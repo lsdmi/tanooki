@@ -1,0 +1,2 @@
+class TalesController < ApplicationController
+end
