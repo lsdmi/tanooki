@@ -1,0 +1,9 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to tale"), tale_path(@tale) %>
+
+  <div class="header">
+    <h1>Edit tale</h1>
+  </div>
+
+  <%= render "form", tale: @tale %>
+</main>

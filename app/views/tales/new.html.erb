@@ -1,0 +1,9 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to tales"), root_path %>
+
+  <div class="header">
+    <h1>New tale</h1>
+  </div>
+
+  <%= render "form", tale: @tale %>
+</main>
