@@ -1,26 +1,20 @@
 development:
   adapter: mysql2
-  encoding: utf8
-  reconnect: false
   database: tanooki_development
-  pool: 5
+  host: localhost
   username: root
-  password: supersecretpassword
+  password: mypassword
 
 test:
   adapter: mysql2
-  encoding: utf8
-  reconnect: false
   database: tanooki_test
-  pool: 5
+  host: localhost
   username: root
-  password: supersecretpassword
+  password: mypassword
 
 production:
   adapter: mysql2
-  encoding: utf8
-  reconnect: false
   database: tanooki_production
-  pool: 5
+  host: localhost
   username: root
-  password: supersecretpassword
+  password: mypassword
