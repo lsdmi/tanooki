@@ -2,6 +2,6 @@
   <%= link_to sanitize("&larr; Back to tales"), root_path %>
   <div class="header">
     <%= tag.h1 @tale.title %>
-    <%= tag.h2 @tale.description %>
+    <%= @tale.description %>
   </div>
 </main>
