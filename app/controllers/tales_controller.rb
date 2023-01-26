@@ -23,7 +23,7 @@ class TalesController < ApplicationController
 
   def update
     if @tale.update(tale_params)
-      redirect_to root_path, notice: "Tale was successfully updated."
+      redirect_to tale_path(@tale), notice: "Tale was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end

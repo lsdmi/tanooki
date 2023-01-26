@@ -1,11 +1,31 @@
 <%= simple_form_for tale, html: { class: "tale form" } do |f| %>
-  <% if tale.errors.any? %>
-    <div class="error-message">
-      <%= tale.errors.full_messages.to_sentence.capitalize %>
-    </div>
+  <div class="mb-6">
+    <%= f.input :title,
+                input_html: { 
+                  autofocus: true,
+                  class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                },
+                placeholder: "Заголовок...",
+                label: "Заголовок"
+              %>
+    <% if tale.errors[:title].any? %>
+      <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">сталася помилка із заголовком звістки...</p>
+    <% end %>
+  </div>
+
+  <%= f.rich_text_area :description,
+              input_html: { 
+                autofocus: true 
+              },
+              placeholder: "Зміст звістки...",
+              label: false,
+              class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            %>
+  <% if tale.errors[:description].any? %>
+    <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400"><span class="font-medium">сталася помилка зі змістом звістки...</p>
   <% end %>
 
-  <%= f.input :title, input_html: { autofocus: true } %>
-  <%= f.input :description, input_html: { autofocus: true, cols: 10, rows: 2 } %>
-  <%= f.submit class: "btn btn--secondary" %>
+  <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
+    <%= f.submit "Надіслати", class: "py-12 mt-1 content-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" %>
+  </div>
 <% end %>
