@@ -13,6 +13,16 @@
     <% end %>
   </div>
 
+  <%= f.label :cover, "Обкладинка" %>
+  <div class="mb-6 grid grid-cols-2 gap-2 bg-slate-50">
+    <div>
+      <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
+    </div>
+    <div>
+      <%= image_tag tale.cover, class: "float-right max-w-xs" if tale.persisted? %>
+    </div>
+  </div>
+
   <%= f.rich_text_area :description,
               input_html: {
                 autofocus: true
