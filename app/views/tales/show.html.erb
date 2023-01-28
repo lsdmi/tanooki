@@ -1,7 +1,13 @@
-<main class="container">
-  <%= link_to sanitize("&larr; Back to tales"), root_path %>
-  <div class="header">
-    <%= tag.h1 @tale.title %>
-    <%= @tale.description %>
+<main class="pt-8 pb-16 lg:pb-24 bg-white dark:bg-gray-900">
+  <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
+    <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+      <header class="mb-4 not-format">
+        <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
+          <%= tag.h1 @tale.title, class: "text-center mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white" %>
+        </div>
+      </header>
+      <figure class="mb-6"><%= image_tag @tale.cover %></figure>
+      <%= tag.p @tale.description %>
+    </article>
   </div>
 </main>

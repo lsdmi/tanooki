@@ -72,4 +72,4 @@ end
 
 gem "simple_form"
 gem "tailwindcss-rails"
-
+gem "pagy"

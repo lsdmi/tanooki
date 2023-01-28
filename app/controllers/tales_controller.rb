@@ -41,6 +41,6 @@ class TalesController < ApplicationController
   end
 
   def tale_params
-    params.require(:tale).permit(:title, :description, :cover)
+    params.require(:tale).permit(:title, :description, :cover, :highlight)
   end
 end
