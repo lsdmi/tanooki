@@ -1,25 +1,7 @@
 <section class="mb-32 text-gray-800 text-center">
   <h2 class="text-3xl font-bold mb-12 mt-12 text-center">Стрічка Звісток</h2>
-  <% @tales.in_groups_of(3) do |group| %>
-    <div class="grid lg:grid-cols-3 gap-6 xl:gap-x-12 mb-6">
-      <% group.each do |tale| %>
-        <div class="mb-6 lg:mb-0">
-          <div>
-            <div class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6" data-mdb-ripple="true" data-mdb-ripple-color="light">
-              <%= link_to tale_path(tale) do %>
-                <%= image_tag tale.cover, class: "w-full rounded-large" %>
-              <% end %>
-            </div>
-
-            <%= tag.h5 tale.title, class: 'text-lg font-bold mb-3' %>
-
-            <p class="text-gray-500 mb-6">
-              <small>Опубліковано <%= tag.u tale.created_at.strftime("%d.%m.%Y") %></small>
-            </p>
-            <%= tag.p tale.description.to_plain_text.truncate(150), class: "text-gray-500" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="grid lg:grid-cols-3 gap-6 xl:gap-x-12 mb-6">
+    <%= render partial: "tale", collection: @tales %>
+    <%= render partial: "next_page" %>
+  </div>
 </section>

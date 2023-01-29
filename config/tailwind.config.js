@@ -63,6 +63,12 @@ module.exports = {
         'Segoe UI Symbol',
         'Noto Color Emoji'
       ]
+    },
+    rotate: {
+      "7": "7deg"
     }
+  },
+  variants: {
+    rotate: ['responsive', 'hover', 'focus']
   }
 }

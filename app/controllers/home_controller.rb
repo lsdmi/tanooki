@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
   def index
     @highlight = Tale.highlight
-    @tales = Tale.news # + Tale.news + Tale.news + Tale.news
+    @pagy, @tales = pagy_countless(Tale.news.order(created_at: :desc), items: 3)
+
+    render "scrollable_list" if params[:page]
   end
 end
