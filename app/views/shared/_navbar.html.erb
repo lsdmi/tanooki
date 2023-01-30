@@ -39,45 +39,39 @@
           </div>
         </div>
       </div>
-      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-          <span class="sr-only">View notifications</span>
-          <!-- Heroicon name: outline/bell -->
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-          </svg>
-        </button>
-
-        <!-- Profile dropdown -->
-        <div class="relative ml-3">
-          <div class="flex items-center md:order-2">
-            <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-              <span class="sr-only">Open user menu</span>
-              <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="user photo">
-            </button>
-            <!-- Dropdown menu -->
-            <div class="absolute right-0 z-10 mt-2 w-48 hidden my-4 text-base list-none origin-top-right bg-white divide-y divide-gray-100 rounded-md pt-2 pb-1 shadow-lg dark:bg-gray-700 dark:divide-gray-600 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" id="user-dropdown">
-              <div class="px-4 py-3">
-                <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+      <% if current_user %>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <!-- Profile dropdown -->
+          <div class="relative ml-3">
+            <div class="flex items-center md:order-2">
+              <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="user photo">
+              </button>
+              <!-- Dropdown menu -->
+              <div class="absolute right-0 z-10 mt-2 w-48 hidden my-4 text-base list-none origin-top-right bg-white divide-y divide-gray-100 rounded-md pt-2 pb-1 shadow-lg dark:bg-gray-700 dark:divide-gray-600 ring-1 ring-black ring-opacity-5 focus:outline-none z-50" id="user-dropdown">
+                <div class="px-4 py-3">
+                  <%= tag.span current_user.name, class: "block text-sm text-gray-900 dark:text-white" %>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                  <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+                  </li>
+                  <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                  </li>
+                  <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
+                  </li>
+                  <li>
+                    <%= link_to "Вийти", destroy_user_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" %>
+                  </li>
+                </ul>
               </div>
-              <ul class="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </nav>

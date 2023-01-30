@@ -5,4 +5,11 @@ Rails.application.routes.draw do
   post '/' => "home#index"
 
   resources :tales, except: %i[index]
+
+  devise_for :users, controllers: {
+    confirmations: 'users/confirmations',
+    passwords: 'users/passwords',
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
 end
