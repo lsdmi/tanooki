@@ -1,18 +1,50 @@
-<h2>Forgot your password?</h2>
+<section class="h-full gradient-form md:h-screen">
+  <div class="container py-12 px-6">
+    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+      <div class="xl:w-10/12">
+        <div class="block bg-white rounded-lg">
+          <div class="lg:flex lg:flex-wrap g-0 p-10 shadow-lg">
+            <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none">
+              <%= image_tag "https://i.kym-cdn.com/photos/images/newsfeed/001/225/565/71c.gif" %>
+            </div>
+            <div class="lg:w-6/12 px-4 md:px-0">
+              <div class="md:p-12 md:mx-6">
+                <div class="text-center">
+                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Забули Пароль?</h4>
+                </div>
+                <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
+                  <%= f.input :email,
+                              id: 'email',
+                              required: true,
+                              autofocus: true,
+                              label: false,
+                              placeholder: "Електронна Адреса",
+                              input_html: {
+                                autocomplete: "email",
+                                class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none #{'border-red-500' if resource.errors[:email].any? }"
+                              } %>
+                  <%= tag.span resource.errors[:email].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 mb-2" if resource.errors[:email].any? %>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
+                  <div class="form-actions text-center pt-1 mb-2 pb-1">
+                    <%= f.button :submit, "Відправити інструкції щодо зміни пароля", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
+                  </div>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
+                  <div class="form-actions text-center pt-1 mb-1 pb-1">
+                    <%= link_to 'Зареєструватися', new_user_registration_path, class: 'text-gray-500 hover:underline' %>
+                  </div>
+                  <div class="form-actions text-center pt-1 mb-1 pb-1">
+                    <%= link_to 'Увійти', new_user_session_path, class: 'text-gray-500 hover:underline' %>
+                  </div>
+
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
-  </div>
-<% end %>
 
 <%= render "devise/shared/links" %>

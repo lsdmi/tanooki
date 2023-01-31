@@ -42,8 +42,9 @@ en:
         user:
           attributes:
             email:
-              blank: "введіть Email"
-              invalid: "недійсний Email"
+              blank: "введіть електронну адресу"
+              invalid: "недійсна електронна адреса"
+              not_found: "електронна адреса не знайдена"
             password:
               blank: "введіть Пароль"
               too_short: "введіть щонайменше 6 символів"

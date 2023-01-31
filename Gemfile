@@ -74,4 +74,3 @@ gem "devise"
 gem "pagy"
 gem "simple_form"
 gem "tailwindcss-rails"
-
