@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tanooki</title>
+    <title>ТанукіNews</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,10 +13,10 @@
 
   <body>
     <%= render "shared/navbar" %>
+    <%= render "shared/notice" if notice %>
+    <%= render "shared/alert" if alert %>
     <%= render 'hero_section' if current_page?(root_path) %>
     <main class="container mx-auto px-5">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
       <%= yield %>
     </main>
     <%= render "shared/footer" %>

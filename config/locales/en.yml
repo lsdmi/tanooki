@@ -30,4 +30,26 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      user:
+        email: ""
+        password: ""
+        name: ""
+        password_confirmation: ""
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "введіть Email"
+              invalid: "недійсний Email"
+            password:
+              blank: "введіть Пароль"
+              too_short: "введіть щонайменше 6 символів"
+            password_confirmation:
+              confirmation: "не відповідає значенню Пароля"
+            name:
+              too_short: "введіть щонайменше 3 символи"
+              too_long: "введіть не більше 10-ти символів"
+              invalid: "недійсне Прізвисько (лише літери чи цифри)"
