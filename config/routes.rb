@@ -6,10 +6,11 @@ Rails.application.routes.draw do
 
   resources :tales, except: %i[index]
 
-  devise_for :users, controllers: {
-    confirmations: 'users/confirmations',
-    passwords: 'users/passwords',
-    registrations: 'users/registrations',
-    sessions: 'users/sessions'
-  }
+  devise_for :users,
+    controllers: {
+      confirmations: 'users/confirmations',
+      passwords: 'users/passwords',
+      registrations: 'users/registrations',
+      sessions: 'users/sessions'
+    }
 end

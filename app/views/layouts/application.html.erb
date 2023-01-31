@@ -13,6 +13,7 @@
 
   <body>
     <%= render "shared/navbar" %>
+    <%= render 'hero_section' if current_page?(root_path) %>
     <main class="container mx-auto px-5">
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

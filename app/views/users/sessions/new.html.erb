@@ -1,20 +1,64 @@
-<h2>Log in</h2>
+<section class="h-full gradient-form md:h-screen">
+  <div class="container py-12 px-6">
+    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+      <div class="xl:w-10/12">
+        <div class="block bg-white rounded-lg">
+          <div class="lg:flex lg:flex-wrap g-0">
+            <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none">
+              <%= image_tag "https://img5.goodfon.com/wallpaper/nbig/0/53/forma-golosa-koe-no-katachi-malchik-belyi-fon.jpg" %>
+            </div>
+            <div class="lg:w-6/12 px-4 md:px-0">
+              <div class="md:p-12 md:mx-6">
+                <div class="text-center">
+                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Логін</h4>
+                </div>
+                <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+                  <%= f.error_notification %>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="mb-6">
+                      <%= f.input :email,
+                                  id: 'email',
+                                  required: true,
+                                  autofocus: true,
+                                  label: false,
+                                  placeholder: "Email",
+                                  input_html: {
+                                    autocomplete: "email",
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                  } %>
+                    </div>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+                    <div class="mb-6">
+                      <%= f.input :password,
+                                  id: 'password',
+                                  required: true,
+                                  autofocus: true,
+                                  label: false,
+                                  placeholder: "Пароль",
+                                  input_html: {
+                                    autocomplete: "current-password",
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                  } %>
+                    </div>
+                  </div>
+
+                  <div class="form-actions text-center pt-1 mb-12 pb-1">
+                    <%= f.button :submit, "Увійти", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
+                    <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-gray-500' %>
+                  </div>
+
+                  <div class="flex items-center justify-between pb-6">
+                    <p class="mb-0 mr-2">Ще не зареєстровані?
+                      <%= link_to 'Зареєструватися', new_user_registration_path, class: 'font-medium hover:underline' %>
+                    </p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
