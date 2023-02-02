@@ -1,0 +1,31 @@
+<div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+  <!-- Profile dropdown -->
+  <div class="relative ml-3">
+    <div class="flex items-center md:order-2">
+      <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+        <span class="sr-only">Open user menu</span>
+        <img class="w-8 h-8 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
+      </button>
+      <!-- Dropdown menu -->
+      <div class="absolute right-0 z-10 mt-2 w-48 hidden my-4 text-base list-none origin-top-right bg-white divide-y divide-gray-100 rounded-md pt-2 pb-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50" id="user-dropdown">
+        <div class="px-4 py-3">
+          <%= tag.span current_user.name, class: "block text-sm text-gray-900" %>
+          <%= tag.span current_user.email, class: "block text-sm font-medium text-gray-500 truncate" %>
+        </div>
+        <% if current_user.admin? %>
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown" data-dropdown-placement="right-start" type="button" class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 text-sm text-gray-700">Управління<svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button>
+              <div id="doubleDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                  <li><%= link_to "Звістки", new_tale_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %></li>
+                </ul>
+            </div>
+          </li>
+        <% end %>
+        <ul class="py-2" aria-labelledby="user-menu-button">
+          <li><%= link_to "Вийти", destroy_user_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

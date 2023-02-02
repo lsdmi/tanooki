@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
   post '/' => "home#index"
 
-  resources :tales, except: %i[index]
+  resources :tales
 
   devise_for :users,
     controllers: {

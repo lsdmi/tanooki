@@ -1,6 +1,9 @@
 class TalesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, :verify_user_permissions, only: [:index, :new, :create, :edit, :update, :destroy]
   before_action :set_tale, only: [:show, :edit, :update, :destroy]
+
+  def index
+  end
 
   def show
   end
@@ -43,5 +46,9 @@ class TalesController < ApplicationController
 
   def tale_params
     params.require(:tale).permit(:title, :description, :cover, :highlight)
+  end
+
+  def verify_user_permissions
+    redirect_to root_path unless current_user.admin?
   end
 end

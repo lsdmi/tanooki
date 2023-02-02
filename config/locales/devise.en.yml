@@ -14,8 +14,8 @@ en:
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "Недійсна Електронна Адреса чи Пароль."
       timeout: "Your session expired. Please sign in again to continue."
-      unauthenticated: "You need to sign in or sign up before continuing."
-      unconfirmed: "You have to confirm your email address before continuing."
+      unauthenticated: "Перш ніж продовжити, увійдіть або зареєструйтесь."
+      unconfirmed: "Перш ніж продовжити, підтвердіть свою електронну адресу."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
