@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       sessions: 'users/sessions'
     }
 
-  resources :tales, only: [:show, :index]
+  resources :tales, only: [:show]
 
   namespace :admin do
     resources :tales, except: :show

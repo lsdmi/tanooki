@@ -5,5 +5,4 @@ class Tale < ApplicationRecord
   validates :title, :description, presence: true
 
   scope :highlight, -> { where(highlight: true).last }
-  scope :news, -> { where(highlight: false) }
 end

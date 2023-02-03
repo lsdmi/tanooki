@@ -1,5 +1,5 @@
 class Admin::TalesController < ApplicationController
-  before_action :authenticate_user!, :verify_user_permissions, only: [:index, :new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, :verify_user_permissions
   before_action :set_tale, only: [:edit, :update, :destroy]
 
   def index

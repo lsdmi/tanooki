@@ -5,5 +5,7 @@
     <p class="text-lg text-gray-900 font-semibold">Оновити Звістку</p>
   </div>
 
-  <%= render "form", tale: @tale %>
+  <%= simple_form_for @tale, url: admin_tale_path(@tale), method: :put, html: { class: "tale form" } do |f| %>
+    <%= render "form", tale: @tale, f: f %>
+  <% end %>
 </main>

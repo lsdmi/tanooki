@@ -1,13 +1,5 @@
 <div class="mb-6 lg:mb-0 p-10 shadow-lg">
-  <div class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6" data-mdb-ripple="true" data-mdb-ripple-color="light">
-    <%= link_to tale_path(tale) do %>
-      <%= image_tag tale.cover, class: "w-full rounded-large" %>
-      <%= link_to tale_path(tale) do %>
-        <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-      <% end %>
-    <% end %>
-  </div>
-
+  <%= render 'tales/cover_image', tale: tale %>
   <%= link_to tale_path(tale) do %>
     <%= tag.h5 tale.title, class: 'text-lg font-bold mb-3 hover:text-gray-600' %>
   <% end %>
