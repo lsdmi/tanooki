@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   root 'home#index'
   post '/' => "home#index"
 
-  resources :tales
-
   devise_for :users,
     controllers: {
       confirmations: 'users/confirmations',
@@ -13,4 +11,10 @@ Rails.application.routes.draw do
       registrations: 'users/registrations',
       sessions: 'users/sessions'
     }
+
+  resources :tales, only: [:show, :index]
+
+  namespace :admin do
+    resources :tales, except: :show
+  end
 end

@@ -1,0 +1,32 @@
+<section class="bg-white">
+  <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <div class="mx-auto max-w-screen-sm text-center lg:mb-2 mb-1">
+        <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900">Керування Звістками</h2>
+      </div>
+      <div class="lg:mb-20 mb-10">
+        <%= link_to "Cтворити", new_admin_tale_path, class: "float-right py-12 mt-1 content-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+      </div>
+      <% @tales.in_groups_of(2) do |group| %>
+        <div class="grid gap-8 lg:grid-cols-2">
+          <% group.each do |tale| %>
+            <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-2">
+              <div class="flex justify-between items-center mb-5 text-gray-500">
+                <%= tag.span "Опубліковано #{tale.created_at.strftime("%d.%m.%Y")}", class: 'text-sm text-justify' %>
+                <div class="w-7">
+                  <%= link_to edit_admin_tale_path(tale) do %>
+                    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
+                    </svg>
+                  <% end %>
+                </div>
+              </div>
+              <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                <%= link_to tale.title, tale_path(tale) %>
+              </h2>
+              <%= tag.p tale.description.to_plain_text.truncate(125), class: 'mb-5 font-light text-gray-500' %>
+            </article>
+          <% end %>
+        </div>
+      <% end %>
+  </div>
+</section>
