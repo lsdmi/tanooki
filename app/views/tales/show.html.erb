@@ -17,6 +17,8 @@
       <%= tag.p @tale.description %>
     </article>
   </div>
+
+  <%= render "comments/index", comments: @comments %>
 </main>
 
 <aside aria-label="Related articles" class="py-8 lg:py-16 bg-gray-50 mb-4">

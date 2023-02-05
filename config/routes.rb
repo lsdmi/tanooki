@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     }
 
   resources :tales, only: [:show]
+  resources :comments, except: [:index, :show]
 
   namespace :admin do
     resources :tales, except: :show
