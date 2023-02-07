@@ -1,0 +1,38 @@
+<article class="p-6 mb-6 text-base bg-white rounded-lg <%= 'ml-6 lg:ml-12' if comment.parent_id.present? %>">
+  <footer class="flex justify-between items-center mb-2">
+    <div class="flex items-center">
+      <%= tag.p class: 'inline-flex items-center mr-3 text-sm text-gray-900' do %>
+        <img class="mr-2 w-6 h-6 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg">
+        <%= comment.user.name %>
+      <% end %>
+      <%= tag.p class: 'text-sm text-gray-600' do %>
+        <%= "Опубліковано #{comment.created_at.strftime('%d.%m.%Y')}" %>
+      <% end %>
+    </div>
+    <% if current_user && current_user.id == comment.user_id %>
+      <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
+        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+        </svg>
+        <span class="sr-only">Comment settings</span>
+      </button>
+      <!-- Dropdown menu -->
+      <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
+        <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton">
+          <li>
+            <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "block py-2 px-4 hover:bg-gray-100" %>
+          </li>
+          <li>
+            <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "block py-2 px-4 hover:bg-gray-100" %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </footer>
+  <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
+    <%= tag.p comment.content %>
+  <% end %>
+  <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
+    <%= render 'comments/reply_button', comment: comment, tale: @tale %>
+  <% end if current_user %>
+  </article>

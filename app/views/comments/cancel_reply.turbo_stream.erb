@@ -1,0 +1,3 @@
+<%= turbo_stream.update "comment-reply-#{@comment.id}" do %>
+  <%= render 'comments/reply_button', comment: @comment, tale: @tale %>
+<% end %>

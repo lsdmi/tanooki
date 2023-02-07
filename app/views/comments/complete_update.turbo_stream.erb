@@ -1,0 +1,3 @@
+<%= turbo_stream.update "comment-content-#{@comment.id}" do %>
+  <%= tag.p @comment.content %>
+<% end %>

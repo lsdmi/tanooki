@@ -1,2 +1,13 @@
-<%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @comment } %>
-<%= turbo_stream.update "new_comment", partial: "comments/new", locals: { comment: Comment.new } %>
+<% if @created_comment.parent_id.present? %>
+  <%= turbo_stream.append "replies", partial: "comments/comment", locals: { comment: @created_comment } %>
+  <%= turbo_stream.update "comment-reply-#{@parent.id}" do %>
+    <%= render 'comments/reply_button', comment: @created_comment.parent, tale: @tale %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @created_comment } %>
+  <%= turbo_stream.update "new_comment" do %>
+    <%= simple_form_for @new_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
+      <%= render "comments/new", comment: @new_comment, tale: @tale, f: f %>
+    <% end %>
+  <% end %>
+<% end %>

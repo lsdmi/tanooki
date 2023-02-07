@@ -1,1 +1,5 @@
-<%= turbo_stream.remove @comment %>
+<% if @comment.parent_id.present? %>
+  <%= turbo_stream.remove "reply-#{@comment.id}" %>
+<% else %>
+  <%= turbo_stream.remove @comment %>
+<% end %>
