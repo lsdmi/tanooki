@@ -1,7 +1,20 @@
-<% if @created_comment.parent_id.present? %>
-  <%= turbo_stream.append "replies", partial: "comments/comment", locals: { comment: @created_comment } %>
-  <%= turbo_stream.update "comment-reply-#{@parent.id}" do %>
-    <%= render 'comments/reply_button', comment: @created_comment.parent, tale: @tale %>
+<% if @created_comment.invalid? && @created_comment.parent_id.present? %>
+  <% @created_comment.update(parent_id: @reply_parent.id) if @reply_parent %>
+  <%= turbo_stream.update "comment-reply-#{@reply_parent.id || @created_comment.parent_id}" do %>
+    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6 mt-2.5" } do |f| %>
+      <%= render "comments/new", comment: @created_comment, tale: @tale, f: f %>
+    <% end %>
+  <% end %>
+<% elsif @created_comment.invalid? %>
+  <%= turbo_stream.update "new_comment" do %>
+    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
+      <%= render "comments/new", comment: @created_comment, tale: @tale, f: f %>
+    <% end %>
+  <% end %>
+<% elsif @created_comment.parent_id.present? %>
+  <%= turbo_stream.append "replies-#{@created_comment.parent_id}", partial: "comments/reply", locals: { reply: @created_comment } %>
+  <%= turbo_stream.update "comment-reply-#{@reply_parent.id}" do %>
+    <%= render 'comments/actions', comment: @reply_parent || @created_comment.parent, tale: @tale %>
   <% end %>
 <% else %>
   <%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @created_comment } %>

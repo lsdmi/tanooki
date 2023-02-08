@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @tale = Tale.find_by(comment_params[:commentable_id])
+    @tale = Tale.find_by(id: comment_params[:commentable_id])
     @created_comment = Comment.create(comment_params)
 
     update_parent
@@ -50,10 +50,10 @@ class CommentsController < ApplicationController
   def update_parent
     return unless comment_params[:parent_id].present?
 
-    @parent = Comment.find_by(id: comment_params[:parent_id])
+    @reply_parent = Comment.find_by(id: comment_params[:parent_id])
 
-    return unless @parent.parent_id.present?
+    return unless @reply_parent.parent_id.present?
 
-    @created_comment.update(parent_id: @parent.parent_id)
+    @created_comment.update(parent_id: @reply_parent.parent_id)
   end
 end

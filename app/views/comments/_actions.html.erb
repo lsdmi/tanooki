@@ -5,4 +5,14 @@
     </svg>
     Відповісти
   <% end %>
+  <% if current_user.id == comment.user_id %>
+    <span>|</span>
+    <span>
+      <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "flex items-center text-sm text-gray-500 hover:underline" %>
+    </span>
+    <span>|</span>
+    <span>
+      <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "flex items-center text-sm text-gray-500 hover:underline" %>
+    </span>
+  <% end %>
 </div>

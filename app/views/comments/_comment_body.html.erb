@@ -7,32 +7,18 @@
       <% end %>
       <%= tag.p class: 'text-sm text-gray-600' do %>
         <%= "Опубліковано #{comment.created_at.strftime('%d.%m.%Y')}" %>
+        <% if comment.created_at != comment.updated_at %>
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-3% inline ml-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"></path>
+          </svg>
+        <% end %>
       <% end %>
     </div>
-    <% if current_user && current_user.id == comment.user_id %>
-      <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
-        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
-        </svg>
-        <span class="sr-only">Comment settings</span>
-      </button>
-      <!-- Dropdown menu -->
-      <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
-        <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton">
-          <li>
-            <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "block py-2 px-4 hover:bg-gray-100" %>
-          </li>
-          <li>
-            <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "block py-2 px-4 hover:bg-gray-100" %>
-          </li>
-        </ul>
-      </div>
-    <% end %>
   </footer>
   <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
     <%= tag.p comment.content %>
   <% end %>
   <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-    <%= render 'comments/reply_button', comment: comment, tale: @tale %>
+    <%= render 'comments/actions', comment: comment, tale: @tale %>
   <% end if current_user %>
-  </article>
+</article>

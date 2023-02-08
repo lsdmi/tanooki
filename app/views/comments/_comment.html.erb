@@ -1,10 +1,8 @@
 <%= turbo_frame_tag comment do %>
   <%= render 'comments/comment_body', comment: comment %>
-  <%= turbo_frame_tag 'replies' do %>
+  <%= turbo_frame_tag "replies-#{comment.id}" do %>
     <% comment.comments.each do |reply| %>
-      <%= turbo_frame_tag "reply-#{reply.id}" do %>
-        <%= render 'comments/comment_body', comment: reply %>
-      <% end %>
+      <%= render 'comments/reply', reply: reply %>
     <% end %>
   <% end %>
 <% end %>

@@ -6,4 +6,6 @@ class Comment < ApplicationRecord
   has_many :comments, foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
 
   scope :parents, -> { where(parent_id: nil) }
+
+  validates :content, presence: true, length: { maximum: 2200 }
 end
