@@ -3,6 +3,8 @@ class TalesController < ApplicationController
 
   def show
     @more_tales = Tale.all.order(created_at: :desc).excluding(@tale).first(4)
+    @comments = @tale.comments.parents.order(created_at: :desc)
+    @comment = Comment.new
   end
 
   private

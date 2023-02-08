@@ -1,4 +1,4 @@
-<main class="pt-8 pb-16 lg:pb-24 bg-white">
+<main class="pt-8 pb-8 lg:pb-12 bg-white">
   <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
     <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-blue p-10 shadow-lg">
       <header class="mb-4 not-format">
@@ -17,6 +17,12 @@
       <%= tag.p @tale.description %>
     </article>
   </div>
+
+  <% if current_user || @comments.any? %>
+    <%= render "comments/index", comments: @comments  %>
+  <% else %>
+    <div class="pb-2"></div>
+  <% end %>
 </main>
 
 <aside aria-label="Related articles" class="py-8 lg:py-16 bg-gray-50 mb-4">

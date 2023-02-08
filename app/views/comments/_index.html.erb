@@ -1,0 +1,14 @@
+<section class="pt-8 lg:pt-16 mb-4 px-4 mx-auto max-w-screen-xl">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Обговорення</h2>
+    </div>
+    <%= turbo_frame_tag "new_comment" do %>
+        <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
+            <%= render "comments/new", comment: @comment, tale: @tale, f: f %>
+        <% end %>
+    <% end if current_user %>
+
+    <%= turbo_frame_tag "comments" do %>
+        <%= render @comments %>
+    <% end %>
+</section>

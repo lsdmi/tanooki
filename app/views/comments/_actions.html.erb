@@ -1,0 +1,18 @@
+ <div class="flex items-center mt-4 space-x-4">
+  <%= link_to new_comment_path(comment: { parent_id: comment.id, commentable_id: tale.id, commentable_type: tale.class, user_id: current_user.id }), data: { turbo_stream: "" }, class: 'flex items-center text-sm text-gray-500 hover:underline' do %>
+    <svg aria-hidden="true" class="mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+    </svg>
+    Відповісти
+  <% end %>
+  <% if current_user.id == comment.user_id %>
+    <span>|</span>
+    <span>
+      <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "flex items-center text-sm text-gray-500 hover:underline" %>
+    </span>
+    <span>|</span>
+    <span>
+      <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "flex items-center text-sm text-gray-500 hover:underline" %>
+    </span>
+  <% end %>
+</div>

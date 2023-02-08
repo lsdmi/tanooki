@@ -1,0 +1,34 @@
+<div>
+  <%= f.input :commentable_id, as: :hidden, input_html: { value: tale.id }  %>
+  <%= f.input :commentable_type, as: :hidden, input_html: { value: tale.class }  %>
+  <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
+  <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
+
+  <div class="py-2 px-4 bg-white rounded-lg rounded-t-lg border border-gray-200 <%= 'mb-4' unless comment.errors.any? %>">
+    <%= f.text_area :content,
+                    id: 'comment',
+                    rows: '3',
+                    class: "px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 #{'border-red-500' if comment.errors.any? }",
+                    placeholder: 'Лишити коментар...',
+                    required: true %>
+  </div>
+  <%= tag.span comment.errors[:content].to_sentence, class: "flex items-center font-medium tracking-wide text-red-500 text-xs ml-1 mb-2" if comment.errors.any? %>
+
+  <div>
+    <%= f.submit 'Надіслати', class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800' %>
+    <% if comment.persisted? %>
+      <%= link_to "Скасувати",
+                  cancel_edit_comment_path(comment),
+                  method: :get,
+                  data: { turbo_stream: "" },
+                  class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-gray-900 border border-gray-800 rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-300 hover:bg-gray-900 hover:text-white' %>
+    <% end %>
+    <% if comment.new_record? && comment.parent_id.present? %>
+      <%= link_to "Скасувати",
+                cancel_reply_comment_path(comment.parent_id),
+                method: :get,
+                data: { turbo_stream: "" },
+                class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-gray-900 border border-gray-800 rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-300 hover:bg-gray-900 hover:text-white' %>
+    <% end %>
+  </div>
+</div>
