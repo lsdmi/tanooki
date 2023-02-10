@@ -1,4 +1,6 @@
 class Tale < ApplicationRecord
+  searchkick
+
   has_one_attached :cover
   has_rich_text :description
 
@@ -7,4 +9,11 @@ class Tale < ApplicationRecord
   validates :title, :description, presence: true
 
   scope :highlight, -> { where(highlight: true).last }
+
+  def search_data
+    {
+      title: title,
+      description: description.to_plain_text
+    }
+  end
 end

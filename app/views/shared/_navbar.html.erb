@@ -11,10 +11,11 @@
         </div>
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-            <%= link_to 'Головна', root_path, class: 'bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium', area: { current: 'page' } %>
+            <%= link_to 'Головна', root_path, class: 'hover:bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium', area: { current: 'page' } %>
           </div>
         </div>
       </div>
+      <%= render "shared/search" %>
       <% if current_user %>
         <%= render 'shared/user_dropdown' %>
       <% else %>
