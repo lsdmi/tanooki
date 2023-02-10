@@ -71,6 +71,8 @@ group :test do
 end
 
 gem "devise"
+gem "elasticsearch", "~> 7.17.0"
 gem "pagy"
+gem "searchkick"
 gem "simple_form"
 gem "tailwindcss-rails"

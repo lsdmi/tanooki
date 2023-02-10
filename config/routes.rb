@@ -12,15 +12,16 @@ Rails.application.routes.draw do
       sessions: 'users/sessions'
     }
 
-  resources :tales, only: [:show]
+  namespace :admin do
+    resources :tales, except: :show
+  end
+
   resources :comments, except: [:index, :show] do
     member do
       get :cancel_edit
       get :cancel_reply
     end
   end
-
-  namespace :admin do
-    resources :tales, except: :show
-  end
+  resources :search, only: [:index]
+  resources :tales, only: [:show]
 end
