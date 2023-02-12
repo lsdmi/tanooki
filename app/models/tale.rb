@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tale < ApplicationRecord
   searchkick
 
@@ -12,7 +14,7 @@ class Tale < ApplicationRecord
 
   def search_data
     {
-      title: title,
+      title:,
       description: description.to_plain_text
     }
   end

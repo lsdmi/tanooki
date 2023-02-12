@@ -1,52 +1,55 @@
-class Admin::TalesController < ApplicationController
-  before_action :authenticate_user!, :verify_user_permissions
-  before_action :set_tale, only: [:edit, :update, :destroy]
+# frozen_string_literal: true
 
-  def index
-    @tales = Tale.all
-  end
+class Admin
+  class TalesController < ApplicationController
+    before_action :authenticate_user!, :verify_user_permissions
+    before_action :set_tale, only: %i[edit update destroy]
 
-  def new
-    @tale = Tale.new
-  end
-
-  def create
-    @tale = Tale.new(tale_params)
-
-    if @tale.save
-      redirect_to root_path, notice: "Tale was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    def index
+      @tales = Tale.all
     end
-  end
 
-  def edit
-  end
-
-  def update
-    if @tale.update(tale_params)
-      redirect_to tale_path(@tale), notice: "Tale was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    def new
+      @tale = Tale.new
     end
-  end
 
-  def destroy
-    @tale.destroy
-    redirect_to root_path, notice: "Tale was successfully destroyed."
-  end
+    def create
+      @tale = Tale.new(tale_params)
 
-  private
+      if @tale.save
+        redirect_to root_path, notice: 'Tale was successfully created.'
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
 
-  def set_tale
-    @tale = Tale.find(params[:id])
-  end
+    def edit; end
 
-  def tale_params
-    params.require(:tale).permit(:title, :description, :cover, :highlight)
-  end
+    def update
+      if @tale.update(tale_params)
+        redirect_to tale_path(@tale), notice: 'Tale was successfully updated.'
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
 
-  def verify_user_permissions
-    redirect_to root_path unless current_user.admin?
+    def destroy
+      @tale.destroy
+      redirect_to root_path, notice: 'Tale was successfully destroyed.'
+    end
+
+    private
+
+    def set_tale
+      @tale = Tale.find(params[:id])
+    end
+
+    def tale_params
+      params.require(:tale).permit(:title, :description, :cover, :highlight)
+    end
+
+    def verify_user_permissions
+      redirect_to root_path unless current_user.admin?
+    end
   end
 end
