@@ -75,6 +75,8 @@ end
 
 gem 'devise'
 gem 'elasticsearch', '~> 7.17.0'
+gem 'friendly_id'
+gem 'i18n'
 gem 'pagy'
 gem 'searchkick'
 gem 'simple_form'

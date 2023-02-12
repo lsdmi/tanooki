@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Tale < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :slug_candidates
   searchkick
 
   has_one_attached :cover
@@ -17,5 +20,11 @@ class Tale < ApplicationRecord
       title:,
       description: description.to_plain_text
     }
+  end
+
+  def slug_candidates
+    [
+      title.downcase
+    ]
   end
 end
