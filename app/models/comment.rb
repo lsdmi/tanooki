@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :parent, optional: true, class_name: 'Comment', inverse_of: :comments

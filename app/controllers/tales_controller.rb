@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TalesController < ApplicationController
   before_action :set_tale
 
