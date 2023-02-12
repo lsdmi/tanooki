@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Admin
+module Admin
   class TalesController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
     before_action :set_tale, only: %i[edit update destroy]
 
     def index
-      @tales = Tale.all
+      @tales = Tale.all.order(created_at: :desc)
     end
 
     def new
@@ -17,7 +17,7 @@ class Admin
       @tale = Tale.new(tale_params)
 
       if @tale.save
-        redirect_to root_path, notice: 'Tale was successfully created.'
+        redirect_to root_path, notice: 'Звістку створено.'
       else
         render :new, status: :unprocessable_entity
       end
@@ -27,7 +27,7 @@ class Admin
 
     def update
       if @tale.update(tale_params)
-        redirect_to tale_path(@tale), notice: 'Tale was successfully updated.'
+        redirect_to tale_path(@tale), notice: 'Звістку оновлено.'
       else
         render :edit, status: :unprocessable_entity
       end
@@ -35,7 +35,7 @@ class Admin
 
     def destroy
       @tale.destroy
-      redirect_to root_path, notice: 'Tale was successfully destroyed.'
+      redirect_to root_path, notice: 'Звістку видалено.'
     end
 
     private
