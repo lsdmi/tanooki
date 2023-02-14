@@ -1,8 +1,28 @@
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'bin/**'
+    - 'db/migrate/**'
+    - 'db/schema.rb'
+
+Layout/EndOfLine:
+  Enabled: False
+
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/users/registrations_controller.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/development.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/users/registrations_controller.rb'
 
 Style/Documentation:
   Enabled: false
-
-Layout/EndOfLine:
-   Enabled: False

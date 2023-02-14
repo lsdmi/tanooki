@@ -1,5 +1,4 @@
-# frozen_string_literal: true
+#!/usr/bin/env ruby
 
-# !/usr/bin/env ruby
-require_relative '../config/application'
-require 'importmap/commands'
+require_relative "../config/application"
+require "importmap/commands"
