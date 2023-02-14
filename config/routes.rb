@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :tales, except: :show
   end
 
+  resources :blogs
   resources :comments, except: %i[index show] do
     member do
       get :cancel_edit

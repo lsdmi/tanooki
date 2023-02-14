@@ -1,0 +1,45 @@
+<div>
+  <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
+
+  <div class="mb-6">
+    <%= f.input :title,
+                input_html: {
+                  autofocus: true,
+                  class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                },
+                placeholder: "Заголовок...",
+                label: "Заголовок"
+              %>
+    <% if blog.errors[:title].any? %>
+      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">сталася помилка із заголовком звістки...</p>
+    <% end %>
+  </div>
+
+  <%= f.label :cover, "Обкладинка" %>
+  <div class="mb-6 grid grid-cols-2 gap-2 bg-slate-50">
+    <div>
+      <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
+    </div>
+    <div>
+      <%= image_tag blog.cover, class: "float-right max-w-xs" if blog.persisted? %>
+    </div>
+  </div>
+
+  <%= f.rich_text_area :description,
+              input_html: {
+                autofocus: true
+              },
+              placeholder: "Зміст звістки...",
+              label: false,
+              class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            %>
+  <% if blog.errors[:description].any? %>
+    <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">сталася помилка зі змістом звістки...</p>
+  <% end %>
+
+  <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
+    <div>
+      <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+    </div>
+  </div>
+</div>

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Tale < Content
+class Blog < Content
   extend FriendlyId
 
   friendly_id :slug_candidates
 
-  scope :highlight, -> { where(highlight: true).last }
+  belongs_to :user
 
   def slug_candidates
     [
