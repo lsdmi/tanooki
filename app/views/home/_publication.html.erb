@@ -1,0 +1,16 @@
+<div class="mb-6 lg:mb-0">
+  <div class="relative block bg-white rounded-lg shadow-lg px-5">
+    <div class="flex">
+      <%= render 'publications/cover_image', publication: publication %>
+    </div>
+    <div class="p-4">
+      <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
+        <%= tag.h5 publication.title.truncate(150), class: 'text-lg font-bold mb-3 hover:text-gray-600' %>
+      <% end %>
+      <p class="text-gray-500 mb-4">
+        <small>Опубліковано <%= tag.u publication.created_at.strftime("%d.%m.%Y") %></small>
+      </p>
+      <%= tag.p publication.description.to_plain_text.truncate(140), class: "text-gray-500 mb-4 pb-2" %>
+    </div>
+  </div>
+</div>

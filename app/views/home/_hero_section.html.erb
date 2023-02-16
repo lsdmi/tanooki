@@ -19,11 +19,11 @@
                 <section class="text-gray-800 text-center md:text-left">
                     <h2 class="text-3xl font-bold mb-12 text-center">Головне</h2>
 
-                    <% @top4.first(4).each_with_index do |tale, i| %>
+                    <% @top_four.first(4).each_with_index do |tale, i| %>
                         <div class="flex flex-wrap mb-6 <%= 'border-b-2' unless i == 3 %>">
                             <div class="grow-0 shrink-0 basis-auto w-full md:w-4/12 px-3 mb-6 md:mb-0 ml-auto">
                                 <div class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple rounded-lg mb-6" data-mdb-ripple="true" data-mdb-ripple-color="light">
-                                    <%= render 'tales/cover_image', tale: tale %>
+                                    <%= render 'publications/cover_image', publication: tale %>
                                 </div>
                             </div>
 

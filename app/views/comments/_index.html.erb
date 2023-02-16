@@ -4,7 +4,7 @@
     </div>
     <%= turbo_frame_tag "new_comment" do %>
         <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-            <%= render "comments/new", comment: @comment, tale: @tale, f: f %>
+            <%= render "comments/new", comment: @comment, publication: @publication, f: f %>
         <% end %>
     <% end if current_user %>
 
