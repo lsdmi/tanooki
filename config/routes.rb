@@ -17,12 +17,14 @@ Rails.application.routes.draw do
     resources :tales, except: :show
   end
 
+  resources :blogs
   resources :comments, except: %i[index show] do
     member do
       get :cancel_edit
       get :cancel_reply
     end
   end
+  resources :publications
   resources :search, only: [:index]
   resources :tales, only: [:show]
 end
