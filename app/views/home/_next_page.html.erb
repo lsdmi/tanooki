@@ -1,11 +1,9 @@
 <% if @pagy.next.present? %>
   <%= turbo_frame_tag(
         "publications-page-#{@pagy.next}",
-        # autoscroll: true,
         loading: :lazy,
         src: pagy_url_for(@pagy, @pagy.next),
         target: "_top"
       ) do %>
-    Завантаження...
   <% end %>
 <% end %>

@@ -1,6 +1,6 @@
 <div class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6" data-mdb-ripple="true" data-mdb-ripple-color="light">
   <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
-    <%= image_tag publication.cover, class: "w-full rounded-large" %>
+    <%= image_tag publication.cover, class: "w-full rounded-large max-h-80" %>
     <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
       <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
     <% end %>
