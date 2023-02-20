@@ -41,17 +41,25 @@
     <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній зміст публікації...</p>
   <% end %>
 
-  <%= tag.div class: publication.instance_of?(Tale) ? 'py-2 px-10 grid grid-cols-4' : 'container py-2 px-10 mx-0 min-w-full flex flex-col items-center' do %>
+  <%= tag.div class: publication.instance_of?(Tale) ? 'py-2 grid grid-cols-4' : 'container py-2 mx-0 min-w-full flex flex-col items-center grid grid-cols-3' do %>
     <div></div>
-    <div>
+    <%= tag.div class: "#{'container py-2 mx-0 min-w-full flex flex-col items-center' if publication.instance_of?(Blog)}" do %>
       <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
-    </div>
+    <% end %>
     <% if publication.instance_of?(Tale) %>
       <div class="flex items-center mr-4">
         <%= f.input :highlight, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2' } %>
         <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-900">Парадна</label>
       </div>
     <% end %>
-    <div></div>
+    <div>
+      <%= link_to 'Видалити',
+                  publication_path(publication),
+                  class: 'float-right mt-1 content-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2',
+                  data: {
+                    turbo_confirm: 'Певні, що прагнете видалити цю публікацію?',
+                    "turbo-method": :delete
+                  } if publication.persisted? %>
+    </div>
   <% end %>
 </div>

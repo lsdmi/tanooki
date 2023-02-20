@@ -24,3 +24,17 @@ module Tanooki
     config.active_storage.variant_processor = :mini_magick
   end
 end
+
+Rails.configuration.after_initialize do
+  ActionText::RichText.class_eval do
+    acts_as_paranoid
+  end
+
+  ActiveStorage::Attachment.class_eval do
+    acts_as_paranoid
+  end
+
+  ActiveStorage::Blob.class_eval do
+    acts_as_paranoid
+  end
+end

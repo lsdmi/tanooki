@@ -4,7 +4,7 @@ class TalesController < ApplicationController
   before_action :set_tale
 
   def show
-    @more_tales = Tale.all.order(created_at: :desc).excluding(@tale).first(4)
+    @more_tales = Tale.all.order(created_at: :desc).excluding(@publication).first(4)
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
   end
