@@ -1,4 +1,9 @@
 
 <footer class="p-4 bg-gray-50 rounded-lg md:flex md:items-center md:justify-between md:p-6">
     <span class="text-sm text-gray-500 sm:text-center">© <%= Time.zone.now.year %> ТанукіNews™. Всі права захищені.</span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500">
+        <li>
+            <%= link_to "Кузня Блогів", blogs_path, class: "mr-4 hover:underline md:mr-6" if current_user.present? %>
+        </li>
+    </ul>
 </footer>
