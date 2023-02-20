@@ -15,11 +15,6 @@ module Admin
 
     def edit; end
 
-    def destroy
-      @tale.destroy
-      redirect_to root_path, notice: 'Звістку видалено.'
-    end
-
     private
 
     def set_tale

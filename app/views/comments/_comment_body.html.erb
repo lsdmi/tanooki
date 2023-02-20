@@ -17,6 +17,6 @@
     <%= tag.p comment.content %>
   <% end %>
   <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-    <%= render 'comments/actions', comment: comment, tale: @tale %>
+    <%= render 'comments/actions', comment: comment, publication: @publication %>
   <% end if current_user %>
 </article>

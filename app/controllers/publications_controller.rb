@@ -2,7 +2,7 @@
 
 class PublicationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_publication, only: :update
+  before_action :set_publication, only: %i[update destroy]
   before_action :verify_user_permissions
 
   def create
@@ -23,6 +23,11 @@ class PublicationsController < ApplicationController
     end
   end
 
+  def destroy
+    @publication.destroy
+    redirect_to root_path, notice: destroy_notice
+  end
+
   private
 
   def create_notice
@@ -31,6 +36,10 @@ class PublicationsController < ApplicationController
 
   def update_notice
     @publication.instance_of?(Blog) ? 'пост надіслано на модерацію' : 'звістку оновлено'
+  end
+
+  def destroy_notice
+    @publication.instance_of?(Blog) ? 'пост видалено' : 'звістку видалено'
   end
 
   def new_publication_partial
@@ -54,12 +63,24 @@ class PublicationsController < ApplicationController
   end
 
   def verify_user_permissions
-    if (
-      @publication.type == 'Blog' && action_name.to_sym == :update && @publication.user_id != current_user.id
-    ) || (
-      @oublication.type == 'Tale' && !current_user.admin?
-    )
-      redirect_to root_path
-    end
+    redirect_to root_path if blog_author? || admin_user?
+  end
+
+  def blog_author?
+    publication_type == 'Blog' &&
+      (action_name.to_sym == :update || action_name.to_sym == :destroy) &&
+      publication_user_id != current_user.id
+  end
+
+  def admin_user?
+    publication_type == 'Tale' && !current_user.admin?
+  end
+
+  def publication_type
+    @publication&.type || publication_params[:type]
+  end
+
+  def publication_user_id
+    @publication&.user_id || publication_params[:user_id]
   end
 end

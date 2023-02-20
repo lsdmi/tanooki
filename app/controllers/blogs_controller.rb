@@ -2,7 +2,7 @@
 
 class BlogsController < ApplicationController
   before_action :authenticate_user!, except: :show
-  before_action :set_tale, only: %i[edit show destroy]
+  before_action :set_blog, only: %i[edit show destroy]
   before_action :verify_user_permissions, only: %i[edit destroy]
 
   def index
@@ -23,7 +23,7 @@ class BlogsController < ApplicationController
 
   private
 
-  def set_tale
+  def set_blog
     @publication = Blog.find(params[:id])
   end
 
