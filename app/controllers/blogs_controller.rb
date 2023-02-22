@@ -24,7 +24,7 @@ class BlogsController < ApplicationController
   private
 
   def set_blog
-    @publication = Blog.find(params[:id])
+    @publication = (action_name == 'show' ? Publication.approved.find(params[:id]) : Publication.find(params[:id]))
   end
 
   def verify_user_permissions

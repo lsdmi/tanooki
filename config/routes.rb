@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
+    resources :blogs, only: %i[index edit update]
     resources :tales, except: %i[show create update destroy]
   end
 
@@ -25,6 +26,6 @@ Rails.application.routes.draw do
     end
   end
   resources :publications, except: %i[new edit show]
-  resources :search, only: [:index]
-  resources :tales, only: [:show]
+  resources :search, only: :index
+  resources :tales, only: :show
 end

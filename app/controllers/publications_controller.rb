@@ -31,15 +31,15 @@ class PublicationsController < ApplicationController
   private
 
   def create_notice
-    @publication.instance_of?(Blog) ? 'пост надіслано на модерацію' : 'звістку створено'
+    @publication.instance_of?(Blog) ? 'допис надіслано на модерацію' : 'звістку створено'
   end
 
   def update_notice
-    @publication.instance_of?(Blog) ? 'пост надіслано на модерацію' : 'звістку оновлено'
+    @publication.instance_of?(Blog) ? 'допис надіслано на модерацію' : 'звістку оновлено'
   end
 
   def destroy_notice
-    @publication.instance_of?(Blog) ? 'пост видалено' : 'звістку видалено'
+    @publication.instance_of?(Blog) ? 'допис видалено' : 'звістку видалено'
   end
 
   def new_publication_partial
@@ -55,7 +55,9 @@ class PublicationsController < ApplicationController
   end
 
   def publication_params
-    params.require(:publication).permit(:type, :title, :description, :cover, :highlight, :user_id)
+    params.require(:publication).permit(
+      :type, :title, :description, :cover, :highlight, :user_id, :status, :status_message
+    )
   end
 
   def set_publication

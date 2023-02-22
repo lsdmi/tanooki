@@ -1,9 +1,7 @@
 <main class="container mx-auto px-5">
-  <%= link_to sanitize("&larr; До Звістки"),
-              dynamic_variables(publication.slug)[:show_publication_path],
-              class: "inline-block mt-2 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-            %>
-
+  <div class="mt-3">
+    <%= render 'blogs/status_alert', status: publication.status, message: publication.status_message if controller_path == 'blogs' %>
+  </div>
   <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
     <%= tag.p static_variables[:publication_edit_header], class: 'text-lg text-gray-900 font-semibold' %>
   </div>

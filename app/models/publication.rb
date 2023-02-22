@@ -14,9 +14,15 @@ class Publication < ApplicationRecord
 
   has_many :comments
 
-  validates :title, :description, :cover, presence: true
+  validates :title, :description, :cover, :status, :status_message, presence: true
 
   scope :highlight, -> { where(highlight: true).last }
+
+  enum status: {
+    created: 'created',
+    approved: 'approved',
+    declined: 'declined'
+  }
 
   def search_data
     {
