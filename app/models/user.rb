@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   validates :name, length: { minimum: 3, maximum: 10 }, format: { with: /\A[a-zA-Z0-9 ]+\z/ }
 
+  has_many :blogs
   has_many :comments
   has_many :publications
 end

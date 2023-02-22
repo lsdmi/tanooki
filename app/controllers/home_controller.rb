@@ -3,7 +3,7 @@
 class HomeController < ApplicationController
   def index
     @highlight = Publication.highlight || Tale.last
-    @top_four = Tale.all.order(created_at: :desc).excluding(@highlight).first(4)
+    @top_four = Tale.order(created_at: :desc).excluding(@highlight).first(4)
 
     remaining_publications = Publication.approved.order(created_at: :desc).excluding(@highlight, @top_four)
     @pagy, @publications = pagy_countless(remaining_publications, items: 9)
