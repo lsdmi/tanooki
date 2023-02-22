@@ -4,9 +4,9 @@ module PublicationsHelper
   def static_variables
     @static_variables ||= {
       new_publication_path: blog_controller ? new_blog_path : new_admin_tale_path,
-      publication_edit_header: blog_controller ? 'Оновити Пост' : 'Оновити Звістку',
-      publication_index_header: blog_controller ? 'Керування Блогами' : 'Керування Звістками',
-      publication_new_header: blog_controller ? 'Створити Пост' : 'Створити Звістку'
+      publication_edit_header: blog_controller ? 'Оновити Допис' : 'Оновити Звістку',
+      publication_index_header:,
+      publication_new_header: blog_controller ? 'Створити Допис' : 'Створити Звістку'
     }
   end
 
@@ -17,9 +17,31 @@ module PublicationsHelper
     }
   end
 
+  def status_variables(status)
+    case status
+    when 'created'
+      { class: 'bg-indigo-100 border-indigo-500 text-indigo-900', heading: 'Модерується' }
+    when 'approved'
+      { class: 'bg-teal-100 border-teal-500 text-teal-900', heading: 'Опубліковано' }
+    else
+      { class: 'bg-red-100 border-red-500 text-red-900', heading: 'Відхилено' }
+    end
+  end
+
   def blog_controller(publication_class = nil)
     return true if publication_class == Blog
 
     controller_name.to_sym == :blogs
+  end
+
+  def publication_index_header
+    case controller_path
+    when 'blogs'
+      'Мій Блог'
+    when 'admin/blogs'
+      'Модерування Блогів'
+    else
+      'Керування Звістками'
+    end
   end
 end

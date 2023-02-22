@@ -14,7 +14,7 @@
   <%= tag.span comment.errors[:content].to_sentence, class: "flex items-center font-medium tracking-wide text-red-500 text-xs ml-1 mb-2" if comment.errors.any? %>
 
   <div>
-    <%= f.submit 'Надіслати', class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800' %>
+    <%= f.submit 'Надіслати', class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-800' %>
     <% if comment.persisted? %>
       <%= link_to "Скасувати",
                   cancel_edit_comment_path(comment),

@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     @highlight = Publication.highlight || Tale.last
     @top_four = Tale.all.order(created_at: :desc).excluding(@highlight).first(4)
 
-    remaining_publications = Publication.all.order(created_at: :desc).excluding(@highlight, @top_four)
+    remaining_publications = Publication.approved.order(created_at: :desc).excluding(@highlight, @top_four)
     @pagy, @publications = pagy_countless(remaining_publications, items: 9)
 
     render 'scrollable_list' if params[:page]
