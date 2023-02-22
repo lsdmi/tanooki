@@ -1,0 +1,8 @@
+<%= tag.div class: "#{status_variables(status)[:class]} border-t-4 rounded-b px-4 py-3 shadow-lg mb-6", role: 'alert' do %>
+  <div class="flex">
+    <div>
+      <%= tag.p "#{status_variables(status)[:heading]}:", class: 'font-bold' %>
+      <%= tag.p message, class: 'text-smpy-1' %>
+    </div>
+  </div>
+<% end %>

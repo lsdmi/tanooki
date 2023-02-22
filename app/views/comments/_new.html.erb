@@ -1,6 +1,5 @@
 <div>
-  <%= f.input :commentable_id, as: :hidden, input_html: { value: tale.id }  %>
-  <%= f.input :commentable_type, as: :hidden, input_html: { value: tale.class }  %>
+  <%= f.input :publication_id, as: :hidden, input_html: { value: publication.id }  %>
   <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
   <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
 
@@ -15,7 +14,7 @@
   <%= tag.span comment.errors[:content].to_sentence, class: "flex items-center font-medium tracking-wide text-red-500 text-xs ml-1 mb-2" if comment.errors.any? %>
 
   <div>
-    <%= f.submit 'Надіслати', class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800' %>
+    <%= f.submit 'Надіслати', class: 'inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-800' %>
     <% if comment.persisted? %>
       <%= link_to "Скасувати",
                   cancel_edit_comment_path(comment),

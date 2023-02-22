@@ -1,0 +1,67 @@
+<%= f.input :type, as: :hidden, input_html: { value: publication.class } %>
+<%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
+<%= f.input :status, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'created' : 'approved' } %>
+<%= f.input :status_message, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'допис буде переглянуто та опубліковано' : 'допис відмодеровано та схвалено' } %>
+
+<div>
+  <div class="mb-6">
+    <%= f.input :title,
+                input_html: {
+                  autofocus: true,
+                  class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                },
+                placeholder: "Заголовок...",
+                label: "Заголовок"
+              %>
+    <% if publication.errors[:title].any? %>
+      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній заголовок публікації...</p>
+    <% end %>
+  </div>
+
+  <%= f.label :cover, "Обкладинка" %>
+  <div class="mb-2 grid grid-cols-2 gap-2 bg-slate-50">
+    <div>
+      <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
+    </div>
+    <div>
+      <%= image_tag publication.cover, class: "float-right max-w-xs" if publication.persisted? %>
+    </div>
+  </div>
+  <% if publication.errors[:cover].any? %>
+    <p id="outlined_error_help" class="mb-6 text-xs text-red-600"><span class="font-medium">відсутня обкладинка публікації...</p>
+  <% end %>
+
+  <%= f.rich_text_area :description,
+              input_html: {
+                autofocus: true
+              },
+              placeholder: "Зміст публікації...",
+              label: false,
+              class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+            %>
+  <% if publication.errors[:description].any? %>
+    <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній зміст публікації...</p>
+  <% end %>
+
+  <%= tag.div class: publication.instance_of?(Tale) ? 'py-2 grid grid-cols-4' : 'container py-2 mx-0 min-w-full flex flex-col items-center grid grid-cols-3' do %>
+    <div></div>
+    <%= tag.div class: "#{'container py-2 mx-0 min-w-full flex flex-col items-center' if publication.instance_of?(Blog)}" do %>
+      <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+    <% end %>
+    <% if publication.instance_of?(Tale) %>
+      <div class="flex items-center mr-4">
+        <%= f.input :highlight, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2' } %>
+        <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-900">Парадна</label>
+      </div>
+    <% end %>
+    <div>
+      <%= link_to 'Видалити',
+                  publication_path(publication),
+                  class: 'float-right mt-1 content-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2',
+                  data: {
+                    turbo_confirm: 'Певні, що прагнете видалити цю публікацію?',
+                    "turbo-method": :delete
+                  } if publication.persisted? %>
+    </div>
+  <% end %>
+</div>

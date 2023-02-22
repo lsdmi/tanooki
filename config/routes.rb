@@ -14,15 +14,18 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
-    resources :tales, except: :show
+    resources :blogs, only: %i[index edit update]
+    resources :tales, except: %i[show create update destroy]
   end
 
+  resources :blogs, except: %i[create update destroy]
   resources :comments, except: %i[index show] do
     member do
       get :cancel_edit
       get :cancel_reply
     end
   end
-  resources :search, only: [:index]
-  resources :tales, only: [:show]
+  resources :publications, except: %i[new edit show]
+  resources :search, only: :index
+  resources :tales, only: :show
 end

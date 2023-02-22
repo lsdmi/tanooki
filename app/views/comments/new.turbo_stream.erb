@@ -1,5 +1,5 @@
 <%= turbo_stream.update "comment-reply-#{@comment.parent_id}" do %>
   <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6 mt-2.5" } do |f| %>
-    <%= render "comments/new", comment: @comment, tale: @tale, f: f %>
+    <%= render "comments/new", comment: @comment, publication: @publication, f: f %>
   <% end %>
 <% end %>

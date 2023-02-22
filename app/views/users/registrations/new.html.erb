@@ -1,4 +1,4 @@
-<section class="h-full gradient-form md:h-screen">
+<section class="h-full gradient-form flex justify-center">
   <div class="container py-12 px-6">
     <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
       <div class="xl:w-10/12">
@@ -28,7 +28,7 @@
                                   placeholder: "Електронна Адреса",
                                   input_html: {
                                     autocomplete: "email",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none #{'border-red-500' if resource.errors[:email].any? }"
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:email].any? }"
                                   } %>
                       <%= tag.span resource.errors[:email].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
                     </div>
@@ -42,7 +42,7 @@
                                   placeholder: "Прізвисько",
                                   input_html: {
                                     autocomplete: "name",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none #{'border-red-500' if resource.errors[:name].any? }"
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:name].any? }"
                                   } %>
                       <%= tag.span resource.errors[:name].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
                     </div>
@@ -59,7 +59,7 @@
                                   hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
                                   input_html: {
                                     autocomplete: "new-password",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none #{'border-red-500' if resource.errors[:password].any? }"
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:password].any? }"
                                   } %>
                       <%= tag.span resource.errors[:password].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
                     </div>
@@ -73,14 +73,14 @@
                                   placeholder: "Підтвердження пароля",
                                   input_html: {
                                     autocomplete: "password_confirmation",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:password_confirmation].any? }"
                                   } %>
                       <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
                     </div>
                   </div>
 
                   <div class="form-actions text-center pt-1 mb-12 pb-1">
-                    <%= f.button :submit, "Зареєструватися", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
+                    <%= f.button :submit, "Зареєструватися", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
                     <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-gray-500' %>
                   </div>
 

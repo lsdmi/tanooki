@@ -3,45 +3,22 @@
 module Admin
   class TalesController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
-    before_action :set_tale, only: %i[edit update destroy]
+    before_action :set_tale, only: %i[edit destroy]
 
     def index
-      @tales = Tale.all.order(created_at: :desc)
+      @tales = Tale.order(created_at: :desc)
     end
 
     def new
-      @tale = Tale.new
-    end
-
-    def create
-      @tale = Tale.new(tale_params)
-
-      if @tale.save
-        redirect_to root_path, notice: 'Звістку створено.'
-      else
-        render :new, status: :unprocessable_entity
-      end
+      @publication = Tale.new
     end
 
     def edit; end
 
-    def update
-      if @tale.update(tale_params)
-        redirect_to tale_path(@tale), notice: 'Звістку оновлено.'
-      else
-        render :edit, status: :unprocessable_entity
-      end
-    end
-
-    def destroy
-      @tale.destroy
-      redirect_to root_path, notice: 'Звістку видалено.'
-    end
-
     private
 
     def set_tale
-      @tale = Tale.find(params[:id])
+      @publication = Tale.find(params[:id])
     end
 
     def tale_params
