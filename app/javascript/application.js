@@ -3,5 +3,4 @@ import "@hotwired/turbo-rails";
 import "controllers";
 import 'flowbite';
 import "trix";
-import "@rails/actiontext";import "trix"
-import "@rails/actiontext"
+import "@rails/actiontext";
