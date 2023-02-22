@@ -6,7 +6,7 @@ class BlogsController < ApplicationController
   before_action :verify_user_permissions, only: %i[edit destroy]
 
   def index
-    @blogs = Blog.where(user_id: current_user.id).order(created_at: :desc)
+    @blogs = current_user.blogs.order(created_at: :desc)
   end
 
   def new
@@ -16,7 +16,7 @@ class BlogsController < ApplicationController
   def edit; end
 
   def show
-    @more_tales = Tale.all.order(created_at: :desc).first(4)
+    @more_tales = Tale.order(created_at: :desc).first(4)
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
   end

@@ -1,7 +1,7 @@
 <%= turbo_frame_tag comment do %>
   <%= render 'comments/comment_body', comment: comment %>
   <%= turbo_frame_tag "replies-#{comment.id}" do %>
-    <% comment.comments.each do |reply| %>
+    <% comment.replies.each do |reply| %>
       <%= render 'comments/reply', reply: reply %>
     <% end %>
   <% end %>

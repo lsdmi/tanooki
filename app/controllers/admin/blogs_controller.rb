@@ -15,7 +15,7 @@ module Admin
       if @publication.update(blog_params)
         redirect_to update_redirect_path, notice: 'допис відмодеровано'
       else
-        render 'admin/blogs/edit', status: :unprocessable_entity
+        render :edit, status: :unprocessable_entity
       end
     end
 
@@ -34,7 +34,7 @@ module Admin
     end
 
     def update_redirect_path
-      @publication.status == 'approved' ? blog_path(@publication) : admin_blogs_path
+      @publication.approved? ? blog_path(@publication) : admin_blogs_path
     end
   end
 end

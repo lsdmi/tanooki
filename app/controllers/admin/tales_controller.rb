@@ -6,7 +6,7 @@ module Admin
     before_action :set_tale, only: %i[edit destroy]
 
     def index
-      @tales = Tale.all.order(created_at: :desc)
+      @tales = Tale.order(created_at: :desc)
     end
 
     def new

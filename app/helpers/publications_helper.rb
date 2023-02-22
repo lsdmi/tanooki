@@ -2,18 +2,18 @@
 
 module PublicationsHelper
   def static_variables
-    @static_variables ||= {
-      new_publication_path: blog_controller ? new_blog_path : new_admin_tale_path,
-      publication_edit_header: blog_controller ? 'Оновити Допис' : 'Оновити Звістку',
+    {
+      new_publication_path:,
+      publication_edit_header:,
       publication_index_header:,
-      publication_new_header: blog_controller ? 'Створити Допис' : 'Створити Звістку'
+      publication_new_header:
     }
   end
 
   def dynamic_variables(slug, publication_class = nil)
     {
-      edit_publication_path: blog_controller(publication_class) ? edit_blog_path(slug) : edit_admin_tale_path(slug),
-      show_publication_path: blog_controller(publication_class) ? blog_path(slug) : tale_path(slug)
+      edit_publication_path: edit_publication_path(slug, publication_class),
+      show_publication_path: show_publication_path(slug, publication_class)
     }
   end
 
@@ -28,12 +28,6 @@ module PublicationsHelper
     end
   end
 
-  def blog_controller(publication_class = nil)
-    return true if publication_class == Blog
-
-    controller_name.to_sym == :blogs
-  end
-
   def publication_index_header
     case controller_path
     when 'blogs'
@@ -43,5 +37,31 @@ module PublicationsHelper
     else
       'Керування Звістками'
     end
+  end
+
+  private
+
+  def new_publication_path
+    blog_controller? ? new_blog_path : new_admin_tale_path
+  end
+
+  def publication_edit_header
+    blog_controller? ? 'Оновити Допис' : 'Оновити Звістку'
+  end
+
+  def publication_new_header
+    blog_controller? ? 'Створити Допис' : 'Створити Звістку'
+  end
+
+  def edit_publication_path(slug, publication_class)
+    blog_controller?(publication_class) ? edit_blog_path(slug) : edit_admin_tale_path(slug)
+  end
+
+  def show_publication_path(slug, publication_class)
+    blog_controller?(publication_class) ? blog_path(slug) : tale_path(slug)
+  end
+
+  def blog_controller?(publication_class = nil)
+    publication_class == Blog || controller_name.to_sym == :blogs
   end
 end
