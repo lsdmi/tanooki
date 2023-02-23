@@ -2,6 +2,8 @@
 
 module Users
   class PasswordsController < Devise::PasswordsController
+    before_action :authentication_enabled?
+
     # GET /resource/password/new
     # def new
     #   super
@@ -22,7 +24,7 @@ module Users
     #   super
     # end
 
-    # protected
+    protected
 
     # def after_resetting_password_path_for(resource)
     #   super(resource)
@@ -32,5 +34,9 @@ module Users
     # def after_sending_reset_password_instructions_path_for(resource_name)
     #   super(resource_name)
     # end
+
+    def authentication_enabled?
+      redirect_to root_path unless ENV['FEATURE_FLAG_AUTHENTICATION_ENABLED']
+    end
   end
 end

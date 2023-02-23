@@ -37,7 +37,7 @@
     </article>
   </div>
 
-  <% if current_user || @comments.any? %>
+  <% if ENV['FEATURE_FLAG_COMMENTS_ENABLED'] && (current_user || @comments.any?) %>
     <%= render "comments/index", comments: @comments  %>
   <% else %>
     <div class="pb-2"></div>
