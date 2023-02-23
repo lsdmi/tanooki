@@ -10,7 +10,9 @@
             <div class="lg:w-6/12 px-4 md:px-0">
               <div class="md:p-12 md:mx-6">
                 <div class="text-center">
-                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Забули Пароль?</h4>
+                  <% if ENV['FEATURE_FLAG_AUTHENTICATION_ENABLED'] %>
+                    <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Забули Пароль?</h4>
+                  <% end %>
                 </div>
                 <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
                   <%= f.input :email,
