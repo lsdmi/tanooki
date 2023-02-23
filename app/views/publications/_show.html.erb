@@ -2,15 +2,32 @@
   <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
     <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-indigo p-10 shadow-lg">
       <header class="mb-4 not-format">
-        <address class="flex items-center mb-6 not-italic">
-            <div class="inline-flex items-center mr-3 text-sm text-gray-900">
-                <img class="mr-4 w-16 h-16 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
-                <div>
-                    <%= tag.p publication.user.name, class: "text-xl font-bold text-gray-900" %>
-                    <%= tag.p "Опубліковано #{publication.created_at.strftime("%d.%m.%Y")}", class: "text-base font-light text-gray-500" %>
-                </div>
+        <address class="items-center mb-6 not-italic">
+          <div class="grid grid-cols-12">
+            <div class="inline-flex col-span-11">
+              <img class="mr-4 w-16 h-16 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
+              <div>
+                <%= tag.p publication.user.name, class: "text-xl font-bold text-gray-900" %>
+                <%= tag.p "Опубліковано #{publication.created_at.strftime("%d.%m.%Y")}", class: "text-base font-light text-gray-500" %>
+              </div>
             </div>
+            <div class="col-span-1 flex">
+              <div class="flex flex-col w-full">
+                <div class="flex flex-row h-1/2">
+                  <div class="flex-1 text-center">
+                  </div>
+                  <div class="flex-1 text-center ml-4">
+                  </div>
+                </div>
+                <div class="flex flex-row h-1/2 mt-2">
+                  <div class="flex-1 text-center font-extrabold tracking-tight text-rose-700"></div>
+                  <div class="flex-1 text-center font-extrabold tracking-tight text-gray-700 ml-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </address>
+
         <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
           <%= tag.h1 publication.title, class: "text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" %>
         </div>

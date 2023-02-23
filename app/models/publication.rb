@@ -4,7 +4,7 @@ class Publication < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
-  searchkick
+  searchkick callbacks: :async
 
   belongs_to :user
   has_one_attached :cover
@@ -32,5 +32,9 @@ class Publication < ApplicationRecord
     [
       title.downcase
     ]
+  end
+
+  def should_index?
+    approved?
   end
 end
