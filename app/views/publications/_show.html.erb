@@ -1,62 +1,50 @@
-<main class="pt-8 pb-8 lg:pb-12 bg-white">
-  <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
-    <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-indigo p-10 shadow-lg">
-      <header class="mb-4 not-format">
-        <address class="items-center mb-6 not-italic">
-          <div class="grid grid-cols-12">
-            <div class="inline-flex col-span-11">
-              <img class="mr-4 w-16 h-16 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
-              <div>
-                <%= tag.p publication.user.name, class: "text-xl font-bold text-gray-900" %>
-                <%= tag.p "Опубліковано #{publication.created_at.strftime("%d.%m.%Y")}", class: "text-base font-light text-gray-500" %>
+<article class="block w-full relative float-left bg-white">
+ <div class="w-full relative">
+    <div class="my-0 mx-auto w-[1200px] h-full">
+      <div class="relative w-full mx-0">
+        <div class="relative float-left w-full -mr-96">
+          <main class="mr-96">
+            <div class="relative float-left w-full">
+              <div class="w-full relative mt-6">
+                <%= render 'publications/header', publication: publication %>
               </div>
-            </div>
-            <div class="col-span-1 flex">
-              <div class="flex flex-col w-full">
-                <div class="flex flex-row h-1/2">
-                  <div class="flex-1 text-center">
-                  </div>
-                  <div class="flex-1 text-center ml-4">
-                  </div>
-                </div>
-                <div class="flex flex-row h-1/2 mt-2">
-                  <div class="flex-1 text-center font-extrabold tracking-tight text-rose-700"></div>
-                  <div class="flex-1 text-center font-extrabold tracking-tight text-gray-700 ml-4"></div>
+              <div class="mb-7 text-center w-full relative">
+                <%= image_tag publication.cover, class: "rounded-lg w-full h-auto" %>
+              </div>
+              <div class="w-full relative mb-8">
+                <div class="leading-6 w-full relative">
+                  <%= tag.p publication.description %>
                 </div>
               </div>
+              <div class="w-full relative mb-8">
+                <div class="mt-2 w-full relative">
+                  <%= render 'shared/divider', caption: 'Інші Новини' %>
+                  <ul class="grid grid-cols-3 gap-4 list-none w-full">
+                    <% @more_tales.each do |tale| %>
+                      <%= link_to tale_path(tale) do %>
+                        <li class="ml-0 overflow-hidden w-full">
+                          <div class="rounded-xl leading-none mb-2 w-full relative h-44 flex items-center">
+                            <%= image_tag tale.cover, class: "rounded-xl w-full h-auto" %>
+                            <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                          </div>
+                          <div class="font-oswald relative text-gray-800 tracking-tight w-full h-auto">
+                            <%= tag.p tale.title %>
+                          </div>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        </address>
-
-        <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
-          <%= tag.h1 publication.title, class: "text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" %>
+          </main>
+          <aside class="sticky top-24">
+            <div class="float-left relative ml-14 w-80">
+              <%= render 'shared/ads' %>
+            </div>
+          </aside>
         </div>
-      </header>
-      <figure class="mb-6"><%= image_tag publication.cover, class: "rounded-lg" %></figure>
-      <%= tag.p publication.description %>
-    </article>
-  </div>
-
-  <% if ENV['FEATURE_FLAG_COMMENTS_ENABLED'] && (current_user || @comments.any?) %>
-    <%= render "comments/index", comments: @comments  %>
-  <% else %>
-    <div class="pb-2"></div>
-  <% end %>
-</main>
-
-<aside aria-label="Related articles" class="py-8 lg:py-16 bg-gray-50 mb-4">
-  <div class="px-4 mx-auto max-w-screen-xl">
-      <h2 class="mb-8 text-2xl font-bold text-gray-900">Інші Новини</h2>
-      <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-        <% @more_tales.each do |tale| %>
-          <article class="max-w-xs">
-            <%= render 'publications/cover_image', publication: tale %>
-            <%= link_to tale_path(tale) do %>
-              <%= tag.h2 tale.title, class: 'mb-2 text-xl font-bold leading-tight text-gray-900 text-center' %>
-            <% end %>
-            <%= tag.p tale.description.to_plain_text.truncate(85), class: "mb-4 font-light text-gray-500"  %>
-          </article>
-        <% end %>
       </div>
+    </div>
   </div>
-</aside>
+</article>

@@ -16,7 +16,7 @@ class BlogsController < ApplicationController
   def edit; end
 
   def show
-    @more_tales = Tale.order(created_at: :desc).first(4)
+    @more_tales = Tale.order(created_at: :desc).first(6)
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
   end
