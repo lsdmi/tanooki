@@ -1,8 +1,8 @@
 <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mr-16 sm:mr-0" } do |form| %>
     <div class="relative w-full">
-        <%= form.input nil, id: 'simple-search', type: 'text', input_html: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-2 p-2.5' }, placeholder: 'Пошук', required: true %>
+        <%= form.input nil, id: 'simple-search', type: 'text', input_html: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-300 focus:border-emerald-300 block w-full pl-2 p-2.5' }, placeholder: 'Пошук', required: true %>
     </div>
-    <%= button_tag type: "submit", class: "p-2.5 ml-2 text-sm font-medium text-white rounded-lg hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-indigo-300" do %>
+    <%= button_tag type: "submit", class: "p-2.5 ml-2 text-sm font-medium text-white rounded-lg hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300" do %>
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>

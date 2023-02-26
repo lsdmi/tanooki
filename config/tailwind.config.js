@@ -25,14 +25,13 @@ module.exports = {
     fontFamily: {
       'body': [
         'Montserrat',
-        'Arial',
         'sans-serif'
       ],
       'sans': [
         'Montserrat',
-        'Arial',
         'sans-serif'
-      ]
+      ],
+      oswald: ['Oswald', ...defaultTheme.fontFamily.sans]
     },
     rotate: {
       "2": "2deg"

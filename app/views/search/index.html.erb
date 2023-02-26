@@ -1,54 +1,47 @@
-<section class="bg-white">
-  <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-      <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
-          <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900">Результати Пошуку</h2>
-          <% if @results.any? %>
-            <%= tag.p "знайдено збігів за запитом: #{@results.size}", class: "font-light text-gray-500 sm:text-xl" %>
-          <% else %>
-            <%= tag.p "не знайдено збігів за запитом", class: "font-light text-gray-500 sm:text-xl" %>
-          <% end %>
-      </div>
-      <% if @results.any? %>
-        <div>
-          <% @results.each do |result| %>
-            <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-2">
-              <div class="flex justify-between items-center mb-5 text-gray-500">
-                  <% if result.instance_of?(Tale) %>
-                    <span class="bg-indigo-100 text-indigo-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"></path>
-                        </svg>
-                        Звістка
-                    </span>
-                  <% else %>
-                    <span class="bg-emerald-100 text-emerald-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
-                        </svg>
-                        Блог
-                    </span>
+<div class="w-full relative float-left bg-white pb-14">
+  <div class="w-full relative float-left">
+    <div class="h-full w-[1200px] my-0 mx-auto">
+      <header class="mt-4 w-full float-left relative block">
+        <h1 class="float-left text-gray-900 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
+        <div class="relative float-left w-full -mr-96">
+          <main class="mr-96">
+            <div class="relative float-left w-full">
+              <% if @results.any? %>
+                <ul class="list-none w-full float-left relative">
+                  <% @results.each do |result| %>
+                    <li class="relative float-left w-full mt-0 mb-4">
+                      <%= link_to dynamic_variables(result.slug, result.class)[:show_publication_path] do %>
+                        <div class="relative w-full float-right ml-[-410px]">
+                          <div class="rounded-xl leading-none relative float-left overflow-hidden mr-7 w-[23rem]">
+                            <%= image_tag result.cover, class: "rounded-xl w-full h-auto" %>
+                            <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                          </div>
+                          <div class="ml-[410px]">
+                            <div class="mt-4 w-full float-left relative">
+                              <div class="mb-2 w-full float-left">
+                                <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-400 text-xs relative float-left' %>
+                              </div>
+                              <%= tag.h2 result.title, class: 'font-oswald text-gray-900 float-left text-2xl font-bold tracking-tight w-full' %>
+                              <%= tag.p result.description.to_plain_text.truncate(130), class: 'float-left w-full font-light leading-5 text-gray-600 mt-2' %>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    </li>
                   <% end %>
-                  <%= tag.span "Опубліковано #{result.created_at.strftime("%d.%m.%Y")}", class: 'text-sm' %>
-              </div>
-              <%= tag.h2 result.title, class: 'mb-2 text-2xl font-bold tracking-tight text-gray-900' %>
-              <%= tag.p result.description.to_plain_text.truncate(325), class: 'mb-5 font-light text-gray-500' %>
-              <div class="flex justify-between items-center">
-                  <div class="flex items-center space-x-4">
-                  </div>
-                  <%= link_to dynamic_variables(result.slug, result.class)[:show_publication_path], class: 'inline-flex items-center font-medium text-indigo-600 hover:underline' do %>
-                    Читати далі
-                    <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
-                  <% end %>
-              </div>
-          </article>
-          <% end %>
+                </ul>
+              <% else %>
+                <%= tag.p "Даруйте, та збігів за запитом не знайдено.", class: "w-full leading-5 text-gray-600" %>
+              <% end %>
+            </div>
+          </main>
+          <aside class="sticky top-24">
+            <div class="float-left relative ml-14 w-80">
+              <%= render 'shared/ads' %>
+            </div>
+          </aside>
         </div>
-      <% else %>
-        <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
-          <%= image_tag "https://images.anime-pictures.net/966/96682eb6ef42cf746b308be9a27186c8.jpg?if=ANIME-PICTURES.NET_-_46593-1169x825-toradora-j.c.+staff-aisaka+taiga-takasu+ryuuji-white+background-couple.jpg" %>
-        </div>
-      <% end %>
+      </header>
+    </div>
   </div>
-</section>
+</div>

@@ -1,5 +1,22 @@
-<!-- Container for demo purpose -->
-<div class="container mb-24 mt-12 px-6 mx-auto">
-  <%= render "articles" %>
+<div class="relative float-left w-full bg-white">
+  <div class="m-auto w-[1200px] h-full ">
+    <div class="relative float-left w-full mt-4">
+      <%= render 'shared/divider', caption: 'Більше Новин' %>
+      <div class="relative float-left w-full -mr-96">
+        <main class="mr-96">
+          <div class="relative float-left w-full">
+            <ul class="relative float-left w-full list-none">
+              <%= render "home/publications", publications: @publications %>
+              <%= render partial: "next_page" %>
+            </ul>
+          </div>
+        </main>
+        <aside class="sticky top-24">
+          <div class="float-left relative ml-14 w-80">
+            <%= render 'shared/ads' %>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- Container for demo purpose -->
