@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
+    resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :blogs, only: %i[index edit update]
     resources :tales, except: %i[show create update destroy]
   end

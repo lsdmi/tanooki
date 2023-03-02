@@ -1,0 +1,18 @@
+<%= tag.div class: 'lg:mb-20 mb-10' do %>
+  <%= link_to "Створити",
+              new_admin_advertisement_path,
+              class: "float-right mt-1 content-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            %>
+<% end %>
+<% advertisements.in_groups_of(3) do |group| %>
+  <div class="grid gap-1 lg:grid-cols-3">
+    <% group.each do |ad| %>
+      <% if ad.present? %>
+        <article class="pt-4 pl-10 min-h-[32rem]">
+          <% ad.resource = edit_admin_advertisement_path(ad) %>
+          <%= render 'shared/ad_body', advertisement: ad %>
+        </article>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -5,5 +5,6 @@ class SearchController < ApplicationController
     redirect_to root_path unless params[:search]
 
     @results = Publication.search params[:search], fields: ['title^5', 'description'], order: { _score: :desc }
+    @advertisement = Advertisement.enabled.sample
   end
 end

@@ -5,7 +5,7 @@
         <h1 class="float-left text-gray-900 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
         <div class="relative float-left w-full -mr-96">
           <main class="mr-96">
-            <div class="relative float-left w-full">
+            <div class="relative float-left w-full min-h-[32rem]">
               <% if @results.any? %>
                 <ul class="list-none w-full float-left relative">
                   <% @results.each do |result| %>
@@ -37,7 +37,7 @@
           </main>
           <aside class="sticky top-24">
             <div class="float-left relative ml-14 w-80">
-              <%= render 'shared/ads' %>
+              <%= render 'shared/ads', advertisement: @advertisement %>
             </div>
           </aside>
         </div>
