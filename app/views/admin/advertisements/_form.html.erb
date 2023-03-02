@@ -1,0 +1,95 @@
+<div class="grid grid-cols-3 gap-4">
+  <div class="col-span-2">
+    <div class="mb-6">
+      <%= f.input :caption,
+                  input_html: {
+                    autofocus: true,
+                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                  },
+                  placeholder: "Заголовок...",
+                  label: "Заголовок"
+                %>
+      <% if advertisement.errors[:caption].any? %>
+        <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній заголовок оголошення...</p>
+      <% end %>
+    </div>
+
+    <%= f.label :cover, "Обкладинка" %>
+    <div class="mb-2 grid grid-cols-2 gap-2 bg-slate-50">
+      <div>
+        <%= f.file_field :cover, class: "form-control m-10", label: false, data: { action: "change->preview#previewImage" } %>
+        <img src="#" data-preview-target="preview" class="invisible" />
+      </div>
+      <div>
+        <%= image_tag advertisement.cover, class: "float-right max-w-xs" if advertisement.persisted? %>
+      </div>
+    </div>
+    <% if advertisement.errors[:cover].any? %>
+      <p id="outlined_error_help" class="mb-6 text-xs text-red-600"><span class="font-medium">відсутня обкладинка оголошення...</p>
+    <% end %>
+
+    <div class="mb-6">
+      <%= f.input :resource,
+                  input_html: {
+                    autofocus: true,
+                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                  },
+                  placeholder: "Посилання...",
+                  label: "Посилання"
+                %>
+      <% if advertisement.errors[:resource].any? %>
+        <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутнє посилання...</p>
+      <% end %>
+    </div>
+
+    <%= f.rich_text_area :description,
+                input_html: {
+                  autofocus: true
+                },
+                placeholder: "Зміст оголошення...",
+                label: false,
+                class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+              %>
+    <% if advertisement.errors[:description].any? %>
+      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній або задовгий зміст оголошення...</p>
+    <% end %>
+
+    <%= tag.div class: 'py-2 grid grid-cols-4' do %>
+      <div></div>
+      <%= tag.div do %>
+        <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+      <% end %>
+      <div class="flex items-center mr-4">
+        <%= f.input :enabled, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2' } %>
+        <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-900">Активувати</label>
+      </div>
+      <div>
+        <button type="button"
+                class="float-right mt-1 content-center text-sky-700 hover:text-white border border-sky-700 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                data-action="click->preview#update"
+              >Передогляд</button>
+      </div>
+    <% end %>
+  </div>
+  <turbo-frame id="preview">
+    <div data-target="preview.output">
+      <div class="col-span-1 ml-8">
+        <div class="float-left relative w-full">
+          <%= link_to advertisement.resource || 'https://via.placeholder.com/150', class: 'group relative block bg-black rounded-lg' do %>
+            <div class="relative w-80 h-80">
+              <%= image_tag advertisement.cover.presence || 'https://via.placeholder.com/150', id: 'preview-image', class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
+              <div class="absolute opacity-0 transition-opacity hover:opacity-100 relative p-1">
+                <div class="mt-32 sm:mt-48 lg:mt-64">
+                  <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+                    <%= tag.p advertisement.caption || 'Заголовок', class: 'font-bold text-3xl font-oswald text-gray-100 float-left tracking-tight w-full mb-3 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
+                    <%= tag.p formatted_description(advertisement.description).presence || 'Деякий зміст оголошення для передогляду...', class: 'h-auto italic font-light text-gray-200 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
+                    <p class="h-4"></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </turbo-frame>
+</div>

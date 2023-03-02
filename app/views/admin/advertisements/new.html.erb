@@ -1,0 +1,9 @@
+<main class="container mx-auto px-5 mt-4" data-controller="preview">
+  <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
+    <%= tag.p 'Створити Оголошення', class: 'text-lg text-gray-900 font-semibold' %>
+  </div>
+
+  <%= simple_form_for @advertisement, url: admin_advertisements_path, method: :post, html: { class: "form" }, data: { action: "preview#update" } do |f| %>
+    <%= render 'admin/advertisements/form', advertisement: @advertisement, f: f %>
+  <% end %>
+</main>
