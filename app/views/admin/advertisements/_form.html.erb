@@ -77,12 +77,12 @@
         <div class="float-left relative w-full">
           <%= link_to advertisement.resource || 'https://via.placeholder.com/150', class: 'group relative block bg-black rounded-lg' do %>
             <div class="relative w-80 h-80">
-              <%= image_tag advertisement.cover || 'https://via.placeholder.com/150', id: 'preview-image', class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
+              <%= image_tag advertisement.cover.presence || 'https://via.placeholder.com/150', id: 'preview-image', class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
               <div class="absolute opacity-0 transition-opacity hover:opacity-100 relative p-1">
                 <div class="mt-32 sm:mt-48 lg:mt-64">
                   <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
                     <%= tag.p advertisement.caption || 'Заголовок', class: 'font-bold text-3xl font-oswald text-gray-100 float-left tracking-tight w-full mb-3 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
-                    <%= tag.p formatted_description(advertisement.description) || 'Деякий зміст оголошення для передогляду...', class: 'h-auto italic font-light text-gray-200 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
+                    <%= tag.p formatted_description(advertisement.description).presence || 'Деякий зміст оголошення для передогляду...', class: 'h-auto italic font-light text-gray-200 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
                     <p class="h-4"></p>
                 </div>
               </div>
