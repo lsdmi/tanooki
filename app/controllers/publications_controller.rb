@@ -65,16 +65,16 @@ class PublicationsController < ApplicationController
   end
 
   def verify_user_permissions
-    redirect_to root_path if blog_author? || admin_user?
+    redirect_to root_path if not_blog_author? || not_admin_user?
   end
 
-  def blog_author?
+  def not_blog_author?
     publication_type == 'Blog' &&
       (action_name.to_sym == :update || action_name.to_sym == :destroy) &&
       publication_user_id != current_user.id
   end
 
-  def admin_user?
+  def not_admin_user?
     publication_type == 'Tale' && !current_user.admin?
   end
 

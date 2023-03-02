@@ -7,6 +7,7 @@ class TalesController < ApplicationController
     @more_tales = Tale.order(created_at: :desc).excluding(@publication).first(6)
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
+    @advertisement = Advertisement.enabled.sample
   end
 
   private
