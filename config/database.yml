@@ -12,6 +12,7 @@ test:
   host: 127.0.0.1
   username: root
   password: mypassword
+  collation: utf8mb4_general_ci
   socket: /var/run/mysqld/mysqld.sock
 
 production:
