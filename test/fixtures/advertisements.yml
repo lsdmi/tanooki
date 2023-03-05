@@ -1,0 +1,6 @@
+advertisement_one:
+  id: 1
+  slug: advertisement_one
+  caption: "Lorem ipsum dolor sit amet"
+  resource: "https://example.com/image1.jpg"
+  enabled: true

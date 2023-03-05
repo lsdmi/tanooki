@@ -7,7 +7,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable
 
-  validates :name, length: { minimum: 3, maximum: 10 }, format: { with: /\A[a-zA-Z0-9 ]+\z/ }
+  validates :name, presence: true, length: { minimum: 3, maximum: 20 }, format: { with: /\A[a-zA-Z0-9 ]+\z/ }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   has_many :blogs
   has_many :comments

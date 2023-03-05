@@ -1,0 +1,20 @@
+attachment_one:
+  name: cover
+  record_type: Publication
+  record_id: 1
+  blob_id: 1
+  created_at: <%= Time.now %>
+
+attachment_two:
+  name: cover
+  record_type: Publication
+  record_id: 2
+  blob_id: 2
+  created_at: <%= Time.now %>
+
+attachment_three:
+  name: cover
+  record_type: Advertisement
+  record_id: 1
+  blob_id: 3
+  created_at: <%= Time.now %>

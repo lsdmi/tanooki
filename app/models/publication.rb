@@ -13,7 +13,7 @@ class Publication < ApplicationRecord
 
   validates :title, :description, :cover, :status, :status_message, presence: true
 
-  scope :highlight, -> { where(highlight: true).last }
+  scope :highlights, -> { where(highlight: true) }
 
   enum status: {
     created: 'created',
