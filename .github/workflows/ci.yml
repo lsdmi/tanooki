@@ -36,5 +36,4 @@ jobs:
           bundle install
       - name: Run tests
         run: |
-          sudo apt-get install mysql-server
           bundle exec rake test
