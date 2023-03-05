@@ -2,7 +2,7 @@
 
 class HomeController < ApplicationController
   def index
-    @highlight = Publication.highlight || Tale.last
+    @highlight = Publication.highlights.last || Tale.last
     @top_four = Tale.order(created_at: :desc).excluding(@highlight).first(4)
 
     remaining_publications = Publication.approved.order(created_at: :desc).excluding(@highlight, @top_four)
