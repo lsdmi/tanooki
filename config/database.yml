@@ -4,6 +4,7 @@ development:
   host: localhost
   username: root
   password: mypassword
+  socket: /var/run/mysqld/mysqld.sock
 
 test:
   adapter: mysql2
@@ -11,6 +12,7 @@ test:
   host: localhost
   username: root
   password: mypassword
+  socket: /var/run/mysqld/mysqld.sock
 
 production:
   adapter: mysql2
