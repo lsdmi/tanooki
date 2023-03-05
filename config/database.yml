@@ -1,5 +1,8 @@
 development:
   adapter: mysql2
+  encoding: utf8mb4
+  charset: utf8mb4_general_ci
+  collation: utf8mb4_general_ci
   database: tanooki_development
   host: localhost
   username: root
@@ -7,13 +10,20 @@ development:
 
 test:
   adapter: mysql2
+  encoding: utf8mb4
+  charset: utf8mb4_general_ci
+  collation: utf8mb4_general_ci
   database: tanooki_test
-  host: localhost
+  host: 127.0.0.1
   username: root
   password: mypassword
+  collation: utf8mb4_general_ci
 
 production:
   adapter: mysql2
+  encoding: utf8mb4
+  charset: utf8mb4_general_ci
+  collation: utf8mb4_general_ci
   database: <%= ENV['DB_NAME'] %>
   host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['DB_USER'] %>
