@@ -24,7 +24,7 @@ jobs:
         command: --default-authentication-plugin=mysql_native_password
         volumes:
           - db:/var/lib/mysql
-        - /var/run/mysqld/mysqld.sock
+          - /var/run/mysqld/mysqld.sock
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
