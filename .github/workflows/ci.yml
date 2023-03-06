@@ -25,10 +25,6 @@ jobs:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
         ports:
           - 9200:9200
-        env_file:
-          - ./elasticsearch.env
-        volumes:
-          - ./data/elasticsearch:/usr/share/elasticsearch/data
         options: >-
           --health-cmd="curl -f http://localhost:9200/_cluster/health || exit 1"
           --health-interval=10s
