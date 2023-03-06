@@ -4,7 +4,7 @@ require 'test_helper'
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   setup do
-    Publication.reindex if Publication.searchkick_index.blank?
+    Publication.reindex
     advertisements(:advertisement_one)
   end
 
