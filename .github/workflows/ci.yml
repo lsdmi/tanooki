@@ -23,12 +23,14 @@ jobs:
           --health-retries=3
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
-        environment:
-          - discovery.type=single-node
-          - "discovery.seed_hosts=127.0.0.1:9300"
-          - cluster.name=elasticsearch
-          - bootstrap.memory_lock=true
-          - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        command: ["bin/elasticsearch"]
+        args: [
+          "-Enetwork.host=0.0.0.0",
+          "-Ediscovery.type=single-node",
+          "-Ecluster.name=elasticsearch",
+          "-Ebootstrap.memory_lock=true",
+          "-EES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ]
         ports:
           - 9200:9200
           - 9300:9300
