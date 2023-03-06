@@ -4,6 +4,7 @@ require 'test_helper'
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   setup do
+    Publication.search_index.delete
     Publication.reindex
     advertisements(:advertisement_one)
   end
