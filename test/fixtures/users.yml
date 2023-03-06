@@ -1,0 +1,15 @@
+user_one:
+  id: 1
+  email: example@example.com
+  encrypted_password: password
+  name: John Doe
+  admin: true
+  reset_password_token: ''
+  reset_password_sent_at: ''
+  remember_created_at: ''
+  confirmation_token: ''
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

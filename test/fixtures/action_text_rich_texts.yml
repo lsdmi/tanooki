@@ -1,0 +1,23 @@
+rich_text_one:
+  name: description
+  record_type: Publication
+  record_id: 1
+  body: <%= Faker::Lorem.paragraph %>
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+rich_text_two:
+  name: description
+  record_type: Publication
+  record_id: 2
+  body: <%= Faker::Lorem.paragraph %>
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+rich_text_three:
+  name: description
+  record_type: Advertisement
+  record_id: 1
+  body: <%= Faker::Lorem.paragraph %>
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
