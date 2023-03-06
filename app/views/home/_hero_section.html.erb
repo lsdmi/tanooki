@@ -2,11 +2,11 @@
   <div class="bg-gray-900 pt-4 pb-14 w-full float-left relative">
     <div class="m-auto max-w-screen-2xl">
       <%= render 'shared/divider', caption: 'Головне' %>
-      <div class="float-left relative w-full grid grid-cols-5 gap-4">
+      <div class="float-left relative w-full grid grid-cols-5 gap-4 ">
         <div class="col-span-3 float-left relative">
           <%= link_to tale_path(@highlight) do %>
             <div class="float-left relative w-full">
-              <div class="float-left relative bg-gray-900 w-full overflow-hidden h-[443px]">
+              <div class="float-left relative bg-gray-900 w-full overflow-hidden h-[443px] sm:ml-2 xl:ml-0">
                 <%= image_tag @highlight.cover, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] min-w-[744px]" %>
                 <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
               </div>
@@ -14,7 +14,7 @@
                 <div class="mb-2 w-full float-left">
                   <%= tag.span "Опубліковано: #{time_ago_in_words(@highlight.created_at)} тому", class: 'text-gray-400 text-xs w-full float-left' %>
                 </div>
-                <%= tag.h2 @highlight.title, class: 'font-oswald text-white float-left text-5xl font-bold tracking-tight mr-[30%] w-4/5 mb-2' %>
+                <%= tag.h2 @highlight.title, class: 'font-oswald text-white float-left text-4xl xl:text-5xl font-bold tracking-tight mr-[30%] w-4/5 xl:mb-2 mb-20' %>
               </div>
             </div>
           <% end %>
@@ -30,7 +30,7 @@
                       <div class="mb-2 w-full float-left relative">
                         <%= tag.span "Опубліковано: #{time_ago_in_words(tale.created_at)} тому", class: 'text-gray-400 text-xs w-full float-left ml-1 relative' %>
                       </div>
-                      <%= tag.h2 tale.title, class: 'font-oswald text-white float-left font-bold tracking-wide mr-[30%] w-4/5 mb-2 text-xl' %>
+                      <%= tag.h2 tale.title, class: 'font-oswald text-white float-left font-bold tracking-wide mr-[30%] w-4/5 mb-2 text-xl md:text-lg lg:text-xl xl:text-2xl' %>
                     </div>
                   </div>
                 </div>
