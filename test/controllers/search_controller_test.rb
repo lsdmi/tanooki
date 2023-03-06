@@ -4,6 +4,10 @@ require 'test_helper'
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   setup do
+    client = Elasticsearch::Client.new
+    index_name = 'publications_test'
+    index_exists = client.indices.exists(index: index_name)
+    Publication.reindex unless index_exists
     advertisements(:advertisement_one)
   end
 
