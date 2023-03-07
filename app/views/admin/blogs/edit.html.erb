@@ -5,7 +5,7 @@
         <%= tag.h1 @publication.title, class: "text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" %>
       </div>
     </header>
-    <figure class="mb-6"><%= image_tag @publication.cover, class: "rounded-lg" %></figure>
+    <figure class="mb-6"><%= image_tag url_for(@publication.cover), class: "rounded-lg" %></figure>
     <%= tag.p @publication.description %>
 
     <%= simple_form_for @publication, as: :publication, url: admin_blog_path(@publication), method: :put, html: { class: "form" } do |f| %>

@@ -1,7 +1,7 @@
 <div class="float-left relative w-full">
   <%= link_to advertisement.resource, class: 'group relative block bg-black rounded-lg' do %>
     <div class="relative w-80 h-80 pr-2 xl:p-0">
-      <%= image_tag advertisement.cover, class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
+      <%= image_tag url_for(advertisement.cover), class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
       <div class="absolute opacity-0 transition-opacity hover:opacity-100 relative p-1">
         <div class="mt-32 sm:mt-48 lg:mt-64">
           <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">

@@ -24,7 +24,8 @@ production:
   encoding: utf8mb4
   charset: utf8mb4_general_ci
   collation: utf8mb4_general_ci
-  database: <%= ENV['DB_NAME'] %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV.fetch('DB_NAME') %>
+  host: <%= ENV.fetch('DB_HOST') %>
+  username: <%= ENV.fetch('DB_USER') %>
+  password: <%= ENV.fetch('DB_PASSWORD') %>
+  port: <%= ENV.fetch('DB_PORT') %>

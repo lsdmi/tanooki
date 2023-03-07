@@ -56,8 +56,8 @@ end
 
 group :development do
   gem 'capistrano'
-  gem 'capistrano-rails'
   gem 'capistrano-passenger'
+  gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'rubocop'
   # Use console on exceptions pages [https://github.com/rails/web-console]
@@ -78,7 +78,12 @@ group :test do
   gem 'webdrivers'
 end
 
+group :production do
+  gem 'aws-sdk-s3'
+end
+
 gem 'devise'
+gem 'dotenv-rails'
 gem 'elasticsearch', '~> 7.17.0'
 gem 'friendly_id'
 gem 'i18n'

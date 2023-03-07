@@ -13,7 +13,7 @@
                       <%= link_to dynamic_variables(result.slug, result.class)[:show_publication_path] do %>
                         <div class="relative w-full float-right md:ml-[-370px] xl:ml-[-410px]">
                           <div class="rounded-xl leading-none relative float-left overflow-hidden mr-2 xl:mr-7 md:w-[22rem] xl:w-[23rem]">
-                            <%= image_tag result.cover, class: "rounded-xl w-full h-auto" %>
+                            <%= image_tag url_for(result.cover), class: "rounded-xl w-full h-auto" %>
                             <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                           </div>
                           <div class="md:ml-[370px] lg:ml-[410px]">

@@ -45,6 +45,8 @@ jobs:
           sudo apt-get install -y default-libmysqlclient-dev
           sudo gem install bundler -v 2.3.7
           bundle install
+      - name: Set up environment variables
+        run: cp .env.test .env
       - name: Compile assets
         run: |
           bundle exec rails assets:precompile RAILS_ENV=test

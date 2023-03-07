@@ -24,7 +24,7 @@
       <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
     </div>
     <div>
-      <%= image_tag publication.cover, class: "float-right max-w-xs" if publication.persisted? %>
+      <%= image_tag url_for(publication.cover), class: "float-right max-w-xs" if publication.persisted? %>
     </div>
   </div>
   <% if publication.errors[:cover].any? %>

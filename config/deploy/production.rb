@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server '18.196.209.71', user: 'ubuntu', roles: %w[app db web], my_property: :my_value
+server ENV.fetch('DEPLOY_PRODUCTION_IP'), user: ENV.fetch('DEPLOY_PRODUCTION_USER'), roles: %w[app db web]
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 

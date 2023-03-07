@@ -25,10 +25,10 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.98614846"
-     inkscape:cx="194.18983"
-     inkscape:cy="196.72494"
+     inkscape:cx="195.20387"
+     inkscape:cy="197.23197"
      inkscape:window-width="1440"
-     inkscape:window-height="786"
+     inkscape:window-height="847"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -39,16 +39,26 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <text
-       xml:space="preserve"
-       style="font-size:50.8px;line-height:0;font-family:NAMU;-inkscape-font-specification:NAMU;fill:#000000;stroke-width:0.264583"
-       x="3.5576534"
-       y="46.211632"
-       id="text113"><tspan
-         sodipodi:role="line"
-         id="tspan111"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:50.8px;font-family:NAMU;-inkscape-font-specification:'NAMU Medium';fill:#0be6af;fill-opacity:1;stroke-width:0.264583"
-         x="3.5576534"
-         y="46.211632">БАКА</tspan></text>
+    <g
+       aria-label="БАКА"
+       id="text113"
+       style="font-size:50.8px;line-height:0;font-family:NAMU;-inkscape-font-specification:NAMU;stroke-width:0.264583">
+      <path
+         d="m 13.209653,24.113632 v -8.6868 h 20.32 v -4.7752 H 8.1296534 v 35.56 H 35.561653 v -1.524 c 0,-12.5984 -8.9916,-20.574 -22.352,-20.574 z m 0,4.6228 c 9.652,0 15.6464,5.0292 16.8656,12.8016 h -16.8656 z"
+         style="font-weight:500;-inkscape-font-specification:'NAMU Medium';fill:#0be6af"
+         id="path6102" />
+      <path
+         d="m 72.289961,46.211632 -13.716,-35.56 h -5.588 l 3.9116,10.16 c -10.0076,2.2352 -17.272,11.3792 -17.272,22.7584 0,1.016 0.1016,2.1336 0.2032,3.2004 l 24.9936,-5.4356 1.8796,4.8768 z m -27.1272,-5.334 c 0.3048,-7.9248 5.588,-14.1224 13.5128,-15.5448 l 4.4704,11.6332 z"
+         style="font-weight:500;-inkscape-font-specification:'NAMU Medium';fill:#0be6af"
+         id="path6104" />
+      <path
+         d="m 95.657901,28.177632 c 6.756399,-2.4892 10.058399,-9.652 10.058399,-17.526 h -5.08 c 0,10.16 -5.587999,15.5448 -14.071599,15.5448 h -3.8608 v -15.5448 h -4.9784 v 35.56 h 4.9784 v -15.5448 h 3.8608 c 9.652,0 14.782799,6.5024 14.782799,15.5448 h 5.08 c 0,-8.1788 -3.6068,-15.494 -10.769599,-18.034 z"
+         style="font-weight:500;-inkscape-font-specification:'NAMU Medium';fill:#0be6af"
+         id="path6106" />
+      <path
+         d="m 142.90183,46.211632 -13.716,-35.56 h -5.588 l 3.9116,10.16 c -10.0076,2.2352 -17.272,11.3792 -17.272,22.7584 0,1.016 0.1016,2.1336 0.2032,3.2004 l 24.9936,-5.4356 1.8796,4.8768 z m -27.1272,-5.334 c 0.3048,-7.9248 5.588,-14.1224 13.5128,-15.5448 l 4.4704,11.6332 z"
+         style="font-weight:500;-inkscape-font-specification:'NAMU Medium';fill:#0be6af"
+         id="path6108" />
+    </g>
   </g>
 </svg>
