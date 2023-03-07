@@ -1,17 +1,17 @@
-<li class="relative float-left w-full mb-4">
+<li class="relative float-left w-full mb-4 mr-2">
   <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
-    <div class="float-right relative ml-[-410px] w-full">
-      <div class="relative float-left leading-none mr-7 overflow-hidden w-[23rem]">
+    <div class="float-right relative w-full">
+      <div class="relative float-left leading-none mr-0 md:mr-7 overflow-hidden md:w-80 xl:w-[23rem]">
         <%= image_tag publication.cover, class: "max-w-full rounded-xl h-auto" %>
         <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
       </div>
-      <div class="ml-[410px]">
-        <div class="relative float-left w-full mt-3">
+      <div class="md:ml-[370px] lg:ml-[375px] xl:ml-[410px]">
+        <div class="relative float-left w-11/12 md:w-full m-4 sm:m-7 md:m-0 mt-3">
           <div class="mb-2 w-full float-left">
             <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-400 text-xs w-full float-left' %>
           </div>
-          <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-2xl font-bold tracking-tight w-full mb-3' %>
-          <%= tag.p publication.description.to_plain_text.truncate(130), class: "float-left w-full font-light leading-5 text-gray-600" %>
+          <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-2xl lg:text-xl xl:text-2xl font-bold tracking-tight w-full mb-3' %>
+          <%= tag.p publication.description.to_plain_text.truncate(130), class: "float-left w-full font-light leading-5 text-gray-600 text-base" %>
         </div>
       </div>
     </div>

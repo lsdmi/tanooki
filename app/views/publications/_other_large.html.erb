@@ -6,12 +6,12 @@
         <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
       </div>
       <div class="ml-0">
-        <div class="relative float-left m-7 w-11/12">
+        <div class="relative float-left m-4 sm:m-7 w-11/12">
           <div class="mb-2 w-full float-left relative">
             <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-400 text-xs float-left relative' %>
           </div>
-          <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-3xl font-bold tracking-tight w-full mb-3' %>
-          <%= tag.p publication.description.to_plain_text.truncate(150), class: "float-left w-full font-light leading-5 text-gray-600 text-xl" %>
+          <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-2xl lg:text-3xl font-bold tracking-tight w-full mb-3' %>
+          <%= tag.p publication.description.to_plain_text.truncate(150), class: "float-left w-full font-light leading-5 text-gray-600 text-base lg:text-xl" %>
       </div>
     </div>
   <% end %>

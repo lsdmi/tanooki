@@ -1,9 +1,8 @@
 <% if @pagy.next.present? %>
   <%= turbo_frame_tag(
         "publications-page-#{@pagy.next}",
-        loading: :lazy,
+        loading: :defer,
         src: pagy_url_for(@pagy, @pagy.next),
         target: "_top"
-      ) do %>
-  <% end %>
+      ) %>
 <% end %>
