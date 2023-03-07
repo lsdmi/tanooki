@@ -25,6 +25,6 @@ production:
   charset: utf8mb4_general_ci
   collation: utf8mb4_general_ci
   database: tanooki_production
-  host: <%= ENV['DB_HOST'] %>
+  host: ls-67015b39face583a25fd2c4f7ebcfae0daeb3738.cor3k60vx5qc.eu-central-1.rds.amazonaws.com
   username: ubuntu
-  password: <%= ENV['DB_PASSWORD'] %>
+  password: N7BgK,v9|gK#Vv+^nlBYw3W8pQe51-ZD
