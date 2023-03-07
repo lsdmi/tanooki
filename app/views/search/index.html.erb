@@ -1,33 +1,34 @@
 <div class="w-full relative float-left bg-white pb-14">
   <div class="w-full relative float-left">
-    <div class="h-full w-[1200px] my-0 mx-auto">
+    <div class="h-full lg:w-[1200px] my-0 mx-auto">
       <header class="mt-4 w-full float-left relative block">
         <h1 class="float-left text-gray-900 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
-        <div class="relative float-left w-full -mr-96">
-          <main class="mr-96">
+        <div class="relative float-left w-full sm:-mr-96">
+          <main class="mr-2 lg:mr-96">
             <div class="relative float-left w-full min-h-[32rem] ml-2 xl:ml-0">
               <% if @results.any? %>
                 <ul class="list-none w-full float-left relative">
                   <% @results.each do |result| %>
                     <li class="relative float-left w-full mt-0 mb-4">
                       <%= link_to dynamic_variables(result.slug, result.class)[:show_publication_path] do %>
-                        <div class="relative w-full float-right ml-[-410px]">
-                          <div class="rounded-xl leading-none relative float-left overflow-hidden mr-7 w-[23rem]">
+                        <div class="relative w-full float-right md:ml-[-370px] xl:ml-[-410px]">
+                          <div class="rounded-xl leading-none relative float-left overflow-hidden mr-2 xl:mr-7 md:w-[22rem] xl:w-[23rem]">
                             <%= image_tag result.cover, class: "rounded-xl w-full h-auto" %>
                             <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                           </div>
-                          <div class="ml-[410px]">
-                            <div class="mt-4 w-full float-left relative">
+                          <div class="md:ml-[370px] lg:ml-[410px]">
+                            <div class="mt-2 xl:mt-4 w-full float-left relative">
                               <div class="mb-2 w-full float-left">
-                                <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-400 text-xs relative float-left' %>
+                                <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-400 text-sm lg:text-xs relative float-left' %>
                               </div>
-                              <%= tag.h2 result.title, class: 'font-oswald text-gray-900 float-left text-2xl font-bold tracking-tight w-full' %>
-                              <%= tag.p result.description.to_plain_text.truncate(130), class: 'float-left w-full font-light leading-5 text-gray-600 mt-2' %>
+                              <%= tag.h2 result.title, class: 'font-oswald text-gray-900 float-left text-3xl md:text-2xl font-bold tracking-tight w-full' %>
+                              <%= tag.p result.description.to_plain_text.truncate(130), class: 'float-left w-full text-base xl:text-sm font-light leading-5 text-gray-600 mt-2' %>
                             </div>
                           </div>
                         </div>
                       <% end %>
                     </li>
+                    <hr class="h-px my-8 border-[1px] md:border-0 dark:bg-gray-700">
                   <% end %>
                 </ul>
               <% else %>
@@ -35,7 +36,7 @@
               <% end %>
             </div>
           </main>
-          <aside class="sticky top-24">
+          <aside class="sticky top-24 invisible lg:visible">
             <div class="float-left relative ml-14 w-80">
               <%= render 'shared/ads', advertisement: @advertisement %>
             </div>

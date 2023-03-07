@@ -1,17 +1,17 @@
 <div class="relative float-left w-full bg-white">
-  <div class="m-auto w-[1200px] h-full ">
+  <div class="m-auto lg:w-[1200px] h-full ">
     <div class="relative float-left w-full mt-4">
       <%= render 'shared/divider', caption: 'Більше Новин' %>
-      <div class="relative float-left w-full -mr-96">
-        <main class="mr-96">
+      <div class="relative float-left w-full sm:-mr-96">
+        <main class="mr-2 lg:mr-96">
           <div class="relative float-left w-full">
-            <ul class="relative float-left w-full list-none sm:ml-2 xl:ml-0">
+            <ul class="relative float-left w-full list-none mx-[0.1rem] xl:ml-0">
               <%= render "home/publications", publications: @publications %>
               <%= render partial: "next_page" %>
             </ul>
           </div>
         </main>
-        <aside class="sticky top-24">
+        <aside class="sticky top-24 invisible lg:visible">
           <div class="float-left relative ml-14 w-80">
             <%= render 'shared/ads', advertisement: @advertisement %>
           </div>

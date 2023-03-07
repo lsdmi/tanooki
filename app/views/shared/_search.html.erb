@@ -1,4 +1,4 @@
-<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mr-16 sm:mr-0" } do |form| %>
+<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mr-0 lg:ml-16 w-5/12 sm:w-4/12 md:w-3/12 lg:w-2/12 sm:mr-0" } do |form| %>
     <div class="relative w-full">
         <%= form.input nil, id: 'simple-search', type: 'text', input_html: { class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-300 focus:border-emerald-300 block w-full pl-2 p-2.5' }, placeholder: 'Пошук', required: true %>
     </div>
