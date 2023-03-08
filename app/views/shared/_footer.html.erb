@@ -1,6 +1,6 @@
 
 <footer class="p-4 bg-gray-900 text-center">
-    <%#= image_tag 'logo', class: 'h-14 w-auto lg:block ml-auto mr-auto mb-1' %>
+    <%= image_tag 'logo', class: 'h-14 w-auto lg:block ml-auto mr-auto mb-1' %>
     <span class="text-sm text-gray-400">© <%= Time.zone.now.year %> ТанукіNews™. Всі права захищені.</span>
     <% if ENV['FEATURE_FLAG_AUTHENTICATION_ENABLED'] %>
         <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500">
