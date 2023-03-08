@@ -28,3 +28,4 @@ production:
   host: dbaas-db-8389628-do-user-13712068-0.b.db.ondigitalocean.com
   username: deploy
   password: AVNS_v7h1tnVLVZ2X95by_oy
+  port: 25060
