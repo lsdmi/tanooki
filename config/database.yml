@@ -25,6 +25,6 @@ production:
   charset: utf8mb4_general_ci
   collation: utf8mb4_general_ci
   database: tanooki_production
-  host: ls-67015b39face583a25fd2c4f7ebcfae0daeb3738.cor3k60vx5qc.eu-central-1.rds.amazonaws.com
-  username: ubuntu
-  password: N7BgK,v9|gK#Vv+^nlBYw3W8pQe51-ZD
+  host: dbaas-db-8389628-do-user-13712068-0.b.db.ondigitalocean.com
+  username: deploy
+  password: AVNS_v7h1tnVLVZ2X95by_oy
