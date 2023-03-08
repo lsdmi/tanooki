@@ -92,6 +92,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  config.elasticsearch_url = 'http://167.172.160.165:9200'
 end
