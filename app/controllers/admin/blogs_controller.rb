@@ -13,7 +13,7 @@ module Admin
 
     def update
       if @publication.update(blog_params)
-        redirect_to update_redirect_path, notice: 'допис відмодеровано'
+        redirect_to update_redirect_path, notice: 'Допис відмодеровано.'
       else
         render :edit, status: :unprocessable_entity
       end

@@ -31,15 +31,15 @@ class PublicationsController < ApplicationController
   private
 
   def create_notice
-    @publication.instance_of?(Blog) ? 'допис надіслано на модерацію' : 'звістку створено'
+    @publication.instance_of?(Blog) ? 'Допис надіслано на модерацію.' : 'Звістку створено.'
   end
 
   def update_notice
-    @publication.instance_of?(Blog) ? 'допис надіслано на модерацію' : 'звістку оновлено'
+    @publication.instance_of?(Blog) ? 'Допис надіслано на модерацію.' : 'Звістку оновлено.'
   end
 
   def destroy_notice
-    @publication.instance_of?(Blog) ? 'допис видалено' : 'звістку видалено'
+    @publication.instance_of?(Blog) ? 'Допис видалено.' : 'Звістку видалено.'
   end
 
   def new_publication_partial
