@@ -2,7 +2,7 @@
   <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
     <div class="float-right relative ml-0 w-full">
       <div class="relative float-left leading-none m-0 overflow-hidden w-full">
-        <%= image_tag url_for(publication.cover), class: "block rounded-xl" %>
+        <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "block rounded-xl" %>
         <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
       </div>
       <div class="ml-0">
