@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TalesController < ApplicationController
-  before_action :set_tale
+  before_action :set_tale, :track_visit
 
   def show
     @more_tales = Tale.order(created_at: :desc).excluding(@publication).first(6)

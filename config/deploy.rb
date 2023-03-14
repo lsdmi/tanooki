@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+Dotenv.load('.env')
+
 # config valid for current version and patch releases of Capistrano
 lock '~> 3.17.2'
 
@@ -8,6 +11,7 @@ set :repo_url, 'git@github.com:lsdmi/tanooki.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+set :branch, 'main'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/deploy/#{fetch :application}"
@@ -29,7 +33,24 @@ set :deploy_to, "/home/deploy/#{fetch :application}"
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, {
+  'DB_HOST' => ENV.fetch('DB_HOST'),
+  'DB_NAME' => ENV.fetch('DB_NAME'),
+  'DB_PASSWORD' => ENV.fetch('DB_PASSWORD'),
+  'DB_PORT' => ENV.fetch('DB_PORT'),
+  'DB_USER' => ENV.fetch('DB_USER'),
+  'DEPLOY_PRODUCTION_IP' => ENV.fetch('DEPLOY_PRODUCTION_IP'),
+  'DEPLOY_PRODUCTION_USER' => ENV.fetch('DEPLOY_PRODUCTION_USER'),
+  'FEATURE_FLAG_AUTHENTICATION_ENABLED' => ENV.fetch('FEATURE_FLAG_AUTHENTICATION_ENABLED'),
+  'FEATURE_FLAG_BLOGS_ENABLED' => ENV.fetch('FEATURE_FLAG_BLOGS_ENABLED'),
+  'FEATURE_FLAG_COMMENTS_ENABLED' => ENV.fetch('FEATURE_FLAG_COMMENTS_ENABLED'),
+  'SECRET_KEY_BASE' => ENV.fetch('SECRET_KEY_BASE'),
+  'STORAGE_ACCESS_KEY' => ENV.fetch('STORAGE_ACCESS_KEY'),
+  'STORAGE_BUCKET' => ENV.fetch('STORAGE_BUCKET'),
+  'STORAGE_ENDPOINT' => ENV.fetch('STORAGE_ENDPOINT'),
+  'STORAGE_REGION' => ENV.fetch('STORAGE_REGION'),
+  'STORAGE_SECRET_KEY' => ENV.fetch('STORAGE_SECRET_KEY')
+}
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }

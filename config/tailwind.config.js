@@ -31,7 +31,8 @@ module.exports = {
         'Montserrat',
         'sans-serif'
       ],
-      oswald: ['Oswald', ...defaultTheme.fontFamily.sans]
+      oswald: ['Oswald', ...defaultTheme.fontFamily.sans],
+      georgia: ['Georgia,Times,Times New Roman,serif']
     },
     rotate: {
       "2": "2deg"

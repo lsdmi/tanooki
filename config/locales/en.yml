@@ -94,6 +94,7 @@ en:
         щ: 'shch'
         ю: 'yu'
         я: 'ya'
+        ь: ''
   date:
     abbr_day_names:
     - нд.
