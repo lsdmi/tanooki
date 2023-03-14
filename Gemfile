@@ -84,7 +84,7 @@ end
 
 gem 'devise'
 gem 'dotenv-rails'
-gem 'elasticsearch', '~> 7.17.0'
+gem 'elasticsearch', '~> 8.6.0'
 gem 'friendly_id'
 gem 'i18n'
 gem 'pagy'
