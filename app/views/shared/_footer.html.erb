@@ -1,12 +1,9 @@
-
 <footer class="p-4 bg-gray-900 text-center">
     <%= image_tag 'logo.svg', class: 'h-14 w-auto lg:block ml-auto mr-auto mb-2', alt: 'logo' %>
     <span class="font-oswald text-lg text-gray-400">© <%= Time.zone.now.year %> Бака™. Всі права захищені.</span>
-    <% if ENV['FEATURE_FLAG_AUTHENTICATION_ENABLED'] %>
         <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500">
             <li>
                 <%= link_to "Кузня Блогів", blogs_path, class: "mr-4 hover:underline md:mr-6" if current_user.present? %>
             </li>
         </ul>
-    <% end %>
 </footer>

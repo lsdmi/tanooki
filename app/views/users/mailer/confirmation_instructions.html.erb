@@ -1,5 +1,12 @@
-<p>Welcome <%= @email %>!</p>
+<div style="max-width: 600px; margin: 0 auto; padding: 32px;">
+  <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">Ласкаво просимо <%= @resource.name %>!</h1>
 
-<p>You can confirm your account email through the link below:</p>
+  <p>Будь ласка, засвідчіть електронну адресу за посиланням далі:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <p><a href="<%= confirmation_url(@resource, confirmation_token: @token) %>"
+    style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; transition: background-color 0.2s;">Засвідчити Профіль</a></p>
+
+  <p>Дякуємо за реєстрацію!</p>
+
+  <p style="margin-top: 32px;">З повагою,<br>команда Бака</p>
+</div>

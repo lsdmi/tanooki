@@ -78,7 +78,7 @@
 
                   <div class="form-actions text-center pt-1 mb-12 pb-1">
                     <%= f.button :submit, "Зареєструватися", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
-                    <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-gray-500' if ENV['FEATURE_FLAG_AUTHENTICATION_ENABLED'] %>
+                    <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-gray-500' %>
                   </div>
 
                   <div class="flex items-center justify-between pb-6">

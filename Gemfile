@@ -59,6 +59,7 @@ group :development do
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
+  gem 'letter_opener'
   gem 'rubocop'
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
