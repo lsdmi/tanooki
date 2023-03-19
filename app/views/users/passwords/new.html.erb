@@ -1,47 +1,37 @@
-<section class="h-full gradient-form flex justify-center">
-  <div class="container py-12 px-6">
-    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-      <div class="xl:w-10/12">
-        <div class="block bg-white rounded-lg">
-          <div class="lg:flex lg:flex-wrap g-0 p-10 shadow-lg">
-            <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none">
-              <%= image_tag "https://i.kym-cdn.com/photos/images/newsfeed/001/225/565/71c.gif", alt: 'new password' %>
-            </div>
-            <div class="lg:w-6/12 px-4 md:px-0">
-              <div class="md:p-12 md:mx-6">
-                <div class="text-center">
-                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Забули Пароль?</h4>
-                </div>
-                <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
-                  <%= f.input :email,
-                              id: 'email',
-                              required: true,
-                              autofocus: true,
-                              label: false,
-                              placeholder: "Електронна Адреса",
-                              input_html: {
-                                autocomplete: "email",
-                                class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:email].any? }"
-                              } %>
-                  <%= tag.span resource.errors[:email].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1 mb-2" if resource.errors[:email].any? %>
-
-                  <div class="form-actions text-center pt-1 mb-2 pb-1">
-                    <%= f.button :submit, "Відправити інструкції щодо зміни пароля", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
-                  </div>
-
-                  <div class="form-actions text-center pt-1 mb-1 pb-1">
-                    <%= link_to 'Зареєструватися', new_user_registration_path, class: 'text-gray-500 hover:underline' %>
-                  </div>
-                  <div class="form-actions text-center pt-1 mb-1 pb-1">
-                    <%= link_to 'Увійти', new_user_session_path, class: 'text-gray-500 hover:underline' %>
-                  </div>
-
-                <% end %>
-              </div>
-            </div>
+<section class="h-full gradient-form bg-white py-16 lg:py-32 xl:py-64 z-10">
+  <div class="md:container md:shadow-lg mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
+    <div class="w-full place-self-center col-span-12 md:col-span-6">
+      <div class="p-8 rounded-lg mx-auto">
+        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Втратили Доступ до Акаунту?</h1>
+        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500">Надішліть свою електронну пошту та ми відправимо Вам інструкції для його відновлення!</p>
+        <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
+          <div>
+            <%= f.input :email,
+                        id: 'email',
+                        required: true,
+                        autofocus: true,
+                        label: "Електронна Адреса",
+                        placeholder: "user@baka.in.ua",
+                        input_html: {
+                          autocomplete: "email",
+                          class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
+                        },
+                        label_html: {
+                          class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                        } %>
+            <%= tag.span resource.errors[:email].uniq.join(""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
           </div>
-        </div>
+          <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
+            <div></div>
+            <%= link_to 'Перейти до Авторизації', new_user_session_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold hover:underline text-emerald-700' %>
+          </div>
+          <%= f.button :submit, "Відновити Пароль", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+        <% end %>
       </div>
+    </div>
+    <div class="mr-auto place-self-center col-span-6 shadow-lg invisible md:visible">
+      <%= image_tag 'forgot_password', alt: 'forgot_password', class: 'align-middle mx-auto flex rounded-lg' %>
     </div>
   </div>
 </section>
+

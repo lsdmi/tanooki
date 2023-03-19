@@ -27,6 +27,7 @@ module Users
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       else
+        set_flash_message! :alert, :sign_up_error
         clean_up_passwords resource
         set_minimum_password_length
         respond_with resource

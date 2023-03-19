@@ -1,27 +1,58 @@
-<h2>Change your password</h2>
+<section class="h-full gradient-form bg-white py-16 lg:py-32 xl:py-64 z-10">
+  <div class="md:container md:shadow-lg mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
+    <div class="w-full place-self-center col-span-12 md:col-span-6">
+      <div class="p-8 rounded-lg mx-auto">
+        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Оновлення Паролю</h1>
+        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500">Для зміни введіть та підтвердіть новий пароль!</p>
+        <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
+          <%= f.input :reset_password_token, as: :hidden %>
+          <%= f.full_error :reset_password_token %>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.error_notification %>
-
-  <%= f.input :reset_password_token, as: :hidden %>
-  <%= f.full_error :reset_password_token %>
-
-  <div class="form-inputs">
-    <%= f.input :password,
-                label: "New password",
-                required: true,
-                autofocus: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                label: "Confirm your new password",
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+          <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">
+            <div>
+              <%= f.input :password,
+                          id: 'password',
+                          required: true,
+                          autofocus: true,
+                          label: "Новий Пароль",
+                          placeholder: "***********",
+                          input_html: {
+                            autocomplete: "current-password",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:password].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
+            </div>
+            <div>
+              <%= f.input :password_confirmation,
+                          id: 'password_confirmation',
+                          required: true,
+                          autofocus: true,
+                          label: "Підтвердження Паролю",
+                          placeholder: "***********",
+                          input_html: {
+                            autocomplete: "password_confirmation",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
+            </div>
+          </div>
+          <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
+            <div></div>
+            <%= link_to 'Перейти до Авторизації', new_user_session_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold hover:underline text-emerald-700' %>
+          </div>
+          <%= f.button :submit, "Оновити Пароль", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="mr-auto place-self-center col-span-6 shadow-lg invisible md:visible">
+      <%= image_tag 'password_edit', alt: 'password edit', class: 'align-middle mx-auto flex rounded-lg' %>
+    </div>
   </div>
+</section>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

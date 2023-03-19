@@ -1,100 +1,91 @@
-<section class="h-full gradient-form flex justify-center">
-  <div class="container py-12 px-6">
-    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-      <div class="xl:w-10/12">
-        <div class="block bg-white rounded-lg">
-          <div class="lg:flex lg:flex-wrap g-0 p-10 shadow-lg">
-            <div class="lg:w-6/12 px-4 md:px-0">
-              <div class="md:p-12 md:mx-6">
-                <div class="text-center">
-                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Реєстрація</h4>
-                </div>
-                <%= simple_form_for(resource, as: resource_name, url: user_registration_path, data: { turbo: false }) do |f| %>
-                  <% if resource.errors.any? %>
-                    <div class="flex items-center justify-center pb-4 text-gray-600" role="alert">
-                      <%= tag.div 'Будь ласка, усуньте такі недоліки:', class: "font-oswald text-xl ml-2 font-bold text-center" %>
-                    </div>
-                  <% end %>
-                  <div class="grid grid-cols-2 gap-2">
-                    <div class="mb-6">
-                      <%= f.input :email,
-                                  id: 'email',
-                                  required: true,
-                                  autofocus: true,
-                                  label: false,
-                                  placeholder: "Електронна Адреса",
-                                  input_html: {
-                                    autocomplete: "email",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:email].any? }"
-                                  } %>
-                      <%= tag.span resource.errors[:email].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
-                    </div>
-
-                    <div class="mb-6">
-                      <%= f.input :name,
-                                  id: 'name',
-                                  required: true,
-                                  autofocus: true,
-                                  label: false,
-                                  placeholder: "Прізвисько",
-                                  input_html: {
-                                    autocomplete: "name",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:name].any? }"
-                                  } %>
-                      <%= tag.span resource.errors[:name].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-2 gap-2">
-                    <div class="mb-6">
-                      <%= f.input :password,
-                                  id: 'password',
-                                  required: true,
-                                  autofocus: true,
-                                  label: false,
-                                  placeholder: "Пароль",
-                                  hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                                  input_html: {
-                                    autocomplete: "new-password",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:password].any? }"
-                                  } %>
-                      <%= tag.span resource.errors[:password].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
-                    </div>
-
-                    <div class="mb-6">
-                      <%= f.input :password_confirmation,
-                                  id: 'password_confirmation',
-                                  required: true,
-                                  autofocus: true,
-                                  label: false,
-                                  placeholder: "Підтвердження пароля",
-                                  input_html: {
-                                    autocomplete: "password_confirmation",
-                                    class: "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-indigo-600 focus:outline-none #{'border-red-500' if resource.errors[:password_confirmation].any? }"
-                                  } %>
-                      <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: " та ", last_word_connector: " та "), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
-                    </div>
-                  </div>
-
-                  <div class="form-actions text-center pt-1 mb-12 pb-1">
-                    <%= f.button :submit, "Зареєструватися", class: "-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3" %>
-                    <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-gray-500' %>
-                  </div>
-
-                  <div class="flex items-center justify-between pb-6">
-                    <p class="mb-0 mr-2">Вже маєте акаунт?
-                      <%= link_to 'Увійти', new_user_session_path, class: 'font-bold hover:underline' %>
-                    </p>
-                  </div>
-                <% end %>
-              </div>
+<section class="h-full gradient-form bg-white py-16 lg:py-32 xl:py-64 z-10">
+  <div class="md:container md:shadow-lg mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
+    <div class="w-full place-self-center col-span-12 md:col-span-6">
+      <div class="p-8 rounded-lg mx-auto">
+        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Ласкаво Просимо до Баки!</h1>
+        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500">Вже маєте обліковий запис?
+          <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-bold hover:underline text-emerald-700' %>
+        </p>
+        <%= simple_form_for(resource, as: resource_name, url: user_registration_path, data: { turbo: false }) do |f| %>
+          <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">
+            <div>
+              <%= f.input :email,
+                          id: 'email',
+                          required: true,
+                          autofocus: true,
+                          label: "Електронна Адреса",
+                          placeholder: "user@baka.in.ua",
+                          input_html: {
+                            autocomplete: "email",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:email].uniq.to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
             </div>
-            <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none">
-              <%= image_tag "https://c4.wallpaperflare.com/wallpaper/871/347/726/anime-anime-girls-tongue-out-simple-background-white-background-hd-wallpaper-preview.jpg", alt: 'new registration' %>
+            <div>
+              <%= f.input :name,
+                          id: 'name',
+                          required: true,
+                          autofocus: true,
+                          label: "Прізвисько",
+                          placeholder: "username",
+                          input_html: {
+                            autocomplete: "name",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:name].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:name].join(''), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
             </div>
           </div>
-        </div>
+          <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">
+            <div>
+              <%= f.input :password,
+                          id: 'password',
+                          required: true,
+                          autofocus: true,
+                          label: "Пароль",
+                          placeholder: "***********",
+                          input_html: {
+                            autocomplete: "current-password",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:password].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
+            </div>
+            <div>
+              <%= f.input :password_confirmation,
+                          id: 'password_confirmation',
+                          required: true,
+                          autofocus: true,
+                          label: "Підтвердження Паролю",
+                          placeholder: "***********",
+                          input_html: {
+                            autocomplete: "password_confirmation",
+                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                          },
+                          label_html: {
+                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                          } %>
+              <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
+            </div>
+          </div>
+          <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
+            <div></div>
+            <%= link_to 'Забули пароль?', new_user_password_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold hover:underline text-emerald-700' %>
+          </div>
+          <%= f.button :submit, "Зареєструватися", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+        <% end %>
       </div>
+    </div>
+    <div class="mr-auto place-self-center col-span-6 shadow-lg invisible md:visible">
+      <%= image_tag 'registration', alt: 'registration', class: 'align-middle mx-auto flex rounded-lg' %>
     </div>
   </div>
 </section>
+
