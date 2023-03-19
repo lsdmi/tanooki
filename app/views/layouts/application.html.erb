@@ -26,7 +26,7 @@
     <%= render "shared/alert" if alert %>
     <%= render 'hero_section' if current_page?(root_path) %>
     <main class="relative">
-      <%= image_tag 'bg', alt: 'bg image', class: 'absolute w-full h-full object-cover opacity-5' %>
+      <%= image_tag 'bg', alt: 'bg image', class: 'absolute w-full h-full object-cover opacity-10' %>
       <%= yield %>
     </main>
     <%= render "shared/footer" %>

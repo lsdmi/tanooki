@@ -1,0 +1,17 @@
+
+<div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-search">
+  <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mt-4 lg:hidden" } do |form| %>
+    <label for="search-mobile" class="sr-only">Search</label>
+    <div class="relative w-full">
+      <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+        </svg>
+      </div>
+      <%= form.input nil, id: 'search-mobile', type: 'search', input_html: { class: 'font-oswald border text-xl rounded-lg block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-emerald-500 focus:border-emerald-500' }, placeholder: 'Пошук', required: true %>
+    </div>
+    <button type="submit" class="font-oswald inline-flex items-center p-2.5 ml-2 text-xl font-medium text-white rounded-lg border border-primary-700 focus:ring-4 focus:outline-none bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-800">
+      Шукати
+    </button>
+  <% end %>
+</div>
