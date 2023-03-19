@@ -4,7 +4,7 @@
       <%= f.input :caption,
                   input_html: {
                     autofocus: true,
-                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                   },
                   placeholder: "Заголовок...",
                   label: "Заголовок"
@@ -32,7 +32,7 @@
       <%= f.input :resource,
                   input_html: {
                     autofocus: true,
-                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                    class: "mt-1 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                   },
                   placeholder: "Посилання...",
                   label: "Посилання"
@@ -48,7 +48,7 @@
                 },
                 placeholder: "Зміст оголошення...",
                 label: false,
-                class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                class: "block p-2.5 w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
               %>
     <% if advertisement.errors[:description].any? %>
       <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній або задовгий зміст оголошення...</p>
@@ -61,7 +61,7 @@
       <% end %>
       <div class="flex items-center mr-4">
         <%= f.input :enabled, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2' } %>
-        <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-900">Активувати</label>
+        <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-800">Активувати</label>
       </div>
       <div>
         <button type="button"

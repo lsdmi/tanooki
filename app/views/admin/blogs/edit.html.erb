@@ -2,7 +2,7 @@
   <article class="mx-auto w-full max-w-4xl format format-sm sm:format-base lg:format-lg format-indigo p-10 shadow-lg">
     <header class="mb-4 not-format">
       <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
-        <%= tag.h1 @publication.title, class: "text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl" %>
+        <%= tag.h1 @publication.title, class: "text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-800 md:text-5xl lg:text-6xl" %>
       </div>
     </header>
     <figure class="mb-6"><%= image_tag url_for(@publication.cover), class: "rounded-lg" %></figure>
@@ -13,7 +13,7 @@
         <%= f.text_area :status_message,
                         id: 'comment',
                         rows: '3',
-                        class: "px-0 w-full text-sm text-gray-900 border-0 focus:ring-0",
+                        class: "px-0 w-full text-sm text-gray-800 border-0 focus:ring-0",
                         placeholder: 'Коментар до схвалення чи пояснення з приводу відхилення допису...',
                         value: nil,
                         required: true %>

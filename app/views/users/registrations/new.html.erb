@@ -17,10 +17,10 @@
                           placeholder: "user@baka.in.ua",
                           input_html: {
                             autocomplete: "email",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
+                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:email].uniq.to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
             </div>
@@ -33,10 +33,10 @@
                           placeholder: "username",
                           input_html: {
                             autocomplete: "name",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:name].any? }"
+                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:name].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:name].join(''), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
             </div>
@@ -51,10 +51,10 @@
                           placeholder: "***********",
                           input_html: {
                             autocomplete: "current-password",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
+                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:password].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
             </div>
@@ -67,10 +67,10 @@
                           placeholder: "***********",
                           input_html: {
                             autocomplete: "password_confirmation",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-base sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
             </div>

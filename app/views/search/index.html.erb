@@ -2,7 +2,7 @@
   <div class="w-full relative float-left">
     <div class="h-full lg:w-[1200px] my-0 mx-auto">
       <header class="mt-4 w-full float-left relative block">
-        <h1 class="float-left text-gray-900 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
+        <h1 class="float-left text-gray-800 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
         <div class="relative float-left w-full sm:-mr-96">
           <main class="mr-2 lg:mr-96">
             <div class="relative float-left w-full min-h-[32rem] ml-2 xl:ml-0">
@@ -21,7 +21,7 @@
                               <div class="mb-2 w-full float-left">
                                 <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-400 text-sm lg:text-xs relative float-left' %>
                               </div>
-                              <%= tag.h2 result.title, class: 'font-oswald text-gray-900 float-left text-3xl md:text-2xl font-bold tracking-tight w-full' %>
+                              <%= tag.h2 result.title, class: 'font-oswald text-gray-800 float-left text-3xl md:text-2xl font-bold tracking-tight w-full' %>
                               <%= tag.p result.description.to_plain_text.truncate(130), class: 'float-left w-full text-base xl:text-sm font-light leading-5 text-gray-600 mt-2' %>
                             </div>
                           </div>

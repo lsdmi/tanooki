@@ -1,9 +1,11 @@
-<main class="container mx-auto px-5 mt-4" data-controller="preview">
-  <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
-    <%= tag.p 'Оновити Оголошення', class: 'text-lg text-gray-900 font-semibold' %>
-  </div>
+<section class="h-full gradient-form bg-white py-8 lg:py-16 xl:py-32 z-10">
+  <div class="md:container md:shadow-lg mx-auto max-w-7xl pl-4 grid-cols-12 relative" data-controller="preview">
+    <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
+      <%= tag.p 'Оновити Оголошення', class: 'text-lg text-gray-800 font-semibold' %>
+    </div>
 
-  <%= simple_form_for @advertisement, url: admin_advertisement_path(@advertisement), method: :put, html: { class: "form" }, data: { action: "preview#update" } do |f| %>
-    <%= render 'admin/advertisements/form', advertisement: @advertisement, f: f %>
-  <% end %>
-</main>
+    <%= simple_form_for @advertisement, url: admin_advertisement_path(@advertisement), method: :put, html: { class: "form" }, data: { action: "preview#update" } do |f| %>
+      <%= render 'admin/advertisements/form', advertisement: @advertisement, f: f %>
+    <% end %>
+  </div>
+</section>
