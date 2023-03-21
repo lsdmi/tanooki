@@ -1,5 +1,5 @@
 <li class="relative float-left w-full mb-4 mt-2">
-  <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path] do %>
+  <%= link_to dynamic_variables(publication.slug, publication.class)[:show_publication_path], aria: { label: publication.title } do %>
     <div class="float-right relative ml-0 w-full">
       <div class="relative float-left leading-none m-0 overflow-hidden w-full">
         <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "block rounded-xl" %>

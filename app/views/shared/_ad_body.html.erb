@@ -1,5 +1,5 @@
 <div class="float-left relative w-full">
-  <%= link_to advertisement.resource, class: 'group relative block bg-black rounded-lg' do %>
+  <%= link_to advertisement.resource, class: 'group relative block bg-black rounded-lg', aria: { label: advertisement.caption } do %>
     <div class="relative w-80 h-80 pr-2 xl:p-0">
       <%= image_tag url_for(advertisement.cover), alt: advertisement.cover.blob.filename.to_s, class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
       <div class="absolute opacity-0 transition-opacity hover:opacity-100 relative p-1">
