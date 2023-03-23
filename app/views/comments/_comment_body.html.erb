@@ -1,22 +1,39 @@
-<article class="p-6 mb-6 text-base bg-white rounded-lg <%= 'ml-6 lg:ml-12' if comment.parent_id.present? %>">
-  <footer class="flex justify-between items-center mb-2">
-    <div class="flex items-center">
-      <%= tag.p class: 'inline-flex items-center mr-3 text-sm text-gray-800' do %>
-        <img class="mr-2 w-6 h-6 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg">
-        <%= comment.user.name %>
-      <% end %>
-      <%= tag.p class: 'text-sm text-gray-600' do %>
-        <%= "Опубліковано #{comment.created_at.strftime('%d.%m.%Y')}" %>
-        <%= turbo_frame_tag "edit-icon-#{comment.id}" do %>
-          <%= render "comments/edit_icon" if comment.created_at != comment.updated_at %>
+<%= tag.article class: "p-4 lg:p-6 mb-6 text-base border border-rose-100 rounded-lg #{'ml-6 lg:ml-12' if comment.parent_id.present?}" do %>
+  <div class="flex">
+    <div class="w-full">
+      <footer class="flex justify-between items-center mb-2 w-full">
+        <div class="flex items-center">
+          <img class="mr-2 w-12 h-12 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg">
+          <p class="inline-flex flex-col md:flex-row items-start mr-3">
+            <%= tag.span comment.user.name, class: 'font-oswald text-2xl font-bold text-rose-900' %>
+            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: 'font-oswald text-base font-bold text-rose-600 md:ml-2' %>
+          </p>
+        </div>
+        <% if current_user&.id == comment.user_id %>
+          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 rounded-lg focus:ring-4 focus:outline-none focus:ring-rose-100" type="button">
+            <svg class="w-5 h-5 fill-rose-400" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+            </svg>
+            <span class="sr-only">Comment settings</span>
+          </button>
+          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-rose-100 shadow">
+            <ul class="py-1 text-sm text-rose-700" aria-labelledby="dropdownMenuIconHorizontalButton">
+              <li>
+                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
+              </li>
+              <li>
+                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
+              </li>
+            </ul>
+          </div>
         <% end %>
+      </footer>
+      <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
+        <%= tag.p comment.content, class: 'font-oswald text-gray-500 text-xl' %>
       <% end %>
+      <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
+        <%= render 'comments/actions', comment: comment, publication: @publication %>
+      <% end if current_user %>
     </div>
-  </footer>
-  <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-    <%= tag.p comment.content %>
-  <% end %>
-  <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-    <%= render 'comments/actions', comment: comment, publication: @publication %>
-  <% end if current_user %>
-</article>
+  </div>
+<% end %>
