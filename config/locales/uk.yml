@@ -29,7 +29,7 @@
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
-en:
+uk:
   activerecord:
     attributes:
       user:
@@ -60,165 +60,6 @@ en:
             content:
               blank: введіть ваш коментар
               too_long: введіть не більше 2200 символів
-  i18n:
-    transliterate:
-      rule:
-        а: 'a'
-        б: 'b'
-        в: 'v'
-        г: 'h'
-        ґ: 'g'
-        д: 'd'
-        е: 'e'
-        є: 'ye'
-        ж: 'zh'
-        з: 'z'
-        и: 'y'
-        і: 'i'
-        ї: 'yi'
-        й: 'y'
-        к: 'k'
-        л: 'l'
-        м: 'm'
-        н: 'n'
-        о: 'o'
-        п: 'p'
-        р: 'r'
-        с: 's'
-        т: 't'
-        у: 'u'
-        ф: 'f'
-        х: 'kh'
-        ц: 'ts'
-        ч: 'ch'
-        ш: 'sh'
-        щ: 'shch'
-        ю: 'yu'
-        я: 'ya'
-        ь: ''
-  date:
-    abbr_day_names:
-    - нд.
-    - пн.
-    - вт.
-    - ср.
-    - чт.
-    - пт.
-    - сб.
-    abbr_month_names:
-    -
-    - січ.
-    - лют.
-    - бер.
-    - квіт.
-    - трав.
-    - черв.
-    - лип.
-    - серп.
-    - вер.
-    - жовт.
-    - лист.
-    - груд.
-    day_names:
-    - неділя
-    - понеділок
-    - вівторок
-    - середа
-    - четвер
-    - п'ятниця
-    - субота
-    formats:
-      default: "%d.%m.%Y"
-      long: "%d %B %Y"
-      short: "%d %b"
-    month_names:
-    -
-    - Січня
-    - Лютого
-    - Березня
-    - Квітня
-    - Травня
-    - Червня
-    - Липня
-    - Серпня
-    - Вересня
-    - Жовтня
-    - Листопада
-    - Грудня
-    order:
-    - :day
-    - :month
-    - :year
-  datetime:
-    distance_in_words:
-      about_x_hours:
-        one: близько %{count} години
-        few: близько %{count} годин
-        many: близько %{count} годин
-        other: близько %{count} години
-      about_x_months:
-        one: близько %{count} місяця
-        few: близько %{count} місяців
-        many: близько %{count} місяців
-        other: близько %{count} місяця
-      about_x_years:
-        one: близько %{count} року
-        few: близько %{count} років
-        many: близько %{count} років
-        other: близько %{count} року
-      almost_x_years:
-        one: майже %{count} рік
-        few: майже %{count} роки
-        many: майже %{count} років
-        other: майже %{count} років
-      half_a_minute: пів хвилини
-      less_than_x_seconds:
-        one: менше %{count} секунди
-        few: менше %{count} секунд
-        many: менше %{count} секунд
-        other: менше %{count} секунди
-      less_than_x_minutes:
-        one: менше %{count} хвилини
-        few: менше %{count} хвилин
-        many: менше %{count} хвилин
-        other: менше %{count} хвилини
-      over_x_years:
-        one: більше %{count} року
-        few: більше %{count} років
-        many: більше %{count} років
-        other: більше %{count} року
-      x_seconds:
-        one: "%{count} секунда"
-        few: "%{count} секунди"
-        many: "%{count} секунд"
-        other: "%{count} секунди"
-      x_minutes:
-        one: "%{count} хвилина"
-        few: "%{count} хвилини"
-        many: "%{count} хвилин"
-        other: "%{count} хвилини"
-      x_days:
-        one: "%{count} день"
-        few: "%{count} дні"
-        many: "%{count} днів"
-        other: "%{count} дня"
-      x_months:
-        one: "%{count} місяць"
-        few: "%{count} місяці"
-        many: "%{count} місяців"
-        other: "%{count} місяця"
-      x_years:
-        one: "%{count} рік"
-        few: "%{count} роки"
-        many: "%{count} років"
-        other: "%{count} року"
-    prompts:
-      second: Секунда
-      minute: Хвилина
-      hour: Година
-      day: День
-      month: Місяць
-      year: Рік
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -349,7 +190,7 @@ en:
   time:
     am: до полудня
     formats:
-      default: "%a, %d %b %Y, %H:%M:%S %z"
-      long: "%d %B %Y, %H:%M"
-      short: "%d %b, %H:%M"
+      default: "%d.%m.%Y %H:%M:%S"
+      short: "%d.%m.%Y"
+      long: "%d %B %Y %H:%M"
     pm: по полудні

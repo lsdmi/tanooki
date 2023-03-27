@@ -19,7 +19,7 @@ export default class PreviewController extends Controller {
     const resource = resourceInput.value;
 
     this.outputTarget.innerHTML = `
-      <div class="col-span-1 ml-8">
+      <div class="col-span-1 ml-8 h-[36rem]">
         <div class="float-left relative w-full">
           <a href="${resource}" class="group relative block bg-black rounded-lg">
             <div class="relative w-80 h-80">
