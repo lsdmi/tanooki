@@ -74,9 +74,9 @@
   <turbo-frame id="preview">
     <div data-target="preview.output">
       <div class="col-span-1 ml-8">
-        <div class="float-left relative w-full">
+        <div class="float-left relative w-full h-[36rem]">
           <%= link_to advertisement.resource || 'https://via.placeholder.com/150', class: 'group relative block bg-black rounded-lg' do %>
-            <div class="relative w-80 h-80">
+            <div class="relative w-80">
               <%= image_tag url_for(advertisement.cover.presence || 'https://via.placeholder.com/150'), id: 'preview-image', class: 'absolute h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-50 rounded-lg' %>
               <div class="absolute opacity-0 transition-opacity hover:opacity-100 relative p-1">
                 <div class="mt-32 sm:mt-48 lg:mt-64">
