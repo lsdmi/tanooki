@@ -16,26 +16,8 @@
                   <%= publication.description %>
                 </div>
               </div>
-              <div class="w-full relative mb-8">
-                <div class="mt-2 w-full relative">
-                  <%= render 'shared/divider', caption: 'Інші Новини' %>
-                  <ul class="grid grid-cols-3 gap-4 list-none w-full">
-                    <% @more_tales.each do |tale| %>
-                      <%= link_to tale_path(tale) do %>
-                        <li class="ml-0 overflow-hidden w-full">
-                          <div class="rounded-xl leading-none mb-2 w-full relative h-28 sm:h-36 md:h-28 lg:h-44 flex items-center">
-                            <%= image_tag url_for(tale.cover), alt: tale.cover.blob.filename.to_s, class: "rounded-xl w-full h-auto" %>
-                            <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-                          </div>
-                          <div class="font-oswald relative text-gray-800 tracking-tight w-full h-auto text-xs sm:text-base md:text-sm lg:text-base">
-                            <%= tag.p tale.title %>
-                          </div>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
+              <%= render 'comments/index' if current_user || @comments.any? %>
+              <%= render 'publications/more' %>
             </div>
           </main>
           <aside class="sticky top-24 invisible md:visible float-right h-[36rem]">
