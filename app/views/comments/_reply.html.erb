@@ -1,3 +1,5 @@
 <%= turbo_frame_tag "reply-#{reply.id}" do %>
-  <%= render 'comments/comment_body', comment: reply %>
+  <div data-controller="flowbite">
+    <%= render 'comments/comment_body', comment: reply %>
+  </div>
 <% end %>
