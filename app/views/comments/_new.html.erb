@@ -4,15 +4,15 @@
   <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
 
   <%= tag.div class: "mb-4 w-full bg-gray-50 rounded-lg border border-rose-200 #{'mb-0 mt-6' if comment.new_record? && comment.parent_id.present?}" do %>
-    <div class="py-2 px-4 bg-gray-50 rounded-t-lg <%= 'mb-4' unless comment.errors.any? %>">
+    <div class="py-2 px-4 bg-gray-50 rounded-t-lg">
       <%= f.text_area :content,
                       id: 'comment',
                       rows: '3',
-                      class: "font-oswald px-0 w-full text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-900 placeholder-rose-900 bg-gray-50 border-0 focus:ring-0 #{'border-red-500' if comment.errors.any? }",
+                      class: "font-oswald px-0 w-full text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-900 placeholder-rose-900 bg-gray-50 border-0 focus:ring-0",
                       placeholder: 'Лишити коментар...',
                       required: true %>
     </div>
-    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs ml-1 mb-2" if comment.errors.any? %>
+    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2" if comment.errors.any? %>
 
     <div class="flex justify-between items-center py-2 px-3 border-t border-rose-200">
       <%= f.submit 'Надіслати', class: 'font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-bold bg-rose-500 rounded-lg transition ease-in-out m-0 hover:bg-rose-600 hover:cursor-pointer' %>

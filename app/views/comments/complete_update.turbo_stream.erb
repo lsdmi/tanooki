@@ -8,7 +8,4 @@
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
     <%= tag.p @comment.content, class: 'font-oswald text-gray-500 text-xl' %>
   <% end %>
-  <%= turbo_stream.update "edit-icon-#{@comment.id}" do %>
-    <%= render "comments/edit_icon" if @comment.created_at != @comment.updated_at %>
-  <% end %>
 <% end %>
