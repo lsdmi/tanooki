@@ -13,4 +13,8 @@ module ApplicationHelper
     @publication&.description&.to_plain_text&.truncate(125) ||
       'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
   end
+
+  def requires_tinymce?
+    %w[admin/tales].any? { |string| controller_path.include? string }
+  end
 end
