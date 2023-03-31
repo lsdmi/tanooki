@@ -15,6 +15,6 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    return true if request.path.match?(%r{\A/admin/tales/[^/]+/edit\z|\A/admin/tales/new\z})
+    return true if request.path.include?('admin/tales')
   end
 end

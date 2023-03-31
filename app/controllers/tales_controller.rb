@@ -14,5 +14,6 @@ class TalesController < ApplicationController
 
   def set_tale
     @publication = Tale.find(params[:id])
+    response.headers['Cache-Control'] = 'public, max-age=31536000'
   end
 end

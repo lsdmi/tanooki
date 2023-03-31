@@ -51,7 +51,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test 'does not require tinymce for other pages' do
-    request.path = admin_tales_path
+    request.path = root_path
     refute requires_tinymce?
   end
 end
