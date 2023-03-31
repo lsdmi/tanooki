@@ -19,7 +19,10 @@
       <%= javascript_include_tag 'ga' %>
     <% end %>
 
-    <%= tinymce_assets if requires_tinymce?  %>
+    <% if requires_tinymce? %>
+      <%= tinymce_assets %>
+      <%= javascript_include_tag 'tinymce_initializer' %>
+    <% end %>
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1200px] flex flex-col min-h-screen bg-gray-800">

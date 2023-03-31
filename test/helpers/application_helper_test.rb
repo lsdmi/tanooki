@@ -39,4 +39,19 @@ class ApplicationHelperTest < ActionView::TestCase
     request.path = search_index_path
     assert_equal description, meta_description
   end
+
+  test 'requires tinymce for admin/tales/:id/edit' do
+    request.path = edit_admin_tale_path(publications(:tale_approved_one))
+    assert requires_tinymce?
+  end
+
+  test 'requires tinymce for admin/tales/new' do
+    request.path = new_admin_tale_path
+    assert requires_tinymce?
+  end
+
+  test 'does not require tinymce for other pages' do
+    request.path = admin_tales_path
+    refute requires_tinymce?
+  end
 end

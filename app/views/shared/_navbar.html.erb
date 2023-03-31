@@ -7,7 +7,9 @@
     <div class="flex items-center lg:order-2">
       <%= render "shared/search" %>
       <% if current_user %>
-        <%= render 'shared/user_dropdown' %>
+        <div data-controller="flowbite">
+          <%= render 'shared/user_dropdown' %>
+        </div>
       <% else %>
         <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald text-emerald-300 ml-1 lg:ml-3 focus:ring-4 rounded-lg text-2xl px-3 lg:px-5 py-2 lg:py-2.5 hover:bg-gray-700 focus:outline-none focus:ring-emerald-800', area: { current: 'page' } %>
       <% end %>

@@ -7,7 +7,7 @@ class AdvertisementsHelperTest < ActionView::TestCase
 
   setup do
     @advertisement_description = action_text_rich_texts(:rich_text_one)
-    @advertisement_body = "\n  #{@advertisement_description.body.to_plain_text}\n\n"
+    @advertisement_body = "#{@advertisement_description.body.to_plain_text}\n"
   end
 
   test 'should get formatted_description' do
