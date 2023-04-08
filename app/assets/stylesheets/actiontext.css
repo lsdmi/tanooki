@@ -29,3 +29,9 @@
   padding: 0 !important;
   max-width: 100% !important;
 }
+
+#publication-description a {
+  color: #3598DB;
+  text-decoration: underline;
+  font-style: italic;
+}
