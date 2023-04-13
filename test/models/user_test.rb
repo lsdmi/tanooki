@@ -8,7 +8,8 @@ class UserTest < ActiveSupport::TestCase
       name: 'John Doe',
       email: 'john@example.com',
       password: 'password',
-      password_confirmation: 'password'
+      password_confirmation: 'password',
+      avatar_id: avatars(:one).id
     )
   end
 
@@ -91,5 +92,9 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should have many publications' do
     assert_respond_to @user, :publications
+  end
+
+  test 'should belong to an avatar' do
+    assert_equal avatars(:one), @user.avatar
   end
 end

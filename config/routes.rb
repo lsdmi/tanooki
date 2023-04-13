@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
+    resources :avatars, except: %i[new edit show update]
     resources :blogs, only: %i[index edit update]
     resources :tales, except: %i[show create update destroy]
   end
@@ -29,4 +30,7 @@ Rails.application.routes.draw do
   resources :publications, except: %i[new edit show]
   resources :search, only: :index
   resources :tales, only: :show
+  resources :users do
+    member { put :update_avatar }
+  end
 end

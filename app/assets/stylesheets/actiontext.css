@@ -35,3 +35,8 @@
   text-decoration: underline;
   font-style: italic;
 }
+
+.selected-image {
+  border: 3px solid pink;
+  box-shadow: 0 0 5px pink;
+}

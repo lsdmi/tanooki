@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_14_025236) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_11_195313) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -63,6 +63,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_025236) do
     t.index ["slug"], name: "index_advertisements_on_slug", unique: true
   end
 
+  create_table "avatars", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "parent_id"
@@ -97,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_025236) do
     t.string "encrypted_password", default: "", null: false
     t.string "name", null: false
     t.boolean "admin", default: false
+    t.bigint "avatar_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -106,6 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_025236) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -117,4 +124,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_025236) do
   add_foreign_key "comments", "publications", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "publications", "users", on_delete: :cascade
+  add_foreign_key "users", "avatars"
 end

@@ -1,12 +1,27 @@
-<button type="button" class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+<button type="button" class="hidden sm:flex text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
   <span class="sr-only">Open user menu</span>
-  <img class="w-8 h-8 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
+  <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
 </button>
-<div class="font-oswald hidden z-50 my-4 w-56 text-xl list-none rounded divide-y shadow bg-gray-700 divide-emerald-600" id="dropdown">
+<div class="hidden sm:visible font-oswald hidden z-50 my-4 w-56 text-xl list-none rounded divide-y shadow bg-gray-700 divide-emerald-600" id="dropdown">
   <div class="py-3 px-4">
     <%= tag.span current_user.name, class: "block font-semibold text-white" %>
     <%= tag.span current_user.email, class: "block font-light truncate text-gray-400" %>
   </div>
+  <ul class="py-1 font-light text-gray-400" aria-labelledby="dropdown">
+    <li>
+      <button id="doubleDropdownButtonProfile" data-dropdown-toggle="doubleDropdownProfile" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:bg-gray-600 hover:text-white">
+        Профіль
+        <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+      <div id="doubleDropdownProfile" class="z-10 hidden bg-gray-700 divide-y divide-emerald-600 rounded-lg shadow w-44">
+        <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonProfile">
+          <li><%= link_to 'Портретики', '#', data: { modal_target: 'avatar-modal', modal_toggle: 'avatar-modal' }, onclick: 'event.preventDefault()', class: "block px-4 py-2 text-gray-400 hover:bg-gray-600 hover:text-white" %></li>
+        </ul>
+      </div>
+    </li>
+  </ul>
   <% if current_user.admin? %>
     <ul class="py-1 font-light text-gray-400" aria-labelledby="dropdown">
       <li>
@@ -25,6 +40,9 @@
           </ul>
           <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
             <li><%= link_to "Оголошення", admin_advertisements_path, class: "block px-4 py-2 text-gray-400 hover:bg-gray-600 hover:text-white" %></li>
+          </ul>
+          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Портретики", admin_avatars_path, class: "block px-4 py-2 text-gray-400 hover:bg-gray-600 hover:text-white" %></li>
           </ul>
         </div>
       </li>

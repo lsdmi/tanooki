@@ -1,0 +1,5 @@
+<div id="avatar-list" class="col-span-12 md:col-span-6 grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 md:gap-1 my-4 md:ml-6 mr-1 overflow-y-auto max-h-[32rem]">
+  <% avatars.each do |avatar| %>
+    <%= render 'avatar', avatar: avatar %>
+  <% end %>
+</div>

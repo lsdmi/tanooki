@@ -1,0 +1,15 @@
+<%= simple_form_for avatar, url: admin_avatars_path, method: :post, html: { class: "form" } do |f| %>
+  <div class="flex items-center justify-center w-full mt-4">
+    <%= f.label :image, class: "cursor-pointer" do %>
+      <div class="flex flex-col items-center justify-center pt-5 pb-6">
+        <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+        <p class="mb-2 text-sm text-gray-500 text-center"><span class="font-semibold">Натисніть чи перетягніть,</span> аби обрати файл</p>
+        <p class="text-xs text-gray-500">SVG, PNG, JPEG, WebP чи GIF</p>
+      </div>
+      <%= f.file_field :image, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+      <div id="image_name" class="text-center text-sm text-gray-500"></div>
+      <%= tag.div avatar.errors[:image].uniq.join(""), class: "font-oswald text-center tracking-wide text-red-500 text-2xl mt-1" if avatar.errors.any? %>
+    <% end %>
+  </div>
+  <%= f.submit "Завантажити", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+<% end %>

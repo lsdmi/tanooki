@@ -1,0 +1,40 @@
+<div id="avatar-modal" data-modal-target="avatar-modal" tabindex="-1" class="backdrop-blur-sm fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative w-full max-w-4xl max-h-full">
+    <!-- Modal content -->
+    <%= image_tag 'modal-bg.png', alt: 'modal image', class: 'hidden' %>
+    <div class="bg-no-repeat bg-cover bg-center bg-fixed rounded-lg shadow" style="background-image:linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.75)), url(<%= asset_path('modal-bg.png') %>">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-5 border-b rounded-t">
+        <h3 class="font-oswald text-3xl font-bold text-gray-900">
+          Оновити Портретик
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="avatar-modal">
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-6 space-y-6">
+        <p class="font-oswald text-2xl font-bold leading-relaxed text-gray-500">
+          Оберіть вподобаний портретик та натисніть кнопку <i>Оновити</i>.
+        </p>
+        <p class="text-base leading-relaxed text-gray-500">
+          <div class="col-span-12 md:col-span-6 grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 md:gap-1 my-4 md:ml-6 mr-1 overflow-y-auto max-h-[32rem]">
+            <% Avatar.all.each do |avatar| %>
+              <%= turbo_frame_tag 'avatar-modal-image' do %>
+                <%= image_tag url_for(avatar.image), alt: avatar.image.blob.filename.to_s, id: "avatar-image-#{avatar.id}", data: { controller: 'image-click', action: 'click->image-click#addSelected', "avatar-id": avatar.id }, class: "cursor-pointer rounded-full mx-auto block shadow-lg mb-3 #{'selected-image' if current_user.avatar == avatar}" %>
+              <% end %>
+            <% end %>
+          </div>
+        </p>
+      </div>
+      <!-- Modal footer -->
+      <%= simple_form_for current_user, url: update_avatar_user_path(current_user), method: :put, html: { class: "form" } do |f| %>
+        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
+          <%= f.input :avatar_id, as: :hidden, input_html: { value: current_user.avatar_id } %>
+          <%= f.button :submit, 'Оновити', class: "space-y-reverse uppercase w-full rounded-lg py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

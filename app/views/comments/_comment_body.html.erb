@@ -3,7 +3,7 @@
     <div class="w-full">
       <footer class="flex justify-between items-center mb-2 w-full">
         <div class="flex items-center">
-          <img class="mr-2 w-12 h-12 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg">
+          <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-12 h-12 rounded-full' %>
           <p class="inline-flex flex-col md:flex-row items-start mr-3">
             <%= tag.span comment.user.name, class: 'font-oswald text-2xl font-bold text-rose-900' %>
             <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: 'font-oswald text-base font-bold text-rose-600 md:ml-2' %>

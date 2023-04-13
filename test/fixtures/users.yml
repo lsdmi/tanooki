@@ -4,10 +4,24 @@ user_one:
   encrypted_password: password
   name: John Doe
   admin: true
-  reset_password_token: ''
-  reset_password_sent_at: ''
+  avatar_id: 1
   remember_created_at: ''
-  confirmation_token: ''
+  confirmation_token: '1'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_two:
+  id: 2
+  email: example2@example.com
+  encrypted_password: password2
+  name: John Doe
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '2'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
   unconfirmed_email: ''

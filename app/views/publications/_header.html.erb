@@ -1,8 +1,8 @@
 <header class="w-full relative mb-4 block">
   <%= tag.h1 publication.title, class: "text-gray-800 font-bold tracking-tight font-oswald w-full mr-0 text-4xl" %>
   <div class="mt-3 w-full relative">
-    <div class="inline-flex w-11 relative">
-      <img class="rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="user photo">
+    <div class="inline-flex w-12 relative">
+      <%= image_tag url_for(publication.user.avatar.image), alt: publication.user.avatar.blob.filename.to_s, class: 'h-12 rounded-full' %>
     </div>
     <div class="inline-block relative text-sm ml-3.5 align-super mt-4">
       <div class="relative">

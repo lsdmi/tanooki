@@ -1,0 +1,14 @@
+<section class="h-full gradient-form bg-white py-64 z-10">
+  <div class="md:container md:shadow-lg mx-auto grid max-w-7xl pl-4 md:grid-cols-12 relative" data-controller="dropzone">
+    <div class="w-full place-self-center col-span-12 md:col-span-6">
+      <div class="p-8 rounded-lg mx-auto">
+        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Керування Портретиками</h1>
+        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500">Завантажити, прибрати та переглянути портретики для користувачів!</p>
+        <%= turbo_frame_tag 'avatar-form' do %>
+          <%= render 'form', avatar: @avatar %>
+        <% end %>
+      </div>
+    </div>
+    <%= render 'list', avatars: @avatars %>
+  </div>
+</section>

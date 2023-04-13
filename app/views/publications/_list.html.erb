@@ -41,7 +41,7 @@
           <% if controller_path == 'admin/blogs' %>
             <div class="flex justify-between items-center px-6 pb-6">
               <div class="flex items-center space-x-4">
-                <img class="w-7 h-7 rounded-full" src="https://pm1.narvii.com/7067/09aea797323b369166d45d54dab8cad497877f10r1-800-800v2_hq.jpg" alt="Jese Leos avatar" />
+                <%= image_tag url_for(publication.user.avatar.image), alt: publication.user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
                 <%= tag.span publication.user.name, class: 'font-medium' %>
               </div>
               <%= link_to edit_admin_blog_path(publication), class: 'inline-flex items-center font-medium hover:underline' do %>

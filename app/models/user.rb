@@ -10,9 +10,12 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3, maximum: 20 }, format: { with: /\A[a-zA-Z0-9 ]+\z/ }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
+  belongs_to :avatar
   has_many :blogs
   has_many :comments
   has_many :publications
+
+  scope :avatarless, -> { where(avatar_id: nil) }
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later

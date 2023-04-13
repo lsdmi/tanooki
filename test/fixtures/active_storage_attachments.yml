@@ -18,3 +18,17 @@ attachment_three:
   record_id: 1
   blob_id: 3
   created_at: <%= Time.now %>
+
+attachment_four:
+  name: image
+  record_type: Avatar
+  record_id: 1
+  blob_id: 4
+  created_at: <%= Time.now %>
+
+attachment_five:
+  name: image
+  record_type: Avatar
+  record_id: 2
+  blob_id: 5
+  created_at: <%= Time.now %>
