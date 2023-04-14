@@ -9,7 +9,7 @@
     <% group.each do |publication| %>
       <% if publication.present? %>
         <% variables = dynamic_variables(publication.slug) %>
-        <article class="pt-6 bg-white rounded-lg border border-gray-200 shadow-md mb-2">
+        <article class="pt-6 rounded-lg border border-gray-200 shadow-md mb-2">
           <div class="items-center mb-5 text-gray-500">
             <%= render 'blogs/status_alert', status: publication.status, message: publication.status_message if controller_path == 'blogs' %>
             <%= tag.span "Створено #{publication.created_at.strftime("%d.%m.%Y")}", class: 'text-sm text-justify px-6' %>

@@ -17,7 +17,7 @@
             </svg>
             <span class="sr-only">Comment settings</span>
           </button>
-          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-rose-100 shadow">
+          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 rounded divide-y divide-rose-100 shadow">
             <ul class="py-1 text-sm text-rose-700" aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
                 <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>

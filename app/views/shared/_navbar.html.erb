@@ -1,7 +1,7 @@
-<nav class="bg-gray-800 sticky top-0 z-50 border-gray-200 px-4 lg:px-6 py-2.5">
+<nav class="top-0 z-50 border-gray-200 px-4 lg:px-6 my-2">
   <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
     <a href="/" class="flex items-center">
-      <%= image_tag 'logo.svg', class: 'h-10 lg:h-14 w-auto lg:block', alt: 'logo' %>
+      <%= image_tag 'logo.svg', class: 'h-10 lg:h-12 w-auto lg:block', alt: 'logo' %>
       <span class="font-oswald mb-auto px-2 py-px text-xs lg:text-s font-bold leading-none text-indigo-100 bg-rose-600 rounded border border-white">beta</span>
     </a>
     <div class="flex items-center lg:order-2">
@@ -12,7 +12,7 @@
           <%= render 'shared/mobile_user_dropdown' %>
         </div>
       <% else %>
-        <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald text-emerald-300 ml-1 lg:ml-3 focus:ring-4 rounded-lg text-2xl px-3 lg:px-5 py-2 lg:py-2.5 hover:bg-gray-700 focus:outline-none focus:ring-emerald-800', area: { current: 'page' } %>
+        <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald text-emerald-300 ml-1 lg:ml-3 focus:ring-4 rounded-lg text-2xl px-3 lg:px-5 py-2 lg:py-2.5 hover:text-emerald-100 focus:outline-none', area: { current: 'page' } %>
       <% end %>
     </div>
     <%= render 'shared/mobile_search' %>

@@ -25,13 +25,13 @@
     <% end %>
   </head>
 
-  <body class="min-w-[375px] lg:min-w-[1200px] flex flex-col min-h-screen bg-gray-800">
+  <body class="min-w-[375px] lg:min-w-[1200px] flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image:linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.8)), url(<%= asset_path('hero-bg.png') %>">
     <%= render "shared/navbar" %>
     <%= render "shared/notice" if notice %>
     <%= render "shared/alert" if alert %>
     <%= render 'hero_section' if current_page?(root_path) %>
-    <main class="relative">
-      <%= image_tag 'bg.jpg', alt: 'bg image', class: 'absolute w-full h-full object-cover opacity-10' %>
+    <main class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image:linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.9)), url(<%= asset_path('bg.jpg') %>">
+      <%= image_tag 'bg.jpg', alt: 'bg image', class: 'hidden' %>
       <%= yield %>
     </main>
     <%= render "shared/avatar_modal" if current_user %>

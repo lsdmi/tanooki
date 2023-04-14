@@ -14,14 +14,14 @@
     </div>
     <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2" if comment.errors.any? %>
 
-    <div class="flex justify-between items-center py-2 px-3 border-t border-rose-200">
+    <div class="flex justify-between items-center py-2 px-3 border-t border-rose-200" style="background-image:linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.85)), url(<%= asset_path('modal-bg.png') %>)">
       <%= f.submit 'Надіслати', class: 'font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-bold bg-rose-500 rounded-lg transition ease-in-out m-0 hover:bg-rose-600 hover:cursor-pointer' %>
       <% if comment.persisted? %>
         <%= link_to "Скасувати",
                     cancel_edit_comment_path(comment),
                     method: :get,
                     data: { turbo_stream: "" },
-                    class: 'font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-bold bg-white rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
+                    class: 'font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-bold rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
       <% end %>
       <% if comment.new_record? && comment.parent_id.present? %>
         <%= link_to "Скасувати",
