@@ -30,12 +30,14 @@
     <%= render "shared/navbar" %>
     <%= render "shared/notice" if notice %>
     <%= render "shared/alert" if alert %>
-    <%= render 'hero_section' if current_page?(root_path) %>
-    <main class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.jpg') %>);">
-      <div class="absolute inset-0 bg-white opacity-90"></div>
-      <%= image_tag 'bg.jpg', alt: 'bg image', class: 'hidden' %>
-      <%= yield %>
-    </main>
+    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.jpg') %>);">
+      <%= render 'hero_section' if current_page?(root_path) %>
+      <main>
+        <div class="absolute inset-0 bg-white opacity-90"></div>
+        <%= image_tag 'bg.jpg', alt: 'bg image', class: 'hidden' %>
+        <%= yield %>
+      </main>
+    </div>
     <%= render "shared/avatar_modal" if current_user %>
     <%= render "shared/footer" %>
   </body>

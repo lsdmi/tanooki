@@ -1,44 +1,19 @@
-<section class="w-full float-left relative shadow-lg shadow-emerald-500/50">
-  <div class="pt-4 sm:pt-0 pb-8 w-full float-left relative bg-no-repeat bg-cover bg-center bg-fixed">
-    <div class="m-auto max-w-screen-2xl">
-      <%= render 'shared/divider', caption: 'Головне' %>
-      <div class="float-left relative w-full lg:grid lg:grid-cols-5 lg:gap-4 ">
-        <div class="lg:col-span-3 lg:float-left relative">
-          <%= link_to tale_path(@highlight) do %>
-            <div class="rounded-xl float-left relative w-[-webkit-fill-available] lg:w-full mx-4 lg:mx-0">
-              <div class="rounded-xl float-left relative w-full overflow-hidden h-96 lg:h-[400px]">
-                <%= image_tag url_for(@highlight.cover), alt: @highlight.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] min-w-[744px]" %>
-                <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
-              </div>
-              <div class="rounded-xl w-full float-left absolute left-0 bottom-0 px-[2.7%] pt-32 pb-5 xl:pb-12 bg-gradient-to-t from-gray-900 via-gray-800/60 to-gray-800/9">
-                <div class="mb-2 w-full float-left rounded-xl">
-                  <%= tag.span "Опубліковано: #{time_ago_in_words(@highlight.created_at)} тому", class: 'text-gray-400 text-xs w-full float-left' %>
-                </div>
-                <%= tag.h2 @highlight.title, class: 'font-oswald text-white float-left text-4xl md:text-5xl lg:text-4xl 2xl:text-5xl font-bold tracking-tight mr-[30%] w-11/12 md:w-4/5 xl:mb-2 mb-2 lg:mb-16' %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <div class="lg:col-span-2 float-left relative mt-8 lg:mt-3 mx-4 lg:mx-0">
-          <% @top_four.first(4).each do |tale| %>
-            <%= link_to tale_path(tale) do %>
-              <div class="mb-4 w-full float-left relative">
-                <div class="float-right relative w-full -ml-44">
-                  <%= render 'publications/cover_image', publication: tale %>
-                  <div class="md:ml-[22rem] lg:ml-44 m-4 sm:m-7 md:m-0">
-                    <div class="float-left relative w-full">
-                      <div class="mb-2 w-full float-left relative mt-3 md:mt-0">
-                        <%= tag.span "Опубліковано: #{time_ago_in_words(tale.created_at)} тому", class: 'text-gray-400 text-xs w-full float-left relative' %>
-                      </div>
-                      <%= tag.h2 tale.title, class: 'font-oswald text-white float-left tracking-wide mr-[20%] w-11/12 md:w-4/5 mb-2 text-xl sm:text-3xl lg:text-xl xl:text-2xl' %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
+<div class="w-full bg-white">
+  <div class="lg:w-[1200px] m-auto">
+    <section class="z-10 w-full relative float-left">
+      <div class="sm:mr-[340px]">
+        <div class="w-full relative float-left">
+          <div class="relative sm:float-right w-full lg:w-[60%]">
+            <%= render 'hero_center', publications: @highlights %>
+          </div>
+          <div class="relative sm:float-left w-full lg:w-80 mr-5">
+            <%= render 'hero_left', publications: @most_popular %>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="relative sm:float-left lg:ml-5 w-full sm:w-80">
+        <%= render 'hero_right', publications: @newest %>
+      </div>
+    </section>
   </div>
-</section>
+</div>

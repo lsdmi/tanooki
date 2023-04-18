@@ -50,6 +50,10 @@ class PublicationTest < ActiveSupport::TestCase
     assert_includes Publication.highlights, @publication
   end
 
+  test 'should have last_month scope' do
+    assert_includes Publication.last_month, @publication
+  end
+
   test 'should have created, approved and declined statuses' do
     assert_equal 3, Publication.statuses.count
     assert_equal 'created', Publication.statuses[:created]
