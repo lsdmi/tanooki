@@ -2,9 +2,10 @@
   <div class="relative w-full max-w-4xl max-h-full">
     <!-- Modal content -->
     <%= image_tag 'modal-bg.png', alt: 'modal image', class: 'hidden' %>
-    <div class="bg-no-repeat bg-cover bg-center bg-fixed rounded-lg shadow" style="background-image:linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.75)), url(<%= asset_path('modal-bg.png') %>">
+    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed rounded-lg shadow" style="background-image: url(<%= asset_path('modal-bg.png') %>);">
+      <div class="absolute inset-0 bg-white opacity-90"></div>
       <!-- Modal header -->
-      <div class="flex items-center justify-between p-5 border-b rounded-t">
+      <div class="z-10 relative flex items-center justify-between p-5 border-b rounded-t">
         <h3 class="font-oswald text-3xl font-bold text-gray-900">
           Оновити Портретик
         </h3>
@@ -14,7 +15,7 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="p-6 space-y-6">
+      <div class="z-10 relative p-6 space-y-6">
         <p class="font-oswald text-2xl font-bold leading-relaxed text-gray-500">
           Оберіть вподобаний портретик та натисніть кнопку <i>Оновити</i>.
         </p>
@@ -29,7 +30,7 @@
         </p>
       </div>
       <!-- Modal footer -->
-      <%= simple_form_for current_user, url: update_avatar_user_path(current_user), method: :put, html: { class: "form" } do |f| %>
+      <%= simple_form_for current_user, url: update_avatar_user_path(current_user), method: :put, html: { class: "z-10 relative form" } do |f| %>
         <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
           <%= f.input :avatar_id, as: :hidden, input_html: { value: current_user.avatar_id } %>
           <%= f.button :submit, 'Оновити', class: "space-y-reverse uppercase w-full rounded-lg py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>

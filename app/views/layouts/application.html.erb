@@ -25,12 +25,14 @@
     <% end %>
   </head>
 
-  <body class="min-w-[375px] lg:min-w-[1200px] flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image:linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.8)), url(<%= asset_path('hero-bg.png') %>">
+  <body class="min-w-[375px] lg:min-w-[1200px] relative flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('hero-bg.png') %>);">
+    <div class="absolute inset-0 bg-black opacity-90"></div>
     <%= render "shared/navbar" %>
     <%= render "shared/notice" if notice %>
     <%= render "shared/alert" if alert %>
     <%= render 'hero_section' if current_page?(root_path) %>
-    <main class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image:linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.9)), url(<%= asset_path('bg.jpg') %>">
+    <main class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.jpg') %>);">
+      <div class="absolute inset-0 bg-white opacity-90"></div>
       <%= image_tag 'bg.jpg', alt: 'bg image', class: 'hidden' %>
       <%= yield %>
     </main>
