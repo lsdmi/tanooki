@@ -16,7 +16,7 @@
       </div>
       <!-- Modal body -->
       <div class="z-10 relative p-6 space-y-6">
-        <p class="font-oswald text-2xl font-bold leading-relaxed text-gray-500">
+        <p class="font-oswald text-2xl font-light leading-relaxed text-gray-500">
           Оберіть вподобаний портретик та натисніть кнопку <i>Оновити</i>.
         </p>
         <p class="text-base leading-relaxed text-gray-500">
@@ -33,7 +33,7 @@
       <%= simple_form_for current_user, url: update_avatar_user_path(current_user), method: :put, html: { class: "z-10 relative form" } do |f| %>
         <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
           <%= f.input :avatar_id, as: :hidden, input_html: { value: current_user.avatar_id } %>
-          <%= f.button :submit, 'Оновити', class: "space-y-reverse uppercase w-full rounded-lg py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+          <%= f.button :submit, 'Оновити', class: "space-y-reverse uppercase w-full rounded-lg py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-light bg-emerald-700 text-white transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
         </div>
       <% end %>
     </div>

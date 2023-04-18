@@ -9,8 +9,8 @@
               <%= image_tag url_for(tale.cover), alt: tale.cover.blob.filename.to_s, class: "rounded-xl w-full h-auto" %>
               <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
             </div>
-            <div class="font-oswald relative text-gray-800 tracking-tight w-full h-auto text-xs sm:text-lg md:text-base lg:text-lg">
-              <%= tag.p tale.title %>
+            <div class="font-oswald relative text-gray-800 text-sm sm:text-xl md:text-lg lg:text-xl">
+              <%= tag.p tale.title.truncate(30) %>
             </div>
           </li>
         <% end %>

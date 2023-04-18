@@ -5,9 +5,9 @@
         <div class="flex items-center">
           <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-12 h-12 rounded-full' %>
           <p class="inline-flex flex-col md:flex-row items-start mr-3">
-            <%= tag.span comment.user.name, class: 'font-oswald text-2xl font-bold text-rose-900' %>
-            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: 'font-oswald text-base font-bold text-rose-600 md:ml-2' %>
-            <%= tag.time "(відредаговано)", class: 'font-oswald text-base font-bold text-rose-600 md:ml-1' if comment.created_at != comment.updated_at %>
+            <%= tag.span comment.user.name, class: 'font-oswald text-2xl font-light text-rose-900' %>
+            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: 'font-oswald text-base font-light text-rose-600 md:ml-2' %>
+            <%= tag.time "(відредаговано)", class: 'font-oswald text-base font-light text-rose-600 md:ml-1' if comment.created_at != comment.updated_at %>
           </p>
         </div>
         <% if current_user&.id == comment.user_id %>
@@ -20,17 +20,17 @@
           <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 rounded divide-y divide-rose-100 shadow">
             <ul class="py-1 text-sm text-rose-700" aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
-                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
+                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald font-light text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
               </li>
               <li>
-                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
+                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald font-light text-lg text-rose-500 block py-2 px-4 hover:bg-rose-100" %>
               </li>
             </ul>
           </div>
         <% end %>
       </footer>
       <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: 'font-oswald text-gray-500 text-xl' %>
+        <%= tag.p comment.content, class: 'font-oswald font-light text-gray-500 text-xl' %>
       <% end %>
       <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
         <%= render 'comments/actions', comment: comment, publication: @publication %>

@@ -2,9 +2,9 @@
   <div class="md:container md:shadow-2xl mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
     <div class="w-full place-self-center col-span-12 md:col-span-6">
       <div class="p-8 rounded-lg mx-auto">
-        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Ласкаво Просимо до Баки!</h1>
-        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500">Вже маєте обліковий запис?
-          <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-bold hover:underline text-emerald-700' %>
+        <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl">Ласкаво Просимо до Баки!</h1>
+        <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500 font-light">Вже маєте обліковий запис?
+          <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'hover:underline text-emerald-700' %>
         </p>
         <%= simple_form_for(resource, as: resource_name, url: user_registration_path, data: { turbo: false }) do |f| %>
           <%= f.input :avatar_id, as: :hidden, input_html: { value: Avatar.all.sample.id } %>
@@ -19,10 +19,10 @@
                           placeholder: "user@baka.in.ua",
                           input_html: {
                             autocomplete: "email",
-                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
+                            class: "font-oswald font-light text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:email].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-light my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:email].uniq.to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
             </div>
@@ -35,10 +35,10 @@
                           placeholder: "username",
                           input_html: {
                             autocomplete: "name",
-                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:name].any? }"
+                            class: "font-oswald font-light text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:name].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-light my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:name].join(''), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
             </div>
@@ -53,10 +53,10 @@
                           placeholder: "***********",
                           input_html: {
                             autocomplete: "current-password",
-                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
+                            class: "font-oswald font-light text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-light my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:password].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
             </div>
@@ -69,19 +69,19 @@
                           placeholder: "***********",
                           input_html: {
                             autocomplete: "password_confirmation",
-                            class: "font-oswald text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                            class: "font-oswald font-light text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 #{'border-red-500' if resource.errors[:password_confirmation].any? }"
                           },
                           label_html: {
-                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-bold my-4 block leading-5'
+                            class: 'font-oswald text-sm sm:text-2xl md:text-base lg:text-xl xl:text-2xl font-light my-4 block leading-5'
                           } %>
               <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: "", last_word_connector: ""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
             </div>
           </div>
           <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
             <div></div>
-            <%= link_to 'Забули пароль?', new_user_password_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold hover:underline text-emerald-700' %>
+            <%= link_to 'Забули пароль?', new_user_password_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-light hover:underline text-emerald-700' %>
           </div>
-          <%= f.button :submit, "Зареєструватися", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-bold bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
+          <%= f.button :submit, "Зареєструватися", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 font-light bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer" %>
         <% end %>
       </div>
     </div>

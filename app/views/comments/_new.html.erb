@@ -8,28 +8,28 @@
       <%= f.text_area :content,
                       id: 'comment',
                       rows: '3',
-                      class: "font-oswald px-0 w-full text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-900 placeholder-rose-900 bg-gray-50 border-0 focus:ring-0",
+                      class: "font-oswald font-light px-0 w-full text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-900 placeholder-rose-900 bg-gray-50 border-0 focus:ring-0",
                       placeholder: 'Лишити коментар...',
                       required: true %>
     </div>
-    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2" if comment.errors.any? %>
+    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2" if comment.errors.any? %>
 
-    <div class="relative flex justify-between items-center py-2 px-3 border-t border-rose-200" style="background-image: url(<%= asset_path('modal-bg.png') %>);">
+    <div class="relative flex justify-between items-center py-2 px-3 border-t border-rose-200 bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.png') %>);">
       <div class="absolute inset-0 bg-white opacity-90"></div>
-      <%= f.submit 'Надіслати', class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-bold bg-rose-500 rounded-lg transition ease-in-out m-0 hover:bg-rose-600 hover:cursor-pointer' %>
+      <%= f.submit 'Надіслати', class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-light bg-rose-500 rounded-lg transition ease-in-out m-0 hover:bg-rose-600 hover:cursor-pointer' %>
       <% if comment.persisted? %>
         <%= link_to "Скасувати",
                     cancel_edit_comment_path(comment),
                     method: :get,
                     data: { turbo_stream: "" },
-                    class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-bold rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
+                    class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-light rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
       <% end %>
       <% if comment.new_record? && comment.parent_id.present? %>
         <%= link_to "Скасувати",
                   cancel_reply_comment_path(comment.parent_id),
                   method: :get,
                   data: { turbo_stream: "" },
-                  class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-bold bg-white rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
+                  class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-rose-500 leading-5 font-light bg-white rounded-lg transition ease-in-out m-0 hover:bg-rose-100 hover:cursor-pointer border border-rose-200' %>
       <% end %>
     </div>
   <% end %>
