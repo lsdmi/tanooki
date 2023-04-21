@@ -1,0 +1,11 @@
+one:
+  id: 1
+  name: <%= Faker::Book.title %>
+
+two:
+  id: 2
+  name: <%= Faker::Book.title %>
+
+three:
+  id: 3
+  name: <%= Faker::Book.title %>

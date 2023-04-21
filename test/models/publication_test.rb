@@ -68,4 +68,18 @@ class PublicationTest < ActiveSupport::TestCase
   test 'should return false for should_index? when not approved' do
     assert_not @publication_created.should_index?
   end
+
+  test 'should have many publication tags' do
+    assert_instance_of PublicationTag, @publication.publication_tags.build
+  end
+
+  test 'should have many tags through publication tags' do
+    assert_instance_of Tag, @publication.tags.build
+  end
+
+  test 'should destroy associated publication tags when destroyed' do
+    assert_difference 'PublicationTag.count', -1 do
+      @publication.destroy
+    end
+  end
 end

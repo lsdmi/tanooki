@@ -9,7 +9,7 @@ class PublicationsController < ApplicationController
     @publication = Publication.new(publication_params)
 
     if @publication.save
-      manage_tags
+      manage_tags if params[:publication][:tag_ids]
       redirect_to root_path, notice: create_notice
     else
       render new_publication_partial, status: :unprocessable_entity
@@ -18,7 +18,7 @@ class PublicationsController < ApplicationController
 
   def update
     if @publication.update(publication_params)
-      manage_tags
+      manage_tags if params[:publication][:tag_ids]
       redirect_to update_redirect_path, notice: update_notice
     else
       render edit_publication_partial, status: :unprocessable_entity

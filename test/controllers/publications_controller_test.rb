@@ -46,4 +46,11 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
   end
+
+  test 'should update publication with tags' do
+    tag_ids = Tag.all.sample(2).map(&:id)
+    patch publication_url(@publication), params: { publication: { tag_ids: } }
+    assert_redirected_to tale_path(@publication)
+    assert_equal tag_ids.sort, @publication.tags.ids.sort
+  end
 end
