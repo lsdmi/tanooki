@@ -10,6 +10,8 @@ class Publication < ApplicationRecord
   has_one_attached :cover
   has_rich_text :description
   has_many :comments
+  has_many :publication_tags, dependent: :destroy
+  has_many :tags, through: :publication_tags
 
   validates :title, :description, :cover, :status, :status_message, presence: true
 
