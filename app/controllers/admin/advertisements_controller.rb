@@ -40,10 +40,6 @@ module Admin
       @advertisement = Advertisement.find(params[:id])
     end
 
-    def verify_user_permissions
-      redirect_to root_path unless current_user.admin?
-    end
-
     def advertisement_params
       params.require(:advertisement).permit(:caption, :description, :cover, :resource, :enabled)
     end

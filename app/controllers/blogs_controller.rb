@@ -3,7 +3,7 @@
 class BlogsController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_blog, only: %i[edit show destroy]
-  before_action :verify_user_permissions, only: %i[edit destroy]
+  before_action :verify_permissions, only: %i[edit destroy]
 
   def index
     @blogs = current_user.blogs.order(created_at: :desc)
@@ -27,7 +27,7 @@ class BlogsController < ApplicationController
     @publication = (action_name == 'show' ? Publication.approved.find(params[:id]) : Publication.find(params[:id]))
   end
 
-  def verify_user_permissions
+  def verify_permissions
     redirect_to root_path unless @publication.user_id == current_user.id
   end
 end

@@ -24,24 +24,31 @@
       <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
     </div>
     <div>
-      <%= image_tag url_for(publication.cover), class: "float-right max-w-xs" if publication.persisted? %>
+      <%= image_tag url_for(publication.cover), class: "hidden sm:block float-right max-w-xs" if publication.persisted? %>
     </div>
   </div>
   <% if publication.errors[:cover].any? %>
     <p id="outlined_error_help" class="mb-6 text-xs text-red-600"><span class="font-medium">відсутня обкладинка публікації...</p>
   <% end %>
 
-  <%= f.text_area :description,
-              input_html: {
-                autofocus: true
-              },
-              placeholder: "Зміст публікації...",
-              label: false,
-              class: "tinymce block p-2.5 w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
-            %>
-  <% if publication.errors[:description].any? %>
-    <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній зміст публікації...</p>
-  <% end %>
+  <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-2">
+    <div class="col-span-3 md:col-span-5 lg:col-span-6 xl:col-span-7">
+      <%= f.text_area :description,
+                  input_html: {
+                    autofocus: true
+                  },
+                  placeholder: "Зміст публікації...",
+                  label: false,
+                  class: "tinymce block p-2.5 w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                %>
+      <% if publication.errors[:description].any? %>
+        <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній зміст публікації...</p>
+      <% end %>
+    </div>
+    <div class="overflow-y-auto max-h-[45rem]">
+      <%= render 'publications/tags', tags: @tags, f: f %>
+    </div>
+  </div>
 
   <%= tag.div class: publication.instance_of?(Tale) ? 'py-2 grid grid-cols-4' : 'container py-2 mx-0 min-w-full flex flex-col items-center grid grid-cols-3' do %>
     <div></div>

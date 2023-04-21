@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
     session[:viewed_publications] ||= []
     session[:viewed_publications] << @publication.id
   end
+
+  def verify_user_permissions
+    redirect_to root_path unless current_user.admin?
+  end
 end

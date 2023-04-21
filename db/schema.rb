@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_195313) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_19_020841) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -80,6 +80,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195313) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "publication_tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "publication_id"
+    t.bigint "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publication_id"], name: "index_publication_tags_on_publication_id"
+    t.index ["tag_id"], name: "index_publication_tags_on_tag_id"
+  end
+
   create_table "publications", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "slug", null: false
     t.string "type", null: false
@@ -95,6 +104,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195313) do
     t.index ["slug"], name: "index_publications_on_slug", unique: true
     t.index ["status"], name: "index_publications_on_status"
     t.index ["user_id"], name: "index_publications_on_user_id"
+  end
+
+  create_table "tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -123,6 +139,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_195313) do
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "publications", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "publication_tags", "publications"
+  add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade
   add_foreign_key "users", "avatars"
 end

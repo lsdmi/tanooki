@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
     resources :blogs, only: %i[index edit update]
+    resources :tags, except: :new do
+      member { delete :detach }
+    end
     resources :tales, except: %i[show create update destroy]
   end
 

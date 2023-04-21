@@ -2,8 +2,7 @@
 
 module Admin
   class AvatarsController < ApplicationController
-    before_action :authenticate_user!
-    before_action :verify_user_permissions
+    before_action :authenticate_user!, :verify_user_permissions
 
     def index
       @avatars = Avatar.order(created_at: :desc)
@@ -35,10 +34,6 @@ module Admin
 
     def avatar_params
       params.require(:avatar).permit(:image) if params[:avatar]
-    end
-
-    def verify_user_permissions
-      redirect_to root_path unless current_user.admin?
     end
 
     def prepend_avatar_and_refresh_form

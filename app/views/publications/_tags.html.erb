@@ -1,0 +1,15 @@
+<h3 class="font-oswald block text-lg font-medium text-center">Прикріплення Тегів</label>
+<ul class="mt-4">
+  <% tags.each do |tg| %>
+    <li class="my-1 w-11/12">
+      <div class="form__group">
+        <%= f.check_box :tag_ids, { class: 'form__input hidden peer', id: "tag-#{tg.id}", value: tg.id, multiple: true, checked: f.object.tags.exists?(tg.id) }, tg.id, nil %>
+        <%= tag.label for: "tag-#{tg.id}", class: 'inline-flex items-center w-full p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 hover:text-gray-600 peer-checked:text-gray-600' do %>
+          <div>
+            <%= tag.div tg.name, class: 'text-base tracking-tight' %>
+          </div>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

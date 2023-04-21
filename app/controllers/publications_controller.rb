@@ -3,12 +3,13 @@
 class PublicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_publication, only: %i[update destroy]
-  before_action :verify_user_permissions
+  before_action :verify_permissions
 
   def create
     @publication = Publication.new(publication_params)
 
     if @publication.save
+      manage_tags if params[:publication][:tag_ids]
       redirect_to root_path, notice: create_notice
     else
       render new_publication_partial, status: :unprocessable_entity
@@ -17,6 +18,7 @@ class PublicationsController < ApplicationController
 
   def update
     if @publication.update(publication_params)
+      manage_tags if params[:publication][:tag_ids]
       redirect_to update_redirect_path, notice: update_notice
     else
       render edit_publication_partial, status: :unprocessable_entity
@@ -29,6 +31,17 @@ class PublicationsController < ApplicationController
   end
 
   private
+
+  def manage_tags
+    publication_tags_ids = params[:publication][:tag_ids].map(&:to_i)
+    existing_tag_ids = @publication.tags.ids
+
+    tags_to_add = publication_tags_ids - existing_tag_ids
+    tags_to_remove = existing_tag_ids - publication_tags_ids
+
+    tags_to_add.each { |tag_id| @publication.publication_tags.create(tag_id:) }
+    tags_to_remove.each { |tag_id| @publication.publication_tags.find_by(tag_id:).destroy }
+  end
 
   def create_notice
     @publication.instance_of?(Blog) ? 'Допис надіслано на модерацію.' : 'Звістку створено.'
@@ -64,7 +77,7 @@ class PublicationsController < ApplicationController
     @publication = Publication.find(params[:id])
   end
 
-  def verify_user_permissions
+  def verify_permissions
     redirect_to root_path if not_blog_author? || not_admin_user?
   end
 

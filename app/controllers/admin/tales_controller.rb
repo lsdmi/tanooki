@@ -4,6 +4,7 @@ module Admin
   class TalesController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
     before_action :set_tale, only: %i[edit destroy]
+    before_action :set_tags, only: %i[new edit]
 
     def index
       @tales = Tale.order(created_at: :desc)
@@ -17,16 +18,16 @@ module Admin
 
     private
 
+    def set_tags
+      @tags = Tag.all.order(:name)
+    end
+
     def set_tale
       @publication = Tale.find(params[:id])
     end
 
     def tale_params
       params.require(:tale).permit(:title, :description, :cover, :highlight)
-    end
-
-    def verify_user_permissions
-      redirect_to root_path unless current_user.admin?
     end
   end
 end
