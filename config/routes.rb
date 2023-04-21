@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     resources :avatars, except: %i[new edit show update]
     resources :blogs, only: %i[index edit update]
     resources :tags, except: :new do
-      collection { post :attach }
       member { delete :detach }
     end
     resources :tales, except: %i[show create update destroy]

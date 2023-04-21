@@ -6,6 +6,8 @@ class Publication < ApplicationRecord
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
+  attr_accessor :tag_ids
+
   belongs_to :user
   has_one_attached :cover
   has_rich_text :description

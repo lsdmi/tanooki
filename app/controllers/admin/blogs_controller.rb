@@ -29,10 +29,6 @@ module Admin
       params.require(:publication).permit(:status, :status_message)
     end
 
-    def verify_user_permissions
-      redirect_to root_path unless current_user.admin?
-    end
-
     def update_redirect_path
       @publication.approved? ? blog_path(@publication) : admin_blogs_path
     end

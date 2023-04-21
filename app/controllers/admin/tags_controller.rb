@@ -2,11 +2,11 @@
 
 module Admin
   class TagsController < ApplicationController
-    before_action :set_new_tag, only: %i[index destroy attach detach]
+    before_action :authenticate_user!, :verify_user_permissions
 
     def index
+      @tag = Tag.new
       @tags = Tag.all.order(:name)
-      @publications = Publication.all.order(created_at: :desc)
     end
 
     def create
@@ -17,7 +17,7 @@ module Admin
     def destroy
       tag = Tag.find(params[:id])
       tag.destroy
-      render turbo_stream: [refresh_list, refresh_publications]
+      render turbo_stream: refresh_list
     end
 
     def edit
@@ -30,32 +30,16 @@ module Admin
       render turbo_stream: (@tag.update(tag_params) ? refresh_list : edit_tag)
     end
 
-    def attach
-      if publication_tags_params
-        publication_ids = params.dig(:tag, :publication_id)
-        find_or_create_publication_tags(publication_ids, params[:tag_id])
-        render turbo_stream: [refresh_list, refresh_publications]
-      else
-        @tag = Tag.find(params[:tag_id])
-        @tag.errors.add(:publication_id, 'долучіть публікації')
-        render turbo_stream: [show_tag]
-      end
-    end
-
     def detach
       publication_tag = PublicationTag.find(params[:id])
       publication_tag.destroy
-      render turbo_stream: refresh_publications
+      render turbo_stream: turbo_stream.remove("publication-tag-#{params[:id]}")
     end
 
     private
 
     def tag_params
       params.require(:tag).permit(:name) if params[:tag]
-    end
-
-    def publication_tags_params
-      params.require(:tag).permit(:publication_id) if params[:tag]
     end
 
     def prepend_form
@@ -70,31 +54,8 @@ module Admin
       turbo_stream.update('index-list', partial: 'list', locals: { tags: Tag.all.order(:name) })
     end
 
-    def refresh_publications
-      turbo_stream.update(
-        'publications-form',
-        partial: 'publications', locals: { publications: Publication.all.order(created_at: :desc) }
-      )
-    end
-
     def edit_tag
       turbo_stream.replace("tag-#{params[:id]}", partial: 'edit', locals: { tg: @tag })
-    end
-
-    def show_tag
-      turbo_stream.replace("tag-#{params[:tag_id]}", partial: 'tag', locals: { tg: @tag })
-    end
-
-    def set_new_tag
-      @tag = Tag.new
-    end
-
-    def find_or_create_publication_tags(publication_ids, tag_id)
-      PublicationTag.transaction do
-        publication_ids.each do |publication_id|
-          PublicationTag.find_or_create_by(publication_id:, tag_id:)
-        end
-      end
     end
   end
 end
