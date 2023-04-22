@@ -48,7 +48,8 @@ set :default_env, {
   'STORAGE_BUCKET' => ENV.fetch('STORAGE_BUCKET'),
   'STORAGE_ENDPOINT' => ENV.fetch('STORAGE_ENDPOINT'),
   'STORAGE_REGION' => ENV.fetch('STORAGE_REGION'),
-  'STORAGE_SECRET_KEY' => ENV.fetch('STORAGE_SECRET_KEY')
+  'STORAGE_SECRET_KEY' => ENV.fetch('STORAGE_SECRET_KEY'),
+  'TELEGRAM_KEY' => ENV.fetch('TELEGRAM_KEY')
 }
 
 # Default value for local_user is ENV['USER']

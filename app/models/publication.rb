@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../config/initializers/telegram_bot'
+
 class Publication < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid
@@ -7,6 +9,8 @@ class Publication < ApplicationRecord
   searchkick callbacks: :async
 
   attr_accessor :tag_ids
+
+  after_create :send_to_telegram
 
   belongs_to :user
   has_one_attached :cover
@@ -42,5 +46,13 @@ class Publication < ApplicationRecord
 
   def should_index?
     approved?
+  end
+
+  def send_to_telegram
+    return unless Rails.env.production?
+
+    TelegramBot.init
+    url = "baka.in.ua/#{Rails.application.routes.url_helpers.tale_path(self)}"
+    TelegramBot.bot.api.send_message(chat_id: '@bakaInUa', text: url)
   end
 end
