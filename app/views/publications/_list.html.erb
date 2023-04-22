@@ -40,7 +40,7 @@
           <%= tag.p publication.description.to_plain_text.truncate(90), class: 'mb-2 font-light text-gray-500 px-6 font-oswald' %>
 
           <div class="my-2 mx-2">
-            <% publication.publication_tags.each do |publication_tag| %>
+            <% publication.publication_tags.joins(:tag).order(:name).each do |publication_tag| %>
                 <%= render 'admin/tags/publication_tag', publication_tag: publication_tag %>
             <% end %>
           </div>
