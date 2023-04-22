@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../config/initializers/telegram_bot'
+
 class Publication < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid
@@ -7,6 +9,8 @@ class Publication < ApplicationRecord
   searchkick callbacks: :async
 
   attr_accessor :tag_ids
+
+  after_create_commit { TelegramJob.perform_later(self) }
 
   belongs_to :user
   has_one_attached :cover
