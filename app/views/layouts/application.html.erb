@@ -22,16 +22,16 @@
     <% end %>
   </head>
 
-  <body class="min-w-[375px] lg:min-w-[1200px] relative flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('hero-bg.png') %>);">
+  <body class="min-w-[375px] lg:min-w-[1200px] relative flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('hero-bg.webp') %>);">
     <div class="absolute inset-0 bg-black opacity-90"></div>
     <%= render "shared/navbar" %>
     <%= render "shared/notice" if notice %>
     <%= render "shared/alert" if alert %>
-    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.jpg') %>);">
+    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.webp') %>);">
       <%= render 'hero_section' if current_page?(root_path) %>
       <main>
         <div class="absolute inset-0 bg-white opacity-90"></div>
-        <%= image_tag 'bg.jpg', alt: 'bg image', class: 'hidden' %>
+        <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
         <%= yield %>
       </main>
     </div>

@@ -14,7 +14,7 @@
     </div>
     <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2" if comment.errors.any? %>
 
-    <div class="relative flex justify-between items-center py-2 px-3 border-t border-rose-200 bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.png') %>);">
+    <div class="relative flex justify-between items-center py-2 px-3 border-t border-rose-200 bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
       <div class="absolute inset-0 bg-white opacity-90"></div>
       <%= f.submit 'Надіслати', class: 'z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-light bg-rose-500 rounded-lg transition ease-in-out m-0 hover:bg-rose-600 hover:cursor-pointer' %>
       <% if comment.persisted? %>

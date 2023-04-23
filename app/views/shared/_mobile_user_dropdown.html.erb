@@ -2,7 +2,7 @@
   <span class="sr-only">Open user menu</span>
   <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
 </button>
-<div class="relative border border-emerald-600 sm:hidden font-oswald hidden z-50 my-4 w-56 text-xl list-none rounded divide-y shadow divide-emerald-600 bg-center" style="background-image: url(<%= asset_path('modal-bg.png') %>);" id="mobile-dropdown">
+<div class="relative border border-emerald-600 sm:hidden font-oswald hidden z-50 my-4 w-56 text-xl list-none rounded divide-y shadow divide-emerald-600 bg-center" style="background-image: url(<%= asset_path('modal-bg.webp') %>);" id="mobile-dropdown">
   <div class="absolute inset-0 bg-black opacity-90"></div>
   <div class="z-10 relative py-3 px-4">
     <%= tag.span current_user.name, class: "block font-semibold text-white" %>
