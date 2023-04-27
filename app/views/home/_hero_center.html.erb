@@ -10,7 +10,7 @@
           <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-300 text-xs w-full float-left' %>
         </div>
         <%= tag.h2 publication.title, class: 'font-oswald text-white float-left text-3xl md:text-4xl lg:text-4xl font-bold tracking-tight mr-[15%] w-11/5 lg:mb-2 mb-2' %>
-        <%= tag.p publication.description.to_plain_text.truncate(130), class: "float-left mr-[10%] lg:mr-0 mb-2 lg:mb-0 mt-2 text-gray-300 leading-4 text-base" if i.zero? %>
+        <%= tag.p punch(publication.description.to_plain_text), class: "float-left mr-[10%] lg:mr-0 mb-2 lg:mb-0 mt-2 text-gray-300 leading-4 text-base" if i.zero? %>
       </div>
     </div>
   <% end %>

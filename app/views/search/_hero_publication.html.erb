@@ -1,0 +1,12 @@
+<%= link_to tale_path(publication) do %>
+  <% rs = random_size %>
+  <div class="rounded-xl float-left relative w-[-webkit-fill-available] lg:w-full mx-1 md:mx-2 lg:mx-0 my-1">
+    <div class="rounded-xl float-left relative w-full overflow-hidden h-64 <%= rs %>">
+      <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] h-64 #{rs} object-cover" %>
+      <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+    </div>
+    <div class="rounded-xl w-full float-left absolute left-0 bottom-0 px-[2.7%] pt-24 md:pt-12 pb-2 lg:pb-4 bg-gradient-to-t from-gray-900 via-gray-800/60 to-gray-800/9">
+      <%= tag.h2 publication.title, class: 'font-oswald text-white float-left text-2xl md:text-xl lg:text-2xl font-bold tracking-tight mr-[10%] w-11/5 lg:mb-2 mb-2' %>
+    </div>
+  </div>
+<% end %>

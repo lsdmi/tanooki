@@ -3,6 +3,11 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def punch(string)
+    sentence_end = string.index(/[.?!]/)
+    string[0..sentence_end]
+  end
+
   def meta_title
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
 
@@ -10,7 +15,7 @@ module ApplicationHelper
   end
 
   def meta_description
-    return @publication.description.to_plain_text.split(/(?<=[.?!])\s+/).first if @publication&.description.present?
+    return punch(@publication.description.to_plain_text) if @publication&.description.present?
 
     'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
   end

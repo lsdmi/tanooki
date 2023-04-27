@@ -33,8 +33,10 @@ class Publication < ApplicationRecord
 
   def search_data
     {
-      title:,
-      description: description.to_plain_text
+      created_at:,
+      description: description.to_plain_text,
+      tags: tags.pluck(:name).to_sentence,
+      title:
     }
   end
 

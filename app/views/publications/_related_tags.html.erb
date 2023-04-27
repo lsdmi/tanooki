@@ -1,0 +1,5 @@
+<div class="inline-flex flex-wrap items-center">
+  <% tgs.each do |tg| %>
+    <%= link_to "##{tg.name}", search_index_path(search: [tg.name]), class: "font-oswald text-base mr-2 mb-2 px-2 py-0.5 rounded bg-gray-200 text-pink-800 hover:text-pink-600" %>
+  <% end %>
+</div>

@@ -1,0 +1,23 @@
+<div class="w-11/12 mx-0 my-auto">
+  <div class="ml-0 grid sm:grid-cols-2 md:grid-cols-4 gap-2 rounded-xl">
+    <% publications.each do |publication| %>
+      <%= link_to tale_path(publication) do %>
+        <div class="float-left relative w-full lg:mx-0 mb-2">
+          <div class="rounded-xl float-left relative w-full overflow-hidden h-36">
+            <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full h-36 object-cover" %>
+          </div>
+          <div class="w-full float-left px-0 pt-4 pb-2 items-center">
+            <div class="w-full float-left rounded-xl mb-1">
+              <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'hidden lg:block text-gray-500 text-xs w-full float-left' %>
+              <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'block lg:hidden text-gray-500 text-xs w-full float-left' %>
+            </div>
+            <div>
+              <%= tag.h2 publication.title, class: 'font-oswald text-gray-700 float-left text-2xl md:text-lg md:leading-6 lg:leading-6 lg:text-xl tracking-tight w-full' %>
+            </div>
+          </div>
+          <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

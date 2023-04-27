@@ -3,7 +3,13 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
+  helper_method :trending_tags
+
   private
+
+  def trending_tags
+    TrendingTagsService.call
+  end
 
   def track_visit
     return if session[:viewed_publications]&.include?(@publication.id)

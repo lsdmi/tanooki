@@ -11,8 +11,10 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get show' do
-    get tale_url(@tale)
-    assert_response :success
+    Publication.stub :search, [publications(:tale_approved_one), publications(:tale_created_one)] do
+      get tale_url(@tale)
+      assert_response :success
+    end
   end
 
   test 'should increment views for publication' do
@@ -52,6 +54,23 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @tale.update(views: 0)
       @controller.send(:track_visit)
       assert_equal [@tale.id], session[:viewed_publications]
+    end
+  end
+
+  test '#more_tails should return 6 publications' do
+    @controller.instance_variable_set(:@publication, @tale)
+    publications = 10.times.map { |_n| publications(:tale_created_one) }
+    Publication.stub :search, publications do
+      assert_equal 6, @controller.send(:more_tails).size
+    end
+  end
+
+  test '#more_tails should exclude the current publication' do
+    @controller.instance_variable_set(:@publication, @tale)
+    publications = 10.times.map { |_n| publications(:tale_created_one) }
+    publications << @tale
+    Publication.stub :search, publications do
+      assert_not_includes @controller.send(:more_tails), @tale
     end
   end
 end

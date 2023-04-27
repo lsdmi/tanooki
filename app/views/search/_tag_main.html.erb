@@ -1,0 +1,17 @@
+<%= link_to tale_path(publication) do %>
+  <div class="float-left relative w-full">
+    <div class="w-2/3 float-right relative">
+      <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl max-w-full h-auto opacity-100 hover:opacity-75" %>
+      <div class="absolute inset-0" style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .5) 60%, rgba(0, 0, 0, 1) 100%);">
+        <div class="z-10 h-full w-full absolute top-0 left-0 bg-black opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
+      </div>
+    </div>
+    <div class="absolute hidden sm:block sm:left-4 sm:top-8 md:left-8 md:top-8 lg:left-12 lg:top-12 sm:w-1/2 md:w-5/12">
+      <%= tag.h3 class: 'hidden md:block text-left mb-4 relative w-full' do %>
+        <%= tag.span params[:search].join.split.map(&:capitalize).join(' '), class: 'inline-block text-white font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-rose-500' %>
+      <% end %>
+      <%= tag.h2 publication.title, class: 'font-oswald text-white font-bold sm:text-2xl md:text-2xl lg:text-4xl' %>
+      <%= tag.h2 punch(publication.description.to_plain_text), class: "#{main_state(publication)} lg:block font-oswald font-thin text-white mt-8 lg:text-xl w-11/12" %>
+    </div>
+  </div>
+<% end %>

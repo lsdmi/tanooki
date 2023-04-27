@@ -100,4 +100,24 @@ class ApplicationHelperTest < ActionView::TestCase
     request.path = '/blog'
     assert_equal 'article', meta_type
   end
+
+  test 'punch should return the first sentence of a string' do
+    string = 'This is a test. This is only a test.'
+    assert_equal 'This is a test.', punch(string)
+  end
+
+  test 'punch should return the whole string if there is no sentence end' do
+    string = 'This is a test'
+    assert_equal string, punch(string)
+  end
+
+  test 'punch should handle special characters' do
+    string = 'This is a test! And this is another test?'
+    assert_equal 'This is a test!', punch(string)
+  end
+
+  test 'punch should handle empty strings' do
+    string = ''
+    assert_equal '', punch(string)
+  end
 end

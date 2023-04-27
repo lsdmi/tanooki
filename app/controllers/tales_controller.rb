@@ -4,13 +4,28 @@ class TalesController < ApplicationController
   before_action :set_tale, :track_visit
 
   def show
-    @more_tales = Tale.order(created_at: :desc).excluding(@publication).first(6)
+    @more_tales = more_tails
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
     @advertisement = Advertisement.enabled.sample
   end
 
   private
+
+  def more_tails
+    more = Publication.search(
+      @publication.tags.pluck(:name).join(' '),
+      fields: ['tags^10', 'title^5', 'description'],
+      boost_by_recency: { created_at: { scale: '30d', decay: 0.9 } },
+      operator: 'or'
+    )
+
+    return more.excluding(@publication).first(6) if more.size > 6
+
+    (
+      more.to_a + Publication.all.order(created_at: :desc).first(6)
+    ).excluding(@publication).uniq.first(6)
+  end
 
   def set_tale
     @publication = Tale.find(params[:id])
