@@ -11,7 +11,7 @@
             <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-400 text-xs float-left relative' %>
           </div>
           <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-2xl lg:text-3xl font-bold tracking-tight w-full mb-3' %>
-          <%= tag.p publication.description.to_plain_text.truncate(150), class: "float-left w-full font-light leading-5 text-gray-600 text-base lg:text-xl" %>
+          <%= tag.p punch(publication.description.to_plain_text), class: "float-left w-full font-light leading-5 text-gray-600 text-base lg:text-xl" %>
       </div>
     </div>
   <% end %>

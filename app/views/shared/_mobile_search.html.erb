@@ -1,5 +1,5 @@
-
 <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-search">
+  <%= render 'shared/trending_tags', trendings: trending_tags, mobile: true %>
   <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mt-4 lg:hidden" } do |form| %>
     <label for="search-mobile" class="sr-only">Search</label>
     <div class="relative w-full">

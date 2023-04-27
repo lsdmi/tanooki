@@ -37,7 +37,7 @@
               <%= link_to publication.title.truncate(55), variables[:show_publication_path], class: 'font-oswald' %>
             <% end %>
           </h2>
-          <%= tag.p publication.description.to_plain_text.truncate(90), class: 'mb-2 font-light text-gray-500 px-6 font-oswald' %>
+          <%= tag.p punch(publication.description.to_plain_text), class: 'mb-2 font-light text-gray-500 px-6 font-oswald' %>
 
           <div class="my-2 mx-2">
             <% publication.publication_tags.joins(:tag).order(:name).each do |publication_tag| %>

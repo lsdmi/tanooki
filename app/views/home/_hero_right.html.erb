@@ -12,7 +12,7 @@
               <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-500 text-xs w-full float-left mb-1' %>
             </div>
             <%= tag.h2 publication.title.truncate(75), class: 'font-oswald text-gray-700 float-left text-2xl md:text-xl md:leading-5 lg:leading-5 lg:text-xl tracking-tight w-full mb-1 lg:mb-0' %>
-            <%= tag.p publication.description.to_plain_text.truncate(130), class: "float-left w-full font-light leading-5 text-gray-600 text-base sm:hidden" %>
+            <%= tag.p punch(publication.description.to_plain_text), class: "float-left w-full font-light leading-5 text-gray-600 text-base sm:hidden" %>
           </div>
           <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
         </div>

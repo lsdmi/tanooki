@@ -1,0 +1,44 @@
+<section>
+  <div class="md:hidden flex justify-between items-center mb-2">
+    <%= render 'shared/divider', caption: params[:search].join.split.map(&:capitalize).join(' ') %>
+  </div>
+  <div class="hidden lg:mx-1 w-full sm:flex justify-center">
+    <div class="bg-black mb-4 overflow-hidden w-full sm:w-11/12 lg:w-full rounded-xl">
+      <%= render 'tag_main', publication: results.first %>
+    </div>
+  </div>
+  <div class="flex sm:hidden justify-center items-center h-full">
+    <%= render 'tag_secondary', publications: results.first(1) %>
+  </div>
+
+  <% if results.size > 1 %>
+    <div class="flex justify-center items-center h-full">
+      <%= render 'tag_secondary', publications: results[1..4] %>
+    </div>
+  <% end %>
+
+  <% if results.size > 4 %>
+    <div class="flex justify-between items-center mt-6">
+      <%= render 'shared/divider', caption: 'Більше Новин' %>
+    </div>
+    <div class="py-2 px-2 mx-auto max-w-screen-xl lg:py-4 lg:px-6">
+      <div class="grid gap-1 grid-cols-1 sm:grid-cols-2 lg:gap-6 md:grid-cols-3">
+        <div class="col-span-1">
+          <% left_column(results).each do |result| %>
+            <%= render 'hero_publication', publication: result %>
+          <% end %>
+        </div>
+        <div class="col-span-1">
+          <% main_column(results).each do |result| %>
+            <%= render 'hero_publication', publication: result %>
+          <% end %>
+        </div>
+        <div class="col-span-1 sm:col-span-2 md:col-span-1">
+          <% right_column(results).each do |result| %>
+            <%= render 'hero_publication', publication: result %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</section>

@@ -54,6 +54,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'bullet'
   gem 'capistrano'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
