@@ -21,7 +21,7 @@
         </p>
         <p class="text-base leading-relaxed text-gray-500">
           <div class="col-span-12 md:col-span-6 grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 md:gap-1 my-4 md:ml-6 mr-1 overflow-y-auto max-h-[32rem]">
-            <% Avatar.order(created_at: :desc).each do |avatar| %>
+            <% Avatar.includes(image_attachment: :blob).order(created_at: :desc).each do |avatar| %>
               <%= turbo_frame_tag 'avatar-modal-image' do %>
                 <%= image_tag url_for(avatar.image), alt: avatar.image.blob.filename.to_s, id: "avatar-image-#{avatar.id}", data: { controller: 'image-click', action: 'click->image-click#addSelected', "avatar-id": avatar.id }, class: "cursor-pointer rounded-full mx-auto block shadow-lg mb-3 #{'selected-image' if current_user.avatar == avatar}" %>
               <% end %>

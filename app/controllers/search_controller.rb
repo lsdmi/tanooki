@@ -8,7 +8,7 @@ class SearchController < ApplicationController
       params[:search],
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '30d', decay: 0.9 } }
-    )
+    ).includes([{ cover_attachment: :blob }, :rich_text_description])
 
     @tag = Tag.find_by(name: params[:search])
     @tag ? set_tag_logic : set_search_logic
@@ -25,11 +25,12 @@ class SearchController < ApplicationController
 
     @results = (
       @results.to_a +
-      Publication.all.order(created_at: :desc).where.not(id: excluded_ids).first(num_to_add)
+      Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
+                 .order(created_at: :desc).where.not(id: excluded_ids).first(num_to_add)
     )
   end
 
   def set_search_logic
-    @advertisement = Advertisement.enabled.sample
+    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, :rich_text_description]).enabled.sample
   end
 end

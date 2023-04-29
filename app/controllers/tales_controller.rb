@@ -7,7 +7,7 @@ class TalesController < ApplicationController
     @more_tales = more_tails
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
-    @advertisement = Advertisement.enabled.sample
+    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, :rich_text_description]).enabled.sample
   end
 
   private
@@ -18,7 +18,7 @@ class TalesController < ApplicationController
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '30d', decay: 0.9 } },
       operator: 'or'
-    )
+    ).includes([{ cover_attachment: :blob }, :rich_text_description])
 
     return more.excluding(@publication).first(6) if more.size > 6
 

@@ -1,5 +1,5 @@
 <%= f.input :type, as: :hidden, input_html: { value: publication.class } %>
-<%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
+<%= f.input :user_id, as: :hidden, input_html: { value: publication.user&.id || current_user.id } %>
 <%= f.input :status, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'created' : 'approved' } %>
 <%= f.input :status_message, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'допис буде переглянуто та опубліковано' : 'допис відмодеровано та схвалено' } %>
 

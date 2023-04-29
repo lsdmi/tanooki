@@ -8,7 +8,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index with search' do
-    Publication.stub :search, [publications(:tale_approved_one), publications(:tale_created_one)] do
+    Publication.stub :search, Publication.all do
       get search_index_url, params: { search: ['test'] }
       assert_response :success
     end
@@ -25,7 +25,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     publications_with_tag = tag.publications
     excluded_ids = publications_with_tag.pluck(:id)
 
-    Publication.stub :search, [publications(:tale_approved_one), publications(:tale_created_one)] do
+    Publication.stub :search, Publication.all  do
       get search_index_url, params: { search: [tag_name] }
       results = assigns(:results)
 
@@ -46,7 +46,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   test 'should display advertisement when searching by keyword' do
     advertisement = advertisements(:advertisement_one)
 
-    Publication.stub :search, [publications(:tale_approved_one), publications(:tale_created_one)] do
+    Publication.stub :search, Publication.all  do
       get search_index_url, params: { search: ['test'] }
       assert_equal advertisement, assigns(:advertisement)
     end

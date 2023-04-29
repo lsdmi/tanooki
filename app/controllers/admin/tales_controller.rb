@@ -7,7 +7,7 @@ module Admin
     before_action :set_tags, only: %i[new edit]
 
     def index
-      @tales = Tale.order(created_at: :desc)
+      @pagy, @tales = pagy(Tale.order(created_at: :desc), items: 9)
     end
 
     def new
