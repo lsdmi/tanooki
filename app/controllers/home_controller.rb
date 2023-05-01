@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
+  before_action :load_advertisement, only: :index
+
   def index
     @highlights = highlights
     @most_popular = most_popular
     @newest = newest
     @pagy, @publications = pagy_countless(remaining, items: 5)
-
-    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, :rich_text_description]).enabled.sample
+    @videos = videos
 
     render 'scrollable_list' if params[:page]
   end

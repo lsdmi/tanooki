@@ -2,12 +2,13 @@
 
 class TalesController < ApplicationController
   before_action :set_tale, :track_visit
+  before_action :load_advertisement, only: :show
 
   def show
     @more_tales = more_tails
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
-    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, :rich_text_description]).enabled.sample
+    @videos = videos
   end
 
   private

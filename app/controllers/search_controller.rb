@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SearchController < ApplicationController
+  before_action :load_advertisement, only: :index
+
   def index
     redirect_to root_path unless params[:search]
 
@@ -31,6 +33,6 @@ class SearchController < ApplicationController
   end
 
   def set_search_logic
-    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, :rich_text_description]).enabled.sample
+    @videos = videos
   end
 end

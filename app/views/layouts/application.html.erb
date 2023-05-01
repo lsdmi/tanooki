@@ -23,6 +23,7 @@
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1200px] relative flex flex-col min-h-screen bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('hero-bg.webp') %>);">
+    <%= render 'shared/ads', advertisement: @advertisement if @advertisement&.persisted? %>
     <div class="absolute inset-0 bg-black opacity-90"></div>
     <%= render "shared/navbar" %>
     <%= render "shared/notice" if notice %>

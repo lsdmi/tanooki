@@ -2,7 +2,7 @@
   <span class="sr-only">Open user menu</span>
   <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
 </button>
-<div class="border border-emerald-600 hidden sm:visible font-oswald hidden z-50 my-4 w-56 text-xl list-none rounded divide-y shadow divide-emerald-600 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>" id="dropdown">
+<div class="z-50 border border-emerald-600 hidden sm:visible font-oswald hidden my-4 w-56 text-xl list-none rounded divide-y shadow divide-emerald-600 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>" id="dropdown">
   <div class="py-3 px-4">
     <%= tag.span current_user.name, class: "block font-semibold text-white" %>
     <%= tag.span current_user.email, class: "block font-light truncate text-gray-400" %>
@@ -15,7 +15,7 @@
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
       </button>
-      <div id="doubleDropdownProfile" class="z-10 hidden divide-y border border-emerald-600 divide-emerald-600 rounded-lg shadow w-44 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
+      <div id="doubleDropdownProfile" class="hidden divide-y border border-emerald-600 divide-emerald-600 rounded-lg shadow w-44 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
         <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonProfile">
           <li><%= link_to 'Портретики', '#', data: { modal_target: 'avatar-modal', modal_toggle: 'avatar-modal' }, onclick: 'event.preventDefault()', class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
         </ul>
@@ -31,7 +31,7 @@
             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
           </svg>
         </button>
-        <div id="doubleDropdownManage" class="border border-emerald-600 z-10 hidden divide-y divide-emerald-600 rounded-lg shadow w-44" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
+        <div id="doubleDropdownManage" class="border border-emerald-600 hidden divide-y divide-emerald-600 rounded-lg shadow w-44" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
           <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
             <li><%= link_to "Блоги", admin_blogs_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
           </ul>
