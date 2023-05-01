@@ -1,5 +1,5 @@
-<div class="w-full z-10 max-h-96 hidden md:grid ">
+<div class="w-full z-10 h-auto hidden md:grid ">
   <%= link_to advertisement.resource, aria: { label: advertisement.caption } do %>
-    <%= image_tag url_for(advertisement.cover), alt: advertisement.cover.blob.filename.to_s, class: 'w-full max-h-96' %>
+    <%= video_tag url_for(advertisement.cover), alt: advertisement.cover.blob.filename.to_s, class: 'w-full h-auto', autoplay: true, loop: true, muted: true %>
   <% end %>
 </div>
