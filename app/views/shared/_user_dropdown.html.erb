@@ -1,59 +1,59 @@
-<button type="button" class="hidden sm:flex text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+<button type="button" class="hidden sm:inline-flex items-center text-gray-900 font-medium rounded-lg text-sm px-2 lg:px-4 py-2 lg:py-2.5 mr-2 md:mr-3 focus:outline-none transition duration-500 hover:scale-110" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
   <span class="sr-only">Open user menu</span>
-  <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
+  <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-10 h-10 rounded-full' %>
 </button>
-<div class="z-50 border border-emerald-600 hidden sm:visible font-oswald hidden my-4 w-56 text-xl list-none rounded divide-y shadow divide-emerald-600 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>" id="dropdown">
+<div class="hidden font-oswald z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-pink-100 shadow" id="dropdown">
   <div class="py-3 px-4">
-    <%= tag.span current_user.name, class: "block font-semibold text-white" %>
-    <%= tag.span current_user.email, class: "block font-light truncate text-gray-400" %>
+    <%= tag.span current_user.name, class: "block font-semibold text-gray-900" %>
+    <%= tag.span current_user.email, class: "block font-light text-gray-500 truncate" %>
   </div>
-  <ul class="py-1 font-light text-gray-400" aria-labelledby="dropdown">
+  <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
     <li>
-      <button id="doubleDropdownButtonProfile" data-dropdown-toggle="doubleDropdownProfile" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:text-white">
+      <button id="doubleDropdownButtonProfile" data-dropdown-toggle="doubleDropdownProfile" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:bg-gray-100">
         Профіль
         <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
       </button>
-      <div id="doubleDropdownProfile" class="hidden divide-y border border-emerald-600 divide-emerald-600 rounded-lg shadow w-44 bg-center" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
-        <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonProfile">
-          <li><%= link_to 'Портретики', '#', data: { modal_target: 'avatar-modal', modal_toggle: 'avatar-modal' }, onclick: 'event.preventDefault()', class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+      <div id="doubleDropdownProfile" class="hidden my-4 w-48 text-base list-none bg-white rounded divide-y divide-pink-100 shadow">
+        <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonProfile">
+          <li><%= link_to 'Портретики', '#', data: { modal_target: 'avatar-modal', modal_toggle: 'avatar-modal' }, onclick: 'event.preventDefault()', class: "block px-4 py-2 hover:bg-gray-100" %></li>
         </ul>
       </div>
     </li>
   </ul>
   <% if current_user.admin? %>
-    <ul class="py-1 font-light text-gray-400" aria-labelledby="dropdown">
+    <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
       <li>
-        <button id="doubleDropdownButtonManage" data-dropdown-toggle="doubleDropdownManage" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:text-white">
+        <button id="doubleDropdownButtonManage" data-dropdown-toggle="doubleDropdownManage" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:bg-gray-100">
           Управління
           <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
           </svg>
         </button>
-        <div id="doubleDropdownManage" class="border border-emerald-600 hidden divide-y divide-emerald-600 rounded-lg shadow w-44" style="background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(<%= asset_path('modal-bg.webp') %>">
-          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
-            <li><%= link_to "Блоги", admin_blogs_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+        <div id="doubleDropdownManage" class="hidden my-4 w-48 text-base list-none bg-white rounded divide-y divide-pink-100 shadow">
+          <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Блоги", admin_blogs_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
           </ul>
-          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
-            <li><%= link_to "Звістки", admin_tales_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+          <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Звістки", admin_tales_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
           </ul>
-          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
-            <li><%= link_to "Оголошення", admin_advertisements_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+          <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Оголошення", admin_advertisements_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
           </ul>
-          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
-            <li><%= link_to "Портретики", admin_avatars_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+          <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Портретики", admin_avatars_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
           </ul>
-          <ul class="py-2 text-gray-700" aria-labelledby="doubleDropdownButtonManage">
-            <li><%= link_to "Теги", admin_tags_path, class: "block px-4 py-2 text-gray-400 hover:text-white" %></li>
+          <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+            <li><%= link_to "Теги", admin_tags_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
           </ul>
         </div>
       </li>
     </ul>
   <% end %>
-  <ul class="py-1 font-light text-gray-400" aria-labelledby="dropdown">
+  <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
     <li>
-      <%= link_to "Вийти", destroy_user_session_path, class: "block py-2 px-4 hover:text-white" %>
+      <%= link_to "Вийти", destroy_user_session_path, class: "block py-2 px-4 hover:bg-gray-100" %>
     </li>
   </ul>
 </div>

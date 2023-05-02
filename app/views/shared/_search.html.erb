@@ -1,8 +1,8 @@
-<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "hidden mr-3 w-full lg:inline-block" } do |form| %>
+<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "hidden mr-3 lg:inline-block" } do |form| %>
   <label for="search-bar" class="mb-2 text-sm font-medium sr-only text-gray-200">Пошук</label>
   <div class="relative">
     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-      <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
       </svg>
     </div>
@@ -10,15 +10,9 @@
                   type: 'search',
                   input_html: {
                     id: 'search-bar',
-                    class: 'font-oswald font-light block py-2 px-4 pl-10 w-full text-xl rounded-lg border border-gray-600 placeholder-gray-400 text-white focus:ring-emerald-500 focus:border-emerald-500 bg-center',
-                    style: "background-image:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0.85)), url(#{asset_path('modal-bg.webp')})"
+                    class: 'font-oswald font-light block px-4 pl-10 w-full text-xl rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center'
                   },
                   placeholder: 'Пошук',
                   required: true %>
   </div>
 <% end %>
-<button data-collapse-toggle="mobile-menu-search" aria-label="mobile search menu" aria-controls="mobile-menu-search" aria-expanded="false" type="button" class="lg:hidden inline-flex mr-2 lg:mr-0 items-center text-gray-300 focus:ring-4 font-medium rounded-lg text-sm px-2.5 lg:px-5 py-2.5 focus:outline-none focus:ring-gray-800">
-  <svg class="w-5 h-5 lg:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-  </svg>
-</button>

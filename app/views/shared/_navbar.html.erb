@@ -1,21 +1,42 @@
-<nav class="top-0 z-50 border-gray-200 px-4 lg:px-6 my-2">
-  <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-    <a href="/" class="flex items-center">
-      <%= image_tag 'logo.svg', class: 'h-10 lg:h-12 w-auto lg:block', alt: 'logo' %>
-      <span class="font-oswald mb-auto px-2 py-px text-xs lg:text-s font-bold leading-none text-indigo-100 bg-rose-600 rounded border border-white">beta</span>
-    </a>
-    <%= render 'shared/trending_tags', trendings: trending_tags, mobile: false %>
-    <div class="flex items-center lg:order-2">
-      <%= render "shared/search" %>
-      <% if current_user %>
-        <div data-controller="flowbite z-50">
+<nav class="relative z-50 bg-white pt-2 shadow-xl lg:shadow-none mb-2 lg:mb-0">
+  <div class="max-w-screen-xl mx-auto px-4 md:px-6">
+    <div class="grid grid-cols-3">
+      <div class="flex place-items-center mt-2">
+        <%= link_to 'https://t.me/bakaInUa', class: 'inline-flex items-center p-1 text-sm font-medium rounded-lg', area: { current: 'page' } do %>
+          <%= image_tag 'telegram.svg', class: 'h-6 sm:h-8 transform transition duration-500 hover:scale-110', alt: 'logo' %>
+        <% end %>
+
+        <%= link_to 'https://www.buymeacoffee.com/bakaInUa', class: 'inline-flex items-center p-1 text-sm font-medium rounded-lg', area: { current: 'page' } do %>
+          <%= image_tag 'buyme.svg', class: 'hidden md:block h-16 transform transition duration-500 hover:scale-110', alt: 'logo' %>
+          <%= image_tag 'buymecoffee.svg', class: 'h-6 sm:h-8 block md:hidden transform transition duration-500 hover:scale-110', alt: 'logo' %>
+        <% end %>
+      </div>
+      <div class="flex justify-center place-items-center">
+        <a href="/" class="flex items-center">
+          <%= image_tag 'logo-black.svg', class: 'h-12 md:h-16 transition duration-500 hover:scale-110', alt: 'logo' %>
+        </a>
+      </div>
+      <div class="flex justify-end place-items-center mt-2">
+        <%= render "shared/search" %>
+        <% if current_user %>
           <%= render 'shared/user_dropdown' %>
           <%= render 'shared/mobile_user_dropdown' %>
-        </div>
-      <% else %>
-        <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-light text-emerald-300 ml-1 lg:ml-3 focus:ring-4 rounded-lg text-xl px-3 lg:px-5 py-2 lg:py-2.5 hover:text-emerald-100 focus:outline-none', area: { current: 'page' } %>
-      <% end %>
+        <% else %>
+          <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-medium text-gray-900 text-xl px-0 sm:px-3 lg:px-5 py-2 lg:py-2.5 hover:text-gray-600 focus:outline-none transition duration-500 hover:scale-110', area: { current: 'page' } %>
+        <% end %>
+      </div>
+      <%= render 'shared/mobile_search' %>
     </div>
-    <%= render 'shared/mobile_search' %>
+  </div>
+</nav>
+<nav class="hidden lg:block relative z-10 bg-white shadow-xl mb-6">
+  <div class="pb-4 px-4 mx-auto max-w-screen-xl md:px-6">
+    <div class="flex justify-center items-center place-items-center">
+      <ul class="flex flex-row mt-0 space-x-8 text-sm font-medium">
+        <% trending_tags.each do |trending| %>
+          <%= link_to trending.name, search_index_path(search: [trending.name]), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </nav>

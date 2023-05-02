@@ -1,5 +1,9 @@
-<div class="w-full z-10 h-auto hidden md:grid ">
-  <%= link_to advertisement.resource, aria: { label: advertisement.caption } do %>
-    <%= video_tag url_for(advertisement.cover), alt: advertisement.cover.blob.filename.to_s, class: 'w-full h-auto', autoplay: true, loop: true, muted: true %>
-  <% end %>
-</div>
+<%= link_to advertisement.resource, class: 'relative overflow-hidden h-0 hidden md:block', aria: { label: advertisement.caption } do %>
+  <%= video_tag url_for(advertisement.cover),
+                alt: advertisement.cover.blob.filename.to_s,
+                class: 'top-0 left-0 w-full h-full',
+                autoplay: true,
+                loop: true,
+                muted: true,
+                onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');" %>
+<% end %>
