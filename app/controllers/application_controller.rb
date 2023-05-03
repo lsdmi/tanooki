@@ -24,15 +24,17 @@ class ApplicationController < ActionController::Base
   end
 
   def videos
-    rich_texts = ActionText::RichText.where('body LIKE ?', '%youtube.com/embed/%').order(created_at: :desc).limit(3)
+    Rails.cache.fetch('videos', expires_in: 1.hour) do
+      rich_texts = ActionText::RichText.where('body LIKE ?', '%youtube.com/embed/%').order(created_at: :desc).limit(3)
 
-    video_urls = []
-    rich_texts.each do |rich_text|
-      doc = Nokogiri::HTML.parse(rich_text.body.to_s)
-      video_urls << doc.at_css('iframe[src*="youtube.com/embed/"]')&.attr('src')
+      video_urls = []
+      rich_texts.each do |rich_text|
+        doc = Nokogiri::HTML.parse(rich_text.body.to_s)
+        video_urls << doc.at_css('iframe[src*="youtube.com/embed/"]')&.attr('src')
+      end
+
+      video_urls
     end
-
-    video_urls
   end
 
   def load_advertisement

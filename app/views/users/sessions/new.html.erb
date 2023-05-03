@@ -1,4 +1,4 @@
-<section class="h-full gradient-form py-24 z-10">
+<section class="h-full gradient-form pt-4 pb-8 z-10">
   <div class="md:container md:shadow-2xl mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
     <div class="w-full place-self-center col-span-12 md:col-span-6">
       <div class="p-8 rounded-lg mx-auto">
@@ -39,12 +39,13 @@
                           } %>
             </div>
           </div>
-          <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
-            <div></div>
-            <%= link_to 'Забули пароль?', new_user_password_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 hover:underline text-emerald-700 font-light' %>
-          </div>
-          <%= f.button :submit, "Увійти", class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer font-light" %>
         <% end %>
+        <%= render 'omniauth' %>
+        <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
+          <div></div>
+          <%= link_to 'Забули пароль?', new_user_password_path, class: 'font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 hover:underline text-emerald-700 font-light' %>
+        </div>
+        <%= button_tag "Увійти", form: 'new_user', class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center font-oswald text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer font-light" %>
       </div>
     </div>
     <div class="mr-auto place-self-center col-span-6 shadow-lg invisible md:visible">

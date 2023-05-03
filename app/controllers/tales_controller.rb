@@ -17,7 +17,7 @@ class TalesController < ApplicationController
     more = Publication.search(
       @publication.tags.pluck(:name).join(' '),
       fields: ['tags^10', 'title^5', 'description'],
-      boost_by_recency: { created_at: { scale: '30d', decay: 0.9 } },
+      boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
       operator: 'or'
     ).includes([{ cover_attachment: :blob }, :rich_text_description])
 
@@ -29,7 +29,8 @@ class TalesController < ApplicationController
   end
 
   def set_tale
-    @publication = Tale.find(params[:id])
-    response.headers['Cache-Control'] = 'public, max-age=31536000'
+    @publication = Rails.cache.fetch("publication_#{params[:id]}", expires_in: 1.hour) do
+      Tale.find(params[:id])
+    end
   end
 end

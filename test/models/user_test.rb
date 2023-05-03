@@ -97,4 +97,76 @@ class UserTest < ActiveSupport::TestCase
   test 'should belong to an avatar' do
     assert_equal avatars(:one), @user.avatar
   end
+
+  test 'creates a new user if user with email does not exist' do
+    access_token = OmniAuth::AuthHash.new(
+      {
+        provider: 'google',
+        uid: '123456',
+        info: {
+          email: 'test@example.com',
+          name: 'Test User'
+        },
+        credentials: {
+          token: 'token',
+          refresh_token: 'refresh_token',
+          expires_at: Time.now + 1.day
+        }
+      }
+    )
+
+    assert_difference 'User.count', 1 do
+      User.from_omniauth(access_token)
+    end
+
+    assert_equal User.last.email, 'test@example.com'
+    assert_equal User.last.name, 'Test User'
+  end
+
+  test 'returns existing user if user with email already exists' do
+    user = users(:user_one)
+    access_token = OmniAuth::AuthHash.new(
+      {
+        provider: 'google',
+        uid: '123456',
+        info: {
+          email: user.email,
+          name: user.name
+        },
+        credentials: {
+          token: 'token',
+          refresh_token: 'refresh_token',
+          expires_at: Time.now + 1.day
+        }
+      }
+    )
+
+    assert_no_difference 'User.count' do
+      assert_equal user, User.from_omniauth(access_token)
+    end
+  end
+
+  test 'truncates name to 20 characters' do
+    access_token = OmniAuth::AuthHash.new(
+      {
+        provider: 'google',
+        uid: '123456',
+        info: {
+          email: 'test@example.com',
+          name: 'Test User Test User Test User Test User Test User'
+        },
+        credentials: {
+          token: 'token',
+          refresh_token: 'refresh_token',
+          expires_at: Time.now + 1.day
+        }
+      }
+    )
+
+    assert_difference 'User.count', 1 do
+      User.from_omniauth(access_token)
+    end
+
+    assert_equal User.last.name, 'Test User Test User '
+  end
 end

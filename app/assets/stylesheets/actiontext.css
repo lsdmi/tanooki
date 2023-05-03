@@ -4,6 +4,14 @@
   font-style: italic;
 }
 
+#publication-description blockquote {
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-left: 0.25rem solid #d1d5db;
+  background-color: #f9fafb;
+}
+
 .selected-image {
   border: 3px solid pink;
   box-shadow: 0 0 5px pink;
