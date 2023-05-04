@@ -19,17 +19,11 @@ class Publication < ApplicationRecord
   has_many :publication_tags, dependent: :destroy
   has_many :tags, through: :publication_tags
 
-  validates :title, :description, :cover, :status, :status_message, presence: true
+  validates :title, :description, :cover, presence: true
 
   scope :highlights, -> { where(highlight: true) }
   scope :not_highlights, -> { where(highlight: false) }
   scope :last_month, -> { where(created_at: 1.month.ago..) }
-
-  enum status: {
-    created: 'created',
-    approved: 'approved',
-    declined: 'declined'
-  }
 
   def search_data
     {
@@ -44,9 +38,5 @@ class Publication < ApplicationRecord
     [
       title.downcase
     ]
-  end
-
-  def should_index?
-    approved?
   end
 end

@@ -4,9 +4,8 @@
       <% variables = dynamic_variables(publication.slug) %>
       <article class="pt-6 rounded-lg border border-gray-200 shadow-md mb-2">
         <div class="items-center mb-5 text-gray-500">
-          <%= render 'blogs/status_alert', status: publication.status, message: publication.status_message if controller_path == 'blogs' %>
           <%= tag.span "Створено #{publication.created_at.strftime("%d.%m.%Y")}", class: 'font-oswald text-sm text-justify px-6' %>
-          <% if controller_path != 'admin/blogs' && ((publication.instance_of?(Tale) && current_user.admin?) || (publication.instance_of?(Blog) && current_user.id == publication.user_id)) %>
+          <% if ((publication.instance_of?(Tale) && current_user.admin?) || (current_user.id == publication.user_id)) %>
             <div class="w-7 float-right mr-6">
               <%= link_to publication_path(publication), data: { turbo_confirm: 'Певні, що прагнете видалити цю публікацію?', "turbo-method": :delete } do %>
                 <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="stroke-red-800">
@@ -24,11 +23,7 @@
           <% end %>
         </div>
         <h2 class="mb-4 text-lg font-bold tracking-tight text-gray-800 px-6">
-          <% if controller_path == 'admin/blogs' %>
-            <%= tag.p publication.title %>
-          <% else %>
-            <%= link_to publication.title, variables[:show_publication_path], class: 'font-oswald' %>
-          <% end %>
+          <%= link_to publication.title, variables[:show_publication_path], class: 'font-oswald' %>
         </h2>
 
         <div class="my-2 mx-2">
@@ -36,20 +31,6 @@
               <%= render 'admin/tags/publication_tag', publication_tag: publication_tag %>
           <% end %>
         </div>
-        <% if controller_path == 'admin/blogs' %>
-          <div class="flex justify-between items-center px-6 pb-6">
-            <div class="flex items-center space-x-4">
-              <%= image_tag url_for(publication.user.avatar.image), alt: publication.user.avatar.blob.filename.to_s, class: 'w-12 h-12 rounded-full' %>
-              <%= tag.span publication.user.name, class: 'font-medium' %>
-            </div>
-            <%= link_to edit_admin_blog_path(publication), class: 'inline-flex items-center font-medium hover:underline' do %>
-              Переглянути
-              <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-              </svg>
-            <% end %>
-          </div>
-        <% end %>
       </article>
     <% end %>
   <% end %>

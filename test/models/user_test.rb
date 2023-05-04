@@ -82,10 +82,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test 'should have many blogs' do
-    assert_respond_to @user, :blogs
-  end
-
   test 'should have many comments' do
     assert_respond_to @user, :comments
   end

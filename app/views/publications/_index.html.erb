@@ -2,12 +2,10 @@
   <div class="my-8 px-4 mx-auto max-w-screen-xl lg:mt-12 lg:mb-16 relative">
     <div class="mx-auto max-w-screen-sm text-center lg:mb-2 mb-1">
       <%= tag.h2 static_variables[:publication_index_header], class: 'font-oswald mb-8 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-800' %>
-      <%= link_to "Створити", static_variables[:new_publication_path], class: "inline-block w-1/3 py-2 uppercase space-y-revers rounded-lg text-center font-oswald text-base sm:text-xl md:text-base lg:text-lg xl:text-xl font-light bg-emerald-700 text-white transition ease-in-out hover:bg-emerald-800 hover:cursor-pointer" if (controller_path == 'blogs' || controller_path == 'admin/tales') %>
+      <%= link_to "Створити", static_variables[:new_publication_path], class: "inline-block w-1/3 py-2 uppercase space-y-revers rounded-lg text-center font-oswald text-base sm:text-xl md:text-base lg:text-lg xl:text-xl font-light bg-emerald-700 text-white transition ease-in-out hover:bg-emerald-800 hover:cursor-pointer" %>
     </div>
     <% if publications.any? %>
       <%= render 'publications/list', publications: publications %>
-    <% elsif controller_path == 'admin/blogs' %>
-      <%= render 'admin/blogs/no_blogs_to_moderate' %>
     <% else %>
       <%= render 'publications/cta_create_publication' %>
     <% end %>

@@ -17,14 +17,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
-    resources :blogs, only: %i[index edit update]
     resources :tags, except: :new do
       member { delete :detach }
     end
     resources :tales, except: %i[show create update destroy]
   end
 
-  resources :blogs, except: %i[create update destroy]
   resources :comments, except: %i[index show] do
     member do
       get :cancel_edit

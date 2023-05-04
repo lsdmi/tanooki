@@ -18,8 +18,6 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
       ),
       description: action_text_rich_texts(:rich_text_one),
       highlight: @publication.highlight,
-      status: @publication.status,
-      status_message: @publication.status_message,
       title: @publication.title,
       type: @publication.type,
       user_id: @publication.user_id

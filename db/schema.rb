@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_19_020841) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_04_195135) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -93,8 +93,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_19_020841) do
     t.string "slug", null: false
     t.string "type", null: false
     t.string "title", null: false
-    t.string "status", null: false
-    t.string "status_message", null: false
     t.boolean "highlight", default: false
     t.bigint "user_id", null: false
     t.integer "views", default: 0
@@ -102,7 +100,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_19_020841) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["slug"], name: "index_publications_on_slug", unique: true
-    t.index ["status"], name: "index_publications_on_status"
     t.index ["user_id"], name: "index_publications_on_user_id"
   end
 

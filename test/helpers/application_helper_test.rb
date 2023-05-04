@@ -96,9 +96,6 @@ class ApplicationHelperTest < ActionView::TestCase
   test 'meta_type returns article for all other pages' do
     request.path = '/about'
     assert_equal 'article', meta_type
-
-    request.path = '/blog'
-    assert_equal 'article', meta_type
   end
 
   test 'punch should return the first sentence of a string' do

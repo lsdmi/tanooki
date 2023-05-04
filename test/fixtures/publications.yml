@@ -3,8 +3,6 @@ tale_approved_one:
   slug: tale_approved_one
   type: Tale
   title: <%= Faker::Book.title %>
-  status: approved
-  status_message: <%= Faker::Lorem.sentence %>
   highlight: true
   user_id: 1
   created_at: <%= Time.now %>
@@ -15,8 +13,6 @@ tale_created_one:
   slug: tale_created_one
   type: Tale
   title: <%= Faker::Book.title %>
-  status: created
-  status_message: <%= Faker::Lorem.sentence %>
   highlight: false
   user_id: 1
   created_at: <%= Time.now %>

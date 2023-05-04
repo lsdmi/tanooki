@@ -1,7 +1,5 @@
 <%= f.input :type, as: :hidden, input_html: { value: publication.class } %>
 <%= f.input :user_id, as: :hidden, input_html: { value: publication.user&.id || current_user.id } %>
-<%= f.input :status, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'created' : 'approved' } %>
-<%= f.input :status_message, as: :hidden, input_html: { value: publication.instance_of?(Blog) ? 'допис буде переглянуто та опубліковано' : 'допис відмодеровано та схвалено' } %>
 
 <div class="mx-3">
   <div class="mb-6">
@@ -52,7 +50,7 @@
 
   <%= tag.div class: publication.instance_of?(Tale) ? 'py-2 grid grid-cols-4' : 'container py-2 mx-0 min-w-full flex flex-col items-center grid grid-cols-3' do %>
     <div></div>
-    <%= tag.div class: "#{'container py-2 mx-0 min-w-full flex flex-col items-center' if publication.instance_of?(Blog)}" do %>
+    <%= tag.div do %>
       <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
     <% end %>
     <% if publication.instance_of?(Tale) %>

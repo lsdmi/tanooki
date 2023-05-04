@@ -10,24 +10,24 @@ class PublicationsController < ApplicationController
 
     if @publication.save
       manage_tags if params[:publication][:tag_ids]
-      redirect_to root_path, notice: create_notice
+      redirect_to root_path, notice: 'Звістку створено.'
     else
-      render new_publication_partial, status: :unprocessable_entity
+      render 'admin/tales/new', status: :unprocessable_entity
     end
   end
 
   def update
     if @publication.update(publication_params)
       manage_tags if params[:publication][:tag_ids]
-      redirect_to update_redirect_path, notice: update_notice
+      redirect_to tale_path(@publication), notice: 'Звістку оновлено.'
     else
-      render edit_publication_partial, status: :unprocessable_entity
+      render 'admin/tales/edit', status: :unprocessable_entity
     end
   end
 
   def destroy
     @publication.destroy
-    redirect_to root_path, notice: destroy_notice
+    redirect_to root_path, notice: 'Звістку видалено.'
   end
 
   private
@@ -43,33 +43,9 @@ class PublicationsController < ApplicationController
     tags_to_remove.each { |tag_id| @publication.publication_tags.find_by(tag_id:).destroy }
   end
 
-  def create_notice
-    @publication.instance_of?(Blog) ? 'Допис надіслано на модерацію.' : 'Звістку створено.'
-  end
-
-  def update_notice
-    @publication.instance_of?(Blog) ? 'Допис надіслано на модерацію.' : 'Звістку оновлено.'
-  end
-
-  def destroy_notice
-    @publication.instance_of?(Blog) ? 'Допис видалено.' : 'Звістку видалено.'
-  end
-
-  def new_publication_partial
-    @publication.instance_of?(Blog) ? 'blogs/new' : 'admin/tales/new'
-  end
-
-  def edit_publication_partial
-    @publication.instance_of?(Blog) ? 'blogs/edit' : 'admin/tales/edit'
-  end
-
-  def update_redirect_path
-    @publication.instance_of?(Blog) ? blog_path(@publication) : tale_path(@publication)
-  end
-
   def publication_params
     params.require(:publication).permit(
-      :type, :title, :description, :cover, :highlight, :user_id, :status, :status_message
+      :type, :title, :description, :cover, :highlight, :user_id
     )
   end
 
@@ -78,13 +54,7 @@ class PublicationsController < ApplicationController
   end
 
   def verify_permissions
-    redirect_to root_path if not_blog_author? || not_admin_user?
-  end
-
-  def not_blog_author?
-    publication_type == 'Blog' &&
-      (action_name.to_sym == :update || action_name.to_sym == :destroy) &&
-      publication_user_id != current_user.id
+    redirect_to root_path if not_admin_user?
   end
 
   def not_admin_user?

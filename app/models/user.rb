@@ -11,7 +11,6 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :avatar
-  has_many :blogs
   has_many :comments
   has_many :publications
 

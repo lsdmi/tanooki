@@ -29,16 +29,16 @@ class HomeController < ApplicationController
 
   def most_popular
     Publication.includes({ cover_attachment: :blob })
-               .approved.last_month.excluding(@highlights).order(views: :desc).limit(5)
+               .last_month.excluding(@highlights).order(views: :desc).limit(5)
   end
 
   def newest
     Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .approved.order(created_at: :desc).excluding(@highlights, @most_popular).limit(10)
+               .order(created_at: :desc).excluding(@highlights, @most_popular).limit(10)
   end
 
   def remaining
     Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .approved.order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
+               .order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
   end
 end
