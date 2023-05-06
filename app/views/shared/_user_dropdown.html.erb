@@ -9,17 +9,9 @@
   </div>
   <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
     <li>
-      <button id="doubleDropdownButtonProfile" data-dropdown-toggle="doubleDropdownProfile" data-dropdown-placement="right-start" type="button" class="flex justify-between w-full items-center py-2 px-4 hover:bg-gray-100">
-        Профіль
-        <svg aria-hidden="true" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-        </svg>
-      </button>
-      <div id="doubleDropdownProfile" class="hidden my-4 w-48 text-base list-none bg-white rounded divide-y divide-pink-100 shadow">
-        <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonProfile">
-          <li><%= link_to 'Портретики', '#', data: { modal_target: 'avatar-modal', modal_toggle: 'avatar-modal' }, onclick: 'event.preventDefault()', class: "block px-4 py-2 hover:bg-gray-100" %></li>
-        </ul>
-      </div>
+      <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+        <li><%= link_to "Майстерня", dashboard_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
+      </ul>
     </li>
   </ul>
   <% if current_user.admin? %>

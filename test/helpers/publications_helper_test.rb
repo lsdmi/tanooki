@@ -16,7 +16,6 @@ class PublicationsHelperTest < ActionView::TestCase
 
     test 'should return correct static variables for tales' do
       variables = static_variables
-      assert_equal '/admin/tales/new', variables[:new_publication_path]
       assert_equal 'Оновити Звістку', variables[:publication_edit_header]
       assert_equal 'Керування Звістками', variables[:publication_index_header]
       assert_equal 'Створити Звістку', variables[:publication_new_header]
@@ -25,7 +24,7 @@ class PublicationsHelperTest < ActionView::TestCase
     test 'should return correct dynamic variables for tales' do
       variables = dynamic_variables('test-slug')
 
-      assert_equal '/admin/tales/test-slug/edit', variables[:edit_publication_path]
+      assert_equal '/publications/test-slug/edit', variables[:edit_publication_path]
       assert_equal '/tales/test-slug', variables[:show_publication_path]
     end
   end

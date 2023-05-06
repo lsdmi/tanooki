@@ -4,6 +4,13 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 640px) {
+  .pagy-nav,
+  .pagy-nav-js {
+    gap: 0.15rem;
+  }
+}
+
 .pagy-nav .page a,
 .pagy-nav .page.active,
 .pagy-nav .page.prev.disabled,

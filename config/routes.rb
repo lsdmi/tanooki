@@ -17,10 +17,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
-    resources :tags, except: :new do
-      member { delete :detach }
-    end
-    resources :tales, except: %i[show create update destroy]
+    resources :tags, except: :new
+    resources :tales, only: :index
   end
 
   resources :comments, except: %i[index show] do
@@ -29,10 +27,12 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
-  resources :publications, except: %i[new edit show]
+  resources :publications, except: %i[index show]
   resources :search, only: :index
   resources :tales, only: :show
   resources :users do
     member { put :update_avatar }
   end
+
+  get :dashboard, to: 'users#show', as: :dashboard
 end

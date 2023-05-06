@@ -80,15 +80,5 @@ module Admin
       assert_not_nil assigns(:tag)
       assert_includes response.body, 'не може бути пустим'
     end
-
-    test 'should detach publication tag' do
-      publication_tag = publication_tags(:one)
-      assert_difference 'PublicationTag.count', -1 do
-        delete detach_admin_tag_path(publication_tag)
-      end
-      assert_response :success
-      assert_template nil
-      assert_not PublicationTag.exists?(publication_tag.id)
-    end
   end
 end

@@ -1,24 +1,94 @@
-<section class="h-full gradient-form flex justify-center">
-  <div class="container">
-    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-      <div class="block rounded-lg">
-        <div class="lg:flex lg:flex-wrap g-0 p-10 shadow-lg">
-          <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none">
-            <img class="w-full rounded-md bg-white/5 ring-1 ring-white/10" src="https://www.barnesandnoble.com/blog/wp-content/uploads/2016/10/manga-about-making-manga.jpg" alt="dashboard image">
-          </div>
-          <div class="lg:w-6/12 px-4 md:px-0">
-            <div class="md:p-4 md:mx-6">
-              <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-800 text-center">Творіть разом з Бакою!</h2>
-              <p class="mb-6 font-light text-gray-500 md:text-lg text-left">
-                Мрієш стати аніме-блогером? Маєш, що сказати? А може написати огляд на улюблену манґу?
-              </p>
-              <p class="mb-6 font-light text-gray-500 md:text-lg text-left">
-                Бака створено, аби надати кожному бажаючому таку нагоду! Долучайтеся до найбільшої аніме-спільноти Україні вже зараз!
-              </p>
-              <div class="mx-auto max-w-screen-sm text-center lg:mb-2 mb-1">
-                <%= link_to "Створити Публікацію", static_variables[:new_publication_path], class: "inline-flex items-center text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
+<section class="bg-white antialiased">
+  <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-12">
+    <div class="grid grid-cols-1 gap-8 lg:gap-16 lg:grid-cols-2">
+      <div>
+        <div id="deviceTabContent" class="mt-8">
+          <div id="ios" role="tabpanel" aria-labelledby="ios-tab">
+            <div class="space-y-4 sm:space-y-6 lg:space-y-8">
+              <div>
+                <h2 class="text-3xl font-extrabold leading-tight text-gray-900 sm:text-4xl">
+                  Твори із Бакою: український аніме-хаб
+                </h2>
+                <p class="mt-4 text-base font-normal text-gray-500 sm:text-xl">
+                  Долучайся та поширюй україномовний контент про аніме, манґу та культуру східної Азії.
+                  Із його створенням та розповсюдженням домопоже наш зручний інтерфейс.
+                  Бака - це все необхідне, аби розпочати свій шлях у світі аніме-блогів.
+                </p>
+              </div>
+
+              <div class="pt-4 border-t border-gray-200 sm:pt-6 lg:pt-8">
+                <ul class="space-y-4">
+                  <li class="flex items-center gap-2.5">
+                    <div
+                      class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                      <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <span class="text-base font-medium text-gray-900">
+                      Створи власний аніме-блоґ у кілька кліків
+                    </span>
+                  </li>
+
+                  <li class="flex items-center gap-2.5">
+                    <div
+                      class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                      <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <span class="text-base font-medium text-gray-900">
+                      Поширюй спільнотою пристрасних шанувальників
+                    </span>
+                  </li>
+
+                  <li class="flex items-center gap-2.5">
+                    <div
+                      class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                      <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <span class="text-base font-medium text-gray-900">
+                      Спілкуйся та ділися враженнями у коментарях
+                    </span>
+                  </li>
+                </ul>
+
+                <h3 class="mt-6 text-xl font-normal text-gray-500">
+                  Приєднуйся уже зараз, аби стати частиною нашої аніме-спільноти та нічого не пропустити!
+                </h3>
+              </div>
+
+              <div>
+                <%= link_to new_publication_path, class: 'inline-flex items-center text-base font-medium text-emerald-600 hover:underline' do %>
+                  Мій перший допис
+                  <svg aria-hidden="true" class="w-5 h-5 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                    fill="currentColor">
+                    <path fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd" />
+                  </svg>
+                <% end %>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden lg:block">
+        <div class="relative mx-auto border-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl">
+          <div class="rounded-[2.5rem] overflow-hidden w-[272px] h-[572px] bg-white">
+            <%= image_tag 'blog_cta.webp', alt: 'blog cta', class: 'w-[272px] h-[572px] object-cover' %>
           </div>
         </div>
       </div>

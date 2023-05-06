@@ -10,6 +10,17 @@ class UsersControllerTest < ActionController::TestCase
     @user = users(:user_one)
   end
 
+  test 'should get show' do
+    sign_in @user
+
+    get :show
+    assert_response :success
+    assert_template :show
+    assert_not_nil assigns(:pagy)
+    assert_not_nil assigns(:publications)
+    assert_not_nil assigns(:avatars)
+  end
+
   test "should update user's avatar" do
     sign_in @user
 
@@ -19,6 +30,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal @avatar_id, @user.avatar_id
 
     assert_response :redirect
-    assert_equal 'Аватар оновлено.', flash[:notice]
+    assert_equal 'Портретик оновлено.', flash[:notice]
   end
 end

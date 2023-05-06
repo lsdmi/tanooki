@@ -40,13 +40,18 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal description, meta_description
   end
 
-  test 'requires tinymce for admin/tales/:id/edit' do
-    request.path = edit_admin_tale_path(publications(:tale_approved_one))
+  test 'requires tinymce for admin/tales' do
+    request.path = admin_tales_path
     assert requires_tinymce?
   end
 
-  test 'requires tinymce for admin/tales/new' do
-    request.path = new_admin_tale_path
+  test 'requires tinymce for dashboard' do
+    request.path = dashboard_path
+    assert requires_tinymce?
+  end
+
+  test 'requires tinymce for publications/new' do
+    request.path = new_publication_path
     assert requires_tinymce?
   end
 

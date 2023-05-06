@@ -16,15 +16,5 @@ module Admin
       get admin_tales_url
       assert_response :success
     end
-
-    test 'should get new' do
-      get new_admin_tale_url
-      assert_response :success
-    end
-
-    test 'should get edit' do
-      get edit_admin_tale_url(Tale.first)
-      assert_response :success
-    end
   end
 end

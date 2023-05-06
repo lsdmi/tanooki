@@ -2,8 +2,9 @@
 
 class PublicationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_publication, only: %i[update destroy]
-  before_action :verify_permissions
+  before_action :set_publication, only: %i[edit update destroy]
+  before_action :set_tags, only: %i[new edit]
+  before_action :verify_permissions, except: %i[new create]
 
   def create
     @publication = Publication.new(publication_params)
@@ -27,10 +28,39 @@ class PublicationsController < ApplicationController
 
   def destroy
     @publication.destroy
-    redirect_to root_path, notice: 'Звістку видалено.'
+    @pagy, @publications = pagy(
+      publications,
+      items: 8,
+      request_path:,
+      page: params[:page] || 1
+    )
+
+    render turbo_stream: refresh_list
   end
 
+  def new
+    @publication = Tale.new
+  end
+
+  def edit; end
+
   private
+
+  def publications
+    if request.referer&.include?('admin/tales')
+      Publication.all.order(created_at: :desc)
+    else
+      current_user.publications.order(created_at: :desc)
+    end
+  end
+
+  def request_path
+    if request.referer&.include?('admin/tales')
+      admin_tales_path
+    else
+      dashboard_path
+    end
+  end
 
   def manage_tags
     publication_tags_ids = params[:publication][:tag_ids].map(&:to_i)
@@ -53,19 +83,23 @@ class PublicationsController < ApplicationController
     @publication = Publication.find(params[:id])
   end
 
+  def set_tags
+    @tags = Tag.all.order(:name)
+  end
+
   def verify_permissions
-    redirect_to root_path if not_admin_user?
-  end
-
-  def not_admin_user?
-    publication_type == 'Tale' && !current_user.admin?
-  end
-
-  def publication_type
-    @publication&.type || publication_params[:type]
+    redirect_to root_path unless current_user.admin? || current_user.publications.include?(@publication)
   end
 
   def publication_user_id
     @publication&.user_id || publication_params[:user_id]
+  end
+
+  def refresh_list
+    turbo_stream.update(
+      'publications-list',
+      partial: 'users/dashboard/publications',
+      locals: { publications: @publications, pagy: @pagy }
+    )
   end
 end

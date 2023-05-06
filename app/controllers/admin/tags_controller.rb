@@ -30,12 +30,6 @@ module Admin
       render turbo_stream: (@tag.update(tag_params) ? refresh_list : edit_tag)
     end
 
-    def detach
-      publication_tag = PublicationTag.find(params[:id])
-      publication_tag.destroy
-      render turbo_stream: turbo_stream.remove("publication-tag-#{params[:id]}")
-    end
-
     private
 
     def tag_params
