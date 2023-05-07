@@ -48,7 +48,7 @@ const initializeTinymce = () => {
   tinymce.init({
     language: 'uk',
     selector: 'textarea',
-    height: 750,
+    height: 500,
     plugins: [
       'code',
       'image',

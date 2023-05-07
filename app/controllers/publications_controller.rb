@@ -3,7 +3,7 @@
 class PublicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_publication, only: %i[edit update destroy]
-  before_action :set_tags, only: %i[new edit]
+  before_action :set_tags, only: %i[new create edit update]
   before_action :verify_permissions, except: %i[new create]
 
   def create

@@ -1,5 +1,5 @@
 <li class="relative float-left w-full mb-4 mr-2">
-  <%= link_to dynamic_variables(publication.slug)[:show_publication_path] do %>
+  <%= link_to tale_path(publication.slug) do %>
     <div class="float-right relative w-full">
       <div class="relative float-left leading-none mr-0 md:mr-7 overflow-hidden md:w-80 xl:w-[23rem]">
         <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "max-w-full rounded-xl h-auto" %>

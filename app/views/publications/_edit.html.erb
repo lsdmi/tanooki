@@ -1,9 +1,6 @@
-<section class="h-full gradient-form py-4 lg:py-8 xl:py-16 z-10">
-  <div class="md:container md:shadow-2xl mx-auto max-w-7xl pl-4 grid-cols-12 relative">
-    <div class="container py-2 px-10 mx-0 min-w-full flex flex-col items-center">
-      <%= tag.p static_variables[:publication_edit_header], class: 'font-oswald text-xl text-gray-800 font-semibold' %>
-    </div>
-
+<section class="bg-white z-10 relative font-oswald">
+  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
+    <h2 class="mb-4 text-xl font-semibold leading-none text-gray-900">Оновити Звістку</h2>
     <%= simple_form_for publication, as: :publication, url: publication_path(publication), method: :put, html: { class: "form" } do |f| %>
       <%= render 'publications/form', publication: publication, f: f %>
     <% end %>

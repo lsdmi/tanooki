@@ -1,72 +1,49 @@
 <%= f.input :type, as: :hidden, input_html: { value: publication.class } %>
 <%= f.input :user_id, as: :hidden, input_html: { value: publication.user&.id || current_user.id } %>
 
-<div class="mx-3">
-  <div class="mb-6">
-    <%= f.input :title,
-                input_html: {
-                  autofocus: true,
-                  class: "mt-1 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                },
-                placeholder: "Заголовок...",
-                label: "Заголовок"
-              %>
-    <% if publication.errors[:title].any? %>
-      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній заголовок публікації...</p>
-    <% end %>
-  </div>
-
-  <%= f.label :cover, "Обкладинка" %>
-  <div class="mb-2 grid grid-cols-2 gap-2 bg-slate-50">
-    <div>
-      <%= f.input :cover, type: "file", label: false, input_html: { class: 'm-10' } %>
-    </div>
-    <div>
-      <%= image_tag url_for(publication.cover), class: "hidden sm:block float-right max-w-xs" if publication.persisted? %>
-    </div>
-  </div>
-  <% if publication.errors[:cover].any? %>
-    <p id="outlined_error_help" class="mb-6 text-xs text-red-600"><span class="font-medium">відсутня обкладинка публікації...</p>
-  <% end %>
-
-  <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-2">
-    <div class="col-span-3 md:col-span-5 lg:col-span-6 xl:col-span-7">
-      <%= f.text_area :description,
-                  input_html: {
-                    autofocus: true
-                  },
-                  placeholder: "Зміст публікації...",
-                  label: false,
-                  class: "tinymce block p-2.5 w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
-                %>
-      <% if publication.errors[:description].any? %>
-        <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній зміст публікації...</p>
+<div class="py-4 border-gray-200 sm:py-5">
+  <div class="lg:grid gap-4 md:gap-6 lg:grid-cols-3">
+    <div class="space-y-4 sm:space-y-6">
+      <div>
+        <%= f.label :title, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if publication.errors[:title].any?}" }, label: false, placeholder: 'Додайте заголовок' %>
+        <%= tag.p 'відсутній заголовок', class: 'text-sm text-red-600' if publication.errors[:title].any? %>
+      </div>
+      <div>
+        <%= f.label :tag_ids, 'Теґи', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.select :tag_ids, options_for_select(@tags.pluck(:name, :id), selected: f.object.tags.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+      </div>
+      <div>
+        <%= f.label :cover, 'Обкладинка', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <div class="flex justify-center items-center w-full">
+          <%= f.label :cover, class: "flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if publication.errors[:cover].any?}" do %>
+            <div class="flex flex-col justify-center items-center pt-5 pb-6">
+              <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть чи перетягніть,</span> аби обрати файл</p>
+              <p class="mb-4 text-xs text-gray-500">SVG, PNG, JPEG чи WebP</p>
+            </div>
+            <%= f.file_field :cover, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'text-center text-sm text-gray-500' %>
+          <% end %>
+        </div>
+        <%= tag.p 'відсутня обкладинка', class: 'text-sm text-red-600' if publication.errors[:cover].any? %>
+      </div>
+      <% if current_user.admin? %>
+        <div class="flex items-center">
+          <%= f.input :highlight, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-emerald-600 bg-gray-100 rounded border-gray-300 focus:ring-emerald-500' } %>
+          <label for="inline-checkbox" class="ml-2 text-sm text-gray-500 mt-1">Додати цю звістку до центральної секції головної сторінки</label>
+        </div>
       <% end %>
     </div>
-    <div class="overflow-y-auto max-h-[45rem]">
-      <%= render 'publications/tags', tags: @tags, f: f %>
+    <div class="mt-4 lg:mt-0 space-y-4 sm:space-y-6 col-span-2">
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-900">Зміст</label>
+        <div class="py-2 rounded-b-lg">
+          <%= f.text_area :description, placeholder: "Додайте зміст", label: false, class: "tinymce block px-0 w-full focus:ring-0" %>
+          <%= tag.p 'відсутній зміст', class: 'text-base text-red-600' if publication.errors[:description].any? %>
+        </div>
+      </div>
     </div>
   </div>
-
-  <%= tag.div class: 'py-2 grid grid-cols-4' do %>
-    <div></div>
-    <%= tag.div do %>
-      <%= f.submit "Надіслати", class: "float-right mt-1 content-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" %>
-    <% end %>
-    <% if current_user.admin? %>
-      <div class="flex items-center mr-4">
-        <%= f.input :highlight, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2' } %>
-        <label for="inline-checkbox" class="ml-2 text-sm font-medium text-gray-800">Парадна</label>
-      </div>
-    <% end %>
-    <div>
-      <%= link_to 'Видалити',
-                  publication_path(publication),
-                  class: 'float-right mt-1 content-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2',
-                  data: {
-                    turbo_confirm: 'Певні, що прагнете видалити цю публікацію?',
-                    "turbo-method": :delete
-                  } if publication.persisted? %>
-    </div>
-  <% end %>
+  <%= f.submit "Надіслати", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-800" %>
 </div>
