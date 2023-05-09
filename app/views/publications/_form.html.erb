@@ -7,7 +7,7 @@
       <div>
         <%= f.label :title, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
         <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if publication.errors[:title].any?}" }, label: false, placeholder: 'Додайте заголовок' %>
-        <%= tag.p 'відсутній заголовок', class: 'text-sm text-red-600' if publication.errors[:title].any? %>
+        <%= tag.p publication.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if publication.errors[:title].any? %>
       </div>
       <div>
         <%= f.label :tag_ids, 'Теґи', class: 'block mb-2 text-sm font-medium text-gray-900' %>
@@ -26,7 +26,7 @@
             <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'text-center text-sm text-gray-500' %>
           <% end %>
         </div>
-        <%= tag.p 'відсутня обкладинка', class: 'text-sm text-red-600' if publication.errors[:cover].any? %>
+        <%= tag.p publication.errors[:cover].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if publication.errors[:cover].any? %>
       </div>
       <% if current_user.admin? %>
         <div class="flex items-center">
@@ -40,7 +40,7 @@
         <label for="description" class="block text-sm font-medium text-gray-900">Зміст</label>
         <div class="py-2 rounded-b-lg">
           <%= f.text_area :description, placeholder: "Додайте зміст", label: false, class: "tinymce block px-0 w-full focus:ring-0" %>
-          <%= tag.p 'відсутній зміст', class: 'text-base text-red-600' if publication.errors[:description].any? %>
+          <%= tag.p publication.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-base text-red-600' if publication.errors[:description].any? %>
         </div>
       </div>
     </div>

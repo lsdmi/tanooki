@@ -32,13 +32,19 @@ end
 Rails.configuration.after_initialize do
   ActionText::RichText.class_eval do
     acts_as_paranoid
+
+    default_scope -> { where(deleted_at: nil) }
   end
 
   ActiveStorage::Attachment.class_eval do
     acts_as_paranoid
+
+    default_scope -> { where(deleted_at: nil) }
   end
 
   ActiveStorage::Blob.class_eval do
     acts_as_paranoid
+
+    default_scope -> { where(deleted_at: nil) }
   end
 end

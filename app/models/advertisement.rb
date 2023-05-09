@@ -18,4 +18,10 @@ class Advertisement < ApplicationRecord
       caption.downcase
     ]
   end
+
+  def thumbnail
+    return unless cover.previewable?
+
+    cover.preview(resize_to_limit: [100, 100]).processed
+  end
 end

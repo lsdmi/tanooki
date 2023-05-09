@@ -1,7 +1,7 @@
 <section class="float-left block w-full">
   <div class="w-full float-left relative">
     <%= render 'shared/divider', caption: 'Останні Відео' %>
-    <% @videos.each do |video| %>
+    <% videos.each do |video| %>
       <%= tag.iframe src: video, allowfullscreen: true, width: '100%', height: '200', class: 'mb-2 rounded-lg' %>
     <% end %>
   </div>

@@ -57,4 +57,28 @@ class PublicationTest < ActiveSupport::TestCase
       @publication.destroy
     end
   end
+
+  test 'should not save publication with a description shorter than 1000 characters' do
+    @publication.description = 'Short description'
+    assert_not @publication.valid?
+  end
+
+  test 'should not save publication with a title shorter than 10 characters' do
+    @publication.title = 'Title'
+    assert_not @publication.valid?
+  end
+
+  test 'should not save publication with a title longer than 100 characters' do
+    @publication.title = 'Title' * 25
+    assert_not @publication.valid?
+  end
+
+  test 'should not save publication with a cover that is not a JPEG, PNG, SVG, or WebP' do
+    invalid_image = Rack::Test::UploadedFile.new(
+      Rails.root.join('app', 'assets', 'stylesheets', 'actiontext.css')
+    )
+
+    @publication.cover.attach(invalid_image)
+    assert_not @publication.valid?
+  end
 end

@@ -1,9 +1,10 @@
 <%= link_to advertisement.resource, class: 'relative overflow-hidden h-0 hidden md:block', aria: { label: advertisement.caption } do %>
   <%= video_tag url_for(advertisement.cover),
                 alt: advertisement.cover.blob.filename.to_s,
-                class: 'top-0 left-0 w-full h-full',
                 autoplay: true,
+                class: 'top-0 left-0 w-full h-full',
                 loop: true,
                 muted: true,
-                onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');" %>
+                onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');",
+                poster: url_for(advertisement.thumbnail) %>
 <% end %>
