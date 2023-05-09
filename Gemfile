@@ -86,7 +86,7 @@ end
 
 gem 'devise'
 gem 'dotenv-rails'
-gem 'elasticsearch', '~> 7.17.0'
+gem 'elasticsearch', '~> 8.7.1'
 gem 'friendly_id'
 gem 'i18n'
 gem 'omniauth-google-oauth2'
