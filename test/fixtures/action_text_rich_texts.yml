@@ -2,7 +2,7 @@ rich_text_one:
   name: description
   record_type: Publication
   record_id: 1
-  body: 'Rich Text with Video <iframe src="https://www.youtube.com/embed/video1"></iframe>'
+  body: "Rich Text with Video <iframe src='https://www.youtube.com/embed/video1'></iframe> <%= Faker::Lorem.characters(number: 984) %>"
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
@@ -10,7 +10,7 @@ rich_text_two:
   name: description
   record_type: Publication
   record_id: 2
-  body: 'Rich Text Two with Video <iframe src="https://www.youtube.com/embed/video2"></iframe>'
+  body: "Rich Text with Video <iframe src='https://www.youtube.com/embed/video2'></iframe> <%= Faker::Lorem.characters(number: 984) %>"
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 

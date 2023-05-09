@@ -1,7 +1,7 @@
 <%= link_to tale_path(publication) do %>
   <div class="float-left relative w-full">
     <div class="w-2/3 float-right relative">
-      <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl max-w-full h-auto opacity-100 hover:opacity-75" %>
+      <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl max-w-full h-auto opacity-100 hover:opacity-75", loading: 'eager' %>
       <div class="absolute inset-0" style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .5) 60%, rgba(0, 0, 0, 1) 100%);">
         <div class="z-10 h-full w-full absolute top-0 left-0 bg-black opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
       </div>

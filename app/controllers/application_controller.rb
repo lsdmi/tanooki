@@ -25,15 +25,15 @@ class ApplicationController < ActionController::Base
 
   def videos
     Rails.cache.fetch('videos', expires_in: 1.hour) do
-      rich_texts = ActionText::RichText.where('body LIKE ?', '%youtube.com/embed/%').order(created_at: :desc).limit(3)
-
-      video_urls = []
-      rich_texts.each do |rich_text|
+      videos = ActionText::RichText.where('body LIKE ?', '%youtube.com/embed/%')
+                                   .order(created_at: :desc)
+                                   .limit(3)
+                                   .flat_map do |rich_text|
         doc = Nokogiri::HTML.parse(rich_text.body.to_s)
-        video_urls << doc.at_css('iframe[src*="youtube.com/embed/"]')&.attr('src')
+        doc.css('iframe[src*="youtube.com/embed/"]').map { |iframe| iframe['src'] }
       end
 
-      video_urls
+      videos[0..2]
     end
   end
 

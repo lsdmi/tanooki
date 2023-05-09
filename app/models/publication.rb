@@ -19,7 +19,11 @@ class Publication < ApplicationRecord
   has_many :publication_tags, dependent: :destroy
   has_many :tags, through: :publication_tags
 
-  validates :title, :description, :cover, presence: true
+  validates :cover, presence: true
+  validates :description, length: { minimum: 1000 }
+  validates :title, length: { minimum: 10, maximum: 100 }
+
+  validate :cover_format
 
   scope :highlights, -> { where(highlight: true) }
   scope :not_highlights, -> { where(highlight: false) }
@@ -38,5 +42,12 @@ class Publication < ApplicationRecord
     [
       title.downcase
     ]
+  end
+
+  def cover_format
+    return unless cover.attached?
+    return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
+
+    errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
   end
 end

@@ -2,7 +2,7 @@
   <%= link_to tale_path(publication) do %>
     <div class="rounded-xl float-left relative w-[-webkit-fill-available] w-[-moz-available] lg:w-full mx-4 lg:mx-0 my-2">
       <div class="rounded-xl float-left relative w-full overflow-hidden h-96 <%= i.zero? ? 'lg:h-[450px]' : 'lg:h-[350px]' %>">
-        <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] h-96 #{i.zero? ? 'lg:h-[450px]' : 'lg:h-[350px]'} object-cover" %>
+        <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] h-96 #{i.zero? ? 'lg:h-[450px]' : 'lg:h-[350px]'} object-cover", loading: i.zero? ? 'eager' : 'lazy' %>
         <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
       </div>
       <div class="rounded-xl w-full float-left absolute left-0 bottom-0 px-[2.7%] pt-32 pb-2 lg:pb-8 bg-gradient-to-t from-gray-900 via-gray-800/60 to-gray-800/9">

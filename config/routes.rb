@@ -6,13 +6,19 @@ Rails.application.routes.draw do
   root 'home#index'
   post '/' => 'home#index'
 
-  devise_for :users, controllers: {
-    confirmations: 'users/confirmations',
-    omniauth_callbacks: 'users/omniauth_callbacks',
-    passwords: 'users/passwords',
-    registrations: 'users/registrations',
-    sessions: 'users/sessions'
-  }
+  devise_for :users,
+             path: '',
+             path_names: {
+               sign_in: 'login',
+               sign_up: 'register'
+             },
+             controllers: {
+               confirmations: 'users/confirmations',
+               omniauth_callbacks: 'users/omniauth_callbacks',
+               passwords: 'users/passwords',
+               registrations: 'users/registrations',
+               sessions: 'users/sessions'
+             }
 
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
