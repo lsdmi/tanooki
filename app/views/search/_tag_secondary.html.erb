@@ -7,9 +7,12 @@
             <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full h-36 object-cover" %>
           </div>
           <div class="w-full float-left px-0 pt-4 pb-2 items-center">
-            <div class="w-full float-left rounded-xl mb-1">
-              <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'hidden lg:block text-gray-500 text-xs w-full float-left' %>
-              <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'block lg:hidden text-gray-500 text-xs w-full float-left' %>
+            <div class="w-full flex rounded-xl mb-1">
+              <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'block text-gray-500 text-xs w-full float-left' %>
+              <span class="text-gray-500 text-xs float-right mr-4 flex align-center">
+                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+                <%= tag.span publication.views, class: 'ml-1 inline-block' %>
+              </span>
             </div>
             <div>
               <%= tag.h2 publication.title, class: 'font-oswald text-gray-700 float-left text-2xl md:text-lg md:leading-6 lg:leading-6 lg:text-xl tracking-tight w-full' %>

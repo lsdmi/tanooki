@@ -6,7 +6,13 @@
         <div class="flex items-center space-x-4">
           <div class="flex-1 min-w-0">
             <%= tag.p publication.title, class: 'text-base font-semibold text-gray-900 truncate' %>
-            <%= tag.p "#{time_ago_in_words(publication.created_at)} тому", class: 'text-sm font-normal text-gray-500 truncate' %>
+            <div class="flex">
+              <%= tag.p "#{time_ago_in_words(publication.created_at)} тому", class: 'text-sm font-normal text-gray-500 truncate inline-block' %>
+              <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
+                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+                <%= tag.span publication.views, class: 'ml-1 inline-block' %>
+              </span>
+            </div>
           </div>
           <div class="inline-flex items-center">
             <%= link_to 'Редагувати', edit_publication_path(publication.slug), data: { turbo: false }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>

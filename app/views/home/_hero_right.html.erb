@@ -8,8 +8,12 @@
             <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-90 m-auto w-full lg:w-24 lg:h-24 object-cover" %>
           </div>
           <div class="relative float-right sm:w-full lg:col-span-3 m-4 sm:m-0">
-            <div class="w-full float-left rounded-xl md:mt-1 lg:mt-0">
-              <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-500 text-xs w-full float-left mb-1' %>
+            <div class="w-full float-left rounded-xl md:mt-1 mb-1 lg:mt-0">
+              <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-500 text-xs float-left' %>
+              <span class="text-gray-500 text-xs float-right mr-4 flex align-center">
+                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+                <%= tag.span publication.views, class: 'ml-1 inline-block' %>
+              </span>
             </div>
             <%= tag.h2 publication.title.truncate(75), class: 'font-oswald text-gray-700 float-left text-2xl md:text-xl md:leading-5 lg:leading-5 lg:text-xl tracking-tight w-full mb-1 lg:mb-0' %>
             <%= tag.p punch(publication.description.to_plain_text), class: "float-left w-full font-light leading-5 text-gray-600 text-base sm:hidden" %>

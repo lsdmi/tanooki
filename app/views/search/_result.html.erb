@@ -8,7 +8,11 @@
       <div class="md:ml-[370px] lg:ml-[410px]">
         <div class="mt-2 xl:mt-4 w-full float-left relative">
           <div class="mb-2 w-full float-left">
-            <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-400 text-sm lg:text-xs relative float-left' %>
+            <%= tag.span "Опубліковано: #{time_ago_in_words(result.created_at)} тому", class: 'ml-1 text-gray-500 text-sm lg:text-xs relative float-left' %>
+            <span class="text-gray-500 text-xs float-right mr-4 flex align-center">
+              <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+              <%= tag.span result.views, class: 'ml-1 inline-block' %>
+            </span>
           </div>
           <%= tag.h2 result.title, class: 'font-oswald text-gray-800 float-left text-3xl md:text-2xl font-bold tracking-tight w-full' %>
           <%= tag.p punch(result.description.to_plain_text), class: 'float-left w-full text-base xl:text-sm font-light leading-5 text-gray-600 mt-2' %>

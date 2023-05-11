@@ -5,15 +5,26 @@ export default class DropzoneController extends Controller {
 
   connect() {
     console.log("DropzoneController connected");
+
+    const coverInput = document.getElementById("publication_cover");
+    if (!coverInput) return;
+
+    this.updateTextContent(coverInput);
   }
 
   update(event) {
-    const imageName = document.querySelector("#image_name");
-    if (!imageName) return;
+    this.updateTextContent(event.target);
+  }
 
-    const input = event.target;
-    if (input.files && input.files[0]) {
-      imageName.textContent = input.files[0].name.slice(0, 40);
+  updateTextContent(input) {
+    const imageName = document.querySelector("#image_name");
+
+    if (!imageName || !input.files || !input.files[0]) {
+      imageName.textContent = "";
+      return;
     }
+
+    const fileName = input.files[0].name;
+    imageName.textContent = fileName.slice(0, 40);
   }
 }
