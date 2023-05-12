@@ -1,0 +1,10 @@
+one:
+  id: 1
+  slug: 'one'
+  status: 'announced'
+  title: "Test Fiction"
+  author: "Test Author"
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  total_chapters: 5
+  translator: "Test Translator"
+  user_id: 1

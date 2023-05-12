@@ -1,0 +1,7 @@
+<section class="z-10 font-oswald">
+  <div class="my-8 px-4 mx-auto max-w-screen-xl lg:mt-12 lg:mb-16 relative">
+    <%= turbo_frame_tag 'fictions-list' do %>
+      <%= render 'list', fictions: @fictions, pagy: @pagy %>
+    <% end %>
+  </div>
+</section>

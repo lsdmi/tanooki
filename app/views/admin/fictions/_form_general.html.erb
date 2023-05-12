@@ -1,0 +1,62 @@
+<%= f.input :user_id, as: :hidden, input_html: { value: fiction.user&.id || current_user.id } %>
+
+<div class="py-4 border-gray-200 sm:py-5">
+  <div class="lg:grid gap-4 md:gap-6 lg:grid-cols-2">
+    <div class="space-y-4 sm:space-y-6">
+      <div>
+        <%= f.label :title, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:title].any?}" }, label: false, placeholder: 'Додайте заголовок' %>
+        <%= tag.p fiction.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:title].any? %>
+      </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <%= f.label :author, 'Автор', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :author, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:author].any?}" }, label: false, placeholder: 'Вкажіть автора' %>
+          <%= tag.p fiction.errors[:author].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:author].any? %>
+        </div>
+        <div class="w-full">
+          <%= f.label :translator, 'Перекладач', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :translator, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:translator].any?}" }, label: false, placeholder: 'Вкажіть перекладача' %>
+          <%= tag.p fiction.errors[:translator].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:translator].any? %>
+        </div>
+      </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <%= f.label :total_chapters, 'Кількість розділів', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :total_chapters, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:total_chapters].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p fiction.errors[:total_chapters].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:total_chapters].any? %>
+        </div>
+        <div class="w-full">
+          <%= f.label :status, 'Статус', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.select :status, options_for_select(Fiction.statuses.map { |key, value| [value, key] }), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 lg:mt-0 space-y-4 sm:space-y-6">
+      <div>
+        <%= f.label :description, 'Опис', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= tag.div class: "w-full bg-gray-100 rounded-lg border border-gray-200 #{'border-red-300' if fiction.errors[:description].any?}" do %>
+          <div class="py-2 px-4 bg-gray-50 rounded-b-lg">
+            <%= f.text_area :description, class: "block px-0 w-full text-sm text-gray-800 bg-gray-50 border-0 focus:ring-0", rows: 4, label: false, placeholder: 'Додайте недовгий опис твору' %>
+          </div>
+        <% end %>
+        <%= tag.p fiction.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:description].any? %>
+      </div>
+      <div>
+        <%= f.label :cover, 'Обкладинка', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <div class="flex justify-center items-center w-full">
+          <%= f.label :cover, class: "flex flex-col justify-center items-center w-full h-48 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if fiction.errors[:cover].any?}" do %>
+            <div class="flex flex-col justify-center items-center pt-5 pb-6">
+              <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть чи перетягніть,</span> аби обрати файл</p>
+              <p class="mb-4 text-xs text-gray-500">SVG, PNG, JPEG чи WebP</p>
+            </div>
+            <%= f.file_field :cover, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'text-center text-sm text-gray-500' %>
+          <% end %>
+        </div>
+        <%= tag.p fiction.errors[:cover].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:cover].any? %>
+      </div>
+    </div>
+  </div>
+</div>

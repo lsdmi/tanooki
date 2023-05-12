@@ -21,3 +21,11 @@ rich_text_three:
   body: 'Rich Text with Vimeo Video <iframe src="https://www.vimeo.com/embed/video4"></iframe>'
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+rich_text_four:
+  name: content
+  record_type: Chapter
+  record_id: 1
+  body: "<%= Faker::Lorem.characters(number: 984) %>"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

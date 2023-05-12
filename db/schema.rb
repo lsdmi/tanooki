@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_04_195135) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_11_020957) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -68,6 +68,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_195135) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "slug", null: false
+    t.bigint "fiction_id", null: false
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.integer "number", null: false
+    t.integer "views", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
+    t.index ["slug"], name: "index_chapters_on_slug", unique: true
+    t.index ["user_id"], name: "index_chapters_on_user_id"
+  end
+
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "parent_id"
@@ -78,6 +93,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_195135) do
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["publication_id"], name: "index_comments_on_publication_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "slug", null: false
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "views", default: 0
+    t.string "status", null: false
+    t.string "author", null: false
+    t.string "translator"
+    t.integer "total_chapters", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["slug"], name: "index_fictions_on_slug", unique: true
+    t.index ["user_id"], name: "index_fictions_on_user_id"
   end
 
   create_table "publication_tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -133,9 +165,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_195135) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chapters", "fictions", on_delete: :cascade
+  add_foreign_key "chapters", "users", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "publications", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "fictions", "users", on_delete: :cascade
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade

@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
+    resources :chapters, except: %i[index show]
+    resources :fictions, except: %i[show]
     resources :tags, except: :new
     resources :tales, only: :index
   end
@@ -33,6 +35,8 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
+  resources :chapters, only: :show
+  resources :fictions, only: %i[index show]
   resources :publications, except: %i[index show]
   resources :search, only: :index
   resources :tales, only: :show

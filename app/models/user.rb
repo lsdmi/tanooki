@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   belongs_to :avatar
   has_many :comments
+  has_many :fictions
   has_many :publications
 
   scope :avatarless, -> { where(avatar_id: nil) }

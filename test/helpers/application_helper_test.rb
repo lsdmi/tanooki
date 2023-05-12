@@ -55,6 +55,16 @@ class ApplicationHelperTest < ActionView::TestCase
     assert requires_tinymce?
   end
 
+  test 'requires tinymce for chapters/new' do
+    request.path = new_admin_chapter_path
+    assert requires_tinymce?
+  end
+
+  test 'requires tinymce for fictions/new' do
+    request.path = new_admin_fiction_path
+    assert requires_tinymce?
+  end
+
   test 'does not require tinymce for other pages' do
     request.path = root_path
     refute requires_tinymce?

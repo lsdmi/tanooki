@@ -47,7 +47,7 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    path_strings = ['admin/tales', 'dashboard', 'publications']
+    path_strings = ['admin/tales', 'admin/chapters', 'admin/fictions', 'dashboard', 'publications']
     return true if path_strings.any? { |str| request.path.include?(str) }
   end
 end

@@ -1,0 +1,27 @@
+<%= f.input :fiction_id, as: :hidden, input_html: { value: chapter.fiction&.id || Fiction.find_by(slug: params[:fiction])&.id } %>
+<%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
+
+<div class="py-4 border-gray-200 sm:py-5">
+  <div class="space-y-4 sm:space-y-6">
+    <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+      <div class="w-full">
+        <%= f.label :title, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:title].any?}" }, label: false, placeholder: 'Додайте заголовок' %>
+        <%= tag.p chapter.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:title].any? %>
+      </div>
+      <div class="w-full">
+        <%= f.label :number, 'Номер розділу', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.input :number, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:number].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+        <%= tag.p chapter.errors[:number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:number].any? %>
+      </div>
+    </div>
+    <div>
+      <label for="content" class="block text-sm font-medium text-gray-900">Зміст</label>
+      <div class="py-2 rounded-b-lg">
+        <%= f.text_area :content, placeholder: "Додайте зміст", label: false, class: "tinymce block px-0 w-full focus:ring-0" %>
+        <%= tag.p chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-base text-red-600' if chapter.errors[:content].any? %>
+      </div>
+    </div>
+    <%= f.submit "Надіслати", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-800" %>
+  </div>
+</div>
