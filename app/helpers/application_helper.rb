@@ -11,12 +11,13 @@ module ApplicationHelper
   def meta_title
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
 
-    @publication&.title || @fiction&.title || 'Бака - Новини Аніме та Манґа'
+    [@publication, @fiction, @chapter].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
 
   def meta_description
     return punch(@publication.description.to_plain_text) if @publication&.description.present?
     return @fiction.description if @fiction&.description.present?
+    return punch(@chapter.content.to_plain_text) if @chapter&.content.present?
 
     'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
   end
@@ -48,6 +49,8 @@ module ApplicationHelper
       @publication.cover
     elsif @fiction&.persisted?
       @fiction.cover
+    elsif @chapter&.persisted?
+      @chapter.fiction.cover
     end
   end
 

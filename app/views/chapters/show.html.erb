@@ -1,0 +1,52 @@
+<section class="z-10 relative">
+  <main class="pb-4">
+    <header class="py-4 font-oswald">
+      <div class="px-4 mx-auto w-full max-w-screen-2xl text-center">
+        <%= tag.span "Опубліковано: #{time_ago_in_words(@chapter.created_at)} тому", class: "block mb-2 font-semibold text-gray-900" %>
+        <%= tag.h1 "Розділ #{@chapter.number} - #{@chapter.title}", class: 'mx-auto mb-2 max-w-2xl text-2xl font-extrabold leading-none text-gray-900 sm:text-3xl lg:text-4xl' %>
+      </div>
+    </header>
+    <div class="flex relative z-20 justify-between px-4 mx-auto max-w-screen-2xl rounded">
+      <article class="xl:w-[950px] w-full max-w-none format format-sm sm:format-base lg:format-lg format-blue">
+        <div class="flex flex-row justify-between lg:items-center py-4 border-b border-gray-200 not-format font-oswald">
+          <%= tag.span @chapter.fiction.author, class: 'text-base mb-2 lg:mb-0 font-normal text-gray-500' %>
+          <aside aria-label="chapter details">
+            <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
+              <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+              <%= tag.span @chapter.views, class: 'ml-1 inline-block' %>
+            </span>
+          </aside>
+        </div>
+        <div id="chapter-content" class="mt-2 text-sm font-georgia">
+          <%= @chapter.content %>
+        </div>
+        <div class="mt-8">
+          <%= render 'comments/index' if current_user || @comments.any? %>
+        </div>
+      </article>
+      <aside class="ml-8 hidden xl:block" aria-labelledby="sidebar-label">
+        <div class="xl:w-[450px] sticky top-6">
+          <%= tag.div class: 'p-4 mb-6 rounded-lg border border-gray-200 font-oswald' do %>
+            <h4 class="mb-4 text-sm font-bold text-gray-900 uppercase">Далі</h4>
+            <div class="mb-6">
+              <%= tag.h5 "Розділ #{@next_chapter.number} - #{@next_chapter.title}", class: 'mb-2 text-lg font-bold leading-tight text-gray-900' %>
+              <%= tag.p punch(@next_chapter.content.to_plain_text), class: 'mb-2 font-light text-gray-500' %>
+              <%= link_to 'Читати', chapter_path(@next_chapter), class: 'inline-flex items-center font-medium underline underline-offset-4 text-emerald-600 hover:no-underline' %>
+            </div>
+          <% end if @next_chapter %>
+          <div class="flex justify-center items-center mb-3 w-full rounded-lg xl:w-[450px]">
+            <%= link_to @more_ads.resource, class: '', aria: { label: @more_ads.caption } do %>
+              <%= video_tag url_for(@more_ads.cover),
+                            alt: @more_ads.cover.blob.filename.to_s,
+                            autoplay: true,
+                            class: 'rounded-lg object-cover h-48 shadow-xl',
+                            loop: true,
+                            muted: true,
+                            poster: url_for(@more_ads.thumbnail) %>
+            <% end %>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</section>

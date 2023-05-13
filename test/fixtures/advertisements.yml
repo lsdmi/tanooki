@@ -4,3 +4,10 @@ advertisement_one:
   caption: "Lorem ipsum dolor sit amet"
   resource: "https://example.com/image1.jpg"
   enabled: true
+
+advertisement_two:
+  id: 2
+  slug: advertisement_two
+  caption: "Lorem ipsum dolor sit amet"
+  resource: "https://example.com/image1.jpg"
+  enabled: true

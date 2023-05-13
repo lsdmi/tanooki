@@ -58,7 +58,7 @@ module Admin
     end
 
     test 'should not update chapter with invalid data' do
-      patch admin_chapter_url(@chapter), params: { chapter: { content: '', fiction_id: '', number: '', title: '' } }
+      patch admin_chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
       assert_response :unprocessable_entity
     end
 

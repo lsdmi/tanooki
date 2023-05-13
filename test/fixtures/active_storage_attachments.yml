@@ -39,3 +39,10 @@ attachment_six:
   record_id: 1
   blob_id: 6
   created_at: <%= Time.now %>
+
+attachment_seven:
+  name: cover
+  record_type: Advertisement
+  record_id: 2
+  blob_id: 7
+  created_at: <%= Time.now %>
