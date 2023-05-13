@@ -52,3 +52,14 @@ blob_five:
   byte_size: 44040
   checksum: <%= Faker::Book.title %>
   created_at: <%= Time.now %>
+
+blob_six:
+  id: 6
+  key: blob_six
+  filename: <%= Faker::Book.title %>
+  content_type: image/png
+  metadata: <%= Faker::Book.title %>
+  service_name: local
+  byte_size: 44040
+  checksum: <%= Faker::Book.title %>
+  created_at: <%= Time.now %>

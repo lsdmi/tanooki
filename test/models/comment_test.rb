@@ -20,14 +20,14 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should be valid with required attributes' do
-    comment = Comment.new(content: 'valid comment', publication: @publication, user: @user)
+    comment = Comment.new(content: 'valid comment', commentable: @publication, user: @user)
     assert comment.valid?, 'Comment is invalid with required attributes'
   end
 
   test 'should destroy child comments when parent is destroyed' do
-    parent = Comment.create(content: 'Parent comment', publication: @publication, user: @user)
-    child1 = Comment.create(content: 'Child 1', parent:, publication: @publication, user: @user)
-    child2 = Comment.create(content: 'Child 2', parent:, publication: @publication, user: @user)
+    parent = Comment.create(content: 'Parent comment', commentable: @publication, user: @user)
+    child1 = Comment.create(content: 'Child 1', parent:, commentable: @publication, user: @user)
+    child2 = Comment.create(content: 'Child 2', parent:, commentable: @publication, user: @user)
 
     parent.destroy
 
@@ -37,11 +37,11 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should return only parent comments in parents scope' do
-    parent1 = Comment.create(content: 'Parent 1', publication: @publication, user: @user)
-    child1 = Comment.create(content: 'Child 1', parent: parent1, publication: @publication, user: @user)
-    child2 = Comment.create(content: 'Child 2', parent: parent1, publication: @publication, user: @user)
+    parent1 = Comment.create(content: 'Parent 1', commentable: @publication, user: @user)
+    child1 = Comment.create(content: 'Child 1', parent: parent1, commentable: @publication, user: @user)
+    child2 = Comment.create(content: 'Child 2', parent: parent1, commentable: @publication, user: @user)
 
-    parent2 = Comment.create(content: 'Parent 2', publication: @publication, user: @user)
+    parent2 = Comment.create(content: 'Parent 2', commentable: @publication, user: @user)
     parents = Comment.parents
 
     assert_includes parents, parent1

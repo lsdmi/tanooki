@@ -58,7 +58,7 @@ uk:
         comment:
           attributes:
             content:
-              blank: введіть ваш коментар
+              blank: введіть коментар чи відгук
               too_long: введіть не більше 2200 символів
   errors:
     format: "%{attribute} %{message}"

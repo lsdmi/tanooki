@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_11_020957) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_13_015339) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -86,12 +86,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_020957) do
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "parent_id"
-    t.bigint "publication_id", null: false
+    t.bigint "commentable_id", null: false
+    t.string "commentable_type", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
-    t.index ["publication_id"], name: "index_comments_on_publication_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -168,7 +169,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_020957) do
   add_foreign_key "chapters", "fictions", on_delete: :cascade
   add_foreign_key "chapters", "users", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
-  add_foreign_key "comments", "publications", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fictions", "users", on_delete: :cascade
   add_foreign_key "publication_tags", "publications"

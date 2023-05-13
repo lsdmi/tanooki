@@ -29,7 +29,7 @@ class TalesController < ApplicationController
   end
 
   def set_tale
-    @publication = Rails.cache.fetch("publication_#{params[:id]}", expires_in: 1.hour) do
+    @publication = @commentable = Rails.cache.fetch("publication_#{params[:id]}", expires_in: 1.hour) do
       Tale.find(params[:id])
     end
   end

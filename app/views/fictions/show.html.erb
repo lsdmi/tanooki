@@ -1,0 +1,19 @@
+<section class="z-10 relative font-oswald">
+  <div class="gap-8 items-center py-4 mx-4 2xl:mx-auto max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
+    <div class="<%= @fiction.chapters.any? ? 'col-span-5' : 'col-span-8' %> grid grid-cols-5 lg:grid-cols-5 gap-8 xl:gap-16 self-start">
+      <%= image_tag url_for(@fiction.cover), class: 'md:col-span-2 hidden h-[32rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
+      <%= render 'details' %>
+      <div class="col-span-5">
+        <div class="lg:hidden">
+          <%= render 'chapters' if @fiction.chapters.any? %>
+        </div>
+        <%= render 'comments/index' if current_user || @comments.any? %>
+      </div>
+    </div>
+    <% if @fiction.chapters.any? %>
+      <div class="hidden lg:contents">
+        <%= render 'chapters' %>
+      </div>
+    <% end %>
+  </div>
+</section>

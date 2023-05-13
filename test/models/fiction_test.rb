@@ -99,4 +99,13 @@ class FictionTest < ActiveSupport::TestCase
     @fiction.cover.attach(invalid_image)
     assert_not @fiction.valid?
   end
+
+  test 'should destroy associated comments' do
+    fiction = fictions(:one)
+    fiction.comments << comments(:comment_one)
+
+    assert_difference('Comment.count', -1) do
+      fiction.destroy
+    end
+  end
 end

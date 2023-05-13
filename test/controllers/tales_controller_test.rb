@@ -28,7 +28,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not increment views for publication if already viewed' do
-    session = { viewed_publications: [@tale.id] }
+    session = { viewed: [@tale.slug] }
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
@@ -43,17 +43,17 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
-      assert_equal [@tale.id], session[:viewed_publications]
+      assert_equal [@tale.slug], session[:viewed]
     end
   end
 
   test 'should not add publication id to viewed_publications session variable if already viewed' do
-    session = { viewed_publications: [@tale.id] }
+    session = { viewed: [@tale.slug] }
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
-      assert_equal [@tale.id], session[:viewed_publications]
+      assert_equal [@tale.slug], session[:viewed]
     end
   end
 

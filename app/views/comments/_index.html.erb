@@ -1,10 +1,10 @@
 <div class="w-full relative mb-4 pb-8">
-  <div class="flex justify-between items-center mb-2 mt-6">
-    <%= render 'shared/divider', caption: 'Коментарі' %>
+  <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-0' %>">
+    <%= render 'shared/divider', caption: fictions? ? 'Відгуки' : 'Коментарі', rose: fictions? ? false : true  %>
   </div>
   <%= turbo_frame_tag "new_comment" do %>
     <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @comment, publication: @publication, f: f %>
+      <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
     <% end %>
   <% end if current_user %>
   <%= turbo_frame_tag "comments" do %>

@@ -50,8 +50,10 @@ module Admin
     end
 
     test 'should get edit' do
-      get edit_admin_fiction_url(@fiction)
-      assert_response :success
+      @fiction.stub :cover, ActiveStorage::Attachment.last do
+        get edit_admin_fiction_url(@fiction)
+        assert_response :success
+      end
     end
 
     test 'should update fiction' do

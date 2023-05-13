@@ -93,4 +93,13 @@ class ChapterTest < ActiveSupport::TestCase
     refute @chapter.valid?
     assert_not_nil @chapter.errors[:title]
   end
+
+  test 'should destroy associated comments' do
+    chapter = chapters(:one)
+    chapter.comments << comments(:comment_one)
+
+    assert_difference('Comment.count', -1) do
+      chapter.destroy
+    end
+  end
 end

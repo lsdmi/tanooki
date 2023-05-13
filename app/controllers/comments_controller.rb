@@ -5,12 +5,12 @@ class CommentsController < ApplicationController
 
   def new
     @comment = Comment.new(comment_params)
-    @publication = @comment.publication
+    @commentable = @comment.commentable
   end
 
   def create
-    @publication = Publication.find_by(id: comment_params[:publication_id])
     @created_comment = Comment.create(comment_params)
+    @commentable = @created_comment.commentable
 
     update_parent
 
@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    @publication = @comment.publication
+    @commentable = @comment.commentable
   end
 
   def cancel_edit
@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
   end
 
   def cancel_reply
-    @publication = @comment.publication
+    @commentable = @comment.commentable
   end
 
   def update
@@ -46,7 +46,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content, :publication_id, :user_id, :parent_id)
+    params.require(:comment).permit(:content, :commentable_id, :commentable_type, :user_id, :parent_id)
   end
 
   def update_parent

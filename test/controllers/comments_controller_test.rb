@@ -15,7 +15,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
   test 'should create comment' do
     assert_difference('Comment.count') do
       post comments_url(format: :turbo), params: {
-        comment: { content: 'New comment', publication_id: @publication.id, user_id: @user.id }
+        comment: { content: 'New comment', commentable_id: @publication.id, commentable_type: Tale, user_id: @user.id }
       }
     end
   end

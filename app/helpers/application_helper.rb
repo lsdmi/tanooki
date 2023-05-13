@@ -11,11 +11,12 @@ module ApplicationHelper
   def meta_title
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
 
-    @publication&.title || 'Бака - Новини Аніме та Манґа'
+    @publication&.title || @fiction&.title || 'Бака - Новини Аніме та Манґа'
   end
 
   def meta_description
     return punch(@publication.description.to_plain_text) if @publication&.description.present?
+    return @fiction.description if @fiction&.description.present?
 
     'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
   end
@@ -27,7 +28,7 @@ module ApplicationHelper
                    when search_index_path
                      @results.first&.cover
                    else
-                     publication_cover
+                     meta_cover
                    end
 
     url_for(result_cover || asset_path('login.jpg'))
@@ -42,8 +43,12 @@ module ApplicationHelper
     end
   end
 
-  def publication_cover
-    @publication&.persisted? ? @publication.cover : nil
+  def meta_cover
+    if @publication&.persisted?
+      @publication.cover
+    elsif @fiction&.persisted?
+      @fiction.cover
+    end
   end
 
   def requires_tinymce?

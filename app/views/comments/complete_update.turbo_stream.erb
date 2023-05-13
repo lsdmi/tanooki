@@ -1,7 +1,7 @@
 <% if @comment.invalid? %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
     <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @comment, publication: @comment.publication, f: f %>
+      <%= render "comments/new", comment: @comment, commentable: @comment.commentable, f: f %>
     <% end %>
   <% end %>
 <% else %>

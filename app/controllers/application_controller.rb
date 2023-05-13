@@ -12,11 +12,10 @@ class ApplicationController < ActionController::Base
   end
 
   def track_visit
-    return if session[:viewed_publications]&.include?(@publication.id)
-
-    @publication.increment!(:views)
-    session[:viewed_publications] ||= []
-    session[:viewed_publications] << @publication.id
+    TrackingService.new(
+      @publication || @chapter || @fiction,
+      session
+    ).call
   end
 
   def verify_user_permissions
