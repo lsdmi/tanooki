@@ -4,7 +4,7 @@
       <div class="p-8 rounded-lg mx-auto">
         <h1 class="font-oswald mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl">Вітаємо з поверненням!</h1>
         <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500 font-light">Досі не з нами? Приєднуйтеся до світу аніме вже зараз!
-          <%= link_to 'Зареєструватися', new_user_registration_path, class: 'hover:underline text-emerald-700' %>
+          <%= link_to 'Зареєструватися', register_path, class: 'hover:underline text-emerald-700' %>
         </p>
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
           <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">

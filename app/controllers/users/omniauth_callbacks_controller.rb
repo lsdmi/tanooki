@@ -34,7 +34,7 @@ module Users
 
     def failure_google_oauth
       session['devise.google_data'] = request.env['omniauth.auth'].except('extra')
-      redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
+      redirect_to register_url, alert: @user.errors.full_messages.join("\n")
     end
   end
 end

@@ -7,18 +7,22 @@ Rails.application.routes.draw do
   post '/' => 'home#index'
 
   devise_for :users,
+             skip: %i[registrations],
              path: '',
              path_names: {
                sign_in: 'login',
-               sign_up: 'register'
              },
              controllers: {
                confirmations: 'users/confirmations',
                omniauth_callbacks: 'users/omniauth_callbacks',
                passwords: 'users/passwords',
-               registrations: 'users/registrations',
                sessions: 'users/sessions'
              }
+
+  devise_scope :user do
+    get '/register', to: 'users/registrations#new'
+    post '/register', to: 'users/registrations#create'
+  end
 
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]

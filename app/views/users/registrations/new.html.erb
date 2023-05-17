@@ -6,7 +6,7 @@
         <p class="font-oswald leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500 font-light">Вже маєте обліковий запис?
           <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'hover:underline text-emerald-700' %>
         </p>
-        <%= simple_form_for(resource, as: resource_name, url: user_registration_path, data: { turbo: false }) do |f| %>
+        <%= simple_form_for(resource, as: resource_name, url: register_path, data: { turbo: false }) do |f| %>
           <%= f.input :avatar_id, as: :hidden, input_html: { value: Avatar.all.sample.id } %>
 
           <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">

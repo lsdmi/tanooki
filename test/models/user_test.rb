@@ -32,20 +32,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test 'name should only contain letters, numbers, and spaces' do
-    valid_names = ['John Doe', 'Jane123', 'Joe B Bloggs']
-    valid_names.each do |name|
-      @user.name = name
-      assert @user.valid?
-    end
-
-    invalid_names = ['JohnDoe!', 'Jane@123', 'Joe/B/Bloggs']
-    invalid_names.each do |name|
-      @user.name = name
-      assert_not @user.valid?
-    end
-  end
-
   test 'email should be present' do
     @user.email = '    '
     assert_not @user.valid?
