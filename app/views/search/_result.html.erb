@@ -1,9 +1,9 @@
 <li class="relative float-left w-full mt-0 mb-4">
   <%= link_to tale_path(result.slug) do %>
     <div class="relative w-full float-right md:ml-[-370px] xl:ml-[-410px]">
-      <div class="rounded-xl leading-none relative float-left overflow-hidden mr-2 xl:mr-7 md:w-[22rem] xl:w-[23rem]">
-        <%= image_tag url_for(result.cover), alt: result.cover.blob.filename.to_s, class: "rounded-xl w-full h-auto" %>
-        <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+      <div class="relative md:float-left leading-none mr-0 md:mr-7 overflow-hidden md:w-80 xl:w-[23rem]">
+        <%= image_tag url_for(result.cover), alt: result.cover.blob.filename.to_s, class: "w-full rounded-xl h-80 sm:h-96 md:h-44 xl:h-48 object-cover" %>
+        <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
       </div>
       <div class="md:ml-[370px] lg:ml-[410px]">
         <div class="mt-2 xl:mt-4 w-full float-left relative">

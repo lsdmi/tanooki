@@ -1,6 +1,6 @@
-<div class="grid grid-cols-1 px-4 xl:grid-cols-3 xl:gap-4 z-10 relative font-oswald">
+<div class="grid grid-cols-1 px-4 xl:grid-cols-6 xl:gap-3 z-10 relative font-oswald">
   <div class="col-span-full mb-4 xl:mb-0 mt-2 sm:mt-0">
-    <nav class="flex mb-5" aria-label="Breadcrumb">
+    <nav class="flex bg-white shadow-lg py-4 px-4 rounded-lg" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-2">
         <li class="inline-flex items-center">
           <a href="/" class="inline-flex items-center text-gray-700 hover:text-gray-900">
@@ -17,19 +17,10 @@
       </ol>
     </nav>
   </div>
-  <div class="col-span-full xl:col-auto">
-    <%= render 'users/dashboard/profile' %>
-    <%= render 'users/dashboard/avatars' %>
+  <div class="col-span-full bg-white shadow-lg rounded-lg mb-4 py-4 xl:col-auto">
+    <%= render 'users/dashboard/sidebar' %>
   </div>
-  <div class="col-span-2">
-    <div class="p-4 mb-4 bg-white rounded-lg shadow sm:p-6 xl:p-8">
-      <% if @publications.any? %>
-        <%= turbo_frame_tag 'publications-list' do %>
-          <%= render 'users/dashboard/publications', publications: @publications, pagy: @pagy %>
-        <% end %>
-      <% else %>
-        <%= render 'publications/cta_create_publication' %>
-      <% end %>
-    </div>
+  <div class="col-span-5">
+    <%= render 'users/dashboard/blogs' %>
   </div>
 </div>

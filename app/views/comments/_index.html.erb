@@ -1,5 +1,5 @@
 <div class="w-full relative mb-4 pb-8">
-  <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-0' %>">
+  <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-2' %>">
     <%= render 'shared/divider', caption: fictions? ? 'Відгуки' : 'Коментарі', rose: fictions? ? false : true  %>
   </div>
   <%= turbo_frame_tag "new_comment" do %>

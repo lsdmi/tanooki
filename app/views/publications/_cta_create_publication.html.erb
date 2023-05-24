@@ -1,18 +1,18 @@
 <section class="bg-white antialiased">
   <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-12">
-    <div class="grid grid-cols-1 gap-8 lg:gap-16 lg:grid-cols-2">
-      <div>
+    <div class="grid grid-cols-1 gap-8 lg:gap-16 lg:grid-cols-3">
+      <div class="lg:col-span-2">
         <div id="deviceTabContent" class="mt-8">
           <div id="ios" role="tabpanel" aria-labelledby="ios-tab">
             <div class="space-y-4 sm:space-y-6 lg:space-y-8">
               <div>
-                <h2 class="text-3xl font-extrabold leading-tight text-gray-900 sm:text-4xl">
+                <h2 class="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl">
                   Твори із Бакою: український аніме-хаб
                 </h2>
-                <p class="mt-4 text-base font-normal text-gray-500 sm:text-xl">
+                <p class="mt-4 text-lg font-normal text-gray-500 sm:text-2xl">
                   Долучайся та поширюй україномовний контент про аніме, манґу та культуру східної Азії.
                   Із його створенням та розповсюдженням домопоже наш зручний інтерфейс.
-                  Бака - це все необхідне, аби розпочати свій шлях у світі аніме-блогів.
+                  <span class="font-semibold text-gray-900">Бака - </span> це все необхідне, аби розпочати свій шлях у світі аніме-блогів.
                 </p>
               </div>
 
@@ -28,8 +28,8 @@
                           clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-base font-medium text-gray-900">
-                      Створи власний аніме-блоґ у кілька кліків
+                    <span class="text-lg font-medium text-gray-900">
+                      Створи власний аніме-блог у кілька кліків
                     </span>
                   </li>
 
@@ -43,7 +43,7 @@
                           clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-base font-medium text-gray-900">
+                    <span class="text-lg font-medium text-gray-900">
                       Поширюй спільнотою пристрасних шанувальників
                     </span>
                   </li>
@@ -58,19 +58,19 @@
                           clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-base font-medium text-gray-900">
+                    <span class="text-lg font-medium text-gray-900">
                       Спілкуйся та ділися враженнями у коментарях
                     </span>
                   </li>
                 </ul>
 
-                <h3 class="mt-6 text-xl font-normal text-gray-500">
+                <h3 class="mt-6 text-2xl font-normal text-gray-500">
                   Приєднуйся уже зараз, аби стати частиною нашої аніме-спільноти та нічого не пропустити!
                 </h3>
               </div>
 
               <div>
-                <%= link_to new_publication_path, class: 'inline-flex items-center text-base font-medium text-emerald-600 hover:underline' do %>
+                <%= link_to new_publication_path, class: 'inline-flex items-center text-lg font-medium text-emerald-600 hover:underline' do %>
                   Мій перший допис
                   <svg aria-hidden="true" class="w-5 h-5 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                     fill="currentColor">
@@ -86,8 +86,12 @@
       </div>
 
       <div class="hidden lg:block">
-        <div class="relative mx-auto border-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl">
-          <div class="rounded-[2.5rem] overflow-hidden w-[272px] h-[572px] bg-white">
+        <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px]">
+          <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
+          <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
+          <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
+          <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
+          <div class="rounded-[2rem] overflow-hidden w-[272px] h-[572px] bg-white">
             <%= image_tag 'blog_cta.webp', alt: 'blog cta', class: 'w-[272px] h-[572px] object-cover' %>
           </div>
         </div>

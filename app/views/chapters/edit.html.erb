@@ -1,7 +1,7 @@
 <section class="bg-white z-10 relative font-oswald">
   <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
     <h2 class="mb-4 text-xl font-semibold leading-none text-gray-900">Оновити Розділ</h2>
-    <%= simple_form_for @chapter, as: :chapter, url: admin_chapter_path(@chapter), method: :put, html: { class: "form" } do |f| %>
+    <%= simple_form_for @chapter, as: :chapter, url: chapter_path(@chapter), method: :put, html: { class: "form" } do |f| %>
       <%= render 'form', chapter: @chapter, f: f %>
     <% end %>
   </div>

@@ -1,0 +1,28 @@
+<div id="default-sidebar" aria-label="Sidebar">
+  <div class="h-full px-3 overflow-y-auto">
+    <ul class="space-y-2 font-medium">
+      <li>
+        <%= link_to blogs_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
+          <%= image_tag 'blog.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
+          <span class="flex-1 ml-3 whitespace-nowrap">Блог</span>
+          <%= tag.span @pagy.count, class: 'inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full' unless @pagy.count.zero? %>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to readings_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
+          <%= image_tag 'fiction.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
+          <span class="flex-1 ml-3 whitespace-nowrap">Читальня</span>
+          <%= tag.span @fictions_size, class: 'inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full' unless @fictions_size.zero? %>
+        <% end %>
+      </li>
+    </ul>
+    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200">
+      <li>
+        <%= link_to avatars_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
+          <%= image_tag 'avatar.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
+          <span class="flex-1 ml-3 whitespace-nowrap">Портретики</span>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>

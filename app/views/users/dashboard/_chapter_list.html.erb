@@ -1,0 +1,65 @@
+<div id="chapters-accordion-collapse-body-<%= fiction.id %>" class="<%= 'hidden' unless params["chapter_page_#{fiction.slug}"] %>" aria-labelledby="chapters-accordion-collapse-heading-<%= fiction.id %>">
+  <div class="border-gray-200">
+    <% if pagination&.second&.any? %>
+      <ul class="divide-y divide-gray-200">
+        <% pagination.second.each do |chapter| %>
+          <li class="py-2 mx-4">
+            <div class="flex items-center space-x-4" data-controller="flowbite">
+              <div class="flex-1 min-w-0">
+                <%= tag.p "Розділ #{chapter.number} - #{chapter.title}", class: 'text-sm font-semibold text-gray-900 truncate' %>
+                <div class="flex">
+                  <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: 'text-xs font-normal text-gray-500 truncate inline-block' %>
+                  <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
+                    <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+                    <%= tag.span chapter.views, class: 'ml-1 inline-block' %>
+                  </span>
+                </div>
+              </div>
+              <div class="hidden sm:block inline-flex items-center">
+                <%= link_to 'Переглянути', chapter_path(chapter.slug), data: { turbo: false }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
+                <% if crud_permissions?(chapter) %>
+                  <%= link_to 'Редагувати', edit_chapter_path(chapter.slug), data: { turbo: false }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
+                  <%= link_to 'Видалити', chapter_path(chapter, "chapter_page_#{fiction.slug}": pagination.first.page), data: { turbo_confirm: 'Певні, що прагнете видалити цю роботу?', "turbo-method": :delete }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
+                <% end %>
+              </div>
+              <button id="dropdownMenuIconHorizontalButtonChapter<%= chapter.id %>" data-dropdown-toggle="dropdownDotsHorizontalChapter<%= chapter.id %>" class="sm:hidden inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
+                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+              </button>
+              <div id="dropdownDotsHorizontalChapter<%= chapter.id %>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButtonChapter<%= chapter.id %>">
+                  <li>
+                    <%= link_to 'Переглянути', chapter_path(chapter.slug), data: { turbo: false }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
+                  </li>
+                  <% if crud_permissions?(chapter) %>
+                    <li>
+                      <%= link_to 'Редагувати', edit_chapter_path(chapter.slug), data: { turbo: false }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
+                    </li>
+                    <li>
+                      <%= link_to 'Видалити', chapter_path(chapter, page: params[:page]), data: { turbo_confirm: 'Певні, що прагнете видалити цю публікацію?', "turbo-method": :delete }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <div class="pagy-nav ml-4 mt-2 my-2">
+            <%== pagy_nav(pagination.first) if pagination.first.pages > 1 %>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="mb-2 ml-4 sm:ml-0 mt-6 sm:mt-3 mr-8 sm:float-right">
+            <%= link_to "Додати Розділ", new_chapter_path(fiction: fiction), data: { turbo: false }, class: 'text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center' %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="mt-4 ml-6 font-light text-gray-500 md:text-lg">
+        Ця історія ще не має розділів! Виправте це, <%= link_to 'додавши перший!', new_chapter_path(fiction: fiction), data: { turbo: false }, class: 'inline-flex items-center text-lg font-medium text-emerald-600 hover:underline' %>
+      </div>
+    <% end %>
+  </div>
+</div>
