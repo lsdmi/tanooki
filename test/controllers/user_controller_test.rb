@@ -16,9 +16,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show
     assert_response :success
     assert_template :show
-    assert_not_nil assigns(:pagy)
-    assert_not_nil assigns(:publications)
-    assert_not_nil assigns(:avatars)
+    assert_not_nil assigns(:fictions_size)
   end
 
   test "should update user's avatar" do
@@ -31,5 +29,33 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_response :redirect
     assert_equal 'Портретик оновлено.', flash[:notice]
+  end
+
+  test 'should get avatars' do
+    sign_in @user
+    get :avatars
+    assert_response :success
+    assert_template 'users/dashboard/_avatars'
+    assert_not_nil assigns(:avatars)
+  end
+
+  test 'should get blogs' do
+    sign_in @user
+    get :blogs
+    assert_response :success
+    assert_template 'users/dashboard/_blogs'
+    assert_not_nil assigns(:pagy)
+    assert_not_nil assigns(:publications)
+  end
+
+  test 'should get readings' do
+    sign_in @user
+    get :readings
+    assert_response :success
+    assert_template 'users/dashboard/_readings'
+    assert_not_nil assigns(:pagy)
+    assert_not_nil assigns(:fictions)
+    assert_not_nil assigns(:random_reading)
+    assert_not_nil assigns(:paginators)
   end
 end

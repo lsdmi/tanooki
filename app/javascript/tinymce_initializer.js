@@ -2,6 +2,9 @@ const initializeTinymce = () => {
   const textarea = document.querySelector('.tinymce');
   if (!textarea) return;
 
+  const textareaIframe = document.querySelector('.tox-tinymce');
+  if (textareaIframe) textareaIframe.remove();
+
   tinymce.remove();
   tinymce.util.I18n.add('uk', {
     'Align': 'Вирівнювання',

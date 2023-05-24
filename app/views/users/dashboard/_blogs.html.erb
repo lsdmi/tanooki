@@ -1,0 +1,9 @@
+<div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
+  <% if @publications.any? %>
+    <%= turbo_frame_tag 'publications-list' do %>
+      <%= render 'users/dashboard/publications', publications: @publications, pagy: @pagy %>
+    <% end %>
+  <% else %>
+    <%= render 'publications/cta_create_publication' %>
+  <% end %>
+</div>

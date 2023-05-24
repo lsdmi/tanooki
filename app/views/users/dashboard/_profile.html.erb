@@ -1,9 +1,0 @@
-<div class="p-4 mb-4 bg-white rounded-lg shadow sm:p-6 xl:p-8">
-  <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
-    <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'mb-4 w-24 h-24 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0' %>
-    <div>
-      <%= tag.h3 current_user.name, class: 'mb-1 text-2xl font-bold text-gray-900' %>
-      <%= tag.div current_user.email, class: 'mb-4 text-base font-normal text-gray-500' %>
-    </div>
-  </div>
-</div>

@@ -4,8 +4,14 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def punch(string)
-    sentence_end = string.index(/[.?!]/)
-    string[0..sentence_end]
+    sentences = string.scan(/.*?[.?!](?=\s|\z)/)
+    result = ''
+
+    sentences.each do |sentence|
+      result.length <= 20 ? result += sentence : break
+    end
+
+    result.presence || string
   end
 
   def meta_title
@@ -55,7 +61,9 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    path_strings = ['admin/tales', 'admin/chapters', 'admin/fictions', 'dashboard', 'publications']
+    path_strings = [
+      'admin/tales', 'admin/chapters', 'admin/fictions', 'dashboard', 'publications', 'fictions', 'chapters'
+    ]
     return true if path_strings.any? { |str| request.path.include?(str) }
   end
 end

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
              skip: %i[registrations],
              path: '',
              path_names: {
-               sign_in: 'login',
+               sign_in: 'login'
              },
              controllers: {
                confirmations: 'users/confirmations',
@@ -27,8 +27,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
-    resources :chapters, except: %i[index show]
-    resources :fictions, except: %i[show]
     resources :tags, except: :new
     resources :tales, only: :index
   end
@@ -39,8 +37,8 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
-  resources :chapters, only: :show
-  resources :fictions, only: %i[index show]
+  resources :chapters, except: :index
+  resources :fictions, except: :index
   resources :publications, except: %i[index show]
   resources :search, only: :index
   resources :tales, only: :show
@@ -49,4 +47,7 @@ Rails.application.routes.draw do
   end
 
   get :dashboard, to: 'users#show', as: :dashboard
+  get :avatars, to: 'users#avatars', as: :avatars
+  get :blogs, to: 'users#blogs', as: :blogs
+  get :readings, to: 'users#readings', as: :readings
 end

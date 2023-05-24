@@ -1,12 +1,12 @@
-<div class="p-4 mb-4 bg-white rounded-lg shadow sm:p-6 xl:p-8">
-  <h3 class="mb-4 text-xl font-bold">Портретики</h3>
-  <div class="grid gap-1 grid-cols-4 sm:grid-cols-6 md:grid-cols-8 xl:grid-cols-4 mx-auto">
+<div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-6 xl:p-8 xl:min-h-[700px]">
+  <h3 class="mb-4 text-xl">Портретики</h3>
+  <div class="grid gap-1 grid-cols-4 sm:grid-cols-6 2xl:grid-cols-8 mx-auto">
     <% @avatars.each do |avatar| %>
-      <%= image_tag url_for(avatar.image), alt: avatar.image.blob.filename.to_s, id: "avatar-image-#{avatar.id}", data: { controller: 'image-click', action: 'click->image-click#addSelected', "avatar-id": avatar.id }, class: "w-24 cursor-pointer rounded-lg shadow-lg mb-3 #{'selected-image' if current_user.avatar == avatar}" %>
+      <%= image_tag url_for(avatar.image), alt: avatar.image.blob.filename.to_s, id: "avatar-image-#{avatar.id}", data: { controller: 'image-click', action: 'click->image-click#addSelected', "avatar-id": avatar.id }, class: "w-52 cursor-pointer rounded-lg shadow-lg mb-3 #{'selected-image' if current_user.avatar == avatar}" %>
     <% end %>
   </div>
   <%= simple_form_for current_user, url: update_avatar_user_path(current_user), method: :put do |f| %>
     <%= f.input :avatar_id, as: :hidden, input_html: { value: current_user.avatar_id } %>
-    <%= f.button :submit, 'Оновити', class: "text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" %>
+    <%= f.button :submit, 'Оновити', class: "mt-4 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" %>
   <% end %>
 </div>

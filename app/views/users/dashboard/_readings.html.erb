@@ -1,0 +1,11 @@
+<div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
+  <% if @fictions.any? %>
+    <div data-controller="accordion">
+      <%= turbo_frame_tag 'fictions-list' do %>
+        <%= render 'users/dashboard/fictions', fictions: @fictions, pagy: @pagy %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render 'fictions/cta_create' %>
+  <% end %>
+</div>
