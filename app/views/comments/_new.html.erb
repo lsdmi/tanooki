@@ -1,6 +1,6 @@
 <div>
   <%= f.input :commentable_id, as: :hidden, input_html: { value: commentable.id }  %>
-  <%= f.input :commentable_type, as: :hidden, input_html: { value: commentable.class }  %>
+  <%= f.input :commentable_type, as: :hidden, input_html: { value: application_record_child(commentable) }  %>
   <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
   <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
 

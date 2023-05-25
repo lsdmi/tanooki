@@ -15,11 +15,10 @@ class DashboardHelperTest < ActionView::TestCase
     assert crud_permissions?(@fiction, @user)
   end
 
-  test 'crud_permissions? should return true for chapter within owned fiction' do
+  test 'crud_permissions? should return true for owned chapter' do
+    @admin = users(:user_one)
     chapter = chapters(:one)
-    @user.fictions << @fiction
-    @fiction.chapters << chapter
-    assert crud_permissions?(chapter, @user)
+    assert crud_permissions?(chapter, @admin)
   end
 
   test 'crud_permissions? should return false for non-owned fiction' do

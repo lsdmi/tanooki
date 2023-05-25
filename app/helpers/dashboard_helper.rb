@@ -4,13 +4,10 @@ module DashboardHelper
   def crud_permissions?(object, user)
     return true if user.admin?
 
-    fictions = user.fictions.includes(:chapters)
-    chapter_ids = fictions.flat_map { |fiction| fiction.chapters.pluck(:id) }
-
     if object.is_a?(Fiction)
-      fictions.include?(object)
+      user.fictions.include?(object)
     elsif object.is_a?(Chapter)
-      chapter_ids.include?(object.id)
+      user.chapters.include?(object)
     end
   end
 end
