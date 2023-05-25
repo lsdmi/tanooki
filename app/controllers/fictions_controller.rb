@@ -43,15 +43,17 @@ class FictionsController < ApplicationController
       request_path: readings_path,
       page: fiction_page || 1
     )
-
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
-    fiction_paginator.call
-    @paginators = fiction_paginator.get_paginator
-
+    setup_paginator
     render turbo_stream: refresh_list
   end
 
   private
+
+  def setup_paginator
+    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
+    fiction_paginator.call
+    @paginators = fiction_paginator.initiate
+  end
 
   def fiction_page
     (params[:page].to_i - 1) if Fiction.all.size <= (params[:page].to_i * 8) - 8

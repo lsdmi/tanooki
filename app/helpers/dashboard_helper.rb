@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module DashboardHelper
-  def crud_permissions?(object)
-    fictions = current_user.fictions.includes(:chapters)
+  def crud_permissions?(object, user)
+    fictions = user.fictions.includes(:chapters)
     chapter_ids = fictions.flat_map { |fiction| fiction.chapters.pluck(:id) }
 
     if object.is_a?(Fiction)

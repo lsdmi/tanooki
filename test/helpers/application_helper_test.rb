@@ -61,7 +61,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   test 'requires tinymce for fictions/new' do
-    request.path = new_admin_fiction_path
+    request.path = new_fiction_path
     assert requires_tinymce?
   end
 
@@ -113,9 +113,9 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal 'article', meta_type
   end
 
-  test 'punch should return the first sentence of a string' do
+  test 'punch should return string if first sentence if less than 20 characters' do
     string = 'This is a test. This is only a test.'
-    assert_equal 'This is a test.', punch(string)
+    assert_equal string, punch(string)
   end
 
   test 'punch should return the whole string if there is no sentence end' do
@@ -125,7 +125,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test 'punch should handle special characters' do
     string = 'This is a test! And this is another test?'
-    assert_equal 'This is a test!', punch(string)
+    assert_equal string, punch(string)
   end
 
   test 'punch should handle empty strings' do

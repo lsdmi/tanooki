@@ -1,5 +1,5 @@
 <div class="flow-root">
-  <%= tag.h3 "Твори та Переклади (#{pagy.count})", class: 'text-xl font-bold' %>
+  <%= tag.h3 "Твори та Переклади (#{pagy.count})", class: 'text-xl' %>
   <ul class="divide-y divide-gray-200">
     <% fictions.each do |fiction| %>
       <li class="py-4">
@@ -14,31 +14,7 @@
               </span>
             </div>
           </div>
-          <div class="hidden sm:block inline-flex items-center">
-            <%= link_to 'Переглянути', fiction_path(fiction.slug), data: { turbo: false }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
-            <% if crud_permissions?(fiction) %>
-              <%= link_to 'Редагувати', edit_fiction_path(fiction.slug), data: { turbo: false }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
-              <%= link_to 'Видалити', fiction_path(fiction, page: params[:page]), data: { turbo_confirm: 'Певні, що прагнете видалити цю роботу?', "turbo-method": :delete }, class: 'py-2 px-3 mr-3 mb-3 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-primary-300'  %>
-            <% end %>
-          </div>
-          <button id="dropdownMenuIconHorizontalButton<%= fiction.id %>" data-dropdown-toggle="dropdownDotsHorizontal<%= fiction.id %>" class="sm:hidden inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
-          </button>
-          <div id="dropdownDotsHorizontal<%= fiction.id %>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-            <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton<%= fiction.id %>">
-              <li>
-                <%= link_to 'Переглянути', fiction_path(fiction.slug), data: { turbo: false }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
-              </li>
-              <% if crud_permissions?(fiction) %>
-                <li>
-                  <%= link_to 'Редагувати', edit_fiction_path(fiction.slug), data: { turbo: false }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
-                </li>
-                <li>
-                  <%= link_to 'Видалити', fiction_path(fiction, page: params[:page]), data: { turbo_confirm: 'Певні, що прагнете видалити цю публікацію?', "turbo-method": :delete }, class: 'block px-4 py-2 hover:bg-gray-100'  %>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+          <%= render 'users/dashboard/fiction_controls', fiction: fiction %>
         </div>
         <div id="chapters-accordion-collapse" data-accordion="collapse">
           <h2 id="chapters-accordion-collapse-heading-<%= fiction.id %>">

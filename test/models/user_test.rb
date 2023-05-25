@@ -76,6 +76,10 @@ class UserTest < ActiveSupport::TestCase
     assert_respond_to @user, :publications
   end
 
+  test 'should have many chapters' do
+    assert_respond_to @user, :chapters
+  end
+
   test 'should belong to an avatar' do
     assert_equal avatars(:one), @user.avatar
   end

@@ -60,7 +60,7 @@ class ChaptersController < ApplicationController
   end
 
   def setup_pagination(chapters, chapter_page)
-    return if chapter_page < 1
+    return if chapter_page && chapter_page < 1
 
     @pagination = pagy(
       chapters,

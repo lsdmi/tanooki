@@ -5,13 +5,13 @@ module ApplicationHelper
 
   def punch(string)
     sentences = string.scan(/.*?[.?!](?=\s|\z)/)
-    result = ""
+    result = ''
 
     sentences.each do |sentence|
       result.length <= 20 ? result += sentence : break
     end
 
-    result
+    result.presence || string
   end
 
   def meta_title

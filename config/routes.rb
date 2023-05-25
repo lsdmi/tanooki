@@ -10,7 +10,7 @@ Rails.application.routes.draw do
              skip: %i[registrations],
              path: '',
              path_names: {
-               sign_in: 'login',
+               sign_in: 'login'
              },
              controllers: {
                confirmations: 'users/confirmations',

@@ -21,7 +21,7 @@ class FictionPaginator
     end
   end
 
-  def get_paginator
+  def initiate
     @paginators
   end
 

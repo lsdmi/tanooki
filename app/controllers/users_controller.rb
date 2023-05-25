@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   def avatars
     avatar_vars
     render turbo_stream: turbo_stream.replace(
-      "section",
+      'section',
       partial: 'users/dashboard/avatars'
     )
   end
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def blogs
     blog_vars
     render turbo_stream: turbo_stream.replace(
-      "section",
+      'section',
       partial: 'users/dashboard/blogs'
     )
   end
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def readings
     readings_vars
     render turbo_stream: turbo_stream.replace(
-      "section",
+      'section',
       partial: 'users/dashboard/readings'
     )
   end
@@ -54,6 +54,6 @@ class UsersController < ApplicationController
     @random_reading = @fictions.sample
     fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
     fiction_paginator.call
-    @paginators = fiction_paginator.get_paginator
+    @paginators = fiction_paginator.initiate
   end
 end
