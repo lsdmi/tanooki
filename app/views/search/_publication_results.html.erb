@@ -1,0 +1,5 @@
+<%= tag.ul class: 'list-none w-full float-left relative mb-4' do %>
+  <% results.each do |result| %>
+    <%= render 'result', result: result %>
+  <% end %>
+<% end if results.any? %>

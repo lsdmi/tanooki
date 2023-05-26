@@ -5,7 +5,7 @@
         <% if @tag.present? %>
           <%= render 'tag_page', results: @results %>
         <% else %>
-          <%= render 'search_page', results: @results %>
+          <%= render 'search_page', results: @results, fictions: @fictions %>
         <% end %>
       </header>
     </div>

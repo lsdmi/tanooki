@@ -5,6 +5,7 @@ class Fiction < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
+  searchkick callbacks: :async
 
   belongs_to :user
   has_many :chapters, dependent: :destroy
@@ -23,10 +24,20 @@ class Fiction < ApplicationRecord
   validates :author, length: { minimum: 3, maximum: 50 }
   validates :description, length: { minimum: 50, maximum: 500 }
   validates :title, length: { minimum: 3, maximum: 100 }
+  validates :alternative_title, length: { maximum: 100 }
+  validates :english_title, length: { maximum: 100 }
   validates :total_chapters, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :translator, length: { minimum: 3, maximum: 50 }, allow_blank: true
 
   validate :cover_format
+
+  def search_data
+    {
+      alternative_title:,
+      english_title:,
+      title:
+    }
+  end
 
   def slug_candidates
     [

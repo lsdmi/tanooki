@@ -37,6 +37,36 @@ class FictionTest < ActiveSupport::TestCase
     assert_not @fiction.valid?
   end
 
+  test 'alternative title should be optional' do
+    @fiction.alternative_title = ''
+    assert @fiction.valid?
+  end
+
+  test 'alternative title could be short' do
+    @fiction.alternative_title = 'a' * 2
+    assert @fiction.valid?
+  end
+
+  test 'alternative title should not be too long' do
+    @fiction.alternative_title = 'a' * 101
+    assert_not @fiction.valid?
+  end
+
+  test 'english title should be optional' do
+    @fiction.english_title = ''
+    assert @fiction.valid?
+  end
+
+  test 'english title could be short' do
+    @fiction.english_title = 'a' * 2
+    assert @fiction.valid?
+  end
+
+  test 'english title should not be too long' do
+    @fiction.english_title = 'a' * 101
+    assert_not @fiction.valid?
+  end
+
   test 'author should be present' do
     @fiction.author = ''
     assert_not @fiction.valid?

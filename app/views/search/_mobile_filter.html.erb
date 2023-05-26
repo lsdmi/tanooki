@@ -1,0 +1,31 @@
+<div class="lg:invisible">
+  <div data-dial-init class="fixed right-6 bottom-6 group z-50">
+    <div id="speed-dial-menu-default" class="flex flex-col items-center hidden mb-4 space-y-2">
+      <%= link_to search_index_path(search: params[:search]), remote: true, type: 'button', data: { "tooltip-target": 'tooltip-refresh', "tooltip-placement": 'left' }, class: "flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 focus:outline-none" do  %>
+        <%= image_tag 'refresh.svg', class: 'h-6 inline-block', alt: 'refresh' %>
+      <% end %>
+      <div id="tooltip-refresh" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+        Все
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+      <%= link_to search_index_path(search: params[:search], only_publications: true), remote: true, type: 'button', data: { "tooltip-target": 'tooltip-blog', "tooltip-placement": 'left' }, class: "flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 focus:outline-none" do  %>
+        <%= image_tag 'blog.svg', class: 'h-6 inline-block', alt: 'blog' %>
+      <% end %>
+      <div id="tooltip-blog" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+        Блоги
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+      <%= link_to search_index_path(search: params[:search], only_fictions: true), remote: true, type: 'button', data: { "tooltip-target": 'tooltip-fiction', "tooltip-placement": 'left' }, class: "flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 focus:outline-none" do  %>
+        <%= image_tag 'fiction.svg', class: 'h-6 inline-block', alt: 'fiction' %>
+      <% end %>
+      <div id="tooltip-fiction" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+        Твори
+        <div class="tooltip-arrow" data-popper-arrow></div>
+      </div>
+    </div>
+    <button type="button" data-dial-toggle="speed-dial-menu-default" aria-controls="speed-dial-menu-default" aria-expanded="false" class="flex items-center justify-center text-white bg-emerald-700 rounded-full w-14 h-14 hover:bg-emerald-800">
+      <%= image_tag 'filter.svg', class: 'h-6 inline-block', alt: 'views' %>
+    </button>
+  </div>
+</div>
+

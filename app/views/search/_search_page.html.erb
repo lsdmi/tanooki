@@ -1,22 +1,19 @@
 <h1 class="float-left text-gray-800 font-bold font-oswald tracking-tight mr-0 text-center w-full text-4xl mb-8">Результати Пошуку:</h2>
 <div class="relative float-left w-full sm:-mr-96">
   <main class="mr-2 lg:mr-96">
+    <%= render 'mobile_filter' %>
     <div class="relative float-left w-full min-h-[32rem] ml-2 xl:ml-0">
-      <% if results.any? %>
-        <ul class="list-none w-full float-left relative">
-          <% results.each do |result| %>
-            <%= render 'result', result: result %>
-            <hr class="h-px my-8 border-[1px] md:border-0">
-          <% end %>
-        </ul>
+      <% if results.any? || fictions.any? %>
+        <%= render 'publication_results', results: results unless params[:only_fictions] %>
+        <%= render 'fiction_results', results: results, fictions: fictions unless params[:only_publications] %>
       <% else %>
-        <%= tag.p "Даруйте, та збігів за запитом не знайдено.", class: "w-full leading-5 text-gray-600" %>
+        <%= tag.p "Даруйте, та збігів за запитом не знайдено.", class: "w-full leading-5 text-gray-600 font-oswald text-xl" %>
       <% end %>
     </div>
   </main>
-  <aside class="sticky top-8 invisible lg:visible float-right h-[45rem]">
+  <aside class="top-8 invisible lg:visible float-right h-[45rem]">
     <div class="float-left relative ml-14 w-80">
-      <%= render 'shared/videos', videos: @videos %>
+      <%= render 'filter' %>
     </div>
   </aside>
 </div>

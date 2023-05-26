@@ -46,3 +46,10 @@ attachment_seven:
   record_id: 2
   blob_id: 7
   created_at: <%= Time.now %>
+
+attachment_eight:
+  name: cover
+  record_type: Fiction
+  record_id: 2
+  blob_id: 8
+  created_at: <%= Time.now %>

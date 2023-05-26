@@ -10,6 +10,18 @@
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
+          <%= f.label :alternative_title, 'Альтернативний заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :alternative_title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:alternative_title].any?}" }, label: false, placeholder: "Додайте альтернативний заголовок (необов'язково)" %>
+          <%= tag.p fiction.errors[:alternative_title].to_sentence, class: 'text-sm text-red-600' if fiction.errors[:alternative_title].any? %>
+        </div>
+        <div class="w-full">
+          <%= f.label :english_title, 'Заголовок англійською', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :english_title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:english_title].any?}" }, label: false, placeholder: "Додайте заголовок англійською (необов'язково)" %>
+          <%= tag.p fiction.errors[:english_title].to_sentence, class: 'text-sm text-red-600' if fiction.errors[:english_title].any? %>
+        </div>
+      </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
           <%= f.label :author, 'Автор', class: 'block mb-2 text-sm font-medium text-gray-900' %>
           <%= f.input :author, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:author].any?}" }, label: false, placeholder: 'Вкажіть автора' %>
           <%= tag.p fiction.errors[:author].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:author].any? %>
