@@ -30,7 +30,7 @@
         <% end %>
       </footer>
       <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: 'font-oswald font-light text-gray-500 text-xl' %>
+        <%= tag.p comment.content, class: 'font-oswald font-light text-gray-500 text-xl whitespace-break-spaces' %>
       <% end %>
       <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
         <%= render 'comments/actions', comment: comment, commentable: @commentable %>

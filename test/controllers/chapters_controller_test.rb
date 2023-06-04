@@ -49,7 +49,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to dashboard_path
+    assert_redirected_to readings_path(false_remote: true)
   end
 
   test 'should not create chapter with invalid data' do

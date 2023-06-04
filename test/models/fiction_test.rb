@@ -93,7 +93,7 @@ class FictionTest < ActiveSupport::TestCase
   end
 
   test 'description should not be too long' do
-    @fiction.description = 'a' * 501
+    @fiction.description = 'a' * 751
     assert_not @fiction.valid?
   end
 

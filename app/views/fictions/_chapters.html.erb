@@ -14,7 +14,7 @@
     <% @fiction.chapters.includes(:rich_text_content).order(number: :desc).each_with_index do |chapter, index| %>
       <div class="<%= 'pb-2 border-b border-gray-200' unless @fiction.chapters.includes(:rich_text_content).size == (index + 1) %>">
         <div>
-          <%= link_to "Розділ #{chapter.number}: #{chapter.title}", chapter_path(chapter), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-2 border-b-2 border-gray-50' %>
+          <%= link_to chapter_header(chapter), chapter_path(chapter), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-2 border-b-2 border-gray-50' %>
           <div class="float-right">
             <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
               <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>

@@ -19,16 +19,14 @@ class ChapterTest < ActiveSupport::TestCase
     assert @chapter.valid?
   end
 
-  test 'invalid without title' do
+  test 'valid without title' do
     @chapter.title = nil
-    refute @chapter.valid?
-    assert_not_nil @chapter.errors[:title]
+    assert @chapter.valid?
   end
 
-  test 'invalid with short title' do
+  test 'valid with short title' do
     @chapter.title = 'A'
-    refute @chapter.valid?
-    assert_not_nil @chapter.errors[:title]
+    assert @chapter.valid?
   end
 
   test 'invalid with long title' do

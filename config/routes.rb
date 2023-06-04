@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     end
   end
   resources :chapters, except: :index
-  resources :fictions, except: :index
+  resources :fictions
   resources :publications, except: %i[index show]
   resources :search, only: :index
   resources :tales, only: :show

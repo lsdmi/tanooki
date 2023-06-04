@@ -3,7 +3,7 @@
     <header class="py-4 font-oswald">
       <div class="px-4 mx-auto w-full max-w-screen-2xl text-center">
         <%= tag.span "Опубліковано: #{time_ago_in_words(@chapter.created_at)} тому", class: "block mb-2 font-semibold text-gray-900" %>
-        <%= tag.h1 "Розділ #{@chapter.number} - #{@chapter.title}", class: 'mx-auto mb-2 max-w-2xl text-2xl font-extrabold leading-none text-gray-900 sm:text-3xl lg:text-4xl' %>
+        <%= tag.h1 chapter_header(@chapter), class: 'mx-auto mb-2 max-w-2xl text-2xl font-extrabold leading-none text-gray-900 sm:text-3xl lg:text-4xl' %>
       </div>
     </header>
     <div class="flex relative z-20 justify-between px-4 mx-auto max-w-screen-2xl rounded">
@@ -29,7 +29,7 @@
           <%= tag.div class: 'p-4 mb-6 rounded-lg border border-gray-200 font-oswald' do %>
             <h4 class="mb-4 text-sm text-gray-900 uppercase">Далі</h4>
             <div class="mb-6">
-              <%= tag.h5 "Розділ #{@next_chapter.number} - #{@next_chapter.title}", class: 'mb-2 text-lg leading-tight text-gray-900' %>
+              <%= tag.h5 chapter_header(@next_chapter), class: 'mb-2 text-lg leading-tight text-gray-900' %>
               <%= tag.p punch(@next_chapter.content.to_plain_text), class: 'mb-2 font-light text-gray-500' %>
               <%= link_to 'Читати', chapter_path(@next_chapter), class: 'inline-flex items-center font-medium underline underline-offset-4 text-emerald-600 hover:no-underline' %>
             </div>

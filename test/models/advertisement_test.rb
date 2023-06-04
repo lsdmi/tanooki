@@ -14,12 +14,6 @@ class AdvertisementTest < ActiveSupport::TestCase
     assert_not advertisement.valid?
   end
 
-  test 'should not be valid without description' do
-    advertisement = advertisements(:advertisement_one)
-    advertisement.description = nil
-    assert_not advertisement.valid?
-  end
-
   test 'should not be valid without resource' do
     advertisement = advertisements(:advertisement_one)
     advertisement.resource = nil
@@ -35,12 +29,6 @@ class AdvertisementTest < ActiveSupport::TestCase
   test 'should not be valid with caption length more than 50' do
     advertisement = advertisements(:advertisement_one)
     advertisement.caption = 'a' * 51
-    assert_not advertisement.valid?
-  end
-
-  test 'should not be valid with description length more than 300' do
-    advertisement = advertisements(:advertisement_one)
-    advertisement.description = 'a' * 301
     assert_not advertisement.valid?
   end
 

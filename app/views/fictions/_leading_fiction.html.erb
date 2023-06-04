@@ -1,0 +1,16 @@
+<div class="col-span-1 mr-2 bg-gray-300 bg-opacity-10 rounded-lg">
+  <div class="rounded-md relative">
+    <div class="bg-center bg-no-repeat bg-cover absolute top-0 right-0 bottom-0 left-0" style="background-image: url(<%= url_for(fiction.cover) %>); filter: blur(5px); z-index: 0;"></div>
+    <%= link_to fiction_path(fiction) do %>
+      <div class="flex justify-center relative">
+        <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename, class: 'h-80 object-cover rounded-lg shadow-lg' %>
+        <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+      </div>
+    <% end %>
+    <div class="w-full float-left rounded-xl md:mt-1 lg:mt-0">
+      <%= tag.h3 fiction.title, class: 'mt-4 mb-1 text-center text-lg sm:text-2xl text-gray-900 mr-[1.75%]' %>
+      <%= tag.h3 fiction_author(fiction), class: 'text-center text-xs sm:text-sm mr-[1.75%] text-gray-600' %>
+      <%= tag.p fiction.description, class: "px-2 line-clamp-6 overflow-hidden whitespace-break-spaces mt-2 w-full font-light leading-5 text-gray-600 text-sm" %>
+    </div>
+  </div>
+</div>

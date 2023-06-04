@@ -58,7 +58,7 @@ class PublicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not save publication with a description shorter than 1000 characters' do
+  test 'should not save publication with a description shorter than 500 characters' do
     @publication.description = 'Short description'
     assert_not @publication.valid?
   end

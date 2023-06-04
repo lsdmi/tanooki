@@ -14,14 +14,6 @@ rich_text_two:
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
 
-rich_text_three:
-  name: description
-  record_type: Advertisement
-  record_id: 1
-  body: 'Rich Text with Vimeo Video <iframe src="https://www.vimeo.com/embed/video4"></iframe>.'
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
-
 rich_text_four:
   name: content
   record_type: Chapter

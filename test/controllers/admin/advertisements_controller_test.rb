@@ -11,7 +11,6 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @ads_params = {
       caption: Faker::Lorem.sentence,
-      description: 'test',
       cover: Rack::Test::UploadedFile.new(
         Rails.root.join('app', 'assets', 'images', 'logo.svg'),
         'image/svg'

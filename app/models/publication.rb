@@ -20,7 +20,7 @@ class Publication < ApplicationRecord
   has_many :tags, through: :publication_tags
 
   validates :cover, presence: true
-  validates :description, length: { minimum: 1000 }
+  validates :description, length: { minimum: 500 }
   validates :title, length: { minimum: 10, maximum: 100 }
 
   validate :cover_format

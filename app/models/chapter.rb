@@ -12,7 +12,7 @@ class Chapter < ApplicationRecord
 
   validates :content, length: { minimum: 500 }
   validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :title, length: { minimum: 3, maximum: 100 }
+  validates :title, length: { maximum: 100 }
 
   def slug_candidates
     [

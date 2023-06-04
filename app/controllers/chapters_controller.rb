@@ -21,7 +21,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
-      redirect_to dashboard_path, notice: 'Розділ додано.'
+      redirect_to readings_path(false_remote: true), notice: 'Розділ додано.'
     else
       render 'chapters/new', status: :unprocessable_entity
     end

@@ -22,9 +22,26 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     assert_instance_of Comment, assigns(:comment)
   end
 
-  test 'should get index' do
+  test 'should get dashboard' do
     get dashboard_path
     assert_response :success
+  end
+
+  test 'should get index' do
+    get fictions_path
+    assert_response :success
+
+    assert_not_nil assigns(:hero_ad)
+    assert_equal advertisements(:advertisement_three), assigns(:hero_ad)
+
+    assert_not_nil assigns(:popular_fictions)
+    assert_equal 2, assigns(:popular_fictions).count
+
+    assert_not_nil assigns(:most_reads)
+    assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:most_reads).map(&:title)
+
+    assert_not_nil assigns(:latest_updates)
+    assert_not_nil assigns(:hot_updates)
   end
 
   test 'should get new' do

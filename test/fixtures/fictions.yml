@@ -13,7 +13,7 @@ two:
   id: 2
   slug: 'two'
   status: 'announced'
-  title: "Test Fiction"
+  title: "Test Fiction 2"
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   total_chapters: 5

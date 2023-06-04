@@ -1,0 +1,23 @@
+<div class="">
+  <%= render 'shared/divider', caption: 'Читачі рекомендують', rose: false %>
+  <div class="relative float-left w-full mt-0">
+    <% @most_reads.each_with_index do |fiction, i| %>
+      <%= link_to fiction_path(fiction) do %>
+        <div class="relative float-right w-full grid lg:grid-cols-10 my-1">
+          <div class="leading-none float-left relative lg:col-span-4">
+            <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "float-left rounded-xl opacity-90 m-auto w-full lg:w-24 lg:h-36 object-cover mr-4" %>
+            <%= tag.div i+1, class: 'font-oswald text-emerald-600 text-4xl top-0 left-0 text-center inline-block align-middle' %>
+          </div>
+          <div class="relative float-right sm:w-full lg:col-span-6 m-4 sm:m-0">
+            <div class="w-full float-left rounded-xl md:mt-2 mb-1">
+              <%= tag.h2 fiction.title, class: 'font-oswald text-gray-700 float-left text-2xl md:text-xl md:leading-5 lg:leading-5 lg:text-xl tracking-tight w-full mb-1 line-clamp-2 align-middle mb-2' %>
+            </div>
+            <%= tag.p fiction_author(fiction), class: 'font-light text-sm text-gray-500 mt-px' %>
+            <%= tag.p fiction.description, class: 'text-sm text-gray-500 mt-4 line-clamp-2' %>
+          </div>
+          <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
