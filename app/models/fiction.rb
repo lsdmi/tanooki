@@ -22,7 +22,7 @@ class Fiction < ApplicationRecord
 
   validates :cover, presence: true
   validates :author, length: { minimum: 3, maximum: 50 }
-  validates :description, length: { minimum: 50, maximum: 500 }
+  validates :description, length: { minimum: 50, maximum: 750 }
   validates :title, length: { minimum: 3, maximum: 100 }
   validates :alternative_title, length: { maximum: 100 }
   validates :english_title, length: { maximum: 100 }

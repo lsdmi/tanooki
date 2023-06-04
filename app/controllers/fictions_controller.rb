@@ -6,6 +6,14 @@ class FictionsController < ApplicationController
   before_action :track_visit, :load_advertisement, only: :show
   before_action :verify_permissions, except: %i[new create show]
 
+  def index
+    # TODO:
+    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
+    @popular_fictions = Fiction.order(:view)
+    @most_reads = most_reads
+    @latest_updates = latest_updates
+  end
+
   def show
     @comments = @fiction.comments.parents.order(created_at: :desc)
     @comment = Comment.new
@@ -48,6 +56,24 @@ class FictionsController < ApplicationController
   end
 
   private
+
+  def most_reads
+    Fiction.select('fictions.*, SUM(chapters.views) AS total_views')
+           .joins(:chapters)
+           .includes([{ cover_attachment: :blob }])
+           .group('fictions.id')
+           .order('total_views DESC')
+           .limit(5)
+  end
+
+  def latest_updates
+    Fiction.joins(:chapters)
+           .includes([{ cover_attachment: :blob }])
+           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+           .group(:fiction_id)
+           .order('max_created_at DESC')
+           .limit(20)
+  end
 
   def setup_paginator
     fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
