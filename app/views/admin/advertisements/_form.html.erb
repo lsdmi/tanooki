@@ -42,18 +42,6 @@
       <% end %>
     </div>
 
-    <%= f.rich_text_area :description,
-                input_html: {
-                  autofocus: true
-                },
-                placeholder: "Зміст оголошення...",
-                label: false,
-                class: "block p-2.5 w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
-              %>
-    <% if advertisement.errors[:description].any? %>
-      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній або задовгий зміст оголошення...</p>
-    <% end %>
-
     <%= tag.div class: 'py-2 grid grid-cols-4' do %>
       <div></div>
       <%= tag.div do %>
@@ -82,7 +70,7 @@
                 <div class="mt-32 sm:mt-48 lg:mt-64">
                   <div class="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
                     <%= tag.p advertisement.caption || 'Заголовок', class: 'font-bold text-3xl font-oswald text-gray-100 float-left tracking-tight w-full mb-3 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
-                    <%= tag.p formatted_description(advertisement.description).presence || 'Деякий зміст оголошення для передогляду...', class: 'h-auto italic font-light text-gray-200 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
+                    <%= tag.p 'Деякий зміст оголошення для передогляду...', class: 'h-auto italic font-light text-gray-200 inline-block leading-none px-4 py-2 relative uppercase z-10 bg-rose-600 text-center opacity-[0.85] [text-shadow:_1px_1px_rgba(0,0,0,0.7)]' %>
                     <p class="h-4"></p>
                 </div>
               </div>

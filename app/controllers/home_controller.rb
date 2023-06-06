@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     @newest = newest
     @pagy, @publications = pagy_countless(remaining, items: 5)
     @videos = videos
-    @fictions = fictions
+    @hero_fictions_ad = Advertisement.find_by(slug: 'home-index-fictions-hero-ad')
 
     render 'scrollable_list' if params[:page]
   end
@@ -41,14 +41,5 @@ class HomeController < ApplicationController
   def remaining
     Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
                .order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
-  end
-
-  def fictions
-    Fiction.joins(:chapters)
-           .includes([{ cover_attachment: :blob }])
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group(:fiction_id)
-           .order('max_created_at DESC')
-           .limit(20)
   end
 end

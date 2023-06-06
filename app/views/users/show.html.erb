@@ -21,6 +21,10 @@
     <%= render 'users/dashboard/sidebar' %>
   </div>
   <div class="col-span-5">
-    <%= render 'users/dashboard/blogs' %>
+    <% if params[:false_remote] %>
+      <%= render 'users/dashboard/readings' %>
+    <% else %>
+      <%= render 'users/dashboard/blogs' %>
+    <% end %>
   </div>
 </div>
