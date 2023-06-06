@@ -1,0 +1,25 @@
+<div class="h-full lg:w-[1250px] my-0 mx-auto hidden lg:block">
+  <div class="mx-auto grid grid-cols-3">
+    <%= render 'leading_fiction', fiction: @latest_updates.first %>
+    <div class="col-span-2 grid grid-cols-4 gap-2 mx-12">
+      <% @latest_updates.excluding(@latest_updates.first).limit(8).each do |fiction| %>
+        <%= render 'other_updates', fiction: fiction %>
+      <% end %>
+    </div>
+  </div>
+  <%= link_to @hero_ad.resource, class: 'relative overflow-hidden h-0', aria: { label: @hero_ad.caption } do %>
+    <%= video_tag url_for(@hero_ad.cover),
+                  alt: @hero_ad.cover.blob.filename.to_s,
+                  autoplay: true,
+                  class: 'mt-5 top-0 left-0 w-[96%] h-full rounded-lg',
+                  loop: true,
+                  muted: true,
+                  onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');",
+                  poster: url_for(@hero_ad.thumbnail) %>
+  <% end if @hero_ad.present? %>
+  <div class="grid grid-cols-3 gap-4 mt-4 w-[96%]">
+    <div class="p-4"><%= render 'all_time_fiction_views' %></div>
+    <div class="p-4"><%= render 'all_time_chapter_views' %></div>
+    <div class="p-4"><%= render 'trending_chapter_views' %></div>
+  </div>
+</div>
