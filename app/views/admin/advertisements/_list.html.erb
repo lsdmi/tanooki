@@ -7,9 +7,9 @@
 <div class="grid gap-1 lg:grid-cols-3">
   <% advertisements.each do |ad| %>
     <% next unless ad.present? %>
-    <article class="pt-4 pl-10 min-h-[32rem]">
+    <article class="pt-4 pl-10">
       <% ad.resource = edit_admin_advertisement_path(ad) %>
-      <%= render 'shared/ad_body', advertisement: ad %>
+      <%= render 'shared/ads', advertisement: ad %>
     </article>
   <% end %>
 </div>
