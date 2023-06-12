@@ -15,11 +15,6 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should load advertisement' do
-    get chapter_url(@chapter)
-    assert_not_nil assigns(:more_ads)
-  end
-
   test 'should get comments' do
     @chapter.comments << comments(:comment_one)
     get chapter_url(@chapter)

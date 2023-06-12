@@ -10,7 +10,7 @@ class ChaptersController < ApplicationController
     @comments = @chapter.comments.parents.order(created_at: :desc)
     @comment = Comment.new
     @next_chapter = next_chapter
-    @more_ads = Advertisement.includes([{ cover_attachment: :blob }]).excluding(@advertisement).enabled.sample
+    @more_from_author = more_from_author
   end
 
   def new
@@ -46,6 +46,18 @@ class ChaptersController < ApplicationController
   end
 
   private
+
+  def more_from_author
+    Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
+      Fiction.joins(:chapters)
+             .includes([{ cover_attachment: :blob }])
+             .where(translator: @chapter.fiction.translator)
+             .excluding(@chapter.fiction)
+             .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+             .group(:fiction_id)
+             .order('max_created_at DESC')
+    end
+  end
 
   def set_chapter
     @chapter = @commentable = Chapter.find(params[:id])

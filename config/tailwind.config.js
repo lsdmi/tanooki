@@ -32,7 +32,8 @@ module.exports = {
         'sans-serif'
       ],
       oswald: ['Oswald', ...defaultTheme.fontFamily.sans],
-      georgia: ['Georgia,Times,Times New Roman,serif']
+      georgia: ['Georgia,Times,Times New Roman,serif'],
+      helvetica: ['"Helvetica Neue",sans-serif']
     }
   },
   variants: {

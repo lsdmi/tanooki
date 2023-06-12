@@ -1,0 +1,17 @@
+<div class="rounded-lg mb-16">
+  <div class="rounded-md relative">
+    <div class="bg-center bg-no-repeat bg-cover absolute top-0 right-0 bottom-0 left-0 h-[110%]" style="background-image: url(<%= url_for(fiction.cover) %>); filter: blur(15px) brightness(40%); z-index: 0;"></div>
+    <div class="flex justify-center relative">
+      <div class="w-[10%] sm:w-[10%] md:w-[15%] lg:w-[20%] 2xl:w-[25%]"></div>
+      <%= link_to fiction_path(fiction), class: 'hidden sm:block w-[1%] sm:w-[30%] lg:w-[20%] text-center' do %>
+        <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename, class: 'h-80 object-cover rounded-lg shadow-lg inline-block align-middle' %>
+      <% end %>
+      <div class="w-[72.5%] sm:w-[40%] md:w-[35%] 2xl:w-[25%]">
+        <%= tag.h3 fiction.title, class: 'ml-6 mt-4 mb-1 text-xl sm:text-2xl md:text-3xl text-white' %>
+        <%= tag.h3 fiction.author, class: 'ml-6 text-xs sm:text-sm text-gray-400 font-light' %>
+        <%= tag.h3 fiction.description, class: 'mt-2 mb-8 sm:my-0 line-clamp-6 ml-6 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-200 font-light mr-[1.75%]' %>
+      </div>
+      <div class="w-[15%] sm:w-[15%] md:w-[20%] lg:w-[25%] 2xl:w-[30%]"></div>
+    </div>
+  </div>
+</div>

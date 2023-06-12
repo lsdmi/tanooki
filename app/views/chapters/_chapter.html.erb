@@ -1,0 +1,21 @@
+<div class="mt-12 text-center mx-2">
+  <%= tag.h1 chapter_header(chapter), class: 'mx-auto mb-2 max-w-2xl text-2xl font-extrabold leading-none text-gray-900 sm:text-3xl lg:text-4xl' %>
+  <%= tag.h1 chapter.fiction.translator.presence || chapter.fiction.author, class: 'visible lg:invisible text-base font-light mt-2' %>
+</div>
+<div class="flex mt-8 m-auto w-full lg:w-[1250px] h-full">
+  <div class="mx-px w-full lg:w-3/4">
+    <div class="bg-gray-100 p-4 rounded-lg">
+      <div id="chapter-content" class="mt-2 text-base md:text-xl mb-2 font-light text-gray-500">
+        <%= chapter.content %>
+      </div>
+    </div>
+    <div class="lg:hidden mt-4">
+      <%= render 'more_from_author_mobile' if @more_from_author.any? %>
+    </div>
+  </div>
+  <aside class="sticky top-0 hidden lg:block lg:w-1/4 h-[45rem]">
+    <div class="p-4">
+      <%= render 'sidebar', chapter: chapter %>
+    </div>
+  </aside>
+</div>

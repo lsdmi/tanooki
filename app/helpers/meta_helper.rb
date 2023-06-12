@@ -21,7 +21,7 @@ module MetaHelper
     elsif fiction_description_present?
       @fiction.description
     elsif chapter_content_present?
-      punch(chapter_content)
+      chapter_description
     elsif request_path_is_fictions_path?
       RANOBE_SEO_DESCRIPTION
     else
@@ -43,8 +43,9 @@ module MetaHelper
   def meta_title
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
     return 'Бака - Ранобе та Фанфіки' if request.path == fictions_path
+    return chapter_title if @chapter.present?
 
-    [@publication, @fiction, @chapter].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
+    [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
 
   def meta_type
@@ -58,8 +59,12 @@ module MetaHelper
 
   private
 
-  def chapter_content
-    @chapter.content.to_plain_text
+  def chapter_title
+    "#{@chapter.fiction&.title} | #{chapter_header(@chapter)}"
+  end
+
+  def chapter_description
+    "Ранобе \"#{@chapter.fiction&.title}\" за авторства #{@chapter.fiction&.author} | #{chapter_header(@chapter)}"
   end
 
   def chapter_content_present?
