@@ -1,14 +1,14 @@
-<section class="z-10 relative font-oswald">
-  <div class="pb-4">
+<section class="z-10 relative font-oswald dark:bg-gray-900">
+  <div class="pt-8 pb-4">
     <%= render 'hero', fiction: @chapter.fiction %>
     <%= render @chapter %>
 
-    <div class="bg-gray-100 flex mt-8 m-auto w-full lg:w-[1250px] h-full">
-      <%= tag.div class: 'p-4 mb-6 rounded-lg border border-gray-200 font-oswald w-full' do %>
-        <h4 class="mb-4 text-sm text-gray-900 uppercase">Далі</h4>
+    <div class="bg-gray-100 dark:bg-gray-800 flex mt-8 m-auto w-full lg:w-[1250px] h-full">
+      <%= tag.div class: 'p-4 rounded-lg border border-gray-200 font-oswald w-full' do %>
+        <h4 class="mb-4 text-sm text-gray-900 dark:text-white uppercase">Далі</h4>
         <div class="mb-6">
-          <%= tag.h5 chapter_header(@next_chapter), class: 'mb-2 text-lg leading-tight text-gray-900' %>
-          <%= tag.p @next_chapter.content.to_plain_text, class: 'mb-2 font-light text-gray-500 line-clamp-2' %>
+          <%= tag.h5 chapter_header(@next_chapter), class: 'mb-2 text-lg leading-tight text-gray-900 dark:text-white' %>
+          <%= tag.p @next_chapter.content.to_plain_text, class: 'mb-2 font-light text-gray-500 dark:text-gray-300 line-clamp-2' %>
           <%= link_to 'Читати', chapter_path(@next_chapter), class: 'inline-flex items-center font-medium underline underline-offset-4 text-emerald-600 hover:no-underline' %>
         </div>
       <% end if @next_chapter %>
