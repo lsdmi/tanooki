@@ -1,4 +1,4 @@
-<%= render 'shared/divider', caption: 'Читальня', rose: false if results.any? && !params[:only_fictions] %>
+<%= render 'shared/divider', caption: 'Читальня', rose: false if results.any? && fictions.any? && !params[:only_fictions] %>
 <ul class="list-none w-full float-left relative">
   <% fictions.each do |fiction| %>
     <%= render 'fiction', fiction: fiction %>

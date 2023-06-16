@@ -6,6 +6,6 @@
   <% end %>
 <% else %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-    <%= tag.p @comment.content, class: 'font-oswald font-light text-gray-500 text-xl' %>
+    <%= tag.p @comment.content, class: "font-oswald font-light text-gray-500 text-xl #{'dark:text-gray-400' if comments_dark_mode?}" %>
   <% end %>
 <% end %>

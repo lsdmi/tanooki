@@ -5,32 +5,32 @@
         <div class="flex items-center">
           <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-12 h-12 rounded-full' %>
           <p class="inline-flex flex-col md:flex-row items-start mr-3">
-            <%= tag.span comment.user.name, class: "font-oswald text-2xl font-light #{ fictions? ? 'text-emerald-900' : 'text-rose-900' }" %>
-            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-2" %>
-            <%= tag.time "(відредаговано)", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-1" if comment.created_at != comment.updated_at %>
+            <%= tag.span comment.user.name, class: "font-oswald text-2xl font-light #{ fictions? ? 'text-emerald-900' : 'text-rose-900' } #{'dark:text-white' if comments_dark_mode?}" %>
+            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-2 #{'dark:text-gray-400' if comments_dark_mode?}" %>
+            <%= tag.time "(відредаговано)", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-1 #{'dark:text-gray-400' if comments_dark_mode?}" if comment.created_at != comment.updated_at %>
           </p>
         </div>
         <% if current_user&.id == comment.user_id %>
-          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 rounded-lg focus:ring-4 focus:outline-none <%= fictions? ? 'focus:ring-emerald-500' : 'focus:ring-rose-100' %>" type="button">
-            <svg class="w-5 h-5 <%= fictions? ? 'fill-emerald-600' : 'fill-rose-400' %>" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 rounded-lg focus:ring-4 focus:outline-none <%= fictions? ? 'focus:ring-emerald-500' : 'focus:ring-rose-100' %> <%= 'dark:focus:ring-gray-600' if comments_dark_mode? %>" type="button">
+            <svg class="w-5 h-5 <%= fictions? ? 'fill-emerald-600' : 'fill-rose-400' %> <%= 'dark:fill-gray-500' if comments_dark_mode? %>" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
             </svg>
             <span class="sr-only">Comment settings</span>
           </button>
           <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 rounded divide-y <%= fictions? ? 'divide-emerald-500' : 'divide-rose-100' %> shadow">
-            <ul class="py-1 text-sm bg-white <%= fictions? ? 'text-emerald-900' : 'text-rose-700' %>" aria-labelledby="dropdownMenuIconHorizontalButton">
+            <ul class="rounded-lg py-1 text-sm bg-white <%= 'dark:bg-gray-800' if comments_dark_mode? %> <%= fictions? ? 'text-emerald-900' : 'text-rose-700' %>" aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
-                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:bg-rose-100'}" %>
+                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:bg-rose-100'} #{'dark:text-gray-400 dark:hover:text-gray-300' if comments_dark_mode?}" %>
               </li>
               <li>
-                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:bg-rose-100'}" %>
+                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:bg-rose-100'} #{'dark:text-gray-400 dark:hover:text-gray-300' if comments_dark_mode?}" %>
               </li>
             </ul>
           </div>
         <% end %>
       </footer>
       <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: 'font-oswald font-light text-gray-500 text-xl whitespace-break-spaces' %>
+        <%= tag.p comment.content, class: "font-oswald font-light text-gray-500 text-xl whitespace-break-spaces #{'dark:text-gray-400' if comments_dark_mode?}" %>
       <% end %>
       <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
         <%= render 'comments/actions', comment: comment, commentable: @commentable %>

@@ -15,7 +15,7 @@ class Publication < ApplicationRecord
   belongs_to :user
   has_one_attached :cover
   has_rich_text :description
-  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy, counter_cache: true
   has_many :publication_tags, dependent: :destroy
   has_many :tags, through: :publication_tags
 

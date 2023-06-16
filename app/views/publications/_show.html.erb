@@ -17,7 +17,7 @@
                 </div>
               </div>
               <%= render 'publications/related_tags', tgs: publication.tags.order(:name) %>
-              <%= render 'comments/index' if current_user || @comments.any? %>
+              <%= render 'comments/index' %>
               <%= render 'publications/more' %>
             </div>
           </main>

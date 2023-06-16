@@ -8,7 +8,7 @@ class Chapter < ApplicationRecord
   belongs_to :fiction
   belongs_to :user
   has_rich_text :content
-  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy, counter_cache: true
 
   validates :content, length: { minimum: 500 }
   validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

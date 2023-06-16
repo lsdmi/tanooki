@@ -7,7 +7,7 @@
         <div class="lg:hidden">
           <%= render 'chapters' if @fiction.chapters.any? %>
         </div>
-        <%= render 'comments/index' if current_user || @comments.any? %>
+        <%= render 'comments/index' %>
       </div>
     </div>
     <% if @fiction.chapters.any? %>

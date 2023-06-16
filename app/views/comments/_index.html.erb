@@ -1,13 +1,27 @@
-<div class="w-full relative mb-4 pb-8">
+<div class="w-full relative my-4 pb-8">
   <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-2' %>">
     <%= render 'shared/divider', caption: fictions? ? 'Відгуки' : 'Коментарі', rose: fictions? ? false : true  %>
   </div>
-  <%= turbo_frame_tag "new_comment" do %>
-    <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
+  <% if current_user || @comments.any? %>
+    <%= turbo_frame_tag "new_comment" do %>
+      <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
+        <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
+      <% end %>
+    <% end if current_user %>
+    <%= turbo_frame_tag "comments" do %>
+      <%= render @comments %>
     <% end %>
-  <% end if current_user %>
-  <%= turbo_frame_tag "comments" do %>
-    <%= render @comments %>
+  <% else %>
+    <div class="py-2 px-4 mx-auto max-w-screen-xl lg:px-6 font-oswald">
+      <div class="mx-auto max-w-screen-sm text-center">
+        <%= tag.h2 no_comments_prompt, class: "mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 #{'dark:text-white' if comments_dark_mode?}" %>
+        <%= tag.p class: "font-light text-gray-500 md:text-lg #{'dark:text-gray-400' if comments_dark_mode?}" do %>
+          <%= link_to 'Зареєструйтеся', register_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
+          або
+          <%= link_to 'увійдіть', new_user_session_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
+          , аби лишити Ваш коментар!
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
