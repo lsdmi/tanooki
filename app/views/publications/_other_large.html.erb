@@ -15,7 +15,7 @@
             </span>
             <span class="text-gray-500 text-xs float-right md:mr-4 lg:mr-0 flex align-center">
               <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments' %>
-              <%= tag.span publication.comments.size, class: 'mx-2 inline-block' %>
+              <%= tag.span publication.comments_count, class: 'mx-2 inline-block' %>
             </span>
           </div>
           <%= tag.h2 publication.title, class: 'font-oswald text-gray-800 float-left text-2xl lg:text-3xl font-bold tracking-tight w-full mb-3' %>

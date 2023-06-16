@@ -11,7 +11,7 @@
                   <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: 'text-xs font-normal text-gray-500 truncate inline-block' %>
                   <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
                     <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments' %>
-                    <%= tag.span chapter.comments.size, class: 'ml-1 inline-block' %>
+                    <%= tag.span chapter.comments_count, class: 'ml-1 inline-block' %>
                   </span>
                   <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
                     <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
