@@ -6,7 +6,7 @@ export default class DropzoneController extends Controller {
   connect() {
     console.log("DropzoneController connected");
 
-    const coverInput = document.getElementById("publication_cover");
+    const coverInput = document.getElementById("#image_name");
     if (!coverInput) return;
 
     this.updateTextContent(coverInput);

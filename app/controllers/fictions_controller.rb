@@ -3,20 +3,21 @@
 class FictionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_fiction, only: %i[show edit update destroy]
+  before_action :set_genres, only: %i[new create edit update]
   before_action :track_visit, only: :show
   before_action :load_advertisement, only: %i[index show]
   before_action :verify_permissions, except: %i[index new create show]
 
   def index
     @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    @popular_fictions = Fiction.order(views: :desc).limit(5)
+    @popular_fictions = Fiction.includes(:genres).order(views: :desc).limit(5)
     @most_reads = most_reads
     @latest_updates = latest_updates
     @hot_updates = hot_updates
   end
 
   def show
-    @comments = @fiction.comments.parents.order(created_at: :desc)
+    @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
     @comment = Comment.new
   end
 
@@ -28,7 +29,8 @@ class FictionsController < ApplicationController
     @fiction = Fiction.new(fiction_params)
 
     if @fiction.save
-      redirect_to root_path, notice: 'Твір створено.'
+      manage_genres if params[:fiction][:genre_ids]
+      redirect_to fiction_path(@fiction), notice: 'Твір створено.'
     else
       render 'fictions/new', status: :unprocessable_entity
     end
@@ -38,7 +40,8 @@ class FictionsController < ApplicationController
 
   def update
     if @fiction.update(fiction_params)
-      redirect_to root_path, notice: 'Твір оновлено.'
+      manage_genres if params[:fiction][:genre_ids]
+      redirect_to fiction_path(@fiction), notice: 'Твір оновлено.'
     else
       render 'fictions/edit', status: :unprocessable_entity
     end
@@ -59,10 +62,21 @@ class FictionsController < ApplicationController
 
   private
 
+  def manage_genres
+    fiction_genres_ids = params[:fiction][:genre_ids].map(&:to_i)
+    existing_genre_ids = @fiction.genres.ids
+
+    genres_to_add = fiction_genres_ids - existing_genre_ids
+    genres_to_remove = existing_genre_ids - fiction_genres_ids
+
+    genres_to_add.each { |genre_id| @fiction.fiction_genres.create(genre_id:) }
+    genres_to_remove.each { |genre_id| @fiction.fiction_genres.find_by(genre_id:).destroy }
+  end
+
   def most_reads
     Fiction.select('fictions.*, SUM(chapters.views) AS total_views')
            .joins(:chapters)
-           .includes([{ cover_attachment: :blob }])
+           .includes([{ cover_attachment: :blob }, :genres])
            .group('fictions.id')
            .order('total_views DESC')
            .limit(5)
@@ -70,7 +84,7 @@ class FictionsController < ApplicationController
 
   def latest_updates
     Fiction.joins(:chapters)
-           .includes([{ cover_attachment: :blob }])
+           .includes([{ cover_attachment: :blob }, :genres])
            .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
            .group(:fiction_id)
            .order('max_created_at DESC')
@@ -80,11 +94,15 @@ class FictionsController < ApplicationController
   def hot_updates
     Fiction.select('fictions.*, SUM(chapters.views) AS total_views')
            .joins(:chapters)
-           .includes([{ cover_attachment: :blob }])
+           .includes([{ cover_attachment: :blob }, :genres])
            .where('chapters.created_at >= ?', 7.days.ago)
            .group('fictions.id')
            .order('total_views DESC')
            .limit(5)
+  end
+
+  def set_genres
+    @genres = Genre.all.order(:name)
   end
 
   def setup_paginator

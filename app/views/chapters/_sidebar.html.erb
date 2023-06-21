@@ -22,7 +22,15 @@
             <%= tag.h2 fiction.title, class: 'font-oswald text-gray-700 dark:text-white float-left text-2xl md:text-xl md:leading-5 lg:leading-5 lg:text-xl tracking-tight w-full mb-1 line-clamp-2 align-middle mb-2 font-light' %>
           </div>
           <div class="w-full float-left rounded-xl md:mt-2 mb-1">
-            <%= tag.p fiction.description, class: 'font-light text-sm text-gray-500 dark:text-gray-300 mt-px line-clamp-4' %>
+            <% if fiction.genres.any? %>
+              <div class="overflow-hidden break-words line-clamp-4">
+                <% fiction.genres.each do |genre| %>
+                  <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600 dark:text-gray-300' %>
+                <% end %>
+              </div>
+            <% else %>
+              <%= tag.p fiction.description, class: 'font-light text-sm text-gray-500 dark:text-gray-300 mt-px line-clamp-4' %>
+            <% end %>
           </div>
         </div>
       </div>

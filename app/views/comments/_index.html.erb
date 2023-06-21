@@ -18,8 +18,8 @@
         <%= tag.p class: "font-light text-gray-500 md:text-lg #{'dark:text-gray-400' if comments_dark_mode?}" do %>
           <%= link_to 'Зареєструйтеся', register_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
           або
-          <%= link_to 'увійдіть', new_user_session_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
-          , аби лишити Ваш коментар!
+          <%= link_to 'увійдіть,', new_user_session_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
+          аби лишити Ваш коментар!
         <% end %>
       </div>
     </div>

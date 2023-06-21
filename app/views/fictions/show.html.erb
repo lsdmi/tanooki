@@ -1,7 +1,16 @@
 <section class="z-10 relative font-oswald mt-6">
   <div class="gap-8 items-center py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
     <div class="<%= @fiction.chapters.any? ? 'col-span-5' : 'col-span-8' %> grid grid-cols-5 lg:grid-cols-5 gap-8 xl:gap-16 self-start">
-      <%= image_tag url_for(@fiction.cover), class: 'md:col-span-2 hidden h-[32rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
+      <div class="md:col-span-2 hidden md:block">
+        <%= image_tag url_for(@fiction.cover), class: 'hidden h-[32rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
+        <% if @fiction.description.size > 500 && @fiction.genres.any? %>
+          <div class="mt-4 overflow-hidden break-words text-center">
+            <% @fiction.genres.each do |genre| %>
+              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
       <%= render 'details' %>
       <div class="col-span-5">
         <div class="lg:hidden">

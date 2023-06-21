@@ -138,4 +138,20 @@ class FictionTest < ActiveSupport::TestCase
       fiction.destroy
     end
   end
+
+  test 'should have many fiction genres' do
+    assert_instance_of FictionGenre, @fiction.fiction_genres.build
+  end
+
+  test 'should have many genres through fiction genres' do
+    assert_instance_of Genre, @fiction.genres.build
+  end
+
+  test 'should destroy associated fiction genres when destroyed' do
+    fiction = fictions(:one)
+
+    assert_difference 'FictionGenre.count', -1 do
+      fiction.destroy
+    end
+  end
 end

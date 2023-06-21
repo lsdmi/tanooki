@@ -2,8 +2,10 @@
 
 module FictionsHelper
   def fiction_author(fiction)
-    sanitize("
-      #{fiction.author} #{"(переклад <strong>#{fiction.translator}</strong>)" if fiction.translator.present?}
-    ")
+    if fiction.translator.present?
+      sanitize("Перекладач: <strong>#{fiction.translator}</strong>")
+    else
+      sanitize("Оригінальна робота <strong>#{fiction.author}</strong>")
+    end
   end
 end

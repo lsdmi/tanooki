@@ -7,10 +7,14 @@ class Fiction < ApplicationRecord
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
+  attr_accessor :genre_ids
+
   belongs_to :user
   has_many :chapters, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_one_attached :cover
+  has_many :fiction_genres, dependent: :destroy
+  has_many :genres, through: :fiction_genres
 
   enum status: {
     announced: 'Анонсовано',

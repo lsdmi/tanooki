@@ -1,7 +1,16 @@
 <section class="z-10 relative font-oswald">
   <div class="gap-4 items-center pb-2 md:py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
     <div class="col-span-8 grid grid-cols-6 gap-4 xl:gap-8 self-start">
-      <%= image_tag url_for(fiction.cover), class: 'md:col-span-2 hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
+      <div class="md:col-span-2 hidden md:block">
+        <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
+        <% if fiction.description.size > 500 && fiction.genres.any? %>
+          <div class="mt-4 overflow-hidden break-words text-center">
+            <% fiction.genres.each do |genre| %>
+              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
       <div class="text-gray-500 sm:text-xl col-span-6 md:col-span-4">
         <div class="w-full float-left rounded-xl mb-2 md:mt-1 md:mb-1 lg:mt-0">
           <div class="float-left mt-1">
@@ -24,6 +33,19 @@
         </div>
 
         <%= tag.h2 fiction.title, class: 'mb-4 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl' %>
+        <% if fiction.description.size < 500 && fiction.genres.any? %>
+          <div class="mb-4 overflow-hidden break-words">
+            <% fiction.genres.each do |genre| %>
+              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
+            <% end %>
+          </div>
+        <% elsif fiction.genres.any? %>
+          <div class="block md:hidden mb-4 overflow-hidden break-words">
+            <% fiction.genres.each do |genre| %>
+              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
+            <% end %>
+          </div>
+        <% end %>
         <%= tag.p fiction.description, class: 'mb-4 font-light text-base lg:text-lg whitespace-break-spaces' %>
 
         <div class="flex items-center gap-4">

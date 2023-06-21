@@ -1,0 +1,14 @@
+<%= simple_form_for genre, url: admin_genres_path, method: :post, html: { class: "form mt-2 mb-4 sm:mx-4 md:mx-24 lg:mx-80" } do |f| %>
+  <div class="relative">
+    <%= f.input :name,
+                input_html: {
+                  autofocus: true,
+                  class: 'block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500'
+                },
+                placeholder: 'Назвисько',
+                label: false,
+                required: true %>
+    <%= f.submit "Створити", class: "text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2" %>
+  </div>
+  <%= tag.span genre.errors[:name].uniq.join(""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if genre.errors[:name].any? %>
+<% end %>

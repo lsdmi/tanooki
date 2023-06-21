@@ -66,7 +66,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to fiction_path('new-fiction')
   end
 
   test 'should not create fiction with invalid params' do
@@ -94,7 +94,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
         title: 'Updated Title'
       }
     }
-    assert_redirected_to root_path
+    assert_redirected_to fiction_path(@fiction)
     @fiction.reload
     assert_equal 'Updated Title', @fiction.title
   end
@@ -112,6 +112,13 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
+  end
+
+  test 'should update fiction with genres' do
+    genre_ids = Genre.all.sample(2).map(&:id)
+    patch fiction_url(@fiction), params: { fiction: { genre_ids: } }
+    assert_redirected_to fiction_path(@fiction)
+    assert_equal genre_ids.sort, @fiction.genres.ids.sort
   end
 
   private

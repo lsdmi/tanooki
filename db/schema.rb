@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_035629) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_004229) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -97,6 +97,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_035629) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "fiction_genres", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "fiction_id"
+    t.bigint "genre_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiction_id"], name: "index_fiction_genres_on_fiction_id"
+    t.index ["genre_id"], name: "index_fiction_genres_on_genre_id"
+  end
+
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "slug", null: false
     t.bigint "user_id", null: false
@@ -115,6 +124,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_035629) do
     t.datetime "deleted_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
     t.index ["user_id"], name: "index_fictions_on_user_id"
+  end
+
+  create_table "genres", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name"
   end
 
   create_table "publication_tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -175,6 +191,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_035629) do
   add_foreign_key "chapters", "users", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "fiction_genres", "fictions"
+  add_foreign_key "fiction_genres", "genres"
   add_foreign_key "fictions", "users", on_delete: :cascade
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
