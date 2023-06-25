@@ -3,7 +3,7 @@
     <%= render 'leading_fiction', fiction: @latest_updates.first %>
     <div class="col-span-2 grid grid-cols-4 gap-2 mx-12">
       <% @latest_updates.excluding(@latest_updates.first).limit(8).each do |fiction| %>
-        <%= render 'other_updates', fiction: fiction %>
+        <%= render 'other_updates', fiction: fiction, large: false %>
       <% end %>
     </div>
   </div>
@@ -22,4 +22,14 @@
     <div class="p-4"><%= render 'all_time_chapter_views' %></div>
     <div class="p-4"><%= render 'trending_chapter_views' %></div>
   </div>
+  <% if @other.any? %>
+    <div class="mt-2">
+      <%= render 'shared/divider', caption: 'Варте уваги', rose: false %>
+      <div class="mx-auto w-full grid grid-cols-6 gap-4">
+        <% @other.each do |fiction| %>
+          <%= render 'other_updates', fiction: fiction, large: true %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

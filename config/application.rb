@@ -26,6 +26,7 @@ module Tanooki
 
     config.active_storage.variant_processor = :mini_magick
     config.autoload_paths += %W[#{config.root}/app/services]
+    config.autoload_paths += %W[#{config.root}/app/query]
   end
 end
 

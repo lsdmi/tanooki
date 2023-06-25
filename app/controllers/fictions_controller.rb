@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FictionsController < ApplicationController
+  include FictionQuery
+
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_fiction, only: %i[show edit update destroy]
   before_action :set_genres, only: %i[new create edit update]
@@ -10,10 +12,12 @@ class FictionsController < ApplicationController
 
   def index
     @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    @popular_fictions = Fiction.includes(:genres).order(views: :desc).limit(5)
+    @popular_fictions = popular_fictions
     @most_reads = most_reads
     @latest_updates = latest_updates
     @hot_updates = hot_updates
+    @other = other
+    @other_mobile = other_mobile
   end
 
   def show
@@ -73,32 +77,34 @@ class FictionsController < ApplicationController
     genres_to_remove.each { |genre_id| @fiction.fiction_genres.find_by(genre_id:).destroy }
   end
 
+  def other
+    fiction_exclusions_query.merge(fiction_with_max_created_at_query)
+  end
+
+  def other_mobile
+    fiction_exclusions_query_mobile.merge(fiction_with_max_created_at_query)
+  end
+
   def most_reads
-    Fiction.select('fictions.*, SUM(chapters.views) AS total_views')
-           .joins(:chapters)
-           .includes([{ cover_attachment: :blob }, :genres])
-           .group('fictions.id')
-           .order('total_views DESC')
-           .limit(5)
+    Rails.cache.fetch('most_reads', expires_in: 12.hours) do
+      fiction_with_total_views_query.limit(5)
+    end
+  end
+
+  def popular_fictions
+    Rails.cache.fetch('popular_fictions', expires_in: 12.hours) do
+      Fiction.includes(:genres).order(views: :desc).limit(5)
+    end
   end
 
   def latest_updates
-    Fiction.joins(:chapters)
-           .includes([{ cover_attachment: :blob }, :genres])
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group(:fiction_id)
-           .order('max_created_at DESC')
-           .limit(9)
+    fiction_with_max_created_at_query.limit(9)
   end
 
   def hot_updates
-    Fiction.select('fictions.*, SUM(chapters.views) AS total_views')
-           .joins(:chapters)
-           .includes([{ cover_attachment: :blob }, :genres])
-           .where('chapters.created_at >= ?', 7.days.ago)
-           .group('fictions.id')
-           .order('total_views DESC')
-           .limit(5)
+    Rails.cache.fetch('hot_updates', expires_in: 12.hours) do
+      fiction_with_recent_hot_updates_query.limit(5)
+    end
   end
 
   def set_genres
