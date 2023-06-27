@@ -15,7 +15,7 @@
                   loop: true,
                   muted: true,
                   onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');",
-                  poster: url_for(@hero_ad.thumbnail) %>
+                  poster: url_for(@hero_ad.poster) %>
   <% end if @hero_ad.present? %>
   <div class="grid grid-cols-3 gap-4 mt-4 w-[96%]">
     <div class="p-4"><%= render 'all_time_fiction_views' %></div>

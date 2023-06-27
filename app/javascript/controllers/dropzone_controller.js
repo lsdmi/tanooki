@@ -6,25 +6,58 @@ export default class DropzoneController extends Controller {
   connect() {
     console.log("DropzoneController connected");
 
-    const coverInput = document.getElementById("#image_name");
-    if (!coverInput) return;
+    const targetIds = [
+      "advertisement_cover",
+      "advertisement_poster",
+      "fictions_cover",
+      "publication_cover"
+    ];
 
-    this.updateTextContent(coverInput);
+    targetIds.forEach(targetId => {
+      const element = document.getElementById(targetId);
+      if (element) this.setTextContent(element);
+    });
   }
 
   update(event) {
     this.updateTextContent(event.target);
   }
 
-  updateTextContent(input) {
-    const imageName = document.querySelector("#image_name");
+  setTextContent(input) {
+    const targetId = input.getAttribute("id");
+    const targetElement = document.querySelector(`#${targetId}`);
 
-    if (!imageName || !input.files || !input.files[0]) {
-      imageName.textContent = "";
+    if (!targetElement || !input.files || !input.files[0]) {
+      targetElement.textContent = "";
       return;
     }
 
     const fileName = input.files[0].name;
-    imageName.textContent = fileName.slice(0, 40);
+    targetElement.textContent = fileName.slice(0, 40);
+  }
+
+  updateTextContent(input) {
+    const targetId = input.getAttribute("id");
+    let targetElement;
+
+    switch(targetId) {
+      case 'advertisement_cover':
+        targetElement = document.querySelector(`#cover_name`);
+        break;
+      case 'advertisement_poster':
+        targetElement = document.querySelector(`#poster_name`);
+        break;
+      default:
+        targetElement = document.querySelector(`#image_name`);
+        break;
+    }
+
+    if (!targetElement || !input.files || !input.files[0]) {
+      targetElement.textContent = "";
+      return;
+    }
+
+    const fileName = input.files[0].name;
+    targetElement.textContent = fileName.slice(0, 40);
   }
 }

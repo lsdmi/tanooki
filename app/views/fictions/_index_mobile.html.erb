@@ -12,7 +12,7 @@
                   loop: true,
                   muted: true,
                   onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');",
-                  poster: url_for(@hero_ad.thumbnail) %>
+                  poster: url_for(@hero_ad.poster) %>
   <% end if @hero_ad.present? %>
   <%= render 'shared/divider', caption: 'Популярні Твори', rose: false %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">

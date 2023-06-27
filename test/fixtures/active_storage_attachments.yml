@@ -60,3 +60,24 @@ attachment_nine:
   record_id: 3
   blob_id: 9
   created_at: <%= Time.now %>
+
+attachment_ten:
+  name: poster
+  record_type: Advertisement
+  record_id: 1
+  blob_id: 10
+  created_at: <%= Time.now %>
+
+attachment_eleven:
+  name: poster
+  record_type: Advertisement
+  record_id: 2
+  blob_id: 11
+  created_at: <%= Time.now %>
+
+attachment_twelve:
+  name: poster
+  record_type: Advertisement
+  record_id: 3
+  blob_id: 12
+  created_at: <%= Time.now %>

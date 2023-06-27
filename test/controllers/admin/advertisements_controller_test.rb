@@ -15,6 +15,10 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
         Rails.root.join('app', 'assets', 'images', 'logo.svg'),
         'image/svg'
       ),
+      poster: Rack::Test::UploadedFile.new(
+        Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+        'image/svg'
+      ),
       resource: 'test',
       enabled: true
     }

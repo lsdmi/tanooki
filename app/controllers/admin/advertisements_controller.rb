@@ -41,7 +41,7 @@ module Admin
     end
 
     def advertisement_params
-      params.require(:advertisement).permit(:caption, :description, :cover, :resource, :enabled)
+      params.require(:advertisement).permit(:caption, :description, :cover, :resource, :enabled, :poster)
     end
   end
 end

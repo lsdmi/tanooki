@@ -10,11 +10,11 @@
             <div class="w-full flex rounded-xl mb-1">
               <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'block text-gray-500 text-xs w-full float-left' %>
               <span class="text-gray-500 text-xs float-right mr-4 flex align-center">
-                <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments' %>
+                <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
                 <%= tag.span publication.comments_count, class: 'ml-1 inline-block' %>
               </span>
               <span class="text-gray-500 text-xs float-right mr-4 flex align-center">
-                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views' %>
+                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views', height: '16', width: '16' %>
                 <%= tag.span publication.views, class: 'ml-1 inline-block' %>
               </span>
             </div>

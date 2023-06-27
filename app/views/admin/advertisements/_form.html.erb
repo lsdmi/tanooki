@@ -13,19 +13,38 @@
     <% end %>
   </div>
 
-  <%= f.label :cover, "Обкладинка" %>
-  <div class="mb-2 bg-slate-50">
+  <div class="grid grid-cols-2 gap-2">
     <div>
-      <%= f.file_field :cover, class: "form-control m-10", label: false %>
-      <img src="#" class="invisible" />
+      <%= f.label :cover, 'Відео', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <div class="flex justify-center items-center w-full">
+        <%= f.label :cover, class: "flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if advertisement.errors[:cover].any?}" do %>
+          <div class="flex flex-col justify-center items-center pt-5 pb-6">
+            <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
+            <p class="mb-4 text-xs text-gray-500">MP4</p>
+          </div>
+          <%= f.file_field :cover, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+          <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'text-center text-sm text-gray-500' %>
+        <% end %>
+      </div>
+      <%= tag.p advertisement.errors[:cover].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if advertisement.errors[:cover].any? %>
     </div>
-    <div>
-      <%= render 'shared/ads', advertisement: advertisement if advertisement&.persisted? %>
+    <div class="mr-2 mb-2">
+      <%= f.label :poster, 'Постер', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <div class="flex justify-center items-center w-full">
+        <%= f.label :poster, class: "flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if advertisement.errors[:poster].any?}" do %>
+          <div class="flex flex-col justify-center items-center pt-5 pb-6">
+            <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
+            <p class="mb-4 text-xs text-gray-500">SVG, PNG, JPEG чи WebP</p>
+          </div>
+          <%= f.file_field :poster, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+          <%= tag.div f.object.poster.blob&.filename || nil, id: 'poster_name', class: 'text-center text-sm text-gray-500' %>
+        <% end %>
+      </div>
+      <%= tag.p advertisement.errors[:poster].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if advertisement.errors[:poster].any? %>
     </div>
   </div>
-  <% if advertisement.errors[:cover].any? %>
-    <p id="outlined_error_help" class="mb-6 text-xs text-red-600"><span class="font-medium">відсутня обкладинка оголошення...</p>
-  <% end %>
 
   <div class="mb-6">
     <%= f.input :resource,

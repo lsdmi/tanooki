@@ -5,8 +5,9 @@ class Advertisement < ApplicationRecord
   friendly_id :slug_candidates
 
   has_one_attached :cover
+  has_one_attached :poster
 
-  validates :cover, presence: true
+  validates :cover, :poster, presence: true
   validates :caption, presence: true, length: { maximum: 50 }
   validates :resource, presence: true, length: { maximum: 300 }
 
@@ -16,11 +17,5 @@ class Advertisement < ApplicationRecord
     [
       caption.downcase
     ]
-  end
-
-  def thumbnail
-    return unless cover.previewable?
-
-    cover.preview(resize_to_limit: [100, 100]).processed
   end
 end
