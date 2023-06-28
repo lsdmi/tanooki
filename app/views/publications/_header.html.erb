@@ -7,7 +7,7 @@
       </span>
       <span>
         <%= tag.span "Опубліковано: #{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-500 float-left' %>
-        <%= tag.div publication.user.name, class: 'text-gray-800 font-bold' %>
+        <%= tag.div publication.username, class: 'text-gray-800 font-bold' %>
       </span>
     </div>
     <aside aria-label="views">

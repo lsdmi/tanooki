@@ -4,12 +4,12 @@
       <div class="w-20 h-20 mx-auto">
         <%= image_tag url_for(chapter.user.avatar.image), alt: chapter.user.avatar.blob.filename.to_s, class: 'w-full h-full mx-auto rounded-full' %>
       </div>
-      <%= tag.p chapter.fiction.translator.presence || chapter.fiction.author, class: "w-full text-base font-light mt-2 dark:text-white" %>
+      <%= tag.p chapter.translator.presence || chapter.author, class: "w-full text-base font-light mt-2 dark:text-white" %>
     </div>
   </div>
   <%= tag.div do %>
     <%= render 'shared/divider', caption: 'Оновлення команди', rose: false %>
-    <% @more_from_author.limit(3).each do |fiction| %>
+    <% more_from_author.limit(3).each do |fiction| %>
       <div class="float-right w-full grid lg:grid-cols-10 my-1">
         <div class="leading-none float-left relative lg:col-span-4 cursor-pointer">
           <%= link_to fiction_path(fiction) do %>
@@ -35,5 +35,5 @@
         </div>
       </div>
     <% end %>
-  <% end if @more_from_author.any? %>
+  <% end if more_from_author.any? %>
 </div>

@@ -10,4 +10,8 @@ class Comment < ApplicationRecord
   scope :parents, -> { where(parent_id: nil) }
 
   validates :content, presence: true, length: { maximum: 2200 }
+
+  def username
+    user.name
+  end
 end

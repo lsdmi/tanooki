@@ -1,6 +1,6 @@
 <div class="mt-20 text-center mx-2">
   <%= tag.h1 chapter_header(chapter), class: 'mx-auto mb-2 max-w-2xl text-2xl font-extrabold leading-none text-gray-900 dark:text-white sm:text-3xl lg:text-4xl' %>
-  <%= tag.h1 chapter.fiction.translator.presence || chapter.fiction.author, class: 'visible lg:invisible text-base font-light mt-2 dark:text-white' %>
+  <%= tag.h1 chapter.translator.presence || chapter.author, class: 'visible lg:invisible text-base font-light mt-2 dark:text-white' %>
 </div>
 <div class="flex mt-4 m-auto w-full lg:w-[1250px] h-full">
   <div class="mx-px w-full lg:w-3/4">
@@ -14,12 +14,12 @@
       </div>
     </div>
     <div class="lg:hidden mt-4">
-      <%= render 'more_from_author_mobile' if @more_from_author.any? %>
+      <%= render 'more_from_author_mobile', more_from_author: more_from_author if more_from_author.any? %>
     </div>
   </div>
   <aside class="sticky top-0 hidden lg:block lg:w-1/4 h-[45rem]">
     <div class="p-4">
-      <%= render 'sidebar', chapter: chapter %>
+      <%= render 'sidebar', chapter: chapter, more_from_author: more_from_author %>
     </div>
   </aside>
 </div>

@@ -39,7 +39,7 @@ class ChaptersController < ApplicationController
 
   def destroy
     @chapter.destroy
-    chapter_page = params["chapter_page_#{@chapter.fiction.slug}"]
+    chapter_page = params["chapter_page_#{@chapter.fiction_slug}"]
     chapter_page = (chapter_page.to_i - 1) if chapters.size <= (chapter_page.to_i * 8) - 8
     setup_pagination(chapters, chapter_page)
     render turbo_stream: refresh_list
@@ -51,7 +51,7 @@ class ChaptersController < ApplicationController
     Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
       Fiction.joins(:chapters)
              .includes([{ cover_attachment: :blob }])
-             .where(translator: @chapter.fiction.translator)
+             .where(translator: @chapter.translator)
              .excluding(@chapter.fiction)
              .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
              .group(:fiction_id)
@@ -79,7 +79,7 @@ class ChaptersController < ApplicationController
       page: chapter_page,
       items: 8,
       request_path: readings_path,
-      page_param: "chapter_page_#{@chapter.fiction.slug}"
+      page_param: "chapter_page_#{@chapter.fiction_slug}"
     )
   end
 
@@ -91,7 +91,7 @@ class ChaptersController < ApplicationController
 
   def refresh_list
     turbo_stream.update(
-      "chapter-list-#{@chapter.fiction.slug}",
+      "chapter-list-#{@chapter.fiction_slug}",
       partial: 'users/dashboard/chapter_list',
       locals: { fiction: @chapter.fiction, pagination: @pagination }
     )

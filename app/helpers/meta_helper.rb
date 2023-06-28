@@ -43,7 +43,7 @@ module MetaHelper
   def meta_title
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
     return 'Бака - Ранобе та Фанфіки' if request.path == fictions_path
-    return chapter_title if @chapter.present?
+    return chapter_title if @chapter.present? && @chapter.persisted?
 
     [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
@@ -60,11 +60,11 @@ module MetaHelper
   private
 
   def chapter_title
-    "#{@chapter.fiction&.title} | #{chapter_header(@chapter)}"
+    "#{@chapter.fiction_title} | #{chapter_header(@chapter)}"
   end
 
   def chapter_description
-    "Ранобе \"#{@chapter.fiction&.title}\" за авторства #{@chapter.fiction&.author} | #{chapter_header(@chapter)}"
+    "Ранобе \"#{@chapter.fiction_title}\" за авторства #{@chapter.author} | #{chapter_header(@chapter)}"
   end
 
   def chapter_content_present?

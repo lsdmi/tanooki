@@ -14,9 +14,25 @@ class Chapter < ApplicationRecord
   validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :title, length: { maximum: 100 }
 
+  def author
+    fiction.author
+  end
+
+  def fiction_slug
+    fiction.slug
+  end
+
+  def fiction_title
+    fiction.title
+  end
+
   def slug_candidates
     [
       "#{fiction&.title&.downcase}-rozdil-#{number}"
     ]
+  end
+
+  def translator
+    fiction.translator
   end
 end

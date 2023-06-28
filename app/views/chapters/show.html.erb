@@ -1,7 +1,7 @@
 <section class="z-10 relative font-oswald dark:bg-gray-900">
   <div class="pt-8 pb-4">
     <%= render 'hero', fiction: @chapter.fiction %>
-    <%= render @chapter %>
+    <%= render @chapter, more_from_author: @more_from_author %>
 
     <div class="bg-gray-100 dark:bg-gray-800 flex mt-8 m-auto w-full lg:w-[1250px] h-full">
       <%= tag.div class: 'p-4 rounded-lg border border-gray-200 font-oswald w-full' do %>

@@ -50,4 +50,8 @@ class Publication < ApplicationRecord
 
     errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
   end
+
+  def username
+    user.name
+  end
 end
