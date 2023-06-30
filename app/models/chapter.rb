@@ -18,6 +18,10 @@ class Chapter < ApplicationRecord
     fiction.author
   end
 
+  def display_title
+    title.presence || "Розділ #{number}"
+  end
+
   def fiction_slug
     fiction.slug
   end

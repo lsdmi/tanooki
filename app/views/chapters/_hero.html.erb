@@ -1,23 +1,56 @@
-<div class="rounded-lg mb-16">
-  <div class="rounded-md relative">
-    <div class="bg-center bg-no-repeat bg-cover absolute top-0 right-0 bottom-0 left-0 h-[110%]" style="background-image: url(<%= url_for(fiction.cover) %>); filter: blur(15px) brightness(40%); z-index: 0;"></div>
-    <div class="flex justify-center relative">
-      <div class="w-[10%] sm:w-[10%] md:w-[15%] lg:w-[20%] 2xl:w-[25%]"></div>
-      <%= link_to fiction_path(fiction), class: 'hidden sm:block w-[1%] sm:w-[30%] lg:w-[20%] text-center' do %>
-        <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename, class: 'h-96 object-cover rounded-lg shadow-lg inline-block align-middle' %>
-      <% end %>
-      <div class="w-[72.5%] sm:w-[40%] md:w-[35%] 2xl:w-[25%]">
-        <%= tag.h3 fiction.title, class: 'ml-6 mt-4 mb-1 text-xl sm:text-2xl md:text-3xl text-white' %>
-        <% if fiction.genres.any? %>
-          <div class="ml-6 mt-2 overflow-hidden break-words line-clamp-4">
-            <% fiction.genres.each do |genre| %>
-              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs font-semibold mr-2 whitespace-nowrap uppercase text-emerald-500 dark:text-gray-300' %>
+<div class="flex justify-between px-4 mx-auto max-w-screen-xl">
+  <article class="mx-auto w-full format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+    <header class="mb-4 lg:mb-6 not-format">
+      <nav class="flex hidden sm:block" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center">
+          <li class="inline-flex items-center">
+            <%= link_to fictions_path, class: 'inline-flex items-center text-sm md:text-base lg:text-lg font-medium text-gray-700 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white' do %>
+              <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+              </svg>
+              Усі Твори
             <% end %>
-          </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              <%= link_to fiction.title, fiction_path(fiction), class: 'inline-flex items-center text-sm md:text-base lg:text-lg font-medium text-gray-700 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white' %>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                <%= tag.span "Розділ #{@chapter.number}", class: 'ml-1 text-sm md:text-base lg:text-lg font-medium text-gray-500 dark:text-gray-300 line-clamp-1' %>
+              </svg>
+            </div>
+          </li>
+        </ol>
+      </nav>
+      <div class="flex items-center my-4">
+        <% fiction.genres.each do |tg| %>
+          <%= tag.p tg.name, class: 'bg-emerald-100 dark:hover:bg-emerald-300 text-emerald-800 text-lg font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-emerald-200 dark:text-emerald-800 hover:bg-emerald-200' %>
         <% end %>
-        <%= tag.h3 fiction.description, class: 'sm:line-clamp-6 lg:line-clamp-none whitespace-break-spaces mt-2 mb-8 sm:my-0 ml-6 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-200 font-light mr-[1.75%]' %>
       </div>
-      <div class="w-[15%] sm:w-[15%] md:w-[20%] lg:w-[25%] 2xl:w-[30%]"></div>
-    </div>
-  </div>
+      <%= tag.h1 @chapter.display_title, class: 'font-oswald mb-4 text-2xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white' %>
+      <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
+        <div class="mr-4 text-sm">
+          <%= tag.p @chapter.translator.presence || @chapter.author, class: 'text-xl text-gray-700 no-underline dark:text-white' %>
+        </div>
+        <div>
+        <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 float-right">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        </button>
+        </div>
+        <div>
+          <%= tag.p class: 'text-center items-center text-sm font-medium shrink-0 text-gray-600 dark:text-gray-500' do %>
+            <%= tag.span "#{@chapter.views} переглядів", class: 'dark:text-gray-400' %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+  </article>
 </div>

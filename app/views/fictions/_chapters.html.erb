@@ -11,22 +11,29 @@
     <% end if @fiction.chapters.any? %>
   </div>
   <div class="lg:max-w-3xl p-5 mx-auto my-4 space-y-5 border border-gray-100 rounded-lg bg-gray-50 overflow-y-auto max-h-[55rem]">
-    <% @fiction.chapters.includes(:rich_text_content).order(number: :desc).each_with_index do |chapter, index| %>
-      <div class="<%= 'pb-2 border-b border-gray-200' unless @fiction.chapters.includes(:rich_text_content).size == (index + 1) %>">
-        <div>
-          <%= link_to chapter_header(chapter), chapter_path(chapter), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-2 border-b-2 border-gray-50' %>
-          <div class="float-right">
-            <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
-              <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views', height: '16', width: '16'  %>
-              <%= tag.span chapter.views, class: 'ml-1 inline-block' %>
-            </span>
+    <ul class="max-w-md divide-y divide-gray-200">
+      <% @fiction.chapters.includes(:rich_text_content).order(number: :desc, created_at: :desc).each_with_index do |chapter, index| %>
+        <li class="pb-3 sm:pb-4">
+          <div class="flex items-center space-x-4">
+            <div class="flex-1 min-w-0">
+              <%= link_to chapter_path(chapter) do %>
+                <%= tag.p chapter.display_title, class: 'text-sm font-medium text-gray-900 truncate mt-2 hover:text-gray-600' %>
+              <% end %>
+              <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: 'text-sm text-gray-500 truncate' %>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900">
+              <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
+                <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
+                <%= tag.span chapter.comments_count, class: 'ml-1 inline-block' %>
+              </span>
+              <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
+                <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views', height: '16', width: '16'  %>
+                <%= tag.span chapter.views, class: 'ml-1 inline-block' %>
+              </span>
+            </div>
           </div>
-        </div>
-        <p class="mt-1 text-base font-normal text-gray-500">
-          <%= punch(chapter.content.to_plain_text) %>
-        </p>
-        <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: 'text-xs font-normal text-gray-900 truncate inline-block' %>
-      </div>
-    <% end %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>

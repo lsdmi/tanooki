@@ -64,7 +64,9 @@ class ChaptersController < ApplicationController
   end
 
   def next_chapter
-    @chapter.fiction.chapters.where('number > ?', @chapter.number).order(:number).first
+    @chapter.fiction.chapters.where(
+      'number > ? OR (number = ? AND created_at > ?)', @chapter.number, @chapter.number, @chapter.created_at
+    ).order(:number).first
   end
 
   def chapters

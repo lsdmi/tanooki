@@ -1,5 +1,5 @@
 <section class="z-10 relative font-oswald dark:bg-gray-900">
-  <div class="pt-8 pb-4">
+  <div class="sm:pt-2 md:pt-4 lg:pt-8 pb-4">
     <%= render 'hero', fiction: @chapter.fiction %>
     <%= render @chapter, more_from_author: @more_from_author %>
 
@@ -7,7 +7,7 @@
       <%= tag.div class: 'p-4 rounded-lg border border-gray-200 font-oswald w-full' do %>
         <h4 class="mb-4 text-sm text-gray-900 dark:text-white uppercase">Далі</h4>
         <div class="mb-6">
-          <%= tag.h5 chapter_header(@next_chapter), class: 'mb-2 text-lg leading-tight text-gray-900 dark:text-white' %>
+          <%= tag.h5 @next_chapter.display_title, class: 'mb-2 text-lg leading-tight text-gray-900 dark:text-white' %>
           <%= tag.p @next_chapter.content.to_plain_text, class: 'mb-2 font-light text-gray-500 dark:text-gray-300 line-clamp-2' %>
           <%= link_to 'Читати', chapter_path(@next_chapter), class: 'inline-flex items-center font-medium underline underline-offset-4 text-emerald-600 hover:no-underline' %>
         </div>

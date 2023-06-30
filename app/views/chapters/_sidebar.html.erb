@@ -1,12 +1,4 @@
 <div class="text-center">
-  <div class="flex items-center mb-8">
-    <div class="w-full">
-      <div class="w-20 h-20 mx-auto">
-        <%= image_tag url_for(chapter.user.avatar.image), alt: chapter.user.avatar.blob.filename.to_s, class: 'w-full h-full mx-auto rounded-full' %>
-      </div>
-      <%= tag.p chapter.translator.presence || chapter.author, class: "w-full text-base font-light mt-2 dark:text-white" %>
-    </div>
-  </div>
   <%= tag.div do %>
     <%= render 'shared/divider', caption: 'Оновлення команди', rose: false %>
     <% more_from_author.limit(3).each do |fiction| %>
@@ -25,7 +17,7 @@
             <% if fiction.genres.any? %>
               <div class="overflow-hidden break-words line-clamp-4">
                 <% fiction.genres.each do |genre| %>
-                  <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600 dark:text-gray-300' %>
+                  <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600 dark:text-emerald-600' %>
                 <% end %>
               </div>
             <% else %>
