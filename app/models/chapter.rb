@@ -2,8 +2,11 @@
 
 class Chapter < ApplicationRecord
   extend FriendlyId
+  include GenresHelper
   acts_as_paranoid
   friendly_id :slug_candidates
+
+  after_create_commit :telegram_send_message
 
   belongs_to :fiction
   belongs_to :user
@@ -22,6 +25,10 @@ class Chapter < ApplicationRecord
     title.presence || "Розділ #{number}"
   end
 
+  def fiction_description
+    fiction.description
+  end
+
   def fiction_slug
     fiction.slug
   end
@@ -34,6 +41,27 @@ class Chapter < ApplicationRecord
     [
       "#{fiction&.title&.downcase}-rozdil-#{number}"
     ]
+  end
+
+  def telegram_fiction_path
+    Rails.application.routes.url_helpers.fiction_url(fiction, host: ApplicationHelper::PRODUCTION_URL)
+  end
+
+  def telegram_message
+    ActionController::Base.helpers.sanitize(
+      "<i>Досі не слідкуєте за <b>\"#{fiction_title}\"<b>?</i> \n\n" \
+      "🎉 <i>Насолоджуйтеся <b>#{fiction.chapters.size}</b> розділами неймовірних пригод за " \
+      "<i><b><a href=\"#{telegram_fiction_path}\">посиланням</a></b></i>!</i> 🎉 \n\n" \
+      "<i>#{fiction_description}</i> \n\n" \
+      "✍️ Переклад: <i>#{translator}</i> ✍️ \n\n" \
+      "#{fiction.genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
+    )
+  end
+
+  def telegram_send_message
+    return unless (fiction.chapters.size % 25).zero?
+
+    TelegramJob.perform_later(object: self)
   end
 
   def translator

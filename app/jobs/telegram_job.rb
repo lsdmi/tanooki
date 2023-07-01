@@ -3,11 +3,18 @@
 class TelegramJob < ApplicationJob
   queue_as :default
 
-  def perform(tale)
+  attr_reader :object
+
+  def perform(object:)
     return unless Rails.env.production?
 
+    @object = object
+
     TelegramBot.init
-    url = "https://baka.in.ua#{Rails.application.routes.url_helpers.tale_path(tale)}"
-    TelegramBot.bot.api.send_message(chat_id: '@bakaInUa', text: url)
+    TelegramBot.bot.api.send_message(
+      chat_id: '@bakaInUa',
+      text: object.telegram_message,
+      parse_mode: 'HTML'
+    )
   end
 end

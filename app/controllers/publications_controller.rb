@@ -63,7 +63,6 @@ class PublicationsController < ApplicationController
   end
 
   def manage_tags
-    publication_tags_ids = params[:publication][:tag_ids].map(&:to_i)
     existing_tag_ids = @publication.tags.ids
 
     tags_to_add = publication_tags_ids - existing_tag_ids
@@ -77,6 +76,10 @@ class PublicationsController < ApplicationController
     params.require(:publication).permit(
       :type, :title, :description, :cover, :highlight, :user_id
     )
+  end
+
+  def publication_tags_ids
+    @publication_tags_ids ||= params[:publication][:tag_ids].reject(&:blank?).map(&:to_i)
   end
 
   def set_publication

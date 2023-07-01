@@ -6,7 +6,7 @@ development:
   database: tanooki_development
   host: localhost
   username: root
-  password: mypassword
+  password: <%= ENV.fetch('DB_PASSWORD') %>
 
 test:
   adapter: mysql2
@@ -16,7 +16,7 @@ test:
   database: tanooki_test
   host: 127.0.0.1
   username: root
-  password: mypassword
+  password: <%= ENV.fetch('DB_PASSWORD') %>
   collation: utf8mb4_general_ci
 
 production:

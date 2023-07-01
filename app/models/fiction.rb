@@ -2,12 +2,15 @@
 
 class Fiction < ApplicationRecord
   include Pagy::Backend
+  include GenresHelper
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
   attr_accessor :genre_ids
+
+  after_create_commit { TelegramJob.perform_later(object: self) }
 
   belongs_to :user
   has_many :chapters, dependent: :destroy
@@ -54,5 +57,19 @@ class Fiction < ApplicationRecord
     return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
     errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
+  end
+
+  def telegram_fiction_path
+    Rails.application.routes.url_helpers.fiction_url(self, host: ApplicationHelper::PRODUCTION_URL)
+  end
+
+  def telegram_message
+    ActionController::Base.helpers.sanitize(
+      "🎉 <b>#{title}</b> 🎉 \n\n" \
+      "<i>#{description}</i> \n\n" \
+      "✍️ Переклад: <i>#{translator}</i> ✍️ \n\n" \
+      "🔗 <i><b><a href=\"#{telegram_fiction_path}\">Читати на сайті</a></b></i> 🔗 \n\n" \
+      "#{genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
+    )
   end
 end

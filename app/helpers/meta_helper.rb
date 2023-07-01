@@ -19,7 +19,7 @@ module MetaHelper
     if publication_description_present?
       punch(publication_description)
     elsif fiction_description_present?
-      @fiction.description
+      fiction_description
     elsif chapter_content_present?
       chapter_description
     elsif request_path_is_fictions_path?
@@ -60,11 +60,15 @@ module MetaHelper
   private
 
   def chapter_title
-    "#{@chapter.fiction_title} | #{chapter_header(@chapter)}"
+    "#{@chapter.fiction_title} | #{@chapter.display_title}"
   end
 
   def chapter_description
-    "Ранобе \"#{@chapter.fiction_title}\" за авторства #{@chapter.author} | #{chapter_header(@chapter)}"
+    if @chapter.translator.present?
+      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" у перекладі команди \"#{@chapter.translator}\"."
+    else
+      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" за авторства #{@chapter.author}."
+    end
   end
 
   def chapter_content_present?
@@ -77,6 +81,14 @@ module MetaHelper
 
   def fictions_cover
     params[:action] == 'index' ? @latest_updates&.first&.cover : meta_cover
+  end
+
+  def fiction_description
+    if @fiction.translator.present?
+      "Читати ранобе \"#{@fiction.title}\" у перекладі команди \"#{@fiction.translator}\"."
+    else
+      "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."
+    end
   end
 
   def fiction_description_present?

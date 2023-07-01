@@ -11,4 +11,8 @@ module TagsHelper
       'hidden sm:block'
     end
   end
+
+  def tag_formatter(tag)
+    tag.name.downcase.gsub(/[\s,!\-]/, '_')
+  end
 end

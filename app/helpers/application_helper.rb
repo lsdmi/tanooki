@@ -3,6 +3,8 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  PRODUCTION_URL = 'https://baka.in.ua'
+
   def punch(string)
     sentences = string.scan(/.*?[.?!](?=\s|\z)/)
     result = ''

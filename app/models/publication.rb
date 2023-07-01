@@ -4,13 +4,14 @@ require_relative '../../config/initializers/telegram_bot'
 
 class Publication < ApplicationRecord
   extend FriendlyId
+  include TagsHelper
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
   attr_accessor :tag_ids
 
-  after_create_commit { TelegramJob.perform_later(self) }
+  after_create_commit { TelegramJob.perform_later(object: self) }
 
   belongs_to :user
   has_one_attached :cover
@@ -49,6 +50,19 @@ class Publication < ApplicationRecord
     return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
     errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
+  end
+
+  def telegram_tale_path
+    Rails.application.routes.url_helpers.tale_url(self, host: ApplicationHelper::PRODUCTION_URL)
+  end
+
+  def telegram_message
+    ActionController::Base.helpers.sanitize(
+      "📚 <b>#{title}</b> 📚 \n\n" \
+      "📖 <i>#{description.to_plain_text[0..300]}...</i> " \
+      "<i><b><a href=\"#{telegram_tale_path}\">читати далі</a></b></i> 📖 \n\n" \
+      "#{tags.map { |tag| "<i><b>##{tag_formatter(tag)}</b></i>" }.join(', ')}"
+    )
   end
 
   def username
