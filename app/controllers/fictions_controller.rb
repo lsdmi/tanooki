@@ -121,6 +121,17 @@ class FictionsController < ApplicationController
     (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
   end
 
+  def fiction_list
+    if current_user.admin?
+      Fiction.all
+    else
+      Fiction.joins(:chapters)
+             .where(chapters: { user_id: current_user.id })
+             .or(Fiction.where(user_id: current_user.id))
+             .distinct
+    end
+  end
+
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title,
@@ -141,7 +152,7 @@ class FictionsController < ApplicationController
   end
 
   def setup_sidebar_vars
-    @fictions_size = Fiction.count
+    @fictions_size = fiction_list.count
     @user_publications = current_user.publications.order(created_at: :desc)
   end
 

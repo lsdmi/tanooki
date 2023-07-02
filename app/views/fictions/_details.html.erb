@@ -1,14 +1,8 @@
-<div class="text-gray-500 sm:text-lg col-span-5 md:col-span-3">
+<div class="text-gray-500 sm:text-lg col-span-5 md:col-span-3 overflow-y-auto max-h-[35rem]">
   <%= tag.h2 @fiction.title, class: 'text-center mb-4 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl' %>
 
-  <% if @fiction.description.size < 500 && @fiction.genres.any? %>
+  <% if @fiction.genres.any? %>
     <div class="mb-4 overflow-hidden break-words text-center">
-      <% @fiction.genres.each do |genre| %>
-        <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
-      <% end %>
-    </div>
-  <% elsif @fiction.genres.any? %>
-    <div class="block md:hidden mb-4 overflow-hidden break-words text-center">
       <% @fiction.genres.each do |genre| %>
         <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
       <% end %>

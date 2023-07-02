@@ -11,8 +11,8 @@
     <% end if @fiction.chapters.any? %>
   </div>
   <div class="lg:max-w-3xl p-5 mx-auto my-4 space-y-5 border border-gray-100 rounded-lg bg-gray-50 overflow-y-auto max-h-[55rem]">
-    <ul class="max-w-md divide-y divide-gray-200">
-      <% @fiction.chapters.includes(:rich_text_content).order(number: :desc, created_at: :desc).each_with_index do |chapter, index| %>
+    <ul class="divide-y divide-gray-200">
+      <% @fiction.chapters.order(number: :desc, created_at: :desc).each_with_index do |chapter, index| %>
         <li class="pb-3 sm:pb-4">
           <div class="flex items-center space-x-4">
             <div class="flex-1 min-w-0">
@@ -36,4 +36,5 @@
       <% end %>
     </ul>
   </div>
+  <%= render 'add_chapter_cta', fiction: @fiction %>
 </div>

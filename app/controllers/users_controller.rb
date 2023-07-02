@@ -24,8 +24,8 @@ class UsersController < ApplicationController
   end
 
   def readings
-    @pagy, @fictions = pagy(Fiction.order(:title), items: 8)
-    @random_reading = @fictions.sample
+    @pagy, @fictions = pagy(fiction_list, items: 8)
+    @random_reading = Fiction.all.sample
     fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
     fiction_paginator.call
     @paginators = fiction_paginator.initiate
@@ -34,8 +34,20 @@ class UsersController < ApplicationController
 
   private
 
+  def fiction_list
+    if current_user.admin?
+      Fiction.order(:title)
+    else
+      Fiction.joins(:chapters)
+             .where(chapters: { user_id: current_user.id })
+             .or(Fiction.where(user_id: current_user.id))
+             .order(:title)
+             .distinct
+    end
+  end
+
   def set_common_vars
-    @fictions_size = Fiction.count
+    @fictions_size = fiction_list.count
     @user_publications = current_user.publications.order(created_at: :desc)
   end
 
