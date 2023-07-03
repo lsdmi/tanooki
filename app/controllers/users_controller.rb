@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     if current_user.admin?
       Fiction.order(:title)
     else
-      Fiction.joins(:chapters)
+      Fiction.left_joins(:chapters)
              .where(chapters: { user_id: current_user.id })
              .or(Fiction.where(user_id: current_user.id))
              .order(:title)

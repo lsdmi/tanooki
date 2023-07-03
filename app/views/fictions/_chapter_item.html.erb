@@ -1,0 +1,25 @@
+<% theme = chapter_item_theme(color) %>
+
+<li class="pb-3 sm:pb-4">
+  <div class="flex items-center space-x-4">
+    <div class="flex-1 min-w-0">
+      <%= link_to chapter_path(chapter) do %>
+        <%= tag.span class: "inline-flex items-center text-green-800 text-sm font-medium font-medium truncate mt-2" do %>
+          <%= tag.span class: 'w-2 h-2 mr-1 bg-green-500 rounded-full' if color == :green %>
+          <%= tag.p chapter.display_title, class: "text-sm font-medium truncate #{theme[:title]} #{theme[:title_hover]}" %>
+        <% end %>
+      <% end %>
+      <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: "text-sm truncate #{theme[:text]}" %>
+    </div>
+    <div class="inline-flex items-center text-base font-semibold <%= theme[:title] %>">
+      <span class="<%= theme[:icon] %> ml-3 text-xs mt-1 flex align-center">
+        <%= image_tag (color == :green ? 'comment-green.svg' : 'comment.svg'), class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
+        <%= tag.span chapter.comments_count, class: 'ml-1 inline-block' %>
+      </span>
+      <span class="<%= theme[:icon] %> ml-3 text-xs mt-1 flex align-center">
+        <%= image_tag (color == :green ? 'eye-green.svg' : 'eye.svg'), class: 'h-4 inline-block', alt: 'views', height: '16', width: '16'  %>
+        <%= tag.span chapter.views, class: 'ml-1 inline-block' %>
+      </span>
+    </div>
+  </div>
+</li>

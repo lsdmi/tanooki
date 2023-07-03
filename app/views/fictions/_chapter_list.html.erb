@@ -1,0 +1,34 @@
+<div class="overflow-y-auto max-h-[55rem]">
+  <% if @reading_progress.present? && @reading_progress.chapter != @fiction.chapters.order(:number).last %>
+    <span class="inline-flex items-center bg-green-100 text-green-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded-full">
+      <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+      Оновлення
+    </span>
+    <div class="lg:max-w-3xl p-5 mx-auto mt-4 mb-2 space-y-5 border border-emerald-100 rounded-lg bg-emerald-50">
+      <ul class="divide-y divide-gray-200">
+        <% @before_next_chapter.each_with_index do |chapter, index| %>
+          <%= render 'chapter_item', chapter: chapter, index: index, color: :green %>
+        <% end %>
+      </ul>
+    </div>
+    <span class="inline-flex items-center bg-gray-100 text-gray-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded-full">
+      <span class="w-2 h-2 mr-1 bg-gray-500 rounded-full"></span>
+      Прочитане
+    </span>
+    <div class="lg:max-w-3xl p-5 mx-auto mt-4 mb-2 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
+      <ul class="divide-y divide-gray-200">
+        <% @after_next_chapter.each_with_index do |chapter, index| %>
+          <%= render 'chapter_item', chapter: chapter, index: index, color: :gray %>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="lg:max-w-3xl p-5 mx-auto mt-4 mb-2 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
+      <ul class="divide-y divide-gray-200">
+        <% @fiction.chapters.order(number: :desc, created_at: :desc).each_with_index do |chapter, index| %>
+          <%= render 'chapter_item', chapter: chapter, index: index, color: :black %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

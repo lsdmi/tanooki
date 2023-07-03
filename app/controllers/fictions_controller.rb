@@ -23,6 +23,8 @@ class FictionsController < ApplicationController
   def show
     @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
     @comment = Comment.new
+
+    reading_progress_vars
   end
 
   def new
@@ -93,7 +95,7 @@ class FictionsController < ApplicationController
 
   def popular_fictions
     Rails.cache.fetch('popular_fictions', expires_in: 12.hours) do
-      Fiction.includes(:genres).order(views: :desc).limit(5)
+      Fiction.includes([{ cover_attachment: :blob }, :genres]).order(views: :desc).limit(5)
     end
   end
 
@@ -139,8 +141,36 @@ class FictionsController < ApplicationController
     )
   end
 
+  def next_chapter
+    first_chapter = @fiction.chapters.order(:number).first
+
+    return first_chapter unless @reading_progress.present?
+
+    chapter = @reading_progress.chapter
+
+    chapter.fiction.chapters.where(
+      'number > ? OR (number = ? AND created_at > ?)', chapter.number, chapter.number, chapter.created_at
+    ).order(:number).first || first_chapter
+  end
+
   def set_fiction
     @fiction = @commentable = Fiction.find(params[:id])
+  end
+
+  def split_chapter_list
+    fiction_chapters = @fiction.chapters.order(number: :desc, created_at: :desc)
+    next_chapter_index = fiction_chapters.index(@next_chapter)
+
+    return unless next_chapter_index
+
+    @before_next_chapter = fiction_chapters[0...next_chapter_index + 1]
+    @after_next_chapter = fiction_chapters[next_chapter_index + 1..-1]
+  end
+
+  def reading_progress_vars
+    @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
+    @next_chapter = next_chapter
+    split_chapter_list
   end
 
   def refresh_list

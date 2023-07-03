@@ -3,7 +3,7 @@
 class ChaptersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update destroy]
-  before_action :track_visit, :load_advertisement, only: :show
+  before_action :track_visit, :load_advertisement, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
 
   def show
@@ -97,6 +97,10 @@ class ChaptersController < ApplicationController
       partial: 'users/dashboard/chapter_list',
       locals: { fiction: @chapter.fiction, pagination: @pagination }
     )
+  end
+
+  def track_reading_progress
+    ReadingProgressTracker.new(chapter: @chapter, user: current_user).call
   end
 
   def verify_permissions
