@@ -2,6 +2,6 @@
 
 module GenresHelper
   def genre_formatter(genre)
-    genre.name.downcase.gsub(/[\s,!\-]/, '_')
+    genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')
   end
 end

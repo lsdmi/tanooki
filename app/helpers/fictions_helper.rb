@@ -29,6 +29,7 @@ module FictionsHelper
   end
 
   def green_chapter_theme
-    { icon: 'text-emerald-700', text: 'text-emerald-700', title: 'text-emerald-900', title_hover: 'hover:text-emerald-600' }
+    { icon: 'text-emerald-700', text: 'text-emerald-700', title: 'text-emerald-900',
+      title_hover: 'hover:text-emerald-600' }
   end
 end

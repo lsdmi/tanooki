@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class ReadingProgressTest < ActiveSupport::TestCase
+class LibraryControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

@@ -157,7 +157,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_021613) do
     t.index ["user_id"], name: "index_publications_on_user_id"
   end
 
-  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.bigint "chapter_id", null: false

@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :fictions
   has_many :publications
+  has_many :readings, class_name: 'ReadingProgress'
 
   scope :avatarless, -> { where(avatar_id: nil) }
 

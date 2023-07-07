@@ -164,7 +164,7 @@ class FictionsController < ApplicationController
     return unless next_chapter_index
 
     @before_next_chapter = fiction_chapters[0...next_chapter_index + 1]
-    @after_next_chapter = fiction_chapters[next_chapter_index + 1..-1]
+    @after_next_chapter = fiction_chapters[next_chapter_index + 1..]
   end
 
   def reading_progress_vars
