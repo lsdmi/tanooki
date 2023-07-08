@@ -14,15 +14,13 @@
       </ul>
     </li>
   </ul>
-  <% if false %>
-    <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
-      <li>
-        <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
-          <li><%= link_to "Читальня", library_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
-        </ul>
-      </li>
-    </ul>
-  <% end %>
+  <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
+    <li>
+      <ul class="py-1 font-light text-gray-500" aria-labelledby="doubleDropdownButtonManage">
+        <li><%= link_to "Читальня", library_path, class: "block px-4 py-2 hover:bg-gray-100" %></li>
+      </ul>
+    </li>
+  </ul>
   <% if current_user.admin? %>
     <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">
       <li>

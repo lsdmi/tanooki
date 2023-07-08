@@ -1,4 +1,4 @@
-<div class="col-span-1 mr-2 bg-gray-300 bg-opacity-10 rounded-lg">
+<div class="col-span-1 mr-2 bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto max-h-[40rem]">
   <div class="rounded-md relative">
     <div class="bg-center bg-no-repeat bg-cover absolute top-0 right-0 bottom-0 left-0" style="background-image: url(<%= url_for(fiction.cover) %>); filter: blur(5px); z-index: 0;"></div>
     <%= link_to fiction_path(fiction) do %>
@@ -11,7 +11,7 @@
       <%= tag.h3 fiction.title, class: 'mt-4 mb-1 text-center text-lg sm:text-2xl text-gray-900 mr-[1.75%]' %>
       <%= tag.h3 fiction_author(fiction), class: 'text-center text-xs sm:text-sm mr-[1.75%] text-gray-600 font-light' %>
       <% if fiction.genres.any? %>
-        <div class="mt-1 overflow-hidden break-words line-clamp-3 text-center">
+        <div class="mt-1 overflow-hidden break-words text-center">
           <% fiction.genres.each do |genre| %>
             <%= tag.p "##{genre.name}", class: 'inline-block tracking-wider leading-4 text-sm font-semibold mr-1 whitespace-nowrap uppercase text-emerald-600' %>
           <% end %>

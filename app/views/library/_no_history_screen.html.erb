@@ -1,0 +1,22 @@
+<div class="grid py-4 px-4 mx-auto max-w-screen-xl lg:gap-12 xl:gap-0 lg:grid-cols-12 text-center justify-center lg:text-left lg:justify-left">
+  <div class="place-self-center mr-auto mb-10 lg:col-span-6 xl:col-span-7 xl:mb-0">
+    <h1 class="mb-4 max-w-2xl text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">Подорож світом ранобе!</h1>
+    <p class="mb-6 max-w-2xl font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">Ваші улюблені романи та фанфіки тепер українською! Саме час розпочати мандрівку бібліотекою <b>Баки</b>!</p>
+    <ul class="justify-between pt-4 mx-auto mt-4 my-8 border-t border-gray-300 hidden sm:flex lg:hidden text-left justify-left">
+      <%= render 'stats_list', stats: @history_stats %>
+    </ul>
+    <%= link_to fictions_path, class: 'inline-flex items-center py-3 px-5 font-medium text-center text-white rounded-lg bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300' do %>
+      <svg class="mr-2 -ml-1 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+        <path d="M9 1.334C7.06.594 1.646-.84.293.653a1.158 1.158 0 0 0-.293.77v13.973c0 .193.046.383.134.55.088.167.214.306.366.403a.932.932 0 0 0 .5.147c.176 0 .348-.05.5-.147 1.059-.32 6.265.851 7.5 1.65V1.334ZM19.707.653C18.353-.84 12.94.593 11 1.333V18c1.234-.799 6.436-1.968 7.5-1.65a.931.931 0 0 0 .5.147.931.931 0 0 0 .5-.148c.152-.096.279-.235.366-.403.088-.167.134-.357.134-.55V1.423a1.158 1.158 0 0 0-.293-.77Z"/>
+      </svg>
+      Переглянути
+    <% end %>
+    <ul class="justify-between pt-12 mx-auto mt-14 border-t border-gray-300 hidden lg:flex">
+      <%= render 'stats_list', stats: @history_stats %>
+    </ul>
+  </div>
+  <div class="hidden justify-center p-4 max-w-screen-sm bg-white rounded-lg lg:mt-0 lg:col-span-6 xl:col-span-5 sm:p-6 lg:p-8 lg:grid grid-cols-2 gap-4 mt-8">
+    <%= image_tag url_for(@popular_fictions.first.cover), alt: @popular_fictions.first.cover.blob.filename.to_s, class: "w-full rounded-lg" %>
+    <%= image_tag url_for(@popular_fictions.last.cover), alt: @popular_fictions.last.cover.blob.filename.to_s, class: "mt-4 w-full lg:mt-10 rounded-lg" %>
+  </div>
+</div>
