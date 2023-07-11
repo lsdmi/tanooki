@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class FictionPaginator
+  include LibraryHelper
   include Pagy::Backend
 
   def initialize(pagy, fictions, params)
@@ -35,7 +36,7 @@ class FictionPaginator
 
   def paginated_chapters(fiction)
     pagy(
-      fiction.chapters.order(number: :desc),
+      ordered_chapters_desc(fiction),
       page: @params["chapter_page_#{fiction.slug}"] || 1,
       items: 8,
       page_param: "chapter_page_#{fiction.slug}"

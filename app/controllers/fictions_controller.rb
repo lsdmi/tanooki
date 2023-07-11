@@ -2,6 +2,7 @@
 
 class FictionsController < ApplicationController
   include FictionQuery
+  include LibraryHelper
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_fiction, only: %i[show edit update destroy]
@@ -56,7 +57,7 @@ class FictionsController < ApplicationController
   def destroy
     @fiction.destroy
     @pagy, @fictions = pagy(
-      Fiction.all.order(:title),
+      ordered_fiction_list,
       items: 8,
       request_path: readings_path,
       page: fiction_page || 1
@@ -142,15 +143,18 @@ class FictionsController < ApplicationController
   end
 
   def next_chapter
-    first_chapter = @fiction.chapters.order(:number).first
+    first_chapter = ordered_chapters(@fiction).first
 
     return first_chapter unless @reading_progress.present?
 
-    chapter = @reading_progress.chapter
+    following_chapter(
+      @reading_progress.chapter.fiction,
+      @reading_progress.chapter
+    ) || first_chapter
+  end
 
-    chapter.fiction.chapters.where(
-      'number > ? OR (number = ? AND created_at > ?)', chapter.number, chapter.number, chapter.created_at
-    ).order(:number).first || first_chapter
+  def ordered_fiction_list
+    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
   def set_fiction
@@ -158,7 +162,7 @@ class FictionsController < ApplicationController
   end
 
   def split_chapter_list
-    fiction_chapters = @fiction.chapters.order(number: :desc, created_at: :desc)
+    fiction_chapters = ordered_chapters_desc(@fiction)
     next_chapter_index = fiction_chapters.index(@next_chapter)
 
     return unless next_chapter_index
@@ -182,7 +186,7 @@ class FictionsController < ApplicationController
   end
 
   def setup_sidebar_vars
-    @fictions_size = fiction_list.count
+    @fictions_size = @pagy.count
     @user_publications = current_user.publications.order(created_at: :desc)
   end
 

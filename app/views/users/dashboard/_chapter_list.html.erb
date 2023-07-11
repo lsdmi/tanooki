@@ -6,7 +6,7 @@
           <li class="py-2 mx-4">
             <div class="flex items-center space-x-4">
               <div class="flex-1 min-w-0">
-                <%= tag.p chapter_header(chapter), class: 'text-sm font-semibold text-gray-900 truncate' %>
+                <%= tag.p chapter.display_title, class: 'text-sm font-semibold text-gray-900 truncate' %>
                 <div class="flex">
                   <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: 'text-xs font-normal text-gray-500 truncate inline-block' %>
                   <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">

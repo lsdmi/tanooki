@@ -2,11 +2,17 @@
 
 <li class="pb-3 sm:pb-4">
   <div class="flex items-center space-x-4">
-    <div class="flex-1 min-w-0">
+    <div class="flex-1 min-w-0 mt-5">
       <%= link_to chapter_path(chapter) do %>
-        <%= tag.span class: "inline-flex items-center text-green-800 text-sm font-medium font-medium truncate mt-2" do %>
-          <%= tag.span class: 'w-2 h-2 mr-1 bg-green-500 rounded-full' if color == :green %>
-          <%= tag.p chapter.display_title, class: "text-sm font-medium truncate #{theme[:title]} #{theme[:title_hover]}" %>
+        <%= tag.span class: "items-center text-green-800 text-sm font-medium font-medium truncate" do %>
+          <span class="inline-flex items-center">
+            <% if color == :green %>
+              <svg class="w-3 h-3 text-green-500 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"/>
+              </svg>
+            <% end %>
+            <%= tag.p chapter.display_title, class: "text-sm font-medium truncate #{theme[:title]} #{theme[:title_hover]}" %>
+          </span>
         <% end %>
       <% end %>
       <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: "text-sm truncate #{theme[:text]}" %>

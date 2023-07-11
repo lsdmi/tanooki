@@ -2,6 +2,7 @@
 
 class Chapter < ApplicationRecord
   extend FriendlyId
+  include ChaptersHelper
   include GenresHelper
   acts_as_paranoid
   friendly_id :slug_candidates
@@ -14,7 +15,8 @@ class Chapter < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
 
   validates :content, length: { minimum: 500 }
-  validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :number, numericality: { greater_than_or_equal_to: 0 }
+  validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
 
   def author
@@ -22,7 +24,18 @@ class Chapter < ApplicationRecord
   end
 
   def display_title
-    title.presence || "Розділ #{number}"
+    header = ''
+    header += "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?
+    header += "Розділ #{check_decimal(number)}"
+    header += " - #{title}" if title.present?
+
+    header
+  end
+
+  def display_chapter_numbers
+    volume_text = "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?
+    chapter_text = "Розділ #{check_decimal(number)}"
+    "#{volume_text}#{chapter_text}"
   end
 
   def fiction_description
