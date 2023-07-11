@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  include FictionQuery
+
   before_action :authenticate_user!
   before_action :set_common_vars, only: %i[show avatars blogs readings]
 
@@ -35,19 +37,11 @@ class UsersController < ApplicationController
   private
 
   def fiction_list
-    if current_user.admin?
-      Fiction.order(:title)
-    else
-      Fiction.left_joins(:chapters)
-             .where(chapters: { user_id: current_user.id })
-             .or(Fiction.where(user_id: current_user.id))
-             .order(:title)
-             .distinct
-    end
+    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
   def set_common_vars
-    @fictions_size = fiction_list.count
+    @fictions_size = fiction_list.size.size
     @user_publications = current_user.publications.order(created_at: :desc)
   end
 

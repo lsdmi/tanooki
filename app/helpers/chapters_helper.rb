@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module ChaptersHelper
-  def chapter_header(chapter)
-    "Розділ #{chapter.number} #{"- #{chapter.title}" if chapter.title.present?}"
+  def check_decimal(number)
+    decimal_part = number.to_s.split('.').last.to_i
+    decimal_part.zero? ? number.to_i : number
   end
 end

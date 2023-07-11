@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChaptersController < ApplicationController
+  include LibraryHelper
+
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update destroy]
   before_action :track_visit, :load_advertisement, :track_reading_progress, only: :show
@@ -9,7 +11,7 @@ class ChaptersController < ApplicationController
   def show
     @comments = @chapter.comments.parents.order(created_at: :desc)
     @comment = Comment.new
-    @next_chapter = next_chapter
+    @next_chapter = following_chapter(@chapter.fiction, @chapter)
     @more_from_author = more_from_author
   end
 
@@ -63,14 +65,8 @@ class ChaptersController < ApplicationController
     @chapter = @commentable = Chapter.find(params[:id])
   end
 
-  def next_chapter
-    @chapter.fiction.chapters.where(
-      'number > ? OR (number = ? AND created_at > ?)', @chapter.number, @chapter.number, @chapter.created_at
-    ).order(:number).first
-  end
-
   def chapters
-    @chapter.fiction.chapters.order(number: :desc)
+    ordered_chapters_desc(@chapter.fiction)
   end
 
   def setup_pagination(chapters, chapter_page)
@@ -87,7 +83,7 @@ class ChaptersController < ApplicationController
 
   def chapter_params
     params.require(:chapter).permit(
-      :content, :fiction_id, :number, :title, :user_id
+      :content, :fiction_id, :number, :title, :user_id, :volume_number
     )
   end
 

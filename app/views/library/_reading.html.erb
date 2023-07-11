@@ -25,12 +25,12 @@
           <%= tag.span chapters_size(reading.fiction) %>
         </div>
         <div class="text-base lg:text-xl 2xl:text-base font-light text-emerald-600 md:mt-2 lg:mt-4 2xl:mt-2">
-          <%= link_to next_chapter(reading.fiction, reading.chapter), class: 'hover:text-emerald-700' do %>
+          <%= link_to following_chapter(reading.fiction, reading.chapter), class: 'hover:text-emerald-700' do %>
             Читати далі
             <svg class="w-2 h-2 text-gray-800 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
               <path stroke="green" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
             </svg>
-          <% end if next_chapter(reading.fiction, reading.chapter) %>
+          <% end if following_chapter(reading.fiction, reading.chapter) %>
         </div>
       </div>
     </div>
