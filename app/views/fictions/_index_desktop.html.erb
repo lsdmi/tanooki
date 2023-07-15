@@ -22,14 +22,5 @@
     <div class="p-4"><%= render 'all_time_chapter_views' %></div>
     <div class="p-4"><%= render 'trending_chapter_views' %></div>
   </div>
-  <% if @other.any? %>
-    <div class="mt-2">
-      <%= render 'shared/divider', caption: 'Варте уваги', rose: false %>
-      <div class="mx-auto w-full grid grid-cols-6 gap-4">
-        <% @other.each do |fiction| %>
-          <%= render 'other_updates', fiction: fiction, large: true %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
+  <%= render 'other_section' if @other.any? %>
 </div>

@@ -1,0 +1,13 @@
+<div class="<%= column_selector(size) %> rounded-md relative bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto max-h-[20rem]">
+  <%= link_to new_fiction_path do %>
+    <div class="flex flex-col items-center justify-center w-full sm:h-[20rem] rounded-lg cursor-pointer bg-gray-50 bg-opacity-10">
+      <div class="flex flex-col items-center justify-center pt-2 sm:pt-5 pb-6 px-2 sm:px-0">
+        <%= image_tag 'cta_upload_fiction.svg', class: 'w-20 h-20 mb-4', alt: 'views', height: '80', width: '80' %>
+        <p class="mb-2 text-xs sm:text-base md:text-lg text-gray-600 text-center"><span class="font-semibold">Твори із Бакою</p>
+        <p class="<%= 'mx-2 hidden sm:block' if size == 1 %> text-xs sm:text-sm font-light text-gray-500 text-center">
+          Завантажуй власні роботи чи переклади - <br/>фанфіки, ранобе та інші твори.
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>

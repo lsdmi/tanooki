@@ -75,7 +75,7 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
 
   test "publications should return current user's publications for non-admin users" do
     request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/dashboard'
+    request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/blogs'
 
     new_user = users(:user_two)
 
@@ -99,11 +99,11 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'request_path should return dashboard path for non-admin users' do
     request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/dashboard'
+    request.env['HTTP_REFERER'] = 'http://localhost:3000/blogs'
 
     @controller = PublicationsController.new
     @controller.stub :request, request do
-      assert_equal '/dashboard', @controller.send(:request_path)
+      assert_equal '/blogs', @controller.send(:request_path)
     end
   end
 

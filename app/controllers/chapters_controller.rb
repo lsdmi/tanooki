@@ -23,7 +23,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
-      redirect_to readings_path(false_remote: true), notice: 'Розділ додано.'
+      redirect_to readings_path, notice: 'Розділ додано.'
     else
       render 'chapters/new', status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class ChaptersController < ApplicationController
 
   def update
     if @chapter.update(chapter_params)
-      redirect_to dashboard_path, notice: 'Розділ оновлено.'
+      redirect_to readings_path, notice: 'Розділ оновлено.'
     else
       render 'chapters/edit', status: :unprocessable_entity
     end

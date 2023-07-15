@@ -10,11 +10,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert requires_tinymce?
   end
 
-  test 'requires tinymce for dashboard' do
-    request.path = dashboard_path
-    assert requires_tinymce?
-  end
-
   test 'requires tinymce for publications/new' do
     request.path = new_publication_path
     assert requires_tinymce?

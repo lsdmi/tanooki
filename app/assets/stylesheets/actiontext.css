@@ -20,3 +20,12 @@
   border: 3px solid pink;
   box-shadow: 0 0 5px pink;
 }
+
+.new-chapter::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 7.5px;
+  background-color: rgb(34 197 94);
+  margin-right: 5px;
+}

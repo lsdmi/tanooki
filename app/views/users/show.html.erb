@@ -21,8 +21,10 @@
     <%= render 'users/dashboard/sidebar' %>
   </div>
   <div class="col-span-5">
-    <% if params[:false_remote] %>
+    <% if action_name.to_sym == :readings %>
       <%= render 'users/dashboard/readings' %>
+    <% elsif action_name.to_sym == :avatars %>
+      <%= render 'users/dashboard/avatars' %>
     <% else %>
       <%= render 'users/dashboard/blogs' %>
     <% end %>

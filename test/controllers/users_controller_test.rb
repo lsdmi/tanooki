@@ -13,7 +13,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should get show' do
     sign_in @user
 
-    get :show
+    get :blogs
     assert_response :success
     assert_template :show
     assert_not_nil assigns(:fictions_size)

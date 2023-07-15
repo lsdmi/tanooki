@@ -44,7 +44,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to readings_path(false_remote: true)
+    assert_redirected_to readings_path
   end
 
   test 'should not create chapter with invalid data' do
@@ -69,7 +69,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
         title: @chapter.title
       }
     }
-    assert_redirected_to dashboard_path
+    assert_redirected_to readings_path
   end
 
   test 'should not update chapter with invalid data' do

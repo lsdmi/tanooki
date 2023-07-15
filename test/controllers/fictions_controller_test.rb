@@ -23,7 +23,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get dashboard' do
-    get dashboard_path
+    get blogs_path
     assert_response :success
   end
 

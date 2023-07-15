@@ -2,11 +2,17 @@
 
 module LibraryHelper
   def ordered_chapters(fiction)
-    fiction.chapters.order(:volume_number, :number, :created_at)
+    fiction.chapters.order(
+      Arel.sql(
+        'CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, created_at'
+      )
+    )
   end
 
   def ordered_chapters_desc(fiction)
-    fiction.chapters.order(volume_number: :desc, number: :desc, created_at: :desc)
+    fiction.chapters.order(
+      Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, created_at DESC')
+    )
   end
 
   def chapters_size(fiction)

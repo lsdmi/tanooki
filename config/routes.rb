@@ -47,7 +47,6 @@ Rails.application.routes.draw do
     member { put :update_avatar }
   end
 
-  get :dashboard, to: 'users#show', as: :dashboard
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs
   get :readings, to: 'users#readings', as: :readings

@@ -58,7 +58,7 @@ class PublicationsController < ApplicationController
     if request.referer&.include?('admin/tales')
       admin_tales_path
     else
-      dashboard_path
+      blogs_path
     end
   end
 

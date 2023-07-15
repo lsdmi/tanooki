@@ -37,13 +37,5 @@
     <% end %>
   </div>
 
-  <% if @other.any? %>
-    <div class="my-2"></div>
-    <%= render 'shared/divider', caption: 'Варте уваги', rose: false %>
-    <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
-      <% @other_mobile.each do |fiction| %>
-        <%= render 'mobile_fiction', fiction: fiction %>
-      <% end %>
-    </div>
-  <% end %>
+  <%= render 'other_section_mobile' if @other.any? %>
 </div>
