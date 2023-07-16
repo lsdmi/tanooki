@@ -1,4 +1,4 @@
-<div class="rounded-md relative bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto max-h-[20rem]">
+<div class="rounded-md relative bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto <%= 'max-h-[20rem]' unless large %>">
   <%= link_to fiction_path(fiction) do %>
     <div class="flex justify-center relative">
       <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename, class: "#{large ? 'h-64' : 'h-56' } w-full object-cover rounded-md shadow-lg" %>
@@ -7,7 +7,7 @@
   <% end %>
   <div class="w-full float-left rounded-xl md:mt-1 mb-1 lg:mt-0 px-2">
     <%= tag.h3 fiction.title, class: 'line-clamp-1 mt-2 mb-1 text-center text-base text-gray-900 mr-[1.75%]' %>
-    <% if fiction.genres.any? %>
+    <% if fiction.genres.any? && !large %>
       <div class="mt-1 overflow-hidden break-words text-center">
         <% fiction.genres.each do |genre| %>
           <%= tag.p "##{genre.name}", class: 'inline-block tracking-wider leading-3 text-xs font-semibold mr-1 whitespace-nowrap uppercase text-emerald-600' %>

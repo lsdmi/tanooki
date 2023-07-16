@@ -10,11 +10,11 @@ class TaleTest < ActiveSupport::TestCase
   test 'default scope should only return tales' do
     publications = Publication.all
     assert_not_nil publications
-    assert_equal 2, publications.length
+    assert_equal 7, publications.length
 
     tales = Tale.all
     assert_not_nil tales
-    assert_equal 2, tales.length
+    assert_equal 7, tales.length
     assert_equal @tale, tales.first
   end
 end

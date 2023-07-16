@@ -17,3 +17,53 @@ tale_created_one:
   user_id: 1
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+three:
+  id: 3
+  slug: tale_created_three
+  type: Tale
+  title: <%= Faker::Book.title %>
+  highlight: false
+  user_id: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+four:
+  id: 4
+  slug: tale_created_four
+  type: Tale
+  title: <%= Faker::Book.title %>
+  highlight: false
+  user_id: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+five:
+  id: 5
+  slug: tale_created_five
+  type: Tale
+  title: <%= Faker::Book.title %>
+  highlight: false
+  user_id: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+six:
+  id: 6
+  slug: tale_created_six
+  type: Tale
+  title: <%= Faker::Book.title %>
+  highlight: false
+  user_id: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+seven:
+  id: 7
+  slug: tale_created_seven
+  type: Tale
+  title: <%= Faker::Book.title %>
+  highlight: false
+  user_id: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

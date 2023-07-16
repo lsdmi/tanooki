@@ -12,13 +12,14 @@ class FictionsController < ApplicationController
   before_action :verify_permissions, except: %i[index new create show]
 
   def index
-    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    @popular_fictions = popular_fictions
-    @most_reads = most_reads
-    @latest_updates = latest_updates
-    @hot_updates = hot_updates
-    @other = other
-    @other_mobile = other_mobile
+    index_variables
+
+    respond_to do |format|
+      format.html { render 'index' }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('filtered-fictions', partial: 'other_section')
+      end
+    end
   end
 
   def show
@@ -69,6 +70,15 @@ class FictionsController < ApplicationController
 
   private
 
+  def index_variables
+    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
+    @popular_fictions = popular_fictions
+    @most_reads = most_reads
+    @latest_updates = latest_updates
+    @hot_updates = hot_updates
+    setup_filtered_fictions
+  end
+
   def manage_genres
     fiction_genres_ids = params[:fiction][:genre_ids].map(&:to_i)
     existing_genre_ids = @fiction.genres.ids
@@ -78,14 +88,6 @@ class FictionsController < ApplicationController
 
     genres_to_add.each { |genre_id| @fiction.fiction_genres.create(genre_id:) }
     genres_to_remove.each { |genre_id| @fiction.fiction_genres.find_by(genre_id:).destroy }
-  end
-
-  def other
-    fiction_exclusions_query.merge(fiction_with_max_created_at_query)
-  end
-
-  def other_mobile
-    fiction_exclusions_query_mobile.merge(fiction_with_max_created_at_query)
   end
 
   def most_reads
@@ -183,6 +185,16 @@ class FictionsController < ApplicationController
       partial: 'users/dashboard/fictions',
       locals: { fictions: @fictions, pagy: @pagy }
     )
+  end
+
+  def setup_filtered_fictions
+    @genres = Genre.joins(:fictions).order(:name).distinct
+    params[:genre_id] ||= @genres.sample.id
+
+    @sample_genre = @genres.find_by(id: params[:genre_id]) || @genres.sample
+    params[:genre_id] = @sample_genre.id
+
+    @other = filtered_fiction_with_max_created_at_query
   end
 
   def setup_sidebar_vars

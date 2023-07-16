@@ -2,5 +2,6 @@
   <div class="w-full relative float-left">
     <%= render 'index_desktop' %>
     <%= render 'index_mobile' %>
+    <%= render 'other_section' if @other.any? %>
   </div>
 </div>

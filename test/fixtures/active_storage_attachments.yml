@@ -81,3 +81,38 @@ attachment_twelve:
   record_id: 3
   blob_id: 12
   created_at: <%= Time.now %>
+
+attachment_thirteen:
+  name: cover
+  record_type: Publication
+  record_id: 3
+  blob_id: 13
+  created_at: <%= Time.now %>
+
+attachment_fourteen:
+  name: cover
+  record_type: Publication
+  record_id: 4
+  blob_id: 14
+  created_at: <%= Time.now %>
+
+attachment_fifteen:
+  name: cover
+  record_type: Publication
+  record_id: 5
+  blob_id: 15
+  created_at: <%= Time.now %>
+
+attachment_sixteen:
+  name: cover
+  record_type: Publication
+  record_id: 6
+  blob_id: 16
+  created_at: <%= Time.now %>
+
+attachment_seventeen:
+  name: cover
+  record_type: Publication
+  record_id: 7
+  blob_id: 17
+  created_at: <%= Time.now %>

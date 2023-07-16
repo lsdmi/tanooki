@@ -60,7 +60,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
   test '#more_tails should return a publication' do
     @controller.instance_variable_set(:@publication, @tale)
     Publication.stub :search, Publication.all do
-      assert_equal 1, @controller.send(:more_tails).size
+      assert_equal 6, @controller.send(:more_tails).size
     end
   end
 
