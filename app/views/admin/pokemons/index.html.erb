@@ -1,0 +1,5 @@
+<section class="z-10 font-oswald">
+  <%= turbo_frame_tag 'pokemons-list' do %>
+    <%= render 'list', pokemons: @pokemons, pagy: @pagy %>
+  <% end %>
+</section>

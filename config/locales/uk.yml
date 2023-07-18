@@ -37,6 +37,19 @@ uk:
         password: ""
         name: ""
         password_confirmation: ""
+    enum:
+      rarity:
+        common: Поширений
+        uncommon: Незвичайний
+        rare: Рідкісний
+        very_rare: Дуже рідкісний
+        super_rare: Надзвичайно рідкісний
+      power_level:
+        weak: Слабкий
+        moderate: Помірний
+        formidable: Сильний
+        mighty: Могутній
+        legendary: Легендарний
     errors:
       models:
         user:

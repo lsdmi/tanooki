@@ -116,3 +116,10 @@ attachment_seventeen:
   record_id: 7
   blob_id: 17
   created_at: <%= Time.now %>
+
+attachment_eighteen:
+  name: sprite
+  record_type: Pokemon
+  record_id: 1
+  blob_id: 18
+  created_at: <%= Time.now %>

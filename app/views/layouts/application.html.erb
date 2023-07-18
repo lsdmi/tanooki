@@ -30,11 +30,16 @@
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
       <%= render 'shared/ads', advertisement: @advertisement if @advertisement&.persisted? %>
       <%= render "shared/navbar" %>
-      <%= render "shared/notice" if notice %>
+      <%= turbo_frame_tag 'application-notice' do %>
+        <%= render "shared/notice" if notice %>
+      <% end %>
       <%= render "shared/alert" if alert %>
       <%= render 'hero_section' if current_page?(root_path) %>
       <main>
         <%= yield %>
+        <%= turbo_frame_tag 'catch-pokemon' do %>
+          <%= render 'shared/pokemon', pokemon: @wild_pokemon %>
+        <% end if @wild_pokemon %>
       </main>
     </div>
     <%= render "shared/footer" %>

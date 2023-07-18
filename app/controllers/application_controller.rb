@@ -5,7 +5,15 @@ class ApplicationController < ActionController::Base
 
   helper_method :trending_tags
 
+  before_action :pokemon_appearance, only: %i[index show]
+
   private
+
+  def pokemon_appearance
+    return unless current_user.present?
+
+    @wild_pokemon = PokemonService.new(session:).call
+  end
 
   def trending_tags
     TrendingTagsService.call

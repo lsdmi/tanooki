@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
     resources :genres, except: :new
+    resources :pokemons, except: :show
     resources :tags, except: :new
     resources :tales, only: :index
   end
@@ -52,4 +53,6 @@ Rails.application.routes.draw do
   get :readings, to: 'users#readings', as: :readings
 
   get :library, to: 'library#index'
+
+  post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
 end

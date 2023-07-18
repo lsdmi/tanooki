@@ -1,0 +1,6 @@
+one:
+  id: 1
+  slug: 'one'
+  name: "First"
+  power_level: 1
+  rarity: 1

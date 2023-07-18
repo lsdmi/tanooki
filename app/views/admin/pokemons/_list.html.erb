@@ -1,0 +1,44 @@
+<div class="my-8 px-4 mx-auto max-w-screen-xl lg:mt-12 lg:mb-16 relative">
+  <div class="flow-root">
+    <%= tag.h3 "Покемони", class: 'text-xl font-bold mb-2' %>
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-2">
+      <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              <span class="sr-only">Спрайт</span>
+            </th>
+            <th scope="col" class="px-6 py-3">Ім'я</th>
+            <th scope="col" class="px-6 py-3">Рівень могуті</th>
+            <th scope="col" class="px-6 py-3">Рідкість</th>
+            <th scope="col" class="px-6 py-3">Редагувати</th>
+            <th scope="col" class="px-6 py-3">Видалити</th>
+            </tr>
+        </thead>
+        <tbody>
+          <% pokemons.each do |pokemon| %>
+            <tr class="border-b hover:bg-gray-50">
+              <td class="mx-auto py-4 pl-8">
+                <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename %>
+              </td>
+              <td class="px-6 py-4 font-semibold text-gray-900"><%= pokemon.name %></td>
+              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.power_level.#{Pokemon.power_levels.key(pokemon.power_level)}") %></td>
+              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.rarity.#{Pokemon.rarities.key(pokemon.rarity)}") %></td>
+              <td class="px-6 py-4"><%= link_to 'Редагувати', edit_admin_pokemon_path(pokemon), data: { turbo: false }, class: 'font-medium text-emerald-600 hover:underline' %></td>
+              <td class="px-6 py-4"><%= link_to 'Видалити', admin_pokemon_path(pokemon), data: { turbo_confirm: 'Певні, що прагнете усунути цього покемона?', "turbo-method": :delete }, class: 'font-medium text-red-600 hover:underline' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="">
+      <div class="float-left mt-3">
+        <%= link_to "Додати Покемона", new_admin_pokemon_path, data: { turbo: false }, class: 'text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center' %>
+      </div>
+      <div class="pagy-nav mt-8 sm:mt-0 float-right my-2">
+        <%== pagy_nav(pagy) if pagy.pages > 1 %>
+      </div>
+    </div>
+  </div>
+</div>
