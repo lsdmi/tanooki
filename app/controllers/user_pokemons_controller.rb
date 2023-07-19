@@ -2,10 +2,9 @@
 
 class UserPokemonsController < ApplicationController
   def create
-    return unless session[:permitted_catch].present?
+    return unless session[:pokemon_catch_permitted].present?
 
     UserPokemon.create(user_pokemon_params)
-    session[:permitted_catch] = false
 
     render turbo_stream: [remove_pokemon, update_notice]
   end

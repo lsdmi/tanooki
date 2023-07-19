@@ -23,7 +23,7 @@
     </div>
   <% else %>
     <div id="section" class="p-4 my-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
-      <%= render 'no_history_screen' %>
+      <%= render 'no_history_screen', history_stats: @history_stats, popular_fictions: @popular_fictions %>
     </div>
   <% end %>
   </div>

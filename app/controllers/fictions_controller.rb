@@ -17,7 +17,9 @@ class FictionsController < ApplicationController
     respond_to do |format|
       format.html { render 'index' }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('filtered-fictions', partial: 'other_section')
+        render turbo_stream: turbo_stream.replace(
+          'filtered-fictions', partial: 'other_section', locals: { other: @other }
+        )
       end
     end
   end
@@ -183,7 +185,7 @@ class FictionsController < ApplicationController
     turbo_stream.update(
       'fictions-list',
       partial: 'users/dashboard/fictions',
-      locals: { fictions: @fictions, pagy: @pagy }
+      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
     )
   end
 
@@ -203,7 +205,11 @@ class FictionsController < ApplicationController
   end
 
   def refresh_sidebar
-    turbo_stream.update('default-sidebar', partial: 'users/dashboard/sidebar')
+    turbo_stream.update(
+      'default-sidebar',
+      partial: 'users/dashboard/sidebar',
+      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
+    )
   end
 
   def verify_permissions

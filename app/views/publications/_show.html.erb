@@ -18,12 +18,12 @@
               </div>
               <%= render 'publications/related_tags', tgs: publication.tags.order(:name) %>
               <%= render 'comments/index' %>
-              <%= render 'publications/more' %>
+              <%= render 'publications/more', more_tales: more_tales %>
             </div>
           </main>
           <aside class="sticky top-8 invisible md:visible float-right h-[45rem] mt-4">
             <div class="float-left relative ml-14 w-80">
-              <%= render 'shared/videos', videos: @videos %>
+              <%= render 'shared/videos', videos: videos %>
             </div>
           </aside>
         </div>

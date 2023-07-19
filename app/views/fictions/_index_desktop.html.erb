@@ -20,6 +20,6 @@
   <div class="grid grid-cols-3 gap-4 mt-4 w-[96%]">
     <div class="p-4"><%= render 'all_time_fiction_views' %></div>
     <div class="p-4"><%= render 'all_time_chapter_views' %></div>
-    <div class="p-4"><%= render 'trending_chapter_views' %></div>
+    <div class="p-4"><%= render 'trending_chapter_views', hot_updates: @hot_updates %></div>
   </div>
 </div>

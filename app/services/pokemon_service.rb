@@ -8,14 +8,25 @@ class PokemonService
   end
 
   def call
-    set_session_variables
+    precatch_session
 
     return nil if rand > session[:pokemon_catch_rate]
 
+    postcatch_session
     caught_pokemon
   end
 
   private
+
+  def catch_rate
+    last_seen = session[:pokemon_catch_last_seen]
+
+    if last_seen < 365.days.ago then 1
+    elsif last_seen > 24.hours.ago then 0.3
+    else
+      0.03
+    end
+  end
 
   def caught_pokemon
     Pokemon.find_by(id: caught_pokemon_id)
@@ -31,6 +42,12 @@ class PokemonService
     pokemon_array.sample
   end
 
+  def initialize_catch_info
+    session[:pokemon_catch_rate] ||= 0.03
+    session[:pokemon_catch_last_seen] ||= 23.hours.ago
+    session[:pokemon_catch_permitted] ||= false
+  end
+
   def populate_pokemon_array(rarity, pokemon_array, pokemon)
     case rarity
     when 1 then 10.times { pokemon_array << pokemon.id }
@@ -41,8 +58,15 @@ class PokemonService
     end
   end
 
-  def set_session_variables
-    session[:pokemon_catch_rate] = session[:pokemon_catch_rate]&.present? ? (session[:pokemon_catch_rate] / 2) : 0.3
-    session[:permitted_catch] = true
+  def precatch_session
+    initialize_catch_info
+
+    session[:pokemon_catch_rate] = catch_rate
+    session[:pokemon_catch_permitted] = false
+  end
+
+  def postcatch_session
+    session[:pokemon_catch_last_seen] = Time.now
+    session[:pokemon_catch_permitted] = true
   end
 end

@@ -1,4 +1,4 @@
-<div class="flow-root" data-controller="accordion">
+<div class="flow-root" data-controller="flowbite">
   <%= tag.h3 "Твори та Переклади (#{pagy.count})", class: 'text-xl' %>
   <ul class="divide-y divide-gray-200">
     <% fictions.each do |fiction| %>
@@ -28,7 +28,7 @@
             </button>
           </h2>
           <%= turbo_frame_tag "chapter-list-#{fiction.slug}" do %>
-            <%= render 'users/dashboard/chapter_list', fiction: fiction, pagination: @paginators[fiction.slug][:paginated_chapters] %>
+            <%= render 'users/dashboard/chapter_list', fiction: fiction, pagination: paginators[fiction.slug][:paginated_chapters] %>
           <% end %>
         </div>
       </li>

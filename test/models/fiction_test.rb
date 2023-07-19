@@ -5,17 +5,11 @@ require 'test_helper'
 class FictionTest < ActiveSupport::TestCase
   def setup
     @user = users(:user_one)
-    @fiction = Fiction.new(
-      title: 'Test Fiction',
-      author: 'Test Author',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      total_chapters: 5,
-      translator: 'Test Translator',
-      user_id: @user.id
-    )
-    @fiction.cover.attach(
-      Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'), 'image/svg')
-    )
+    @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author',
+                           description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                           total_chapters: 5, translator: 'Test Translator', user_id: @user.id)
+    @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+                                                       'image/svg'))
   end
 
   test 'should be valid' do

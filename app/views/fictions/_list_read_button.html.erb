@@ -1,7 +1,7 @@
-<% if @reading_progress.nil? || @reading_progress.chapter != ordered_chapters(@fiction).last %>
+<% if reading_progress.nil? || reading_progress.chapter != ordered_chapters(fiction).last %>
   <%= tag.div class: 'mt-4 text-center' do %>
-    <%= link_to chapter_path(@next_chapter), class: 'inline-flex font-oswald text-emerald-800 text-lg hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-gray-50' do %>
-      <%= @reading_progress.present? ? 'Продовжити читання' : 'Читати з початку' %>
+    <%= link_to chapter_path(next_chapter), class: 'inline-flex font-oswald text-emerald-800 text-lg hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-gray-50' do %>
+      <%= reading_progress.present? ? 'Продовжити читання' : 'Читати з початку' %>
       <svg aria-hidden="true" class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="green">
         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
       </svg>

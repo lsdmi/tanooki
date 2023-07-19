@@ -4,7 +4,7 @@
   <%= render 'shared/divider', caption: 'Цідило теґів', rose: false %>
   <%= render 'filters' %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
-    <% @other.in_groups_of(4).each do |group| %>
+    <% other.in_groups_of(4).each do |group| %>
       <% group.each_with_index do |fiction, index| %>
         <% if fiction.present? %>
           <%= render 'mobile_fiction', fiction: fiction %>

@@ -1,7 +1,7 @@
 <div class="">
   <%= render 'shared/divider', caption: 'Гарячі новинки', rose: false %>
   <div class="relative float-left w-full mt-0">
-    <% @hot_updates.each_with_index do |fiction, i| %>
+    <% hot_updates.each_with_index do |fiction, i| %>
       <%= render 'top_list', fiction: fiction, i: i %>
     <% end %>
   </div>

@@ -2,7 +2,7 @@
   <div class="text-center">
     <h2 class="text-lg font-extrabold leading-tight tracking-tight text-gray-900 sm:text-xl">Перелік розділів</h2>
   </div>
-  <%= render 'list_read_button', fiction: @fiction %>
+  <%= render 'list_read_button', fiction: @fiction, reading_progress: @reading_progress, next_chapter: @next_chapter %>
   <%= render 'chapter_list', fiction: @fiction %>
   <%= render 'add_chapter_cta', fiction: @fiction %>
 </div>

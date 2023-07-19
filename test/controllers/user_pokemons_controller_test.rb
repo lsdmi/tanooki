@@ -13,6 +13,9 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create user pokemon and update turbo streams' do
     assert_difference('UserPokemon.count') do
+      travel_to Time.zone.local(2004, 11, 24)
+      get root_path
+      travel_back
       get root_path
       post catch_pokemon_path(format: :turbo_stream), params: @pokemon_params
     end
