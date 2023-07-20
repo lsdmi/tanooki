@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   include FictionQuery
 
   before_action :authenticate_user!
-  before_action :set_common_vars, only: %i[avatars blogs readings]
+  before_action :set_common_vars, only: %i[avatars blogs pokemons readings]
 
   def update_avatar
     current_user.update(avatar_id: params[:user][:avatar_id])
@@ -19,6 +19,13 @@ class UsersController < ApplicationController
 
   def blogs
     @pagy, @publications = pagy(@user_publications, items: 8)
+
+    render 'show'
+  end
+
+  def pokemons
+    @all_pokemon_count = Pokemon.count
+    @all_caught_count = UserPokemon.count
 
     render 'show'
   end
@@ -39,9 +46,19 @@ class UsersController < ApplicationController
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
+  def pokemon_list
+    current_user
+      .pokemons
+      .includes(sprite_attachment: :blob)
+      .select('pokemons.*, COUNT(user_pokemons.pokemon_id) as duplicates_count')
+      .group(:pokemon_id)
+      .order('MAX(user_pokemons.created_at) DESC')
+  end
+
   def set_common_vars
     @fictions_size = fiction_list.size.size
     @user_publications = current_user.publications.order(created_at: :desc)
+    @pokemons = pokemon_list
   end
 
   def fetch_avatars

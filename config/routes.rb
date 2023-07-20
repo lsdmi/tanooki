@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs
+  get :pokemons, to: 'users#pokemons', as: :pokemons
   get :readings, to: 'users#readings', as: :readings
 
   get :library, to: 'library#index'

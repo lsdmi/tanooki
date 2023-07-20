@@ -17,6 +17,9 @@ class User < ApplicationRecord
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress'
 
+  has_many :user_pokemons, dependent: :destroy
+  has_many :pokemons, through: :user_pokemons
+
   scope :avatarless, -> { where(avatar_id: nil) }
 
   def send_devise_notification(notification, *args)

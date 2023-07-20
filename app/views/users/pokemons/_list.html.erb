@@ -1,0 +1,22 @@
+<div class="w-full bg-white border-t border-gray-200">
+  <div class="flex items-center justify-between mt-6 mb-3 mx-2">
+    <h5 class="text-xl font-bold leading-none text-gray-900">Мої Покемони</h5>
+  </div>
+  <div class="flow-root">
+    <ul role="list" class="divide-y divide-gray-200">
+      <% pokemons.each do |pokemon| %>
+        <li class="py-3 sm:py-4">
+          <div class="flex items-center space-x-4 mx-4">
+            <div class="flex-shrink-0">
+              <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'h-8' %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <%= tag.p pokemon.name, class: 'text-sm font-medium text-gray-900 truncate' %>
+            </div>
+            <%= tag.div "x#{pokemon.duplicates_count}", class: 'inline-flex items-center text-sm font-semibold text-gray-600' %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,6 +1,15 @@
 <div id="default-sidebar" aria-label="Sidebar">
   <div class="h-full px-3 overflow-y-auto">
     <ul class="space-y-2 font-medium">
+      <a class="flex justify-between items-center p-2 mb-5 w-full rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200" type="button">
+        <div class="flex items-center">
+          <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'mr-3 w-8 h-8 rounded-full' %>
+          <div class="text-left">
+            <%= tag.div current_user.name, class: 'font-semibold leading-none text-gray-900 my-1' %>
+            <%= tag.div current_user.email, class: 'text-sm text-gray-500' %>
+          </div>
+        </div>
+      </a>
       <%= tag.li class: "#{'bg-gray-100' if params[:action] == 'blogs' || params[:action] == 'show' || params[:controller] == 'blogs' }" do %>
         <%= link_to blogs_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
           <%= image_tag 'blog.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
@@ -16,7 +25,13 @@
         <% end %>
       <% end %>
     </ul>
-    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200">
+    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 mb-3">
+      <%= tag.li class: "#{'bg-gray-100' if params[:action] == 'pokemons' }" do %>
+        <%= link_to pokemons_path, remote: true, class: 'flex items-center px-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
+          <%= image_tag 'pokeball.svg', class: 'flex-shrink-0 w-6 h-10 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
+          <span class="flex-1 ml-3 whitespace-nowrap">Покемони</span>
+        <% end %>
+      <% end %>
       <%= tag.li class: "#{'bg-gray-100' if params[:action] == 'avatars' }" do %>
         <%= link_to avatars_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
           <%= image_tag 'avatar.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
@@ -24,5 +39,6 @@
         <% end %>
       <% end %>
     </ul>
+    <%= render 'users/pokemons/list', pokemons: pokemons if pokemons.any? %>
   </div>
 </div>

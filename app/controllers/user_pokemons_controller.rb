@@ -2,11 +2,12 @@
 
 class UserPokemonsController < ApplicationController
   def create
-    return unless session[:pokemon_catch_permitted].present?
-
-    UserPokemon.create(user_pokemon_params)
-
-    render turbo_stream: [remove_pokemon, update_notice]
+    if session[:pokemon_catch_permitted].present?
+      UserPokemon.create(user_pokemon_params)
+      render turbo_stream: [remove_pokemon, update_notice(UserPokemon::SUCCESS_MESSSAGE)]
+    else
+      render turbo_stream: [remove_pokemon, update_notice(UserPokemon::FAILURE_MESSSAGE)]
+    end
   end
 
   private
@@ -15,11 +16,11 @@ class UserPokemonsController < ApplicationController
     turbo_stream.remove('catch-pokemon')
   end
 
-  def update_notice
+  def update_notice(message)
     turbo_stream.update(
       'application-notice',
       partial: 'shared/notice',
-      locals: { notice: 'Вітаємо, із поповненням у команді!' }
+      locals: { notice: message }
     )
   end
 

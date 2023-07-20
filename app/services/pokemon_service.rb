@@ -22,9 +22,9 @@ class PokemonService
     last_seen = session[:pokemon_catch_last_seen]
 
     if last_seen < 365.days.ago then 1
-    elsif last_seen > 24.hours.ago then 0.3
+    elsif last_seen > 24.hours.ago then 0.1
     else
-      0.03
+      0.01
     end
   end
 

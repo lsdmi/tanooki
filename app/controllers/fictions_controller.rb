@@ -161,6 +161,15 @@ class FictionsController < ApplicationController
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
+  def pokemon_list
+    current_user
+      .pokemons
+      .includes(sprite_attachment: :blob)
+      .select('pokemons.*, COUNT(user_pokemons.pokemon_id) as duplicates_count')
+      .group(:pokemon_id)
+      .order('MAX(user_pokemons.created_at) DESC')
+  end
+
   def set_fiction
     @fiction = @commentable = Fiction.find(params[:id])
   end
@@ -202,13 +211,14 @@ class FictionsController < ApplicationController
   def setup_sidebar_vars
     @fictions_size = @pagy.count
     @user_publications = current_user.publications.order(created_at: :desc)
+    @pokemons = pokemon_list
   end
 
   def refresh_sidebar
     turbo_stream.update(
       'default-sidebar',
       partial: 'users/dashboard/sidebar',
-      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
+      locals: { user_publications: @user_publications, fictions_size: @fictions_size, pokemons: @pokemons }
     )
   end
 
