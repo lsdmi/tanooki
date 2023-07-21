@@ -10,9 +10,7 @@ class ApplicationController < ActionController::Base
   private
 
   def pokemon_appearance
-    return unless current_user.present?
-
-    @wild_pokemon = PokemonService.new(session:).call
+    @wild_pokemon = PokemonService.new(guest: current_user.nil?, session:).call
   end
 
   def trending_tags

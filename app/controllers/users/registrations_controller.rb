@@ -6,9 +6,10 @@ module Users
     # before_action :configure_account_update_params, only: [:update]
 
     # GET /resource/sign_up
-    # def new
-    #   super
-    # end
+    def new
+      pokemon_notice
+      super
+    end
 
     # POST /resource
     def create
@@ -17,6 +18,7 @@ module Users
       resource.save
       yield resource if block_given?
       if resource.persisted?
+        catch_pokemon(resource)
         if resource.active_for_authentication?
           set_flash_message! :notice, :signed_up
           sign_up(resource_name, resource)
@@ -79,5 +81,18 @@ module Users
     # def after_inactive_sign_up_path_for(resource)
     #   super(resource)
     # end
+
+    def catch_pokemon(resource)
+      return if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
+
+      UserPokemon.create(pokemon_id: session[:caught_pokemon_id], user_id: resource.id)
+    end
+
+    def pokemon_notice
+      return if params[:pokenotice].nil? || session[:caught_pokemon_id].nil?
+
+      session[:pokemon_guest_caught] = true
+      set_flash_message! :notice, :pokemon_login_error
+    end
   end
 end

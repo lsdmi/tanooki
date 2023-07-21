@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class PokemonService
-  attr_reader :session
+  attr_reader :guest, :session
 
-  def initialize(session:)
+  def initialize(guest:, session:)
+    @guest = guest
     @session = session
   end
 
@@ -29,6 +30,7 @@ class PokemonService
   end
 
   def caught_pokemon
+    session[:caught_pokemon_id] = caught_pokemon_id if guest
     Pokemon.find_by(id: caught_pokemon_id)
   end
 
@@ -42,12 +44,6 @@ class PokemonService
     pokemon_array.sample
   end
 
-  def initialize_catch_info
-    session[:pokemon_catch_rate] ||= 0.03
-    session[:pokemon_catch_last_seen] ||= 23.hours.ago
-    session[:pokemon_catch_permitted] ||= false
-  end
-
   def populate_pokemon_array(rarity, pokemon_array, pokemon)
     case rarity
     when 1 then 27.times { pokemon_array << pokemon.id }
@@ -58,10 +54,11 @@ class PokemonService
   end
 
   def precatch_session
-    initialize_catch_info
+    session[:pokemon_catch_last_seen] ||= Time.now
 
     session[:pokemon_catch_rate] = catch_rate
     session[:pokemon_catch_permitted] = false
+    session[:pokemon_guest_caught] = nil
   end
 
   def postcatch_session

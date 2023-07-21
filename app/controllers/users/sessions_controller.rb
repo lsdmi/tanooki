@@ -10,20 +10,28 @@ module Users
     # end
 
     # POST /resource/sign_in
-    # def create
-    #   super
-    # end
+    def create
+      super
+      catch_pokemon(resource)
+    end
 
     # DELETE /resource/sign_out
     # def destroy
     #   super
     # end
 
-    # protected
+    protected
 
     # If you have extra params to permit, append them to the sanitizer.
     # def configure_sign_in_params
     #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
     # end
+
+    def catch_pokemon(resource)
+      return if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
+
+      UserPokemon.create(pokemon_id: session[:caught_pokemon_id], user_id: resource.id)
+      set_flash_message! :notice, :signed_in_with_pokemon
+    end
   end
 end

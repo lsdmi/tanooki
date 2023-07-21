@@ -27,8 +27,17 @@ module Users
     #   super(scope)
     # end
 
+    def notice_pokemon_catch
+      if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
+        flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
+      else
+        UserPokemon.create(pokemon_id: session[:caught_pokemon_id], user_id: @user.id)
+        flash[:notice] = I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
+      end
+    end
+
     def success_google_oauth
-      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
+      notice_pokemon_catch
       sign_in_and_redirect @user, event: :authentication
     end
 

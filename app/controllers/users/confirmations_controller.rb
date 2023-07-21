@@ -13,11 +13,12 @@ module Users
     # end
 
     # GET /resource/confirmation?confirmation_token=abcdef
-    # def show
-    #   super
-    # end
+    def show
+      super
+      pokemon_notice
+    end
 
-    # protected
+    protected
 
     # The path used after resending confirmation instructions.
     # def after_resending_confirmation_instructions_path_for(resource_name)
@@ -28,5 +29,11 @@ module Users
     # def after_confirmation_path_for(resource_name, resource)
     #   super(resource_name, resource)
     # end
+
+    def pokemon_notice
+      return if User.find_by(confirmation_token: params[:confirmation_token])&.pokemons&.empty?
+
+      set_flash_message! :notice, :confirmed_with_pokemon
+    end
   end
 end

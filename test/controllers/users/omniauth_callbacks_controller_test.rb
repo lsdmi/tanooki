@@ -60,8 +60,10 @@ module Users
 
       @controller.stub :request, request do
         @controller.stub(:sign_in_and_redirect, sign_in_and_redirect_mock) do
-          @controller.send(:success_google_oauth)
-          assert_equal request.flash[:notice], I18n.t('devise.omniauth_callbacks.success', kind: 'Google')
+          @controller.stub(:session, {}) do
+            @controller.send(:success_google_oauth)
+            assert_equal request.flash[:notice], I18n.t('devise.omniauth_callbacks.success', kind: 'Google')
+          end
         end
       end
 
