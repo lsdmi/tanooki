@@ -1,0 +1,23 @@
+<div class="w-full p-4 bg-white border border-2 border-dashed border-gray-300 rounded-lg shadow sm:p-8 col-span-7 md:col-span-8 lg:col-span-4 2xl:col-span-3">
+  <div class="flex items-center justify-between mb-3 mx-2">
+    <h5 class="text-base sm:text-xl font-bold leading-none text-gray-900">Pokédex Рейтинг</h5>
+  </div>
+  <div class="flow-root overflow-y-auto max-h-[40rem]">
+    <ul role="list" class="divide-y divide-gray-200 divide-dashed">
+      <% dex_leaderboard.each_with_index do |user, i| %>
+        <li class="py-3 sm:py-4">
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <%= image_tag url_for(user.avatar.image), alt: user.avatar.image.blob.filename, class: 'w-8 h-8 rounded-full' %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <%= tag.p user.name, class: 'text-xs sm:text-sm font-medium text-gray-900 truncate' %>
+              <%= tag.p dex_title(i), class: 'text-xs sm:text-sm text-gray-500 truncate' %>
+            </div>
+            <%= tag.div user.unique_pokemon_count, class: 'inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600' %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -20,7 +20,16 @@ class User < ApplicationRecord
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
 
+  scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }
+
+  scope :dex_leaders, lambda {
+    joins(:user_pokemons)
+      .includes(avatar: { image_attachment: :blob })
+      .select('users.*, COUNT(DISTINCT user_pokemons.pokemon_id) AS unique_pokemon_count')
+      .group(:user_id)
+      .order('unique_pokemon_count DESC')
+  }
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later

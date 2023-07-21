@@ -1,5 +1,5 @@
 <div id="default-sidebar" aria-label="Sidebar">
-  <div class="h-full px-3 overflow-y-auto">
+  <div class="h-full px-3 overflow-y-auto hidden xl:block">
     <ul class="space-y-2 font-medium">
       <a class="flex justify-between items-center p-2 mb-5 w-full rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200" type="button">
         <div class="flex items-center">
@@ -39,6 +39,31 @@
         <% end %>
       <% end %>
     </ul>
-    <%= render 'users/pokemons/list', pokemons: pokemons if pokemons.any? %>
+  </div>
+
+  <div class="h-full px-3 overflow-y-auto xl:hidden">
+    <div class="flex flex-wrap items-center justify-between mx-auto px-4 py-2">
+      <div class="flex items-center">
+        <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'mr-3 w-8 h-8 rounded-full' %>
+        <div class="text-left">
+          <%= tag.div current_user.name, class: 'font-semibold leading-none text-gray-900 my-1' %>
+          <%= tag.div current_user.email, class: 'text-sm text-gray-500' %>
+        </div>
+      </div>
+      <button data-collapse-toggle="navbar-solid-bg" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-solid-bg" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+      </button>
+      <div class="hidden w-full sm:block sm:w-auto" id="navbar-solid-bg">
+        <ul class="flex flex-col font-medium mt-4 rounded-lg sm:flex-row sm:space-x-8 sm:mt-0 sm:border-0 text-center sm:text-inherit">
+          <li><%= link_to 'Блоги', blogs_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+          <li><%= link_to 'Писальня', readings_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+          <li><%= link_to 'Покемони', pokemons_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+          <li><%= link_to 'Портретики', avatars_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

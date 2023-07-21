@@ -1,3 +1,7 @@
 <div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
-  <%= render 'users/pokemons/cta', all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+  <% if pokemons.any? %>
+    <%= render 'users/pokemons/data_screens', pokemons: pokemons, dex_leaderboard: dex_leaderboard, all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+  <% else %>
+    <%= render 'users/pokemons/cta', all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+  <% end %>
 </div>

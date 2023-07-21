@@ -24,8 +24,14 @@ class UsersController < ApplicationController
   end
 
   def pokemons
-    @all_pokemon_count = Pokemon.count
-    @all_caught_count = UserPokemon.count
+    @pokemons = pokemon_list
+
+    if @pokemons.empty?
+      @all_pokemon_count = Pokemon.count
+      @all_caught_count = UserPokemon.count
+    else
+      @dex_leaderboard = User.dex_leaders.excluding(User.admins)
+    end
 
     render 'show'
   end
@@ -58,7 +64,6 @@ class UsersController < ApplicationController
   def set_common_vars
     @fictions_size = fiction_list.size.size
     @user_publications = current_user.publications.order(created_at: :desc)
-    @pokemons = pokemon_list
   end
 
   def fetch_avatars
