@@ -71,3 +71,28 @@ module Users
     end
   end
 end
+
+module Users
+  class OmniauthCallbacksIntegrationTest < ActionDispatch::IntegrationTest
+    include Devise::Test::IntegrationHelpers
+
+    setup do
+      @user = users(:user_one)
+      @controller = Users::OmniauthCallbacksController.new
+      @session = { pokemon_guest_caught: true, caught_pokemon_id: 1 }
+      @request = ActionController::TestRequest.new({}, nil, :get)
+      @request.flash = { notice: 'My Notice' }
+    end
+
+    test 'should create user pokemon and update turbo streams' do
+      assert_difference('UserPokemon.count') do
+        @controller.stub(:session, @session) do
+          @controller.stub :request, @request do
+            @controller.instance_variable_set(:@user, @user)
+            @controller.send(:notice_pokemon_catch)
+          end
+        end
+      end
+    end
+  end
+end

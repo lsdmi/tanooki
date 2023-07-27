@@ -13,8 +13,9 @@ class FictionPaginatorTest < ActiveSupport::TestCase
       'chapter_page_fiction-1' => 2,
       'chapter_page_fiction-2' => 1
     }
+    @user = users(:user_one)
     @pagy = Pagy.new(count: 20, page: 1, items: 10)
-    @paginator = FictionPaginator.new(@pagy, @fictions, @params)
+    @paginator = FictionPaginator.new(@pagy, @fictions, @params, @user)
   end
 
   def test_call_method

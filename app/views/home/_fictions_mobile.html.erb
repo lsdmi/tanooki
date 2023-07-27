@@ -1,4 +1,4 @@
-<%= link_to hero_fictions_ad.resource, class: 'sm:hidden relative overflow-hidden h-0', aria: { label: hero_fictions_ad.caption } do %>
+<%= link_to hero_fictions_ad.resource, class: 'sm:hidden relative overflow-hidden h-0 z-50', aria: { label: hero_fictions_ad.caption } do %>
   <%= video_tag url_for(hero_fictions_ad.cover),
                 alt: hero_fictions_ad.cover.blob.filename.to_s,
                 autoplay: true,

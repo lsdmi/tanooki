@@ -25,10 +25,16 @@ class FictionsController < ApplicationController
   end
 
   def show
-    @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
-    @comment = Comment.new
+    show_vars
 
-    reading_progress_vars
+    respond_to do |format|
+      format.html { render 'show' }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          'chapters-list', partial: 'chapter_list', locals: { fiction: @fiction, user_id: params[:translator] }
+        )
+      end
+    end
   end
 
   def new
@@ -119,7 +125,7 @@ class FictionsController < ApplicationController
   end
 
   def setup_paginator
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
+    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
     fiction_paginator.call
     @paginators = fiction_paginator.initiate
   end
@@ -175,10 +181,38 @@ class FictionsController < ApplicationController
     @after_next_chapter = fiction_chapters[next_chapter_index + 1..]
   end
 
-  def reading_progress_vars
+  def split_chapter_by_user_id
+    all_chapters = ordered_chapters_desc(@fiction)
+
+    params[:translator] ||= all_chapters.first.user_id
+
+    fiction_chapters = chapters_by_translator(all_chapters)
+    next_chapter_index = next_chapter_index(fiction_chapters, @next_chapter)
+
+    return if next_chapter_index.nil?
+
+    @before_next_chapter = before_next_chapter_splitted(next_chapter_index, fiction_chapters)
+    @after_next_chapter = after_next_chapter_splitter(next_chapter_index, fiction_chapters)
+  end
+
+  def chapters_by_translator(chapters)
+    chapters.select { |chapter| chapter.user_id == params[:translator].to_i }
+  end
+
+  def before_next_chapter_splitted(index, chapters)
+    index == -1 ? [] : chapters[0...index + 1]
+  end
+
+  def after_next_chapter_splitter(index, chapters)
+    index == -1 ? chapters : chapters[index + 1..]
+  end
+
+  def show_vars
+    @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
+    @comment = Comment.new
     @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
     @next_chapter = next_chapter
-    split_chapter_list
+    duplicate_chapters(@fiction).any? ? split_chapter_by_user_id : split_chapter_list
   end
 
   def refresh_list

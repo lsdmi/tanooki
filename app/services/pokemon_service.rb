@@ -49,7 +49,7 @@ class PokemonService
     when 1 then 27.times { pokemon_array << pokemon.id }
     when 2 then 9.times { pokemon_array << pokemon.id }
     when 3 then 3.times { pokemon_array << pokemon.id }
-    when 4 then 1.times { pokemon_array << pokemon.id }
+    when 4 then pokemon_array << pokemon.id
     end
   end
 

@@ -4,11 +4,12 @@ class FictionPaginator
   include LibraryHelper
   include Pagy::Backend
 
-  def initialize(pagy, fictions, params)
+  def initialize(pagy, fictions, params, user)
     @fictions = fictions
     @paginators = {}
     @pagy = pagy
     @params = params
+    @user = user
   end
 
   def call
@@ -36,7 +37,7 @@ class FictionPaginator
 
   def paginated_chapters(fiction)
     pagy(
-      ordered_chapters_desc(fiction),
+      ordered_user_chapters_desc(fiction, @user),
       page: @params["chapter_page_#{fiction.slug}"] || 1,
       items: 8,
       page_param: "chapter_page_#{fiction.slug}"

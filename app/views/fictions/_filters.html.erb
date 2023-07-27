@@ -2,7 +2,7 @@
   <ul class="list-none flex flex-wrap items-center justify-center w-[400px] sm:w-[450px] md:w-[500px] lg:w-[550px]" role="navigation">
     <% @genres.each do |genre| %>
       <li class="">
-        <%= link_to fictions_path(genre_id: genre.id), data: { turbo_stream: "", weight: genre.fictions.size }, class: "block px-1 py-0.125 relative no-underline focus:outline-1 focus:outline-dashed #{random_tag_color} hover:bg-opacity-20" do %>
+        <%= link_to fictions_path(genre_id: genre.id), data: { turbo_stream: "" }, class: "block px-1 py-0.125 relative no-underline focus:outline-1 focus:outline-dashed #{random_tag_color} hover:bg-opacity-20" do %>
           <%= tag.div "##{genre.name.downcase}", class: "#{ @sample_genre == genre ? 'text-emerald-600 hover:text-emerald-700' : 'text-gray-500 hover:text-gray-600' } transition duration-500 transform hover:scale-110 #{cloud_link_size(genre.fictions.size)}" %>
         <% end %>
       </li>

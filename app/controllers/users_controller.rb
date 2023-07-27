@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   def readings
     @pagy, @fictions = pagy(fiction_list, items: 8)
     @random_reading = Fiction.all.sample
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params)
+    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
     fiction_paginator.call
     @paginators = fiction_paginator.initiate
 

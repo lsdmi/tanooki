@@ -37,7 +37,7 @@
       <%= tag.h1 @chapter.title, class: 'font-oswald mb-4 text-2xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white' %>
       <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
         <div class="mr-4 text-sm">
-          <%= tag.p @chapter.translator.presence || @chapter.author, class: 'text-xl text-gray-700 no-underline dark:text-white' %>
+          <%= tag.p @chapter.user.name, class: 'text-xl text-gray-700 no-underline dark:text-white' %>
         </div>
         <div>
           <%= link_to edit_chapter_path(@chapter), class: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 float-right', type: 'button' do %>

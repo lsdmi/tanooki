@@ -15,17 +15,58 @@ module LibraryHelper
     )
   end
 
+  def ordered_user_chapters_desc(fiction, user)
+    user.admin? ? ordered_chapters_desc(fiction) : ordered_chapters_desc(fiction).where(user_id: user.id)
+  end
+
   def chapters_size(fiction)
-    ordered_chapters(fiction).size
+    unique_chapters(ordered_chapters(fiction)).size
+  end
+
+  def duplicate_chapters(fiction)
+    fiction.chapters.select('number').group('number').having('COUNT(DISTINCT user_id) > 1')
+  end
+
+  def grouped_chapters_desc(fiction)
+    ordered_chapters_desc(fiction).group_by(&:user_id)
   end
 
   def following_chapter(fiction, chapter)
-    chapters = ordered_chapters_desc(fiction)
-    index = chapters.index(chapter)
-    chapters[index - 1] if index.present? && index.positive?
+    chapters = unique_chapters(ordered_chapters_desc(fiction))
+    index = chapter_index(chapters, chapter)
+
+    return if index.nil? || !index.positive?
+
+    following_chapter = chapters[index - 1]
+
+    ordered_chapters_desc(fiction).find_by(
+      number: following_chapter.number,
+      volume_number: following_chapter.volume_number,
+      user_id: chapter.user_id
+    ) || following_chapter
   end
 
-  def read_chapters(fiction, chapter)
-    ordered_chapters(fiction).index(chapter) + 1
+  def chapter_index(chapters, chapter)
+    chapters.each_with_index do |obj, index|
+      return index if obj.number == chapter.number && obj.volume_number == chapter.volume_number
+    end
+
+    0
+  end
+
+  def next_chapter_index(chapters, chapter)
+    final_index = -1
+
+    chapters.each_with_index do |obj, index|
+      next if (chapter.volume_number || 0) > (obj.volume_number || 0)
+
+      final_index = index if chapter.number <= obj.number
+    end
+
+    final_index
+  end
+
+  def unique_chapters(chapters)
+    chapters.uniq { |obj| [obj.number, obj.volume_number] }
   end
 end

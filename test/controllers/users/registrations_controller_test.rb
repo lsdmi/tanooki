@@ -18,6 +18,11 @@ module Users
       }
     end
 
+    test 'should show confirmation page' do
+      get register_path
+      assert_response :success
+    end
+
     test 'should create a new user with valid sign-up parameters' do
       assert_difference 'User.count' do
         post register_path, params: @user_params
