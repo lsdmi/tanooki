@@ -39,7 +39,7 @@ class SearchController < ApplicationController
     Fiction.search(
       params[:search],
       fields: ['title^2', 'alternative_title', 'english_title']
-    ).includes([{ cover_attachment: :blob }])
+    ).includes([{ cover_attachment: :blob }, :chapters, :genres])
   end
 
   def set_search_logic

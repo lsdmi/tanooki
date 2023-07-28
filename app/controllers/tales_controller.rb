@@ -19,12 +19,12 @@ class TalesController < ApplicationController
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
       operator: 'or'
-    ).includes([{ cover_attachment: :blob }, :rich_text_description])
+    ).includes([{ cover_attachment: :blob }])
 
     return more.excluding(@publication).first(6) if more.size > 6
 
     (
-      more.to_a + Publication.all.order(created_at: :desc).first(6)
+      more.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
     ).excluding(@publication).uniq.first(6)
   end
 

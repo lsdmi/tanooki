@@ -3,13 +3,6 @@
     <div class="col-span-8 grid grid-cols-6 gap-4 xl:gap-8 self-start">
       <div class="md:col-span-2 hidden md:block">
         <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
-        <% if fiction.description.size > 500 && fiction.genres.any? %>
-          <div class="mt-4 overflow-hidden break-words text-center">
-            <% fiction.genres.each do |genre| %>
-              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
-            <% end %>
-          </div>
-        <% end %>
       </div>
       <div class="text-gray-500 sm:text-xl col-span-6 md:col-span-4">
         <div class="w-full float-left rounded-xl mb-2 md:mt-1 md:mb-1 lg:mt-0">
@@ -32,21 +25,18 @@
           </span>
         </div>
 
-        <%= tag.h2 fiction.title, class: 'mb-4 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl' %>
-        <% if fiction.description.size < 500 && fiction.genres.any? %>
-          <div class="mb-4 overflow-hidden break-words">
-            <% fiction.genres.each do |genre| %>
-              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
-            <% end %>
-          </div>
-        <% elsif fiction.genres.any? %>
-          <div class="block md:hidden mb-4 overflow-hidden break-words">
+        <%= link_to fiction_path(fiction) do %>
+          <%= tag.h2 fiction.title, class: 'mb-2 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl hover:text-gray-600' %>
+        <% end %>
+
+        <% if fiction.genres.any? %>
+          <div class="mb-2 overflow-hidden break-words">
             <% fiction.genres.each do |genre| %>
               <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
             <% end %>
           </div>
         <% end %>
-        <%= tag.p fiction.description, class: 'mb-4 font-light text-base lg:text-lg whitespace-break-spaces' %>
+        <%= tag.p fiction.description, class: 'mb-4 font-light text-base lg:text-lg whitespace-break-spaces line-clamp-6' %>
 
         <div class="flex items-center gap-4">
           <%= link_to fiction_path(fiction), class: 'text-white bg-emerald-700 justify-center hover:bg-emerald-800 inline-flex items-center  focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-5 py-2.5 text-center', role: 'button' do %>

@@ -10,7 +10,7 @@ class Fiction < ApplicationRecord
 
   attr_accessor :genre_ids
 
-  after_create_commit { TelegramJob.perform_later(object: self) }
+  after_create_commit { TelegramJob.set(wait: 10.seconds).perform_later(object: self) }
 
   belongs_to :user
   has_many :chapters, dependent: :destroy
@@ -18,6 +18,7 @@ class Fiction < ApplicationRecord
   has_one_attached :cover
   has_many :fiction_genres, dependent: :destroy
   has_many :genres, through: :fiction_genres
+  has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
 
   enum status: {
     announced: 'Анонсовано',
@@ -29,7 +30,7 @@ class Fiction < ApplicationRecord
 
   validates :cover, presence: true
   validates :author, length: { minimum: 3, maximum: 50 }
-  validates :description, length: { minimum: 50, maximum: 750 }
+  validates :description, length: { minimum: 50, maximum: 1000 }
   validates :title, length: { minimum: 3, maximum: 100 }
   validates :alternative_title, length: { maximum: 100 }
   validates :english_title, length: { maximum: 100 }
@@ -37,6 +38,8 @@ class Fiction < ApplicationRecord
   validates :translator, length: { minimum: 3, maximum: 50 }, allow_blank: true
 
   validate :cover_format
+
+  scope :most_reads, -> { joins(:readings).group(:fiction_id).order('COUNT(reading_progresses.fiction_id) DESC') }
 
   def search_data
     {

@@ -6,7 +6,7 @@
     <%= link_to edit_fiction_path(fiction.slug), data: { turbo: false } do %>
       <%= image_tag 'edit.svg', class: 'h-5 md:h-6 lg:h-7 inline-block mx-2 transform transition duration-500 hover:scale-110', alt: 'views' %>
     <% end %>
-    <%= link_to fiction_path(fiction, page: params[:page]), data: { turbo_confirm: 'Певні, що прагнете видалити цю публікацію?', "turbo-method": :delete } do %>
+    <%= link_to fiction_path(fiction, page: params[:page]), data: { turbo_confirm: 'Певні, що прагнете видалити цей твір?', "turbo-method": :delete } do %>
       <%= image_tag 'delete.svg', class: 'h-5 md:h-6 lg:h-7 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'views' %>
     <% end %>
   <% end %>

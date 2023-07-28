@@ -1,4 +1,4 @@
-<% user_id = user_id || grouped_chapters_desc(fiction).first.first %>
+<% user_id = user_id || grouped_chapters_desc(fiction)&.first&.first %>
 
 <div class="overflow-y-auto max-h-[55rem]" id="chapters-list">
   <% if @reading_progress.present? && @reading_progress.chapter != ordered_chapters(@fiction).last %>

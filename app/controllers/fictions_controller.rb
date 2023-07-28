@@ -88,7 +88,7 @@ class FictionsController < ApplicationController
   end
 
   def manage_genres
-    fiction_genres_ids = params[:fiction][:genre_ids].map(&:to_i)
+    fiction_genres_ids = params[:fiction][:genre_ids].reject(&:empty?).map(&:to_i)
     existing_genre_ids = @fiction.genres.ids
 
     genres_to_add = fiction_genres_ids - existing_genre_ids
@@ -100,7 +100,7 @@ class FictionsController < ApplicationController
 
   def most_reads
     Rails.cache.fetch('most_reads', expires_in: 12.hours) do
-      fiction_with_total_views_query.limit(5)
+      Fiction.most_reads.limit(5)
     end
   end
 
@@ -148,7 +148,7 @@ class FictionsController < ApplicationController
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title,
-      :status, :title, :translator, :total_chapters, :user_id
+      :genre_ids, :status, :title, :translator, :total_chapters, :user_id
     )
   end
 

@@ -29,9 +29,9 @@
           </li>
         </ol>
       </nav>
-      <div class="flex items-center my-4">
+      <div class="flex flex-wrap items-center my-4">
         <% fiction.genres.each do |tg| %>
-          <%= tag.p tg.name, class: 'bg-emerald-100 dark:hover:bg-emerald-300 text-emerald-800 text-lg font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-emerald-200 dark:text-emerald-800 hover:bg-emerald-200' %>
+          <%= tag.p tg.name, class: 'bg-emerald-100 dark:hover:bg-emerald-300 text-emerald-800 text-lg font-medium mr-3 px-2.5 py-0.5 mb-2 rounded dark:bg-emerald-200 dark:text-emerald-800 hover:bg-emerald-200' %>
         <% end %>
       </div>
       <%= tag.h1 @chapter.title, class: 'font-oswald mb-4 text-2xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white' %>

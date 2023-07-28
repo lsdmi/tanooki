@@ -41,13 +41,6 @@ module FictionQuery
       .order('max_created_at DESC')
   end
 
-  def fiction_with_total_views_query
-    fiction_base_query
-      .select('fictions.*, SUM(chapters.views) AS total_views')
-      .group('fictions.id')
-      .order('total_views DESC')
-  end
-
   def fiction_with_recent_hot_updates_query
     fiction_base_query
       .where('chapters.created_at >= ?', 10.days.ago)
