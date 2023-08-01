@@ -23,7 +23,6 @@ class Fiction < ApplicationRecord
   enum status: {
     announced: 'Анонсовано',
     dropped: 'Покинуто',
-    forbidden: 'Заборонено',
     ongoing: 'Видається',
     finished: 'Завершено'
   }

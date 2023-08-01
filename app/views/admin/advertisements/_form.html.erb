@@ -1,18 +1,4 @@
 <div class="">
-  <div class="mb-6">
-    <%= f.input :caption,
-                input_html: {
-                  autofocus: true,
-                  class: "mt-1 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                },
-                placeholder: "Заголовок...",
-                label: "Заголовок"
-              %>
-    <% if advertisement.errors[:caption].any? %>
-      <p id="outlined_error_help" class="mt-2 text-xs text-red-600"><span class="font-medium">відсутній заголовок оголошення...</p>
-    <% end %>
-  </div>
-
   <div class="grid grid-cols-2 gap-2">
     <div>
       <%= f.label :cover, 'Відео', class: 'block mb-2 text-sm font-medium text-gray-900' %>

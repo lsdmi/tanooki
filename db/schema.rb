@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_135428) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -54,7 +54,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
 
   create_table "advertisements", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "slug", null: false
-    t.string "caption", null: false
     t.string "resource", null: false
     t.boolean "enabled", default: false
     t.datetime "created_at", null: false
@@ -134,7 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
     t.index ["name"], name: "index_genres_on_name"
   end
 
-  create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "slug", null: false
     t.string "name", null: false
     t.integer "power_level", null: false
@@ -168,7 +167,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
     t.index ["user_id"], name: "index_publications_on_user_id"
   end
 
-  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.bigint "chapter_id", null: false
@@ -186,7 +185,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
     t.index ["name"], name: "index_tags_on_name"
   end
 
-  create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "user_fictions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "fiction_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiction_id"], name: "index_user_fictions_on_fiction_id"
+    t.index ["user_id"], name: "index_user_fictions_on_user_id"
+  end
+
+  create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "pokemon_id"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -231,6 +239,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_235546) do
   add_foreign_key "reading_progresses", "chapters", on_delete: :cascade
   add_foreign_key "reading_progresses", "fictions", on_delete: :cascade
   add_foreign_key "reading_progresses", "users", on_delete: :cascade
+  add_foreign_key "user_fictions", "fictions"
+  add_foreign_key "user_fictions", "users"
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"

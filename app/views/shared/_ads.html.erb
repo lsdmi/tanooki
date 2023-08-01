@@ -1,4 +1,4 @@
-<%= link_to advertisement.resource, class: "relative overflow-hidden h-0 #{'hidden' unless request.path == admin_advertisements_path } md:block", aria: { label: advertisement.caption } do %>
+<%= link_to advertisement.resource, class: "relative overflow-hidden h-0 #{'hidden' unless request.path == admin_advertisements_path } md:block", aria: { label: advertisement.cover.blob.filename } do %>
   <%= video_tag url_for(advertisement.cover),
                 alt: advertisement.cover.blob.filename.to_s,
                 autoplay: true,

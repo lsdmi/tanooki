@@ -4,7 +4,7 @@
       <%= render 'mobile_fiction', fiction: fiction %>
     <% end %>
   </div>
-  <%= link_to @hero_ad.resource, class: 'relative overflow-hidden h-0', aria: { label: @hero_ad.caption } do %>
+  <%= link_to @hero_ad.resource, class: 'relative overflow-hidden h-0', aria: { label: @hero_ad.cover.blob.filename } do %>
     <%= video_tag url_for(@hero_ad.cover),
                   alt: @hero_ad.cover.blob.filename.to_s,
                   autoplay: true,

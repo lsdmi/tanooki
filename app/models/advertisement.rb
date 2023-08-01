@@ -8,14 +8,13 @@ class Advertisement < ApplicationRecord
   has_one_attached :poster
 
   validates :cover, :poster, presence: true
-  validates :caption, presence: true, length: { maximum: 50 }
   validates :resource, presence: true, length: { maximum: 300 }
 
   scope :enabled, -> { where(enabled: true) }
 
   def slug_candidates
     [
-      caption.downcase
+      SecureRandom.hex
     ]
   end
 end
