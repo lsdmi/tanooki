@@ -29,3 +29,7 @@
   background-color: rgb(34 197 94);
   margin-right: 5px;
 }
+
+.no-ads .google-auto-placed {
+  display: none !important;
+}

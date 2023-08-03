@@ -1,6 +1,6 @@
-<section class="z-10 relative font-oswald mt-6">
-  <div class="gap-8 py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
-    <div class="col-span-5 grid grid-cols-5 gap-8 self-start bg-gray-50 shadow-lg pt-8 pb-8 lg:pb-0 px-8 rounded-lg">
+<section class="z-10 relative font-oswald mt-4 md:mt-6">
+  <div class="gap-8 py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-3xl grid-cols-5 lg:grid lg:grid-cols-8">
+    <div class="col-span-5 grid grid-cols-5 gap-8 self-start bg-gray-50 shadow-lg pt-4 md:pt-8 pb-4 lg:pb-0 px-4 md:px-4 2xl:px-8 rounded-lg">
       <div class="md:col-span-2 hidden md:block">
         <%= image_tag url_for(@fiction.cover), class: 'hidden mx-auto md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
       </div>
@@ -9,7 +9,7 @@
         <%= render 'comments/index' %>
       </div>
     </div>
-    <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0">
+    <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
       <% if @fiction.chapters.any? %>
         <%= render 'chapters' %>
       <% else %>

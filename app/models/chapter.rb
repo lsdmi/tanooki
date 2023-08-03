@@ -7,7 +7,7 @@ class Chapter < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
 
-  after_create_commit :telegram_send_message
+  after_create_commit :manage_users, :telegram_send_message
 
   belongs_to :fiction
   belongs_to :user
@@ -49,6 +49,10 @@ class Chapter < ApplicationRecord
 
   def fiction_title
     fiction.title
+  end
+
+  def manage_users
+    UserFiction.find_or_create_by(fiction_id: fiction_id, user_id: user_id)
   end
 
   def slug_candidates

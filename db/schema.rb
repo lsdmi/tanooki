@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_135428) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_025021) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -108,7 +108,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_135428) do
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "slug", null: false
-    t.bigint "user_id", null: false
     t.string "title", null: false
     t.string "alternative_title"
     t.string "english_title"
@@ -123,7 +122,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_135428) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
-    t.index ["user_id"], name: "index_fictions_on_user_id"
   end
 
   create_table "genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -232,7 +230,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_135428) do
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
-  add_foreign_key "fictions", "users", on_delete: :cascade
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade

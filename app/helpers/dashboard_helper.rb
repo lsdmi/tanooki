@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
 module DashboardHelper
-  def crud_permissions?(object, user)
-    return true if user.admin?
-
-    if object.is_a?(Fiction)
-      user.fictions.include?(object)
-    elsif object.is_a?(Chapter)
-      user.chapters.include?(object)
-    end
+  def delete_permissions?(users, user)
+    (users.size == 1 && users.first == user) || user.admin?
   end
 end

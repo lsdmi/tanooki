@@ -45,7 +45,8 @@ class FictionsController < ApplicationController
     @fiction = Fiction.new(fiction_params)
 
     if @fiction.save
-      manage_genres if params[:fiction][:genre_ids]
+      manage_user_fictions if fiction_params[:user_id]
+      manage_genres if fiction_params[:genre_ids]
       redirect_to fiction_path(@fiction), notice: 'Твір створено.'
     else
       render 'fictions/new', status: :unprocessable_entity
@@ -98,6 +99,10 @@ class FictionsController < ApplicationController
     genres_to_remove.each { |genre_id| @fiction.fiction_genres.find_by(genre_id:).destroy }
   end
 
+  def manage_user_fictions
+    UserFiction.create(fiction_id: @fiction.id, user_id: fiction_params[:user_id])
+  end
+
   def most_reads
     Rails.cache.fetch('most_reads', expires_in: 12.hours) do
       Fiction.most_reads.limit(5)
@@ -134,21 +139,10 @@ class FictionsController < ApplicationController
     (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
   end
 
-  def fiction_list
-    if current_user.admin?
-      Fiction.all
-    else
-      Fiction.joins(:chapters)
-             .where(chapters: { user_id: current_user.id })
-             .or(Fiction.where(user_id: current_user.id))
-             .distinct
-    end
-  end
-
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title,
-      :genre_ids, :status, :title, :translator, :total_chapters, :user_id
+      :status, :title, :translator, :total_chapters, :user_id, genre_ids: []
     )
   end
 

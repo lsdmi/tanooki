@@ -8,17 +8,18 @@ class Fiction < ApplicationRecord
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
-  attr_accessor :genre_ids
+  attr_accessor :genre_ids, :user_id
 
   after_create_commit { TelegramJob.set(wait: 10.seconds).perform_later(object: self) }
 
-  belongs_to :user
   has_many :chapters, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_one_attached :cover
   has_many :fiction_genres, dependent: :destroy
   has_many :genres, through: :fiction_genres
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
+  has_many :user_fictions, dependent: :destroy
+  has_many :users, through: :user_fictions
 
   enum status: {
     announced: 'Анонсовано',

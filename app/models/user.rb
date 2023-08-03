@@ -13,9 +13,10 @@ class User < ApplicationRecord
   belongs_to :avatar
   has_many :chapters
   has_many :comments
-  has_many :fictions
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
+  has_many :user_fictions, dependent: :destroy
+  has_many :fictions, through: :user_fictions
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons

@@ -7,7 +7,6 @@ one:
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   total_chapters: 5
   translator: "Test Translator"
-  user_id: 1
 
 two:
   id: 2
@@ -18,4 +17,3 @@ two:
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   total_chapters: 5
   translator: "Test Translator"
-  user_id: 1

@@ -4,7 +4,7 @@ module FictionQuery
   def dashboard_fiction_list
     fiction_all_query
       .where(chapters: { user_id: current_user.id })
-      .or(Fiction.where(user_id: current_user.id))
+      .or(UserFiction.where(user_id: current_user.id))
       .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
       .group('fictions.id, fictions.created_at')
       .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
@@ -12,7 +12,7 @@ module FictionQuery
   end
 
   def fiction_all_query
-    Fiction.left_joins(:chapters)
+    Fiction.left_joins(:chapters).joins(:user_fictions)
   end
 
   def fiction_all_ordered_by_latest_chapter
