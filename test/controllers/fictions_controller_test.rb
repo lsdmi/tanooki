@@ -8,11 +8,24 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:user_one)
     @fiction = fictions(:one)
+    @fiction_two = fictions(:two)
   end
 
   test 'should get show' do
     Rails.cache.delete("fiction_#{params[:id]}")
     get fiction_url(@fiction)
+    assert_response :success
+    assert_template :show
+    assert_not_nil assigns(:fiction)
+    assert_not_nil assigns(:commentable)
+    assert_not_nil assigns(:comments)
+    assert_not_nil assigns(:comment)
+    assert_instance_of Comment, assigns(:comment)
+  end
+
+  test 'should get show with more than one translator' do
+    Rails.cache.delete("fiction_#{params[:id]}")
+    get fiction_url(@fiction_two)
     assert_response :success
     assert_template :show
     assert_not_nil assigns(:fiction)

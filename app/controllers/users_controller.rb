@@ -6,9 +6,17 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_common_vars, only: %i[avatars blogs pokemons readings]
 
-  def update_avatar
-    current_user.update(avatar_id: params[:user][:avatar_id])
-    redirect_to request.referer || root_path, notice: 'Портретик оновлено.'
+  def update
+    if current_user.update(name: user_params[:name])
+      current_user.update(avatar_id: user_params[:avatar_id])
+      redirect_to request.referer || root_path, notice: 'Профіль оновлено.'
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: update_avatars_screen
+        end
+      end
+    end
   end
 
   def avatars
@@ -48,6 +56,12 @@ class UsersController < ApplicationController
 
   private
 
+  def update_avatars_screen
+    turbo_stream.replace(
+      'avatars-section', partial: 'users/dashboard/avatars', locals: { avatars: fetch_avatars }
+    )
+  end
+
   def fiction_list
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
@@ -70,5 +84,9 @@ class UsersController < ApplicationController
     Rails.cache.fetch('avatars', expires_in: 1.day) do
       Avatar.includes(image_attachment: :blob).order(created_at: :desc)
     end
+  end
+
+  def user_params
+    params.require(:user).permit(:avatar_id, :name)
   end
 end

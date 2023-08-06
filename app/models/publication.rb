@@ -11,7 +11,7 @@ class Publication < ApplicationRecord
 
   attr_accessor :tag_ids
 
-  after_create_commit { TelegramJob.perform_later(object: self) }
+  after_create_commit { TelegramJob.set(wait: 10.seconds).perform_later(object: self) }
 
   belongs_to :user
   has_one_attached :cover

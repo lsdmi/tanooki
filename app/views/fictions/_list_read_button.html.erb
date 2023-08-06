@@ -1,4 +1,4 @@
-<% if reading_progress.nil? || reading_progress.chapter != unique_chapters(ordered_chapters(fiction)).last %>
+<% if reading_progress.nil? || following_chapter(reading_progress.fiction, reading_progress.chapter) %>
   <%= tag.div class: 'mt-2 lg:mt-4 text-center mb-2 md:mb-0' do %>
     <%= link_to chapter_path(next_chapter), class: 'inline-flex font-oswald text-emerald-800 text-base lg:text-lg hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-gray-50' do %>
       <%= reading_progress.present? ? 'Продовжити читання' : 'Читати з початку' %>

@@ -11,7 +11,7 @@ module Users
         user: {
           avatar_id: 1,
           email: 'test@email.com',
-          name: 'John Doe',
+          name: 'John Four',
           password: 'password',
           password_confirmation: 'password'
         }

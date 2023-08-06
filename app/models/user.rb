@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: [:google_oauth2]
 
-  validates :name, presence: true, length: { minimum: 3, maximum: 20 }
+  validates :name, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :avatar

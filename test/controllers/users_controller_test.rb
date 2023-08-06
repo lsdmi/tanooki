@@ -22,13 +22,22 @@ class UsersControllerTest < ActionController::TestCase
   test "should update user's avatar" do
     sign_in @user
 
-    put :update_avatar, params: { id: @user.id, user: { avatar_id: @avatar_id } }
+    put :update, params: { id: @user.id, user: { avatar_id: @avatar_id, name: 'John Doe' } }
 
     @user.reload
     assert_equal @avatar_id, @user.avatar_id
 
     assert_response :redirect
-    assert_equal 'Портретик оновлено.', flash[:notice]
+    assert_equal 'Профіль оновлено.', flash[:notice]
+  end
+
+  test 'update fails with invalid user params' do
+    sign_in @user
+
+    put :update, params: { id: @user.id, user: { avatar_id: @avatar_id, name: '' } }, format: :turbo_stream
+
+    assert_template 'users/dashboard/_avatars'
+    assert_response :success
   end
 
   test 'should get avatars' do

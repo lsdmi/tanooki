@@ -35,7 +35,7 @@
       <%= tag.li class: "#{'bg-gray-100' if params[:action] == 'avatars' }" do %>
         <%= link_to avatars_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
           <%= image_tag 'avatar.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
-          <span class="flex-1 ml-3 whitespace-nowrap">Портретики</span>
+          <span class="flex-1 ml-3 whitespace-nowrap">Профіль</span>
         <% end %>
       <% end %>
     </ul>
@@ -61,7 +61,7 @@
           <li><%= link_to 'Блоги', blogs_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
           <li><%= link_to 'Писальня', readings_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
           <li><%= link_to 'Покемони', pokemons_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
-          <li><%= link_to 'Портретики', avatars_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+          <li><%= link_to 'Профіль', avatars_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
         </ul>
       </div>
     </div>

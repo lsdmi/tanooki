@@ -52,7 +52,7 @@ class Chapter < ApplicationRecord
   end
 
   def manage_users
-    UserFiction.find_or_create_by(fiction_id: fiction_id, user_id: user_id)
+    UserFiction.find_or_create_by(fiction_id:, user_id:)
   end
 
   def slug_candidates

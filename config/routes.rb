@@ -44,9 +44,7 @@ Rails.application.routes.draw do
   resources :publications, except: %i[index show]
   resources :search, only: :index
   resources :tales, only: :show
-  resources :users do
-    member { put :update_avatar }
-  end
+  resources :users, only: :update
 
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs

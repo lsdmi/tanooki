@@ -14,18 +14,20 @@ class TalesController < ApplicationController
   private
 
   def more_tails
-    more = Publication.search(
+    return base_search.excluding(@publication).first(6) if base_search.size > 6
+
+    (
+      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
+    ).excluding(@publication).uniq.first(6)
+  end
+
+  def base_search
+    @base_search ||= Publication.search(
       @publication.tags.pluck(:name).join(' '),
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
       operator: 'or'
     ).includes([{ cover_attachment: :blob }])
-
-    return more.excluding(@publication).first(6) if more.size > 6
-
-    (
-      more.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
-    ).excluding(@publication).uniq.first(6)
   end
 
   def set_tale

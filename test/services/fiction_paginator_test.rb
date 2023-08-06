@@ -5,10 +5,7 @@ require 'pagy'
 
 class FictionPaginatorTest < ActiveSupport::TestCase
   def setup
-    @fictions = [
-      fictions(:one),
-      fictions(:two)
-    ]
+    @fictions = [fictions(:one), fictions(:two)]
     @params = {
       'chapter_page_fiction-1' => 2,
       'chapter_page_fiction-2' => 1

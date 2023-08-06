@@ -17,7 +17,7 @@ user_two:
   id: 2
   email: example2@example.com
   encrypted_password: password2
-  name: John Doe
+  name: John Two
   admin: false
   avatar_id: 1
   remember_created_at: ''

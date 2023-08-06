@@ -1,7 +1,7 @@
 <% user_id = user_id || grouped_chapters_desc(fiction)&.first&.first %>
 
 <div class="overflow-y-auto max-h-[55rem]" id="chapters-list">
-  <% if @reading_progress.present? && @reading_progress.chapter != unique_chapters(ordered_chapters(@fiction)).last %>
+  <% if @reading_progress.present? && following_chapter(@reading_progress.fiction, @reading_progress.chapter) %>
     <% if duplicate_chapters(@fiction).any? %>
       <%= render 'chapter_progress_list_multiple_authors', before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter, fiction: @fiction, selected_user_id: user_id %>
     <% else %>
