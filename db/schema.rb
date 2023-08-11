@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_03_025021) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_09_232028) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -222,6 +222,30 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_025021) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "youtube_channels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "channel_id", null: false
+    t.string "title", null: false
+    t.string "thumbnail", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "youtube_videos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "slug", null: false
+    t.bigint "youtube_channel_id", null: false
+    t.string "video_id", null: false
+    t.string "title", null: false
+    t.string "thumbnail", null: false
+    t.string "tags"
+    t.integer "comments_count", default: 0
+    t.integer "views", default: 0
+    t.datetime "published_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["youtube_channel_id"], name: "index_youtube_videos_on_youtube_channel_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chapters", "fictions", on_delete: :cascade
@@ -241,4 +265,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_025021) do
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"
+  add_foreign_key "youtube_videos", "youtube_channels"
 end

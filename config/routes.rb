@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :search, only: :index
   resources :tales, only: :show
   resources :users, only: :update
+  resources :videos, only: :show
 
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs
