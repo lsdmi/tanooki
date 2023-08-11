@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def track_visit
     TrackingService.new(
-      @publication || @chapter || @fiction,
+      @publication || @chapter || @fiction || @youtube_video,
       session
     ).call
   end
