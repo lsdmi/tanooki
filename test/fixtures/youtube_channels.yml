@@ -1,0 +1,5 @@
+one:
+  id: 1
+  channel_id: youtube_channel_one
+  title: <%= Faker::Book.author %>
+  thumbnail: <%= Faker::Internet.url %>

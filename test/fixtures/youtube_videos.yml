@@ -1,0 +1,11 @@
+one:
+  id: 1
+  slug: one
+  youtube_channel_id: 1
+  video_id: one
+  title: <%= Faker::Book.title %>
+  thumbnail: <%= Faker::Internet.url %>
+  tags: one
+  published_at: <%= Time.zone.now %>
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

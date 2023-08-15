@@ -12,6 +12,8 @@ module MetaHelper
       @fiction.cover
     elsif @chapter&.persisted?
       @chapter.fiction.cover
+    elsif @youtube_video&.persisted?
+      @youtube_video.thumbnail
     end
   end
 
@@ -24,6 +26,8 @@ module MetaHelper
       chapter_description
     elsif request_path_is_fictions_path?
       RANOBE_SEO_DESCRIPTION
+    elsif youtube_video_description?
+      @youtube_video.description
     else
       default_description
     end
@@ -44,6 +48,7 @@ module MetaHelper
     return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
     return 'Бака - Ранобе та Фанфіки' if request.path == fictions_path
     return chapter_title if @chapter.present? && @chapter.persisted?
+    return @youtube_video.title if @youtube_video&.persisted?
 
     [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
@@ -89,6 +94,10 @@ module MetaHelper
     else
       "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."
     end
+  end
+
+  def youtube_video_description?
+    @youtube_video&.description.present?
   end
 
   def fiction_description_present?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Use this file to easily define all of your cron jobs.
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.
@@ -21,11 +23,13 @@
 
 set :output, './log/cron.log'
 
+set :bundle_command, '/home/deploy/.rbenv/shims/bundler exec'
+job_type :runner, "cd :path && :bundle_command rails runner -e :environment ':task' :output"
+
 case @environment
 when 'production'
   every 24.hours do
     runner 'puts Time.now'
-    runner "YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }"
+    runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
   end
-else
 end

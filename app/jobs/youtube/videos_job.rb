@@ -12,7 +12,7 @@ module Youtube
       youtube = Google::Apis::YoutubeV3::YouTubeService.new
       youtube.key = ENV.fetch('YOUTUBE_API_KEY')
 
-      response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date', event_type: 'completed')
+      response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
       video_ids = response.items.map { |item| item.id.video_id }.compact
 
       video_ids.each do |video_id|
