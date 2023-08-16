@@ -17,15 +17,8 @@ class HomeController < ApplicationController
   private
 
   def highlights
-    highlights = Publication.highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
-                            .order(created_at: :desc).first(3)
-
-    return highlights unless highlights.size < 3
-
-    fallback_tales_count = 3 - highlights.size
-    highlights += Tale.not_highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
-                      .order(created_at: :desc).first(fallback_tales_count)
-    highlights
+    Publication.highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
+               .order(created_at: :desc).first(3)
   end
 
   def most_popular

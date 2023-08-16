@@ -79,7 +79,7 @@ module Users
     def catch_pokemon(resource)
       return if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
 
-      UserPokemon.create(pokemon_id: session[:caught_pokemon_id], user_id: resource.id)
+      PokemonCatchService.new(pokemon_id: session[:caught_pokemon_id], user_id: resource.id, session:).trap
     end
 
     def pokemon_notice

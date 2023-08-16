@@ -14,6 +14,10 @@ class SearchController < ApplicationController
   private
 
   def set_tag_logic
+    Searchkick.client.ping ? set_tag_logic_es : set_tag_logic_no_es
+  end
+
+  def set_tag_logic_es
     return if @results.size < 6
 
     count_without_main = @results.count - 5
@@ -27,19 +31,34 @@ class SearchController < ApplicationController
     )
   end
 
+  def set_tag_logic_no_es
+    @results = Publication.joins(:tags).where(tags: { name: params[:search] } )
+                          .includes([{ cover_attachment: :blob }, :rich_text_description])
+  end
+
   def publications
-    Publication.search(
-      params[:search],
-      fields: ['tags^10', 'title^5', 'description'],
-      boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-    ).includes([{ cover_attachment: :blob }, :rich_text_description])
+    if Searchkick.client.ping
+      Publication.search(
+        params[:search],
+        fields: ['tags^10', 'title^5', 'description'],
+        boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
+      ).includes([{ cover_attachment: :blob }, :rich_text_description])
+    else
+      Publication.where("title LIKE ?", "%#{params[:search]}%")
+                 .includes([{ cover_attachment: :blob }, :rich_text_description])
+    end
   end
 
   def fictions
-    Fiction.search(
-      params[:search],
-      fields: ['title^2', 'alternative_title', 'english_title']
-    ).includes([{ cover_attachment: :blob }, :chapters, :genres])
+    if Searchkick.client.ping
+      Fiction.search(
+        params[:search],
+        fields: ['title^2', 'alternative_title', 'english_title']
+      ).includes([{ cover_attachment: :blob }, :chapters, :genres])
+    else
+      Fiction.where("title LIKE ?", "%#{params[:search]}%")
+             .includes([{ cover_attachment: :blob }, :chapters, :genres])
+    end
   end
 
   def set_search_logic

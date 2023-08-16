@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 class YoutubeVideosController < ApplicationController
-  before_action :set_video, :track_visit, :load_advertisement
+  before_action :set_video, :track_visit, only: :show
+  before_action :load_advertisement
+
+  def index
+    @highlights = YoutubeVideo.order(published_at: :desc).first(4)
+    @latest = YoutubeVideo.excluding(@highlights).order(published_at: :desc).first(6)
+  end
 
   def show
     @more_videos = more_videos

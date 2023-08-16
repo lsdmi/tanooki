@@ -31,7 +31,7 @@ module Users
       if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
         flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
       else
-        UserPokemon.create(pokemon_id: session[:caught_pokemon_id], user_id: @user.id)
+        PokemonCatchService.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id, session:).trap
         flash[:notice] = I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
       end
     end

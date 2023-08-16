@@ -1,0 +1,110 @@
+<div class="lg:w-[1250px] m-auto">
+  <section class="w-full relative float-left font-oswald">
+    <div class="sm:mr-[340px]">
+      <div class="w-full relative float-left">
+        <div class="relative sm:float-right w-full lg:w-[60%]">
+
+          <% main_highlight = @highlights.first %>
+          <div class="py-2 mb-3 border-b border-gray-300">
+            <div class="mb-2 leading-none">
+              <%= link_to youtube_video_path(main_highlight) do %>
+                <%= image_tag url_for(main_highlight.thumbnail), alt: main_highlight.title, class: "rounded-md opacity-80 m-auto w-full l-[-9999px] r-[-9999px] h-64 mt-4", loading: 'eager' %>
+                <div class="z-10 rounded-md absolute top-0 right-0 bottom-0 left-0 w-full h-64 overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out mt-6" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+              <% end %>
+            </div>
+            <div class="text-gray-500 mb-2">
+              <%= tag.span main_highlight.youtube_channel.title, class: 'text-base sm:text-sm md:text-xs lg:text-sm' %> /
+              <%= tag.span "#{time_ago_in_words(main_highlight.published_at)} тому", class: 'text-base sm:text-sm md:text-xs font-light' %>
+              <%= link_to youtube_video_path(main_highlight) do %>
+                <%= tag.h2 main_highlight.title, class: 'text-gray-700 text-3xl sm:text-2xl md:text-xl lg:text-2xl md:leading-6 lg:leading-6 tracking-tight line-clamp-2 w-full hover:text-gray-600 hover:pointer mt-1' %>
+              <% end %>
+              <%= tag.span main_highlight.description, class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-2 mt-2' %>
+            </div>
+          </div>
+
+          <% @highlights.excluding(main_highlight).each do |highlight| %>
+            <div class="float-right relative w-full mt-1 mb-4">
+              <div class="relative md:float-left leading-none overflow-hidden w-56 mr-3">
+                <%= link_to youtube_video_path(highlight) do %>
+                  <%= image_tag url_for(highlight.thumbnail), alt: highlight.title, class: "w-full rounded-md h-32" %>
+                  <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                <% end %>
+              </div>
+              <div class="md:ml-[220px] lg:ml-[240px] xl:ml-[250px]">
+                <div class="relative float-left w-11/12 md:w-full m-4 sm:m-7 md:m-0 mt-3">
+                  <div class="text-gray-500 h-32">
+                    <%= tag.span highlight.youtube_channel.title, class: 'text-base sm:text-sm md:text-xs lg:text-sm' %> /
+                    <%= tag.span "#{time_ago_in_words(highlight.published_at)} тому", class: 'text-base sm:text-sm md:text-xs font-light' %>
+                    <%= link_to youtube_video_path(highlight) do %>
+                      <%= tag.h2 highlight.title, class: 'text-gray-700 text-3xl sm:text-2xl md:text-xl lg:text-2xl md:leading-6 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-2' %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+        <div class="relative sm:float-left w-full lg:w-80 mr-5">
+          <div class="mt-4">
+            <%= render 'shared/divider', caption: 'Оновлення', rose: true %>
+            <% leading_latest = @latest.first %>
+            <div class="mt-0 float-left relative w-[90%] lg:w-full mx-4 lg:mx-0 mb-2 mb-3 border-b border-gray-300">
+              <div class="rounded-xl float-left relative w-full overflow-hidden h-36">
+                <%= link_to youtube_video_path(leading_latest) do %>
+                  <%= image_tag url_for(leading_latest.thumbnail), alt: leading_latest.title, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] h-36" %>
+                  <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+                <% end %>
+              </div>
+              <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left px-0 py-2 flex items-center">
+                <div class="col-span-5">
+                  <div class="w-full float-left rounded-xl mb-1 text-gray-500">
+                    <%= tag.span leading_latest.youtube_channel.title, class: 'text-base sm:text-sm md:text-xs lg:text-sm' %> /
+                    <%= tag.span "#{time_ago_in_words(leading_latest.published_at)} тому", class: 'text-base sm:text-sm md:text-xs font-light' %>
+                    <%= link_to youtube_video_path(leading_latest) do %>
+                      <%= tag.h2 leading_latest.title, class: 'text-gray-700 text-2xl sm:text-xl md:text-lg lg:text-xl md:leading-6 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-1 line-clamp-2' %>
+                    <% end %>
+                    <%= tag.span leading_latest.description, class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="relative float-left w-full mt-0">
+              <% @latest.excluding(leading_latest).each do |video| %>
+                <div class="relative float-right w-full grid lg:grid-cols-5 gap-1 my-1">
+                  <div class="leading-none float-left relative lg:col-span-2">
+                    <%= link_to youtube_video_path(video) do %>
+                      <%= image_tag url_for(video.thumbnail), alt: video.title, class: "rounded-xl opacity-90 m-auto w-full lg:h-24 object-cover" %>
+                      <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+                    <% end %>
+                  </div>
+                  <div class="relative float-right sm:w-full lg:col-span-3 m-4 sm:m-0">
+                    <div class="w-full float-left rounded-xl md:mt-1 mb-1 lg:mt-0 text-gray-500">
+                      <%= tag.span video.youtube_channel.title, class: 'text-base sm:text-sm md:text-xs lg:text-sm ml-2 mt-1' %> /
+                      <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-base sm:text-sm md:text-xs font-light' %>
+                      <%= link_to youtube_video_path(video) do %>
+                        <%= tag.h2 video.title, class: 'text-gray-700 text-2xl sm:text-xl md:text-lg lg:text-xl md:leading-6 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-1 line-clamp-2 ml-2 mt-1' %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="float-left lg:ml-5 w-full sm:w-80">
+      <div class="mt-4">
+        <%= render 'shared/divider', caption: 'Популярне', rose: true %>
+      </div>
+    </div>
+  </section>
+</div>

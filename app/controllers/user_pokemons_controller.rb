@@ -3,7 +3,11 @@
 class UserPokemonsController < ApplicationController
   def create
     if session[:pokemon_catch_permitted].present?
-      UserPokemon.create(user_pokemon_params)
+      PokemonCatchService.new(
+        pokemon_id: user_pokemon_params[:pokemon_id],
+        user_id: user_pokemon_params[:user_id],
+        session:
+      ).trap
       render turbo_stream: [remove_pokemon, update_notice(UserPokemon::SUCCESS_MESSSAGE)]
     else
       render turbo_stream: [remove_pokemon, update_notice(UserPokemon::FAILURE_MESSSAGE)]

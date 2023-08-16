@@ -17,11 +17,13 @@ class TalesController < ApplicationController
     return base_search.excluding(@publication).first(6) if base_search.size > 6
 
     (
-      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
+      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(7)
     ).excluding(@publication).uniq.first(6)
   end
 
   def base_search
+    return [] unless Searchkick.client.ping
+
     @base_search ||= Publication.search(
       @publication.tags.pluck(:name).join(' '),
       fields: ['tags^10', 'title^5', 'description'],
