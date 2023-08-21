@@ -1,0 +1,26 @@
+<div class="mt-4 ml-4">
+  <%= render 'shared/divider', caption: 'Популярне', rose: true %>
+  <div class="relative float-left w-full mt-0">
+    <% popular.each do |video| %>
+      <div class="relative float-right w-full grid lg:grid-cols-5 gap-1 my-1">
+        <div class="leading-none float-left relative lg:col-span-2">
+          <%= link_to youtube_video_path(video) do %>
+            <%= image_tag url_for(video.thumbnail), alt: video.title, class: "rounded-xl opacity-90 m-auto w-full max-h-96 lg:h-20 object-cover" %>
+            <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+          <% end %>
+        </div>
+        <div class="relative float-right sm:w-full lg:col-span-3 sm:m-0">
+          <div class="w-full float-left rounded-xl text-gray-500 mt-2 lg:mt-0">
+            <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-base sm:text-lg md:text-base lg:text-sm lg:ml-2 font-light hover:underline', target: '_blank' %>
+            <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
+            <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
+            <%= link_to youtube_video_path(video) do %>
+              <%= tag.h2 video.title, class: 'text-gray-700 text-2xl lg:text-lg md:leading-8 lg:leading-5 tracking-tight hover:text-gray-600 hover:pointer line-clamp-2 lg:ml-2 md:mb-1 lg:mb-0' %>
+            <% end %>
+            <%= tag.span punch(video.description.to_s), class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2 lg:hidden lg:ml-2' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

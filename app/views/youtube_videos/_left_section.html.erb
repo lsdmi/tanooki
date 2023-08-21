@@ -1,0 +1,50 @@
+<div class="mt-4 sm:mt-0 lg:mt-4">
+  <div class="relative hidden lg:block">
+    <%= render 'shared/divider', caption: 'Оновлення', rose: true %>
+  </div>
+  <% leading_latest = latest.first %>
+  <div class="mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-3 lg:border-b border-gray-300">
+    <div class="rounded-xl float-left relative w-full overflow-hidden lg:h-36">
+      <%= link_to youtube_video_path(leading_latest) do %>
+        <%= image_tag url_for(leading_latest.thumbnail), alt: leading_latest.title, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-36 object-cover" %>
+        <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+      <% end %>
+    </div>
+    <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left px-0 py-2 flex items-center">
+      <div class="col-span-5">
+        <div class="w-full float-left rounded-xl mb-1 text-gray-500">
+          <%= link_to leading_latest.youtube_channel.title, "https://www.youtube.com/watch?v=#{leading_latest.video_id}", class: 'text-rose-700 text-base sm:text-lg md:text-lg lg:text-sm font-light hover:underline md:ml-2 lg:ml-0', target: '_blank' %>
+          <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
+          <%= tag.span "#{time_ago_in_words(leading_latest.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
+          <%= link_to youtube_video_path(leading_latest) do %>
+            <%= tag.h2 leading_latest.title, class: 'text-gray-700 text-2xl sm:text-3xl lg:text-2xl md:leading-8 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-1 sm:mt-0 lg:mt-1 line-clamp-2 md:ml-2 lg:ml-0' %>
+          <% end %>
+          <%= tag.span punch(leading_latest.description.to_s), class: 'text-gray-600 text-base lg:text-sm mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2 sm:mt-0 lg:mt-1 md:ml-2 lg:ml-0' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="relative float-left w-full mt-0">
+    <% latest.excluding(leading_latest).each do |video| %>
+      <div class="relative float-right w-full grid lg:grid-cols-5 gap-1 my-1 mb-2 sm:mb-4 lg:mb-0">
+        <div class="leading-none float-left relative lg:col-span-2">
+          <%= link_to youtube_video_path(video) do %>
+            <%= image_tag url_for(video.thumbnail), alt: video.title, class: "rounded-xl opacity-90 m-auto w-full max-h-96 lg:h-20 object-cover" %>
+            <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+          <% end %>
+        </div>
+        <div class="relative float-right sm:w-full lg:col-span-3 sm:m-0 mt-1">
+          <div class="w-full float-left rounded-xl md:mt-1 lg:mt-0 text-gray-500 mt-0 sm:mt-2">
+            <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-base sm:text-lg lg:text-sm lg:ml-2 mt-1 font-light hover:underline', target: '_blank' %>
+            <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
+            <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
+            <%= link_to youtube_video_path(video) do %>
+              <%= tag.h2 video.title, class: 'text-gray-700 text-2xl sm:text-3xl lg:text-lg md:leading-8 lg:leading-5 tracking-tight hover:text-gray-600 hover:pointer mt-1 sm:mt-0 line-clamp-2 lg:ml-2' %>
+            <% end %>
+            <%= tag.span punch(video.description.to_s), class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2 sm:mt-0 lg:hidden lg:ml-2' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

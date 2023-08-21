@@ -45,7 +45,11 @@ Rails.application.routes.draw do
   resources :search, only: :index
   resources :tales, only: :show
   resources :users, only: :update
-  resources :youtube_videos, path: 'watch', only: %i[index show]
+  resources :youtube_videos, path: 'watch', only: %i[index show] do
+    collection do
+      post :index
+    end
+  end
 
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs

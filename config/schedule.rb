@@ -28,7 +28,7 @@ job_type :runner, "cd :path && :bundle_command rails runner -e :environment ':ta
 
 case @environment
 when 'production'
-  every 1.day, at: '1:00 am' do
+  every 12.hours do
     runner 'puts Time.now'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
   end

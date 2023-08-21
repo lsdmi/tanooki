@@ -1,5 +1,4 @@
-<div class="mt-3">
-  <%= render 'fictions_mobile', hero_fictions_ad: hero_fictions_ad %>
+<div class="mt-3 float-left ">
   <%= render 'shared/divider', caption: 'Популярне', rose: true %>
   <% publications.each_with_index do |publication, i| %>
     <%= link_to tale_path(publication) do %>

@@ -12,6 +12,8 @@ class YoutubeVideo < ApplicationRecord
 
   validates :description, :published_at, :title, :thumbnail, :youtube_channel, :video_id, presence: true
 
+  scope :last_month, -> { where(published_at: 1.month.ago..) }
+
   def slug_candidates
     [
       title.downcase

@@ -5,6 +5,8 @@ module MetaHelper
                            'Захоплюючі історії, герої та світи. ' \
                            'Щоденні оновлення на нашому сайті!'
 
+  YOUTUBE_SEO_DESCRIPTION = 'Захоплюючі відео від талановитих українських ютуберів про аніме, манґу та культуру Сходу.'
+
   def meta_cover
     if @publication&.persisted?
       @publication.cover
@@ -28,6 +30,8 @@ module MetaHelper
       RANOBE_SEO_DESCRIPTION
     elsif youtube_video_description?
       @youtube_video.description
+    elsif request.path == youtube_videos_path
+      YOUTUBE_SEO_DESCRIPTION
     else
       default_description
     end
@@ -38,6 +42,7 @@ module MetaHelper
                    when root_path then highlights_cover
                    when fictions_path then fictions_cover
                    when search_index_path then results_cover
+                   when youtube_videos_path then youtube_video_cover
                    else meta_cover
                    end
 
@@ -49,13 +54,14 @@ module MetaHelper
     return 'Бака - Ранобе та Фанфіки' if request.path == fictions_path
     return chapter_title if @chapter.present? && @chapter.persisted?
     return @youtube_video.title if @youtube_video&.persisted?
+    return 'Український аніме-ютуб: відео на Бака' if request.path == youtube_videos_path
 
     [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
 
   def meta_type
     case request.path
-    when root_path, search_index_path, fictions_path
+    when root_path, search_index_path, fictions_path, youtube_videos_path
       'website'
     else
       'article'
@@ -94,6 +100,10 @@ module MetaHelper
     else
       "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."
     end
+  end
+
+  def youtube_video_cover
+    @highlights.first&.thumbnail
   end
 
   def youtube_video_description?

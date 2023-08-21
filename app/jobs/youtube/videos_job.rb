@@ -16,7 +16,7 @@ module Youtube
       video_ids = response.items.map { |item| item.id.video_id }.compact
 
       video_ids.each do |video_id|
-        create_video(youtube, channel_id, video_id) unless YoutubeVideo.exists?(video_id:)
+        create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
       end
     end
 

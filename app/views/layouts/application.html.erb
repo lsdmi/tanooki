@@ -34,7 +34,7 @@
         <%= render "shared/notice" if notice %>
       <% end %>
       <%= render "shared/alert" if alert %>
-      <%= render 'hero_section', highlights: @highlights, most_popular: @most_popular, newest: @newest, hero_fictions_ad: @hero_fictions_ad if current_page?(root_path) %>
+      <%= render 'hero_section', highlights: @highlights, most_popular: @most_popular, newest: @newest if current_page?(root_path) %>
       <main>
         <%= yield %>
         <%= turbo_frame_tag 'catch-pokemon' do %>

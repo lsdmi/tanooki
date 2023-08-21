@@ -1,4 +1,10 @@
 <div class="w-full lg:flex lg:w-auto lg:order-1 col-span-3 pb-4" id="mobile-menu-search">
+  <ul class="flex p-0 font-medium flex-row space-x-4 justify-center lg:hidden">
+    <li><%= link_to 'Блоги', root_path, class: 'font-oswald text-gray-800 text-lg hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+    <li><%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-lg hover:text-rose-600 transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+    <li><%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-lg hover:text-emerald-600 transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+  </ul>
+
   <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mt-4 lg:hidden" } do |form| %>
     <label for="search-mobile" class="sr-only">Search</label>
     <div class="relative w-full">

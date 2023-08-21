@@ -20,15 +20,15 @@ class TrendingTagsService
          .where(publications: { created_at: 14.days.ago.. })
          .group('tags.id')
          .order('SUM(publications.views) DESC')
-         .limit(6)
+         .limit(5)
          .pluck(:name)
     )
   end
 
   def limited(names)
+    return names.take(2) if names.take(3).join.size > 110
     return names.take(3) if names.take(4).join.size > 110
     return names.take(4) if names.take(5).join.size > 110
-    return names.take(5) if names.take(6).join.size > 110
 
     names
   end

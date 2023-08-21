@@ -32,8 +32,7 @@ class SearchController < ApplicationController
   end
 
   def set_tag_logic_no_es
-    @results = Publication.joins(:tags).where(tags: { name: params[:search] } )
-                          .includes([{ cover_attachment: :blob }, :rich_text_description])
+    @results = SearchService.publications(params[:search])
   end
 
   def publications
@@ -44,8 +43,7 @@ class SearchController < ApplicationController
         boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
       ).includes([{ cover_attachment: :blob }, :rich_text_description])
     else
-      Publication.where("title LIKE ?", "%#{params[:search]}%")
-                 .includes([{ cover_attachment: :blob }, :rich_text_description])
+      SearchService.publications(params[:search])
     end
   end
 
@@ -56,8 +54,7 @@ class SearchController < ApplicationController
         fields: ['title^2', 'alternative_title', 'english_title']
       ).includes([{ cover_attachment: :blob }, :chapters, :genres])
     else
-      Fiction.where("title LIKE ?", "%#{params[:search]}%")
-             .includes([{ cover_attachment: :blob }, :chapters, :genres])
+      SearchService.fictions(params[:search])
     end
   end
 

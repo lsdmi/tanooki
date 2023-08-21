@@ -1,0 +1,11 @@
+<%= turbo_stream.append "others" do %>
+  <%= render partial: "youtube_video", collection: @other %>
+<% end %>
+
+<%= turbo_stream.update "next_link" do %>
+  <% if @pagy.next.present? %>
+    <div class="mx-auto text-center">
+      <%= button_to 'Більше відео', pagy_url_for(@pagy, @pagy.next), class: 'uppercase w-4/5 rounded-lg px-4 py-2 font-oswald text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl leading-5 bg-white text-rose-600 transition ease-in-out m-0 hover:bg-gray-100 hover:text-gray-900 hover:cursor-pointer font-light border border-gray-200 mb-4' %>
+    </div>
+  <% end %>
+<% end %>
