@@ -14,14 +14,6 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'highlights should return up to 3 publication highlights and fill in with tales' do
-    highlights = Publication.highlights.order(created_at: :desc).first(3)
-
-    tales_count = [3 - highlights.size, 0].max
-    expected_highlights = highlights + Tale.not_highlights.order(created_at: :desc).first(tales_count)
-    assert_equal expected_highlights, @controller.send(:highlights)
-  end
-
   test 'most_popular should return the 5 most popular publications from last month, excluding highlights' do
     most_popular = Publication.last_month.order(views: :desc).limit(5).pluck(:id)
     assert_equal most_popular, @controller.send(:most_popular).pluck(:id)

@@ -2,7 +2,7 @@
 
 class SearchController < ApplicationController
   def index
-    redirect_to root_path unless params[:search]
+    return redirect_to root_path if params[:search].nil?
 
     @results = publications
     @fictions = fictions

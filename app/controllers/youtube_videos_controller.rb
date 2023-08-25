@@ -47,7 +47,7 @@ class YoutubeVideosController < ApplicationController
   def more_videos
     YoutubeVideo.includes(:youtube_channel)
                 .where(youtube_channel_id: @youtube_video.youtube_channel_id)
-                .excluding(@youtube_video).first(4)
+                .excluding(@youtube_video).order(published_at: :desc).last(4)
   end
 
   def set_video

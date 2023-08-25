@@ -10,7 +10,31 @@ class PokemonCatchService
   end
 
   def trap
-    UserPokemon.create(pokemon_id:, user_id:)
+    user_pokemon = find_or_create_user_pokemon
+    update_user_pokemon(user_pokemon)
     session[:pokemon_catch_permitted] = false
+  end
+
+  private
+
+  def find_or_create_user_pokemon
+    pokemon_data.descendants.each do |pokemon|
+      user_pokemon = UserPokemon.find_by(user_id:, pokemon_id: pokemon.id)
+      return user_pokemon if user_pokemon
+    end
+
+    UserPokemon.create(user_id:, pokemon_id:)
+  end
+
+  def update_user_pokemon(user_pokemon)
+    user_pokemon.update(current_level: user_pokemon.current_level + 1)
+
+    return unless user_pokemon.current_level == pokemon_data.descendant_level
+
+    user_pokemon.update(pokemon_id: pokemon_data.descendant_id)
+  end
+
+  def pokemon_data
+    @pokemon_data ||= Pokemon.find_by(id: pokemon_id)
   end
 end

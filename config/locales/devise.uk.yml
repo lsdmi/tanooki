@@ -51,7 +51,7 @@ uk:
       updated_but_not_signed_in: "Вітаємо! Обліковий запис оновлено."
     sessions:
       signed_in: "Ласкаво просимо до Баки!"
-      signed_in_with_pokemon: Вітаємо із поверненням та поповненням у команді!
+      signed_in_with_pokemon: Вітаємо із поверненням та оновленням у команді!
       signed_out: "На все добре!"
       already_signed_out: "На все добре!"
   errors:

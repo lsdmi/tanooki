@@ -17,7 +17,9 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       ),
       name: 'Pikachu',
       power_level: @pokemon.power_level,
-      rarity: @pokemon.rarity
+      rarity: @pokemon.rarity,
+      ancestor_id: @pokemon.ancestor_id,
+      descendant_level: 0
     }
   end
 

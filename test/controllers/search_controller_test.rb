@@ -27,21 +27,27 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     publications_with_tag = tag.publications
     excluded_ids = publications_with_tag.pluck(:id)
 
+    searchkick = Searchkick.client
+
     Publication.stub :search, Publication.all do
       Fiction.stub :search, Fiction.all do
-        get search_index_url, params: { search: [tag_name] }
-        results = assigns(:results)
+        Searchkick.stub :client, searchkick do
+          searchkick.stub :ping, true do
+            get search_index_url, params: { search: [tag_name] }
+            results = assigns(:results)
 
-        assert_includes results, publications(:tale_approved_one)
-        assert_includes results, publications(:tale_created_one)
+            assert_includes results, publications(:tale_approved_one)
+            assert_includes results, publications(:tale_created_one)
 
-        count_without_main = results.count - 5
-        num_to_add = 3 - (count_without_main % 3)
+            count_without_main = results.count - 5
+            num_to_add = 3 - (count_without_main % 3)
 
-        extra_publications = Publication.all.order(created_at: :desc).where.not(id: excluded_ids).first(num_to_add)
+            extra_publications = Publication.all.order(created_at: :desc).where.not(id: excluded_ids).first(num_to_add)
 
-        extra_publications.each do |publication|
-          assert_includes results, publication
+            extra_publications.each do |publication|
+              assert_includes results, publication
+            end
+          end
         end
       end
     end

@@ -35,9 +35,11 @@
         </div>
         <div class="relative float-right sm:w-full lg:col-span-3 sm:m-0 mt-1">
           <div class="w-full float-left rounded-xl md:mt-1 lg:mt-0 text-gray-500 mt-0 sm:mt-2">
-            <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-base sm:text-lg lg:text-sm lg:ml-2 mt-1 font-light hover:underline', target: '_blank' %>
-            <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
-            <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
+            <div class="line-clamp-1">
+              <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-base sm:text-lg lg:text-sm lg:ml-2 mt-1 font-light hover:underline', target: '_blank' %>
+              <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
+              <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
+            </div>
             <%= link_to youtube_video_path(video) do %>
               <%= tag.h2 video.title, class: 'text-gray-700 text-2xl sm:text-3xl lg:text-lg md:leading-8 lg:leading-5 tracking-tight hover:text-gray-600 hover:pointer mt-1 sm:mt-0 line-clamp-2 lg:ml-2' %>
             <% end %>

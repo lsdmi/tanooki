@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   private
 
   def pokemon_appearance
+    return if params[:page].present?
+
     @wild_pokemon = PokemonService.new(guest: current_user.nil?, session:).call
   end
 

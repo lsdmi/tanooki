@@ -49,7 +49,7 @@ module Admin
 
     def pokemon_params
       params.require(:pokemon).permit(
-        :name, :power_level, :rarity, :sprite
+        :ancestor_id, :descendant_id, :descendant_level, :name, :power_level, :rarity, :sprite
       )
     end
 

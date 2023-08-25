@@ -4,3 +4,5 @@ one:
   name: "First"
   power_level: 1
   rarity: 1
+  ancestor_id: 1
+  descendant_level: 0

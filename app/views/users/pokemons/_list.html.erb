@@ -4,16 +4,19 @@
   </div>
   <div class="flow-root overflow-y-auto max-h-[40rem]">
     <ul role="list" class="divide-y divide-gray-200 divide-dashed">
-      <% pokemons.each do |pokemon| %>
+      <% pokemons.each do |user_pokemon| %>
         <li class="py-3 sm:py-4">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
-              <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'h-8' %>
+              <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.sprite.blob.filename, class: 'h-8' %>
             </div>
             <div class="flex-1 min-w-0">
-              <%= tag.p pokemon.name, class: 'text-xs sm:text-sm font-medium text-gray-900 truncate' %>
+              <%= tag.p user_pokemon.pokemon.name, class: 'text-xs sm:text-sm font-medium text-gray-900 truncate' %>
             </div>
-            <%= tag.div "x#{pokemon.duplicates_count}", class: 'inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600' %>
+            <%= tag.div class: 'inline-flex items-center text-xs sm:text-sm text-gray-600' do %>
+              Рівень:<%= tag.span sanitize("&nbsp;"), class: 'text-gray-900' %>
+              <%= tag.span user_pokemon.current_level, class: 'text-gray-900' %>
+            <% end %>
           </div>
         </li>
       <% end %>

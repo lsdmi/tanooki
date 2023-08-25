@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_232028) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_214815) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -136,8 +136,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_232028) do
     t.string "name", null: false
     t.integer "power_level", null: false
     t.integer "rarity", null: false
+    t.bigint "ancestor_id"
+    t.bigint "descendant_id"
+    t.integer "descendant_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ancestor_id"], name: "index_pokemons_on_ancestor_id"
+    t.index ["descendant_id"], name: "index_pokemons_on_descendant_id"
     t.index ["name"], name: "index_pokemons_on_name"
   end
 
@@ -197,6 +202,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_232028) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "current_level", default: 0
     t.index ["pokemon_id"], name: "index_user_pokemons_on_pokemon_id"
     t.index ["user_id"], name: "index_user_pokemons_on_user_id"
   end
@@ -254,6 +260,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_232028) do
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
+  add_foreign_key "pokemons", "pokemons", column: "ancestor_id"
+  add_foreign_key "pokemons", "pokemons", column: "descendant_id"
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade

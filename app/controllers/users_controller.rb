@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       @all_pokemon_count = Pokemon.count
       @all_caught_count = UserPokemon.count
     else
-      @dex_leaderboard = User.dex_leaders.excluding(User.admins)
+      @dex_leaderboard = User.dex_leaders
     end
 
     render 'show'
@@ -67,12 +67,7 @@ class UsersController < ApplicationController
   end
 
   def pokemon_list
-    current_user
-      .pokemons
-      .includes(sprite_attachment: :blob)
-      .select('pokemons.*, COUNT(user_pokemons.pokemon_id) as duplicates_count')
-      .group(:pokemon_id)
-      .order('MAX(user_pokemons.created_at) DESC')
+    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order(current_level: :desc)
   end
 
   def set_common_vars
