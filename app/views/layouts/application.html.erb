@@ -28,7 +28,10 @@
     <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-white opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
-      <%= render 'shared/ads', advertisement: @advertisement if @advertisement&.persisted? %>
+      <% if @advertisement&.persisted? %>
+        <%= render 'shared/ads', advertisement: @advertisement %>
+        <%= render 'shared/mobile_ad', advertisement: @advertisement %>
+      <% end %>
       <%= render "shared/navbar" %>
       <%= turbo_frame_tag 'application-notice' do %>
         <%= render "shared/notice" if notice %>

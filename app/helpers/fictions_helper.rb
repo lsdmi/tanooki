@@ -22,18 +22,12 @@ module FictionsHelper
 
   def cloud_link_size(size)
     case ratio(size)
-    when 0.7..Float::INFINITY
+    when 0.75..Float::INFINITY
       'text-3xl sm:text-4xl md:text-5xl lg:text-6xl'
-    when 0.6..0.7
-      'text-2xl sm:text-3xl md:text-4xl lg:text-5xl'
-    when 0.5..0.6
+    when 0.5..0.75
       'text-xl sm:text-2xl md:text-3xl lg:text-4xl'
-    when 0.4..0.5
-      'text-lg sm:text-xl md:text-2xl lg:text-3xl'
-    when 0.3..0.4
+    when 0.25..0.5
       'text-base sm:text-lg md:text-xl lg:text-2xl'
-    when 0.2..0.3
-      'text-sm sm:text-base md:text-lg lg:text-xl'
     else
       'text-xs sm:text-sm md:text-base lg:text-lg'
     end

@@ -15,4 +15,15 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:youtube_video)
     assert_not_nil assigns(:more_videos)
   end
+
+  test 'should get index' do
+    get youtube_videos_path
+    assert_response :success
+
+    assert_not_nil assigns(:highlights)
+    assert_not_nil assigns(:popular)
+    assert_not_nil assigns(:latest)
+    assert_not_nil assigns(:pagy)
+    assert_not_nil assigns(:other)
+  end
 end

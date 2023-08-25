@@ -1,3 +1,7 @@
-<%= link_to advertisement.resource, class: 'sm:hidden relative overflow-hidden h-0', aria: { label: advertisement.cover.blob.filename } do %>
-  <%= image_tag url_for(advertisement.poster), class: 'mx-auto mb-4 w-[96%]' %>
+<%= link_to advertisement.resource, class: 'md:hidden relative overflow-hidden h-0', aria: { label: advertisement.cover.blob.filename } do %>
+  <%= image_tag url_for(advertisement.poster),
+                alt: advertisement.cover.blob.filename,
+                class: 'top-0 left-0 w-full h-full',
+                onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');"
+  %>
 <% end if advertisement.present? %>

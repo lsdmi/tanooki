@@ -3,7 +3,7 @@
     <%= render 'shared/divider', caption: 'Оновлення', rose: true %>
   </div>
   <% leading_latest = latest.first %>
-  <div class="mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-3 lg:border-b border-gray-300">
+  <%= tag.div class: 'mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-3 lg:border-b border-gray-300' do %>
     <div class="rounded-xl float-left relative w-full overflow-hidden lg:h-36">
       <%= link_to youtube_video_path(leading_latest) do %>
         <%= image_tag url_for(leading_latest.thumbnail), alt: leading_latest.title, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-36 object-cover" %>
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-  </div>
+  <% end if leading_latest.present? %>
   <div class="relative float-left w-full mt-0">
     <% latest.excluding(leading_latest).each do |video| %>
       <div class="relative float-right w-full grid lg:grid-cols-5 gap-1 my-1 mb-2 sm:mb-4 lg:mb-0">
