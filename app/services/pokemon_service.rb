@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class PokemonService
-  attr_reader :guest, :session
+  attr_reader :session, :user
 
-  def initialize(guest:, session:)
-    @guest = guest
+  def initialize(session:, user:)
+    @user = user
     @session = session
   end
 
   def call
     precatch_session
 
-    return nil if rand > session[:pokemon_catch_rate]
+    return nil if rand > catch_rate
 
     postcatch_session
     caught_pokemon
@@ -20,18 +20,22 @@ class PokemonService
   private
 
   def catch_rate
-    last_seen = session[:pokemon_catch_last_seen]
+    last_seen = user&.user_pokemons&.maximum(:updated_at) || session[:pokemon_catch_last_seen]
 
     if last_seen < 365.days.ago then 1
-    elsif last_seen > 24.hours.ago then 0.2
+    elsif last_seen > 4.hours.ago then 0.02
     else
       0
     end
   end
 
   def caught_pokemon
-    session[:caught_pokemon_id] = caught_pokemon_id if guest
-    Pokemon.find_by(id: caught_pokemon_id)
+    if user.nil?
+      session[:caught_pokemon_id] = caught_pokemon_id
+      Pokemon.find_by(id: session[:caught_pokemon_id])
+    else
+      Pokemon.find_by(id: caught_pokemon_id)
+    end
   end
 
   def caught_pokemon_id
@@ -56,7 +60,6 @@ class PokemonService
   def precatch_session
     session[:pokemon_catch_last_seen] ||= Time.now
 
-    session[:pokemon_catch_rate] = catch_rate
     session[:pokemon_catch_permitted] = false
     session[:pokemon_guest_caught] = nil
   end

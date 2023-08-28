@@ -33,12 +33,18 @@
           <%= f.select :descendant_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.descendant_id), {}, { data: { controller: 'slim' }, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
         </div>
       </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <%= f.label :type_ids, 'Типи', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.select :type_ids, options_for_select(types.pluck(:name, :id), selected: f.object.types.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+        </div>
+      </div>
     </div>
     <div class="mt-4 lg:mt-0 space-y-4 sm:space-y-6">
       <div>
         <%= f.label :sprite, 'Спрайт', class: 'block mb-2 text-sm font-medium text-gray-900' %>
         <div class="flex justify-center items-center w-full">
-          <%= f.label :sprite, class: "flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if pokemon.errors[:sprite].any?}" do %>
+          <%= f.label :sprite, class: "flex flex-col justify-center items-center w-full h-80 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if pokemon.errors[:sprite].any?}" do %>
             <div class="flex flex-col justify-center items-center pt-5 pb-2">
               <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
               <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_23_214815) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -129,6 +129,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_214815) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name"
+  end
+
+  create_table "pokemon_type_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "pokemon_id", null: false
+    t.bigint "pokemon_type_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pokemon_id", "pokemon_type_id"], name: "index_pokemon_type_relations_on_pokemon_id_and_pokemon_type_id", unique: true
+    t.index ["pokemon_id"], name: "index_pokemon_type_relations_on_pokemon_id"
+    t.index ["pokemon_type_id"], name: "index_pokemon_type_relations_on_pokemon_type_id"
+  end
+
+  create_table "pokemon_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -260,6 +276,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_214815) do
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
+  add_foreign_key "pokemon_type_relations", "pokemon_types"
+  add_foreign_key "pokemon_type_relations", "pokemons"
   add_foreign_key "pokemons", "pokemons", column: "ancestor_id"
   add_foreign_key "pokemons", "pokemons", column: "descendant_id"
   add_foreign_key "publication_tags", "publications"

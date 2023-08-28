@@ -3,10 +3,15 @@
 class Pokemon < ApplicationRecord
   extend FriendlyId
 
+  attr_accessor :type_ids
+
   friendly_id :slug_candidates
 
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
   has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon'
+
+  has_many :pokemon_type_relations, dependent: :destroy
+  has_many :pokemon_types, through: :pokemon_type_relations
 
   has_many :user_pokemons, dependent: :destroy
   has_many :users, through: :user_pokemons
@@ -45,6 +50,10 @@ class Pokemon < ApplicationRecord
     [
       name.downcase
     ]
+  end
+
+  def types
+    pokemon_types
   end
 
   private
