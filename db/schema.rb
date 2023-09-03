@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_135531) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -147,7 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "slug", null: false
     t.string "name", null: false
     t.integer "power_level", null: false
@@ -186,7 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
     t.index ["user_id"], name: "index_publications_on_user_id"
   end
 
-  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.bigint "chapter_id", null: false
@@ -204,7 +204,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
     t.index ["name"], name: "index_tags_on_name"
   end
 
-  create_table "user_fictions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "user_fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -213,12 +213,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_28_152151) do
     t.index ["user_id"], name: "index_user_fictions_on_user_id"
   end
 
-  create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "pokemon_id"
     t.bigint "user_id"
+    t.integer "current_level", default: 0
+    t.integer "battle_experience", default: 0
+    t.string "character"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "current_level", default: 0
     t.index ["pokemon_id"], name: "index_user_pokemons_on_pokemon_id"
     t.index ["user_id"], name: "index_user_pokemons_on_user_id"
   end
