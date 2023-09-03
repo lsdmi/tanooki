@@ -17,13 +17,17 @@ class PokemonCatchService
 
   private
 
+  def sample_character
+    UserPokemon::characters.to_a.sample.second
+  end
+
   def find_or_create_user_pokemon
     pokemon_data.descendants.each do |pokemon|
       user_pokemon = UserPokemon.find_by(user_id:, pokemon_id: pokemon.id)
       return user_pokemon if user_pokemon
     end
 
-    UserPokemon.create(user_id:, pokemon_id:)
+    UserPokemon.create(user_id:, pokemon_id:, character: sample_character)
   end
 
   def update_user_pokemon(user_pokemon)
