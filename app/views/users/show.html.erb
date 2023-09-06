@@ -10,7 +10,7 @@
     <% elsif action_name.to_sym == :blogs %>
       <%= render 'users/dashboard/blogs', publications: @publications, pagy: @pagy %>
     <% else %>
-      <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count %>
+      <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count, selected_pokemon: @selected_pokemon, descendant: @descendant %>
     <% end %>
   </div>
 </div>

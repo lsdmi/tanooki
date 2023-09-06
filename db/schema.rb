@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_02_135531) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_212457) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -148,6 +148,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_135531) do
   end
 
   create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "dex_id"
     t.string "slug", null: false
     t.string "name", null: false
     t.integer "power_level", null: false

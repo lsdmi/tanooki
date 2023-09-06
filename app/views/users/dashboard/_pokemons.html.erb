@@ -1,6 +1,6 @@
-<div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
+<div id="section" class="p-4 mb-4 bg-gradient-to-b from-indigo-200 to-pink-200 rounded-lg shadow sm:p-4 xl:p-6">
   <% if pokemons.any? %>
-    <%= render 'users/pokemons/data_screens', pokemons: pokemons, dex_leaderboard: dex_leaderboard, all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+    <%= render 'users/pokemons/data_screens', pokemons: pokemons, dex_leaderboard: dex_leaderboard, selected_pokemon: selected_pokemon, descendant: descendant %>
   <% else %>
     <%= render 'users/pokemons/cta', all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
   <% end %>

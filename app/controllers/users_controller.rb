@@ -33,6 +33,8 @@ class UsersController < ApplicationController
 
   def pokemons
     @pokemons = pokemon_list
+    @selected_pokemon = @pokemons.first
+    @descendant = @selected_pokemon.pokemon.descendant
 
     if @pokemons.empty?
       @all_pokemon_count = Pokemon.count
@@ -54,6 +56,13 @@ class UsersController < ApplicationController
     render 'show'
   end
 
+  def pokemon_details
+    @selected_pokemon = UserPokemon.includes(:pokemon).find(params[:pokemon_id])
+    @descendant = @selected_pokemon.pokemon.descendant if @selected_pokemon.pokemon.descendant != @selected_pokemon.pokemon
+
+    render turbo_stream: update_pokemon_details
+  end
+
   private
 
   def update_avatars_screen
@@ -62,12 +71,18 @@ class UsersController < ApplicationController
     )
   end
 
+  def update_pokemon_details
+    turbo_stream.replace(
+      'pokemon-details', partial: 'users/pokemons/details', locals: { selected_pokemon: @selected_pokemon, descendant: @descendant }
+    )
+  end
+
   def fiction_list
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
   def pokemon_list
-    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order(current_level: :desc)
+    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
   end
 
   def set_common_vars

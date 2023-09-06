@@ -23,7 +23,7 @@ class PokemonService
     last_seen = user&.user_pokemons&.maximum(:updated_at) || session[:pokemon_catch_last_seen]
 
     if last_seen < 365.days.ago then 1
-    elsif last_seen < 4.hours.ago then 0.02
+    elsif last_seen < 4.hours.ago then 0.04
     else
       0
     end
@@ -59,13 +59,10 @@ class PokemonService
 
   def precatch_session
     session[:pokemon_catch_last_seen] ||= Time.now
-
-    session[:pokemon_catch_permitted] = false
     session[:pokemon_guest_caught] = nil
   end
 
   def postcatch_session
     session[:pokemon_catch_last_seen] = Time.now
-    session[:pokemon_catch_permitted] = true
   end
 end

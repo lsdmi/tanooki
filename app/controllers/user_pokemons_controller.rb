@@ -2,7 +2,7 @@
 
 class UserPokemonsController < ApplicationController
   def create
-    if session[:pokemon_catch_permitted].present?
+    if pokemon_catch_permitted?
       PokemonCatchService.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
         user_id: user_pokemon_params[:user_id],
@@ -15,6 +15,12 @@ class UserPokemonsController < ApplicationController
   end
 
   private
+
+  def pokemon_catch_permitted?
+    return true if current_user.nil?
+
+    current_user.user_pokemons.maximum(:updated_at) < 4.hours.ago
+  end
 
   def remove_pokemon
     turbo_stream.remove('catch-pokemon')

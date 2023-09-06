@@ -1,0 +1,27 @@
+<div class="col-span-12 lg:col-span-4 mt-4 sm:mt-0">
+  <div class="inline-flex items-center justify-between mb-3 mx-2">
+    <%= image_tag 'battle_history.svg', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'stars' %>
+    <h5 class="text-xl font-bold leading-none text-gray-900">Літопис Сутичок</h5>
+  </div>
+  <div class="flow-root py-3 px-4 border border-gray-200 rounded-lg shadow mt-2 overflow-y-auto max-h-[24rem] lg:max-h-[40rem] xl:max-h-[56rem] 2xl:max-h-[40rem]">
+
+    <div class="flex items-center justify-between">
+      <div>
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+          <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <% 15.times do %>
+      <div class="flex items-center justify-between pt-4">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+      </div>
+    <% end %>
+    <span class="sr-only">Loading...</span>
+
+  </div>
+</div>

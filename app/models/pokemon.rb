@@ -8,6 +8,7 @@ class Pokemon < ApplicationRecord
   friendly_id :slug_candidates
 
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
+  belongs_to :descendant, foreign_key: :descendant_id, class_name: 'Pokemon'
   has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon'
 
   has_many :pokemon_type_relations, dependent: :destroy
@@ -21,7 +22,7 @@ class Pokemon < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :power_level, :rarity,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
-  validates :ancestor_id, :sprite, presence: true
+  validates :ancestor_id, :dex_id, :sprite, presence: true
   validates :descendant_level,
             numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 99 }
 

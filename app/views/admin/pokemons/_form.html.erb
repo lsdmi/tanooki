@@ -3,14 +3,14 @@
     <div class="space-y-4 sm:space-y-6">
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
-          <%= f.label :name, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :name, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:name].any?}" }, label: false, placeholder: "Додайте ім'я" %>
-          <%= tag.p pokemon.errors[:name].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:name].any? %>
+          <%= f.label :dex_id, 'Номер в Дексі', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :dex_id, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:dex_id].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p pokemon.errors[:dex_id].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:dex_id].any? %>
         </div>
         <div class="w-full">
-          <%= f.label :descendant_level, 'Рівень еволюції', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :descendant_level, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:descendant_level].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
-          <%= tag.p pokemon.errors[:descendant_level].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:descendant_level].any? %>
+          <%= f.label :name, "Ім'я", class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :name, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:name].any?}" }, label: false, placeholder: "Додайте ім'я" %>
+          <%= tag.p pokemon.errors[:name].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:name].any? %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
@@ -31,6 +31,11 @@
         <div class="w-full">
           <%= f.label :descendant_id, 'Наступна форма', class: 'block mb-2 text-sm font-medium text-gray-900' %>
           <%= f.select :descendant_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.descendant_id), {}, { data: { controller: 'slim' }, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+        </div>
+        <div class="w-full">
+          <%= f.label :descendant_level, 'Рівень еволюції', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :descendant_level, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:descendant_level].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p pokemon.errors[:descendant_level].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:descendant_level].any? %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">

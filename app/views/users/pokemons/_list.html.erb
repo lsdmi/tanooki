@@ -1,25 +1,22 @@
- <div class="w-full p-4 bg-white border border-2 border-dashed border-gray-300 rounded-lg shadow sm:p-8 col-span-5 md:col-span-4 lg:col-span-3 mb-4 sm:mb-0">
-  <div class="flex items-center justify-between mb-3 mx-2">
-    <h5 class="text-base sm:text-xl font-bold leading-none text-gray-900">Мої Покемони</h5>
+<div class="col-span-12 lg:col-span-5">
+  <div class="inline-flex items-center justify-between mb-3 mx-2">
+    <%= image_tag 'pokemon_team.svg', class: 'h-5 md:h-6 lg:h-7 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'views' %>
+    <h5 class="text-xl font-bold leading-none text-gray-900">Мої Покемони</h5>
   </div>
-  <div class="flow-root overflow-y-auto max-h-[40rem]">
-    <ul role="list" class="divide-y divide-gray-200 divide-dashed">
-      <% pokemons.each do |user_pokemon| %>
-        <li class="py-3 sm:py-4">
-          <div class="flex items-center space-x-4">
-            <div class="flex-shrink-0">
-              <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.sprite.blob.filename, class: 'h-8' %>
-            </div>
-            <div class="flex-1 min-w-0">
-              <%= tag.p user_pokemon.pokemon.name, class: 'text-xs sm:text-sm font-medium text-gray-900 truncate' %>
-            </div>
-            <%= tag.div class: 'inline-flex items-center text-xs sm:text-sm text-gray-600' do %>
-              Рівень:<%= tag.span sanitize("&nbsp;"), class: 'text-gray-900' %>
-              <%= tag.span user_pokemon.current_level, class: 'text-gray-900' %>
-            <% end %>
-          </div>
-        </li>
+  <div class="grid grid-cols-4 sm:grid-cols-8 gap-4 lg:grid-cols-6 lg:gap-2 2xl:grid-cols-8 2xl:gap-4 ml-2 mt-4">
+    <% pokemons.in_groups_of(8).each_with_index do |group, group_index| %>
+      <% group.each_with_index do |user_pokemon, index| %>
+        <% if user_pokemon.present? %>
+          <%= button_to pokemon_details_path(pokemon_id: user_pokemon), data: { turbo_stream: "", "turbo-method": :post }, remote: true, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if index.zero? && group_index.zero?}", data: { controller: 'pokemon-image-click', action: 'click->pokemon-image-click#addSelected' } do %>
+            <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.sprite.blob.filename, class: 'w-auto cursor-pointer rounded-lg mb-3 transform transition duration-500 hover:scale-110' %>
+          <% end %>
+        <% else %>
+          <%= tag.div class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full" do %>
+            <%= image_tag 'pokeball.webp', alt: 'pokeball', class: 'h-12 rounded-lg mb-3' %>
+          <% end %>
+        <% end %>
       <% end %>
-    </ul>
+    <% end %>
   </div>
+  <%= render 'users/pokemons/details', selected_pokemon: selected_pokemon, descendant: descendant %>
 </div>

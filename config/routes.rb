@@ -56,6 +56,8 @@ Rails.application.routes.draw do
   get :pokemons, to: 'users#pokemons', as: :pokemons
   get :readings, to: 'users#readings', as: :readings
 
+  post :pokemon_details, to: 'users#pokemon_details', as: :pokemon_details
+
   get :library, to: 'library#index'
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon

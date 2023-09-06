@@ -1,7 +1,40 @@
 # frozen_string_literal: true
 
 module DashboardHelper
+  TYPE_COLORS = {
+    'Звичайний' => 'bg-gray-400',
+    'Вогняний' => 'bg-red-500',
+    'Водяний' => 'bg-blue-500',
+    'Електричний' => 'bg-yellow-500',
+    "Трав'яний" => 'bg-green-500',
+    'Льодовий' => 'bg-blue-300',
+    'Бойовий' => 'bg-red-700',
+    'Отруйний' => 'bg-purple-500',
+    'Ґрунтовий' => 'bg-yellow-700',
+    'Повітряний' => 'bg-blue-400',
+    'Психічний' => 'bg-purple-400',
+    'Комашиний' => 'bg-yellow-600',
+    'Скельний' => 'bg-gray-600',
+    'Примарний' => 'bg-purple-300',
+    'Драконячий' => 'bg-indigo-600',
+  }
+
   def delete_permissions?(users, user)
     (users.size == 1 && users.first == user) || user.admin?
+  end
+
+  def experience_to_sentence(rate)
+    case rate
+    when 0
+      'Відсутній'
+    when 1..20
+      'Початківець'
+    when 21..50
+      'Вояк'
+    when 51..90
+      'Ветеран'
+    when 90..
+      'Незборний'
+    end
   end
 end

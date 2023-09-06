@@ -1,23 +1,31 @@
-<div class="w-full p-4 bg-white border border-2 border-dashed border-gray-300 rounded-lg shadow sm:p-8 col-span-7 md:col-span-8 lg:col-span-4 2xl:col-span-3">
-  <div class="flex items-center justify-between mb-3 mx-2">
-    <h5 class="text-base sm:text-xl font-bold leading-none text-gray-900">Pokédex Рейтинг</h5>
+<div class="col-span-12 lg:col-span-3 mt-4 sm:mt-0">
+  <div class="inline-flex items-center justify-between mb-3 mx-2">
+    <%= image_tag 'star.svg', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'stars' %>
+    <h5 class="text-xl font-bold leading-none text-gray-900">Рейтинг Тренерів</h5>
   </div>
-  <div class="flow-root overflow-y-auto max-h-[40rem]">
-    <ul role="list" class="divide-y divide-gray-200 divide-dashed">
-      <% dex_leaderboard.each_with_index do |user, i| %>
-        <li class="py-3 sm:py-4">
-          <div class="flex items-center space-x-4">
-            <div class="flex-shrink-0">
-              <%= image_tag url_for(user.avatar.image), alt: user.avatar.image.blob.filename, class: 'w-8 h-8 rounded-full' %>
-            </div>
-            <div class="flex-1 min-w-0">
-              <%= tag.p user.name, class: 'text-xs sm:text-sm font-medium text-gray-900 truncate' %>
-              <%= tag.p dex_title(i), class: 'text-xs sm:text-sm text-gray-500 truncate' %>
-            </div>
-            <%= tag.div user.unique_pokemon_count, class: 'inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600' %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+  <div class="flow-root py-3 px-4 border border-gray-200 rounded-lg shadow mt-2 overflow-y-auto max-h-[24rem] lg:max-h-[40rem] xl:max-h-[56rem] 2xl:max-h-[40rem]">
+    <% dex_leaderboard.each_with_index do |user, i| %>
+      <div class="flex items-center space-x-4 rounded-lg shadow p-2 mb-1 border border-gray-200">
+        <%= image_tag url_for(user.avatar.image), alt: user.avatar.image.blob.filename, class: 'w-10 h-10 rounded-full transform transition duration-500 hover:scale-110' %>
+        <div class="flex-1 min-w-0">
+          <%= tag.p class: 'truncate py-1' do %>
+            <%= tag.span i+1, class: 'text-xs sm:text-sm text-gray-900 font-light border rounded-full py-px px-2 mr-1' %>
+            <%= tag.span user.name, class: 'text-sm sm:text-base text-gray-900' %>
+          <% end %>
+          <%= tag.p dex_title(i), class: 'text-xs sm:text-sm text-gray-500 truncate font-light' %>
+        </div>
+        <div class="inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600">
+          <% if true %>
+            <%= button_to "#", disabled: true do %>
+              <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 filter grayscale', alt: 'battle call disabled' %>
+            <% end %>
+          <% else %>
+            <%= button_to "#" do %>
+              <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

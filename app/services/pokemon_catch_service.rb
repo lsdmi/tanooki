@@ -12,7 +12,6 @@ class PokemonCatchService
   def trap
     user_pokemon = find_or_create_user_pokemon
     update_user_pokemon(user_pokemon)
-    session[:pokemon_catch_permitted] = false
   end
 
   private

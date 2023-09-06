@@ -1,5 +1,5 @@
 <div class="sm:grid sm:grid-cols-12 sm:gap-4">
-  <%= render 'users/pokemons/list', pokemons: pokemons %>
+  <%= render 'users/pokemons/list', pokemons: pokemons, selected_pokemon: selected_pokemon, descendant: descendant %>
   <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: dex_leaderboard %>
-  <%= render 'users/pokemons/cta_placeholder', all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+  <%= render 'users/pokemons/battle_history' %>
 </div>

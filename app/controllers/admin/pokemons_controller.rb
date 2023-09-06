@@ -7,7 +7,7 @@ module Admin
     before_action :set_types, only: %i[new create edit update]
 
     def index
-      @pagy, @pokemons = pagy(Pokemon.includes(sprite_attachment: :blob).order(:name), items: 10)
+      @pagy, @pokemons = pagy(Pokemon.includes(sprite_attachment: :blob).order(:dex_id), items: 10)
     end
 
     def create
@@ -69,7 +69,7 @@ module Admin
 
     def pokemon_params
       params.require(:pokemon).permit(
-        :ancestor_id, :descendant_id, :descendant_level, :name, :power_level, :rarity, :sprite
+        :ancestor_id, :descendant_id, :descendant_level, :dex_id, :name, :power_level, :rarity, :sprite
       )
     end
 
