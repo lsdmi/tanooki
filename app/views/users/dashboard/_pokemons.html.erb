@@ -1,7 +1,7 @@
-<div id="section" class="p-4 mb-4 bg-gradient-to-b from-indigo-200 to-pink-200 rounded-lg shadow sm:p-4 xl:p-6">
+<div id="section" class="p-4 mb-4 bg-gradient-to-b from-indigo-200 to-pink-200 rounded-lg shadow sm:p-4 xl:p-6" data-controller="flowbite">
   <% if pokemons.any? %>
-    <%= render 'users/pokemons/data_screens', pokemons: pokemons, dex_leaderboard: dex_leaderboard, selected_pokemon: selected_pokemon, descendant: descendant %>
+    <%= render 'users/pokemons/data_screens', pokemons:, dex_leaderboard:, selected_pokemon:, descendant:, battle_history: %>
   <% else %>
-    <%= render 'users/pokemons/cta', all_pokemon_count: all_pokemon_count, all_caught_count: all_caught_count %>
+    <%= render 'users/pokemons/cta', all_pokemon_count:, all_caught_count: %>
   <% end %>
 </div>

@@ -20,16 +20,17 @@ class User < ApplicationRecord
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
+  has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id
+  has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id
 
   scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }
 
   scope :dex_leaders, lambda {
     joins(:user_pokemons)
-      .includes(avatar: { image_attachment: :blob })
-      .select('users.*, COUNT(DISTINCT user_pokemons.pokemon_id) AS unique_pokemon_count')
+      .includes([{ avatar: { image_attachment: :blob } }, :attacker_battle_logs, :defender_battle_logs])
       .group(:user_id)
-      .order('unique_pokemon_count DESC')
+      .order(battle_win_rate: :desc)
   }
 
   def send_devise_notification(notification, *args)
@@ -47,5 +48,14 @@ class User < ApplicationRecord
       name: data[:name][0, 20],
       password: Devise.friendly_token[0, 20]
     )
+  end
+
+  def battle_logs
+    attacker_battle_logs + defender_battle_logs
+  end
+
+  def battle_logs_includes_details
+    attacker_battle_logs.includes([:rich_text_details, :attacker, :defender, :winner]) +
+    defender_battle_logs.includes([:rich_text_details, :attacker, :defender, :winner])
   end
 end

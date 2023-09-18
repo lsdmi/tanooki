@@ -10,7 +10,9 @@
     <% elsif action_name.to_sym == :blogs %>
       <%= render 'users/dashboard/blogs', publications: @publications, pagy: @pagy %>
     <% else %>
-      <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count, selected_pokemon: @selected_pokemon, descendant: @descendant %>
+      <%= turbo_frame_tag "pokemons-screen" do %>
+        <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count, selected_pokemon: @selected_pokemon, descendant: @descendant, battle_history: @battle_history %>
+      <% end %>
     <% end %>
   </div>
 </div>

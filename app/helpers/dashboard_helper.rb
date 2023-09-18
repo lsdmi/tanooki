@@ -16,8 +16,8 @@ module DashboardHelper
     'Комашиний' => 'bg-yellow-600',
     'Скельний' => 'bg-gray-600',
     'Примарний' => 'bg-purple-300',
-    'Драконячий' => 'bg-indigo-600',
-  }
+    'Драконячий' => 'bg-indigo-600'
+  }.freeze
 
   def delete_permissions?(users, user)
     (users.size == 1 && users.first == user) || user.admin?
@@ -33,7 +33,7 @@ module DashboardHelper
       'Вояк'
     when 51..90
       'Ветеран'
-    when 90..
+    when 90..Float::INFINITY
       'Незборний'
     end
   end

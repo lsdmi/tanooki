@@ -19,6 +19,8 @@ class UserPokemon < ApplicationRecord
     prideful: 'Гордівливий'
   }
 
+  DEFAULT_TEAM_SIZE = 6
+
   FAILURE_MESSSAGE = 'У-упс, невдала спроба!'
   SUCCESS_MESSSAGE = 'Вітаємо, із оновленням у команді!'
 end

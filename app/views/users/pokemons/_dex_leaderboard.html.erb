@@ -12,15 +12,15 @@
             <%= tag.span i+1, class: 'text-xs sm:text-sm text-gray-900 font-light border rounded-full py-px px-2 mr-1' %>
             <%= tag.span user.name, class: 'text-sm sm:text-base text-gray-900' %>
           <% end %>
-          <%= tag.p dex_title(i), class: 'text-xs sm:text-sm text-gray-500 truncate font-light' %>
+          <%= tag.p dex_title(user.battle_win_rate), class: 'text-xs sm:text-sm text-gray-500 truncate font-light' %>
         </div>
         <div class="inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600">
-          <% if true %>
+          <% if cooldown?(User.find(current_user.id), user) %>
             <%= button_to "#", disabled: true do %>
               <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 filter grayscale', alt: 'battle call disabled' %>
             <% end %>
           <% else %>
-            <%= button_to "#" do %>
+            <%= button_to battle_start_path(defender: user), data: { turbo_stream: "", "turbo-method": :post }, remote: true do %>
               <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %>
             <% end %>
           <% end %>

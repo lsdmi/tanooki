@@ -23,7 +23,7 @@ class PokemonService
     last_seen = user&.user_pokemons&.maximum(:updated_at) || session[:pokemon_catch_last_seen]
 
     if last_seen < 365.days.ago then 1
-    elsif last_seen < 4.hours.ago then 0.04
+    elsif last_seen < 4.hours.ago then 0.05
     else
       0
     end

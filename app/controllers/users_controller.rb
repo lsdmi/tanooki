@@ -41,6 +41,7 @@ class UsersController < ApplicationController
       @all_caught_count = UserPokemon.count
     else
       @dex_leaderboard = User.dex_leaders
+      @battle_history = current_user.battle_logs_includes_details.sort_by { |log| -log.id }
     end
 
     render 'show'
@@ -58,7 +59,9 @@ class UsersController < ApplicationController
 
   def pokemon_details
     @selected_pokemon = UserPokemon.includes(:pokemon).find(params[:pokemon_id])
-    @descendant = @selected_pokemon.pokemon.descendant if @selected_pokemon.pokemon.descendant != @selected_pokemon.pokemon
+    if @selected_pokemon.pokemon.descendant != @selected_pokemon.pokemon
+      @descendant = @selected_pokemon.pokemon.descendant
+    end
 
     render turbo_stream: update_pokemon_details
   end
@@ -73,7 +76,9 @@ class UsersController < ApplicationController
 
   def update_pokemon_details
     turbo_stream.replace(
-      'pokemon-details', partial: 'users/pokemons/details', locals: { selected_pokemon: @selected_pokemon, descendant: @descendant }
+      'pokemon-details',
+      partial: 'users/pokemons/details',
+      locals: { selected_pokemon: @selected_pokemon, descendant: @descendant }
     )
   end
 

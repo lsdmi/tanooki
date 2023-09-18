@@ -61,4 +61,5 @@ Rails.application.routes.draw do
   get :library, to: 'library#index'
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
+  post :battle_start, to: 'pokemon_battles#start', as: :battle_start
 end

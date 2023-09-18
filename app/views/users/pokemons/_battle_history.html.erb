@@ -4,24 +4,53 @@
     <h5 class="text-xl font-bold leading-none text-gray-900">Літопис Сутичок</h5>
   </div>
   <div class="flow-root py-3 px-4 border border-gray-200 rounded-lg shadow mt-2 overflow-y-auto max-h-[24rem] lg:max-h-[40rem] xl:max-h-[56rem] 2xl:max-h-[40rem]">
-
-    <div class="flex items-center justify-between">
-      <div>
-          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-          <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-      </div>
-      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <% 15.times do %>
-      <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+    <% battle_history.each_with_index do |battle_log, index| %>
+      <div class="items-center space-x-4 rounded-lg shadow p-2 mb-1 border border-gray-200">
+        <div id="accordion-collapse-<%= index %>" data-accordion="collapse">
+          <h2 id="accordion-collapse-heading-<%= index %>">
+            <div class="grid grid-cols-3 gap-2 py-2 flex">
+              <div class="flex flex-col items-center">
+                <div class="relative flex flex-col items-center">
+                  <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+                </div>
+                <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900' %>
+                <% if battle_log.attacker == battle_log.winner %>
+                  <span class="text-sm text-gray-500 font-light">Перемога</span>
+                <% else %>
+                  <span class="text-sm text-gray-500 font-light">Поразка</span>
+                <% end %>
+              </div>
+              <div class="flex flex-col items-center">
+                <% if current_user == battle_log.winner %>
+                  <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
+                    <%= image_tag 'winner.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
+                  </button>
+                <% else %>
+                  <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
+                    <%= image_tag 'loser.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
+                  </button>
+                <% end %>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="relative flex flex-col items-center">
+                  <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+                </div>
+                <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900' %>
+                <% if battle_log.defender == battle_log.winner %>
+                  <span class="text-sm text-gray-500 font-light">Перемога</span>
+                <% else %>
+                  <span class="text-sm text-gray-500 font-light">Поразка</span>
+                <% end %>
+              </div>
+            </div>
+          </h2>
+          <div id="accordion-collapse-body-<%= index %>" class="hidden" aria-labelledby="accordion-collapse-heading-<%= index %>">
+            <div class="p-5 text-center">
+              <%= tag.p battle_log.details.body, class: 'mb-2 text-gray-600 whitespace-break-spaces font-light' %>
+            </div>
+          </div>
         </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
       </div>
     <% end %>
-    <span class="sr-only">Loading...</span>
-
   </div>
 </div>

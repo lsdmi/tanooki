@@ -17,7 +17,7 @@ class PokemonCatchService
   private
 
   def sample_character
-    UserPokemon::characters.to_a.sample.second
+    UserPokemon.characters.to_a.sample.second
   end
 
   def find_or_create_user_pokemon

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_06_212457) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_10_220339) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -131,6 +131,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_212457) do
     t.index ["name"], name: "index_genres_on_name"
   end
 
+  create_table "pokemon_battle_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "attacker_id", null: false
+    t.bigint "defender_id", null: false
+    t.bigint "winner_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attacker_id"], name: "index_pokemon_battle_logs_on_attacker_id"
+    t.index ["defender_id"], name: "index_pokemon_battle_logs_on_defender_id"
+    t.index ["winner_id"], name: "index_pokemon_battle_logs_on_winner_id"
+  end
+
   create_table "pokemon_type_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "pokemon_id", null: false
     t.bigint "pokemon_type_id", null: false
@@ -232,6 +243,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_212457) do
     t.string "name", null: false
     t.boolean "admin", default: false
     t.bigint "avatar_id"
+    t.integer "battle_win_rate", default: 50
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -279,6 +291,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_212457) do
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
+  add_foreign_key "pokemon_battle_logs", "users", column: "attacker_id"
+  add_foreign_key "pokemon_battle_logs", "users", column: "defender_id"
+  add_foreign_key "pokemon_battle_logs", "users", column: "winner_id"
   add_foreign_key "pokemon_type_relations", "pokemon_types"
   add_foreign_key "pokemon_type_relations", "pokemons"
   add_foreign_key "pokemons", "pokemons", column: "ancestor_id"
