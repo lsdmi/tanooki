@@ -3,6 +3,7 @@
 class UserPokemonsController < ApplicationController
   def create
     if pokemon_catch_permitted?
+      current_user.update(pokemon_last_catch: Time.now)
       PokemonCatchService.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
         user_id: user_pokemon_params[:user_id],
@@ -17,9 +18,7 @@ class UserPokemonsController < ApplicationController
   private
 
   def pokemon_catch_permitted?
-    return true if current_user.nil?
-
-    current_user.user_pokemons.maximum(:updated_at) < 4.hours.ago
+    current_user.pokemon_last_catch < 4.hours.ago
   end
 
   def remove_pokemon
