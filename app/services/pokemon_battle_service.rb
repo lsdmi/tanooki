@@ -33,19 +33,13 @@ class PokemonBattleService
     @battle_log
   end
 
-  def winner_id
-    @winner_id
-  end
-
-  def loser_id
-    @loser_id
-  end
-
   def start_battle
     append_log(
       ActionController::Base.helpers.sanitize(
-        "<div class='mb-4 font-light inline-block'>Вітаємо вас на Арені, шанові глядачі! Сьогодні ми станемо свідками неймовірного " \
-        "протистояння між <span class='font-bold'>#{attacker_username}</span> та <span class='font-bold'>#{defender_username}</span>!</div>" \
+        "<div class='mb-4 font-light inline-block'>Вітаємо вас на Арені, шанові глядачі! Сьогодні " \
+        " ми станемо свідками неймовірного " \
+        "протистояння між <span class='font-bold'>#{attacker_username}</span> та " \
+        "<span class='font-bold'>#{defender_username}</span>!</div>" \
       )
     )
 
@@ -83,7 +77,9 @@ class PokemonBattleService
               <div class='mb-4 grid grid-cols-3 gap-2'>
                 <div class='flex flex-col items-center justify-center text-center'>
                   <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                    <img src='#{url_for(attacker.pokemon.sprite)}' alt='#{attacker.pokemon.sprite.blob.filename}' class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
+                    <img src='#{url_for(attacker.pokemon.sprite)}'
+                          alt='#{attacker.pokemon.sprite.blob.filename}'
+                          class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
                   </div>
                 </div>
 
@@ -93,7 +89,9 @@ class PokemonBattleService
 
                 <div class='flex flex-col items-center justify-center text-center'>
                   <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                  <img src='#{url_for(defender.pokemon.sprite)}' alt='#{defender.pokemon.sprite.blob.filename}' class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
+                  <img src='#{url_for(defender.pokemon.sprite)}'
+                        alt='#{defender.pokemon.sprite.blob.filename}'
+                        class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
                   </div>
                 </div>
               </div>
@@ -116,7 +114,9 @@ class PokemonBattleService
               <div class='mb-4 grid grid-cols-3 gap-2'>
                 <div class='flex flex-col items-center justify-center text-center'>
                   <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                    <img src='#{url_for(attacker.pokemon.sprite)}' alt='#{attacker.pokemon.sprite.blob.filename}' class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
+                    <img src='#{url_for(attacker.pokemon.sprite)}'
+                          alt='#{attacker.pokemon.sprite.blob.filename}'
+                          class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
                   </div>
                 </div>
 
@@ -126,7 +126,9 @@ class PokemonBattleService
 
                 <div class='flex flex-col items-center justify-center text-center'>
                   <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                  <img src='#{url_for(defender.pokemon.sprite)}' alt='#{defender.pokemon.sprite.blob.filename}' class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
+                  <img src='#{url_for(defender.pokemon.sprite)}'
+                        alt='#{defender.pokemon.sprite.blob.filename}'
+                        class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
                   </div>
                 </div>
               </div>

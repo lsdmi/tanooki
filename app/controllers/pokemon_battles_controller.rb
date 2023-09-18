@@ -14,7 +14,8 @@ class PokemonBattlesController < ApplicationController
         details: battle_service.fight_details
       )
 
-      experience_distributor = PokemonExperienceDistributor.new(winner_id: battle_service.winner_id, loser_id: battle_service.loser_id)
+      experience_distributor = PokemonExperienceDistributor.new(winner_id: battle_service.winner_id,
+                                                                loser_id: battle_service.loser_id)
       experience_distributor.refresh
 
       render turbo_stream: refresh_screen
@@ -38,15 +39,16 @@ class PokemonBattlesController < ApplicationController
 
   def possible_fraud?
     (current_user.id == defender.id) ||
-    (current_user.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago ||
-    (defender.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago
+      (current_user.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago ||
+      (defender.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago
   end
 
   def refresh_screen
     turbo_stream.update(
       'pokemons-screen',
       partial: 'users/dashboard/pokemons',
-      locals: { pokemons:, dex_leaderboard:, all_pokemon_count:, all_caught_count:, selected_pokemon:, descendant:, battle_history: }
+      locals: { pokemons:, dex_leaderboard:, all_pokemon_count:, all_caught_count:, selected_pokemon:, descendant:,
+                battle_history: }
     )
   end
 
