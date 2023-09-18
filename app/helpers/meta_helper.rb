@@ -95,7 +95,7 @@ module MetaHelper
   end
 
   def fiction_description
-    if @fiction.translator.present?
+    if @fiction.translator?
       "Читати ранобе \"#{@fiction.title}\" у перекладі команди \"#{@fiction.translator}\"."
     else
       "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."

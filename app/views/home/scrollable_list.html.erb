@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "publications-page-#{@pagy.page}" do %>
   <%= render "home/publications", publications: @publications %>
-  <%= render partial: "next_page", locals: { pagy: @pagy } %>
+  <%= render "next_page", pagy: @pagy %>
 <% end %>

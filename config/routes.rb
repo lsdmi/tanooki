@@ -27,9 +27,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
-    resources :genres, except: :new
+    resources :genres, except: %i[new show]
     resources :pokemons, except: :show
-    resources :tags, except: :new
+    resources :tags, except: %i[new show]
     resources :tales, only: :index
   end
 

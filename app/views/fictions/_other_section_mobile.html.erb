@@ -2,7 +2,7 @@
   <% placeholder_mobile = true %>
   <div class="my-2"></div>
   <%= render 'shared/divider', caption: 'Цідило теґів', rose: false %>
-  <%= render 'filters' %>
+  <%= render 'filters', genres: genres, sample_genre: sample_genre %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
     <% other.in_groups_of(4).each do |group| %>
       <% group.each_with_index do |fiction, index| %>

@@ -4,7 +4,7 @@
       <div class="md:col-span-2 hidden md:block">
         <%= image_tag url_for(@fiction.cover), class: 'hidden mx-auto md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
       </div>
-      <%= render 'details' %>
+      <%= render 'details', fiction: @fiction %>
       <div class="col-span-5 hidden lg:grid">
         <%= render 'comments/index' %>
       </div>

@@ -8,7 +8,7 @@
           <div class="relative float-left w-full">
             <ul class="relative float-left w-full list-none mx-[0.1rem] xl:ml-0">
               <%= render "home/publications", publications: @publications %>
-              <%= render partial: "next_page", locals: { pagy: @pagy } %>
+              <%= render "next_page", pagy: @pagy %>
             </ul>
           </div>
         </main>

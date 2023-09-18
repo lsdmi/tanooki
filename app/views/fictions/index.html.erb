@@ -1,7 +1,7 @@
 <div class="w-full float-left pb-14 z-10 font-oswald mt-6">
   <div class="w-full relative float-left">
-    <%= render 'index_desktop' %>
-    <%= render 'index_mobile' %>
-    <%= render 'other_section', other: @other if @other.any? %>
+    <%= render 'index_desktop', latest_updates: @latest_updates, hero_ad: @hero_ad, hot_updates: @hot_updates %>
+    <%= render 'index_mobile', latest_updates: @latest_updates, hero_ad: @hero_ad, popular_fictions: @popular_fictions, most_reads: @most_reads, hot_updates: @hot_updates %>
+    <%= render 'other_section', other: @other, genres: @genres, sample_genre: @sample_genre if @other.any? %>
   </div>
 </div>

@@ -19,7 +19,9 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       power_level: @pokemon.power_level,
       rarity: @pokemon.rarity,
       ancestor_id: @pokemon.ancestor_id,
-      descendant_level: 0
+      descendant_id: 1,
+      descendant_level: 0,
+      dex_id: 1
     }
   end
 

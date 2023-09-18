@@ -1,5 +1,5 @@
 <%= turbo_stream.append "others" do %>
-  <%= render partial: "youtube_video", collection: @other %>
+  <%= render @other_youtube_videos %>
 <% end %>
 
 <%= turbo_stream.update "next_link" do %>

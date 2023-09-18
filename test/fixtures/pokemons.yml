@@ -1,8 +1,22 @@
 one:
   id: 1
   slug: 'one'
-  name: "First"
+  name: 'First'
+  power_level: 4
+  rarity: 1
+  ancestor_id: 1
+  descendant_id: 2
+  descendant_level: 16
+  dex_id: 1
+
+two:
+  id: 2
+  slug: 'two'
+  name: 'Second'
   power_level: 1
   rarity: 1
   ancestor_id: 1
+  descendant_id: 2
   descendant_level: 0
+  dex_id: 2
+

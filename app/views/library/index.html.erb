@@ -19,7 +19,7 @@
   </div>
   <% if @history.any? %>
     <div id="section" class="p-4 my-4 bg-white rounded-lg shadow sm:p-4 xl:p-6 grid 2xl:grid-cols-2">
-      <%= render partial: 'reading', collection: @history %>
+      <%= render @history %>
     </div>
   <% else %>
     <div id="section" class="p-4 my-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">

@@ -16,7 +16,7 @@ module Users
       post :create, params: { user: { email: @user.email, password: @user.password } }
 
       assert_response :ok
-      assert_equal 0, UserPokemon.where(user_id: @user.id).count
+      assert_equal 1, UserPokemon.where(user_id: @user.id).count
     end
   end
 end
@@ -28,7 +28,7 @@ module Users
     setup do
       @user = users(:user_one)
       @controller = Users::SessionsController.new
-      @session = { pokemon_guest_caught: true, caught_pokemon_id: 1 }
+      @session = { pokemon_guest_caught: true, caught_pokemon_id: 2 }
     end
 
     test 'should create user pokemon and update turbo streams' do

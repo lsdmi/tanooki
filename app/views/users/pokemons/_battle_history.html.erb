@@ -13,7 +13,7 @@
                 <div class="relative flex flex-col items-center">
                   <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
                 </div>
-                <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900' %>
+                <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
                 <% if battle_log.attacker == battle_log.winner %>
                   <span class="text-sm text-gray-500 font-light">Перемога</span>
                 <% else %>
@@ -35,7 +35,7 @@
                 <div class="relative flex flex-col items-center">
                   <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
                 </div>
-                <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900' %>
+                <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
                 <% if battle_log.defender == battle_log.winner %>
                   <span class="text-sm text-gray-500 font-light">Перемога</span>
                 <% else %>

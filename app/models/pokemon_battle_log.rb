@@ -7,5 +7,6 @@ class PokemonBattleLog < ApplicationRecord
 
   has_rich_text :details
 
-  POTENTIAL_FRAUD_ALERT = 'Ця сутичка наразі неможлива. Спробуйте пізніше чи оберіть іншого опонента.'.freeze
+  POTENTIAL_FRAUD_ALERT = 'Ця сутичка наразі неможлива. Спробуйте пізніше чи оберіть іншого опонента.'
+  RECENT_BATTLE = 4.hours.ago
 end

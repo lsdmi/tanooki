@@ -1,0 +1,15 @@
+one:
+  id: 1
+  pokemon_id: 1
+  user_id: 1
+  current_level: 1
+  battle_experience: 1
+  character: 'Таланистий'
+
+two:
+  id: 2
+  pokemon_id: 1
+  user_id: 2
+  current_level: 1
+  battle_experience: 1
+  character: 'Меткий'

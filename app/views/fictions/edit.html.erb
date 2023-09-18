@@ -2,7 +2,7 @@
   <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
     <h2 class="mb-4 text-xl font-semibold leading-none text-gray-900">Оновити Роботу</h2>
     <%= simple_form_for @fiction, as: :fiction, url: fiction_path(@fiction), method: :put, html: { class: "form" }, data: { turbo: false } do |f| %>
-      <%= render 'form', fiction: @fiction, f: f %>
+      <%= render 'form', fiction: @fiction, f: f, genres: @genres %>
     <% end %>
   </div>
 </section>

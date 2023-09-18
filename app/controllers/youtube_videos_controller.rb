@@ -8,7 +8,7 @@ class YoutubeVideosController < ApplicationController
     @highlights = highlights
     @popular = popular
     @latest = latest
-    @pagy, @other = pagy_countless(other, items: 12)
+    @pagy, @other_youtube_videos = pagy_countless(other, items: 12)
 
     respond_to do |format|
       format.html

@@ -24,6 +24,6 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:popular)
     assert_not_nil assigns(:latest)
     assert_not_nil assigns(:pagy)
-    assert_not_nil assigns(:other)
+    assert_not_nil assigns(:other_youtube_videos)
   end
 end

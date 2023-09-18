@@ -79,7 +79,7 @@ module Users
     setup do
       @user = users(:user_one)
       @controller = Users::OmniauthCallbacksController.new
-      @session = { pokemon_guest_caught: true, caught_pokemon_id: 1 }
+      @session = { pokemon_guest_caught: true, caught_pokemon_id: 2 }
       @request = ActionController::TestRequest.new({}, nil, :get)
       @request.flash = { notice: 'My Notice' }
     end

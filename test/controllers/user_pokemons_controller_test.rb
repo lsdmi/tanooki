@@ -6,7 +6,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   include Warden::Test::Helpers
 
   setup do
-    @pokemon_params = { user_pokemon: { pokemon_id: 1, user_id: 1 } }
+    @pokemon_params = { user_pokemon: { pokemon_id: 2, user_id: 1 } }
     @user = users(:user_one)
     login_as(@user, scope: :user)
   end
