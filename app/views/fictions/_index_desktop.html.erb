@@ -7,14 +7,14 @@
       <% end %>
     </div>
   </div>
-  <%= link_to hero_ad.resource, class: 'relative overflow-hidden h-0', aria: { label: hero_ad.cover.blob.filename } do %>
+  <%= link_to hero_ad.resource, class: 'relative overflow-hidden h-auto', aria: { label: hero_ad.cover.blob.filename } do %>
     <%= video_tag url_for(hero_ad.cover),
                   alt: hero_ad.cover.blob.filename.to_s,
                   autoplay: true,
                   class: 'mt-5 top-0 left-0 w-[96%] h-full rounded-lg',
                   loop: true,
                   muted: true,
-                  onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto'); this.classList.remove('opacity-0'); this.classList.add('opacity-100');",
+                  playsinline: true,
                   poster: url_for(hero_ad.poster) %>
   <% end if hero_ad.present? %>
   <div class="grid grid-cols-3 gap-4 mt-4 w-[96%]">

@@ -46,7 +46,7 @@ module MetaHelper
                    else meta_cover
                    end
 
-    url_for(result_cover || asset_path('login.jpg'))
+    url_for(result_cover || asset_path('login.jpeg'))
   end
 
   def meta_title

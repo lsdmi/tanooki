@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 class PokemonBattlesController < ApplicationController
-  before_action :defender, :battle_service, only: :start
-
   def start
     if possible_fraud?
-      redirect_to pokemons_path, alert: PokemonBattleLog::POTENTIAL_FRAUD_ALERT
+      render turbo_stream: refresh_error_screen
     else
       battle_service.start_battle
       create_battle_log
@@ -30,7 +28,7 @@ class PokemonBattlesController < ApplicationController
   def battle_service
     @battle_service ||= PokemonBattleService.new(
       attacker_pokemons: current_user.user_pokemons,
-      defender_pokemons: @defender.user_pokemons,
+      defender_pokemons: defender.user_pokemons,
       attacker_id: current_user.id,
       defender_id: params[:defender]
     )
@@ -50,11 +48,11 @@ class PokemonBattlesController < ApplicationController
   end
 
   def defender
-    @defender ||= User.find(params[:defender])
+    User.find(params[:defender])
   end
 
   def defender_last_battle
-    @defender.battle_logs.maximum(:updated_at) || 1.year.ago
+    defender.battle_logs.maximum(:updated_at) || 1.year.ago
   end
 
   def descendant
@@ -70,11 +68,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def possible_fraud?
-    self_fight || user_last_battle > recent_battle || defender_last_battle > recent_battle
-  end
-
-  def recent_battle
-    PokemonBattleLog::RECENT_BATTLE
+    self_fight || user_last_battle > 4.hours.ago || defender_last_battle > 4.hours.ago
   end
 
   def refresh_screen
@@ -86,12 +80,20 @@ class PokemonBattlesController < ApplicationController
     )
   end
 
+  def refresh_error_screen
+    turbo_stream.update(
+      'application-alert',
+      partial: 'shared/alert',
+      locals: { alert: PokemonBattleLog::POTENTIAL_FRAUD_ALERT }
+    )
+  end
+
   def selected_pokemon
     pokemons.first
   end
 
   def self_fight
-    current_user.id == @defender.id
+    current_user.id == defender.id
   end
 
   def user_last_battle

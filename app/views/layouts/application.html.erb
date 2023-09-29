@@ -36,7 +36,9 @@
       <%= turbo_frame_tag 'application-notice' do %>
         <%= render "shared/notice" if notice %>
       <% end %>
-      <%= render "shared/alert" if alert %>
+      <%= turbo_frame_tag "application-alert" do %>
+        <%= render "shared/alert" if alert %>
+      <% end %>
       <%= render 'hero_section', highlights: @highlights, most_popular: @most_popular, newest: @newest if current_page?(root_path) %>
       <main>
         <%= yield %>

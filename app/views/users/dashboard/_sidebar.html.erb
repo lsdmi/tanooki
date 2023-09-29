@@ -4,9 +4,9 @@
       <a class="flex justify-between items-center p-2 mb-5 w-full rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200" type="button">
         <div class="flex items-center">
           <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'mr-3 w-8 h-8 rounded-full' %>
-          <div class="text-left">
+          <div class="text-left overflow-hidden">
             <%= tag.div current_user.name, class: 'font-semibold leading-none text-gray-900 my-1' %>
-            <%= tag.div current_user.email, class: 'text-sm text-gray-500' %>
+            <%= tag.div current_user.email, class: 'text-sm text-gray-500 mr-1 overflow-hidden text-ellipsis' %>
           </div>
         </div>
       </a>

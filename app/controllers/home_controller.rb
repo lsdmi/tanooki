@@ -9,7 +9,6 @@ class HomeController < ApplicationController
     @newest = newest
     @pagy, @publications = pagy_countless(remaining, items: 5)
     @videos = videos
-    @hero_fictions_ad = Advertisement.find_by(slug: 'home-index-fictions-hero-ad')
 
     render 'scrollable_list' if params[:page]
   end

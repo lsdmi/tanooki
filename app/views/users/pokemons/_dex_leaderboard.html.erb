@@ -14,14 +14,12 @@
           <% end %>
           <%= tag.p dex_title(user.battle_win_rate), class: 'text-xs sm:text-sm text-gray-500 truncate font-light' %>
         </div>
-        <div class="inline-flex items-center text-xs sm:text-sm font-semibold text-gray-600">
+        <div class="flex flex-col items-center text-xs sm:text-sm font-semibold text-gray-600">
           <% if cooldown?(User.find(current_user.id), user) %>
-            <%= button_to "#", disabled: true, data: { "tooltip-target": "tooltip-battle-#{user.id}" } do %>
-              <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 filter grayscale', alt: 'battle call disabled' %>
-            <% end %>
-            <%= tag.div id: "tooltip-battle-#{user.id}", role: 'tooltip', class: 'absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip' do %>
-              <%= reason_for_cooldown(User.find(current_user.id), user) %>
-              <div class="tooltip-arrow" data-popper-arrow></div>
+            <% reason = reason_for_cooldown(User.find(current_user.id), user) %>
+            <%= image_tag 'timer.svg', class: 'h-8 md:h-9 lg:h-10 transform transition duration-500 hover:scale-110', alt: 'timer' %>
+            <% if reason.present? %>
+              <%= tag.p reason, class: 'text-xs text-gray-500 truncate font-light mx-px mt-1' %>
             <% end %>
           <% else %>
             <%= button_to battle_start_path(defender: user), data: { turbo_stream: "", "turbo-method": :post }, remote: true do %>

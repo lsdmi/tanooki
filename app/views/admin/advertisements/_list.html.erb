@@ -9,7 +9,7 @@
     <% next unless ad.present? %>
     <article class="pt-4 pl-10">
       <% ad.resource = edit_admin_advertisement_path(ad) %>
-      <%= render 'shared/ads', advertisement: ad %>
+      <%= render 'advertisement', advertisement: ad %>
     </article>
   <% end %>
 </div>
