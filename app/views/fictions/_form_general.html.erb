@@ -1,3 +1,4 @@
+<%= f.input :status, as: :hidden, input_html: { value: Fiction.statuses[:announced] } %>
 <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
 
 <div class="py-4 border-gray-200 sm:py-5">
@@ -10,8 +11,9 @@
           <%= tag.p fiction.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:title].any? %>
         </div>
         <div class="w-full">
-          <%= f.label :genre_ids, 'Жанри', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+          <%= f.label :total_chapters, 'Кількість розділів', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :total_chapters, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:total_chapters].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p fiction.errors[:total_chapters].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:total_chapters].any? %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
@@ -40,13 +42,8 @@
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
-          <%= f.label :total_chapters, 'Кількість розділів', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :total_chapters, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:total_chapters].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
-          <%= tag.p fiction.errors[:total_chapters].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:total_chapters].any? %>
-        </div>
-        <div class="w-full">
-          <%= f.label :status, 'Статус перекладу', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :status, options_for_select(Fiction.statuses.map { |key, value| [value, key] }), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
+          <%= f.label :genre_ids, 'Жанри', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
         </div>
       </div>
     </div>

@@ -62,6 +62,12 @@ class Fiction < ApplicationRecord
     errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
   end
 
+  def set_dropped_status
+    return if finished? || chapters.maximum(:created_at).nil? || (Time.now - chapters.maximum(:created_at)) < 90.days
+
+    update(status: Fiction.statuses[:dropped])
+  end
+
   def telegram_fiction_path
     Rails.application.routes.url_helpers.fiction_url(self, host: ApplicationHelper::PRODUCTION_URL)
   end

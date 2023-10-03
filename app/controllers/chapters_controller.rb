@@ -23,6 +23,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
+      update_fiction_status
       redirect_to readings_path, notice: 'Розділ додано.'
     else
       render 'chapters/new', status: :unprocessable_entity
@@ -48,6 +49,17 @@ class ChaptersController < ApplicationController
   end
 
   private
+
+  def new_fiction_status(current_status, total_chapters, actual_chapters)
+    case Fiction.statuses[current_status]
+    when Fiction.statuses[:announced], Fiction.statuses[:dropped]
+      actual_chapters.size >= total_chapters ? Fiction.statuses[:finished] : Fiction.statuses[:ongoing]
+    when Fiction.statuses[:ongoing]
+      actual_chapters.size >= total_chapters ? Fiction.statuses[:finished] : current_status
+    else
+      current_status
+    end
+  end
 
   def more_from_author
     Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
@@ -101,5 +113,14 @@ class ChaptersController < ApplicationController
 
   def verify_permissions
     redirect_to root_path unless current_user.admin? || current_user.chapters.include?(@chapter)
+  end
+
+  def update_fiction_status
+    new_status = new_fiction_status(
+      @chapter.fiction.status,
+      @chapter.fiction.total_chapters,
+      unique_chapters(@chapter.fiction.chapters)
+    )
+    @chapter.fiction.update(status: new_status)
   end
 end
