@@ -29,11 +29,11 @@ class YoutubeVideosController < ApplicationController
   end
 
   def popular
-    base_query.excluding(@highlights).last_month.order(views: :desc).first(9)
+    base_query.excluding(@highlights).last_month.order(views: :desc).first(3)
   end
 
   def latest
-    base_query.excluding(@highlights, @popular).order(published_at: :desc).first(7)
+    base_query.excluding(@highlights, @popular).order(published_at: :desc).first(3)
   end
 
   def other
@@ -45,9 +45,15 @@ class YoutubeVideosController < ApplicationController
   end
 
   def more_videos
-    YoutubeVideo.includes(:youtube_channel)
+    videos = YoutubeVideo.includes(:youtube_channel)
                 .where(youtube_channel_id: @youtube_video.youtube_channel_id)
-                .excluding(@youtube_video).order(published_at: :desc).first(4)
+                .excluding(@youtube_video).order(published_at: :desc)
+
+    return videos.first(4) if videos.size > 3
+
+    (
+      videos.to_a + YoutubeVideo.includes(:youtube_channel).order(published_at: :desc).first(8)
+    ).excluding(videos, @youtube_video).uniq.first(4)
   end
 
   def set_video

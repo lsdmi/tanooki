@@ -1,5 +1,5 @@
 <% main_highlight = highlights.first %>
-<div class="py-2 lg:mb-3 lg:border-b border-gray-300">
+<div class="py-2 lg:mb-3 lg:border-b border-gray-300 hidden lg:block">
   <div class="mb-1 mb-2 leading-none relative">
     <%= link_to youtube_video_path(main_highlight) do %>
       <%= image_tag url_for(main_highlight.thumbnail), alt: main_highlight.title, class: "rounded-md opacity-80 m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-72 mt-4 md:object-cover lg:object-fill", loading: 'eager' %>
@@ -16,8 +16,11 @@
     <%= tag.span punch(main_highlight.description.to_s), class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-2 mt-2 lg:mt-1 lg:leading-6' %>
   </div>
 </div>
+<div class="relative float-left w-full mt-0 lg:hidden">
+  <%= render partial: "side_video", collection: [main_highlight] %>
+</div>
 <% highlights.excluding(main_highlight).each do |highlight| %>
-  <div class="float-right relative w-full mb-2">
+  <div class="float-right relative w-full mb-2 hidden lg:block">
     <div class="relative md:float-left leading-none overflow-hidden w-full lg:w-56 mr-3">
       <%= link_to youtube_video_path(highlight) do %>
         <%= image_tag url_for(highlight.thumbnail), alt: highlight.title, class: "w-full rounded-md max-h-96 lg:h-32 md:object-cover lg:object-fill" %>
@@ -43,3 +46,6 @@
     </div>
   </div>
 <% end %>
+<div class="relative float-left w-full mt-0 lg:hidden">
+  <%= render partial: "side_video", collection: highlights.excluding(main_highlight) %>
+</div>

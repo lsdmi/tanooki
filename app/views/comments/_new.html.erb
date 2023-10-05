@@ -17,7 +17,7 @@
 
     <div class="relative flex justify-between items-center py-2 px-3 border-t <%= fictions? ? '' : 'border-rose-200' %> bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
       <%= tag.div class: "absolute inset-0 bg-white opacity-90 #{'dark:bg-gray-800' if comments_dark_mode?}" %>
-      <%= f.submit 'Надіслати', class: "z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-light #{ fictions? ? 'bg-emerald-700 hover:bg-emerald-900' : 'bg-rose-500 hover:bg-rose-600' } rounded-lg transition ease-in-out m-0 hover:cursor-pointer" %>
+      <%= f.submit 'Надіслати', class: "z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-light #{ fictions? ? 'bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br shadow-lg shadow-teal-500/50' : 'bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br shadow-lg shadow-pink-500/50' } rounded-lg transition ease-in-out m-0 hover:cursor-pointer" %>
       <% if comment.persisted? %>
         <%= link_to "Скасувати",
                     cancel_edit_comment_path(comment),

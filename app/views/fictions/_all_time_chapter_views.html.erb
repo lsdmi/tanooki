@@ -1,5 +1,5 @@
 <div class="">
-  <%= render 'shared/divider', caption: 'Читачі рекомендують', rose: false %>
+  <%= render 'shared/divider_shiny_green', caption: 'Читачі рекомендують' %>
   <div class="relative float-left w-full mt-0">
     <% @most_reads.each_with_index do |fiction, i| %>
       <%= render 'top_list', fiction: fiction, i: i %>

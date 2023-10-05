@@ -1,6 +1,6 @@
 <div class="w-full relative mb-8">
   <div class="mt-2 w-full relative">
-    <%= render 'shared/divider', caption: 'Інші Новини', rose: true %>
+    <%= render 'shared/divider_shiny_pink', caption: 'Інші Новини' %>
     <ul class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-4 list-none w-full">
       <% more_tales.each do |tale| %>
         <%= link_to tale_path(tale) do %>

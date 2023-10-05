@@ -14,7 +14,7 @@
                   playsinline: true,
                   poster: url_for(hero_ad.poster) %>
   <% end if hero_ad.present? %>
-  <%= render 'shared/divider', caption: 'Популярні Твори', rose: false %>
+  <%= render 'shared/divider_shiny_green', caption: 'Популярні Твори' %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
     <% popular_fictions.limit(4).each do |fiction| %>
       <%= render 'mobile_fiction', fiction: fiction %>
@@ -22,7 +22,7 @@
   </div>
 
   <div class="my-2"></div>
-  <%= render 'shared/divider', caption: 'Читачі рекомендують', rose: false %>
+  <%= render 'shared/divider_shiny_green', caption: 'Читачі рекомендують' %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
     <% most_reads.limit(4).each do |fiction| %>
       <%= render 'mobile_fiction', fiction: fiction %>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="my-2"></div>
-  <%= render 'shared/divider', caption: 'Гарячі новинки', rose: false %>
+  <%= render 'shared/divider_shiny_green', caption: 'Гарячі новинки' %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
     <% hot_updates.limit(4).each do |fiction| %>
       <%= render 'mobile_fiction', fiction: fiction %>

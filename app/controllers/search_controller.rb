@@ -8,9 +8,10 @@ class SearchController < ApplicationController
 
     @results = publications
     @fictions = fictions
+    @videos = videos
 
     @tag = Tag.find_by(name: params[:search])
-    @tag ? set_tag_logic : set_search_logic
+    set_tag_logic if @tag
   end
 
   private
@@ -60,7 +61,14 @@ class SearchController < ApplicationController
     end
   end
 
-  def set_search_logic
-    @videos = videos
+  def videos
+    if Searchkick.client.ping
+      YoutubeVideo.search(
+        params[:search],
+        fields: ['title^2', 'description', 'tags']
+      ).includes(:rich_text_description, :youtube_channel)
+    else
+      SearchService.videos(params[:search])
+    end
   end
 end

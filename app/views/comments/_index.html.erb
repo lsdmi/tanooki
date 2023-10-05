@@ -1,6 +1,10 @@
 <div class="w-full relative mt-4 sm:pb-8">
   <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-2' %>">
-    <%= render 'shared/divider', caption: fictions? ? 'Відгуки' : 'Коментарі', rose: fictions? ? false : true  %>
+    <% if fictions? %>
+      <%= render 'shared/divider_shiny_green', caption: 'Відгуки'  %>
+    <% else %>
+      <%= render 'shared/divider_shiny_pink', caption: 'Коментарі'  %>
+    <% end %>
   </div>
   <% if current_user || @comments.any? %>
     <%= turbo_frame_tag "new_comment" do %>
