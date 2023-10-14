@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     @pagy, @publications = pagy_countless(remaining, items: 5)
     @videos = videos
 
-    render 'scrollable_list' if params[:page]
+    render 'home/scrollable_list' if params[:page]
   end
 
   private

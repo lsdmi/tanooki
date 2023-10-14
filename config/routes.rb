@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :fictions
   resources :publications, except: %i[index show]
   resources :search, only: :index
-  resources :tales, only: :show
+  resources :tales, only: %i[index show]
   resources :users, only: :update
   resources :youtube_videos, path: 'watch', only: %i[index show] do
     collection do

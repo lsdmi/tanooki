@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
 class TalesController < ApplicationController
-  before_action :set_tale, :track_visit
-  before_action :load_advertisement, only: :show
+  before_action :set_tale, :track_visit, only: :show
+  before_action :load_advertisement, only: %i[index show]
+
+  def index
+    @highlights = highlights
+    @most_popular = most_popular
+    @newest = newest
+    @pagy, @publications = pagy_countless(remaining, items: 5)
+    @videos = videos
+
+    render 'home/scrollable_list' if params[:page]
+  end
 
   def show
     @more_tales = more_tails
@@ -36,5 +46,25 @@ class TalesController < ApplicationController
     @publication = @commentable = Rails.cache.fetch("publication_#{params[:id]}", expires_in: 1.hour) do
       Tale.find(params[:id])
     end
+  end
+
+  def highlights
+    Publication.highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
+               .order(created_at: :desc).first(3)
+  end
+
+  def most_popular
+    Publication.includes({ cover_attachment: :blob })
+               .last_month.excluding(@highlights).order(views: :desc).limit(5)
+  end
+
+  def newest
+    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
+               .order(created_at: :desc).excluding(@highlights, @most_popular).limit(10)
+  end
+
+  def remaining
+    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
+               .order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
   end
 end

@@ -10,6 +10,11 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller = TalesController.new
   end
 
+  test 'should get index' do
+    get tales_url
+    assert_response :success
+  end
+
   test 'should get show' do
     Publication.stub :search, Publication.all do
       get tale_url(@tale)

@@ -56,7 +56,7 @@ class MetaHelperTest < ActionView::TestCase
   test 'meta_image returns expected URL for search controller without results' do
     @results = []
     request.path = search_index_path
-    assert_equal asset_path('login.jpg'), meta_image
+    assert_equal asset_path('login.jpeg'), meta_image
   end
 
   test 'meta_image returns expected URL for other controllers with publication' do
@@ -68,7 +68,7 @@ class MetaHelperTest < ActionView::TestCase
     request.path = search_index_path
     @results = []
     @publication = nil
-    assert_equal asset_path('login.jpg'), meta_image
+    assert_equal asset_path('login.jpeg'), meta_image
   end
 
   test 'meta_type returns website for root and search pages' do
