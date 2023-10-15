@@ -46,8 +46,8 @@ class YoutubeVideosController < ApplicationController
 
   def more_videos
     videos = YoutubeVideo.includes(:youtube_channel)
-                .where(youtube_channel_id: @youtube_video.youtube_channel_id)
-                .excluding(@youtube_video).order(published_at: :desc)
+                         .where(youtube_channel_id: @youtube_video.youtube_channel_id)
+                         .excluding(@youtube_video).order(published_at: :desc)
 
     return videos.first(4) if videos.size > 3
 

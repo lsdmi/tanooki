@@ -4,50 +4,66 @@
     <h5 class="text-xl font-bold leading-none text-gray-900">Літопис Сутичок</h5>
   </div>
   <div class="flow-root py-3 px-4 border border-gray-200 rounded-lg shadow mt-2 overflow-y-auto max-h-[24rem] lg:max-h-[40rem] xl:max-h-[56rem] 2xl:max-h-[40rem]">
-    <% battle_history.each_with_index do |battle_log, index| %>
-      <div class="items-center space-x-4 rounded-lg shadow p-2 mb-1 border border-gray-200">
-        <div id="accordion-collapse-<%= index %>" data-accordion="collapse">
-          <h2 id="accordion-collapse-heading-<%= index %>">
-            <div class="grid grid-cols-3 gap-2 py-2 flex">
-              <div class="flex flex-col items-center">
-                <div class="relative flex flex-col items-center">
-                  <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+    <% if battle_history.any? %>
+      <% battle_history.each_with_index do |battle_log, index| %>
+        <div class="items-center space-x-4 rounded-lg shadow p-2 mb-1 border border-gray-200">
+          <div id="accordion-collapse-<%= index %>" data-accordion="collapse">
+            <h2 id="accordion-collapse-heading-<%= index %>">
+              <div class="grid grid-cols-3 gap-2 py-2 flex">
+                <div class="flex flex-col items-center">
+                  <div class="relative flex flex-col items-center">
+                    <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+                  </div>
+                  <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
+                  <% if battle_log.attacker == battle_log.winner %>
+                    <span class="text-sm text-gray-500 font-light">Перемога</span>
+                  <% else %>
+                    <span class="text-sm text-gray-500 font-light">Поразка</span>
+                  <% end %>
                 </div>
-                <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
-                <% if battle_log.attacker == battle_log.winner %>
-                  <span class="text-sm text-gray-500 font-light">Перемога</span>
-                <% else %>
-                  <span class="text-sm text-gray-500 font-light">Поразка</span>
-                <% end %>
-              </div>
-              <div class="flex flex-col items-center">
-                <% if current_user == battle_log.winner %>
-                  <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
-                    <%= image_tag 'winner.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
-                  </button>
-                <% else %>
-                  <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
-                    <%= image_tag 'loser.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
-                  </button>
-                <% end %>
-              </div>
-              <div class="flex flex-col items-center">
-                <div class="relative flex flex-col items-center">
-                  <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+                <div class="flex flex-col items-center">
+                  <% if current_user == battle_log.winner %>
+                    <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
+                      <%= image_tag 'winner.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
+                    </button>
+                  <% else %>
+                    <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= index %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= index %>">
+                      <%= image_tag 'loser.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
+                    </button>
+                  <% end %>
                 </div>
-                <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
-                <% if battle_log.defender == battle_log.winner %>
-                  <span class="text-sm text-gray-500 font-light">Перемога</span>
-                <% else %>
-                  <span class="text-sm text-gray-500 font-light">Поразка</span>
-                <% end %>
+                <div class="flex flex-col items-center">
+                  <div class="relative flex flex-col items-center">
+                    <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
+                  </div>
+                  <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
+                  <% if battle_log.defender == battle_log.winner %>
+                    <span class="text-sm text-gray-500 font-light">Перемога</span>
+                  <% else %>
+                    <span class="text-sm text-gray-500 font-light">Поразка</span>
+                  <% end %>
+                </div>
+              </div>
+            </h2>
+            <div id="accordion-collapse-body-<%= index %>" class="hidden" aria-labelledby="accordion-collapse-heading-<%= index %>">
+              <div class="p-5 text-center">
+                <%= tag.p battle_log.details.body, class: 'mb-2 text-gray-600 whitespace-break-spaces font-light' %>
               </div>
             </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-8">
+        <div class="space-y-4 sm:space-y-6 lg:space-y-8 lg:col-span-2">
+          <h2 class="font-extrabold leading-tight text-gray-900 text-2xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
+            Вперед до бою!
           </h2>
-          <div id="accordion-collapse-body-<%= index %>" class="hidden" aria-labelledby="accordion-collapse-heading-<%= index %>">
-            <div class="p-5 text-center">
-              <%= tag.p battle_log.details.body, class: 'mb-2 text-gray-600 whitespace-break-spaces font-light' %>
-            </div>
+          <p class="mt-4 text-gray-500 text-base sm:text-lg xl:text-xl 2xl:text-2xl font-light">
+            Ви маєте покемонів, що зриваються до бою! Натисніть на одну із червоних рукавичок <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %> на екрані <b>"Рейтинг Тренерів"</b>, аби розпочати поєдинок!
+          </p>
+          <div class="relative shadow-2xl hidden lg:block">
+            <%= image_tag 'pokemon_cta.webp', alt: 'pokemon cta', class: 'object-cover shadow-2xl' %>
           </div>
         </div>
       </div>

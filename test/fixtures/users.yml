@@ -12,6 +12,7 @@ user_one:
   unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
+  pokemon_last_catch: <%= 2.years.ago %>
 
 user_two:
   id: 2

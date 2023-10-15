@@ -18,7 +18,9 @@
         <%= link_to youtube_video_path(side_video) do %>
           <%= tag.h2 side_video.title, class: 'text-gray-700 text-base sm:text-2xl lg:text-xl md:leading-8 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-0 lg:mt-1 line-clamp-2 md:ml-2 lg:ml-0 sm:mb-1 lg:mb-0' %>
         <% end %>
-        <%= tag.span punch(side_video.description.to_s), class: 'text-gray-600 text-base lg:text-sm mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2 sm:mt-0 lg:mt-1 md:ml-2 lg:ml-0 hidden lg:block' %>
+        <div class="hidden lg:flex lg:flex-col">
+          <%= tag.span punch(side_video.description.to_s), class: 'text-gray-600 text-base lg:text-sm mr-1 w-full whitespace-break-spaces font-light line-clamp-3 mt-2 sm:mt-0 lg:mt-1 md:ml-2 lg:ml-0' %>
+        </div>
         <%= tag.span side_video.description.to_s, class: 'text-gray-600 text-sm sm:text-base lg:text-sm mr-1 w-full whitespace-break-spaces font-light line-clamp-2 md:line-clamp-3 mt-0 lg:mt-1 md:ml-2 lg:ml-0 lg:hidden' %>
       </div>
     </div>

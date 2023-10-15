@@ -100,7 +100,9 @@ class PokemonBattleService
         )
 
         defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:active] = false
-        attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:tiredness] += 0.15
+
+        tiredness_to_add = tiredness_stat(attacker_stats, defender_stats)
+        attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:tiredness] += tiredness_to_add
 
         handle_hardy_character(attacker_team, attacker_stats) if attacker.character == 'hardy'
         handle_agile_character(attacker_team, attacker_stats) if defender.character == 'agile'
@@ -137,7 +139,9 @@ class PokemonBattleService
         )
 
         attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:active] = false
-        defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:tiredness] += 0.15
+
+        tiredness_to_add = tiredness_stat(defender_stats, attacker_stats)
+        defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:tiredness] += tiredness_to_add
 
         handle_hardy_character(defender_team, defender_stats) if defender.character == 'hardy'
         handle_agile_character(defender_team, defender_stats) if attacker.character == 'agile'
@@ -281,6 +285,17 @@ class PokemonBattleService
 
   def pokemon_limit
     [UserPokemon::DEFAULT_TEAM_SIZE, @attacker_pokemons.size, @defender_pokemons.size].min
+  end
+
+  def tiredness_stat(attacker, defender)
+    case (calculate_battle_result(attacker) - calculate_battle_result(defender))
+    when 201..Float::INFINITY
+      0.15
+    when 101..200
+      0.2
+    else
+      0.25
+    end
   end
 
   def initialize_team(pokemon_list)
