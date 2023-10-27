@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_21_011439) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -67,6 +67,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "chapter_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "chapter_id", null: false
+    t.bigint "scanlator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chapter_id"], name: "index_chapter_scanlators_on_chapter_id"
+    t.index ["scanlator_id"], name: "index_chapter_scanlators_on_scanlator_id"
+  end
+
   create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "slug", null: false
     t.bigint "fiction_id", null: false
@@ -104,6 +113,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
     t.datetime "updated_at", null: false
     t.index ["fiction_id"], name: "index_fiction_genres_on_fiction_id"
     t.index ["genre_id"], name: "index_fiction_genres_on_genre_id"
+  end
+
+  create_table "fiction_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "fiction_id", null: false
+    t.bigint "scanlator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiction_id"], name: "index_fiction_scanlators_on_fiction_id"
+    t.index ["scanlator_id"], name: "index_fiction_scanlators_on_scanlator_id"
   end
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -209,6 +227,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
   end
 
+  create_table "scanlator_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scanlator_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scanlator_id"], name: "index_scanlator_users_on_scanlator_id"
+    t.index ["user_id"], name: "index_scanlator_users_on_user_id"
+  end
+
+  create_table "scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "telegram_id"
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -253,7 +288,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "pokemon_last_catch", default: "2023-09-18 02:08:12"
+    t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -286,12 +321,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chapter_scanlators", "chapters"
+  add_foreign_key "chapter_scanlators", "scanlators"
   add_foreign_key "chapters", "fictions", on_delete: :cascade
   add_foreign_key "chapters", "users", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
+  add_foreign_key "fiction_scanlators", "fictions"
+  add_foreign_key "fiction_scanlators", "scanlators"
   add_foreign_key "pokemon_battle_logs", "users", column: "attacker_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "defender_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "winner_id"
@@ -305,6 +344,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_015634) do
   add_foreign_key "reading_progresses", "chapters", on_delete: :cascade
   add_foreign_key "reading_progresses", "fictions", on_delete: :cascade
   add_foreign_key "reading_progresses", "users", on_delete: :cascade
+  add_foreign_key "scanlator_users", "scanlators"
+  add_foreign_key "scanlator_users", "users"
   add_foreign_key "user_fictions", "fictions"
   add_foreign_key "user_fictions", "users"
   add_foreign_key "user_pokemons", "pokemons"

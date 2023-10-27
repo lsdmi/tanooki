@@ -8,7 +8,7 @@ export default class extends Controller {
       select: this.element,
       settings: {
         closeOnSelect: false,
-        placeholderText: "Оберіть зі списку (необов'язково)",
+        placeholderText: "Оберіть зі списку",
         searchPlaceholder: 'Пошук',
       }
     })

@@ -7,13 +7,19 @@ class Chapter < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
 
+  attr_accessor :scanlator_ids
+
   after_create_commit :manage_users, :telegram_send_message
 
   belongs_to :fiction
   belongs_to :user
   has_rich_text :content
+  has_many :chapter_scanlators, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
+  has_many :scanlators, through: :chapter_scanlators
+
+  before_validation :cleanup_scanlator_ids
 
   validates :content, length: { minimum: 500 }
   validates :number, numericality: { greater_than_or_equal_to: 0 }
@@ -84,5 +90,11 @@ class Chapter < ApplicationRecord
 
   def translator
     fiction.translator
+  end
+
+  private
+
+  def cleanup_scanlator_ids
+    self.scanlator_ids = scanlator_ids.reject(&:blank?)
   end
 end

@@ -23,6 +23,9 @@ class User < ApplicationRecord
   has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id
   has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id
 
+  has_many :scanlator_users, dependent: :destroy
+  has_many :scanlators, through: :scanlator_users
+
   scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }
 

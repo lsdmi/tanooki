@@ -64,7 +64,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_template 'users/dashboard/_readings'
     assert_not_nil assigns(:pagy)
     assert_not_nil assigns(:fictions)
-    assert_not_nil assigns(:random_reading)
     assert_not_nil assigns(:paginators)
   end
 end

@@ -24,6 +24,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
+      ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
       update_fiction_status
       redirect_to readings_path, notice: 'Розділ додано.'
     else
@@ -35,6 +36,7 @@ class ChaptersController < ApplicationController
 
   def update
     if @chapter.update(chapter_params)
+      ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
       redirect_to readings_path, notice: 'Розділ оновлено.'
     else
       render 'chapters/edit', status: :unprocessable_entity
@@ -94,7 +96,7 @@ class ChaptersController < ApplicationController
 
   def chapter_params
     params.require(:chapter).permit(
-      :content, :fiction_id, :number, :title, :user_id, :volume_number
+      :content, :fiction_id, :number, :title, :user_id, :volume_number, scanlator_ids: []
     )
   end
 

@@ -47,6 +47,7 @@ class FictionsController < ApplicationController
     if @fiction.save
       UserFiction.create(fiction_id: @fiction.id, user_id: fiction_params[:user_id]) if fiction_params[:user_id]
       FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
+      FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
       redirect_to fiction_path(@fiction), notice: 'Твір створено.'
     else
       render 'fictions/new', status: :unprocessable_entity
@@ -58,6 +59,7 @@ class FictionsController < ApplicationController
   def update
     if @fiction.update(fiction_params)
       FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
+      FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
       redirect_to fiction_path(@fiction), notice: 'Твір оновлено.'
     else
       render 'fictions/edit', status: :unprocessable_entity
@@ -108,8 +110,8 @@ class FictionsController < ApplicationController
 
   def fiction_params
     params.require(:fiction).permit(
-      :alternative_title, :author, :cover, :description, :english_title,
-      :status, :title, :translator, :total_chapters, :user_id, genre_ids: []
+      :alternative_title, :author, :cover, :description, :english_title, :status,
+      :title, :translator, :total_chapters, :user_id, genre_ids: [], scanlator_ids: []
     )
   end
 

@@ -17,6 +17,14 @@
           <%= tag.span user_publications.size, class: 'inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full' unless user_publications.size.zero? %>
         <% end %>
       <% end %>
+    </ul>
+    <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 mb-3">
+      <%= tag.li class: "#{'bg-gray-100' if params[:controller] == 'scanlators' }" do %>
+        <%= link_to scanlators_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
+          <%= image_tag 'scanlators.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
+          <span class="flex-1 ml-3 whitespace-nowrap">Команди</span>
+        <% end %>
+      <% end %>
       <%= tag.li class: "#{'bg-gray-100' if params[:action] == 'readings' || params[:controller] == 'fictions' }" do %>
         <%= link_to readings_path, remote: true, class: 'flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100' do %>
           <%= image_tag 'fiction.svg', class: 'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900', alt: 'avatar'  %>
@@ -50,18 +58,19 @@
           <%= tag.div current_user.email, class: 'text-sm text-gray-500' %>
         </div>
       </div>
-      <button data-collapse-toggle="navbar-solid-bg" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-solid-bg" aria-expanded="false">
+      <button data-collapse-toggle="navbar-solid-bg" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-solid-bg" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
         </svg>
       </button>
-      <div class="hidden w-full sm:block sm:w-auto" id="navbar-solid-bg">
-        <ul class="flex flex-col font-medium mt-4 rounded-lg sm:flex-row sm:space-x-8 sm:mt-0 sm:border-0 text-center sm:text-inherit">
-          <li><%= link_to 'Блоги', blogs_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
-          <li><%= link_to 'Писальня', readings_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
-          <li><%= link_to 'Покемони', pokemons_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
-          <li><%= link_to 'Профіль', avatars_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 sm:p-0 bg-gray-50 sm:bg-white my-1' %></li>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+        <ul class="flex flex-col font-medium mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 text-center md:text-inherit">
+          <li><%= link_to 'Блоги', blogs_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 md:p-0 bg-gray-50 md:bg-white my-1' %></li>
+          <li><%= link_to 'Команди', scanlators_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 md:p-0 bg-gray-50 md:bg-white my-1' %></li>
+          <li><%= link_to 'Писальня', readings_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 md:p-0 bg-gray-50 md:bg-white my-1' %></li>
+          <li><%= link_to 'Покемони', pokemons_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 md:p-0 bg-gray-50 md:bg-white my-1' %></li>
+          <li><%= link_to 'Профіль', avatars_path, class: 'block py-1 pl-3 pr-4 text-gray-900 rounded hover:text-gray-600 md:p-0 bg-gray-50 md:bg-white my-1' %></li>
         </ul>
       </div>
     </div>

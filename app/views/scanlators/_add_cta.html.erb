@@ -1,0 +1,101 @@
+<section class="antialiased">
+  <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-12">
+    <div class="grid grid-cols-1 gap-8 lg:gap-16 lg:grid-cols-3">
+      <div class="hidden lg:block">
+        <div class="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px]">
+          <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
+          <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
+          <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[178px] rounded-l-lg"></div>
+          <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
+          <div class="rounded-[2rem] overflow-hidden w-[272px] h-[572px] bg-white">
+            <%= image_tag 'readings_cta.webp', alt: 'blog cta', class: 'w-[272px] h-[572px] object-cover' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4 sm:space-y-6 lg:space-y-8 lg:col-span-2">
+        <div>
+          <h2 class="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl">
+            Твори із Бакою: український аніме-хаб
+          </h2>
+          <p class="mt-4 text-lg font-normal text-gray-600 sm:text-2xl">
+            Додай сторінку своєї перекладацької спільноти до <span class="font-semibold text-gray-900">Баки</span>, аби встановити зв'язок із сотнями користувачів нашого сервісу.
+          </p>
+          <p class="mt-4 text-lg font-normal text-gray-600 sm:text-2xl">
+            Та отримай доступ до статистики переглядів і прочитань для моніторингу своєї популярності та її порівняння з іншими командами перекладачів.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200 sm:pt-6 lg:pt-8">
+          <ul class="space-y-4">
+            <li class="flex items-center gap-2.5">
+              <div
+                class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-100 text-orange-600 shrink-0">
+                <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <span class="text-lg font-medium text-gray-900">
+                Покажи себе Україні
+              </span>
+            </li>
+
+            <li class="flex items-center gap-2.5">
+              <div
+                class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-100 text-orange-600 shrink-0">
+                <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <span class="text-lg font-medium text-gray-900">
+                Взаємодій зі своєю аудиторією
+              </span>
+            </li>
+
+            <li class="flex items-center gap-2.5">
+              <div
+                class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-100 text-orange-600 shrink-0">
+                <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <span class="text-lg font-medium text-gray-900">
+                Монітор прогрес та популярність
+              </span>
+            </li>
+
+            <li class="flex items-center gap-2.5">
+              <div
+                class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-orange-100 text-orange-600 shrink-0">
+                <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+              <span class="text-lg font-medium text-gray-900">
+                Порівнюй результати з іншими
+              </span>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <%= link_to new_scanlator_path, data: { turbo: false }, class: 'text-white bg-orange-700 justify-center hover:bg-orange-800 inline-flex items-center focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-5 py-2.5 text-center', role: 'button' do %>
+            Додати перекладацьку сторінку
+            <svg aria-hidden="true" class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

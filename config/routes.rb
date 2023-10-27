@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   resources :chapters, except: :index
   resources :fictions
   resources :publications, except: %i[index show]
+  resources :scanlators, except: %i[show]
   resources :search, only: :index
   resources :tales, only: %i[index show]
   resources :users, only: :update

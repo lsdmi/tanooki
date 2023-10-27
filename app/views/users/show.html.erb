@@ -9,6 +9,10 @@
       <%= render 'users/dashboard/avatars', avatars: @avatars %>
     <% elsif action_name.to_sym == :blogs %>
       <%= render 'users/dashboard/blogs', publications: @publications, pagy: @pagy %>
+    <% elsif controller_name.to_sym == :scanlators %>
+      <%= turbo_frame_tag "scanlators-screen" do %>
+        <%= render 'scanlators/dashboard', scanlators: @scanlators %>
+      <% end %>
     <% else %>
       <%= turbo_frame_tag "pokemons-screen" do %>
         <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count, selected_pokemon: @selected_pokemon, descendant: @descendant, battle_history: @battle_history %>

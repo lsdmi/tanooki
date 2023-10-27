@@ -10,7 +10,9 @@ export default class DropzoneController extends Controller {
       "advertisement_cover",
       "advertisement_poster",
       "fictions_cover",
-      "publication_cover"
+      "publication_cover",
+      "scanlator_avatar",
+      "scanlator_banner"
     ];
 
     targetIds.forEach(targetId => {
@@ -46,6 +48,12 @@ export default class DropzoneController extends Controller {
         break;
       case 'advertisement_poster':
         targetElement = document.querySelector(`#poster_name`);
+        break;
+      case 'scanlator_avatar':
+        targetElement = document.querySelector(`#avatar_name`);
+        break;
+      case 'scanlator_banner':
+        targetElement = document.querySelector(`#banner_name`);
         break;
       default:
         targetElement = document.querySelector(`#image_name`);

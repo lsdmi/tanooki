@@ -1,0 +1,8 @@
+<section class="bg-white z-10 relative font-oswald">
+  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
+    <h2 class="mb-4 text-xl font-semibold leading-none text-gray-900">Оновити Команду</h2>
+    <%= simple_form_for @scanlator, as: :scanlator, url: scanlator_path(@scanlator), method: :put, html: { class: "form" } do |f| %>
+      <%= render 'form', scanlator: @scanlator, f: f %>
+    <% end %>
+  </div>
+</section>

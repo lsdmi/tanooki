@@ -35,12 +35,23 @@
           <%= tag.p fiction.errors[:author].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:author].any? %>
         </div>
         <div class="w-full">
-          <%= f.label :translator, 'Перекладач', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :translator, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:translator].any?}" }, label: false, placeholder: 'Вкажіть перекладача' %>
-          <%= tag.p fiction.errors[:translator].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:translator].any? %>
+          <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <% if f.object.new_record? && params[:fiction].nil? %>
+            <%= f.select :scanlator_ids, options_for_select(Scanlator.order(:title).pluck(:title, :id), selected: current_user.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if fiction.errors[:scanlator_ids].any? }" } %>
+          <% elsif params[:fiction].present? %>
+            <%= f.select :scanlator_ids, options_for_select(Scanlator.order(:title).pluck(:title, :id), selected: params[:fiction][:scanlator_ids].reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: "font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if fiction.errors[:scanlator_ids].any? }" } %>
+          <% else %>
+            <%= f.select :scanlator_ids, options_for_select(Scanlator.order(:title).pluck(:title, :id), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if fiction.errors[:scanlator_ids].any? }" } %>
+          <% end %>
+          <%= tag.p fiction.errors[:scanlator_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:scanlator_ids].any? %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <%= f.label :translator, 'Перекладач', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.input :translator, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if fiction.errors[:translator].any?}" }, label: false, placeholder: "Вкажіть назву перекладацької команди (необов'язково)" %>
+          <%= tag.p fiction.errors[:translator].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if fiction.errors[:translator].any? %>
+        </div>
         <div class="w-full">
           <%= f.label :genre_ids, 'Жанри', class: 'block mb-2 text-sm font-medium text-gray-900' %>
           <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
