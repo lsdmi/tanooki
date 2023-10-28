@@ -11,7 +11,7 @@
     </div>
     <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
       <% if @fiction.chapters.any? %>
-        <%= render 'chapters' %>
+        <%= render 'chapters', fiction: @fiction, reading_progress: @reading_progress, next_chapter: @next_chapter %>
       <% else %>
         <%= render 'first_chapter_cta', fiction: @fiction %>
       <% end %>

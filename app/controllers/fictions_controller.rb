@@ -31,7 +31,9 @@ class FictionsController < ApplicationController
       format.html { render 'show' }
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'chapters-list', partial: 'chapter_list', locals: { fiction: @fiction, user_id: params[:translator] }
+          'chapters-list', partial: 'chapter_list', locals: {
+            fiction: @fiction, user_id: params[:translator], reading_progress: @reading_progress, before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter
+          }
         )
       end
     end

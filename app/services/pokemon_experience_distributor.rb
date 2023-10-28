@@ -30,10 +30,7 @@ class PokemonExperienceDistributor
     winner_battle_rate = winner.battle_win_rate
     loser_battle_rate = loser.battle_win_rate
 
-    winner_rank = user_rank(winner_battle_rate)
-    loser_rank = user_rank(loser_battle_rate)
-
-    rank_difference = winner_rank - loser_rank
+    rank_difference = user_rank(winner_battle_rate) - user_rank(loser_battle_rate)
 
     if rank_difference.zero?
       winner.update(battle_win_rate: winner_battle_rate + 2)

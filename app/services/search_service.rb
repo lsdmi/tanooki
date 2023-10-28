@@ -17,7 +17,10 @@ class SearchService
 
   def self.videos(query)
     YoutubeVideo.joins(:rich_text_description)
-                .where('youtube_videos.title LIKE :search OR tags LIKE :search OR body LIKE :search', search: "%#{query.join}%")
+                .where(
+                  'youtube_videos.title LIKE :search OR tags LIKE :search OR body LIKE :search',
+                  search: "%#{query.join}%"
+                )
                 .includes(:rich_text_description, :youtube_channel)
                 .distinct
                 .order(created_at: :desc)

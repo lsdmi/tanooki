@@ -37,7 +37,7 @@ class PokemonBattleService
     append_log(
       ActionController::Base.helpers.sanitize(
         "<div class='mb-4 font-light inline-block'>Вітаємо вас на Арені, шанові глядачі! Сьогодні " \
-        " ми станемо свідками неймовірного " \
+        'ми станемо свідками неймовірного ' \
         "протистояння між <span class='font-bold'>#{attacker_username}</span> та " \
         "<span class='font-bold'>#{defender_username}</span>!</div>" \
       )
@@ -207,6 +207,19 @@ class PokemonBattleService
     team.any? { |pokemon| pokemon[:active] }
   end
 
+  def build_team_member_data(pokemon, experience, luck, power)
+    { active: true,
+      all_types: pokemon.pokemon.types.pluck(:name),
+      character: pokemon.character,
+      experience:,
+      id: pokemon.id,
+      luck:,
+      power:,
+      raw_total: raw_strength_formula(power, luck, experience),
+      tiredness: 1,
+      type: 1 }
+  end
+
   def calculate_battle_result(stats)
     stats[:raw_total] * stats[:type] / stats[:tiredness]
   end
@@ -218,6 +231,16 @@ class PokemonBattleService
       1
     else
       0
+    end
+  end
+
+  def calculate_team_data(pokemon_list)
+    pokemon_list.map do |pokemon|
+      power = calculate_power(pokemon)
+      luck = calculate_luck(pokemon)
+      experience = calculate_experience(pokemon)
+
+      build_team_member_data(pokemon, experience, luck, power)
     end
   end
 
@@ -299,25 +322,7 @@ class PokemonBattleService
   end
 
   def initialize_team(pokemon_list)
-    team_data = pokemon_list.map do |pokemon|
-      power = calculate_power(pokemon)
-      luck = calculate_luck(pokemon)
-      experience = calculate_experience(pokemon)
-
-      {
-        active: true,
-        all_types: pokemon.pokemon.types.pluck(:name),
-        character: pokemon.character,
-        experience:,
-        id: pokemon.id,
-        luck:,
-        power:,
-        raw_total: raw_strength_formula(power, luck, experience),
-        tiredness: 1,
-        type: 1
-      }
-    end
-
+    team_data = calculate_team_data(pokemon_list)
     sorted_team = team_data.sort_by { |data| -data[:raw_total] }
     sorted_team.first(pokemon_limit)
   end
@@ -327,13 +332,11 @@ class PokemonBattleService
   end
 
   def calculate_power(user_pokemon)
-    multiplier = user_pokemon.character == 'independent' ? 120 : 100
-    user_pokemon.pokemon.power_level * multiplier
+    user_pokemon.pokemon.power_level * (user_pokemon.character == 'independent' ? 120 : 100)
   end
 
   def calculate_experience(user_pokemon)
-    multiplier = user_pokemon.character == 'brave' ? 2 : 1
-    user_pokemon.battle_experience * multiplier
+    user_pokemon.battle_experience * (user_pokemon.character == 'brave' ? 2 : 1)
   end
 
   def calculate_luck(user_pokemon)
