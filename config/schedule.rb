@@ -31,6 +31,16 @@ when 'production'
   every 12.hours do
     runner 'puts Time.now'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
+  end
+
+  every 7.days do
+    runner 'weekly job started'
+    runner 'puts Time.now'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'
+    runner 'Fiction.reindex'
+    runner 'Publication.reindex'
+    runner 'YoutubeVideo.reindex'
+    runner 'puts Time.now'
+    runner 'weekly job finished'
   end
 end

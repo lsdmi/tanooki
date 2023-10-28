@@ -10,6 +10,7 @@ export default class extends Controller {
         closeOnSelect: false,
         placeholderText: "Оберіть зі списку",
         searchPlaceholder: 'Пошук',
+        searchText: 'Нічого не знайдено',
       }
     })
   }

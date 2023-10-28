@@ -44,6 +44,6 @@ class Scanlator < ApplicationRecord
   private
 
   def cleanup_member_ids
-    self.member_ids = member_ids.reject(&:blank?)
+    self.member_ids = member_ids&.reject(&:blank?)
   end
 end

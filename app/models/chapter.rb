@@ -95,6 +95,6 @@ class Chapter < ApplicationRecord
   private
 
   def cleanup_scanlator_ids
-    self.scanlator_ids = scanlator_ids.reject(&:blank?)
+    self.scanlator_ids = scanlator_ids&.reject(&:blank?)
   end
 end

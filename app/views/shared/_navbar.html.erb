@@ -34,13 +34,13 @@
 <nav class="hidden lg:block relative z-10 bg-white shadow-xl">
   <div class="pb-4 px-4 mx-auto max-w-screen-xl md:px-6">
     <div class="flex justify-center items-center place-items-center">
-      <ul class="flex flex-row mt-0 space-x-8 text-sm font-medium">
+      <div class="flex flex-row mt-0 space-x-8 text-sm font-medium">
         <% trending_tags.each do |trending| %>
           <%= link_to trending.name, search_index_path(search: [trending.name]), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
         <% end %>
         <%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-lg hover:text-rose-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
         <%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-lg hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
-      </ul>
+      </div>
     </div>
   </div>
 </nav>

@@ -8,7 +8,7 @@ class ScanlatorsController < ApplicationController
   before_action :set_scanlator, :verify_permissions, only: %i[edit update destroy]
 
   def index
-    @scanlators = current_user.admin? ? Scanlator.all : current_user.scanlators
+    @scanlators = current_user.admin? ? Scanlator.order(:title) : current_user.scanlators.order(:title)
 
     render 'users/show'
   end
