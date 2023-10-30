@@ -42,6 +42,8 @@ class Pokemon < ApplicationRecord
     legendary: 5 # 501 - 600
   }.freeze
 
+  STARTER_DEX_IDS = [1, 4, 7].freeze
+
   enum rarities: RARITY_LEVELS
   enum power_levels: POWER_LEVELS
 

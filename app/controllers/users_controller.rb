@@ -33,13 +33,13 @@ class UsersController < ApplicationController
 
   def pokemons
     @pokemons = pokemon_list
-    @selected_pokemon = @pokemons.first
-    @descendant = @selected_pokemon.pokemon.descendant
 
     if @pokemons.empty?
       @all_pokemon_count = Pokemon.count
       @all_caught_count = UserPokemon.count
     else
+      @selected_pokemon = @pokemons.first
+      @descendant = @selected_pokemon.pokemon.descendant
       @dex_leaderboard = User.dex_leaders
       @battle_history = current_user.battle_logs_includes_details.sort_by { |log| -log.id }
     end

@@ -17,7 +17,7 @@
   </div>
 </div>
 <div class="relative float-left w-full mt-0 lg:hidden">
-  <%= render main_highlight %>
+  <%= render partial: "side_video", collection: [main_highlight] %>
 </div>
 <% highlights.excluding(main_highlight).each do |highlight| %>
   <div class="float-right relative w-full mb-2 hidden lg:block">
@@ -47,5 +47,5 @@
   </div>
 <% end %>
 <div class="relative float-left w-full mt-0 lg:hidden">
-  <%= render highlights.excluding(main_highlight) %>
+  <%= render partial: "side_video", collection: highlights.excluding(main_highlight) %>
 </div>

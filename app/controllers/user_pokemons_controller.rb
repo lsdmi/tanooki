@@ -6,8 +6,7 @@ class UserPokemonsController < ApplicationController
       current_user.update(pokemon_last_catch: Time.now)
       PokemonCatchService.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
-        user_id: user_pokemon_params[:user_id],
-        session:
+        user_id: user_pokemon_params[:user_id]
       ).trap
       render turbo_stream: [remove_pokemon, update_notice(UserPokemon::SUCCESS_MESSSAGE)]
     else
