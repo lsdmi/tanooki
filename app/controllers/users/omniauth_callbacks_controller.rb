@@ -29,7 +29,7 @@ module Users
 
     def notice_pokemon_catch
       if no_caught_pokemon?
-        PokemonCatchService.new(pokemon_id: nil, user_id: @user.id).grant if @user.pokemons.empty?
+        PokemonCatchService.new(pokemon_id: nil, user_id: @user.id).grant if @user&.pokemons&.empty?
         flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
       else
         PokemonCatchService.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id).trap

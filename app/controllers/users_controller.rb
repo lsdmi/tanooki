@@ -40,8 +40,8 @@ class UsersController < ApplicationController
     else
       @selected_pokemon = @pokemons.first
       @descendant = @selected_pokemon.pokemon.descendant
-      @dex_leaderboard = User.dex_leaders
-      @battle_history = current_user.battle_logs_includes_details.sort_by { |log| -log.id }
+      @dex_leaderboard = User.dex_leaders.first(50)
+      @battle_history = current_user.battle_logs_includes_details.sort_by { |log| -log.id }.first(50)
     end
 
     render 'show'

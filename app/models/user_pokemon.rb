@@ -23,4 +23,8 @@ class UserPokemon < ApplicationRecord
 
   FAILURE_MESSSAGE = 'У-упс, невдала спроба!'
   SUCCESS_MESSSAGE = 'Вітаємо, із оновленням у команді!'
+  TRAINING_FRAUD_ALERT = 'Ця дія наразі неможлива. Спробуйте пізніше.'
+
+  BATTLE_TRAINING_SUCCESS = 'Вітаємо, із набуттям нового бойового досвіду!'
+  EVOLUTION_TRAINING_SUCCESS = 'Вітаємо, із набуттям нового якісного рівня!'
 end

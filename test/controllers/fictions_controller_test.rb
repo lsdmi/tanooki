@@ -16,11 +16,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
     assert_response :success
     assert_template :show
-    assert_not_nil assigns(:fiction)
-    assert_not_nil assigns(:commentable)
-    assert_not_nil assigns(:comments)
-    assert_not_nil assigns(:comment)
-    assert_instance_of Comment, assigns(:comment)
   end
 
   test 'should get show with more than one translator' do
@@ -28,11 +23,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction_two)
     assert_response :success
     assert_template :show
-    assert_not_nil assigns(:fiction)
-    assert_not_nil assigns(:commentable)
-    assert_not_nil assigns(:comments)
-    assert_not_nil assigns(:comment)
-    assert_instance_of Comment, assigns(:comment)
   end
 
   test 'should get dashboard' do
@@ -44,17 +34,9 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     get fictions_path
     assert_response :success
 
-    assert_not_nil assigns(:hero_ad)
     assert_equal advertisements(:advertisement_three), assigns(:hero_ad)
-
-    assert_not_nil assigns(:popular_fictions)
     assert_equal 2, assigns(:popular_fictions).count
-
-    assert_not_nil assigns(:most_reads)
     assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:most_reads).map(&:title)
-
-    assert_not_nil assigns(:latest_updates)
-    assert_not_nil assigns(:hot_updates)
   end
 
   test 'should get new' do

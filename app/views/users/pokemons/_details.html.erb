@@ -1,6 +1,23 @@
 <div id="pokemon-details" class="p-6 border border-gray-200 rounded-lg shadow mt-4">
-  <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon.name}", class: 'mb-4 text-xl font-bold tracking-tight text-gray-900' %>
-  <div class="grid sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
+  <div class="grid grid-cols-2">
+    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon.name}", class: 'mb-4 text-xl font-bold tracking-tight text-gray-900' %>
+    <div class="flex justify-end">
+      <% if training_cooldown?(current_user) %>
+        <div class="flex flex-col items-center">
+          <%= image_tag 'timer.svg', class: 'h-8 md:h-9 lg:h-10 transform transition duration-500 hover:scale-110', alt: 'timer' %>
+          <%= tag.p training_cooldown_reason(current_user), class: 'text-xs text-gray-500 truncate font-light mx-px mt-1' %>
+        </div>
+      <% else %>
+        <div class="flex flex-col items-center">
+          <%= button_to training_pokemon_path(user_pokemon_id: selected_pokemon.id), data: { turbo_stream: "", "turbo-method": :post }, remote: true do %>
+            <%= image_tag 'training.svg', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+          <% end %>
+          <%= tag.p "Тренування", class: 'text-sm text-gray-500 truncate font-light mx-px mt-1' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="grid sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-4 -mt-2.5">
     <div>
       <div class="inline-flex">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform transition duration-500 hover:scale-110">
@@ -68,5 +85,5 @@
         </div>
       </div>
     </div>
-  <% end if descendant.present? %>
+  <% end if descendant.present? && descendant.id != selected_pokemon.pokemon.id %>
 </div>

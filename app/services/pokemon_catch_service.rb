@@ -8,6 +8,11 @@ class PokemonCatchService
     @user_id = user_id
   end
 
+  def evolve
+    user_pokemon = UserPokemon.find_by(user_id:, pokemon_id:)
+    update_user_pokemon(user_pokemon)
+  end
+
   def grant
     user_pokemon = UserPokemon.create(user_id:, pokemon_id: starter.id, character: sample_character)
     update_user_pokemon(user_pokemon)

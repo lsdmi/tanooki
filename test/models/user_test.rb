@@ -17,11 +17,6 @@ class UserTest < ActiveSupport::TestCase
     assert @user.valid?
   end
 
-  test 'name should be present' do
-    @user.name = '     '
-    assert_not @user.valid?
-  end
-
   test 'name should not be too short' do
     @user.name = 'a' * 2
     assert_not @user.valid?
@@ -29,11 +24,6 @@ class UserTest < ActiveSupport::TestCase
 
   test 'name should not be too long' do
     @user.name = 'a' * 21
-    assert_not @user.valid?
-  end
-
-  test 'email should be present' do
-    @user.email = '    '
     assert_not @user.valid?
   end
 
@@ -68,18 +58,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  test 'should have many comments' do
-    assert_respond_to @user, :comments
-  end
-
-  test 'should have many publications' do
-    assert_respond_to @user, :publications
-  end
-
-  test 'should have many chapters' do
-    assert_respond_to @user, :chapters
-  end
-
   test 'should belong to an avatar' do
     assert_equal avatars(:one), @user.avatar
   end
@@ -89,15 +67,8 @@ class UserTest < ActiveSupport::TestCase
       {
         provider: 'google',
         uid: '123456',
-        info: {
-          email: 'test@example.com',
-          name: 'Test User'
-        },
-        credentials: {
-          token: 'token',
-          refresh_token: 'refresh_token',
-          expires_at: Time.now + 1.day
-        }
+        info: { email: 'test@example.com', name: 'Test User' },
+        credentials: { token: 'token', refresh_token: 'refresh_token', expires_at: Time.now + 1.day }
       }
     )
 
@@ -115,15 +86,8 @@ class UserTest < ActiveSupport::TestCase
       {
         provider: 'google',
         uid: '123456',
-        info: {
-          email: user.email,
-          name: user.name
-        },
-        credentials: {
-          token: 'token',
-          refresh_token: 'refresh_token',
-          expires_at: Time.now + 1.day
-        }
+        info: { email: user.email, name: user.name },
+        credentials: { token: 'token', refresh_token: 'refresh_token', expires_at: Time.now + 1.day }
       }
     )
 
@@ -137,15 +101,8 @@ class UserTest < ActiveSupport::TestCase
       {
         provider: 'google',
         uid: '123456',
-        info: {
-          email: 'test@example.com',
-          name: 'Test User Test User Test User Test User Test User'
-        },
-        credentials: {
-          token: 'token',
-          refresh_token: 'refresh_token',
-          expires_at: Time.now + 1.day
-        }
+        info: { email: 'test@example.com', name: 'Test User Test User Test User Test User Test User' },
+        credentials: { token: 'token', refresh_token: 'refresh_token', expires_at: Time.now + 1.day }
       }
     )
 

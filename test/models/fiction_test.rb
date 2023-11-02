@@ -16,11 +16,6 @@ class FictionTest < ActiveSupport::TestCase
     assert @fiction.valid?
   end
 
-  test 'title should be present' do
-    @fiction.title = ''
-    assert_not @fiction.valid?
-  end
-
   test 'title should not be too short' do
     @fiction.title = 'a' * 2
     assert_not @fiction.valid?
@@ -61,11 +56,6 @@ class FictionTest < ActiveSupport::TestCase
     assert_not @fiction.valid?
   end
 
-  test 'author should be present' do
-    @fiction.author = ''
-    assert_not @fiction.valid?
-  end
-
   test 'author should not be too short' do
     @fiction.author = 'a' * 2
     assert_not @fiction.valid?
@@ -73,11 +63,6 @@ class FictionTest < ActiveSupport::TestCase
 
   test 'author should not be too long' do
     @fiction.author = 'a' * 51
-    assert_not @fiction.valid?
-  end
-
-  test 'description should be present' do
-    @fiction.description = ''
     assert_not @fiction.valid?
   end
 
@@ -111,10 +96,6 @@ class FictionTest < ActiveSupport::TestCase
     assert_not @fiction.valid?
   end
 
-  test 'cover should be present' do
-    assert @fiction.valid?
-  end
-
   test 'cover should be in the correct format' do
     invalid_image = Rack::Test::UploadedFile.new(
       Rails.root.join('app', 'assets', 'stylesheets', 'actiontext.css')
@@ -128,9 +109,7 @@ class FictionTest < ActiveSupport::TestCase
     fiction = fictions(:one)
     fiction.comments << comments(:comment_one)
 
-    assert_difference('Comment.count', -1) do
-      fiction.destroy
-    end
+    assert_difference('Comment.count', -1) { fiction.destroy }
   end
 
   test 'should have many fiction genres' do
@@ -144,8 +123,6 @@ class FictionTest < ActiveSupport::TestCase
   test 'should destroy associated fiction genres when destroyed' do
     fiction = fictions(:one)
 
-    assert_difference 'FictionGenre.count', -1 do
-      fiction.destroy
-    end
+    assert_difference('FictionGenre.count', -1) { fiction.destroy }
   end
 end

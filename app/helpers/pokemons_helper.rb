@@ -7,6 +7,14 @@ module PokemonsHelper
       (selected_opponent.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago
   end
 
+  def training_cooldown?(user)
+    user.pokemon_last_training > 4.hours.ago
+  end
+
+  def training_cooldown_reason(user)
+    cooldown_message_for(user.pokemon_last_training)
+  end
+
   def reason_for_cooldown(current_user, selected_opponent)
     return if current_user.id == selected_opponent.id
 

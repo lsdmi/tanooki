@@ -1,5 +1,7 @@
 <div class="sm:grid sm:grid-cols-12 sm:gap-4">
-  <%= render 'users/pokemons/list', pokemons:, selected_pokemon:, descendant: %>
+  <%= turbo_frame_tag "pokemon-data-screen", class: 'col-span-12 lg:col-span-5' do %>
+    <%= render 'users/pokemons/list', pokemons:, selected_pokemon:, descendant: %>
+  <% end %>
   <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: %>
   <%= render 'users/pokemons/battle_history', battle_history: %>
 </div>

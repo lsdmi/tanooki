@@ -58,7 +58,8 @@ class User < ApplicationRecord
   end
 
   def battle_logs_includes_details
-    attacker_battle_logs.includes(%i[rich_text_details attacker defender winner]) +
+    attacker_battle_logs.includes(%i[rich_text_details attacker defender winner])
+                        .includes(attacker: :avatar, defender: :avatar, winner: :avatar) +
       defender_battle_logs.includes(%i[rich_text_details attacker defender winner])
   end
 end

@@ -14,14 +14,56 @@ class UserPokemonsController < ApplicationController
     end
   end
 
+  def training
+    if current_user.pokemon_last_training > 4.hours.ago
+      render turbo_stream: refresh_error_screen
+    else
+      train_pokemon
+      current_user.update(pokemon_last_training: Time.now)
+      render turbo_stream: [refresh_screen, update_notice(@alert)]
+    end
+  end
+
   private
 
   def pokemon_catch_permitted?
     current_user.pokemon_last_catch < 4.hours.ago
   end
 
+  def pokemons
+    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
+  end
+
+  def refresh_error_screen
+    turbo_stream.update(
+      'application-alert',
+      partial: 'shared/alert',
+      locals: { alert: UserPokemon::TRAINING_FRAUD_ALERT }
+    )
+  end
+
+  def refresh_screen
+    turbo_stream.update(
+      'pokemon-data-screen',
+      partial: 'users/pokemons/list',
+      locals: { pokemons:, selected_pokemon: pokemons.first, descendant: pokemons.first.pokemon.descendant }
+    )
+  end
+
   def remove_pokemon
     turbo_stream.remove('catch-pokemon')
+  end
+
+  def train_pokemon
+    user_pokemon = UserPokemon.find(params[:user_pokemon_id])
+
+    if rand(2).zero?
+      PokemonCatchService.new(pokemon_id: user_pokemon.pokemon.id, user_id: current_user.id).evolve
+      @alert = UserPokemon::EVOLUTION_TRAINING_SUCCESS
+    else
+      user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1)
+      @alert = UserPokemon::BATTLE_TRAINING_SUCCESS
+    end
   end
 
   def update_notice(message)
