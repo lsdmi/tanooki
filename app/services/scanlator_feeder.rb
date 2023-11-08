@@ -17,7 +17,7 @@ class ScanlatorFeeder
   private
 
   def chapter_activities
-    scanlator.chapters.includes(:fiction).order(created_at: :desc).limit(size)
+    scanlator.chapters.order(created_at: :desc).limit(size)
   end
 
   def fiction_activities

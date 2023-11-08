@@ -1,0 +1,35 @@
+<section class="z-10 relative font-oswald mt-2 lg:hidden">
+  <div class="gap-4 items-center pb-2 md:py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
+    <div class="col-span-8 grid grid-cols-6 gap-4 xl:gap-8 self-start">
+      <div class="md:col-span-2 hidden md:block">
+        <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
+        <div class="rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+      </div>
+      <div class="text-gray-500 sm:text-xl col-span-6 md:col-span-4 z-10">
+        <%= link_to fiction_path(fiction) do %>
+          <%= tag.h2 fiction.title, class: 'text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl hover:text-gray-600 uppercase -skew-x-12' %>
+        <% end %>
+
+        <% if fiction.genres.any? %>
+          <div class="mb-2 overflow-hidden break-words">
+            <% fiction.genres.each do |genre| %>
+              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs font-semibold mr-1 whitespace-nowrap uppercase text-emerald-600 uppercase' %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= tag.p fiction.description, class: 'mb-4 font-light text-base lg:text-lg whitespace-break-spaces line-clamp-8 italic' %>
+
+        <div class="flex items-center gap-4">
+          <%= link_to fiction_path(fiction), class: 'inline-block text-white font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br shadow-lg shadow-teal-500/50', role: 'button' do %>
+            Переглянути
+          <% end %>
+          <%= link_to 'Читати з початку',
+                        chapter_path(ordered_chapters(fiction).first),
+                        class: 'inline-block text-gray-900 font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-white hover:bg-gray-100 shadow-lg shadow-teal-500/50',
+                        role: 'button' if fiction.chapters.any? %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -15,7 +15,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def show
-    @fictions = @scanlator.fictions.includes(:genres, cover_attachment: :blob).order(views: :desc)
+    @fictions = @scanlator.fictions.includes(:chapters, :genres, cover_attachment: :blob).order(views: :desc)
     @feeds = ScanlatorFeeder.new(fiction_size: @fictions.size, scanlator: @scanlator).call
   end
 
