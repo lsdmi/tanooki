@@ -1,0 +1,24 @@
+<section class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto font-oswald">
+  <div class="w-full float-left mb-2 z-10 lg:ml-0">
+    <div class="gap-8 mx-4 2xl:pl-2 max-w-screen-3xl grid grid-cols-2 w-full lg:w-[1250px] mt-1">
+      <div class="m-auto z-10 mt-6 min-h-[56rem]">
+        <div class="container relative w-[575px]">
+          <%= render 'banner', scanlator: @scanlator %>
+        </div>
+        <div class="container relative w-[575px]">
+          <%= render 'details', scanlator: @scanlator, fictions: @fictions, pagy: @pagy %>
+        </div>
+      </div>
+      <div class="z-10 mt-6">
+        <div class="mt-1">
+          <%= render 'shared/divider_shiny_green', caption: 'Останні звістки' %>
+          <% if @feeds.any? %>
+            <%= render partial: "feed_card", collection: @feeds, locals: { scanlator: @scanlator } %>
+          <% else %>
+            <%= render 'feed_placeholder' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

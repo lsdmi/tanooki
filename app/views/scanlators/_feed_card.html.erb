@@ -1,0 +1,58 @@
+<div class="overflow-hidden overflow-y-auto p-2 max-w-3xl h-full">
+  <div class="p-4 space-y-4 bg-white bg-opacity-40 rounded-lg shadow xl:p-6 2xl:p-8">
+    <div class="flex items-center space-x-4">
+      <div class="flex-shrink-0">
+        <% if scanlator.avatar.present? %>
+          <%= image_tag url_for(scanlator.avatar), alt: 'scanlator avatar', class: "w-14 h-14 rounded-full shadow-lg object-cover border border-gray-200", height: '56', width: '56' %>
+        <% else %>
+          <%= image_tag 'scanlator_avatar.webp', alt: 'scanlator default avatar', class: 'w-14 h-14 rounded-full shadow-lg object-cover border border-gray-200', height: '56', width: '56' %>
+        <% end %>
+      </div>
+      <div class="flex-1 min-w-0">
+        <%= tag.p scanlator.title, class: 'text-xl font-semibold text-gray-900 truncate' %>
+        <%= tag.p "#{time_ago_in_words(feed_card.created_at)} тому", class: 'text-sm font-normal text-gray-500 truncate' %>
+      </div>
+    </div>
+    <div class="space-y-2 text-md">
+      <% if feed_card.is_a?(Chapter) %>
+        <%= tag.p do %>
+          <%= tag.span "🚀 ", class: 'font-normal text-gray-500' %>
+          <%= link_to feed_card.fiction_title, fiction_path(feed_card.fiction), class: 'font-normal font-light text-sky-700 hover:underline hover:text-sky-600 inline-block' %>
+          <%= tag.span "- новий розділ! 🚀 ", class: 'font-normal text-gray-500' %>
+        <% end %>
+        <%= tag.p do %>
+          <%= tag.span "📚 #{feed_card.display_title} 📚 читати", class: 'font-normal text-gray-500' %>
+          <%= link_to "за посиланням!", chapter_path(feed_card), class: 'font-normal font-light text-sky-700 hover:underline hover:text-sky-600 inline-block' %>
+        <% end %>
+        <br/>
+        <%= tag.p do %>
+          <% if feed_card.fiction.genres.any? %>
+            <div class="mb-2 overflow-hidden break-words">
+              <% feed_card.fiction.genres.each do |genre| %>
+                <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest text-xs sm:text-sm font-semibold mr-1 whitespace-nowrap uppercase text-emerald-600' %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= tag.p do %>
+          <%= tag.span "🎉 Ми завантажили новий твір - ", class: 'font-normal text-gray-500' %>
+          <%= link_to "\"#{feed_card.title}\" 🎉", fiction_path(feed_card), class: 'font-normal font-light text-sky-700 hover:underline hover:text-sky-600 inline-block' %>
+        <% end %>
+        <%= tag.p do %>
+          <%= tag.span "😊 Чекайте на розділи вже незабаром! 😊", class: 'font-normal text-gray-500' %>
+        <% end %>
+        <br/>
+        <%= tag.p do %>
+          <% if feed_card.genres.any? %>
+            <div class="mb-2 overflow-hidden break-words">
+              <% feed_card.genres.each do |genre| %>
+                <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest text-xs sm:text-sm font-semibold mr-1 whitespace-nowrap uppercase text-emerald-600' %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

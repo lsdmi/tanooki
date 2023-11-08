@@ -1,0 +1,16 @@
+<div role="status" class="space-y-8 space-y-0 space-x-8 flex items-center h-56 container shadow-2xl rounded-xl w-full">
+  <div class="items-center justify-center w-full rounded-lg">
+    <% if @scanlator.banner.present? %>
+      <%= image_tag url_for(@scanlator.banner), alt: 'scanlator custom banner', class: 'w-full h-56 object-cover rounded-lg border border-gray-200', height: '575' %>
+    <% else %>
+      <%= image_tag 'scanlator_banner.webp', alt: 'scanlator default banner', class: 'h-56 object-cover rounded-lg border border-gray-200', height: '575' %>
+    <% end %>
+  </div>
+  <div class="absolute top-1/2 left-[31.5%] w-1/4 h-[60%]">
+    <% if @scanlator.avatar.present? %>
+      <%= image_tag url_for(@scanlator.avatar), alt: 'scanlator default avatar', class: 'w-full h-36 object-cover rounded-full border border-gray-200', height: '143.5', width: '143.5' %>
+    <% else %>
+      <%= image_tag 'scanlator_avatar.webp', alt: 'scanlator default avatar', class: 'align-middle mx-auto flex rounded-full border border-gray-200', height: '143.5', width: '143.5' %>
+    <% end %>
+  </div>
+</div>
