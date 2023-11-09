@@ -130,3 +130,17 @@ attachment_nineteen:
   record_id: 2
   blob_id: 19
   created_at: <%= Time.now %>
+
+attachment_twenty:
+  name: avatar
+  record_type: Scanlator
+  record_id: 1
+  blob_id: 20
+  created_at: <%= Time.now %>
+
+attachment_twenty_one:
+  name: banner
+  record_type: Scanlator
+  record_id: 1
+  blob_id: 21
+  created_at: <%= Time.now %>

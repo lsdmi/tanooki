@@ -206,3 +206,27 @@ blob_nineteen:
   byte_size: 44040
   checksum: <%= Faker::Book.title %>
   created_at: <%= Time.now %>
+
+blob_twenty:
+  id: 20
+  key: blob_twenty
+  filename: <%= Faker::Book.title %>
+  content_type: image/png
+  metadata: <%= Faker::Book.title %>
+  service_name: local
+  byte_size: 44040
+  checksum: <%= Faker::Book.title %>
+  created_at: <%= Time.now %>
+
+blob_twenty_one:
+  id: 21
+  key: blob_twenty_one
+  filename: <%= Faker::Book.title %>
+  content_type: image/png
+  metadata: <%= Faker::Book.title %>
+  service_name: local
+  byte_size: 44040
+  checksum: <%= Faker::Book.title %>
+  created_at: <%= Time.now %>
+
+
