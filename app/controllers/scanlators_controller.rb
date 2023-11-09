@@ -3,14 +3,20 @@
 class ScanlatorsController < ApplicationController
   include FictionQuery
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :show
   before_action :set_common_vars, only: :index
-  before_action :set_scanlator, :verify_permissions, only: %i[edit update destroy]
+  before_action :set_scanlator, only: %i[show edit update destroy]
+  before_action :verify_permissions, only: %i[edit update destroy]
 
   def index
     @scanlators = current_user.admin? ? Scanlator.order(:title) : current_user.scanlators.order(:title)
 
     render 'users/show'
+  end
+
+  def show
+    @fictions = @scanlator.fictions.includes(:chapters, :genres, cover_attachment: :blob).order(views: :desc)
+    @feeds = ScanlatorFeeder.new(fiction_size: @fictions.size, scanlator: @scanlator).call
   end
 
   def create

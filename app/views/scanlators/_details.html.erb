@@ -1,0 +1,69 @@
+<div class="mt-20">
+  <div class="top-1/2 justify-center flex">
+    <%= tag.p scanlator.title, class: "text-3xl text-center text-gray-800 font-bold uppercase -skew-x-12 #{ 'ml-2' if scanlator.telegram_id.present? }" %>
+    <%= link_to "https://t.me/#{scanlator.telegram_id}", class: 'inline-flex items-center text-sm font-medium rounded-lg', area: { current: 'page' } do %>
+      <div class="flex items-center">
+        <%= image_tag 'telegram.svg', class: 'h-6 transform transition duration-500 hover:scale-110 ml-1', alt: 'logo', width: '32', height: '32' %>
+      </div>
+    <% end if scanlator.telegram_id.present? %>
+  </div>
+  <div class="mt-1 justify-center flex">
+    <p class="font-light text-base text-gray-500 -skew-x-12">
+      <%= tag.span scanlator.chapters.size, class: 'text-lg font-bold' %>
+      <span>розділів<span>
+    </p>
+  </div>
+  <div class="mb-6 lg:mb-8 justify-center flex">
+    <p class="font-light text-base text-gray-500 -skew-x-12">
+      <%= tag.span scanlator.chapters.sum(:views), class: 'text-lg font-bold' %>
+      <span>прочитань<span>
+    </p>
+  </div>
+  <%= render 'shared/divider_shiny_green', caption: 'Команда' %>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 lg:mb-10 mt-4">
+    <% scanlator.users.in_groups_of(4).each do |group| %>
+      <% group.each do |user| %>
+        <% if user.present? %>
+          <div class="flex flex-col items-center">
+            <%= image_tag url_for(user.avatar.image), alt: user.avatar.blob.filename.to_s, class: 'w-auto h-36 lg:h-20 rounded-full', height: '48', width: '48' %>
+            <%= tag.p user.name, class: 'mt-2 font-light text-xl text-gray-500 -skew-x-12' %>
+          </div>
+        <% else %>
+          <div class="flex flex-col items-center">
+            <%= image_tag 'scanlator_avatar.webp', alt: 'scanlator default avatar', class: 'w-auto h-36 lg:h-28 rounded-full grayscale', height: '48', width: '48' %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <%= render 'shared/divider_shiny_green', caption: 'Твори' if fictions.any? %>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-10 mt-4">
+    <% fictions.in_groups_of(3).each do |group| %>
+      <% group.each do |fiction| %>
+        <% if fiction.present? %>
+          <%= render 'fiction_desktop', fiction: fiction %>
+          <%= render 'fiction_mobile', fiction: fiction %>
+        <% else %>
+          <div class="hidden lg:flex flex-col items-center">
+            <div class="relative bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto h-[24rem]">
+              <div class="flex justify-center relative">
+                <%= image_tag 'fiction_cover.webp', alt: 'default book cover image', class: "h-64 w-full object-cover rounded-md shadow-lg grayscale" %>
+              </div>
+              <div class="w-full float-left rounded-xl mt-1 mb-1 px-2">
+                <div role="status" class="animate-pulse max-w-lg">
+                  <% 6.times do %>
+                    <div class="flex items-center w-full space-x-2 max-w-[480px] mt-2">
+                      <div class="h-2.5 bg-gray-200 rounded-full w-full"></div>
+                      <div class="h-2.5 bg-gray-300 rounded-full w-full"></div>
+                      <div class="h-2.5 bg-gray-300 rounded-full w-24"></div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

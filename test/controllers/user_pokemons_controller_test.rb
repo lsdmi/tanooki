@@ -6,7 +6,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   include Warden::Test::Helpers
 
   setup do
-    @pokemon_params = { user_pokemon: { pokemon_id: 2, user_id: 1 } }
+    @pokemon_params = { user_pokemon: { pokemon_id: 2, user_id: 1 }, user_pokemon_id: 1 }
     @user = users(:user_one)
     login_as(@user, scope: :user)
   end
@@ -21,5 +21,20 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
+  end
+
+  test 'training should refresh screen on success' do
+    post training_pokemon_path(format: :turbo_stream), params: @pokemon_params
+
+    assert_response :success
+    assert_select 'turbo-stream[action="update"][target="pokemon-data-screen"]'
+  end
+
+  test 'training should refresh error screen on training fraud' do
+    @user.update(pokemon_last_training: Time.now)
+    post training_pokemon_path(format: :turbo_stream), params: @pokemon_params
+
+    assert_response :success
+    assert_select 'turbo-stream[action="update"][target="application-alert"]'
   end
 end

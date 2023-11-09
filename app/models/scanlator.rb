@@ -10,6 +10,12 @@ class Scanlator < ApplicationRecord
 
   attr_accessor :member_ids
 
+  has_many :chapter_scanlators, dependent: :destroy
+  has_many :chapters, through: :chapter_scanlators
+
+  has_many :fiction_scanlators, dependent: :destroy
+  has_many :fictions, through: :fiction_scanlators
+
   has_many :scanlator_users, dependent: :destroy
   has_many :users, through: :scanlator_users
 

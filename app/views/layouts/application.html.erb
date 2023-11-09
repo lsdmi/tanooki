@@ -25,7 +25,7 @@
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen">
-    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('bg.webp') %>);">
+    <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-white opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
       <% if @advertisement&.persisted? %>
