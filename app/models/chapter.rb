@@ -77,7 +77,7 @@ class Chapter < ApplicationRecord
       "🎉 <i>Насолоджуйтеся <b>#{fiction.chapters.size}</b> розділами неймовірних пригод за " \
       "<i><b><a href=\"#{telegram_fiction_path}\">посиланням</a></b></i>!</i> 🎉 \n\n" \
       "<i>#{fiction_description}</i> \n\n" \
-      "✍️ Переклад: <i>#{translator}</i> ✍️ \n\n" \
+      "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" \
       "#{fiction.genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
     )
   end
@@ -86,10 +86,6 @@ class Chapter < ApplicationRecord
     return unless (fiction.chapters.size % 25).zero?
 
     TelegramJob.perform_later(object: self)
-  end
-
-  def translator
-    fiction.translator
   end
 
   private

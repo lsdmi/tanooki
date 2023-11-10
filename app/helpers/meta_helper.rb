@@ -16,6 +16,8 @@ module MetaHelper
       @chapter.fiction.cover
     elsif @youtube_video&.persisted?
       @youtube_video.thumbnail
+    elsif @scanlator&.persisted?
+      @scanlator.avatar.presence || url_for(asset_path('scanlator_avatar.webp'))
     end
   end
 
@@ -32,6 +34,8 @@ module MetaHelper
       @youtube_video.description
     elsif request.path == youtube_videos_path
       YOUTUBE_SEO_DESCRIPTION
+    elsif @scanlator&.persisted?
+      "#{@scanlator.title} перекладають ранобе та фанфіки українською (#{@scanlator.fictions.map(&:title).to_sentence.truncate(75)}). Читайте онлайн на Бака!"
     else
       default_description
     end
@@ -55,6 +59,7 @@ module MetaHelper
     return chapter_title if @chapter.present? && @chapter.persisted?
     return @youtube_video.title if @youtube_video&.persisted?
     return 'Український аніме-ютуб: відео на Бака' if request.path == youtube_videos_path
+    return "#{@scanlator.title} | Переклади Ранобе | Бака" if @scanlator.present? && @scanlator.persisted?
 
     [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
   end
@@ -75,8 +80,8 @@ module MetaHelper
   end
 
   def chapter_description
-    if @chapter.translator.present?
-      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" у перекладі команди \"#{@chapter.translator}\"."
+    if @chapter.scanlators.any?
+      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" у перекладі команди \"#{@chapter.scanlators.map(&:title).to_sentence}\"."
     else
       "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" за авторства #{@chapter.author}."
     end
@@ -95,8 +100,8 @@ module MetaHelper
   end
 
   def fiction_description
-    if @fiction.translator?
-      "Читати ранобе \"#{@fiction.title}\" у перекладі команди \"#{@fiction.translator}\"."
+    if @fiction.scanlators.any?
+      "Читати ранобе \"#{@fiction.title}\" у перекладі команди \"#{@fiction.scanlators.map(&:title).to_sentence}\"."
     else
       "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."
     end

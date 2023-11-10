@@ -3,13 +3,13 @@
 class FictionIndexVariablesManager
   def self.popular_fictions
     Rails.cache.fetch('popular_fictions', expires_in: 12.hours) do
-      Fiction.includes([{ cover_attachment: :blob }, :genres]).order(views: :desc).limit(5)
+      Fiction.includes([{ cover_attachment: :blob }, :genres], :scanlators).order(views: :desc).limit(5)
     end
   end
 
   def self.most_reads
     Rails.cache.fetch('most_reads', expires_in: 12.hours) do
-      Fiction.most_reads.limit(5)
+      Fiction.includes(:scanlators).most_reads.limit(5)
     end
   end
 
@@ -27,7 +27,7 @@ class FictionIndexVariablesManager
     Rails.cache.fetch('hot_updates', expires_in: 12.hours) do
       Fiction
         .joins(:chapters)
-        .includes([{ cover_attachment: :blob }, :genres])
+        .includes([{ cover_attachment: :blob }, :genres], :scanlators)
         .where('chapters.created_at >= ?', 10.days.ago)
         .select('fictions.*, SUM(chapters.views) AS total_views')
         .group('fictions.id')
