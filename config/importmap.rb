@@ -10,3 +10,4 @@ pin 'flowbite', to: 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowb
 pin_all_from 'app/javascript/controllers', under: 'controllers'
 pin '@rails/actiontext', to: 'actiontext.js'
 pin 'slim-select', to: 'https://ga.jspm.io/npm:slim-select@2.5.0/dist/slimselect.es.js'
+pin "sweetalert2", to: "https://ga.jspm.io/npm:sweetalert2@11.9.0/dist/sweetalert2.all.js"
