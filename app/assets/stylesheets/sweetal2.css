@@ -1,51 +1,48 @@
-
-
-
 .swal-container {
-    font-family: Oswald, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    border-radius: 0.5rem !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  font-family: Oswald, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
 }
 
 .swal-popup {
-    border-radius: 0.5rem !important;
+  border-radius: 0.5rem !important;
 }
 
 .swal-confirm {
-    background-color: #ef4444 !important;
+  background-color: #ef4444 !important;
 }
 
-.actions{
-    display:flex !important;
-    justify-items: center;
-
+.actions {
+  display:flex !important;
+  justify-items: center;
 }
 
 .swal-button {
-    display: inline-block !important;
-    border-radius: .5rem !important;
-    font-size: 2rem !important;
-    padding: 1rem 2rem !important;
-    width: 100% !important;
+  display: inline-block !important;
+  border-radius: .5rem !important;
+  font-size: 2rem !important;
+  padding: 1rem 2rem !important;
+  width: 100% !important;
 }
-.title{
-    font-size: 4rem !important;
-}
-.htmlContainer{
-    font-size: 3rem !important;
 
+.title{
+  font-size: 4rem !important;
+}
+
+.htmlContainer {
+  font-size: 3rem !important;
 }
 
 @media (min-width: 640px) {
-    .title{
-        font-size: 2em !important;
-    }
-    .htmlContainer{
-        font-size: 1.2em !important;
-    }
-    .swal-button {
-        font-size: 1.5rem !important;
-        padding: 0.7rem 1.2rem !important;
-        width: auto !important;
-    }
+  .title{
+    font-size: 2em !important;
+  }
+  .htmlContainer{
+    font-size: 1.2em !important;
+  }
+  .swal-button {
+    font-size: 1.5rem !important;
+    padding: 0.7rem 1.2rem !important;
+    width: auto !important;
+  }
 }
