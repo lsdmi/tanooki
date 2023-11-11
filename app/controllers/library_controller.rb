@@ -14,6 +14,12 @@ class LibraryController < ApplicationController
     @popular_fictions = popular_fictions
   end
 
+  def destroy
+    item = current_user.readings.find(params[:id])
+    item.destroy
+  end
+
+
   private
 
   def history_stats
@@ -29,4 +35,5 @@ class LibraryController < ApplicationController
       Fiction.includes([{ cover_attachment: :blob }]).order(views: :desc).limit(2)
     end
   end
+
 end
