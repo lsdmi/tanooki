@@ -19,7 +19,6 @@ class LibraryController < ApplicationController
     item.destroy
   end
 
-
   private
 
   def history_stats
@@ -35,5 +34,4 @@ class LibraryController < ApplicationController
       Fiction.includes([{ cover_attachment: :blob }]).order(views: :desc).limit(2)
     end
   end
-
 end

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@rails/actiontext": "^7.0.4-2",
-    "sweetalert2": "^11.9.0"
+    "@rails/actiontext": "^7.0.4-2"
   }
 }
