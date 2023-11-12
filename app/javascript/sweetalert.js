@@ -41,3 +41,28 @@ function sweetAlertBtn(itemid, deleteurl, authtoken) {
         }
     });
 }
+
+
+function sweetalert(message, url="*", description="", type = 0, okbuttontext="Так!", cancelbuttontext="Ні в якому разі!"){
+    Swal.fire({
+        customClass: {
+            container: 'swal-container',
+            title: 'title',
+            htmlContainer: 'htmlContainer',
+            actions: 'actions',
+            confirmButton: 'swal-button swal-confirm',
+            cancelButton: type !== 0 ? 'swal-button' : '',
+        },
+        title: message,
+        text: description,
+        showDenyButton: false,
+        showCancelButton: type !== 0,
+        confirmButtonText: okbuttontext,
+        cancelButtonText: cancelbuttontext,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if(url !== "*")
+                window.location.replace(url);
+        }
+    });
+}
