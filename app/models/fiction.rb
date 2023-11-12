@@ -39,7 +39,6 @@ class Fiction < ApplicationRecord
   validates :alternative_title, length: { maximum: 100 }
   validates :english_title, length: { maximum: 100 }
   validates :total_chapters, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :translator, length: { minimum: 3, maximum: 50 }, allow_blank: true
 
   validate :cover_format
 
@@ -80,7 +79,7 @@ class Fiction < ApplicationRecord
     ActionController::Base.helpers.sanitize(
       "🎉 <b>#{title}</b> 🎉 \n\n" \
       "<i>#{description}</i> \n\n" \
-      "✍️ Переклад: <i>#{translator}</i> ✍️ \n\n" \
+      "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" \
       "🔗 <i><b><a href=\"#{telegram_fiction_path}\">Читати на сайті</a></b></i> 🔗 \n\n" \
       "#{genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
     )

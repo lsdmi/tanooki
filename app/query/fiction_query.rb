@@ -23,19 +23,19 @@ module FictionQuery
   end
 
   def filtered_fiction_with_max_created_at_query
-    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }, :genres])
+    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }, :genres, :scanlators])
            .where(genres: { id: params[:genre_id] })
            .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group('fictions.id, active_storage_attachments.id')
+           .group('fictions.id, active_storage_attachments.id, scanlators.id')
            .order('max_created_at DESC')
   end
 
   def fictions_from_author
-    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }])
-           .where(translator: @chapter.translator)
+    Fiction.joins(:chapters, :scanlators).includes([{ cover_attachment: :blob }, :genres])
+           .where(fiction_scanlators: { scanlator_id: @chapter.scanlators.ids })
            .excluding(@chapter.fiction)
            .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group(:fiction_id)
+           .group('fiction_scanlators.fiction_id')
            .order('max_created_at DESC')
   end
 end

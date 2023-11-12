@@ -2,10 +2,14 @@
 
 module FictionsHelper
   def fiction_author(fiction)
-    if fiction.translator?
-      sanitize("Перекладач: <strong>#{fiction.translator}</strong>")
+    if fiction.scanlators.any?
+      scanlator_links = fiction.scanlators.map do |scanlator|
+        link_to scanlator.title, scanlator_path(scanlator), class: 'font-extrabold tracking-tight text-emerald-900 text-emerald-700 hover:underline hover:text-emerald-600 inline-block'
+      end.join(', ').html_safe
+
+      "Перекладач: #{content_tag(:strong, scanlator_links)}".html_safe
     else
-      sanitize("Оригінальна робота <strong>#{fiction.author}</strong>")
+      "Оригінальна робота #{content_tag(:strong, fiction.author)}".html_safe
     end
   end
 
