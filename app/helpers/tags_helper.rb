@@ -15,4 +15,12 @@ module TagsHelper
   def tag_formatter(tag)
     tag.name.downcase.gsub(/[\s,!\-]/, '_')
   end
+
+  def sweetalert(button_content, options = {})
+    button_tag(
+      button_content,
+      data: options.merge(token: form_authenticity_token),
+      class: "sweet-alert-button #{options[:button_class]}"
+    ).html_safe
+  end
 end

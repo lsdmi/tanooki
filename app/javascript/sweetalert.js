@@ -1,52 +1,65 @@
-function sweetAlertBtn(itemid, deleteurl, authtoken) {
-  const item = document.getElementById(itemid);
-
-  Swal.fire({
+async function sweetAlertBtn(message, description) {
+  return Swal.fire({
     customClass: {
       container: 'swal-container',
       title: 'title',
       htmlContainer: 'htmlContainer',
       actions: 'actions',
       confirmButton: 'swal-button swal-confirm',
-      cancelButton: 'swal-button'
+      cancelButton: 'swal-button',
     },
-    title: 'Ви впевнені?',
-    text: 'текст',
+    title: message,
+    text: description,
+    showDenyButton: false,
     showCancelButton: true,
-    confirmButtonText: 'Так!',
-    cancelButtonText: `Ні в якому разі!`,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      deleteItem(deleteurl, authtoken, item);
-    }
+    confirmButtonText: 'Прибрати',
+    cancelButtonText: 'Відмінити',
   });
 }
 
-function deleteItem(url, token, item) {
-  fetch(url, {
-    method: "DELETE",
+async function makeCall(url, token) {
+  const response = await fetch(url, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRF-Token': token,
     },
-    credentials: "include"
-  }).then((res) => {
-    if (res.ok) {
-      item.remove();
-    }
+    credentials: 'include'
   });
+
+  return response;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function removeItem(itemId){
+  const item = document.getElementById(itemId)
+  item.remove();
+}
+
+const initializeAlert = () => {
   const buttons = document.querySelectorAll('.sweet-alert-button');
 
   buttons.forEach(button => {
-    button.addEventListener('click', function() {
-      sweetAlertBtn(
-        button.getAttribute('data-id'),
-        button.getAttribute('data-url'),
-        button.getAttribute('data-token')
+    button.addEventListener('click', async function () {
+      const result = await sweetAlertBtn(
+        button.getAttribute('data-message'),
+        button.getAttribute('data-description')
       );
+
+      if (result.isConfirmed) {
+        if (button.hasAttribute('data-url')) {
+          const res = await makeCall(
+            button.getAttribute('data-url'),
+            button.getAttribute('data-token')
+          );
+
+          if (res.ok && button.hasAttribute('data-tag-id')) {
+            removeItem(button.getAttribute('data-tag-id'));
+          }
+        }
+      }
     });
   });
-});
+}
+
+document.addEventListener('turbo:load', initializeAlert);
+document.addEventListener('turbo:render', initializeAlert);
