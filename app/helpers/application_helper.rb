@@ -23,4 +23,8 @@ module ApplicationHelper
     ]
     return true if path_strings.any? { |str| request.path.include?(str) }
   end
+
+  def requires_sweetalert?
+    return true if request.path == library_path
+  end
 end
