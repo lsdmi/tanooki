@@ -21,6 +21,10 @@
       <%= javascript_include_tag 'tinymce_initializer' %>
     <% end %>
 
+    <% if requires_sweetalert? %>
+      <%= javascript_include_tag 'sweetalert' %>
+    <% end %>
+
     <%= javascript_include_tag 'mode_toggler' %>
   </head>
 

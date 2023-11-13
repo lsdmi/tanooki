@@ -17,10 +17,12 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    path_strings = [
-      'admin/chapters', 'admin/fictions', 'admin/tales',
-      'chapters', 'fictions', 'publications'
-    ]
-    return true if path_strings.any? { |str| request.path.include?(str) }
+    [
+      'admin/chapters', 'admin/fictions', 'admin/tales', 'chapters', 'fictions', 'publications'
+    ].any? { |str| request.path.include?(str) }
+  end
+
+  def requires_sweetalert?
+    request.path == library_path
   end
 end
