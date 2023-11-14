@@ -10,6 +10,13 @@
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
+          <%= f.label :description, 'Опис', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+          <%= f.text_area :description, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 #{'border-red-300' if scanlator.errors[:description].any?}", rows: 3, label: false, placeholder: "Додайте опис (необов'язково)" %>
+          <%= tag.p scanlator.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:description].any? %>
+        </div>
+      </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
           <%= f.label :telegram_id, 'Телеграм ID', class: 'block mb-2 text-sm font-medium text-gray-900' %>
           <%= f.input :telegram_id, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if scanlator.errors[:telegram_id].any?}" }, label: false, placeholder: "Додайте ID акаунту без @ (необов'язково)" %>
           <%= tag.p scanlator.errors[:telegram_id].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:telegram_id].any? %>
@@ -31,7 +38,7 @@
       <div>
         <%= f.label :banner, 'Банер', class: 'block mb-2 text-sm font-medium text-gray-900' %>
         <div class="flex justify-center items-center w-full">
-          <%= f.label :banner, class: "flex flex-col justify-center items-center w-full h-60 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:banner].any?}" do %>
+          <%= f.label :banner, class: "flex flex-col justify-center items-center w-full h-96 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:banner].any?}" do %>
             <div class="flex flex-col justify-center items-center pt-5 pb-6">
               <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
               <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
@@ -48,7 +55,7 @@
       <div>
         <%= f.label :avatar, 'Портретик', class: 'block mb-2 text-sm font-medium text-gray-900' %>
         <div class="flex justify-center items-center w-full">
-          <%= f.label :avatar, class: "flex flex-col justify-center items-center w-full h-60 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:avatar].any?}" do %>
+          <%= f.label :avatar, class: "flex flex-col justify-center items-center w-full h-96 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:avatar].any?}" do %>
             <div class="flex flex-col justify-center items-center pt-5 pb-6">
               <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
               <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>

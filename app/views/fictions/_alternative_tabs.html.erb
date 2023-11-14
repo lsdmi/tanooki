@@ -7,9 +7,11 @@
       %>
 
       <li class="mr-2">
-        <%= link_to fiction_path(fiction, translator: user_id), data: { turbo_stream: "" }, class: "inline-flex items-center justify-center p-4 rounded-t-lg group #{selected ? 'text-emerald-700 border-b-2 border-emerald-700' : 'border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-300' }" do %>
-          <%= image_tag url_for(user.avatar.image), alt: user.avatar.image.blob.filename, class: "w-8 h-8 mr-2 w-8 h-8 rounded-full #{selected ? 'text-emerald-500 group-hover:text-emerald-600' : 'text-gray-400 group-hover:text-gray-500' }" %>
-          <%= user.name %>
+        <%= turbo_frame_tag 'alternative-tabs' do %>
+          <%= link_to fiction_path(fiction, translator: user_id), data: { turbo_stream: "" }, class: "inline-flex items-center justify-center p-4 rounded-t-lg group #{selected ? 'text-emerald-700 border-b-2 border-emerald-700' : 'border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-300' }" do %>
+            <%= image_tag url_for(user.avatar.image), alt: user.avatar.image.blob.filename, class: "w-8 h-8 mr-2 w-8 h-8 rounded-full #{selected ? 'text-emerald-500 group-hover:text-emerald-600' : 'text-gray-400 group-hover:text-gray-500' }" %>
+            <%= user.name %>
+          <% end %>
         <% end %>
       </li>
     <% end %>

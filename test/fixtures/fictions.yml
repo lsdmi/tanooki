@@ -6,7 +6,6 @@ one:
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   total_chapters: 5
-  translator: "Test Translator"
 
 two:
   id: 2
@@ -16,4 +15,3 @@ two:
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   total_chapters: 5
-  translator: "Test Translator"

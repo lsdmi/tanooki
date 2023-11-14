@@ -30,7 +30,7 @@ class PokemonCatchService
   end
 
   def starter
-    Pokemon.find_by(dex_id: Pokemon::STARTER_DEX_IDS.sample)
+    Pokemon.find_by(dex_id: Pokemon::STARTER_DEX_IDS.sample) || Pokemon.first
   end
 
   def find_or_create_user_pokemon

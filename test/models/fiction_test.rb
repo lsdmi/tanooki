@@ -7,7 +7,7 @@ class FictionTest < ActiveSupport::TestCase
     @user = users(:user_one)
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author',
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                           total_chapters: 5, translator: 'Test Translator', user_id: @user.id)
+                           total_chapters: 5, user_id: @user.id)
     @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'),
                                                        'image/svg'))
   end
@@ -83,16 +83,6 @@ class FictionTest < ActiveSupport::TestCase
 
   test 'total_chapters should not be negative' do
     @fiction.total_chapters = -1
-    assert_not @fiction.valid?
-  end
-
-  test 'translator should not be too short' do
-    @fiction.translator = 'a' * 2
-    assert_not @fiction.valid?
-  end
-
-  test 'translator should not be too long' do
-    @fiction.translator = 'a' * 51
     assert_not @fiction.valid?
   end
 

@@ -22,6 +22,7 @@ class Scanlator < ApplicationRecord
   before_validation :cleanup_member_ids
 
   validates :avatar, :banner, presence: true
+  validates :description, length: { minimum: 3, maximum: 255 }, allow_blank: true
   validates :member_ids, presence: { message: 'мусить бути принаймні один учасник' }
   validates :title, length: { minimum: 3, maximum: 100 }
   validates :telegram_id, length: { minimum: 3, maximum: 50 }, allow_blank: true

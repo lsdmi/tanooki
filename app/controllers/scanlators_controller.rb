@@ -24,7 +24,7 @@ class ScanlatorsController < ApplicationController
 
     if @scanlator.save
       ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
-      redirect_to scanlators_path, notice: 'Команду додано.'
+      redirect_to scanlator_path(@scanlator), notice: 'Команду додано.'
     else
       render 'new', status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class ScanlatorsController < ApplicationController
   def update
     if @scanlator.update(scanlator_params)
       ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
-      redirect_to scanlators_path, notice: 'Команду оновлено.'
+      redirect_to scanlator_path(@scanlator), notice: 'Команду оновлено.'
     else
       render 'edit', status: :unprocessable_entity
     end
@@ -59,7 +59,7 @@ class ScanlatorsController < ApplicationController
 
   def scanlator_params
     params.require(:scanlator).permit(
-      :avatar, :banner, :telegram_id, :title, member_ids: []
+      :avatar, :banner, :description, :telegram_id, :title, member_ids: []
     )
   end
 
