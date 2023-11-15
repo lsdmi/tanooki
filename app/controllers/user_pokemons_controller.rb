@@ -43,10 +43,12 @@ class UserPokemonsController < ApplicationController
   end
 
   def refresh_screen
+    selected_pokemon = UserPokemon.find(params[:user_pokemon_id])
+
     turbo_stream.update(
       'pokemon-data-screen',
       partial: 'users/pokemons/list',
-      locals: { pokemons:, selected_pokemon: pokemons.first, descendant: pokemons.first.pokemon.descendant }
+      locals: { pokemons:, selected_pokemon:, descendant: selected_pokemon.pokemon.descendant }
     )
   end
 
@@ -59,10 +61,10 @@ class UserPokemonsController < ApplicationController
 
     if rand(2).zero?
       PokemonCatchService.new(pokemon_id: user_pokemon.pokemon.id, user_id: current_user.id).evolve
-      @alert = UserPokemon::EVOLUTION_TRAINING_SUCCESS
+      @alert = "#{user_pokemon.pokemon.name} набув нового якісного рівня!"
     else
       user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1)
-      @alert = UserPokemon::BATTLE_TRAINING_SUCCESS
+      @alert = "#{user_pokemon.pokemon.name} набув нового бойового досвіду!"
     end
   end
 

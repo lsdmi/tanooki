@@ -12,6 +12,15 @@ class SearchController < ApplicationController
 
     @tag = Tag.find_by(name: params[:search])
     set_tag_logic if @tag
+
+    respond_to do |format|
+      format.html { render 'index' }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          'search-page', partial: 'search_page', locals: { results: @results, fictions: @fictions, videos: @videos }
+        )
+      end
+    end
   end
 
   private
@@ -54,7 +63,7 @@ class SearchController < ApplicationController
     if Searchkick.client.ping
       Fiction.search(
         params[:search],
-        fields: ['title^2', 'alternative_title', 'english_title']
+        fields: ['title^2', 'alternative_title', 'author', 'english_title']
       ).includes([{ cover_attachment: :blob }, :chapters, :genres])
     else
       SearchService.fictions(params[:search])

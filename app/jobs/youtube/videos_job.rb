@@ -9,14 +9,25 @@ module Youtube
     MAX_TAG_LENGTH = 255
 
     def perform(channel_id)
-      youtube = Google::Apis::YoutubeV3::YouTubeService.new
-      youtube.key = ENV.fetch('YOUTUBE_API_KEY')
+      @api_call_executed ||= false
+      @@mutex ||= Mutex.new
 
-      response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
-      video_ids = response.items.map { |item| item.id.video_id }.compact
+      @@mutex.synchronize do
+        unless @api_call_executed
+          youtube = Google::Apis::YoutubeV3::YouTubeService.new
+          youtube.key = ENV.fetch('YOUTUBE_API_KEY')
 
-      video_ids.each do |video_id|
-        create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
+          response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
+          video_ids = response.items.map { |item| item.id.video_id }.compact
+
+          ActiveRecord::Base.transaction do
+            video_ids.each do |video_id|
+              create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
+            end
+          end
+
+          @api_call_executed = true
+        end
       end
     end
 

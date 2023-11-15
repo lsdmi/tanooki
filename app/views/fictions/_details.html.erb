@@ -14,9 +14,9 @@
       <div class="mr-2 shrink-0 flex flex-col justify-center">
         <%= image_tag 'author.svg', class: 'h-12 inline-block', alt: 'author' %>
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col justify-center">
         <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">автор</p>
-        <%= tag.p fiction.author, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 line-clamp-1' %>
+        <%= button_to fiction.author, search_index_path, method: :get, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-900 line-clamp-1 hover:underline hover:text-emerald-600', params: { search: [fiction.author] } %>
       </div>
     </div>
     <%= tag.div class: 'flex' do %>
@@ -26,7 +26,7 @@
       <div class="flex flex-col justify-center">
         <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">перекладач</p>
         <% fiction.scanlators.each do |scanlator| %>
-          <%= link_to scanlator.title, scanlator_path(scanlator), class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-900 line-clamp-1 text-emerald-700 hover:underline hover:text-emerald-600 inline-block' %>
+          <%= link_to scanlator.title, scanlator_path(scanlator), class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-900 line-clamp-1 hover:underline hover:text-emerald-600 inline-block' %>
         <% end %>
       </div>
     <% end if fiction.scanlators.any? %>

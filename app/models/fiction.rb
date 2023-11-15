@@ -46,6 +46,7 @@ class Fiction < ApplicationRecord
 
   def search_data
     {
+      author:,
       alternative_title:,
       english_title:,
       title:

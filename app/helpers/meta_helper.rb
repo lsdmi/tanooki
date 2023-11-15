@@ -1,46 +1,6 @@
 # frozen_string_literal: true
 
 module MetaHelper
-  RANOBE_SEO_DESCRIPTION = 'Найбільша колекція новел та фанфіків українською мовою. ' \
-                           'Захоплюючі історії, герої та світи. ' \
-                           'Щоденні оновлення на нашому сайті!'
-
-  YOUTUBE_SEO_DESCRIPTION = 'Захоплюючі відео від талановитих українських ютуберів про аніме, манґу та культуру Сходу.'
-
-  def meta_cover
-    if @publication&.persisted?
-      @publication.cover
-    elsif @fiction&.persisted?
-      @fiction.cover
-    elsif @chapter&.persisted?
-      @chapter.fiction.cover
-    elsif @youtube_video&.persisted?
-      @youtube_video.thumbnail
-    elsif @scanlator&.persisted?
-      @scanlator.avatar.presence || url_for(asset_path('scanlator_avatar.webp'))
-    end
-  end
-
-  def meta_description
-    if publication_description_present?
-      punch(publication_description)
-    elsif fiction_description_present?
-      fiction_description
-    elsif chapter_content_present?
-      chapter_description
-    elsif request_path_is_fictions_path?
-      RANOBE_SEO_DESCRIPTION
-    elsif youtube_video_description?
-      @youtube_video.description
-    elsif request.path == youtube_videos_path
-      YOUTUBE_SEO_DESCRIPTION
-    elsif @scanlator&.persisted?
-      "#{@scanlator.title} перекладають ранобе та фанфіки українською (#{@scanlator.fictions.map(&:title).to_sentence.truncate(75)}). Читайте онлайн на Бака!"
-    else
-      default_description
-    end
-  end
-
   def meta_image
     result_cover = case request.path
                    when root_path then highlights_cover
@@ -79,60 +39,16 @@ module MetaHelper
     "#{@chapter.fiction_title} | #{@chapter.display_title}"
   end
 
-  def chapter_description
-    if @chapter.scanlators.any?
-      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" у перекладі команди \"#{@chapter.scanlators.map(&:title).to_sentence}\"."
-    else
-      "Читати #{@chapter.display_title} \"#{@chapter.fiction_title}\" за авторства #{@chapter.author}."
-    end
-  end
-
-  def chapter_content_present?
-    @chapter&.content.present?
-  end
-
-  def default_description
-    'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
-  end
-
   def fictions_cover
     params[:action] == 'index' ? @latest_updates&.first&.cover : meta_cover
-  end
-
-  def fiction_description
-    if @fiction.scanlators.any?
-      "Читати ранобе \"#{@fiction.title}\" у перекладі команди \"#{@fiction.scanlators.map(&:title).to_sentence}\"."
-    else
-      "Читати ранобе \"#{@fiction.title}\" за авторства \"#{@fiction.author}\"."
-    end
   end
 
   def youtube_video_cover
     @highlights.first&.thumbnail
   end
 
-  def youtube_video_description?
-    @youtube_video&.description.present?
-  end
-
-  def fiction_description_present?
-    @fiction&.description.present?
-  end
-
   def highlights_cover
     @highlights.first&.cover
-  end
-
-  def publication_description
-    @publication.description.to_plain_text
-  end
-
-  def publication_description_present?
-    @publication&.description.present?
-  end
-
-  def request_path_is_fictions_path?
-    request.path == fictions_path
   end
 
   def results_cover

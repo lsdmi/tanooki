@@ -15,7 +15,7 @@
       <% end %>
     <% else %>
       <%= turbo_frame_tag "pokemons-screen" do %>
-        <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, all_pokemon_count: @all_pokemon_count, all_caught_count: @all_caught_count, selected_pokemon: @selected_pokemon, descendant: @descendant, battle_history: @battle_history %>
+        <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, selected_pokemon: @selected_pokemon, descendant: @descendant, battle_history: @battle_history %>
       <% end %>
     <% end %>
   </div>

@@ -2,6 +2,6 @@
   <% if pokemons.any? %>
     <%= render 'users/pokemons/data_screens', pokemons:, dex_leaderboard:, selected_pokemon:, descendant:, battle_history: %>
   <% else %>
-    <%= render 'users/pokemons/cta', all_pokemon_count:, all_caught_count: %>
+    <%= render 'users/pokemons/cta' %>
   <% end %>
 </div>

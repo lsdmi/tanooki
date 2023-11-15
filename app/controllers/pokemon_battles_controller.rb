@@ -13,14 +13,6 @@ class PokemonBattlesController < ApplicationController
 
   private
 
-  def all_caught_count
-    UserPokemon.count
-  end
-
-  def all_pokemon_count
-    Pokemon.count
-  end
-
   def battle_history
     current_user.battle_logs_includes_details.sort_by { |log| -log.id }
   end
@@ -75,8 +67,7 @@ class PokemonBattlesController < ApplicationController
     turbo_stream.update(
       'pokemons-screen',
       partial: 'users/dashboard/pokemons',
-      locals: { pokemons:, dex_leaderboard:, all_pokemon_count:, all_caught_count:, selected_pokemon:, descendant:,
-                battle_history: }
+      locals: { pokemons:, dex_leaderboard:, selected_pokemon:, descendant:, battle_history: }
     )
   end
 

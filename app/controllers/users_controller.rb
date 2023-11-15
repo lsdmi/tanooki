@@ -34,10 +34,7 @@ class UsersController < ApplicationController
   def pokemons
     @pokemons = pokemon_list
 
-    if @pokemons.empty?
-      @all_pokemon_count = Pokemon.count
-      @all_caught_count = UserPokemon.count
-    else
+    if @pokemons.any?
       @selected_pokemon = @pokemons.first
       @descendant = @selected_pokemon.pokemon.descendant
       @dex_leaderboard = User.dex_leaders.first(50)

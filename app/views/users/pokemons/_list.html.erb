@@ -7,7 +7,7 @@
     <% pokemons.in_groups_of(8).each_with_index do |group, group_index| %>
       <% group.each_with_index do |user_pokemon, index| %>
         <% if user_pokemon.present? %>
-          <%= button_to pokemon_details_path(pokemon_id: user_pokemon), data: { turbo_stream: "", "turbo-method": :post, controller: 'pokemon-image-click', action: 'click->pokemon-image-click#addSelected' }, remote: true, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if index.zero? && group_index.zero?}" do %>
+          <%= button_to pokemon_details_path(pokemon_id: user_pokemon), data: { turbo_stream: "", "turbo-method": :post, controller: 'pokemon-image-click', action: 'click->pokemon-image-click#addSelected' }, remote: true, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if selected_pokemon.id == user_pokemon.id}" do %>
             <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.sprite.blob.filename, class: 'w-auto cursor-pointer rounded-lg mb-3 transform transition duration-500 hover:scale-110' %>
           <% end %>
         <% else %>

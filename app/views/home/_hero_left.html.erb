@@ -1,4 +1,4 @@
-<div class="mt-3 float-left ">
+<div class="mt-3 float-left w-full">
   <%= render 'shared/divider_shiny_pink', caption: 'Популярне' %>
   <% publications.each_with_index do |publication, i| %>
     <%= link_to tale_path(publication) do %>
@@ -6,9 +6,9 @@
         <div class="rounded-xl float-left relative w-full overflow-hidden h-36">
           <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 absolute m-auto w-full l-[-9999px] r-[-9999px] h-36 object-cover" %>
         </div>
-        <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left px-0 pt-4 pb-2 flex items-center">
-          <%= tag.div i+1, class: 'font-oswald text-gray-400 text-4xl top-0 left-0 text-center inline-block align-middle' %>
-          <div class="col-span-5 lg:col-span-4">
+        <div class="grid grid-cols-6 w-full float-left px-0 pt-4 pb-2 flex items-center">
+          <%= tag.div i+1, class: 'font-oswald text-gray-400 text-3xl text-center inline-block' %>
+          <div class="col-span-5">
             <div class="w-full float-left rounded-xl mb-1">
               <%= tag.span "#{time_ago_in_words(publication.created_at)} тому", class: 'text-gray-500 text-xs float-left' %>
               <span class="text-gray-500 text-xs float-right mr-2 flex align-center">
@@ -20,7 +20,7 @@
                 <%= tag.span publication.comments_count, class: 'ml-1 inline-block' %>
               </span>
             </div>
-            <%= tag.h2 publication.title.truncate(55), class: 'font-oswald text-gray-700 float-left text-xl md:text-2xl md:leading-6 lg:leading-6 lg:text-2xl tracking-tight w-full' %>
+            <%= tag.h2 publication.title, class: 'font-oswald text-gray-700 float-left text-xl md:text-2xl md:leading-6 lg:leading-6 lg:text-2xl tracking-tight w-full line-clamp-2' %>
           </div>
         </div>
         <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
