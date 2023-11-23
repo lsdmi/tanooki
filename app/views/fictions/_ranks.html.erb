@@ -1,0 +1,14 @@
+<div class="mt-4 block">
+  <% @ranks.each do |rank| %>
+    <%= tag.div class: 'mr-2 2xl:mr-4 inline-block w-[70px] 2xl:w-[85px] text-center mb-2' do %>
+      <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"), class: 'h-16 w-16 2xl:h-20 2xl:w-20 inline-block transform transition duration-500 hover:scale-110' %>
+      <div class="">
+        <%= tag.p class: 'text-center mt-1 -skew-x-12' do %>
+          <%= tag.span "##{rank.second}", class: 'font-bold text-base 2xl:text-lg text-gray-900' %>
+          <%= tag.span "в жанрі", class: 'font-light text-xs text-gray-500' %>
+        <% end %>
+        <%= tag.p rank.first, class: '-skew-x-12 text-center font-bold text-sm text-gray-900 lowercase -mt-1' %>
+      </div>
+    <% end if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"].present? %>
+  <% end %>
+</div>

@@ -1,6 +1,30 @@
 # frozen_string_literal: true
 
 module FictionsHelper
+  GENRE_BADGES = {
+    'BL' => 'bl',
+    'GL' => 'gl',
+    'Бойовик' => 'action',
+    'Вуся' => 'wuxia',
+    'Гарем' => 'harem',
+    'Детектив' => 'detective',
+    'Драма' => 'drama',
+    'Жахи' => 'horror',
+    'Ісекай' => 'isekai',
+    'Історичне' => 'history',
+    'Комедія' => 'comedy',
+    'ЛГБТ' => 'lgbt',
+    'Містика' => 'mystic',
+    'Омегаверс' => 'omegaverse'
+  }.freeze
+
+  STATUS_COLORS = {
+    announced: 'text-amber-700',
+    dropped: 'text-red-700',
+    ongoing: 'text-sky-700',
+    finished: 'text-emerald-700'
+  }.freeze
+
   def fiction_author(fiction)
     if fiction.scanlators.any?
       scanlator_links = fiction.scanlators.map do |scanlator|

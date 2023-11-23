@@ -1,72 +1,72 @@
-<div class="text-gray-500 sm:text-lg col-span-5 md:col-span-3 overflow-y-auto max-h-[26rem] md:max-h-[35rem] lg:max-h-[27rem] xl:max-h-[32rem] 2xl:max-h-[35rem]">
-  <%= tag.h2 fiction.title, class: 'text-center my-2 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl' %>
-
-  <% if fiction.genres.any? %>
-    <div class="mb-2 overflow-hidden break-words text-center">
-      <% fiction.genres.each do |genre| %>
-        <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-xs sm:text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
-      <% end %>
+<div class="sm:text-lg col-span-5 md:col-span-3  mx-2 font-light">
+  <%= tag.h2 fiction.title, class: 'my-2 text-2xl text-gray-900 xl:text-3xl -skew-x-12 font-bold' %>
+  <div>
+    <div class="inline-flex -skew-x-12">
+      <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">автор:</p>
+      <%= button_to fiction.author, search_index_path, method: :get, class: 'ml-1 text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-800 line-clamp-1 hover:underline hover:text-emerald-600', params: { search: [fiction.author] } %>
     </div>
-  <% end %>
-
-  <div class="grid gap-2 grid-cols-3 md:grid-cols-3 my-4 justify-center mr-2">
+  </div>
+  <div>
+    <div class="inline-flex -skew-x-12">
+      <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500 mr-1">перекладач:</p>
+      <%= fiction.scanlators.map { |scanlator| link_to(scanlator.title, scanlator_path(scanlator), class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-800 line-clamp-1 hover:underline hover:text-emerald-600 inline-block ml-1') }.join(', ').html_safe %>
+    </div>
+  </div>
+  <%= render 'ranks', ranks: @ranks if (@ranks.keys & ['Детектив', 'BL', 'GL', 'Бойовик', 'Вуся', 'Гарем', 'Драма', 'Жахи', 'Комедія']).any? %>
+  <div class="inline-flex md:flex space-x-4 mt-3 mb-4 sm:mb-0">
     <div class="flex">
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'author.svg', class: 'h-12 inline-block', alt: 'author' %>
-      </div>
-      <div class="flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">автор</p>
-        <%= button_to fiction.author, search_index_path, method: :get, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-900 line-clamp-1 hover:underline hover:text-emerald-600', params: { search: [fiction.author] } %>
-      </div>
-    </div>
-    <%= tag.div class: 'flex' do %>
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'translator.svg', class: 'h-12 inline-block', alt: 'translator' %>
-      </div>
-      <div class="flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">перекладач</p>
-        <% fiction.scanlators.each do |scanlator| %>
-          <%= link_to scanlator.title, scanlator_path(scanlator), class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-900 line-clamp-1 hover:underline hover:text-emerald-600 inline-block' %>
-        <% end %>
-      </div>
-    <% end if fiction.scanlators.any? %>
-    <div class="flex">
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'status.svg', class: 'h-12 inline-block', alt: 'author' %>
-      </div>
-      <div class="flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">переклад</p>
-        <%= tag.p Fiction.statuses[fiction.status], class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 line-clamp-1' %>
-      </div>
-    </div>
-    <%= tag.div class: 'flex' do %>
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'chapter.svg', class: 'h-12 inline-block', alt: 'author' %>
+      <div class="mr-2 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
+        <%= image_tag 'chapter.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'chapter' %>
       </div>
       <div class="mt-2 md:mt-1 flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">розділів</p>
-        <%= tag.p fiction.total_chapters.zero? ? fiction.chapters.size : "#{unique_chapters(fiction.chapters).size} / #{fiction.total_chapters}", class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 line-clamp-1' %>
-      </div>
-    <% end %>
-    <div class="flex">
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'views.svg', class: 'h-12 inline-block', alt: 'author' %>
-      </div>
-      <div class="flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">переглядів</p>
-        <%= tag.p fiction.views, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 line-clamp-1' %>
+        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">розділів</p>
+        <%= tag.p unique_chapters(fiction.chapters).size, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
       </div>
     </div>
-    <%= tag.div class: 'flex' do %>
-      <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'calendar.svg', class: 'h-12 inline-block', alt: 'author' %>
+    <div class="flex">
+      <div class="mr-1 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
+        <%= image_tag 'views.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'views' %>
       </div>
-      <div class="flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">оновлено</p>
-        <%= tag.p "#{time_ago_in_words(fiction.chapters.order(created_at: :desc).first.created_at)} тому", class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 line-clamp-1' %>
+      <div class="mt-2 md:mt-1 flex flex-col justify-center">
+        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">переглядів</p>
+        <%= tag.p fiction.views, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
       </div>
-    <% end if fiction.chapters.any? %>
+    </div>
+    <div class="flex">
+      <div class="mr-3 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
+        <%= image_tag 'bookmark.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'bookmark' %>
+      </div>
+      <div class="mt-2 md:mt-1 flex flex-col justify-center">
+        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">закладинок</p>
+        <%= tag.p fiction.readings.size, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="mr-2 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
+        <%= image_tag 'status.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'status' %>
+      </div>
+      <div class="mt-2 md:mt-1 flex flex-col justify-center">
+        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">статус</p>
+        <%= tag.p Fiction.statuses[fiction.status], class: "text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight #{FictionsHelper::STATUS_COLORS[fiction.status.to_sym]} -skew-x-12 -ml-1" %>
+      </div>
+    </div>
   </div>
-
-  <%= tag.p fiction.description, class: 'mb-4 font-light text-sm sm:text-base 2xl:text-lg whitespace-break-spaces' %>
+  <div class="">
+    <% if fiction.genres.any? %>
+      <div class="mt-4">
+        <p class="hidden md:block font-bold text-xs sm:text-sm text-gray-900 mr-1 -skew-x-12 mb-2">жанри:</p>
+        <div>
+          <ul class="mb-2 overflow-hidden break-words text-center text-left inline-block md:flex flex-wrap">
+            <% fiction.genres.each do |genre| %>
+              <div class="relative inline-block pr-2 xl:p-0 xl:mx-1">
+                <h2 class="relative w-full text-center mb-1 2xl:mb-3">
+                  <%= tag.span genre.name, class: "text-xs inline-block text-white font-bold leading-none px-4 py-2 relative uppercase z-10 bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br rounded-xl" %>
+                </h2>
+              </div>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

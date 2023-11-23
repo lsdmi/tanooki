@@ -141,7 +141,14 @@ class FictionsController < ApplicationController
     @comment = Comment.new
     @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
     @next_chapter = chapter_manager.next_chapter
+    @ranks = fiction_ranks
     duplicate_chapters(@fiction).any? ? split_chapter_by_user_id : split_chapter_list
+  end
+
+  def fiction_ranks
+    Rails.cache.fetch("fiction-#{@fiction.slug}-ranks", expires_in: 24.hours) do
+      FictionRanker.new(fiction: @fiction).call.sort_by { |genre, rank| rank }.to_h
+    end
   end
 
   def refresh_list

@@ -85,7 +85,7 @@ class Chapter < ApplicationRecord
   def telegram_send_message
     return unless (fiction.chapters.size % 25).zero?
 
-    TelegramJob.perform_later(object: self)
+    TelegramJob.set(wait: 10.seconds).perform_later(object: self)
   end
 
   private
