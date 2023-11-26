@@ -36,6 +36,7 @@ when 'production'
   every 7.days do
     runner 'puts "Weekly job started"'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'
+    runner 'Youtube::TelegramJob.perform_now'
     runner 'puts "Weekly job finished"'
   end
 end

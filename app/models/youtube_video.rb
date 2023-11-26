@@ -13,6 +13,7 @@ class YoutubeVideo < ApplicationRecord
 
   validates :description, :published_at, :title, :thumbnail, :youtube_channel, :video_id, presence: true
 
+  scope :last_week, -> { where(published_at: 1.week.ago..) }
   scope :last_month, -> { where(published_at: 1.month.ago..) }
 
   def search_data

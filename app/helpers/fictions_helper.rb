@@ -15,7 +15,10 @@ module FictionsHelper
     'Комедія' => 'comedy',
     'ЛГБТ' => 'lgbt',
     'Містика' => 'mystic',
-    'Омегаверс' => 'omegaverse'
+    'Омегаверс' => 'omegaverse',
+    'Повсякденність' => 'lifeslice',
+    'Пригоди' => 'adventure',
+    'Романтика' => 'romance'
   }.freeze
 
   STATUS_COLORS = {

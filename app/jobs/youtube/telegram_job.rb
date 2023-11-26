@@ -1,0 +1,61 @@
+# frozen_string_literal: true
+
+module Youtube
+  class TelegramJob < ApplicationJob
+    queue_as :default
+
+    def perform
+      @api_call_executed ||= false
+      @@mutex ||= Mutex.new
+
+      @@mutex.synchronize do
+        unless @api_call_executed
+          return unless Rails.env.production?
+
+          TelegramBot.init
+          TelegramBot.bot.api.send_message(
+            chat_id: '@bakaTgTest',
+            text: text_message,
+            parse_mode: 'HTML'
+          )
+
+          @api_call_executed = true
+        end
+      end
+    end
+
+    private
+
+    def index_path
+      Rails.application.routes.url_helpers.youtube_videos_url(host: ApplicationHelper::PRODUCTION_URL)
+    end
+
+    def megal_icon(index)
+      case index
+      when 0
+        '🥇'
+      when 1
+        '🥈'
+      when 2
+        '🥉'
+      end
+    end
+
+    def text_message
+      ActionController::Base.helpers.sanitize(
+        "🌟 <i>Найпопулярніші відео тижня на <b><a href=\"#{index_path}\">Баці</a></b></i> 🌟 \n\n" \
+        "#{top_three.each_with_index.map { |video, index| "#{megal_icon(index)} <b><a href=\"#{video_path(video)}\">#{video.title}</a></b> #{megal_icon(index)}" }.join("\n\n")} \n\n" \
+        "🎬 <i>Насолоджуйтеся світом японської анімації на нашому сайті!</i> 🎬 \n\n " \
+        "<i><b>#щотижневий_ютуб</b></i>"
+      )
+    end
+
+    def top_three
+      YoutubeVideo.last_week.order(views: :desc).limit(3)
+    end
+
+    def video_path(video)
+      Rails.application.routes.url_helpers.youtube_video_url(video, host: ApplicationHelper::PRODUCTION_URL)
+    end
+  end
+end
