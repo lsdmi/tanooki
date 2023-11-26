@@ -1,22 +1,43 @@
-<div class="float-left w-full">
-  <div class="m-auto lg:w-[1250px] h-full">
-    <div class="relative float-left w-full mt-4">
-      <%= render 'shared/divider_shiny_pink', caption: 'Більше Новин' %>
-      <div class="relative float-left w-full sm:-mr-96">
-        <main class="mr-2 lg:mr-96">
-          <div class="relative float-left w-full">
-            <ul class="relative float-left w-full list-none mx-[0.1rem] xl:ml-0">
-              <%= render "home/publications", publications: @publications %>
-              <%= render "home/next_page", pagy: @pagy %>
-            </ul>
-          </div>
-        </main>
-        <aside class="sticky top-8 invisible lg:visible float-right h-[45rem]">
-          <div class="float-left relative ml-14 w-80">
-            <%= render 'shared/videos', videos: @videos %>
-          </div>
-        </aside>
+<section class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto font-oswald z-10 relative">
+  <div class="mt-4">
+    <div class="mb-8 mx-4">
+      <%= render 'root/hero' %>
+    </div>
+    <div class="my-4 mx-5">
+      <p class="font-oswald uppercase leading-5 text-gray-900 text-4xl font-extrabold">
+      Популярне <span class="text-emerald-600">ранобе</span></p>
+    </div>
+    <div class="mb-4 mx-5 flex">
+      <p class="font-oswald leading-5 text-gray-600 text-base font-light flex-1">Цього місяця читачі обирають такі тайтли:</p>
+      <%= link_to fictions_path, class: 'inline-flex font-oswald text-emerald-700 text-base hover:text-emerald-600 font-light hover:underline' do %>
+        Усі ранобе
+        <svg class="w-4 h-4 mt-2 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
+        </svg>
+      <% end %>
+    </div>
+    <div class="mt-4 mx-4">
+      <%= render 'root/fictions', fictions: @top_fictions %>
+    </div>
+    <div class="mb-4">
+      <%= render 'shared/ads', advertisement: @advertisement %>
+    </div>
+    <div class="flex mb-2 mx-2">
+      <div class="mr-2 shrink-0 hidden sm:flex flex-col justify-center">
+        <%= image_tag 'youtube.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+      </div>
+      <div class="flex flex-col justify-center ml-2 sm:ml-0 my-2 sm:my-0">
+        <p class="font-oswald uppercase leading-5 text-gray-900 text-4xl font-extrabold">
+          Краще на <span class="text-red-600">YouTube</span>
+        </p>
       </div>
     </div>
+    <div class="flex mb-8 mx-2">
+      <%= render 'root/videos', videos: @videos %>
+    </div>
+    <div class="mb-4 flex text-center justify-center">
+      <%= link_to 'Більше відео', youtube_videos_path, class: 'uppercase w-4/5 font-oswald text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
+    </div>
+    <%= render 'root/tales', tales: @tales, top_tales: @top_tales %>
   </div>
 </div>

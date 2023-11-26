@@ -2,7 +2,6 @@
 
 class TalesController < ApplicationController
   before_action :set_tale, :track_visit, only: :show
-  before_action :load_advertisement, only: %i[index show]
 
   def index
     @highlights = highlights

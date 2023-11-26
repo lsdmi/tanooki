@@ -1,8 +1,0 @@
-<%= link_to advertisement.resource, class: 'sm:hidden relative overflow-hidden', aria: { label: advertisement.cover.blob.filename } do %>
-  <%= image_tag url_for(advertisement.poster),
-                alt: advertisement.cover.blob.filename,
-                class: 'w-full h-36',
-                height: '144',
-                width: '375'
-  %>
-<% end %>

@@ -1,4 +1,4 @@
-<nav class="relative z-50 bg-white pt-2 shadow-xl lg:shadow-none mb-2 lg:mb-0">
+<nav class="relative z-50 bg-white shadow-xl lg:shadow-none mb-2 lg:mb-0">
   <div class="max-w-screen-xl mx-auto px-4 md:px-6">
     <div class="grid grid-cols-3 no-ads">
       <div class="flex place-items-center mt-2">
@@ -7,13 +7,13 @@
         <% end %>
 
         <%= link_to 'https://www.buymeacoffee.com/bakaInUa', class: 'inline-flex items-center p-1 text-sm font-medium rounded-lg', area: { current: 'page' } do %>
-          <%= image_tag 'buyme.svg', class: 'hidden md:block h-16 transform transition duration-500 hover:scale-110', alt: 'logo' %>
+          <%= image_tag 'buyme.svg', class: 'hidden md:block h-14 transform transition duration-500 hover:scale-110', alt: 'logo' %>
           <%= image_tag 'buymecoffee.svg', class: 'h-6 sm:h-8 block md:hidden transform transition duration-500 hover:scale-110', alt: 'logo', width: '32', height: '32' %>
         <% end %>
       </div>
       <div class="flex justify-center place-items-center">
         <a href="/" class="flex items-center">
-          <%= image_tag 'logo-black.svg', class: 'h-12 md:h-16 transition duration-500 hover:scale-110', alt: 'logo', width: '192', height: '64' %>
+          <%= image_tag 'logo-black.svg', class: 'h-10 md:h-12 transition duration-500 hover:scale-110', alt: 'logo', width: '192', height: '64' %>
         </a>
       </div>
       <div class="flex justify-end place-items-center mt-2">
@@ -24,7 +24,7 @@
             <%= render 'shared/mobile_user_dropdown' %>
           </div>
         <% else %>
-          <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-medium text-gray-900 text-xl px-0 sm:px-3 lg:px-5 py-2 lg:py-2.5 hover:text-gray-600 focus:outline-none transition duration-500 hover:scale-110', area: { current: 'page' } %>
+          <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-medium text-gray-900 text-lg px-0 sm:px-3 lg:px-5 py-2 lg:py-2.5 hover:text-gray-600 focus:outline-none transition duration-500 hover:scale-110', area: { current: 'page' } %>
         <% end %>
       </div>
       <%= render 'shared/mobile_search' %>
@@ -36,10 +36,11 @@
     <div class="flex justify-center items-center place-items-center">
       <div class="flex flex-row mt-0 space-x-8 text-sm font-medium">
         <% trending_tags.each do |trending| %>
-          <%= link_to trending.name, search_index_path(search: [trending.name]), class: 'font-oswald text-gray-900 text-lg hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+          <%= link_to trending.name, search_index_path(search: [trending.name]), class: 'font-oswald text-gray-900 text-base hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
         <% end %>
-        <%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-lg hover:text-rose-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
-        <%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-lg hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+        <%= link_to 'Блоги', tales_path, class: 'font-oswald text-sky-800 text-base hover:text-sky-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-sky-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+        <%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-base hover:text-emerald-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+        <%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-base hover:text-rose-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
       </div>
     </div>
   </div>

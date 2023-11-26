@@ -2,7 +2,6 @@
 
 class YoutubeVideosController < ApplicationController
   before_action :set_video, :track_visit, only: :show
-  before_action :load_advertisement
 
   def index
     @highlights = highlights

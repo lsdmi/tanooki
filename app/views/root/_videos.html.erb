@@ -1,0 +1,26 @@
+<section class="antialiased font-oswald">
+  <div class="max-w-screen-xl px-4 mx-auto lg:px-6">
+    <% videos.each do |video| %>
+      <div class="mt-4 mb-8 lg:mb-1">
+        <div class="flex flex-col lg:items-center lg:flex-row gap-y-4 sm:gap-y-8 lg:gap-x-8 xl:gap-x-12">
+          <div class="rounded-xl float-left relative w-full overflow-hidden mb-1">
+            <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}", width: '672', height: '384', class: 'w-full md:w-[revert-layer] rounded-xl m-auto object-cover h-48 sm:h-72 md:h-96', allowfullscreen: true %>
+          </div>
+          <div class="w-full space-y-6 lg:max-w-lg shrink-0">
+            <div class="space-y-3">
+              <%= link_to youtube_video_path(video) do %>
+                <%= tag.h3 video.title, class: 'text-3xl font-bold leading-tight text-gray-900 sm:text-4xl hover:underline' %>
+              <% end %>
+              <div class="line-clamp-1 sm:mb-1">
+                <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-sm sm:text-xl font-light hover:underline', target: '_blank' %>
+                <%= tag.span "∘", class: 'text-base sm:text-xl font-light' %>
+                <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-sm sm:text-lg md:text-base font-light' %>
+              </div>
+              <%= tag.p video.description.to_s, class: 'line-clamp-4 lg:line-clamp-5 text-base font-normal text-gray-500 sm:text-lg' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

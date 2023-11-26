@@ -8,7 +8,6 @@ class FictionsController < ApplicationController
   before_action :set_fiction, only: %i[show edit update destroy]
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_visit, only: :show
-  before_action :load_advertisement, only: %i[index show]
   before_action :verify_permissions, except: %i[index new create show]
 
   def index

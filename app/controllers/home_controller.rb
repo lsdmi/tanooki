@@ -1,37 +1,36 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  before_action :load_advertisement, only: :index
+  before_action :load_advertisement
 
   def index
-    @highlights = highlights
-    @most_popular = most_popular
-    @newest = newest
-    @pagy, @publications = pagy_countless(remaining, items: 5)
+    @top_fictions = top_fictions
     @videos = videos
-
-    render 'home/scrollable_list' if params[:page]
+    @top_tales = top_tales
+    @tales = tales
   end
 
   private
 
-  def highlights
-    Publication.highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).first(3)
+  def tales
+    Publication.includes(:rich_text_description).order(created_at: :desc).excluding(@top_tales).limit(10)
   end
 
-  def most_popular
-    Publication.includes({ cover_attachment: :blob })
-               .last_month.excluding(@highlights).order(views: :desc).limit(5)
+  def top_fictions
+    Rails.cache.fetch('top_fictions', expires_in: 12.hours) do
+      Fiction.joins(:readings).includes([{ cover_attachment: :blob }, :scanlators]).group(:id).where(readings: { created_at: 1.month.ago..Time.now }).order('COUNT(readings.fiction_id) DESC').limit(10)
+    end
   end
 
-  def newest
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).excluding(@highlights, @most_popular).limit(10)
+  def top_tales
+    Rails.cache.fetch('top_tales', expires_in: 12.hours) do
+      Publication.highlights.includes({ cover_attachment: :blob }, :rich_text_description).last_month.order(views: :desc).limit(2)
+    end
   end
 
-  def remaining
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
+  def videos
+    Rails.cache.fetch('top_videos', expires_in: 12.hours) do
+      YoutubeVideo.includes(:rich_text_description, :youtube_channel).last_week.order(views: :desc).limit(2)
+    end
   end
 end

@@ -10,7 +10,7 @@ module MetaHelper
                    else meta_cover
                    end
 
-    url_for(result_cover || asset_path('login.jpeg'))
+    url_for(result_cover || highlights_cover)
   end
 
   def meta_title
@@ -48,7 +48,7 @@ module MetaHelper
   end
 
   def highlights_cover
-    @highlights.first&.cover
+    asset_path('psyduck_background.webp')
   end
 
   def results_cover

@@ -1,0 +1,23 @@
+<div class="overflow-x-auto mx-auto font-oswald">
+  <div class="flex flex-nowrap">
+    <% fictions.each do |fiction| %>
+      <div class="inline-block mr-3">
+        <%= link_to fiction_path(fiction) do %>
+          <div class="relative w-56 md:w-64">
+            <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "h-80 md:h-96 w-56 md:w-64 rounded-lg object-cover" %>
+            <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-80 md:h-96 overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+          </div>
+        <% end %>
+        <%= link_to fiction_path(fiction) do %>
+          <%= tag.h2 fiction.title, class: 'line-clamp-2 mt-2 mb-1 text-center text-base text-gray-700 hover:underline hover:text-gray-800' %>
+        <% end %>
+        <div class="-skew-x-12 text-center">
+          <%= tag.p class: 'font-light text-xs text-gray-500' do %>
+            <%= tag.span 'переклад: ' %>
+            <%= tag.span fiction.scanlators.map { |scanlator| link_to(scanlator.title, scanlator_path(scanlator), class: 'font-extrabold tracking-tight text-emerald-800 hover:underline hover:text-emerald-600') }.join(', ').html_safe %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

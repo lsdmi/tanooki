@@ -1,11 +1,11 @@
-<div class="w-full lg:flex lg:w-auto lg:order-1 col-span-3 pb-4" id="mobile-menu-search">
+<div class="w-full lg:flex lg:w-auto lg:order-1 col-span-3 pb-4 lg:pb-0" id="mobile-menu-search">
   <ul class="flex p-0 font-medium flex-row space-x-4 justify-center lg:hidden">
-    <li><%= link_to 'Блоги', root_path, class: 'font-oswald text-gray-800 text-lg hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
-    <li><%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-lg hover:text-rose-600 transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
-    <li><%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-lg hover:text-emerald-600 transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+    <li><%= link_to 'Блоги', tales_path, class: 'font-oswald text-gray-800 text-base hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+    <li><%= link_to 'YouTube', youtube_videos_path, class: 'font-oswald text-rose-800 text-base hover:text-rose-600 transition duration-500 transform hover:scale-110 hover:border-rose-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
+    <li><%= link_to 'Ранобе', fictions_path, class: 'font-oswald text-emerald-800 text-base hover:text-emerald-600 transition duration-500 transform hover:scale-110 hover:border-emerald-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %></li>
   </ul>
 
-  <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mt-4 lg:hidden" } do |form| %>
+  <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex items-center mt-2 lg:hidden" } do |form| %>
     <label for="search-mobile" class="sr-only">Search</label>
     <div class="relative w-full">
       <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -13,9 +13,9 @@
           <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
         </svg>
       </div>
-      <%= form.input nil, type: 'search', input_html: { id: 'search-mobile', class: 'font-oswald font-light block px-4 pl-10 w-full text-xl rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center' }, placeholder: 'Пошук', required: true %>
+      <%= form.input nil, type: 'search', input_html: { id: 'search-mobile', class: 'font-oswald font-light block px-4 pl-10 w-full text-lg rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center' }, placeholder: 'Пошук', required: true %>
     </div>
-    <button type="submit" class="font-oswald font-light inline-flex items-center p-2.5 ml-2 text-xl font-medium text-white rounded-lg border border-gray-700 focus:ring-4 focus:outline-none bg-gray-600 hover:bg-gray-700 focus:ring-gray-800">
+    <button type="submit" class="font-oswald font-light inline-flex items-center p-2 ml-2 text-lg font-medium text-white rounded-lg border border-gray-700 focus:ring-4 focus:outline-none bg-gray-600 hover:bg-gray-700 focus:ring-gray-800">
       Шукати
     </button>
   <% end %>

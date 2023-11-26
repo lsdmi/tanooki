@@ -6,7 +6,7 @@ class ChaptersController < ApplicationController
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update destroy]
-  before_action :track_visit, :load_advertisement, :track_reading_progress, only: :show
+  before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
 
   def show

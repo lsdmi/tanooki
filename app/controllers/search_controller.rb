@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SearchController < ApplicationController
-  before_action :load_advertisement
-
   def index
     return redirect_to root_path if params[:search].nil?
 

@@ -1,5 +1,5 @@
 <%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "hidden mr-3 lg:inline-block" } do |form| %>
-  <label for="search-bar" class="mb-2 text-sm font-medium sr-only text-gray-200">Пошук</label>
+  <label for="search-bar" class="text-sm font-medium sr-only text-gray-200">Пошук</label>
   <div class="relative">
     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
       <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -10,7 +10,7 @@
                   type: 'search',
                   input_html: {
                     id: 'search-bar',
-                    class: 'font-oswald font-light block px-4 pl-10 w-full text-xl rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center'
+                    class: 'font-oswald font-light block px-5 pl-12 w-full text-lg rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center'
                   },
                   placeholder: 'Пошук',
                   required: true %>

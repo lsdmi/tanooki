@@ -1,0 +1,6 @@
+<article>
+  <h2 class="mb-2 text-2xl font-bold tracking-tight text-white hover:underline">
+    <%= link_to tale.title, tale_path(tale) %>
+  </h2>
+  <%= tag.p punch(tale.description.to_plain_text), class: 'mb-4 font-light text-gray-300 text-base' %>
+</article>

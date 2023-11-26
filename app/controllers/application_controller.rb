@@ -45,6 +45,6 @@ class ApplicationController < ActionController::Base
   end
 
   def load_advertisement
-    @advertisement = Advertisement.includes([{ cover_attachment: :blob }]).enabled.sample
+    @advertisement = Advertisement.includes([{ cover_attachment: :blob }, { poster_attachment: :blob }]).enabled.sample
   end
 end
