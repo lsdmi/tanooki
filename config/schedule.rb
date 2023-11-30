@@ -33,7 +33,7 @@ when 'production'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
   end
 
-  every 7.days do
+  every :sunday, at: '12pm' do
     runner 'puts "Weekly job started"'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'
     runner 'Youtube::TelegramJob.perform_now'

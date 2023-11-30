@@ -1,10 +1,10 @@
 <section class="z-10 relative font-oswald mt-4 md:mt-6">
-  <div class="gap-4 py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-3xl grid-cols-5 lg:grid lg:grid-cols-8">
+  <div class="gap-4 py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-3xl grid-cols-5 lg:grid lg:grid-cols-8 w-[95%] mx-auto justify-center">
     <div class="col-span-5 grid grid-cols-5 self-start bg-gray-50 shadow-lg pt-4 md:pt-8 pb-4 lg:pb-0 rounded-lg relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
-      <div class="col-span-5 md:block flex flex-col items-center justify-center h-full">
+      <div class="col-span-5 md:block flex flex-col items-center justify-center h-full mb-4">
         <div class="absolute inset-0 bg-white opacity-95"></div>
         <div class="mx-auto w-auto md:w-[95%] flex relative z-10">
-          <div class="hidden md:block h-full max-h-full mx-2.5 mb-8 " style="flex: 0 0 314px;">
+          <div class="hidden md:block h-full max-h-full mx-2.5 mb-8" style="flex: 0 0 314px;">
             <figure class="w-full h-full">
               <%= image_tag url_for(@fiction.cover), class: 'hidden md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
             </figure>
@@ -20,9 +20,6 @@
           </blockquote>
         </div>
       </div>
-      <div class="col-span-5 hidden lg:grid px-4 md:px-4">
-        <%= render 'comments/index' %>
-      </div>
     </div>
     <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
       <% if @fiction.chapters.any? %>
@@ -31,8 +28,8 @@
         <%= render 'first_chapter_cta', fiction: @fiction %>
       <% end %>
     </div>
-    <div class="lg:hidden">
-      <%= render 'comments/index' %>
-    </div>
+  </div>
+  <div class="px-4 w-[90%] justify-center mx-auto">
+    <%= render 'comments/index' %>
   </div>
 </section>

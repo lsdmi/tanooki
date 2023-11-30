@@ -14,7 +14,7 @@ module Youtube
 
           TelegramBot.init
           TelegramBot.bot.api.send_message(
-            chat_id: '@bakaTgTest',
+            chat_id: '@bakaInUa',
             text: text_message,
             parse_mode: 'HTML'
           )
