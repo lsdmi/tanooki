@@ -10,7 +10,7 @@
                   <%= tag.iframe src: "https://www.youtube.com/embed/#{@youtube_video.video_id}", width: '1280', height: '720', frameborder: 0, class: 'absolute top-0 left-0 w-full h-full rounded-lg', allowfullscreen: true %>
                 </div>
                 <div class="float-left w-full relative hidden lg:block">
-                  <%= render 'comments/index' %>
+                  <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
                 </div>
               </div>
             </div>

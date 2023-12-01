@@ -10,7 +10,7 @@
             </figure>
           </div>
           <div class="inline-flex mx-2.5 mb-8 text-center md:text-left">
-            <%= render 'details', fiction: @fiction %>
+            <%= render 'details', fiction: @fiction, ranks: @ranks %>
           </div>
         </div>
         <div class="mx-auto w-[95%] text-gray-600 relative z-10 ">
@@ -23,13 +23,13 @@
     </div>
     <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
       <% if @fiction.chapters.any? %>
-        <%= render 'chapters', fiction: @fiction, reading_progress: @reading_progress, next_chapter: @next_chapter %>
+        <%= render 'chapters', fiction: @fiction, reading_progress: @reading_progress, next_chapter: @next_chapter, before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter %>
       <% else %>
         <%= render 'first_chapter_cta', fiction: @fiction %>
       <% end %>
     </div>
   </div>
   <div class="px-4 w-[90%] justify-center mx-auto">
-    <%= render 'comments/index' %>
+    <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
   </div>
 </section>

@@ -1,11 +1,11 @@
 <div class="mt-20">
   <div class="top-1/2 justify-center flex">
-    <%= tag.p scanlator.title, class: "text-3xl text-center text-gray-800 font-bold uppercase -skew-x-12 #{ 'ml-2' if scanlator.telegram_id.present? }" %>
+    <%= tag.p scanlator.title, class: "text-3xl text-center text-gray-800 font-bold uppercase -skew-x-12 #{ 'ml-2' if scanlator.telegram_id? }" %>
     <%= link_to "https://t.me/#{scanlator.telegram_id}", class: 'inline-flex items-center text-sm font-medium rounded-lg', area: { current: 'page' } do %>
       <div class="flex items-center">
         <%= image_tag 'telegram.svg', class: 'h-6 transform transition duration-500 hover:scale-110 ml-1', alt: 'logo', width: '32', height: '32' %>
       </div>
-    <% end if scanlator.telegram_id.present? %>
+    <% end if scanlator.telegram_id? %>
   </div>
   <div class="mt-2 justify-center flex mb-4 lg:mb-8">
     <%= tag.p scanlator.description, class: 'text-center font-light text-base text-gray-500 -skew-x-12 w-4/5' %>
@@ -15,7 +15,7 @@
   <div class="grid grid-cols-2 mb-4 lg:mb-6">
     <div class="mt-1 justify-center flex">
       <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon' %>
       </div>
       <div class="flex flex-col justify-center">
         <%= tag.p scanlator.chapters.size, class: 'text-center text-lg sm:text-xl 2xl:text-2xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>
@@ -24,7 +24,7 @@
     </div>
     <div class="justify-center flex">
       <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon' %>
       </div>
       <div class="flex flex-col justify-center">
         <%= tag.p scanlator.chapters.sum(:views), class: 'text-center text-lg sm:text-xl 2xl:text-2xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>

@@ -10,8 +10,8 @@ class SearchService
   end
 
   def self.fictions(query)
-    Fiction.where('title LIKE :search OR alternative_title LIKE :search OR author LIKE :search OR english_title LIKE :search',
-                  search: "%#{query.join}%")
+    Fiction.where('title LIKE :search OR alternative_title LIKE :search OR ' \
+                  'author LIKE :search OR english_title LIKE :search', search: "%#{query.join}%")
            .includes([{ cover_attachment: :blob }, :chapters, :genres]).distinct
   end
 

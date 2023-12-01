@@ -4,11 +4,13 @@ require 'test_helper'
 
 class MetaHelperTest < ActionView::TestCase
   include ApplicationHelper
+  include MetaCoverHelper
+  include MetaDescriptionHelper
   include Devise::Test::IntegrationHelpers
 
   test 'should get meta_title for root path' do
     request.path = root_path
-    assert_equal 'Бака - Новини Аніме та Манґа', meta_title
+    assert_equal 'Бака: про аніме українською', meta_title
   end
 
   test 'should get meta_title for search path' do
@@ -23,7 +25,8 @@ class MetaHelperTest < ActionView::TestCase
   end
 
   test 'should get meta_description for root path' do
-    description = 'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
+    description = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, манзі, культурі Сходу, ' \
+                  'а також перекладається ранобе українською мовою.'
 
     request.path = root_path
     assert_equal description, meta_description
@@ -35,14 +38,15 @@ class MetaHelperTest < ActionView::TestCase
   end
 
   test 'should get meta_description for search path' do
-    description = 'Бака - провідний портал аніме та манґа новин в Україні: новини, огляди, статті, інтерв\'ю та інше.'
+    description = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, манзі, культурі Сходу, ' \
+                  'а також перекладається ранобе українською мовою.'
 
     request.path = search_index_path
     assert_equal description, meta_description
   end
 
   test 'meta_image returns expected URL for home controller' do
-    @highlights = [Struct.new(:cover).new('highlights_cover.jpg')]
+    @highlights = [Struct.new(:cover).new('/psyduck_background.webp')]
     request.path = root_path
     assert_equal url_for(@highlights.first.cover), meta_image
   end
@@ -56,7 +60,7 @@ class MetaHelperTest < ActionView::TestCase
   test 'meta_image returns expected URL for search controller without results' do
     @results = []
     request.path = search_index_path
-    assert_equal asset_path('login.jpeg'), meta_image
+    assert_equal asset_path('/psyduck_background.webp'), meta_image
   end
 
   test 'meta_image returns expected URL for other controllers with publication' do
@@ -68,7 +72,7 @@ class MetaHelperTest < ActionView::TestCase
     request.path = search_index_path
     @results = []
     @publication = nil
-    assert_equal asset_path('login.jpeg'), meta_image
+    assert_equal asset_path('/psyduck_background.webp'), meta_image
   end
 
   test 'meta_type returns website for root and search pages' do

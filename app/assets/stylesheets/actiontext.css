@@ -30,6 +30,6 @@
   margin-right: 5px;
 }
 
-.no-ads .google-auto-placed {
+.no-ads .google-auto-placed:nth-child(1) {
   display: none !important;
 }

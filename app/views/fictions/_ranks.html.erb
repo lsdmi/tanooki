@@ -1,5 +1,5 @@
 <div class="mt-4 block">
-  <% @ranks.each do |rank| %>
+  <% ranks.each do |rank| %>
     <%= tag.div class: 'mr-2 2xl:mr-4 inline-block w-[70px] 2xl:w-[85px] text-center mb-2' do %>
       <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"), class: 'h-16 w-16 2xl:h-20 2xl:w-20 inline-block transform transition duration-500 hover:scale-110' %>
       <div class="">

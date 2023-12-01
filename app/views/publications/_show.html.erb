@@ -17,7 +17,7 @@
                 </div>
               </div>
               <%= render 'publications/related_tags', tgs: publication.tags.order(:name) %>
-              <%= render 'comments/index' %>
+              <%= render 'comments/index', comments: comments, comment: comment, commentable: commentable %>
               <%= render 'publications/more', more_tales: more_tales %>
             </div>
           </main>

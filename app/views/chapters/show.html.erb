@@ -15,7 +15,7 @@
     </div>
 
     <div class="flex mt-8 m-auto w-full lg:w-[1250px] h-full rounded-lg">
-      <%= render 'comments/index' %>
+      <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
     </div>
   </div>
 </section>

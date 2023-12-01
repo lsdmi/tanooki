@@ -3,6 +3,6 @@
     <h2 class="text-lg font-extrabold leading-tight tracking-tight text-gray-900 sm:text-xl">Перелік розділів</h2>
   </div>
   <%= render 'list_read_button', fiction: fiction, reading_progress: reading_progress, next_chapter: next_chapter %>
-  <%= render 'chapter_list', fiction: fiction, reading_progress: reading_progress, before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter, user_id: nil %>
+  <%= render 'chapter_list', fiction: fiction, reading_progress: reading_progress, before_next_chapter: before_next_chapter, after_next_chapter: after_next_chapter, user_id: nil %>
   <%= render 'add_chapter_cta', fiction: fiction %>
 </div>

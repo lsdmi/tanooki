@@ -53,25 +53,6 @@ class ChaptersController < ApplicationController
 
   private
 
-  def announced_dropped_new_status(actual_size, total_size)
-    actual_size >= total_size ? Fiction.statuses[:finished] : Fiction.statuses[:ongoing]
-  end
-
-  def ongoing_new_status(actual_size, total_size, current_status)
-    actual_size >= total_size ? Fiction.statuses[:finished] : current_status
-  end
-
-  def new_fiction_status(current_status, total_chapters, actual_chapters)
-    case Fiction.statuses[current_status]
-    when Fiction.statuses[:announced], Fiction.statuses[:dropped]
-      announced_dropped_new_status(actual_chapters.size, total_chapters)
-    when Fiction.statuses[:ongoing]
-      ongoing_new_status(actual_chapters.size, total_chapters, current_status)
-    else
-      current_status
-    end
-  end
-
   def more_from_author
     Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
       fictions_from_author
@@ -117,11 +98,7 @@ class ChaptersController < ApplicationController
   end
 
   def update_fiction_status
-    new_status = new_fiction_status(
-      @chapter.fiction.status,
-      @chapter.fiction.total_chapters,
-      unique_chapters(@chapter.fiction.chapters)
-    )
+    new_status = FictionStatusTracker.new(@chapter.fiction).call
     @chapter.fiction.update(status: new_status)
   end
 end

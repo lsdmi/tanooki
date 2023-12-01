@@ -38,6 +38,6 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to scanlators_path
+    assert_redirected_to scanlator_path(Scanlator.last)
   end
 end

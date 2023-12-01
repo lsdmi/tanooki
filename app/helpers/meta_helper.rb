@@ -21,7 +21,7 @@ module MetaHelper
     return 'Український аніме-ютуб: відео на Бака' if request.path == youtube_videos_path
     return "#{@scanlator.title} | Переклади Ранобе | Бака" if @scanlator.present? && @scanlator.persisted?
 
-    [@publication, @fiction].compact.map(&:title).first || 'Бака - Новини Аніме та Манґа'
+    [@publication, @fiction].compact.map(&:title).first || 'Бака: про аніме українською'
   end
 
   def meta_type

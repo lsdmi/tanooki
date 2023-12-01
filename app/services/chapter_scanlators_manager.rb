@@ -12,7 +12,7 @@ class ChapterScanlatorsManager
     return if scanlators_ids.nil?
 
     create_chapter_scanlators
-    destory_chapter_scanlators
+    destroy_chapter_scanlators
   end
 
   private
@@ -22,7 +22,7 @@ class ChapterScanlatorsManager
     scanlators_to_add.each { |scanlator_id| chapter.chapter_scanlators.create(scanlator_id:) }
   end
 
-  def destory_chapter_scanlators
+  def destroy_chapter_scanlators
     scanlators_to_remove = existing_scanlators_ids - chapter_scanlators_ids
     scanlators_to_remove.each { |scanlator_id| chapter.chapter_scanlators.find_by(scanlator_id:).destroy }
   end

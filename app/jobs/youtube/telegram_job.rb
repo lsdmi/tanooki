@@ -30,7 +30,7 @@ module Youtube
       Rails.application.routes.url_helpers.youtube_videos_url(host: ApplicationHelper::PRODUCTION_URL)
     end
 
-    def megal_icon(index)
+    def medal_icon(index)
       case index
       when 0
         '🥇'
@@ -44,9 +44,11 @@ module Youtube
     def text_message
       ActionController::Base.helpers.sanitize(
         "🌟 <i>Найпопулярніші відео тижня на <b><a href=\"#{index_path}\">Баці</a></b></i> 🌟 \n\n" \
-        "#{top_three.each_with_index.map { |video, index| "#{megal_icon(index)} <b><a href=\"#{video_path(video)}\">#{video.title}</a></b> #{megal_icon(index)}" }.join("\n\n")} \n\n" \
+        "#{top_three.each_with_index.map do |video, index|
+             "#{medal_icon(index)} <b><a href=\"#{video_path(video)}\">#{video.title}</a></b> #{medal_icon(index)}"
+           end.join("\n\n")} \n\n" \
         "🎬 <i>Насолоджуйтеся світом японської анімації на нашому сайті!</i> 🎬 \n\n " \
-        "<i><b>#щотижневий_ютуб</b></i>"
+        '<i><b>#щотижневий_ютуб</b></i>'
       )
     end
 

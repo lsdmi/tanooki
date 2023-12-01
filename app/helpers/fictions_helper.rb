@@ -18,7 +18,12 @@ module FictionsHelper
     'Омегаверс' => 'omegaverse',
     'Повсякденність' => 'lifeslice',
     'Пригоди' => 'adventure',
-    'Романтика' => 'romance'
+    'Романтика' => 'romance',
+    'Спорт' => 'sport',
+    'Сюаньхвань' => 'xuanhuan',
+    'Сянься' => 'xianxia',
+    'Трагедія' => 'tragedy',
+    'Трилер' => 'thriller'
   }.freeze
 
   STATUS_COLORS = {
@@ -31,7 +36,8 @@ module FictionsHelper
   def fiction_author(fiction)
     if fiction.scanlators.any?
       scanlator_links = fiction.scanlators.map do |scanlator|
-        link_to scanlator.title, scanlator_path(scanlator), class: 'font-extrabold tracking-tight text-emerald-900 text-emerald-700 hover:underline hover:text-emerald-600 inline-block'
+        link_to scanlator.title, scanlator_path(scanlator),
+                class: 'font-extrabold tracking-tight text-emerald-900 text-emerald-700 hover:underline hover:text-emerald-600 inline-block'
       end.join(', ').html_safe
 
       "Перекладач: #{content_tag(:strong, scanlator_links)}".html_safe

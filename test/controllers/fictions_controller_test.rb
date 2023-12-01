@@ -55,6 +55,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
             Rails.root.join('app', 'assets', 'images', 'logo.svg'),
             'image/svg'
           ),
+          scanlator_ids: [1],
           status: :announced,
           user_id: @fiction.user_id
         }

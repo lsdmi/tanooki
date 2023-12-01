@@ -1,4 +1,4 @@
-<section class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto font-oswald z-10 relative">
+<section class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto font-oswald z-10 relative no-ads">
   <div class="mt-4">
     <div class="mb-8 mx-4">
       <%= render 'root/hero' %>
@@ -19,12 +19,12 @@
     <div class="mt-4 mx-4">
       <%= render 'root/fictions', fictions: @top_fictions %>
     </div>
-    <div class="my-4">
+    <div class="my-4 w-[95%] mx-auto">
       <%= render 'shared/ads', advertisement: @advertisement %>
     </div>
     <div class="flex mb-2 mx-2">
       <div class="mr-2 shrink-0 hidden sm:flex flex-col justify-center">
-        <%= image_tag 'youtube.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'battle call' %>
+        <%= image_tag 'youtube.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'youtube icon', width: '80', height: '80' %>
       </div>
       <div class="flex flex-col justify-center ml-2 sm:ml-0 my-2 sm:my-0">
         <p class="font-oswald uppercase leading-5 text-gray-900 text-4xl font-extrabold">
@@ -32,11 +32,14 @@
         </p>
       </div>
     </div>
-    <div class="flex mb-8 mx-2">
+    <div class="flex sm:mb-8 mx-2">
       <%= render 'root/videos', videos: @videos %>
     </div>
     <div class="mb-4 flex text-center justify-center">
       <%= link_to 'Більше відео', youtube_videos_path, class: 'uppercase w-4/5 font-oswald text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
+    </div>
+    <div class="my-4 w-[95%] mx-auto">
+      <%= render 'shared/ads', advertisement: Advertisement.find('pokemon') if Advertisement.exists?('pokemon') %>
     </div>
     <%= render 'root/tales', tales: @tales, top_tales: @top_tales %>
   </div>

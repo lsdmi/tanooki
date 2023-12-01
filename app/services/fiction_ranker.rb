@@ -18,10 +18,10 @@ class FictionRanker
 
   def calculate_genre_index(genre)
     Fiction.joins(:genres)
-          .left_joins(:readings)
-          .group('fictions.id')
-          .where(genres: { id: genre.id })
-          .order('COUNT(reading_progresses.fiction_id) DESC')
-          .index(fiction) + 1
+           .left_joins(:readings)
+           .group('fictions.id')
+           .where(genres: { id: genre.id })
+           .order('COUNT(reading_progresses.fiction_id) DESC')
+           .index(fiction) + 1
   end
 end

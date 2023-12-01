@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   root 'home#index'
   post '/' => 'home#index'
 
   devise_for :users,
              skip: %i[registrations],
              path: '',
-             path_names: {
-               sign_in: 'login'
-             },
+             path_names: { sign_in: 'login' },
              controllers: {
                confirmations: 'users/confirmations',
                omniauth_callbacks: 'users/omniauth_callbacks',

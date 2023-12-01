@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PokemonBattleService
-  include Rails.application.routes.url_helpers
-
   attr_reader :attacker_pokemons, :defender_pokemons, :attacker_id, :defender_id, :battle_log, :winner_id, :loser_id
 
   def initialize(attacker_pokemons:, defender_pokemons:, attacker_id:, defender_id:)
@@ -13,8 +11,6 @@ class PokemonBattleService
     @battle_log = ''
     @winner_id = nil
     @loser_id = nil
-
-    default_url_options[:host] = Rails.env.production? ? 'baka.in.ua' : 'localhost:3000'
   end
 
   def append_log(message)
@@ -34,14 +30,8 @@ class PokemonBattleService
   end
 
   def start_battle
-    append_log(
-      ActionController::Base.helpers.sanitize(
-        "<div class='mb-4 font-light inline-block'>Вітаємо вас на Арені, шанові глядачі! Сьогодні " \
-        'ми станемо свідками неймовірного ' \
-        "протистояння між <span class='font-bold'>#{attacker_username}</span> та " \
-        "<span class='font-bold'>#{defender_username}</span>!</div>" \
-      )
-    )
+    logger = BattleLogger.new(attacker_id, defender_id)
+    append_log(logger.start)
 
     attacker_team = initialize_team(@attacker_pokemons)
     defender_team = initialize_team(@defender_pokemons)
@@ -71,33 +61,7 @@ class PokemonBattleService
       defender_experience = defender.battle_experience
 
       if calculate_battle_result(attacker_stats) > calculate_battle_result(defender_stats)
-        append_log(
-          ActionController::Base.helpers.sanitize(
-            "<div class='flex justify-center text-center'>
-              <div class='mb-4 grid grid-cols-3 gap-2'>
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                    <img src='#{url_for(attacker.pokemon.sprite)}'
-                          alt='#{attacker.pokemon.sprite.blob.filename}'
-                          class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
-                  </div>
-                </div>
-
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <span class='font-light text-gray-600'>перемагає</span>
-                </div>
-
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                  <img src='#{url_for(defender.pokemon.sprite)}'
-                        alt='#{defender.pokemon.sprite.blob.filename}'
-                        class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
-                  </div>
-                </div>
-              </div>
-            </div"
-          )
-        )
+        append_log(logger.outcome(attacker, defender, :victory))
 
         defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:active] = false
 
@@ -110,33 +74,7 @@ class PokemonBattleService
         attacker_got_experience = calculate_experience_gain(attacker_experience, defender_experience)
         defender_got_experience = (defender_experience - 15) < attacker_experience ? 1 : 0
       else
-        append_log(
-          ActionController::Base.helpers.sanitize(
-            "<div class='flex justify-center text-center'>
-              <div class='mb-4 grid grid-cols-3 gap-2'>
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                    <img src='#{url_for(attacker.pokemon.sprite)}'
-                          alt='#{attacker.pokemon.sprite.blob.filename}'
-                          class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
-                  </div>
-                </div>
-
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <span class='font-light text-gray-600'>програє</span>
-                </div>
-
-                <div class='flex flex-col items-center justify-center text-center'>
-                  <div class='flex items-center justify-center h-8 w-14 border-2 shadow-md rounded-full mb-1'>
-                  <img src='#{url_for(defender.pokemon.sprite)}'
-                        alt='#{defender.pokemon.sprite.blob.filename}'
-                        class='w-auto cursor-pointer rounded-lg transform transition duration-500 hover:scale-110'>
-                  </div>
-                </div>
-              </div>
-            </div"
-          )
-        )
+        append_log(logger.outcome(attacker, defender, :defeat))
 
         attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:active] = false
 
@@ -161,27 +99,9 @@ class PokemonBattleService
     end
 
     if active_pokemon?(attacker_team)
-      append_log(
-        ActionController::Base.helpers.sanitize(
-          "\n
-          <div class='mt-4 font-light inline-block'>
-            І-і... все! Останній покемон
-            <span class='font-bold'>#{defender_username}</span> падає без сил, тож
-            <span class='font-bold'>#{attacker_username}</span> святкує перемогу в цьому бою!
-          </div>"
-        )
-      )
+      append_log(logger.conclusion(:victory))
     else
-      append_log(
-        ActionController::Base.helpers.sanitize(
-          "\n
-          <div class='mt-4 font-light inline-block'>
-            І-і... все! Останній покемон
-            <span class='font-bold'>#{attacker_username}</span> падає без сил, тож
-            <span class='font-bold'>#{defender_username}</span> святкує перемогу в цьому бою!
-          </div>"
-        )
-      )
+      append_log(logger.conclusion(:defeat))
     end
 
     if active_pokemon?(attacker_team)
@@ -194,14 +114,6 @@ class PokemonBattleService
   end
 
   private
-
-  def attacker_username
-    @attacker_username ||= User.find(attacker_id).name
-  end
-
-  def defender_username
-    @defender_username ||= User.find(defender_id).name
-  end
 
   def active_pokemon?(team)
     team.any? { |pokemon| pokemon[:active] }

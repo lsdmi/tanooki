@@ -1,11 +1,14 @@
-<%= link_to advertisement.resource, class: "relative overflow-hidden h-0 inline", aria: { label: advertisement.cover.blob.filename } do %>
+<%= link_to advertisement.resource, class: "relative overflow-hidden h-auto inline hidden sm:block", aria: { label: advertisement.cover.blob.filename } do %>
   <%= video_tag url_for(advertisement.cover),
                 alt: advertisement.cover.blob.filename.to_s,
                 autoplay: true,
                 class: 'top-0 left-0 w-full h-full border border-gray-200 rounded-xl shadow-xl',
                 loop: true,
                 muted: true,
-                onloadeddata: "this.parentElement.classList.remove('h-0'); this.parentElement.classList.add('h-auto');",
                 playsinline: true,
                 poster: url_for(advertisement.poster) %>
+<% end %>
+
+<%= link_to advertisement.resource, class: 'sm:hidden relative overflow-hidden', aria: { label: advertisement.cover.blob.filename } do %>
+  <%= image_tag url_for(advertisement.poster), alt: advertisement.cover.blob.filename, class: 'top-0 left-0 w-full h-full border border-gray-200 rounded-xl shadow-xl', height: '144', width: '375' %>
 <% end %>
