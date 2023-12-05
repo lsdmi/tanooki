@@ -2,6 +2,8 @@
   <%= turbo_frame_tag "pokemon-data-screen", class: 'col-span-12 lg:col-span-5' do %>
     <%= render 'users/pokemons/list', pokemons:, selected_pokemon:, descendant: %>
   <% end %>
-  <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: %>
+  <%= turbo_frame_tag "pokemon-leaderboard-screen", class: 'col-span-12 lg:col-span-3' do %>
+    <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard:, dex_overall: %>
+  <% end %>
   <%= render 'users/pokemons/battle_history', battle_history: %>
 </div>

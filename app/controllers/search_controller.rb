@@ -8,22 +8,27 @@ class SearchController < ApplicationController
     @fictions = fictions
     @videos = videos
 
-    @tag = Tag.find_by(name: params[:search])
-    set_tag_logic if @tag
+    set_tag_logic
 
     respond_to do |format|
       format.html { render 'index' }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          'search-page', partial: 'search_page', locals: { results: @results, fictions: @fictions, videos: @videos }
-        )
-      end
+      format.turbo_stream { render turbo_stream: replace_search_page }
     end
   end
 
   private
 
+  def replace_search_page
+    turbo_stream.replace(
+      'search-page', partial: 'search_page', locals: { results: @results, fictions: @fictions, videos: @videos }
+    )
+  end
+
   def set_tag_logic
+    @tag = Tag.find_by(name: params[:search])
+
+    return if @tag.nil?
+
     Searchkick.client.ping ? set_tag_logic_es : set_tag_logic_no_es
   end
 

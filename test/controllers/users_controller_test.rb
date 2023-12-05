@@ -66,4 +66,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:fictions)
     assert_not_nil assigns(:paginators)
   end
+
+  test 'should get pokemons' do
+    sign_in @user
+    get :pokemons
+    assert_response :success
+    assert_template 'users/dashboard/_pokemons'
+    assert_not_nil assigns(:pokemons)
+  end
 end

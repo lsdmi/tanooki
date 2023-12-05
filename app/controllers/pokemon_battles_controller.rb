@@ -7,7 +7,7 @@ class PokemonBattlesController < ApplicationController
     else
       battle_service.start_battle
       create_battle_log
-      render turbo_stream: refresh_screen
+      render turbo_stream: [refresh_leaders, refresh_history]
     end
   end
 
@@ -52,7 +52,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def dex_leaderboard
-    User.dex_leaders
+    DexLeaderboard.new(current_user).call
   end
 
   def pokemons
@@ -63,11 +63,19 @@ class PokemonBattlesController < ApplicationController
     self_fight || user_last_battle > 4.hours.ago || defender_last_battle > 4.hours.ago
   end
 
-  def refresh_screen
+  def refresh_leaders
     turbo_stream.update(
-      'pokemons-screen',
-      partial: 'users/dashboard/pokemons',
-      locals: { pokemons:, dex_leaderboard:, selected_pokemon:, descendant:, battle_history: }
+      'pokemon-leaderboard-screen',
+      partial: 'users/pokemons/dex_leaderboard',
+      locals: { dex_leaderboard:, dex_overall: User.dex_leaders }
+    )
+  end
+
+  def refresh_history
+    turbo_stream.prepend(
+      'pokemon-history-list',
+      partial: 'users/pokemons/history_record',
+      locals: { battle_log: battle_history.first }
     )
   end
 

@@ -60,12 +60,16 @@ class UserPokemonsController < ApplicationController
     user_pokemon = UserPokemon.find(params[:user_pokemon_id])
 
     if rand(2).zero?
-      PokemonCatchService.new(pokemon_id: user_pokemon.pokemon.id, user_id: current_user.id).evolve
-      @alert = "#{user_pokemon.pokemon.name} набув нового якісного рівня!"
+      train_level(user_pokemon.pokemon)
     else
       user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1)
       @alert = "#{user_pokemon.pokemon.name} набув нового бойового досвіду!"
     end
+  end
+
+  def train_level(pokemon)
+    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: current_user.id).evolve
+    @alert = "#{pokemon.name} набув нового якісного рівня!"
   end
 
   def update_notice(message)

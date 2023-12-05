@@ -44,7 +44,7 @@ class Scanlator < ApplicationRecord
 
   def slug_candidates
     [
-      title.downcase
+      title&.downcase
     ]
   end
 

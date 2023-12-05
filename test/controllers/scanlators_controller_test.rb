@@ -40,4 +40,43 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to scanlator_path(Scanlator.last)
   end
+
+  test 'should not create scanlator with invalid data' do
+    sign_in users(:user_one)
+    assert_no_difference('Scanlator.count') do
+      post scanlators_url, params: {
+        scanlator: {
+          avatar: nil,
+          banner: nil,
+          title: nil
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_template 'new'
+  end
+
+  test 'should update scanlator' do
+    sign_in users(:user_one)
+    scanlator = scanlators(:one)
+
+    patch scanlator_url(scanlator), params: {
+      scanlator: {
+        member_ids: [users(:user_one).id],
+        title: 'Updated Scanlator'
+      }
+    }
+
+    assert_redirected_to scanlator_path(scanlator)
+    assert_equal 'Updated Scanlator', scanlator.reload.title
+  end
+
+  test 'should show scanlator' do
+    scanlator = scanlators(:one)
+    get scanlator_path(scanlator)
+    assert_response :success
+    assert_not_nil assigns(:fictions)
+    assert_not_nil assigns(:feeds)
+  end
 end
