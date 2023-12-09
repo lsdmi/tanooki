@@ -7,6 +7,7 @@ class ChapterTest < ActiveSupport::TestCase
     @user = users(:user_one)
     @fiction = fictions(:one)
     @chapter = Chapter.new(
+      scanlator_ids: [1],
       title: 'Test Chapter',
       number: 1,
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' * 100,

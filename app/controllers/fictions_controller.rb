@@ -9,6 +9,7 @@ class FictionsController < ApplicationController
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_visit, only: :show
   before_action :verify_permissions, except: %i[index new create show]
+  before_action :verify_create_permissions, only: %i[new create]
 
   def index
     index_variables
@@ -183,5 +184,9 @@ class FictionsController < ApplicationController
 
   def verify_permissions
     redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
+  end
+
+  def verify_create_permissions
+    redirect_to new_fiction_path unless current_user.admin? || current_user.scanlators.any?
   end
 end

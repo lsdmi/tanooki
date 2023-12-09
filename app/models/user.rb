@@ -25,6 +25,7 @@ class User < ApplicationRecord
 
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
+  has_many :fictions_through_scanlators, through: :scanlators, source: :fictions
 
   scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }

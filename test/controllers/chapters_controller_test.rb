@@ -67,6 +67,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
         content: @chapter.content,
         fiction_id: @chapter.fiction_id,
         number: @chapter.number,
+        scanlator_ids: [1],
         title: @chapter.title
       }
     }

@@ -1,0 +1,83 @@
+<section class="bg-white antialiased">
+  <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-12">
+    <div class="lg:col-span-2">
+      <div id="deviceTabContent" class="mt-8">
+        <div id="ios" role="tabpanel" aria-labelledby="ios-tab">
+          <div class="space-y-4 sm:space-y-6 lg:space-y-8">
+            <div>
+              <h2 class="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl">
+                Твори із Бакою: український аніме-хаб
+              </h2>
+              <p class="mt-6 text-lg font-normal text-gray-500 sm:text-2xl">
+                Перш ніж завантажити роботу чи переклад, будь ласка, додайте сторінку своєї спільноти, аби встановити зв'язок із сотнями користувачів нашого сервісу.
+                <span class="font-semibold text-gray-900">Бака - </span> це все необхідне, аби розпочати свій шлях автора чи перекладача ранобе.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-gray-200 sm:pt-6 lg:pt-8">
+              <ul class="space-y-4">
+                <li class="flex items-center gap-2.5">
+                  <div
+                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <span class="text-lg font-medium text-gray-900">
+                    Створи сторінку своєї команди у кілька кліків
+                  </span>
+                </li>
+
+                <li class="flex items-center gap-2.5">
+                  <div
+                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <span class="text-lg font-medium text-gray-900">
+                    Завантаж роботу чи переклад
+                  </span>
+                </li>
+
+                <li class="flex items-center gap-2.5">
+                  <div
+                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
+                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <span class="text-lg font-medium text-gray-900">
+                    Отримай відгук та підтримку читачів
+                  </span>
+                </li>
+              </ul>
+
+              <h3 class="mt-6 text-2xl font-normal text-gray-500">
+                Приєднуйся уже зараз, аби стати частиною нашої аніме-спільноти!
+              </h3>
+            </div>
+
+            <div>
+              <%= link_to new_scanlator_path, data: { turbo: false }, class: 'inline-flex items-center text-lg font-medium text-emerald-600 hover:underline' do %>
+                Додати перекладацьку сторінку
+                <svg aria-hidden="true" class="w-5 h-5 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

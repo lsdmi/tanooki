@@ -10,6 +10,8 @@ class Scanlator < ApplicationRecord
 
   attr_accessor :member_ids
 
+  before_destroy :check_associations
+
   has_many :chapter_scanlators, dependent: :destroy
   has_many :chapters, through: :chapter_scanlators
 
@@ -49,6 +51,13 @@ class Scanlator < ApplicationRecord
   end
 
   private
+
+  def check_associations
+    if fictions.exists? || chapters.exists?
+      errors.add(:base, 'Перш ніж видалити - приберіть всі пов\'язані з командою твори та розділи!')
+      throw(:abort)
+    end
+  end
 
   def cleanup_member_ids
     self.member_ids = member_ids&.reject(&:blank?)

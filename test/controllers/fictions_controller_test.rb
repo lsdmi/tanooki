@@ -87,6 +87,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
           Rails.root.join('app', 'assets', 'images', 'logo.svg'),
           'image/svg'
         ),
+        scanlator_ids: [1],
         title: 'Updated Title'
       }
     }
@@ -112,7 +113,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update fiction with genres' do
     genre_ids = Genre.all.sample(2).map(&:id)
-    patch fiction_url(@fiction), params: { fiction: { genre_ids: } }
+    patch fiction_url(@fiction), params: { fiction: { genre_ids:, scanlator_ids: [1] } }
     assert_redirected_to fiction_path(@fiction)
     assert_equal genre_ids.sort, @fiction.genres.ids.sort
   end

@@ -21,6 +21,7 @@ class Chapter < ApplicationRecord
 
   before_validation :cleanup_scanlator_ids
 
+  validates :scanlator_ids, presence: { message: 'мусить бути принаймні одна команда' }
   validates :content, length: { minimum: 500 }
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true

@@ -33,6 +33,7 @@ class Fiction < ApplicationRecord
   before_validation :cleanup_scanlator_ids
 
   validates :cover, presence: true
+  validates :scanlator_ids, presence: { message: 'мусить бути принаймні одна команда' }
   validates :author, length: { minimum: 3, maximum: 50 }
   validates :description, length: { minimum: 50, maximum: 1000 }
   validates :title, length: { minimum: 3, maximum: 100 }
@@ -80,7 +81,7 @@ class Fiction < ApplicationRecord
     ActionController::Base.helpers.sanitize(
       "🎉 <b>#{title}</b> 🎉 \n\n" \
       "<i>#{description}</i> \n\n" \
-      "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" \
+      "#{scanlators_line}" \
       "🔗 <i><b><a href=\"#{telegram_fiction_path}\">Читати на сайті</a></b></i> 🔗 \n\n" \
       "#{genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
     )
@@ -90,5 +91,9 @@ class Fiction < ApplicationRecord
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)
+  end
+
+  def scanlators_line
+    scanlators.any? ? "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" : ""
   end
 end

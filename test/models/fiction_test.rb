@@ -5,7 +5,7 @@ require 'test_helper'
 class FictionTest < ActiveSupport::TestCase
   def setup
     @user = users(:user_one)
-    @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author',
+    @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                            total_chapters: 5, user_id: @user.id)
     @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'),
