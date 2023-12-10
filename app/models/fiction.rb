@@ -50,6 +50,7 @@ class Fiction < ApplicationRecord
       author:,
       alternative_title:,
       english_title:,
+      scanlators: scanlators.pluck(:title).to_sentence,
       title:
     }
   end

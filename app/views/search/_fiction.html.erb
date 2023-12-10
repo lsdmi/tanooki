@@ -5,51 +5,34 @@
         <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
       </div>
       <div class="text-gray-500 sm:text-xl col-span-6 md:col-span-4">
-        <div class="w-full float-left rounded-xl mb-2 md:mt-1 md:mb-1 lg:mt-0">
-          <div class="float-left mt-1">
-            <span class="inline relative text-emerald-700 leading-4 text-sm sm:text-base">Оновлено</span>
-            <%= image_tag 'circle.svg', class: 'h-1 mx-px inline-block', alt: 'circle' %>
-            <% if fiction.chapters.any? %>
-              <%= tag.span "#{time_ago_in_words(fiction.chapters.order(created_at: :desc).first.created_at) } тому", class: 'inline relative leading-4 text-sm sm:text-base text-gray-700' %>
-            <% else %>
-              <%= tag.span "#{time_ago_in_words(fiction.updated_at) } тому", class: 'inline relative leading-4 text-sm sm:text-base text-gray-700' %>
-            <% end %>
-          </div>
-          <span class="text-gray-500 text-sm float-right mr-2 mt-2.5 flex align-center">
-            <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views', height: '16', width: '16' %>
-            <%= tag.span fiction.views, class: 'ml-1 inline-block' %>
-          </span>
-          <span class="text-gray-500 text-sm float-right mr-2 mt-2.5 flex align-center">
-            <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
-            <%= tag.span fiction.comments_count, class: 'ml-1 inline-block' %>
-          </span>
-        </div>
-
         <%= link_to fiction_path(fiction) do %>
-          <%= tag.h2 fiction.title, class: 'mb-2 text-2xl tracking-tight font-extrabold text-gray-900 md:text-3xl hover:text-gray-600' %>
+          <%= tag.h2 fiction.title, class: 'my-2 text-2xl text-gray-900 xl:text-3xl -skew-x-12 font-bold md:text-3xl hover:underline' %>
         <% end %>
+
+        <div class="inline-flex -skew-x-12">
+          <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">перекладач:</p>
+          <%= fiction.scanlators.map { |scanlator| link_to(scanlator.title, scanlator_path(scanlator), class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-800 hover:underline hover:text-emerald-600 ml-1') }.join(', ').html_safe %>
+        </div>
 
         <% if fiction.genres.any? %>
-          <div class="mb-2 overflow-hidden break-words">
-            <% fiction.genres.each do |genre| %>
-              <%= tag.p "##{genre.name}", class: 'inline-block tracking-widest leading-4 text-sm font-semibold mr-2 whitespace-nowrap uppercase text-emerald-600' %>
-            <% end %>
+          <div class="mt-4">
+            <div>
+              <ul class="overflow-hidden break-words text-center text-left inline-block md:flex flex-wrap">
+                <% fiction.genres.each do |genre| %>
+                  <div class="relative inline-block pr-2 xl:p-0 xl:mx-1">
+                    <h2 class="relative w-full text-center mb-1 2xl:mb-3">
+                      <%= tag.span genre.name, class: "text-xs inline-block text-white font-bold leading-none px-4 py-2 relative uppercase z-10 bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br rounded-xl" %>
+                    </h2>
+                  </div>
+                <% end %>
+              </ul>
+            </div>
           </div>
         <% end %>
-        <%= tag.p fiction.description, class: 'mb-4 font-light text-base lg:text-lg whitespace-break-spaces line-clamp-6' %>
 
-        <div class="flex items-center gap-4">
-          <%= link_to fiction_path(fiction), class: 'text-white bg-emerald-700 justify-center hover:bg-emerald-800 inline-flex items-center  focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-5 py-2.5 text-center', role: 'button' do %>
-            Переглянути
-            <svg aria-hidden="true" class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          <% end %>
-          <%= link_to 'Читати з початку',
-                        chapter_path(ordered_chapters(fiction).first),
-                        class: 'px-5 py-2.5 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-emerald-700 focus:z-10 focus:ring-4 focus:ring-gray-200',
-                        role: 'button' if fiction.chapters.any? %>
-        </div>
+        <blockquote class="p-4 mt-2 mb-4 border-s-4 border-gray-300">
+          <%= tag.p fiction.description, class: 'font-light text-sm sm:text-base whitespace-break-spaces italic leading-relaxed text-gray-900 line-clamp-8' %>
+        </blockquote>
       </div>
     </div>
   </div>

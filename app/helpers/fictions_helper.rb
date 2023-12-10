@@ -23,7 +23,10 @@ module FictionsHelper
     'Сюаньхвань' => 'xuanhuan',
     'Сянься' => 'xianxia',
     'Трагедія' => 'tragedy',
-    'Трилер' => 'thriller'
+    'Трилер' => 'thriller',
+    'Фантастика' => 'scifi',
+    'Фентезі' => 'fantasy',
+    'Школа' => 'school'
   }.freeze
 
   STATUS_COLORS = {

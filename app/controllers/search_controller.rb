@@ -66,8 +66,8 @@ class SearchController < ApplicationController
     if Searchkick.client.ping
       Fiction.search(
         params[:search],
-        fields: ['title^2', 'alternative_title', 'author', 'english_title']
-      ).includes([{ cover_attachment: :blob }, :chapters, :genres])
+        fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
+      ).includes([{ cover_attachment: :blob }, :genres, :scanlators])
     else
       SearchService.fictions(params[:search])
     end
