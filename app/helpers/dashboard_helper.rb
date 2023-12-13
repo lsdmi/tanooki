@@ -19,10 +19,6 @@ module DashboardHelper
     'Драконячий' => 'bg-indigo-600'
   }.freeze
 
-  def delete_permissions?(users, user)
-    (users.size == 1 && users.first == user) || user.admin?
-  end
-
   def experience_to_sentence(rate)
     case rate
     when 0

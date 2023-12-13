@@ -1,5 +1,4 @@
 <%= f.input :status, as: :hidden, input_html: { value: fiction.status || Fiction.statuses[:announced] } %>
-<%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
 
 <div class="py-4 border-gray-200 sm:py-5">
   <div class="lg:grid gap-4 md:gap-6 lg:grid-cols-2">

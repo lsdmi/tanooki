@@ -47,7 +47,7 @@ class ChaptersController < ApplicationController
     @chapter.destroy
     chapter_page = params["chapter_page_#{@chapter.fiction_slug}"]
     chapter_page = (chapter_page.to_i - 1) if chapters.size <= (chapter_page.to_i * 8) - 8
-    setup_pagination(chapters, chapter_page)
+    setup_pagination(scanlator_chapters, chapter_page)
     render turbo_stream: refresh_list
   end
 
@@ -65,6 +65,12 @@ class ChaptersController < ApplicationController
 
   def chapters
     ordered_chapters_desc(@chapter.fiction)
+  end
+
+  def scanlator_chapters
+    ordered_scanlator_chapters_desc(
+      @chapter.fiction.chapters.joins(:users).where(users: { id: current_user.id })
+    )
   end
 
   def setup_pagination(chapters, page)
@@ -99,6 +105,7 @@ class ChaptersController < ApplicationController
 
   def update_fiction_status
     new_status = FictionStatusTracker.new(@chapter.fiction).call
-    @chapter.fiction.update(status: new_status)
+    @chapter.fiction.status = new_status
+    @chapter.fiction.save(validate: false)
   end
 end

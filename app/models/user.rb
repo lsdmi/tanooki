@@ -15,8 +15,6 @@ class User < ApplicationRecord
   has_many :comments
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
-  has_many :user_fictions, dependent: :destroy
-  has_many :fictions, through: :user_fictions
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
@@ -25,7 +23,7 @@ class User < ApplicationRecord
 
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
-  has_many :fictions_through_scanlators, through: :scanlators, source: :fictions
+  has_many :fictions, through: :scanlators
 
   scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }

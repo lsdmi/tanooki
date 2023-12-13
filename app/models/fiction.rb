@@ -20,8 +20,7 @@ class Fiction < ApplicationRecord
   has_many :genres, through: :fiction_genres
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :scanlators, through: :fiction_scanlators
-  has_many :user_fictions, dependent: :destroy
-  has_many :users, through: :user_fictions
+  has_many :users, through: :scanlators
 
   enum status: {
     announced: 'Анонсовано',

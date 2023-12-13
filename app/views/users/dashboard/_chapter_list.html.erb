@@ -1,4 +1,4 @@
-<div id="chapters-accordion-collapse-body-<%= fiction.id %>" class="<%= 'hidden' unless params["chapter_page_#{fiction.slug}"] %>" aria-labelledby="chapters-accordion-collapse-heading-<%= fiction.id %>">
+<div id="chapters-accordion-collapse-body-<%= fiction.id %>" class="<%= 'hidden' unless params["chapter_page_#{fiction.slug}"] %>" aria-labelledby="chapters-accordion-collapse-heading-<%= fiction.id %>" data-controller="flowbite">
   <div class="border-gray-200">
     <% if pagination&.second&.any? %>
       <ul class="divide-y divide-gray-200">

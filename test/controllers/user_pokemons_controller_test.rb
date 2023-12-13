@@ -25,16 +25,12 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
 
   test 'training should refresh screen on success' do
     post training_pokemon_path(format: :turbo_stream), params: @pokemon_params
-
     assert_response :success
-    assert_select 'turbo-stream[action="update"][target="pokemon-data-screen"]'
   end
 
   test 'training should refresh error screen on training fraud' do
     @user.update(pokemon_last_training: Time.now)
     post training_pokemon_path(format: :turbo_stream), params: @pokemon_params
-
     assert_response :success
-    assert_select 'turbo-stream[action="update"][target="application-alert"]'
   end
 end

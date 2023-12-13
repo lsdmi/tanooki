@@ -18,6 +18,7 @@ class Chapter < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :scanlators, through: :chapter_scanlators
+  has_many :users, through: :scanlators
 
   before_validation :cleanup_scanlator_ids
 
@@ -59,7 +60,9 @@ class Chapter < ApplicationRecord
   end
 
   def manage_users
-    UserFiction.find_or_create_by(fiction_id:, user_id:)
+    scanlator_ids.each do |scanlator_id|
+      FictionScanlator.find_or_create_by(fiction_id:, scanlator_id:)
+    end
   end
 
   def slug_candidates

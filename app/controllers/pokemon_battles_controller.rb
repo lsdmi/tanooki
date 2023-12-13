@@ -7,7 +7,7 @@ class PokemonBattlesController < ApplicationController
     else
       battle_service.start_battle
       create_battle_log
-      render turbo_stream: [refresh_leaders, refresh_history]
+      render turbo_stream: [refresh_leaders, refresh_history, remove_call]
     end
   end
 
@@ -77,6 +77,10 @@ class PokemonBattlesController < ApplicationController
       partial: 'users/pokemons/history_record',
       locals: { battle_log: battle_history.first }
     )
+  end
+
+  def remove_call
+    turbo_stream.remove('pokemon-history-call')
   end
 
   def refresh_error_screen

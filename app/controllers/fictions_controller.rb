@@ -47,7 +47,6 @@ class FictionsController < ApplicationController
     @fiction = Fiction.new(fiction_params)
 
     if @fiction.save
-      UserFiction.create(fiction_id: @fiction.id, user_id: fiction_params[:user_id]) if fiction_params[:user_id]
       FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
       FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
       redirect_to fiction_path(@fiction), notice: 'Твір створено.'
@@ -69,7 +68,12 @@ class FictionsController < ApplicationController
   end
 
   def destroy
-    @fiction.destroy
+    if @fiction.scanlators.size > 1
+      current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
+    else
+      @fiction.destroy
+    end
+
     @pagy, @fictions = pagy(
       ordered_fiction_list,
       items: 8,
@@ -82,6 +86,14 @@ class FictionsController < ApplicationController
   end
 
   private
+
+  def destroy_association(scanlator)
+    chapters = @fiction.chapters.joins(:scanlators).where(chapter_scanlators: { scanlator_id: scanlator.id })
+    chapters.destroy_all
+
+    fiction_scanlator = FictionScanlator.find_by(fiction_id: @fiction.id, scanlator_id: scanlator.id)
+    fiction_scanlator&.destroy
+  end
 
   def chapter_manager
     FictionChapterListManager.new(@fiction, @reading_progress, params[:translator])
@@ -113,7 +125,7 @@ class FictionsController < ApplicationController
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title, :status,
-      :title, :total_chapters, :user_id, genre_ids: [], scanlator_ids: []
+      :title, :total_chapters, genre_ids: [], scanlator_ids: []
     )
   end
 

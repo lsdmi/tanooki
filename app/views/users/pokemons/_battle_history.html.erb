@@ -11,19 +11,23 @@
         <% end %>
       <% end %>
     <% else %>
-      <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-8">
-        <div class="space-y-4 sm:space-y-6 lg:space-y-8 lg:col-span-2">
-          <h2 class="font-extrabold leading-tight text-gray-900 text-2xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
-            Вперед до бою!
-          </h2>
-          <p class="mt-4 text-gray-500 text-base sm:text-lg xl:text-xl 2xl:text-2xl font-light">
-            Ви маєте покемонів, що зриваються до бою! Натисніть на одну із червоних рукавичок <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %> на екрані <b>"Рейтинг Тренерів"</b>, аби розпочати поєдинок!
-          </p>
-          <div class="relative shadow-2xl hidden lg:block">
-            <%= image_tag 'pokemon_cta.webp', alt: 'pokemon cta', class: 'object-cover shadow-2xl' %>
+      <%= turbo_frame_tag "pokemon-history-list" do %>
+      <% end %>
+      <%= turbo_frame_tag "pokemon-history-call" do %>
+        <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-8">
+          <div class="space-y-4 sm:space-y-6 lg:space-y-8 lg:col-span-2">
+            <h2 class="font-extrabold leading-tight text-gray-900 text-2xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
+              Вперед до бою!
+            </h2>
+            <p class="mt-4 text-gray-500 text-base sm:text-lg xl:text-xl 2xl:text-2xl font-light">
+              Ви маєте покемонів, що зриваються до бою! Натисніть на одну із червоних рукавичок <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %> на екрані <b>"Рейтинг Тренерів"</b>, аби розпочати поєдинок!
+            </p>
+            <div class="relative shadow-2xl hidden lg:block">
+              <%= image_tag 'pokemon_cta.webp', alt: 'pokemon cta', class: 'object-cover shadow-2xl' %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
