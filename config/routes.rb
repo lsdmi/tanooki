@@ -36,7 +36,11 @@ Rails.application.routes.draw do
     end
   end
   resources :chapters, except: :index
-  resources :fictions
+  resources :fictions do
+    collection do
+      post :toggle_order
+    end
+  end
   resources :publications, except: %i[index show]
   resources :scanlators
   resources :search, only: :index

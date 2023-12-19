@@ -1,5 +1,5 @@
 const initializeModeToggler = () => {
-  if (!document.getElementById('chapter-content')) {
+  if (!document.getElementById('user-content')) {
     return;
   }
 
@@ -11,6 +11,8 @@ const initializeModeToggler = () => {
 
   var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
   var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+  if (!themeToggleLightIcon) { return; }
 
   if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     themeToggleLightIcon.classList.remove('hidden');

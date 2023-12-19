@@ -5,7 +5,7 @@ class FictionsController < ApplicationController
   include LibraryHelper
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_fiction, only: %i[show edit update destroy]
+  before_action :set_fiction, only: %i[show edit update destroy toggle_order]
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_visit, only: :show
   before_action :verify_permissions, except: %i[index new create show]
@@ -31,8 +31,13 @@ class FictionsController < ApplicationController
       format.html { render 'show' }
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'chapters-list', partial: 'chapter_list', locals: {
-            fiction: @fiction, user_id: params[:translator], reading_progress: @reading_progress, before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter
+          'sort-chapters', partial: 'chapters', locals: {
+            fiction: @fiction,
+            translator: params[:translator],
+            reading_progress: @reading_progress,
+            after_next_chapter: @order.to_sym == :desc ? @after_next_chapter : @before_next_chapter.reverse,
+            before_next_chapter: @order.to_sym == :desc ? @before_next_chapter : @after_next_chapter.reverse,
+            order: @order
           }
         )
       end
@@ -85,6 +90,24 @@ class FictionsController < ApplicationController
     render turbo_stream: [refresh_list, refresh_sidebar]
   end
 
+  def toggle_order
+    show_vars
+
+    render turbo_stream: [
+      turbo_stream.update(
+        'sort-chapters',
+        partial: 'chapters', locals: {
+          after_next_chapter: params[:order].to_sym == :desc ? @before_next_chapter.reverse : @after_next_chapter,
+          before_next_chapter: params[:order].to_sym == :desc ? @after_next_chapter.reverse : @before_next_chapter,
+          fiction: @fiction,
+          reading_progress: @reading_progress,
+          order: params[:order].to_sym == :desc ? :asc : :desc,
+          translator: params[:translator]
+        }
+      )
+    ]
+  end
+
   private
 
   def destroy_association(scanlator)
@@ -101,7 +124,7 @@ class FictionsController < ApplicationController
 
   def index_variables
     @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    @popular_fictions = FictionIndexVariablesManager.popular_fictions
+    @popular_novelty = FictionIndexVariablesManager.popular_novelty
     @most_reads = FictionIndexVariablesManager.most_reads
     @latest_updates = FictionIndexVariablesManager.latest_updates
     @hot_updates = FictionIndexVariablesManager.hot_updates
@@ -152,8 +175,8 @@ class FictionsController < ApplicationController
     @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
     @comment = Comment.new
     @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
-    @next_chapter = chapter_manager.next_chapter
     @ranks = fiction_ranks
+    @order = params[:order] || :desc
     duplicate_chapters(@fiction).any? ? split_chapter_by_user_id : split_chapter_list
   end
 

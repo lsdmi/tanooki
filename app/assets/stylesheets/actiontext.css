@@ -1,10 +1,10 @@
-#publication-description a {
+#user-content a {
   color: #3598DB;
   text-decoration: underline;
   font-style: italic;
 }
 
-#publication-description blockquote {
+#user-content blockquote {
   padding: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -12,7 +12,7 @@
   background-color: #f9fafb;
 }
 
-#chapter-content p {
+#user-content p {
   margin-bottom: 7px;
 }
 

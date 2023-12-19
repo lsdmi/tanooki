@@ -16,6 +16,11 @@ module ApplicationHelper
     result.presence || string
   end
 
+  def requires_font?
+    (controller_name.to_sym == :tales && action_name.to_sym == :show) ||
+      (controller_name.to_sym == :chapters && action_name.to_sym == :show)
+  end
+
   def requires_tinymce?
     [
       'admin/chapters', 'admin/fictions', 'admin/tales', 'chapters', 'fictions', 'publications'

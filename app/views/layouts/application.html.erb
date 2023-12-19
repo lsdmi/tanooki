@@ -25,6 +25,7 @@
       <%= javascript_include_tag 'sweetalert' %>
     <% end %>
 
+    <%= javascript_include_tag 'font_toggler' if requires_font? %>
     <%= javascript_include_tag 'mode_toggler' %>
   </head>
 

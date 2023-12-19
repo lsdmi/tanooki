@@ -17,14 +17,7 @@ class HomeController < ApplicationController
   end
 
   def top_fictions
-    Rails.cache.fetch('top_fictions', expires_in: 12.hours) do
-      Fiction.joins(:readings)
-             .includes([{ cover_attachment: :blob }, :scanlators])
-             .group(:id)
-             .where(readings: { created_at: 1.month.ago..Time.now })
-             .order('COUNT(readings.fiction_id) DESC')
-             .limit(10)
-    end
+    FictionIndexVariablesManager.hot_updates
   end
 
   def top_tales
