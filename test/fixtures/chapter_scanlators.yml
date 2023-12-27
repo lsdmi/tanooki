@@ -3,3 +3,8 @@ one:
   chapter_id: 1
   scanlator_id: 1
 
+two:
+  id: 2
+  chapter_id: 2
+  scanlator_id: 1
+

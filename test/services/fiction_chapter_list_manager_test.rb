@@ -13,6 +13,6 @@ class FictionChapterListManagerTest < ActiveSupport::TestCase
   test 'should return correct translator id for single chapter' do
     @fiction.chapters << @chapter_one
     manager = FictionChapterListManager.new(@fiction, [], 1)
-    assert_equal 1, manager.translator
+    assert_equal [1], manager.translator
   end
 end

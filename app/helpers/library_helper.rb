@@ -22,7 +22,7 @@ module LibraryHelper
   end
 
   def ordered_user_chapters_desc(fiction, user)
-    user.admin? ? ordered_chapters_desc(fiction) : ordered_chapters_desc(fiction).where(user_id: user.id)
+    user.admin? ? ordered_chapters_desc(fiction) : ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids })
   end
 
   def chapters_size(fiction)
@@ -34,7 +34,7 @@ module LibraryHelper
   end
 
   def grouped_chapters_desc(fiction)
-    ordered_chapters_desc(fiction).group_by(&:user_id)
+    ordered_chapters_desc(fiction).joins(:scanlators).group_by { |chapter| chapter.scanlators.map(&:id).sort }
   end
 
   def following_chapter(fiction, chapter)

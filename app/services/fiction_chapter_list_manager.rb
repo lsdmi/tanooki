@@ -12,7 +12,7 @@ class FictionChapterListManager
   end
 
   def translator
-    chapters.first.user_id
+    chapters.first.scanlators.ids
   end
 
   def before_next_chapter
@@ -56,7 +56,7 @@ class FictionChapterListManager
 
   def fiction_chapters
     if duplicate_chapters(fiction).any?
-      chapters.select { |chapter| chapter.user_id == translator_id.to_i }
+      chapters.select { |chapter| chapter.scanlators.ids.join('-') == translator_id.join('-') }
     else
       chapters
     end

@@ -35,7 +35,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_equal advertisements(:advertisement_three), assigns(:hero_ad)
-    assert_equal 2, assigns(:popular_fictions).count
+    assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:popular_novelty).map(&:title)
     assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:most_reads).map(&:title)
   end
 

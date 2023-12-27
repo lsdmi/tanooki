@@ -12,6 +12,6 @@ class ScanlatorFeederTest < ActiveSupport::TestCase
   test 'call method should fetch the feed' do
     result = @service.call
     assert_not_nil result
-    assert_equal [Fiction.first, Chapter.first], result
+    assert_equal [Fiction.first, Chapter.second, Chapter.first], result
   end
 end

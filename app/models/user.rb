@@ -11,7 +11,6 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :avatar
-  has_many :chapters
   has_many :comments
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
@@ -23,6 +22,7 @@ class User < ApplicationRecord
 
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
+  has_many :chapters, through: :scanlators
   has_many :fictions, through: :scanlators
 
   scope :admins, -> { where(admin: true) }

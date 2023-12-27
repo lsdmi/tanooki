@@ -44,14 +44,50 @@ class ChaptersController < ApplicationController
   end
 
   def destroy
+    stack_size = @chapter.fiction.chapters.joins(:scanlators).where(scanlators: { id: current_user.scanlators.ids }).size
+
     @chapter.destroy
-    chapter_page = params["chapter_page_#{@chapter.fiction_slug}"]
-    chapter_page = (chapter_page.to_i - 1) if chapters.size <= (chapter_page.to_i * 8) - 8
-    setup_pagination(scanlator_chapters, chapter_page)
-    render turbo_stream: refresh_list
+
+    if @chapter.fiction.scanlators.size > 1 && stack_size == 1
+      current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
+    end
+
+    @pagy, @fictions = pagy(
+      ordered_fiction_list,
+      items: 8,
+      request_path: readings_path,
+      page: fiction_page || 1
+    )
+
+    setup_paginator
+    setup_sidebar_vars
+    render turbo_stream: [refresh_list, refresh_sidebar]
   end
 
   private
+
+  def setup_sidebar_vars
+    @fictions_size = @pagy.count
+    @user_publications = current_user.publications.order(created_at: :desc)
+  end
+
+  def setup_paginator
+    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
+    fiction_paginator.call
+    @paginators = fiction_paginator.initiate
+  end
+
+  def fiction_page
+    (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
+  end
+
+  def ordered_fiction_list
+    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
+  end
+
+  def destroy_association(scanlator)
+    FictionScanlator.find_by(fiction_id: @chapter.fiction.id, scanlator_id: scanlator.id)&.destroy
+  end
 
   def more_from_author
     Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
@@ -89,9 +125,17 @@ class ChaptersController < ApplicationController
 
   def refresh_list
     turbo_stream.update(
-      "chapter-list-#{@chapter.fiction_slug}",
-      partial: 'users/dashboard/chapter_list',
-      locals: { fiction: @chapter.fiction, pagination: @pagination }
+      'fictions-list',
+      partial: 'users/dashboard/fictions',
+      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
+    )
+  end
+
+  def refresh_sidebar
+    turbo_stream.update(
+      'default-sidebar',
+      partial: 'users/dashboard/sidebar',
+      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
     )
   end
 

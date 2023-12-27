@@ -4,11 +4,11 @@ class FictionsController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index show toggle_order]
   before_action :set_fiction, only: %i[show edit update destroy toggle_order]
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_visit, only: :show
-  before_action :verify_permissions, except: %i[index new create show]
+  before_action :verify_permissions, except: %i[index new create show toggle_order]
   before_action :verify_create_permissions, only: %i[new create]
 
   def index
@@ -33,7 +33,7 @@ class FictionsController < ApplicationController
         render turbo_stream: turbo_stream.update(
           'sort-chapters', partial: 'chapters', locals: {
             fiction: @fiction,
-            translator: params[:translator],
+            translator: params[:translator].join('-'),
             reading_progress: @reading_progress,
             after_next_chapter: @order.to_sym == :desc ? @after_next_chapter : @before_next_chapter.reverse,
             before_next_chapter: @order.to_sym == :desc ? @before_next_chapter : @after_next_chapter.reverse,
