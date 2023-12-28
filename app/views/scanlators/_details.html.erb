@@ -15,7 +15,7 @@
   <div class="grid grid-cols-2 mb-4 lg:mb-6">
     <div class="mt-1 justify-center flex">
       <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon' %>
+        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon', width: 80, height: 80 %>
       </div>
       <div class="flex flex-col justify-center">
         <%= tag.p scanlator.chapters.size, class: 'text-center text-lg sm:text-xl 2xl:text-2xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>
@@ -24,7 +24,7 @@
     </div>
     <div class="justify-center flex">
       <div class="mr-2 shrink-0 flex flex-col justify-center">
-        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon' %>
+        <%= image_tag 'book.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon', width: 80, height: 80 %>
       </div>
       <div class="flex flex-col justify-center">
         <%= tag.p scanlator.chapters.sum(:views), class: 'text-center text-lg sm:text-xl 2xl:text-2xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>
@@ -39,12 +39,12 @@
       <% group.each do |user| %>
         <% if user.present? %>
           <div class="flex flex-col items-center">
-            <%= image_tag url_for(user.avatar.image), alt: user.avatar.blob.filename.to_s, class: 'w-auto h-36 lg:h-20 rounded-full', height: '48', width: '48' %>
+            <%= image_tag url_for(user.avatar.image), alt: user.avatar.blob.filename.to_s, class: 'w-auto h-36 lg:h-20 rounded-full', width: 80, height: 80 %>
             <%= tag.p user.name, class: 'mt-2 font-light text-xl text-gray-500 -skew-x-12' %>
           </div>
         <% else %>
           <div class="flex flex-col items-center">
-            <%= image_tag 'scanlator_avatar.webp', alt: 'scanlator default avatar', class: 'w-auto h-36 lg:h-28 rounded-full grayscale', height: '48', width: '48' %>
+            <%= image_tag 'scanlator_avatar.webp', alt: 'scanlator default avatar', class: 'w-auto h-36 lg:h-28 rounded-full grayscale', height: 112, width: 112 %>
           </div>
         <% end %>
       <% end %>
@@ -61,7 +61,7 @@
           <div class="hidden lg:flex flex-col items-center">
             <div class="relative bg-gray-300 bg-opacity-10 rounded-lg overflow-y-auto h-[24rem]">
               <div class="flex justify-center relative">
-                <%= image_tag 'fiction_cover.webp', alt: 'default book cover image', class: "h-64 w-full object-cover rounded-md shadow-lg grayscale" %>
+                <%= image_tag 'fiction_cover.webp', alt: 'default book cover image', class: "h-64 w-full object-cover rounded-md shadow-lg grayscale", height: 256, width: 186 %>
               </div>
               <div class="w-full float-left rounded-xl mt-1 mb-1 px-2">
                 <div role="status" class="animate-pulse max-w-lg">

@@ -2,7 +2,7 @@
 
 class SearchController < ApplicationController
   def index
-    return redirect_to root_path if params[:search].nil?
+    return redirect_to root_path if transformed_param.nil?
 
     @results = publications
     @fictions = fictions
@@ -17,6 +17,12 @@ class SearchController < ApplicationController
   end
 
   private
+
+  def transformed_param
+    return nil unless params[:search].present?
+
+    params[:search] = Array(params[:search])
+  end
 
   def replace_search_page
     turbo_stream.replace(

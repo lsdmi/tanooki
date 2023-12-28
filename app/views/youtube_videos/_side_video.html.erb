@@ -1,7 +1,7 @@
 <div class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 flex justify-center lg:block">
   <div class="rounded-xl float-left relative w-4/5 lg:w-full overflow-hidden lg:h-36 mb-1">
     <%= link_to youtube_video_path(side_video) do %>
-      <%= image_tag url_for(side_video.thumbnail), alt: side_video.title, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-36 object-cover" %>
+      <%= image_tag url_for(side_video.thumbnail), alt: side_video.title, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-36 object-cover", width: 320, height: 144 %>
       <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
     <% end %>
   </div>

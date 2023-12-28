@@ -2,6 +2,11 @@
 <html lang="uk">
   <head>
     <%= render 'shared/meta' %>
+
+    <%= tag.script type: 'application/ld+json' do %>
+      <%= raw article_meta(@publication) %>
+    <% end if structured_data? %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
