@@ -17,17 +17,16 @@ class TalesController < ApplicationController
     @more_tales = more_tails
     @comments = @publication.comments.parents.order(created_at: :desc)
     @comment = Comment.new
-    @videos = videos
   end
 
   private
 
   def more_tails
-    return base_search.excluding(@publication).first(6) if base_search.size > 6
+    return base_search.excluding(@publication).first(5) if base_search.size > 5
 
     (
-      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(7)
-    ).excluding(@publication).uniq.first(6)
+      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
+    ).excluding(@publication).uniq.first(5)
   end
 
   def base_search
@@ -38,7 +37,7 @@ class TalesController < ApplicationController
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
       operator: 'or'
-    ).includes([{ cover_attachment: :blob }])
+    ).includes([{ cover_attachment: :blob }, :rich_text_description])
   end
 
   def set_tale

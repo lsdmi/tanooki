@@ -26,6 +26,9 @@ module CommentsHelper
 
   def comments_dark_mode?
     params[:controller].to_sym == :chapters ||
-      (params[:controller].to_sym == :comments && request.referer&.include?('chapters'))
+      (params[:controller].to_sym == :comments &&
+        (request.referer&.include?('chapters') || request.referer&.include?('tales'))
+      ) ||
+      params[:controller].to_sym == :tales
   end
 end
