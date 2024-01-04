@@ -16,8 +16,8 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
         'image/svg'
       ),
       name: 'Pikachu',
-      power_level: @pokemon.power_level,
-      rarity: @pokemon.rarity,
+      power_level: 4,
+      rarity: 1,
       ancestor_id: @pokemon.ancestor_id,
       descendant_id: 1,
       descendant_level: 0,

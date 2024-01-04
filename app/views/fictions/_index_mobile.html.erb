@@ -14,7 +14,7 @@
                   playsinline: true,
                   poster: url_for(hero_ad.poster) %>
   <% end if hero_ad.present? %>
-  <%= render 'shared/divider_shiny_green', caption: 'ТОП-5 творів року' %>
+  <%= render 'shared/divider_shiny_green', caption: 'ТОП творів року' %>
   <div class="mx-auto w-[90%] grid grid-cols-4 gap-4">
     <% most_reads.limit(4).each do |fiction| %>
       <%= render 'mobile_fiction', fiction: fiction %>

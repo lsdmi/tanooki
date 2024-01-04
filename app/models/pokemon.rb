@@ -44,15 +44,20 @@ class Pokemon < ApplicationRecord
 
   STARTER_DEX_IDS = [1, 4, 7].freeze
 
-  enum rarities: RARITY_LEVELS
-  enum power_levels: POWER_LEVELS
-
   before_destroy :nullify_descendant_references
 
   def slug_candidates
     [
       name.downcase
     ]
+  end
+
+  def power_level
+    POWER_LEVELS.key(read_attribute(:power_level))
+  end
+
+  def rarity
+    RARITY_LEVELS.key(read_attribute(:rarity))
   end
 
   def types

@@ -23,8 +23,8 @@
                 <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename %>
               </td>
               <td class="px-6 py-4 font-semibold text-gray-900"><%= pokemon.name %></td>
-              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.power_level.#{Pokemon.power_levels.key(pokemon.power_level)}") %></td>
-              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.rarity.#{Pokemon.rarities.key(pokemon.rarity)}") %></td>
+              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.power_level.#{pokemon.power_level}") %></td>
+              <td class="px-6 py-4 font-semibold text-gray-900"><%= I18n.t("activerecord.enum.rarity.#{pokemon.rarity}") %></td>
               <td class="px-6 py-4"><%= link_to 'Редагувати', edit_admin_pokemon_path(pokemon), data: { turbo: false }, class: 'font-medium text-emerald-600 hover:underline' %></td>
               <td class="px-6 py-4"><%= link_to 'Видалити', admin_pokemon_path(pokemon), data: { turbo_confirm: 'Певні, що прагнете усунути цього покемона?', "turbo-method": :delete }, class: 'font-medium text-red-600 hover:underline' %></td>
             </tr>

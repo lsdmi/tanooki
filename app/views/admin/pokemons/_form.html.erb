@@ -16,11 +16,11 @@
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
           <%= f.label :power_level, 'Рівень могуті', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :power_level, options_for_select(Pokemon.power_levels.map { |key, value| [I18n.t("activerecord.enum.power_level.#{key}"), value] }, selected: f.object.power_level), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
+          <%= f.select :power_level, options_for_select(Pokemon::POWER_LEVELS.map { |key, value| [I18n.t("activerecord.enum.power_level.#{key}"), value] }, selected: Pokemon::POWER_LEVELS[f.object.power_level&.to_sym]), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
         </div>
         <div class="w-full">
           <%= f.label :rarity, 'Рідкість', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :rarity, options_for_select(Pokemon.rarities.map { |key, value| [I18n.t("activerecord.enum.rarity.#{key}"), value] }, selected: f.object.rarity), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
+          <%= f.select :rarity, options_for_select(Pokemon::RARITY_LEVELS.map { |key, value| [I18n.t("activerecord.enum.rarity.#{key}"), value] }, selected: Pokemon::RARITY_LEVELS[f.object.rarity&.to_sym]), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">

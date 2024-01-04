@@ -49,7 +49,7 @@ class PokemonService
   end
 
   def populate_pokemon_array(rarity, pokemon_array, pokemon)
-    case rarity
+    case Pokemon::RARITY_LEVELS[rarity]
     when 1 then 27.times { pokemon_array << pokemon.id }
     when 2 then 9.times { pokemon_array << pokemon.id }
     when 3 then 3.times { pokemon_array << pokemon.id }
