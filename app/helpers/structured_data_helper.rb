@@ -7,18 +7,22 @@ module StructuredDataHelper
 
   def article_meta(publication)
     {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": publication.title,
-      "image": [
-        url_for(publication.cover)
-      ],
-      "datePublished": publication.created_at.iso8601,
-      "dateModified": publication.updated_at.iso8601,
-      "author": {
-        "@type": "Person",
-        "name": publication.user.name
-      }
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      headline: publication.title,
+      image: [url_for(publication.cover)],
+      datePublished: publication.created_at.iso8601,
+      dateModified: publication.updated_at.iso8601,
+      author: author_data(publication)
     }.to_json
+  end
+
+  private
+
+  def author_data(publication)
+    {
+      '@type': 'Person',
+      name: publication.username
+    }
   end
 end

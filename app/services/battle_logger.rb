@@ -34,6 +34,7 @@ class BattleLogger
     @defender_name ||= User.find(defender_id).name
   end
 
+  # rubocop:disable Metrics/MethodLength
   def outcome_message(attacker, defender, outcome)
     ActionController::Base.helpers.sanitize(
       "<div class='flex justify-center text-center'>
@@ -61,6 +62,7 @@ class BattleLogger
       </div"
     )
   end
+  # rubocop:enable Metrics/MethodLength
 
   def start_message
     ActionController::Base.helpers.sanitize(

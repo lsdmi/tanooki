@@ -104,10 +104,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy fiction' do
-    assert_difference('Fiction.count', -1) do
-      delete fiction_url(@fiction)
-    end
-
+    assert_difference('Fiction.count', -1) { delete fiction_url(@fiction) }
     assert_response :success
   end
 

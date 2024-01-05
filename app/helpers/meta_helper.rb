@@ -14,14 +14,13 @@ module MetaHelper
   end
 
   def meta_title
-    return "#{params[:search].to_sentence} | Бака" if request.path == search_index_path
-    return 'Бака - Ранобе та Фанфіки' if request.path == fictions_path
-    return chapter_title if @chapter.present? && @chapter.persisted?
-    return @youtube_video.title if @youtube_video&.persisted?
-    return 'Український аніме-ютуб: відео на Бака' if request.path == youtube_videos_path
-    return "#{@scanlator.title} | Переклади Ранобе | Бака" if @scanlator.present? && @scanlator.persisted?
+    return search_meta_title if search_index_path?
+    return fictions_meta_title if fictions_path?
+    return chapter_title if chapter_present?
+    return youtube_video_title if youtube_video_present?
+    return scanlator_meta_title if scanlator_present?
 
-    [@publication, @fiction].compact.map(&:title).first || 'Бака: про аніме українською'
+    default_meta_title
   end
 
   def meta_type
@@ -34,6 +33,46 @@ module MetaHelper
   end
 
   private
+
+  def search_index_path?
+    request.path == search_index_path
+  end
+
+  def search_meta_title
+    "#{params[:search].to_sentence} | Бака"
+  end
+
+  def fictions_path?
+    request.path == fictions_path
+  end
+
+  def fictions_meta_title
+    'Бака - Ранобе та Фанфіки'
+  end
+
+  def chapter_present?
+    @chapter.present? && @chapter.persisted?
+  end
+
+  def youtube_video_present?
+    @youtube_video&.persisted?
+  end
+
+  def youtube_video_title
+    @youtube_video.title
+  end
+
+  def scanlator_present?
+    @scanlator.present? && @scanlator.persisted?
+  end
+
+  def scanlator_meta_title
+    "#{@scanlator.title} | Переклади Ранобе | Бака"
+  end
+
+  def default_meta_title
+    [@publication, @fiction].compact.map(&:title).first || 'Бака: про аніме українською'
+  end
 
   def chapter_title
     "#{@chapter.fiction_title} | #{@chapter.display_title}"

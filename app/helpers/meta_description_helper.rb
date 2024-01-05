@@ -54,15 +54,23 @@ module MetaDescriptionHelper
   end
 
   def object_description
-    if @publication&.persisted?
-      publication_description
-    elsif @fiction&.persisted?
-      fiction_description
-    elsif @chapter&.persisted?
-      chapter_description
-    else
-      @youtube_video&.description
-    end
+    return publication_description if publication_persisted?
+    return fiction_description if fiction_persisted?
+    return chapter_description if chapter_persisted?
+
+    @youtube_video&.description
+  end
+
+  def publication_persisted?
+    @publication&.persisted?
+  end
+
+  def fiction_persisted?
+    @fiction&.persisted?
+  end
+
+  def chapter_persisted?
+    @chapter&.persisted?
   end
 
   def publication_description

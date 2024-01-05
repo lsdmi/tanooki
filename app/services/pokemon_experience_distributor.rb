@@ -27,23 +27,31 @@ class PokemonExperienceDistributor
   private
 
   def update_battle_rates(winner, loser)
-    update_rate = lambda do |user, rate|
-      new_rate = [user.battle_win_rate + rate, 100].min
-      user.update(battle_win_rate: new_rate)
-    end
-
     winner_rate = winner.battle_win_rate
     loser_rate = loser.battle_win_rate
     rank_difference = user_rank(winner_rate) - user_rank(loser_rate)
 
     case rank_difference <=> 0
     when 0
-      update_rate.call(winner, 2)
-      update_rate.call(loser, -1)
+      update_equal_rank(winner, loser)
     when -1
-      update_rate.call(winner, 3)
-      update_rate.call(loser, -2)
+      update_lower_rank(winner, loser)
     end
+  end
+
+  def update_equal_rank(user1, user2)
+    update_rate(user1, 2)
+    update_rate(user2, -1)
+  end
+
+  def update_lower_rank(winner, loser)
+    update_rate(winner, 3)
+    update_rate(loser, -2)
+  end
+
+  def update_rate(user, rate)
+    new_rate = [user.battle_win_rate + rate, 100].min
+    user.update(battle_win_rate: new_rate)
   end
 
   def user_rank(battle_rate)

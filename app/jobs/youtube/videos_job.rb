@@ -14,18 +14,9 @@ module Youtube
 
       @@mutex.synchronize do
         unless @api_call_executed
-          youtube = Google::Apis::YoutubeV3::YouTubeService.new
-          youtube.key = ENV.fetch('YOUTUBE_API_KEY')
-
-          response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
-          video_ids = response.items.map { |item| item.id.video_id }.compact
-
-          ActiveRecord::Base.transaction do
-            video_ids.each do |video_id|
-              create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
-            end
-          end
-
+          youtube = initialize_youtube_service
+          video_ids = fetch_video_ids(youtube, channel_id)
+          ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, channel_id, video_ids) }
           @api_call_executed = true
         end
       end
@@ -45,6 +36,23 @@ module Youtube
         tags: trimmed_tags(video_data.tags),
         published_at: video_data.published_at
       )
+    end
+
+    def create_videos_if_not_exists(youtube, channel_id, video_ids)
+      video_ids.each do |video_id|
+        create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
+      end
+    end
+
+    def fetch_video_ids(youtube, channel_id)
+      response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
+      response.items.map { |item| item.id.video_id }.compact
+    end
+
+    def initialize_youtube_service
+      youtube = Google::Apis::YoutubeV3::YouTubeService.new
+      youtube.key = ENV.fetch('YOUTUBE_API_KEY')
+      youtube
     end
 
     def trimmed_tags(tags)

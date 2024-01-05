@@ -18,7 +18,8 @@ class FictionsController < ApplicationController
       format.html { render 'index' }
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
-          'filtered-fictions', partial: 'other_section', locals: { other: @other, genres: @genres, sample_genre: @sample_genre }
+          'filtered-fictions', partial: 'other_section', locals: { other: @other, genres: @genres,
+                                                                   sample_genre: @sample_genre }
         )
       end
     end

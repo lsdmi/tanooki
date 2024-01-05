@@ -12,13 +12,7 @@ module Youtube
         unless @api_call_executed
           return unless Rails.env.production?
 
-          TelegramBot.init
-          TelegramBot.bot.api.send_message(
-            chat_id: '@bakaInUa',
-            text: text_message,
-            parse_mode: 'HTML'
-          )
-
+          send_telegram_message
           @api_call_executed = true
         end
       end
@@ -39,6 +33,15 @@ module Youtube
       when 2
         '🥉'
       end
+    end
+
+    def send_telegram_message
+      TelegramBot.init
+      TelegramBot.bot.api.send_message(
+        chat_id: '@bakaInUa',
+        text: text_message,
+        parse_mode: 'HTML'
+      )
     end
 
     def text_message

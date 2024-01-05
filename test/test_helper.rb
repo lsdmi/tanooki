@@ -17,7 +17,7 @@ module ActiveSupport
       SimpleCov.command_name "#{SimpleCov.command_name}-#{worker}"
     end
 
-    parallelize_teardown do |worker|
+    parallelize_teardown do |_worker|
       SimpleCov.result
     end
 

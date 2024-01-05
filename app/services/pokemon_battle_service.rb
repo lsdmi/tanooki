@@ -98,11 +98,7 @@ class PokemonBattleService
       handle_persistent_character(defender, defender_experience) if defender.character == 'persistent'
     end
 
-    if active_pokemon?(attacker_team)
-      append_log(logger.conclusion(:victory))
-    else
-      append_log(logger.conclusion(:defeat))
-    end
+    active_pokemon?(attacker_team) ? append_log(logger.conclusion(:victory)) : append_log(logger.conclusion(:defeat))
 
     if active_pokemon?(attacker_team)
       assign_winner(attacker_id)

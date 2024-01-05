@@ -12,17 +12,11 @@ Layout/LineLength:
   Exclude:
     - 'config/initializers/devise.rb'
 
-Metrics/AbcSize:
-  Exclude:
-    - 'app/controllers/users/registrations_controller.rb'
-
 Metrics/BlockLength:
   Exclude:
-    - 'config/environments/development.rb'
+    - 'config/environments/*'
+    - 'config/routes.rb'
 
-Metrics/MethodLength:
-  Exclude:
-    - 'app/controllers/users/registrations_controller.rb'
 
 Style/Documentation:
   Enabled: false

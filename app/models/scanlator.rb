@@ -53,10 +53,10 @@ class Scanlator < ApplicationRecord
   private
 
   def check_associations
-    if fictions.exists? || chapters.exists?
-      errors.add(:base, 'Перш ніж видалити - приберіть всі пов\'язані з командою твори та розділи!')
-      throw(:abort)
-    end
+    return unless fictions.exists? || chapters.exists?
+
+    errors.add(:base, 'Перш ніж видалити - приберіть всі пов\'язані з командою твори та розділи!')
+    throw(:abort)
   end
 
   def cleanup_member_ids

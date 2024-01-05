@@ -42,7 +42,12 @@ class Fiction < ApplicationRecord
 
   validate :cover_format
 
-  scope :most_reads, -> { joins(:readings).where(readings: { created_at: 1.year.ago..Time.now }).group(:fiction_id).order('COUNT(readings.fiction_id) DESC') }
+  scope :most_reads, lambda {
+    joins(:readings)
+      .where(readings: { created_at: 1.year.ago..Time.now })
+      .group(:fiction_id)
+      .order('COUNT(readings.fiction_id) DESC')
+  }
 
   def search_data
     {
@@ -94,6 +99,6 @@ class Fiction < ApplicationRecord
   end
 
   def scanlators_line
-    scanlators.any? ? "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" : ""
+    scanlators.any? ? "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" : ''
   end
 end
