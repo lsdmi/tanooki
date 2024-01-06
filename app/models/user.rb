@@ -25,7 +25,6 @@ class User < ApplicationRecord
   has_many :chapters, through: :scanlators
   has_many :fictions, through: :scanlators
 
-  scope :admins, -> { where(admin: true) }
   scope :avatarless, -> { where(avatar_id: nil) }
 
   scope :dex_leaders, lambda {

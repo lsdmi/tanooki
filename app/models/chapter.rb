@@ -51,10 +51,6 @@ class Chapter < ApplicationRecord
     fiction.description
   end
 
-  def fiction_slug
-    fiction.slug
-  end
-
   def fiction_title
     fiction.title
   end

@@ -15,12 +15,6 @@ module LibraryHelper
     )
   end
 
-  def ordered_scanlator_chapters_desc(chapters)
-    chapters.order(
-      Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, created_at DESC')
-    )
-  end
-
   def ordered_user_chapters_desc(fiction, user)
     user.admin? ? ordered_chapters_desc(fiction) : ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids })
   end

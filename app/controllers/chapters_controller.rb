@@ -103,20 +103,6 @@ class ChaptersController < ApplicationController
     ordered_chapters_desc(@chapter.fiction)
   end
 
-  def scanlator_chapters
-    ordered_scanlator_chapters_desc(
-      @chapter.fiction.chapters.joins(:users).where(users: { id: current_user.id })
-    )
-  end
-
-  def setup_pagination(chapters, page)
-    return if page && page.to_i < 1
-
-    @pagination = pagy(
-      chapters, page:, items: 8, request_path: readings_path, page_param: "chapter_page_#{@chapter.fiction_slug}"
-    )
-  end
-
   def chapter_params
     params.require(:chapter).permit(
       :content, :fiction_id, :number, :title, :user_id, :volume_number, scanlator_ids: []

@@ -94,10 +94,6 @@ class PublicationsController < ApplicationController
     redirect_to root_path unless current_user.admin? || current_user.publications.include?(@publication)
   end
 
-  def publication_user_id
-    @publication&.user_id || publication_params[:user_id]
-  end
-
   def refresh_list
     turbo_stream.update(
       'publications-list',

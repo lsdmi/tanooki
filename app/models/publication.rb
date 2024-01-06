@@ -27,7 +27,6 @@ class Publication < ApplicationRecord
   validate :cover_format
 
   scope :highlights, -> { where(highlight: true) }
-  scope :not_highlights, -> { where(highlight: false) }
   scope :last_month, -> { where(created_at: 1.month.ago..) }
 
   def search_data
