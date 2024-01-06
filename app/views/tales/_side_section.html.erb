@@ -1,0 +1,25 @@
+<div class="relative float-left w-full lg:mt-8">
+  <% highlights.first(3).each do |highlight| %>
+    <article class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 md:mb-2 lg:mb-0 md:flex lg:block justify-center">
+      <div class="rounded-md float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-48 mb-2 md:mb-1 lg:mb-2">
+        <%= link_to tale_path(highlight) do %>
+          <div class="float-left relative mb-2 w-full">
+            <%= image_tag url_for(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "rounded-lg h-72 md:h-48 w-full object-cover" %>
+            <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+          </div>
+        <% end %>
+      </div>
+      <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0">
+        <div class="col-span-6 lg:col-span-5">
+          <% highlight.tags.each do |tg| %>
+            <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100' %>
+          <% end %>
+          <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 hover:underline">
+            <%= link_to highlight.title, tale_path(highlight) %>
+          </h2>
+          <%= tag.p highlight.description.to_plain_text, class: 'mb-4 mt-2 font-light text-base lg:text-sm text-gray-500 line-clamp-2 md:line-clamp-3 lg:line-clamp-2' %>
+        </div>
+      </div>
+    </article>
+  <% end %>
+</div>

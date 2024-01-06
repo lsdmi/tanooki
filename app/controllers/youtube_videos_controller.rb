@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class YoutubeVideosController < ApplicationController
+  before_action :load_advertisement, only: :index
   before_action :set_video, :track_visit, only: :show
 
   def index

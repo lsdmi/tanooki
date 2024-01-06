@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 class TalesController < ApplicationController
+  before_action :load_advertisement, only: %i[index show]
   before_action :set_tale, :track_visit, only: :show
 
   def index
     @highlights = highlights
-    @most_popular = most_popular
-    @newest = newest
-    @pagy, @publications = pagy_countless(remaining, items: 5)
-    @videos = videos
+    @pagy, @publications = pagy_countless(publications, items: 17)
 
     render 'home/scrollable_list' if params[:page]
   end
@@ -46,23 +44,19 @@ class TalesController < ApplicationController
     end
   end
 
+  def all_publications
+    Publication.includes([{ cover_attachment: :blob }, :rich_text_description, :tags]).order(created_at: :desc)
+  end
+
   def highlights
-    Publication.highlights.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).first(3)
+    Rails.cache.fetch('highlights', expires_in: 4.hours) do
+      all_publications.first(11)
+    end
   end
 
-  def most_popular
-    Publication.includes({ cover_attachment: :blob })
-               .last_month.excluding(@highlights).order(views: :desc).limit(5)
-  end
-
-  def newest
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).excluding(@highlights, @most_popular).limit(10)
-  end
-
-  def remaining
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description])
-               .order(created_at: :desc).excluding(@highlights, @most_popular, @newest)
+  def publications
+    Rails.cache.fetch('publications', expires_in: 4.hours) do
+      all_publications.excluding(@highlights)
+    end
   end
 end

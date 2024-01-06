@@ -45,7 +45,6 @@
       <%= turbo_frame_tag "application-alert" do %>
         <%= render "shared/alert" if alert %>
       <% end %>
-      <%= render 'home/hero_section', highlights: @highlights, most_popular: @most_popular, newest: @newest if current_page?(tales_path) %>
       <main>
         <%= yield %>
         <%= turbo_frame_tag 'catch-pokemon' do %>

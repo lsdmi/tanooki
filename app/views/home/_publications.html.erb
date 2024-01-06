@@ -1,7 +1,56 @@
-<% publications.each_with_index do |publication, index| %>
-  <% if index != 4 %>
-    <%= render 'publications/other_regular', publication: publication %>
-  <% else %>
-    <%= render 'publications/other_large', publication: publication %>
-  <% end %>
-<% end %>
+<div class="grid mb-1 mt-2 lg:mb-0 lg:mt-0 lg:gap-8 lg:divide-x-4 lg:divide-purple-200 lg:grid-cols-3">
+  <div class="lg:col-span-2">
+    <% publications[0..7]&.each do |highlight| %>
+      <article class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 md:flex justify-center">
+        <div class="rounded-md float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-44 lg:h-48 mb-2 md:mb-1">
+          <%= link_to tale_path(highlight) do %>
+            <%= image_tag url_for(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "rounded-md opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] h-72 md:h-44 lg:h-48 object-cover", width: 320, height: 144 %>
+            <div class="z-10 rounded-md absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+          <% end %>
+        </div>
+        <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4">
+          <div class="col-span-6 lg:col-span-5">
+            <div class="w-full float-left rounded-xl mb-1 text-gray-500">
+              <div class="block">
+                <div class="sm:mb-1 lg:mb-0">
+                  <% highlight.tags.each do |tg| %>
+                    <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100' %>
+                  <% end %>
+                </div>
+              </div>
+              <h2 class="mt-2 mb-1 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 hover:underline line-clamp-3">
+                <%= link_to highlight.title, tale_path(highlight) %>
+              </h2>
+              <%= tag.p highlight.description.to_plain_text, class: 'text-base lg:text-sm font-light text-gray-500 mr-1 w-full whitespace-break-spaces font-light line-clamp-2 md:line-clamp-3 mt-2 lg:mt-1 lg:leading-6' %>
+            </div>
+          </div>
+        </div>
+      </article>
+    <% end %>
+  </div>
+ <div class="lg:space-y-8 lg:pl-8">
+    <% publications[8...17]&.each do |tale| %>
+      <article class="md:flex lg:block mt-2 lg:mt-0">
+        <div class="rounded-md float-left relative w-full md:w-4/5 lg:hidden overflow-hidden h-72 md:h-48 mb-2 lg:mb-1">
+          <%= link_to tale_path(tale), class: 'lg:hidden' do %>
+            <div class="float-left relative mb-4 w-full">
+              <%= image_tag url_for(tale.cover), alt: tale.cover.blob.filename.to_s, class: "rounded-lg h-72 md:h-48 w-full object-cover" %>
+              <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+            </div>
+          <% end %>
+        </div>
+        <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0 lg:mb-4">
+          <div class="col-span-6 lg:col-span-5">
+            <% tale.tags.each do |tg| %>
+              <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100' %>
+            <% end %>
+            <h2 class="mt-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 hover:underline">
+              <%= link_to tale.title, tale_path(tale) %>
+            </h2>
+            <%= tag.p tale.description.to_plain_text, class: 'mb-4 mt-2 text-base lg:text-sm font-light text-gray-500 line-clamp-2 md:line-clamp-3' %>
+          </div>
+        </div>
+      </article>
+    <% end %>
+  </div>
+</div>

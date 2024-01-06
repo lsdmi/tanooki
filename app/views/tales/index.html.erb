@@ -1,22 +1,27 @@
-<div class="float-left w-full">
-  <div class="m-auto lg:w-[1250px] h-full">
-    <div class="relative float-left w-full mt-4">
-      <%= render 'shared/divider_shiny_pink', caption: 'Більше Новин' %>
-      <div class="relative float-left w-full sm:-mr-96">
-        <main class="mr-2 lg:mr-96">
-          <div class="relative float-left w-full">
-            <ul class="relative float-left w-full list-none mx-[0.1rem] xl:ml-0">
-              <%= render "home/publications", publications: @publications %>
-              <%= render "home/next_page", pagy: @pagy %>
-            </ul>
-          </div>
-        </main>
-        <aside class="sticky top-8 invisible lg:visible float-right h-[45rem]">
-          <div class="float-left relative ml-14 w-80">
-            <%= render 'shared/videos', videos: @videos %>
-          </div>
-        </aside>
+<div class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto">
+  <section class="w-full relative float-left font-oswald mb-2 z-10 lg:ml-0">
+    <div class="lg:mr-[375px] mx-auto lg:mx-0 w-[96%] lg:w-auto">
+      <div class="w-full relative float-left lg:ml-4">
+        <div class="relative sm:float-right w-full lg:w-[60%]">
+          <%= render 'main_section', highlights: @highlights[0..4]  %>
+        </div>
+        <div class="relative sm:float-left w-full lg:w-[21rem] mx-auto lg:mx-0 block md:flex lg:block">
+          <%= render 'side_section', highlights: @highlights[5..7] %>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="lg:float-left lg:ml-4 lg:w-[21rem] mx-auto lg:mx-0 w-[96%] block md:flex lg:block">
+      <%= render 'side_section', highlights: @highlights[8..10] %>
+    </div>
+  </section>
+  <section class="relative float-left w-full mt-2">
+    <div class="w-[95%] mx-auto">
+      <%= render 'shared/ads', advertisement: @advertisement %>
+    </div>
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 font-oswald">
+      <%= render "home/publications", publications: @publications %>
+      <%= render "home/next_page", pagy: @pagy %>
+    </div>
+  </section>
 </div>
+
