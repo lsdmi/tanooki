@@ -40,13 +40,27 @@ module Youtube
 
     def create_videos_if_not_exists(youtube, channel_id, video_ids)
       video_ids.each do |video_id|
-        create_video(youtube, channel_id, video_id) unless YoutubeVideo.with_deleted.exists?(video_id:)
+        next if short_video?(video_id)
+        next if YoutubeVideo.with_deleted.exists?(video_id:)
+
+        create_video(youtube, channel_id, video_id)
       end
     end
 
     def fetch_video_ids(youtube, channel_id)
       response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
       response.items.map { |item| item.id.video_id }.compact
+    end
+
+    def short_video?(video_id)
+      url = "https://www.youtube.com/shorts/#{video_id}"
+      uri = URI(url)
+
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        http.request_head(uri)
+      end
+
+      response.code.to_i == 200
     end
 
     def initialize_youtube_service

@@ -2,7 +2,7 @@
   <%= render 'shared/divider_shiny_pink', caption: 'Відео' if (results.any? || fictions.any?) && params[:only_videos].nil? %>
   <ul class="list-none w-full float-left relative">
     <% videos.each do |video| %>
-      <%= render 'video', video: video %>
+      <%= render 'video', video: %>
     <% end %>
   </ul>
 <% end if videos.any? %>

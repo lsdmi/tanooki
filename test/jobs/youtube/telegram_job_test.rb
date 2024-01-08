@@ -10,25 +10,23 @@ class TelegramJobTest < ActiveSupport::TestCase
     Rails.stub(:env, rails_env_mock) do
       object = mock_telegram_object
 
-      TelegramBot.stub(:init, nil) do
-        bot_mock = Minitest::Mock.new
-        api_mock = Minitest::Mock.new
+      bot_mock = Minitest::Mock.new
+      api_mock = Minitest::Mock.new
 
-        api_mock.expect(:send_message, nil) do |params|
-          assert_equal '@bakaInUa', params[:chat_id]
-          assert_equal object.telegram_message, params[:text]
-          assert_equal 'HTML', params[:parse_mode]
-        end
-
-        bot_mock.expect(:api, api_mock)
-
-        TelegramBot.stub(:bot, bot_mock) do
-          Youtube::TelegramJob.new.perform
-        end
-
-        api_mock.verify
-        bot_mock.verify
+      api_mock.expect(:send_message, nil) do |params|
+        assert_equal '@bakaInUa', params[:chat_id]
+        assert_equal object.telegram_message, params[:text]
+        assert_equal 'HTML', params[:parse_mode]
       end
+
+      bot_mock.expect(:api, api_mock)
+
+      TelegramBot.stub(:client, bot_mock) do
+        Youtube::TelegramJob.new.perform
+      end
+
+      api_mock.verify
+      bot_mock.verify
     end
   end
 

@@ -29,15 +29,23 @@
           </li>
         </ol>
       </nav>
-      <div class="flex flex-wrap items-center my-4">
-        <% fiction.genres.each do |tg| %>
-          <%= tag.p tg.name, class: 'bg-emerald-100 dark:hover:bg-emerald-300 text-emerald-800 text-lg font-medium mr-3 px-2.5 py-0.5 mb-2 rounded dark:bg-emerald-200 dark:text-emerald-800 hover:bg-emerald-200' %>
-        <% end %>
+      <%= tag.h1 chapter.title, class: 'mt-4 font-oswald mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white' %>
+      <div>
+        <ul class="mb-2 overflow-hidden break-words text-center text-left inline-block md:flex flex-wrap">
+          <% fiction.genres.each do |genre| %>
+            <div class="relative inline-block pr-2 xl:p-0 xl:mx-1">
+              <h2 class="relative w-full text-center mb-1 2xl:mb-3">
+                <%= tag.span genre.name, class: "text-xs inline-block text-white font-bold leading-none px-4 py-2 relative uppercase z-10 bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br rounded-xl" %>
+              </h2>
+            </div>
+          <% end %>
+        </ul>
       </div>
-      <%= tag.h1 chapter.title, class: 'font-oswald mb-4 text-2xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white' %>
       <div class="flex justify-between items-center pb-2 border-b border-gray-200 dark:border-gray-700">
         <div class="mr-4 text-sm">
-          <%= tag.p chapter.user.name, class: 'text-xl text-gray-700 no-underline dark:text-white' %>
+          <% chapter.scanlators.each_with_index do |scanlator, index| %>
+            <%= link_to index != chapter.scanlators.length - 1 ? "#{scanlator.title}, " : scanlator.title, scanlator_path(scanlator), class: 'text-xl text-gray-700 no-underline dark:text-white hover:underline' %>
+          <% end %>
         </div>
         <div>
           <%= link_to edit_chapter_path(chapter), class: 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 float-right', type: 'button' do %>

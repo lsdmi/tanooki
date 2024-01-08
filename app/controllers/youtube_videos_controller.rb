@@ -29,11 +29,11 @@ class YoutubeVideosController < ApplicationController
   end
 
   def popular
-    base_query.excluding(@highlights).last_month.order(views: :desc).first(3)
+    base_query.excluding(@highlights).last_month.order(views: :desc).first(4)
   end
 
   def latest
-    base_query.excluding(@highlights, @popular).order(published_at: :desc).first(3)
+    base_query.excluding(@highlights, @popular).order(published_at: :desc).first(4)
   end
 
   def other

@@ -21,16 +21,11 @@ module DashboardHelper
 
   def experience_to_sentence(rate)
     case rate
-    when 0
-      'Відсутній'
-    when 1..20
-      'Початківець'
-    when 21..50
-      'Вояк'
-    when 51..90
-      'Ветеран'
-    when 90..Float::INFINITY
-      'Незборний'
+    when 0 then 'Відсутній'
+    when 1..20 then 'Початківець'
+    when 21..50 then 'Вояк'
+    when 51..90 then 'Ветеран'
+    else 'Незборний'
     end
   end
 end

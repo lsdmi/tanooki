@@ -6,8 +6,7 @@ class TelegramJob < ApplicationJob
   def perform(object:)
     return unless Rails.env.production?
 
-    TelegramBot.init
-    TelegramBot.bot.api.send_message(
+    TelegramBot.client.api.send_message(
       chat_id: '@bakaInUa',
       text: object.telegram_message,
       parse_mode: 'HTML'

@@ -21,7 +21,8 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       ancestor_id: @pokemon.ancestor_id,
       descendant_id: 1,
       descendant_level: 0,
-      dex_id: 1
+      dex_id: 1,
+      type_ids: [1]
     }
   end
 

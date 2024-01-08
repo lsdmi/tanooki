@@ -28,13 +28,4 @@ module FictionQuery
            .group('fictions.id, active_storage_attachments.id, scanlators.id')
            .order('max_created_at DESC')
   end
-
-  def fictions_from_author
-    Fiction.joins(:chapters, :scanlators).includes([{ cover_attachment: :blob }, :genres])
-           .where(fiction_scanlators: { scanlator_id: @chapter.scanlators.ids })
-           .excluding(@chapter.fiction)
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group('fiction_scanlators.fiction_id')
-           .order('max_created_at DESC')
-  end
 end

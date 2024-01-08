@@ -16,7 +16,11 @@ module LibraryHelper
   end
 
   def ordered_user_chapters_desc(fiction, user)
-    user.admin? ? ordered_chapters_desc(fiction) : ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids })
+    if user.admin?
+      ordered_chapters_desc(fiction)
+    else
+      ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids })
+    end
   end
 
   def chapters_size(fiction)

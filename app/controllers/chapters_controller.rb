@@ -13,7 +13,6 @@ class ChaptersController < ApplicationController
     @comments = @chapter.comments.parents.order(created_at: :desc)
     @comment = Comment.new
     @next_chapter = following_chapter(@chapter.fiction, @chapter)
-    @more_from_author = more_from_author
   end
 
   def new
@@ -87,12 +86,6 @@ class ChaptersController < ApplicationController
 
   def destroy_association(scanlator)
     FictionScanlator.find_by(fiction_id: @chapter.fiction.id, scanlator_id: scanlator.id)&.destroy
-  end
-
-  def more_from_author
-    Rails.cache.fetch("more_from_author_#{@chapter.id}}", expires_in: 12.hours) do
-      fictions_from_author
-    end
   end
 
   def set_chapter

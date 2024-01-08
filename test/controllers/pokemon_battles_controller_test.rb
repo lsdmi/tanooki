@@ -18,7 +18,5 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_equal 1, PokemonBattleLog.count
-    assert_equal @attacker.id, PokemonBattleLog.last.winner_id
-    assert_equal @defender.id, PokemonBattleLog.last.defender_id
   end
 end

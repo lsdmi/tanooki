@@ -36,8 +36,7 @@ module Youtube
     end
 
     def send_telegram_message
-      TelegramBot.init
-      TelegramBot.bot.api.send_message(
+      TelegramBot.client.api.send_message(
         chat_id: '@bakaInUa',
         text: text_message,
         parse_mode: 'HTML'

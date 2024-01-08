@@ -15,9 +15,9 @@ module FictionsHelper
     'Комедія' => 'comedy',
     'ЛГБТ' => 'lgbt',
     'Містика' => 'mystic',
-    'Омегаверс' => 'omegaverse',
     'Повсякденність' => 'lifeslice',
     'Пригоди' => 'adventure',
+    'Психологія' => 'psychological',
     'Романтика' => 'romance',
     'Спорт' => 'sport',
     'Сюаньхвань' => 'xuanhuan',
@@ -39,8 +39,7 @@ module FictionsHelper
   def fiction_author(fiction)
     if fiction.scanlators.any?
       scanlator_links = fiction.scanlators.map do |scanlator|
-        link_to scanlator.title, scanlator_path(scanlator),
-                class: 'font-extrabold tracking-tight text-emerald-900 text-emerald-700 hover:underline hover:text-emerald-600 inline-block'
+        link_to scanlator.title, scanlator_path(scanlator), class: scanlator_link_classes
       end.join(', ').html_safe
 
       "Перекладач: #{content_tag(:strong, scanlator_links)}".html_safe
@@ -118,5 +117,12 @@ module FictionsHelper
       'hover:bg-purple-200',
       'hover:bg-pink-200'
     ].sample
+  end
+
+  private
+
+  def scanlator_link_classes
+    'font-extrabold tracking-tight text-emerald-900 ' \
+      'text-emerald-700 hover:underline hover:text-emerald-600 inline-block'
   end
 end

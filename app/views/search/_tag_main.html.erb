@@ -14,4 +14,4 @@
       <%= tag.h2 punch(publication.description.to_plain_text), class: "#{main_state(publication)} lg:block font-oswald font-thin text-white mt-8 lg:text-xl w-11/12" %>
     </div>
   </div>
-<% end %>
+<% end if publication.present? %>

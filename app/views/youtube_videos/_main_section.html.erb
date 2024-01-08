@@ -1,5 +1,5 @@
 <% main_highlight = highlights.first %>
-<div class="py-2 lg:mb-3 lg:border-b border-gray-300 hidden lg:block">
+<div class="py-2 lg:mb-4 lg:border-b-4 border-pink-700 hidden lg:block">
   <div class="mb-1 mb-2 leading-none relative">
     <%= link_to youtube_video_path(main_highlight) do %>
       <%= image_tag url_for(main_highlight.thumbnail), alt: main_highlight.title, class: "rounded-md opacity-80 m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-72 mt-4 md:object-cover lg:object-fill", loading: 'eager' %>
@@ -7,39 +7,45 @@
     <% end %>
   </div>
   <div class="text-gray-500 mb-2 lg:mb-1">
-    <%= link_to main_highlight.youtube_channel.title, "https://www.youtube.com/watch?v=#{main_highlight.video_id}", class: 'text-rose-700 text-base sm:text-lg md:text-base lg:text-sm font-light hover:underline', target: '_blank' %>
-    <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
-    <%= tag.span "#{time_ago_in_words(main_highlight.published_at)} тому", class: 'text-base md:text-sm lg:text-xs font-light' %>
-    <%= link_to youtube_video_path(main_highlight) do %>
-      <%= tag.h2 main_highlight.title, class: 'text-gray-700 text-2xl sm:text-3xl md:leading-8 tracking-tight line-clamp-2 w-full hover:text-gray-600 hover:pointer mt-1' %>
-    <% end %>
-    <%= tag.span punch(main_highlight.description.to_s), class: 'text-gray-600 text-base mr-1 w-full whitespace-break-spaces font-light line-clamp-2 mt-2 lg:mt-1 lg:leading-6' %>
+    <%= link_to main_highlight.youtube_channel.title, search_index_path(search: [main_highlight.youtube_channel.title]), class: 'text-rose-700 text-base sm:text-lg lg:text-base hover:underline font-light' %>
+    <%= tag.span "∘", class: 'text-sm font-light' %>
+    <%= tag.span "#{time_ago_in_words(main_highlight.published_at)} тому", class: 'text-sm font-light' %>
+    <div class="mt-2 mb-1">
+      <%= link_to main_highlight.title, youtube_video_path(main_highlight), class: 'text-gray-700 text-3xl sm:text-4xl md:leading-8 tracking-tight w-full hover:text-gray-600 hover:underline' %>
+    </div>
+    <%= tag.div class: 'w-full line-clamp-3 my-1' do %>
+      <% main_highlight.tags.split(', ').each do |video_tag| %>
+        <%= button_to video_tag, search_index_path, method: :get, class: 'bg-rose-100 text-rose-700 text-base font-semibold px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+      <% end %>
+    <% end if main_highlight.tags? %>
   </div>
 </div>
 <div class="relative float-left w-full mt-0 lg:hidden">
   <%= render partial: "side_video", collection: [main_highlight] %>
 </div>
 <% highlights.excluding(main_highlight).each do |highlight| %>
-  <div class="float-right relative w-full mb-2 hidden lg:block">
-    <div class="relative md:float-left leading-none overflow-hidden w-full lg:w-56 mr-3">
+  <div class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 hidden lg:flex justify-center">
+    <div class="rounded-md float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-44 lg:h-36 mb-2 md:mb-1">
       <%= link_to youtube_video_path(highlight) do %>
-        <%= image_tag url_for(highlight.thumbnail), alt: highlight.title, class: "w-full rounded-md max-h-96 lg:h-32 md:object-cover lg:object-fill" %>
-        <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+        <%= image_tag url_for(highlight.thumbnail), alt: highlight.title, class: "rounded-md opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] h-72 md:h-44 lg:h-36 object-cover", width: 320, height: 144 %>
+        <div class="z-10 rounded-md absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
       <% end %>
     </div>
-    <div class="lg:ml-[240px] xl:ml-[250px]">
-      <div class="relative float-left lg:w-11/12 md:w-full md:m-0 mt-1 lg:mt-0">
-        <div class="text-gray-500 lg:h-32 mt-2 lg:mt-[-2px] mb-2 lg:mb-0">
-          <div class="line-clamp-1">
-            <%= link_to highlight.youtube_channel.title, "https://www.youtube.com/watch?v=#{highlight.video_id}", class: 'text-rose-700 text-base sm:text-lg md:text-base lg:text-sm font-light hover:underline', target: '_blank' %>
-            <%= tag.span "∘", class: 'text-base sm:text-lg font-light' %>
-            <%= tag.span "#{time_ago_in_words(highlight.published_at)} тому", class: 'text-base sm:text-sm lg:text-xs font-light' %>
-          </div>
-          <%= link_to youtube_video_path(highlight) do %>
-            <%= tag.h2 highlight.title, class: 'text-gray-700 text-2xl sm:text-3xl lg:text-xl md:leading-8 lg:leading-6 tracking-tight hover:text-gray-600 hover:pointer mt-1 sm:mt-0 lg:mt-1 line-clamp-2' %>
-          <% end %>
-          <div class="mt-2">
-            <%= tag.span punch(highlight.description.to_s), class: 'text-gray-600 text-base lg:text-sm mr-1 w-full whitespace-break-spaces font-light line-clamp-1 lg:line-clamp-2 mt-2 sm:mt-0' %>
+    <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4">
+      <div class="col-span-6 lg:col-span-5">
+        <div class="flex text-gray-500 text-sm mb-2 lg:mb-0">
+          <div>
+            <%= link_to highlight.youtube_channel.title, search_index_path(search: [highlight.youtube_channel.title]), class: 'text-rose-700 text-base sm:text-lg lg:text-sm hover:underline font-light' %>
+            <%= tag.span "∘", class: 'text-xs font-light' %>
+            <%= tag.span "#{time_ago_in_words(highlight.published_at)} тому", class: 'text-xs font-light' %>
+            <div class="line-clamp-3 my-2">
+              <%= link_to highlight.title, youtube_video_path(highlight), class: 'tracking-tight lg:leading-5 text-gray-700 text-xl sm:text-2xl lg:text-xl w-full hover:text-gray-600 hover:underline' %>
+            </div>
+            <%= tag.div class: 'w-full line-clamp-2 mb-1' do %>
+              <% highlight.tags.split(', ').each do |video_tag| %>
+                <%= button_to video_tag, search_index_path, method: :get, class: 'bg-rose-100 text-rose-700 text-xs font-semibold px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+              <% end %>
+            <% end if highlight.tags? %>
           </div>
         </div>
       </div>
