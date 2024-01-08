@@ -9,7 +9,7 @@
           <div class="w-full space-y-6 lg:max-w-lg shrink-0">
             <div class="space-y-3">
               <%= link_to youtube_video_path(video) do %>
-                <%= tag.h3 video.title, class: 'text-3xl font-bold leading-tight text-gray-900 sm:text-4xl hover:underline' %>
+                <%= tag.h3 video.title, class: 'text-2xl font-bold leading-tight text-gray-900 sm:text-3xl md:text-4xl hover:underline' %>
               <% end %>
               <div class="line-clamp-1 sm:mb-1">
                 <%= link_to video.youtube_channel.title, "https://www.youtube.com/watch?v=#{video.video_id}", class: 'text-rose-700 text-sm sm:text-xl font-light hover:underline', target: '_blank' %>
