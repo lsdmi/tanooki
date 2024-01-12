@@ -19,7 +19,7 @@
             </div>
             <%= tag.div class: 'lg:hidden w-full line-clamp-1 md:line-clamp-3 mt-2' do %>
               <% side_video.tags.split(', ').each do |video_tag| %>
-                <%= button_to video_tag, search_index_path, method: :get, class: 'bg-rose-100 text-rose-700 text-xs md:text-sm px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+                <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag-side-video', class: 'bg-rose-100 text-rose-700 text-xs md:text-sm px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
               <% end %>
             <% end if side_video.tags? %>
           </div>

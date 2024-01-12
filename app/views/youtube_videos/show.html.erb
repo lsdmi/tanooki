@@ -38,7 +38,7 @@
               <% tag_list = @youtube_video.tags.split(', ') %>
               <% tag_list.each_with_index do |video_tag, index| %>
                 <% tag_with_comma = index != tag_list.length - 1 ? "#{video_tag}, " : video_tag %>
-                <%= button_to tag_with_comma, search_index_path, method: :get, class: 'text-base md:text-sm lg:text-base 2xl:text-lg w-full font-light text-rose-700 hover:underline hover:text-rose-600 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+                <%= button_to tag_with_comma, search_index_path, method: :get, id: 'search-youtube-video-tag', class: 'text-base md:text-sm lg:text-base 2xl:text-lg w-full font-light text-rose-700 hover:underline hover:text-rose-600 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
               <% end %>
             <% end if @youtube_video.tags? %>
           </div>

@@ -3,7 +3,7 @@
   <div>
     <div class="inline-flex -skew-x-12">
       <p class="font-light text-xs sm:text-sm 2xl:text-base text-gray-500">автор:</p>
-      <%= button_to fiction.author, search_index_path, method: :get, class: 'ml-1 text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-800 line-clamp-1 hover:underline hover:text-emerald-600', params: { search: [fiction.author] } %>
+      <%= button_to fiction.author, search_index_path, method: :get, id: 'fictions-author-search', class: 'ml-1 text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-emerald-800 line-clamp-1 hover:underline hover:text-emerald-600', params: { search: [fiction.author] } %>
     </div>
   </div>
   <div>
@@ -13,41 +13,32 @@
     </div>
   </div>
   <%= render 'ranks', ranks: %>
-  <div class="inline-flex md:flex space-x-4 mt-3 mb-4 sm:mb-0">
-    <div class="flex">
-      <div class="sm:mr-1 2xl:mr-2 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
-        <%= image_tag 'chapter.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'chapter' %>
+  <div class="grid grid-cols-3 my-4 sm:mb-0">
+    <div class="mt-1 justify-center flex">
+      <div class="2xl:mr-2 shrink-0 flex flex-col justify-center">
+        <%= image_tag 'book.webp', class: 'w-auto h-12 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon', width: 80, height: 80 %>
       </div>
-      <div class="mt-2 md:mt-1 flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">розділів</p>
-        <%= tag.p "#{unique_chapters(fiction.chapters).size}/#{fiction.total_chapters}", class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
-      </div>
-    </div>
-    <div class="flex">
-      <div class="sm:mr-1 2xl:mr-2 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
-        <%= image_tag 'views.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'views' %>
-      </div>
-      <div class="mt-2 md:mt-1 flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">переглядів</p>
-        <%= tag.p fiction.views, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
+      <div class="flex flex-col justify-center">
+        <%= tag.p "#{unique_chapters(fiction.chapters).size} з #{fiction.total_chapters}", class: 'text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>
+        <p class="font-light text-base 2xl:text-lg text-gray-500 text-center">розділів</p>
       </div>
     </div>
-    <div class="flex">
-      <div class="mr-1 sm:mr-2 2xl:mr-3 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
-        <%= image_tag 'bookmark.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'bookmark' %>
+    <div class="justify-center flex">
+      <div class="2xl:mr-2 shrink-0 flex flex-col justify-center">
+        <%= image_tag 'book.webp', class: 'w-auto h-12 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon', width: 80, height: 80 %>
       </div>
-      <div class="mt-2 md:mt-1 flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">закладинок</p>
-        <%= tag.p fiction.readings.size, class: 'text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight text-gray-900 -skew-x-12' %>
+      <div class="flex flex-col justify-center">
+        <%= tag.p fiction.views, class: 'text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-gray-500' %>
+        <p class="font-light text-base 2xl:text-lg text-gray-500">переглядів</p>
       </div>
     </div>
-    <div class="flex">
-      <div class="sm:mr-1 2xl:mr-2 shrink-0 hidden sm:flex flex-col justify-center -skew-x-12">
-        <%= image_tag 'status.svg', class: 'h-8 2xl:h-10 inline-block', alt: 'status' %>
+    <div class="mt-1 justify-center flex">
+      <div class="2xl:mr-2 shrink-0 flex flex-col justify-center">
+        <%= image_tag 'book.webp', class: 'w-auto h-12 inline-block transform transition duration-500 hover:scale-110', alt: 'book icon', width: 80, height: 80 %>
       </div>
-      <div class="mt-2 md:mt-1 flex flex-col justify-center">
-        <p class="font-light text-xs sm:text-sm text-gray-500 -skew-x-12">статус</p>
-        <%= tag.p Fiction.statuses[fiction.status], class: "text-xs sm:text-sm 2xl:text-base font-extrabold tracking-tight #{FictionsHelper::STATUS_COLORS[fiction.status.to_sym]} -skew-x-12 -ml-1" %>
+      <div class="flex flex-col justify-center">
+        <%= tag.p Fiction.statuses[fiction.status], class: "text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-gray-500 #{FictionsHelper::STATUS_COLORS[fiction.status.to_sym]}" %>
+        <p class="font-light text-base 2xl:text-lg text-gray-500 text-center">статус</p>
       </div>
     </div>
   </div>

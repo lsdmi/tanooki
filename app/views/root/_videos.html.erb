@@ -18,7 +18,7 @@
               <% end %>
               <%= tag.div class: 'w-full line-clamp-4' do %>
                 <% video.tags.split(', ').each do |video_tag| %>
-                  <%= button_to video_tag, search_index_path, method: :get, class: 'bg-rose-100 text-rose-700 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+                  <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: 'bg-rose-100 text-rose-700 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
                 <% end %>
               <% end if video.tags? %>
             </div>

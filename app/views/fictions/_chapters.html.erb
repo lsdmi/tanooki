@@ -1,12 +1,11 @@
 <div class="text-gray-500 sm:text-lg col-span-3 self-start">
   <div class="flex items-center justify-between">
     <h2 class="text-lg font-extrabold leading-tight tracking-tight text-gray-900 sm:text-xl">Перелік розділів</h2>
-    <%= button_to toggle_order_fictions_path(id: fiction, order:, translator: params[:translator]), data: { turbo_stream: "", "turbo-method": :post }, class: 'text-gray-500 hover:bg-gray-100 rounded-lg text-sm float-right mr-2 mt-2 p-2' do %>
+    <%= button_to toggle_order_fictions_path(id: fiction, order:, translator: params[:translator]), data: { turbo_stream: "", "turbo-method": :post }, id: 'toggle-fictions-order', class: 'text-gray-500 hover:bg-gray-100 rounded-lg text-sm float-right mr-2 mt-2 p-2' do %>
       <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17V1m0 0L1 4m3-3 3 3m4-3h6l-6 6h6m-7 10 3.5-7 3.5 7m-6.125-2H16"/>
       </svg>
     <% end %>
   </div>
   <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, after_next_chapter:, translator: params[:translator], order: %>
-  <%= render 'add_chapter_cta', fiction: fiction %>
 </div>
