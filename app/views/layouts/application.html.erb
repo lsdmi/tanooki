@@ -21,6 +21,11 @@
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5596031369567303" crossorigin="anonymous"></script>
     <% end %>
 
+    <% if controller_name.to_sym == :fictions && action_name.to_sym == :show %>
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      <%= javascript_include_tag 'chart_loader' %>
+    <% end %>
+
     <% if requires_tinymce? %>
       <%= tinymce_assets %>
       <%= javascript_include_tag 'tinymce_initializer' %>

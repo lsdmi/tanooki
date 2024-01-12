@@ -7,7 +7,7 @@ class FictionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show toggle_order]
   before_action :set_fiction, only: %i[show edit update destroy toggle_order]
   before_action :set_genres, only: %i[new create edit update]
-  before_action :track_visit, only: :show
+  before_action :load_advertisement, :track_visit, only: :show
   before_action :verify_permissions, except: %i[index new create show toggle_order]
   before_action :verify_create_permissions, only: %i[new create]
 
@@ -176,9 +176,16 @@ class FictionsController < ApplicationController
     @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
     @comment = Comment.new
     @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
+    @bookmark_stats = bookmark_stats
     @ranks = fiction_ranks
     @order = params[:order] || :desc
     duplicate_chapters(@fiction).any? ? split_chapter_by_user_id : split_chapter_list
+  end
+
+  def bookmark_stats
+    Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do
+      BookmarksAccounter.new(fiction: @fiction).call
+    end
   end
 
   def fiction_ranks

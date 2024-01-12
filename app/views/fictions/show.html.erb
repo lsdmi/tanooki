@@ -9,16 +9,20 @@
               <%= image_tag url_for(@fiction.cover), class: 'hidden md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename  %>
             </figure>
           </div>
-          <div class="inline-flex mx-2.5 mb-8 text-center md:text-left">
+          <div class="inline-flex mx-2.5 mb-4 text-center md:text-left">
             <%= render 'details', fiction: @fiction, ranks: @ranks %>
           </div>
         </div>
-        <div class="mx-auto w-[95%] text-gray-600 relative z-10 ">
+        <div class="mx-auto w-[95%] text-gray-600 relative z-10 mb-8">
           <%= render 'shared/divider_shiny_green', caption: 'Опис'  %>
           <blockquote class="p-4 my-4 border-s-4 border-gray-300">
             <%= tag.p @fiction.description, class: 'font-light text-sm sm:text-base whitespace-break-spaces italic leading-relaxed text-gray-900' %>
           </blockquote>
         </div>
+        <%= tag.div class: 'mx-auto w-[95%] text-gray-600 relative z-10' do %>
+          <%= render 'shared/divider_shiny_green', caption: 'Статистика закладинок'  %>
+          <%= render 'bookmark_stats', bookmark_stats: @bookmark_stats %>
+        <% end if @bookmark_stats.sum > 0 %>
       </div>
     </div>
     <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
@@ -26,6 +30,10 @@
         <%= turbo_frame_tag 'sort-chapters' do %>
           <%= render 'chapters', fiction: @fiction, reading_progress: @reading_progress, before_next_chapter: @before_next_chapter, after_next_chapter: @after_next_chapter, order: @order %>
         <% end %>
+        <div class="my-4">
+          <%= render 'shared/ads', advertisement: @advertisement %>
+        </div>
+        <%= render 'add_chapter_cta', fiction: @fiction %>
       <% else %>
         <%= render 'first_chapter_cta', fiction: @fiction %>
       <% end %>
