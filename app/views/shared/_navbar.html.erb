@@ -36,7 +36,7 @@
     <div class="flex justify-center items-center place-items-center">
       <div class="flex flex-row mt-0 space-x-8 text-sm font-medium">
         <% trending_tags.each do |tg| %>
-          <%= link_to tg[:name], tg[:link], class: 'font-oswald text-gray-900 text-base hover:text-gray-600 focus:outline-none transition duration-500 transform hover:scale-110 hover:border-gray-700 hover:border-b-4 border-b-4 border-white', area: { current: 'page' } %>
+          <%= link_to tg[:name], tg[:link], class: "font-oswald text-base focus:outline-none transition duration-500 transform hover:scale-110 hover:border-b-4 border-b-4 border-white #{navbar_style(tg[:name])}", area: { current: 'page' } %>
         <% end %>
       </div>
     </div>

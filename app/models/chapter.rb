@@ -28,6 +28,8 @@ class Chapter < ApplicationRecord
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
 
+  scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
+
   def author
     fiction.author
   end
