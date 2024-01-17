@@ -87,8 +87,7 @@ class FictionsController < ApplicationController
       page: fiction_page || 1
     )
     setup_paginator
-    setup_sidebar_vars
-    render turbo_stream: [refresh_list, refresh_sidebar]
+    render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
   def toggle_order
@@ -218,24 +217,11 @@ class FictionsController < ApplicationController
     @other = filtered_fiction_with_max_created_at_query
   end
 
-  def setup_sidebar_vars
-    @fictions_size = @pagy.count
-    @user_publications = current_user.publications.order(created_at: :desc)
-  end
-
-  def refresh_sidebar
-    turbo_stream.update(
-      'default-sidebar',
-      partial: 'users/dashboard/sidebar',
-      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
-    )
-  end
-
   def verify_permissions
     redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
   end
 
   def verify_create_permissions
-    redirect_to new_fiction_path unless current_user.admin? || current_user.scanlators.any?
+    redirect_to new_scanlator_path unless current_user.admin? || current_user.scanlators.any?
   end
 end

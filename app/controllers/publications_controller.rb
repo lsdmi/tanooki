@@ -35,7 +35,7 @@ class PublicationsController < ApplicationController
       page: params[:page] || 1
     )
 
-    render turbo_stream: refresh_list
+    render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
   def new

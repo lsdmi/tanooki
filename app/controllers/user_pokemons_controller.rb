@@ -63,7 +63,7 @@ class UserPokemonsController < ApplicationController
       train_level(user_pokemon.pokemon)
     else
       user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1)
-      @alert = "#{user_pokemon.pokemon.name} набув нового бойового досвіду!"
+      @alert = "#{user_pokemon.pokemon_name} набув нового бойового досвіду!"
     end
   end
 

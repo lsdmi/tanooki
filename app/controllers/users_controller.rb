@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   include FictionQuery
 
   before_action :authenticate_user!
-  before_action :set_common_vars, only: %i[avatars blogs pokemons readings]
 
   def update
     if current_user.update(name: user_params[:name])
@@ -26,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def blogs
-    @pagy, @publications = pagy(@user_publications, items: 8)
+    @pagy, @publications = pagy(current_user.publications.order(created_at: :desc), items: 8)
 
     render 'show'
   end
@@ -85,11 +84,6 @@ class UsersController < ApplicationController
 
   def pokemon_list
     UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
-  end
-
-  def set_common_vars
-    @fictions_size = fiction_list.size.size
-    @user_publications = current_user.publications.order(created_at: :desc)
   end
 
   def fetch_avatars

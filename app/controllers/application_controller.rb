@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
     @wild_pokemon = PokemonService.new(user: current_user, session:).call
   end
 
+  def refresh_sweetalert
+    turbo_stream.replace('sweet-alert', partial: 'shared/sweet_alert')
+  end
+
   def trending_tags
     TrendingTagsService.call
   end

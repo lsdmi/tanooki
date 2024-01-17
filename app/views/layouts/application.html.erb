@@ -32,7 +32,9 @@
     <% end %>
 
     <% if requires_sweetalert? %>
-      <%= javascript_include_tag 'sweetalert' %>
+      <%= turbo_frame_tag 'sweet-alert' do %>
+        <%= render 'shared/sweet_alert' %>
+      <% end %>
     <% end %>
 
     <%= javascript_include_tag 'font_toggler' if requires_font? %>

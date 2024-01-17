@@ -201,6 +201,19 @@ uk:
       last_word_connector: " та "
       two_words_connector: " і "
       words_connector: ", "
+  sweetalert:
+    chapters:
+      description: Цей розділ буде назавжди видалено. Продовжити?
+      message: Певні, що прагнете видалити цей розділ?
+    fictions:
+      description: Цей твір буде назавжди видалено. Продовжити?
+      message: Певні, що прагнете видалити цей твір?
+    publications:
+      description: Цей допис буде назавжди видалено. Продовжити?
+      message: Певні, що прагнете видалити цей допис?
+    scanlators:
+      description: Команду та її сторінку на сайті буде видалено назавжди. Продовжити?
+      message: Певні, що прагнете видалити цю команду?
   time:
     am: до полудня
     formats:

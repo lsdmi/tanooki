@@ -7,21 +7,27 @@ class TagsHelperTest < ActionView::TestCase
   include TagsHelper
 
   def setup
-    @tag = Publication.new(title: 'A tag', description: 'A description.')
+    @new_publication = Publication.new(title: 'A tag', description: 'A description.')
+    @publication = publications(:tale_approved_one)
   end
 
   test "main_state should return 'hidden lg:block' if title size is greater than 85" do
-    @tag.title = 'A' * 86
-    assert_equal 'hidden lg:block', main_state(@tag)
+    @new_publication.title = 'A' * 86
+    assert_equal 'hidden lg:block', main_state(@new_publication)
   end
 
   test "main_state should return 'hidden lg:block' if available space is negative" do
-    @tag.title = 'A'
-    @tag.description = 'A' * 150
-    assert_equal 'hidden lg:block', main_state(@tag)
+    @new_publication.title = 'A'
+    @new_publication.description = 'A' * 150
+    assert_equal 'hidden lg:block', main_state(@new_publication)
   end
 
   test "main_state should return 'hidden sm:block' if available space is positive" do
-    assert_equal 'hidden sm:block', main_state(@tag)
+    assert_equal 'hidden sm:block', main_state(@new_publication)
+  end
+
+  test 'tag_formatter should format tag name' do
+    tag = @publication.tags.first
+    assert_equal tag.name.downcase.gsub(/[\s,!\-]/, '_'), tag_formatter(tag)
   end
 end

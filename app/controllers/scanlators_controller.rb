@@ -4,7 +4,6 @@ class ScanlatorsController < ApplicationController
   include FictionQuery
 
   before_action :authenticate_user!, except: :show
-  before_action :set_common_vars, only: :index
   before_action :set_scanlator, only: %i[show edit update destroy]
   before_action :verify_permissions, only: %i[edit update destroy]
 
@@ -24,7 +23,7 @@ class ScanlatorsController < ApplicationController
 
     if @scanlator.save
       ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
-      redirect_to scanlator_path(@scanlator), notice: 'Команду додано.'
+      redirect_to scanlator_path(@scanlator), notice: 'Команду додано, час додати ваші твори.'
     else
       render 'new', status: :unprocessable_entity
     end
@@ -47,8 +46,7 @@ class ScanlatorsController < ApplicationController
 
   def destroy
     if @scanlator.destroy
-      set_common_vars
-      render turbo_stream: [refresh_screen, refresh_sidebar]
+      render turbo_stream: [refresh_screen, refresh_sweetalert]
     else
       render turbo_stream: update_notice(@scanlator.errors[:base].first)
     end
@@ -74,25 +72,12 @@ class ScanlatorsController < ApplicationController
     )
   end
 
-  def refresh_sidebar
-    turbo_stream.update(
-      'default-sidebar',
-      partial: 'users/dashboard/sidebar',
-      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
-    )
-  end
-
   def update_notice(message)
     turbo_stream.update(
       'application-alert',
       partial: 'shared/alert',
       locals: { alert: message }
     )
-  end
-
-  def set_common_vars
-    @fictions_size = fiction_list.size.size
-    @user_publications = current_user.publications.order(created_at: :desc)
   end
 
   def set_scanlator

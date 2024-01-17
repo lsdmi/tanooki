@@ -240,7 +240,7 @@ class PokemonBattleService
   end
 
   def calculate_power(user_pokemon)
-    Pokemon::POWER_LEVELS[user_pokemon.pokemon.power_level] * (user_pokemon.character == 'independent' ? 120 : 100)
+    Pokemon::POWER_LEVELS[user_pokemon.pokemon_power_level] * (user_pokemon.character == 'independent' ? 120 : 100)
   end
 
   def calculate_experience(user_pokemon)

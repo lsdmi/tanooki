@@ -43,31 +43,24 @@ class ChaptersController < ApplicationController
   end
 
   def destroy
-    stack_size = @chapter.fiction.chapters.joins(:scanlators).where(scanlators: { id: current_user.scanlators.ids }).size
+    stack_size = @chapter.fiction.chapters.by_user_scanlators(current_user).size
 
     @chapter.destroy
 
-    if @chapter.fiction.scanlators.size > 1 && stack_size == 1
-      current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
-    end
+    handle_scanlators_destruction(stack_size)
 
-    @pagy, @fictions = pagy(
-      ordered_fiction_list,
-      items: 8,
-      request_path: readings_path,
-      page: fiction_page || 1
-    )
+    @pagy, @fictions = pagy(ordered_fiction_list, items: 8, request_path: readings_path, page: fiction_page || 1)
 
     setup_paginator
-    setup_sidebar_vars
-    render turbo_stream: [refresh_list, refresh_sidebar]
+    render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
   private
 
-  def setup_sidebar_vars
-    @fictions_size = @pagy.count
-    @user_publications = current_user.publications.order(created_at: :desc)
+  def handle_scanlators_destruction(stack_size)
+    return unless @chapter.fiction.scanlators.size > 1 && stack_size == 1
+
+    current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
   end
 
   def setup_paginator
@@ -107,14 +100,6 @@ class ChaptersController < ApplicationController
       'fictions-list',
       partial: 'users/dashboard/fictions',
       locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
-    )
-  end
-
-  def refresh_sidebar
-    turbo_stream.update(
-      'default-sidebar',
-      partial: 'users/dashboard/sidebar',
-      locals: { user_publications: @user_publications, fictions_size: @fictions_size }
     )
   end
 

@@ -16,7 +16,6 @@ class UsersControllerTest < ActionController::TestCase
     get :blogs
     assert_response :success
     assert_template :show
-    assert_not_nil assigns(:fictions_size)
   end
 
   test "should update user's avatar" do

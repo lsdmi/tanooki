@@ -30,4 +30,8 @@ class YoutubeVideo < ApplicationRecord
       title.downcase
     ]
   end
+
+  def youtube_channel_thumbnail
+    youtube_channel.thumbnail
+  end
 end

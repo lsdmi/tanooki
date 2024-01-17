@@ -28,4 +28,12 @@ module DashboardHelper
     else 'Незборний'
     end
   end
+
+  def delete_icon
+    image_tag(
+      'delete.svg',
+      class: 'h-5 md:h-6 lg:h-7 inline-block mx-1 transform transition duration-500 hover:scale-110',
+      alt: 'views'
+    )
+  end
 end

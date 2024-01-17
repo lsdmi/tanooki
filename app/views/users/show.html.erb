@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 px-4 xl:grid-cols-6 xl:gap-3 z-10 relative font-oswald mt-6">
   <div class="col-span-full bg-white shadow-lg rounded-lg mb-4 py-4 xl:col-auto">
-    <%= render 'users/dashboard/sidebar', user_publications: @user_publications, fictions_size: @fictions_size %>
+    <%= render 'users/dashboard/sidebar' %>
   </div>
   <div class="col-span-5">
     <% if action_name.to_sym == :readings %>

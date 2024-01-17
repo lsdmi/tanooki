@@ -17,17 +17,22 @@ async function sweetAlertBtn(message, description) {
   });
 }
 
-async function makeCall(url, token) {
+async function makeCall(url, token, json) {
   const response = await fetch(url, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': (json ? 'application/json' : 'application/turbo_stream'),
       'X-CSRF-Token': token,
     },
     credentials: 'include'
   });
 
-  return response;
+  if (json) {
+    return response;
+  } else {
+    const turboStream = await response.text();
+    Turbo.renderStreamMessage(turboStream);
+  }
 }
 
 function removeItem(itemId){
@@ -49,10 +54,11 @@ function initializeAlert() {
         if (button.hasAttribute('data-url')) {
           const res = await makeCall(
             button.getAttribute('data-url'),
-            button.getAttribute('data-token')
+            button.getAttribute('data-token'),
+            button.hasAttribute('data-tag-id')
           );
 
-          if (res.ok && button.hasAttribute('data-tag-id')) {
+          if (button.hasAttribute('data-tag-id') && res.ok) {
             removeItem(button.getAttribute('data-tag-id'));
           }
         }
@@ -61,6 +67,4 @@ function initializeAlert() {
   });
 }
 
-document.addEventListener('turbo:load', function() {
-  initializeAlert();
-});
+document.addEventListener('turbo:load', initializeAlert);

@@ -24,4 +24,12 @@ class UserPokemon < ApplicationRecord
   FAILURE_MESSSAGE = 'У-упс, невдала спроба!'
   SUCCESS_MESSSAGE = 'Вітаємо, із оновленням у команді!'
   TRAINING_FRAUD_ALERT = 'Ця дія наразі неможлива. Спробуйте пізніше.'
+
+  def pokemon_name
+    pokemon.name
+  end
+
+  def pokemon_power_level
+    pokemon.power_level
+  end
 end

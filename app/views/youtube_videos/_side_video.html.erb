@@ -9,7 +9,7 @@
     <div class="col-span-6 lg:col-span-5">
       <div class="w-full float-left rounded-md mb-1 text-gray-500">
         <div class="flex space-x-1 text-gray-500 text-sm mb-2 lg:mb-0 sm:mt-2">
-          <%= image_tag url_for(side_video.youtube_channel.thumbnail), alt: side_video.youtube_channel.title, class: 'text-rose-700 h-8 w-8 rounded-full max-w-none hover:scale-110 lg:mx-1 hidden lg:block transform transition duration-500', height: '40', width: '40' %>
+          <%= image_tag url_for(side_video.youtube_channel_thumbnail), alt: side_video.youtube_channel.title, class: 'text-rose-700 h-8 w-8 rounded-full max-w-none hover:scale-110 lg:mx-1 hidden lg:block transform transition duration-500', height: '40', width: '40' %>
           <div>
             <%= link_to side_video.youtube_channel.title, search_index_path(search: [side_video.youtube_channel.title]), class: 'text-rose-700 hidden sm:inline text-sm md:text-base lg:text-sm hover:underline font-light' %>
             <%= tag.span "∘", class: 'hidden sm:inline text-xs font-light' %>

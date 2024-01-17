@@ -1,6 +1,6 @@
 <div id="pokemon-details" class="p-6 border border-gray-200 rounded-lg shadow mt-4">
   <div class="grid grid-cols-2">
-    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon.name}", class: 'mb-4 text-xl font-bold tracking-tight text-gray-900' %>
+    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon_name}", class: 'mb-4 text-xl font-bold tracking-tight text-gray-900' %>
     <div class="flex justify-end">
       <% if training_cooldown?(current_user) %>
         <div class="flex flex-col items-center">
@@ -27,7 +27,7 @@
       </div>
       <div class="grid grid-cols-2">
         <p class="ml-1 mb-2 text-sm text-gray-700 font-light">Могуть:</p>
-        <%= tag.span I18n.t("activerecord.enum.power_level.#{selected_pokemon.pokemon.power_level}"), class: 'text-base font-light' %>
+        <%= tag.span I18n.t("activerecord.enum.power_level.#{selected_pokemon.pokemon_power_level}"), class: 'text-base font-light' %>
 
         <p class="ml-1 mb-2 text-sm text-gray-700 font-light">Рідкість:</p>
         <%= tag.span I18n.t("activerecord.enum.rarity.#{selected_pokemon.pokemon.rarity}"), class: 'text-base font-light' %>
