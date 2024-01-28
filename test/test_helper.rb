@@ -6,6 +6,7 @@ SimpleCov.start 'rails'
 SimpleCov.start do
   add_filter 'app/mailers/application_mailer.rb'
   add_filter 'app/models/application_record.rb'
+  add_filter 'app/models/user.rb'
 end
 
 ENV['RAILS_ENV'] ||= 'test'

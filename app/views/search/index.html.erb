@@ -3,7 +3,7 @@
     <div class="h-full lg:w-[1250px] my-0 mx-auto">
       <header class="mt-4 w-full float-left relative block">
         <% if @tag.present? %>
-          <%= render 'tag_page', results: @results %>
+          <%= render 'tag_page', results: @results, fictions: @fictions, videos: @videos %>
         <% else %>
           <%= render 'search_page', results: @results, fictions: @fictions, videos: @videos %>
         <% end %>

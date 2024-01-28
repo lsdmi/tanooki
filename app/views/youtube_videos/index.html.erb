@@ -21,9 +21,11 @@
     <div class="hidden lg:block">
       <%= render 'shared/divider_shiny_pink', caption: 'Відеотека' %>
     </div>
-    <div class="lg:grid grid-cols-4 gap-2 mb-4 mx-auto lg:mx-0 w-[96%] font-oswald" id="others">
-      <%= render 'other_videos_desktop', other_videos: @other_youtube_videos %>
-      <%= render 'other_videos_mobile', other_videos: @other_youtube_videos %>
+    <div class="flex justify-center">
+      <div class="lg:grid grid-cols-4 gap-2 mb-4 mx-auto lg:mx-0 w-[96%] font-oswald" id="others">
+        <%= render 'other_videos_desktop', other_videos: @other_youtube_videos %>
+        <%= render 'other_videos_mobile', other_videos: @other_youtube_videos %>
+      </div>
     </div>
     <div id="next_link">
       <div class="mx-auto text-center">

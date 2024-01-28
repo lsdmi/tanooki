@@ -7,8 +7,7 @@ class SearchController < ApplicationController
     @results = publications
     @fictions = fictions
     @videos = videos
-
-    set_tag_logic
+    @tag = Tag.find_by(name: params[:search])
 
     respond_to do |format|
       format.html { render 'index' }
@@ -28,32 +27,6 @@ class SearchController < ApplicationController
     turbo_stream.replace(
       'search-page', partial: 'search_page', locals: { results: @results, fictions: @fictions, videos: @videos }
     )
-  end
-
-  def set_tag_logic
-    @tag = Tag.find_by(name: params[:search])
-
-    return if @tag.nil?
-
-    Searchkick.client.ping ? set_tag_logic_es : set_tag_logic_no_es
-  end
-
-  def set_tag_logic_es
-    return if @results.size < 6
-
-    count_without_main = @results.count - 5
-    num_to_add = 3 - (count_without_main % 3)
-    excluded_ids = @results.to_a.pluck(:id)
-
-    @results = (
-      @results.to_a +
-      Publication.includes([{ cover_attachment: :blob }])
-                 .order(created_at: :desc).where.not(id: excluded_ids).first(num_to_add)
-    )
-  end
-
-  def set_tag_logic_no_es
-    @results = SearchService.publications(params[:search])
   end
 
   def publications
@@ -83,8 +56,9 @@ class SearchController < ApplicationController
     if Searchkick.client.ping
       YoutubeVideo.search(
         params[:search],
-        fields: ['title^2', 'description', 'tags']
-      ).includes(:rich_text_description, :youtube_channel)
+        fields: ['title^2', 'description', 'tags'],
+        boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
+      ).includes(:youtube_channel)
     else
       SearchService.videos(params[:search])
     end

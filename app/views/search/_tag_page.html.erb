@@ -17,6 +17,9 @@
     </div>
   <% end %>
 
+  <%= render 'tag_fictions', fictions: fictions if fictions.any? %>
+  <%= render 'tag_videos', videos: videos if videos.any? %>
+
   <% if results.size > 5 %>
     <div class="flex justify-between items-center mt-6">
       <%= render 'shared/divider_shiny_pink', caption: 'Більше Новин' %>

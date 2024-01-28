@@ -3,9 +3,15 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
+  rescue_from StandardError, with: :handle_error if Rails.env.production?
+
   helper_method :trending_tags
 
   before_action :pokemon_appearance, only: %i[index show]
+
+  def handle_error
+    render :error, status: :internal_server_error
+  end
 
   private
 

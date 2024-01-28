@@ -2,31 +2,12 @@
 
 module FictionsHelper
   GENRE_BADGES = {
-    'BL' => 'bl',
-    'GL' => 'gl',
-    'Бойовик' => 'action',
-    'Вуся' => 'wuxia',
-    'Гарем' => 'harem',
-    'Детектив' => 'detective',
-    'Драма' => 'drama',
-    'Жахи' => 'horror',
-    'Ісекай' => 'isekai',
-    'Історичне' => 'history',
-    'Комедія' => 'comedy',
-    'ЛГБТ' => 'lgbt',
-    'Містика' => 'mystic',
-    'Повсякденність' => 'lifeslice',
-    'Пригоди' => 'adventure',
-    'Психологія' => 'psychological',
-    'Романтика' => 'romance',
-    'Спорт' => 'sport',
-    'Сюаньхвань' => 'xuanhuan',
-    'Сянься' => 'xianxia',
-    'Трагедія' => 'tragedy',
-    'Трилер' => 'thriller',
-    'Фантастика' => 'scifi',
-    'Фентезі' => 'fantasy',
-    'Школа' => 'school'
+    'BL' => 'bl', 'GL' => 'gl', 'Бойовик' => 'action', 'Вуся' => 'wuxia', 'Гарем' => 'harem', 'Детектив' => 'detective',
+    'Драма' => 'drama', 'Жахи' => 'horror', 'Ісекай' => 'isekai', 'Історичне' => 'history', 'Комедія' => 'comedy',
+    'ЛГБТ' => 'lgbt', 'Містика' => 'mystic', 'Повсякденність' => 'lifeslice', 'Пригоди' => 'adventure',
+    'Психологія' => 'psychological', 'Романтика' => 'romance', 'Спорт' => 'sport', 'Сюаньхвань' => 'xuanhuan',
+    'Сянься' => 'xianxia', 'Трагедія' => 'tragedy', 'Трилер' => 'thriller', 'Фантастика' => 'scifi',
+    'Фентезі' => 'fantasy', 'Школа' => 'school'
   }.freeze
 
   STATUS_COLORS = {
