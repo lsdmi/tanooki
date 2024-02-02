@@ -9,30 +9,6 @@ class FictionsHelperTest < ActionView::TestCase
     assert_equal expected_output, fiction_author(fiction)
   end
 
-  test 'chapter_item_theme returns black theme' do
-    theme = chapter_item_theme(:black)
-    assert_equal(
-      { icon: 'text-gray-500', text: 'text-gray-500', title: 'text-gray-900',
-        title_hover: 'hover:text-gray-600' }, theme
-    )
-  end
-
-  test 'chapter_item_theme returns gray theme' do
-    theme = chapter_item_theme(:gray)
-    assert_equal(
-      { icon: 'text-gray-400', text: 'text-gray-400', title: 'text-gray-500',
-        title_hover: 'hover:text-gray-800' }, theme
-    )
-  end
-
-  test 'chapter_item_theme returns green theme' do
-    theme = chapter_item_theme(:green)
-    assert_equal(
-      { icon: 'text-emerald-700', text: 'text-emerald-700', title: 'text-emerald-900',
-        title_hover: 'hover:text-emerald-600' }, theme
-    )
-  end
-
   test 'column_selector returns col-span-5' do
     selector = column_selector(5)
     assert_equal('col-span-5', selector)

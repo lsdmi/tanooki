@@ -4,14 +4,14 @@ module LibraryHelper
   def ordered_chapters(fiction)
     fiction.chapters.order(
       Arel.sql(
-        'CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, created_at'
+        'CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, chapters.created_at'
       )
     )
   end
 
   def ordered_chapters_desc(fiction)
     fiction.chapters.order(
-      Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, created_at DESC')
+      Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, chapters.created_at DESC')
     )
   end
 
@@ -19,7 +19,7 @@ module LibraryHelper
     if user.admin?
       ordered_chapters_desc(fiction)
     else
-      ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids })
+      ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct
     end
   end
 

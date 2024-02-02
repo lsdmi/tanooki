@@ -39,7 +39,13 @@ class Chapter < ApplicationRecord
     header += "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?
     header += "Розділ #{check_decimal(number)}"
     header += " - #{title}" if title.present?
+    header
+  end
 
+  def display_title_no_volume
+    header = ''
+    header += "Розділ #{check_decimal(number)}"
+    header += " - #{title}" if title.present?
     header
   end
 

@@ -27,18 +27,6 @@ class FictionChapterListManager
     next_chapter_index_by_user == -1 ? [] : fiction_chapters[0...next_chapter_index_by_user + 1]
   end
 
-  def after_next_chapter
-    return nil if following_chapter_index.nil?
-
-    fiction_chapters[following_chapter_index + 1..]
-  end
-
-  def after_next_chapter_by_user
-    return nil if next_chapter_index_by_user.nil?
-
-    next_chapter_index_by_user == -1 ? fiction_chapters : fiction_chapters[next_chapter_index_by_user + 1..]
-  end
-
   def next_chapter
     return first_chapter unless reading_progress.present?
 

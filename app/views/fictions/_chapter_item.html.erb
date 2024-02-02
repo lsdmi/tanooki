@@ -1,26 +1,15 @@
-<% theme = chapter_item_theme(color) %>
-
-<li class="pb-3 sm:pb-4">
-  <div class="flex items-center space-x-4">
-    <div class="flex-1 min-w-0 mt-5">
-      <%= link_to chapter_path(chapter), data: { turbo: false } do %>
-        <%= tag.span class: "items-center text-green-800 text-xs lg:text-sm font-medium font-medium truncate" do %>
-          <%= tag.div class: "#{'new-chapter' if color == :green } flex items-center" do %>
-            <%= tag.p chapter.display_title, class: "text-xs lg:text-sm font-medium truncate #{theme[:title]} #{theme[:title_hover]}" %>
+<li class="">
+  <div class="flex items-center space-x-4 p-3">
+    <div class="flex-1 min-w-0">
+      <%= tag.span class: "items-center text-green-800 font-medium font-medium truncate" do %>
+        <%= tag.div class: "flex items-center" do %>
+          <%= image_tag 'new.webp', class: 'h-4 w-auto inline-block mr-2 transform transition duration-500 hover:scale-110', alt: 'new badge', height: '16', width: '16' if color == :green %>
+          <%= link_to chapter_path(chapter), data: { turbo: false } do %>
+            <%= tag.p chapter.display_title_no_volume, class: "text-sm lg:text-base font-medium truncate text-gray-900 hover:underline" %>
           <% end %>
         <% end %>
       <% end %>
-      <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: "text-xs lg:text-sm truncate #{theme[:text]}" %>
-    </div>
-    <div class="inline-flex items-center text-base font-semibold <%= theme[:title] %>">
-      <span class="<%= theme[:icon] %> ml-3 text-xs lg:text-sm mt-1 flex align-center">
-        <%= image_tag (color == :green ? 'comment-green.svg' : 'comment.svg'), class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
-        <%= tag.span chapter.comments_count, class: 'ml-1 inline-block' %>
-      </span>
-      <span class="<%= theme[:icon] %> ml-3 text-xs lg:text-sm mt-1 flex align-center">
-        <%= image_tag (color == :green ? 'eye-green.svg' : 'eye.svg'), class: 'h-4 inline-block', alt: 'views', height: '16', width: '16'  %>
-        <%= tag.span chapter.views, class: 'ml-1 inline-block' %>
-      </span>
+      <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: "text-xs lg:text-sm truncate font-normal text-gray-500" %>
     </div>
   </div>
 </li>

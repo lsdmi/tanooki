@@ -33,8 +33,8 @@ class Fiction < ApplicationRecord
 
   validates :cover, presence: true
   validates :scanlator_ids, presence: { message: 'мусить бути принаймні одна команда' }
-  validates :author, length: { minimum: 3, maximum: 50 }
-  validates :description, length: { minimum: 50, maximum: 1000 }
+  validates :author, length: { minimum: 2, maximum: 50 }
+  validates :description, length: { minimum: 25, maximum: 1000 }
   validates :title, length: { minimum: 3, maximum: 100 }
   validates :alternative_title, length: { maximum: 100 }
   validates :english_title, length: { maximum: 100 }

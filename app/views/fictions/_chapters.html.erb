@@ -7,5 +7,9 @@
       </svg>
     <% end %>
   </div>
-  <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, after_next_chapter:, translator: params[:translator], order: %>
+  <%= turbo_frame_tag "chapter-list" do %>
+    <div data-controller="flowbite">
+      <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, translator: params[:translator], order: %>
+    </div>
+  <% end %>
 </div>

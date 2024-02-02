@@ -36,8 +36,7 @@ class FictionsController < ApplicationController
             fiction: @fiction,
             translator: params[:translator].join('-'),
             reading_progress: @reading_progress,
-            after_next_chapter: @order.to_sym == :desc ? @after_next_chapter : @before_next_chapter.reverse,
-            before_next_chapter: @order.to_sym == :desc ? @before_next_chapter : @after_next_chapter.reverse,
+            before_next_chapter: @before_next_chapter,
             order: @order
           }
         )
@@ -97,8 +96,7 @@ class FictionsController < ApplicationController
       turbo_stream.update(
         'sort-chapters',
         partial: 'chapters', locals: {
-          after_next_chapter: params[:order].to_sym == :desc ? @before_next_chapter.reverse : @after_next_chapter,
-          before_next_chapter: params[:order].to_sym == :desc ? @after_next_chapter.reverse : @before_next_chapter,
+          before_next_chapter: @before_next_chapter,
           fiction: @fiction,
           reading_progress: @reading_progress,
           order: params[:order].to_sym == :desc ? :asc : :desc,
@@ -162,7 +160,6 @@ class FictionsController < ApplicationController
 
   def split_chapter_list
     @before_next_chapter = chapter_manager.before_next_chapter
-    @after_next_chapter = chapter_manager.after_next_chapter
   end
 
   def split_chapter_by_user_id
@@ -174,7 +171,6 @@ class FictionsController < ApplicationController
     end
 
     @before_next_chapter = chapter_manager.before_next_chapter_by_user
-    @after_next_chapter = chapter_manager.after_next_chapter_by_user
   end
 
   def show_vars
