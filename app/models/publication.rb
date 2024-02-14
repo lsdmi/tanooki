@@ -11,8 +11,6 @@ class Publication < ApplicationRecord
 
   attr_accessor :tag_ids
 
-  after_create_commit { TelegramJob.set(wait: 10.seconds).perform_later(object: self) }
-
   belongs_to :user
   has_one_attached :cover
   has_rich_text :description
@@ -28,6 +26,7 @@ class Publication < ApplicationRecord
 
   scope :highlights, -> { where(highlight: true) }
   scope :last_month, -> { where(created_at: 1.month.ago..) }
+  scope :recent, -> { where(created_at: 5.days.ago..) }
 
   def search_data
     {
@@ -49,19 +48,6 @@ class Publication < ApplicationRecord
     return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
     errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
-  end
-
-  def telegram_tale_path
-    Rails.application.routes.url_helpers.tale_url(self, host: ApplicationHelper::PRODUCTION_URL)
-  end
-
-  def telegram_message
-    ActionController::Base.helpers.sanitize(
-      "📚 <b>#{title}</b> 📚 \n\n" \
-      "📖 <i>#{description.to_plain_text[0..300]}...</i> " \
-      "<i><b><a href=\"#{telegram_tale_path}\">читати далі</a></b></i> 📖 \n\n" \
-      "#{tags.map { |tag| "<i><b>##{tag_formatter(tag)}</b></i>" }.join(', ')}"
-    )
   end
 
   def username

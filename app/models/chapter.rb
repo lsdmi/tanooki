@@ -3,13 +3,12 @@
 class Chapter < ApplicationRecord
   extend FriendlyId
   include ChaptersHelper
-  include GenresHelper
   acts_as_paranoid
   friendly_id :slug_candidates
 
   attr_accessor :scanlator_ids
 
-  after_create_commit :manage_users, :telegram_send_message
+  after_create_commit :manage_users
 
   belongs_to :fiction
   belongs_to :user
@@ -29,6 +28,7 @@ class Chapter < ApplicationRecord
   validates :title, length: { maximum: 100 }
 
   scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
+  scope :recent, -> { where(created_at: 12.hours.ago..) }
 
   def author
     fiction.author
@@ -73,27 +73,6 @@ class Chapter < ApplicationRecord
     [
       "#{fiction&.title&.downcase}-rozdil-#{number}"
     ]
-  end
-
-  def telegram_fiction_path
-    Rails.application.routes.url_helpers.fiction_url(fiction, host: ApplicationHelper::PRODUCTION_URL)
-  end
-
-  def telegram_message
-    ActionController::Base.helpers.sanitize(
-      "<i>Досі не слідкуєте за <b>\"#{fiction_title}\"<b>?</i> \n\n" \
-      "🎉 <i>Насолоджуйтеся <b>#{fiction.chapters.size}</b> розділами неймовірних пригод за " \
-      "<i><b><a href=\"#{telegram_fiction_path}\">посиланням</a></b></i>!</i> 🎉 \n\n" \
-      "<i>#{fiction_description}</i> \n\n" \
-      "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" \
-      "#{fiction.genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
-    )
-  end
-
-  def telegram_send_message
-    return unless (fiction.chapters.size % 25).zero?
-
-    TelegramJob.set(wait: 10.seconds).perform_later(object: self)
   end
 
   private

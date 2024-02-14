@@ -33,6 +33,22 @@ when 'production'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
   end
 
+  every 1.day, at: '4am' do
+    runner 'ChaptersTelegramJob.perform_now'
+  end
+
+  every 1.day, at: '4pm' do
+    runner 'ChaptersTelegramJob.perform_now'
+  end
+
+  every 3.days, at: '2pm' do
+    runner 'FictionsTelegramJob.perform_now'
+  end
+
+  every 5.days, at: '3pm' do
+    runner 'PublicationsTelegramJob.perform_now'
+  end
+
   every :sunday, at: '12pm' do
     runner 'puts "Weekly job started"'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'

@@ -2,15 +2,12 @@
 
 class Fiction < ApplicationRecord
   include Pagy::Backend
-  include GenresHelper
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
   attr_accessor :genre_ids, :scanlator_ids, :user_id
-
-  after_create_commit { TelegramJob.set(wait: 10.seconds).perform_later(object: self) }
 
   has_many :chapters, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
@@ -49,6 +46,15 @@ class Fiction < ApplicationRecord
       .order('COUNT(readings.fiction_id) DESC')
   }
 
+  scope :recent, -> { where(created_at: 3.days.ago..) }
+  scope :recent_chapters, lambda {
+    joins(:chapters)
+      .joins(:readings)
+      .where('chapters.created_at >= ?', 12.hours.ago)
+      .group('fictions.id')
+      .order('COUNT(reading_progresses.fiction_id) DESC')
+  }
+
   def search_data
     {
       author:,
@@ -78,27 +84,9 @@ class Fiction < ApplicationRecord
     update(status: Fiction.statuses[:dropped])
   end
 
-  def telegram_fiction_path
-    Rails.application.routes.url_helpers.fiction_url(self, host: ApplicationHelper::PRODUCTION_URL)
-  end
-
-  def telegram_message
-    ActionController::Base.helpers.sanitize(
-      "🎉 <b>#{title}</b> 🎉 \n\n" \
-      "<i>#{description}</i> \n\n" \
-      "#{scanlators_line}" \
-      "🔗 <i><b><a href=\"#{telegram_fiction_path}\">Читати на сайті</a></b></i> 🔗 \n\n" \
-      "#{genres.map { |genre| "<i><b>##{genre_formatter(genre)}</b></i>" }.join(', ')}"
-    )
-  end
-
   private
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)
-  end
-
-  def scanlators_line
-    scanlators.any? ? "✍️ Переклад: <i>#{scanlators.map(&:title).to_sentence}</i> ✍️ \n\n" : ''
   end
 end
