@@ -12,11 +12,7 @@ class ChaptersTelegramJob < ApplicationJob
         return unless Rails.env.production?
         return unless Chapter.recent.any?
 
-        TelegramBot.client.api.send_message(
-          chat_id: '@bakaInUa',
-          text: text_message,
-          parse_mode: 'HTML'
-        )
+        TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
 
         @api_call_executed = true
       end
@@ -36,9 +32,11 @@ class ChaptersTelegramJob < ApplicationJob
   def recent_chapters
     Fiction.recent_chapters.map do |fiction|
       fiction_details = "🔔 <b><a href=\"#{route(fiction)}\">#{fiction.title}</a></b>\n\n"
-      fiction_description = "<i>#{fiction.description[0..100]}...</i> \n\n"
+      updated_list = fiction.chapters.recent.order(created_at: :desc).map do |chapter|
+        "📖 <i>#{chapter.display_title}</i>\n"
+      end.join
       genre_details = fiction.genres.map { |genre| "<i>##{formatted_genres(genre)}</i>" }.join(', ')
-      "#{fiction_details}#{fiction_description}#{genre_details}"
+      "#{fiction_details}#{updated_list}\n#{genre_details}"
     end.join("\n\n")
   end
 
@@ -50,7 +48,8 @@ class ChaptersTelegramJob < ApplicationJob
     ActionController::Base.helpers.sanitize(
       "🚀 <i>Нові релізи вже на <b><a href=\"#{index_path}\">сайті</a></b></i> 🚀\n\n" \
       "#{recent_chapters}\n\n" \
-      "💫 <i>Хутчіш ознайомлюйтеся та не забувайте підтримувати на <b><a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a></b>!</i> 💫 \n\n "
+      '💫 <i>Хутчіш ознайомлюйтеся та не забувайте підтримувати на ' \
+      "<b><a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a></b>!</i> 💫 \n\n "
     )
   end
 end

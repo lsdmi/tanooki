@@ -27,12 +27,10 @@ class FictionStatusTracker
 
   def new_fiction_status
     case Fiction.statuses[fiction_status]
-    when Fiction.statuses[:announced], Fiction.statuses[:dropped]
+    when Fiction.statuses[:announced], Fiction.statuses[:dropped], Fiction.statuses[:finished]
       announced_dropped_new_status
-    when Fiction.statuses[:ongoing]
-      ongoing_new_status
     else
-      fiction_status
+      ongoing_new_status
     end
   end
 end

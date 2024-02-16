@@ -57,7 +57,7 @@ class FictionTest < ActiveSupport::TestCase
   end
 
   test 'author should not be too short' do
-    @fiction.author = 'a' * 2
+    @fiction.author = 'a'
     assert_not @fiction.valid?
   end
 
@@ -67,7 +67,7 @@ class FictionTest < ActiveSupport::TestCase
   end
 
   test 'description should not be too short' do
-    @fiction.description = 'a' * 49
+    @fiction.description = 'a' * 24
     assert_not @fiction.valid?
   end
 

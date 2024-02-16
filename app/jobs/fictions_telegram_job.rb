@@ -12,11 +12,7 @@ class FictionsTelegramJob < ApplicationJob
         return unless Rails.env.production?
         return unless Fiction.recent.any?
 
-        TelegramBot.client.api.send_message(
-          chat_id: '@bakaInUa',
-          text: text_message,
-          parse_mode: 'HTML'
-        )
+        TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
 
         @api_call_executed = true
       end

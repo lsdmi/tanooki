@@ -31,7 +31,7 @@ class Publication < ApplicationRecord
   def search_data
     {
       created_at:,
-      description: description.to_plain_text,
+      description: description.to_plain_text[0..15_000],
       tags: tags.pluck(:name).to_sentence,
       title:
     }

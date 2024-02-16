@@ -66,6 +66,7 @@ class FictionsController < ApplicationController
     if @fiction.update(fiction_params)
       FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
       FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
+      update_fiction_status
       redirect_to fiction_path(@fiction), notice: 'Твір оновлено.'
     else
       render 'fictions/edit', status: :unprocessable_entity
@@ -219,5 +220,11 @@ class FictionsController < ApplicationController
 
   def verify_create_permissions
     redirect_to new_scanlator_path unless current_user.admin? || current_user.scanlators.any?
+  end
+
+  def update_fiction_status
+    new_status = FictionStatusTracker.new(@fiction).call
+    @fiction.status = new_status
+    @fiction.save(validate: false)
   end
 end
