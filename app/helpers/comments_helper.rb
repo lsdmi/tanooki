@@ -31,4 +31,32 @@ module CommentsHelper
       ) ||
       params[:controller].to_sym == :tales
   end
+
+  def comment_url(comment)
+    case comment.commentable
+    when Chapter
+      chapter_path(comment.commentable)
+    when YoutubeVideo
+      youtube_video_path(comment.commentable)
+    when Fiction
+      fiction_path(comment.commentable)
+    when Publication
+      tale_path(comment.commentable)
+    end
+  end
+
+  def commentable_type(commentable)
+    case commentable
+    when Chapter, Fiction
+      'роману'
+    when YoutubeVideo
+      'відео'
+    when Publication
+      'блогу'
+    end
+  end
+
+  def commentable_title(commentable)
+    commentable.is_a?(Chapter) ? commentable.fiction_title : commentable.title
+  end
 end

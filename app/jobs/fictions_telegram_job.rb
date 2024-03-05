@@ -4,19 +4,10 @@ class FictionsTelegramJob < ApplicationJob
   queue_as :default
 
   def perform
-    @api_call_executed ||= false
-    @@mutex ||= Mutex.new
+    return unless Rails.env.production?
+    return unless Fiction.recent.any?
 
-    @@mutex.synchronize do
-      unless @api_call_executed
-        return unless Rails.env.production?
-        return unless Fiction.recent.any?
-
-        TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
-
-        @api_call_executed = true
-      end
-    end
+    TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
   end
 
   private

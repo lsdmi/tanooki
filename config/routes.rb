@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   end
 
   resources :comments, except: %i[index show] do
+    collection do
+      post :dropdown
+    end
     member do
       get :cancel_edit
       get :cancel_reply

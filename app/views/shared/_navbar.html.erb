@@ -18,13 +18,14 @@
       </div>
       <div class="flex justify-end place-items-center mt-2">
         <%= render "shared/search" %>
+        <%= render 'shared/comments' %>
         <% if current_user %>
           <div data-controller="flowbite">
             <%= render 'shared/user_dropdown' %>
             <%= render 'shared/mobile_user_dropdown' %>
           </div>
         <% else %>
-          <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-medium text-gray-900 text-lg px-0 sm:px-3 lg:px-5 py-2 lg:py-2.5 hover:text-gray-600 focus:outline-none transition duration-500 hover:scale-110', area: { current: 'page' } %>
+          <%= link_to 'Увійти', new_user_session_path, class: 'font-oswald font-medium text-gray-900 text-lg py-2 lg:py-2.5 hover:text-gray-600 focus:outline-none transition duration-500 hover:scale-110', area: { current: 'page' } %>
         <% end %>
       </div>
       <%= render 'shared/mobile_search' %>

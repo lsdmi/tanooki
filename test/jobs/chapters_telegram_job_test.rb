@@ -30,7 +30,7 @@ class ChaptersTelegramJobTest < ActiveSupport::TestCase
   def expected_text_message
     ActionController::Base.helpers.sanitize(
       "🚀 <i>Нові релізи вже на <b><a href=\"https://baka.in.ua/fictions\">сайті</a></b></i> 🚀\n\n" \
-      "#{Fiction.recent_chapters.map { |fiction| expected_recent_chapters(fiction) }.join("\n\n") }\n\n" \
+      "#{Fiction.recent_chapters.map { |fiction| expected_recent_chapters(fiction) }.join("\n\n")}\n\n" \
       '💫 <i>Хутчіш ознайомлюйтеся та не забувайте підтримувати на ' \
       "<b><a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a></b>!</i> 💫 \n\n "
     )
@@ -41,6 +41,8 @@ class ChaptersTelegramJobTest < ActiveSupport::TestCase
     "#{fiction.chapters.recent.order(created_at: :desc).map do |chapter|
       "📖 <i>#{chapter.display_title}</i>\n"
     end.join}\n" \
-    "#{fiction.genres.map { |genre| "<i>##{genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>" }.join(', ')}"
+    "#{fiction.genres.map do |genre|
+         "<i>##{genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>"
+       end.join(', ')}"
   end
 end

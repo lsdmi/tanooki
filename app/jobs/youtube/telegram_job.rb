@@ -5,17 +5,9 @@ module Youtube
     queue_as :default
 
     def perform
-      @api_call_executed ||= false
-      @@mutex ||= Mutex.new
+      return unless Rails.env.production?
 
-      @@mutex.synchronize do
-        unless @api_call_executed
-          return unless Rails.env.production?
-
-          send_telegram_message
-          @api_call_executed = true
-        end
-      end
+      send_telegram_message
     end
 
     private

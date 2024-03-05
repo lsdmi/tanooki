@@ -39,6 +39,10 @@ class CommentsController < ApplicationController
     render 'complete_update'
   end
 
+  def dropdown
+    session[:seen_comment] = Comment.last.id
+  end
+
   private
 
   def set_comment

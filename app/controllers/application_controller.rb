@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
-  helper_method :trending_tags
+  helper_method :latest_comments, :trending_tags
 
   before_action :pokemon_appearance, only: %i[index show]
 
@@ -23,6 +23,12 @@ class ApplicationController < ActionController::Base
 
   def refresh_sweetalert
     turbo_stream.replace('sweet-alert', partial: 'shared/sweet_alert')
+  end
+
+  def latest_comments
+    Rails.cache.fetch('latest_comments', expires_in: 1.hour) do
+      Comment.includes(:commentable, { user: { avatar: { image_attachment: :blob }}}).order(id: :desc).first(5)
+    end
   end
 
   def trending_tags

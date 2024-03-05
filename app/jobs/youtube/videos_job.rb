@@ -9,17 +9,9 @@ module Youtube
     MAX_TAG_LENGTH = 255
 
     def perform(channel_id)
-      @api_call_executed ||= false
-      @@mutex ||= Mutex.new
-
-      @@mutex.synchronize do
-        unless @api_call_executed
-          youtube = initialize_youtube_service
-          video_ids = fetch_video_ids(youtube, channel_id)
-          ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, channel_id, video_ids) }
-          @api_call_executed = true
-        end
-      end
+      youtube = initialize_youtube_service
+      video_ids = fetch_video_ids(youtube, channel_id)
+      ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, channel_id, video_ids) }
     end
 
     private
