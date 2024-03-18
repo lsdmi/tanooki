@@ -34,7 +34,7 @@ module MetaDescriptionHelper
   end
 
   def consts_description
-    request.path == fictions_path ? RANOBE_SEO_DESCRIPTION : YOUTUBE_SEO_DESCRIPTION
+    (request.path == fictions_path || request.path == alphabetical_fictions_path) ? RANOBE_SEO_DESCRIPTION : YOUTUBE_SEO_DESCRIPTION
   end
 
   def consts_descriptions?

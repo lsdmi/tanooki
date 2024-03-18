@@ -24,3 +24,15 @@
 .no-ads .google-auto-placed:nth-child(1) {
   display: none !important;
 }
+
+.flip-card-inner {
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner, .flip-card-back {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  backface-visibility: hidden;
+}

@@ -1,0 +1,16 @@
+<button id="dropdownFictionsLinkDesktop" data-dropdown-toggle="dropdownFictionsDesktop" class="flex items-center font-oswald text-base focus:outline-none transition duration-500 transform hover:scale-110 hover:border-b-4 border-b-4 border-white text-emerald-600 hover:text-emerald-700 hover:border-emerald-700">
+  Ранобе
+  <svg class="w-2 h-2 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+  </svg>
+</button>
+<div id="dropdownFictionsDesktop" class="hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-28">
+  <ul class="py-2" aria-labelledby="dropdownLargeButton">
+    <li class="py-1 font-light text-gray-500">
+      <%= link_to 'Покажчик', alphabetical_fictions_path, class: 'block px-4 py-2 hover:bg-gray-100 font-oswald text-base hover:text-gray-600' %>
+    </li>
+    <li class="py-1 font-light text-gray-500">
+      <%= link_to 'Релізи', fictions_path, class: 'block px-4 py-2 hover:bg-gray-100 font-oswald text-gray-800 text-base hover:text-gray-600' %>
+    </li>
+  </ul>
+</div>

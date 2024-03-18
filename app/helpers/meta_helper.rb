@@ -43,11 +43,11 @@ module MetaHelper
   end
 
   def fictions_path?
-    request.path == fictions_path
+    request.path == fictions_path || request.path == alphabetical_fictions_path
   end
 
   def fictions_meta_title
-    'Бака - Ранобе та Фанфіки'
+    'Ранобе та Фанфіки Українською - Бака'
   end
 
   def chapter_present?

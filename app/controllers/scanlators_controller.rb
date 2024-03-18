@@ -54,10 +54,6 @@ class ScanlatorsController < ApplicationController
 
   private
 
-  def fiction_list
-    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
-  end
-
   def scanlator_params
     params.require(:scanlator).permit(
       :avatar, :banner, :description, :telegram_id, :title, member_ids: []
