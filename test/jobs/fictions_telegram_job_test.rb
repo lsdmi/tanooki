@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class FictionssTelegramJobTest < ActiveSupport::TestCase
+class FictionsTelegramJobTest < ActiveSupport::TestCase
   test 'perform sends message in production when there are recent fictions' do
     rails_env_mock = Minitest::Mock.new
     rails_env_mock.expect(:production?, true)

@@ -42,7 +42,6 @@ const initializeTinymce = () => {
     'Source': 'Джерело',
     'Source code': 'Вихідний код',
     'System Font': 'Шрифт',
-    'Text color': 'Колір тексту',
     'Underline': 'Підкреслення',
     'Undo': 'Відмінити',
     'Width': 'Ширина',
@@ -61,7 +60,7 @@ const initializeTinymce = () => {
       'quickbars'
     ],
     menubar: false,
-    toolbar: 'undo redo | bold italic underline | fontfamily fontsize align lineheight | forecolor backcolor | removeformat | outdent indent | image media | hr | code',
+    toolbar: 'undo redo | bold italic underline | fontfamily fontsize align lineheight | backcolor | removeformat | outdent indent | image media | hr | code',
     quickbars_insert_toolbar: 'image media',
     quickbars_selection_toolbar: 'bold italic underline | blockquote quicklink',
     statusbar: false,

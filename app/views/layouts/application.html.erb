@@ -5,7 +5,11 @@
 
     <%= tag.script type: 'application/ld+json' do %>
       <%= raw article_meta(@publication) %>
-    <% end if structured_data? %>
+    <% end if article_meta? %>
+
+    <%= tag.script type: 'application/ld+json' do %>
+      <%= raw profile_page_meta(@scanlator) %>
+    <% end if profile_page_meta? %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
