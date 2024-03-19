@@ -25,9 +25,4 @@ class TagsHelperTest < ActionView::TestCase
   test "main_state should return 'hidden sm:block' if available space is positive" do
     assert_equal 'hidden sm:block', main_state(@new_publication)
   end
-
-  test 'tag_formatter should format tag name' do
-    tag = @publication.tags.first
-    assert_equal tag.name.downcase.gsub(/[\s,!\-]/, '_'), tag_formatter(tag)
-  end
 end

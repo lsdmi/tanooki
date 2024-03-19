@@ -39,7 +39,9 @@ class FictionsTelegramJobTest < ActiveSupport::TestCase
     Fiction.recent.map do |fiction|
       fiction_details = "📖 <b><a href=\"https://baka.in.ua/fictions/#{fiction.slug}\">#{fiction.title}</a></b> \n\n"
       fiction_description = "<i>#{fiction.description[0..100]}...</i> \n\n"
-      genre_details = fiction.genres.map { |genre| "<i>##{genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>" }.join(', ')
+      genre_details = fiction.genres.map do |genre|
+        "<i>##{genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>"
+      end.join(', ')
       "#{fiction_details}#{fiction_description}#{genre_details}"
     end.join("\n\n")
   end

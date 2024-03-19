@@ -12,10 +12,6 @@ module TagsHelper
     end
   end
 
-  def tag_formatter(tag)
-    tag.name.downcase.gsub(/[\s,!\-]/, '_')
-  end
-
   def sweetalert(button_content, options = {})
     button_tag(
       button_content,

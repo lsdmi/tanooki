@@ -34,7 +34,7 @@ module StructuredDataHelper
         sameAs: ["https://t.me/#{scanlator.telegram_id}"]
       },
       dateCreated: scanlator.created_at.iso8601,
-      dateModified: scanlator.updated_at.iso8601,
+      dateModified: scanlator.updated_at.iso8601
     }.to_json
   end
 

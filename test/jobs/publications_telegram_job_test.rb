@@ -36,10 +36,12 @@ class PublicationsTelegramJobTest < ActiveSupport::TestCase
   end
 
   def recent_publications
-    Publication.recent.map do |publication|
-      publication_details = "🏷️ <b><a href=\"https://baka.in.ua/tales/#{publication.slug}\">#{publication.title}</a></b> \n\n"
-      publication_description = "<i>#{publication.description.to_plain_text[0..120]}...</i> \n\n"
-      tag_details = publication.tags.map { |tag| "<i>##{tag.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>" }.join(', ')
+    Publication.recent.map do |tale|
+      publication_details = "🏷️ <b><a href=\"https://baka.in.ua/tales/#{tale.slug}\">#{tale.title}</a></b> \n\n"
+      publication_description = "<i>#{tale.description.to_plain_text[0..120]}...</i> \n\n"
+      tag_details = tale.tags.map do |tag|
+        "<i>##{tag.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>"
+      end.join(', ')
       "#{publication_details}#{publication_description}#{tag_details}"
     end.join("\n\n")
   end

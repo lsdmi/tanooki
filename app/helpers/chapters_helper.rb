@@ -11,7 +11,7 @@ module ChaptersHelper
       if chapter.number.to_i.zero?
         '1-100'
       else
-        range_start = ((chapter.number.to_i - 1) / 100) * 100 + 1
+        range_start = (((chapter.number.to_i - 1) / 100) * 100) + 1
         range_end = range_start + 99
         "#{range_start}-#{range_end}"
       end
@@ -27,6 +27,6 @@ module ChaptersHelper
   def volume_number_integer(number)
     return 'NA' if number.nil?
 
-    number.zero? ? 0 : (number || 0 * 100).to_i
+    number.zero? ? 0 : ((number || 0) * 100).to_i
   end
 end
