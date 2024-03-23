@@ -11,7 +11,7 @@
       </div>
       <div class="w-full">
         <%= f.label :number, 'Номер розділу', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <%= f.input :number, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:number].any?}", type: 'number', min: 0, step: 0.1 }, label: false, placeholder: '0' %>
+        <%= f.input :number, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:number].any?}", type: 'number', min: 0, step: 0.01 }, label: false, placeholder: '0' %>
         <%= tag.p chapter.errors[:number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:number].any? %>
       </div>
       <div class="w-full">
