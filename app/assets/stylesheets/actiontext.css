@@ -36,3 +36,8 @@
 .flip-card-front, .flip-card-back {
   backface-visibility: hidden;
 }
+
+.comments-grid {
+  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+  grid-auto-rows: 20px;
+}

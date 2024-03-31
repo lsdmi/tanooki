@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resources :tales, only: :index
   end
 
-  resources :comments, except: %i[index show] do
+  resources :comments, except: %i[show] do
     collection do
       post :dropdown
     end

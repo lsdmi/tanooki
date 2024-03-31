@@ -24,6 +24,7 @@ class TrendingTagsService
     [
       { name: 'Блоги', link: tales_path },
       { name: 'Відео', link: youtube_videos_path },
+      { name: 'Обговорення', link: comments_path },
       { name: 'Ранобе', link: fictions_path }
     ]
   end
@@ -35,7 +36,7 @@ class TrendingTagsService
          .where(publications: { created_at: 14.days.ago.. })
          .group('tags.id')
          .order('SUM(publications.views) DESC')
-         .limit(4)
+         .limit(3)
          .pluck(:name)
     )
   end
@@ -43,7 +44,6 @@ class TrendingTagsService
   def limited(names)
     return names.take(1) if names.take(2).join.size > 110
     return names.take(2) if names.take(3).join.size > 110
-    return names.take(3) if names.take(4).join.size > 110
 
     names
   end

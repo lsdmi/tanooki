@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  before_action :load_advertisement, only: :index
   before_action :set_comment, only: %i[show edit update destroy cancel_edit cancel_reply]
+
+  def index
+    @pagy, @comments = pagy_countless(comments, items: 40)
+
+    render 'comments/scrollable_list' if params[:page]
+  end
 
   def new
     @comment = Comment.new(comment_params)
@@ -44,6 +51,14 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def comments
+    Rails.cache.fetch('all_comments', expires_in: 1.hour) do
+      Comment.includes(
+        [{commentable: { cover_attachment: :blob }}, { user: { avatar: { image_attachment: :blob } } }]
+      ).order(id: :desc)
+    end
+  end
 
   def set_comment
     @comment = Comment.find_by(id: params[:id] || params[:comment_id])

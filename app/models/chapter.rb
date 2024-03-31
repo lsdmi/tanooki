@@ -34,6 +34,10 @@ class Chapter < ApplicationRecord
     fiction.author
   end
 
+  def cover
+    fiction.cover
+  end
+
   def display_title
     header = ''
     header += "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?

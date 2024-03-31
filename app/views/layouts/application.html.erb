@@ -42,6 +42,7 @@
     <% end %>
 
     <%= javascript_include_tag 'font_toggler' if requires_font? %>
+    <%= javascript_include_tag 'masonry_grid' if request.path == comments_path %>
     <%= javascript_include_tag 'mode_toggler' %>
     <%= javascript_include_tag 'comments_handler' %>
   </head>

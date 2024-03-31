@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module MetaHelper
+  include MetaDescriptionHelper
+
   def meta_image
     result_cover = case request.path
                    when root_path then highlights_cover
@@ -15,7 +17,7 @@ module MetaHelper
 
   def meta_title
     return search_meta_title if search_index_path?
-    return fictions_meta_title if fictions_path?
+    return I18n.t("meta.title.#{controller_name}.#{action_name}") if consts_paths?
     return chapter_title if chapter_present?
     return youtube_video_title if youtube_video_present?
     return scanlator_meta_title if scanlator_present?
@@ -25,7 +27,7 @@ module MetaHelper
 
   def meta_type
     case request.path
-    when root_path, search_index_path, fictions_path, youtube_videos_path
+    when root_path, search_index_path, fictions_path, youtube_videos_path, comments_path, alphabetical_fictions_path
       'website'
     else
       'article'
@@ -40,14 +42,6 @@ module MetaHelper
 
   def search_meta_title
     "#{params[:search].to_sentence} | Бака"
-  end
-
-  def fictions_path?
-    request.path == fictions_path || request.path == alphabetical_fictions_path
-  end
-
-  def fictions_meta_title
-    'Ранобе та Фанфіки Українською - Бака'
   end
 
   def chapter_present?

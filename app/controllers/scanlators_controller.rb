@@ -77,7 +77,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def set_scanlator
-    @scanlator = @commentable = Scanlator.find(params[:id])
+    @scanlator = Scanlator.find(params[:id])
   end
 
   def verify_permissions

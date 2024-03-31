@@ -1,0 +1,8 @@
+<% if pagy.next.present? %>
+  <%= turbo_frame_tag(
+        "comments-page-#{pagy.next}",
+        loading: :defer,
+        src: pagy_url_for(pagy, pagy.next),
+        target: "_top"
+      ) %>
+<% end %>

@@ -2,6 +2,7 @@
   <ul class="flex p-0 font-medium flex-row space-x-4 justify-center lg:hidden">
     <li><%= link_to 'Блоги', tales_path, class: 'font-oswald text-gray-800 text-base hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:underline', area: { current: 'page' } %></li>
     <li><%= link_to 'Відео', youtube_videos_path, class: 'font-oswald text-gray-800 text-base hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:underline', area: { current: 'page' } %></li>
+    <li><%= link_to 'Обговорення', comments_path, class: "font-oswald text-gray-800 text-base hover:text-gray-600 transition duration-500 transform hover:scale-110 hover:underline", area: { current: 'page' } %></li>
     <%= render 'shared/fictions_nav_dropdown_mobile' %>
   </ul>
 

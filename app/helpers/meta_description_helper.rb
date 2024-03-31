@@ -4,19 +4,13 @@ module MetaDescriptionHelper
   DEFAULT_DESCRIPTION = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, ' \
                         'манзі, культурі Сходу, а також перекладається ранобе українською мовою.'
 
-  RANOBE_SEO_DESCRIPTION = 'Найбільша колекція новел та фанфіків українською мовою. ' \
-                           'Захоплюючі історії, герої та світи. ' \
-                           'Щоденні оновлення на нашому сайті!'
-
-  YOUTUBE_SEO_DESCRIPTION = 'Захоплюючі відео від талановитих українських ютуберів про аніме, манґу та культуру Сходу.'
-
   def meta_description
     if description_object.present?
       object_description
     elsif title_object.present?
       scanlator_description
-    elsif consts_descriptions?
-      consts_description
+    elsif consts_paths?
+      I18n.t("meta.description.#{controller_name}.#{action_name}")
     else
       DEFAULT_DESCRIPTION
     end
@@ -33,12 +27,11 @@ module MetaDescriptionHelper
     end
   end
 
-  def consts_description
-    fictions_path? ? RANOBE_SEO_DESCRIPTION : YOUTUBE_SEO_DESCRIPTION
-  end
-
-  def consts_descriptions?
-    request.path == fictions_path || request.path == youtube_videos_path
+  def consts_paths?
+    request.path == fictions_path ||
+    request.path == youtube_videos_path ||
+    request.path == alphabetical_fictions_path ||
+    request.path == comments_path
   end
 
   def description_object
