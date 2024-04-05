@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_12_015111) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_05_232058) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -81,7 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_015111) do
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.string "title", null: false
-    t.decimal "number", precision: 9, scale: 1, null: false
+    t.decimal "number", precision: 9, scale: 2, null: false
     t.decimal "volume_number", precision: 9, scale: 1
     t.integer "comments_count", default: 0
     t.integer "views", default: 0
@@ -270,6 +270,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_015111) do
     t.boolean "admin", default: false
     t.bigint "avatar_id"
     t.integer "battle_win_rate", default: 50
+    t.bigint "latest_read_comment_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -279,11 +280,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_015111) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "pokemon_last_catch", default: "2023-12-13 02:24:56"
-    t.datetime "pokemon_last_training", default: "2023-12-13 02:24:56"
+    t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
+    t.datetime "pokemon_last_training", default: "2023-11-02 02:58:41"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["latest_read_comment_id"], name: "index_users_on_latest_read_comment_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -341,5 +343,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_015111) do
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"
+  add_foreign_key "users", "comments", column: "latest_read_comment_id"
   add_foreign_key "youtube_videos", "youtube_channels"
 end

@@ -11,6 +11,7 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :avatar
+  belongs_to :latest_read_comment, class_name: 'Comment', optional: true
   has_many :comments
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy

@@ -91,4 +91,9 @@ module CommentsHelper
   def commentable_title(commentable)
     commentable.is_a?(Chapter) ? commentable.fiction_title : commentable.title
   end
+
+  def show_comment_status?
+    comment = current_user.present? ? current_user.latest_read_comment_id : session[:seen_comment]
+    comment != Comment.last.id
+  end
 end
