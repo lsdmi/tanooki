@@ -18,7 +18,11 @@
       </div>
       <div class="flex justify-end place-items-center mt-2">
         <%= render "shared/search" %>
-        <%= render 'shared/comments' %>
+        <% if current_user.present? && latest_comments.any? %>
+          <%= render 'shared/comments' %>
+        <% else %>
+          <div class="mx-2"></div>
+        <% end %>
         <% if current_user %>
           <div data-controller="flowbite">
             <%= render 'shared/user_dropdown' %>

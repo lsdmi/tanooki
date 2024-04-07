@@ -26,11 +26,11 @@ module PokemonsHelper
 
   def dex_title(rate)
     case rate
-    when -Float::INFINITY..20 then 'Початківець (Ранг E)'
-    when 21..40 then 'Школяр (Ранг D)'
-    when 41..60 then 'Тренер (Ранг C)'
-    when 61..80 then 'Висхідна зірка (Ранг B)'
-    when 81..90 then 'Майстер (Ранг A)'
+    when -Float::INFINITY..30 then 'Початківець (Ранг E)'
+    when 31..50 then 'Школяр (Ранг D)'
+    when 51..70 then 'Тренер (Ранг C)'
+    when 71..85 then 'Висхідна зірка (Ранг B)'
+    when 86..95 then 'Майстер (Ранг A)'
     else 'Чемпіон (Ранг S)'
     end
   end

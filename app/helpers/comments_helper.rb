@@ -93,7 +93,6 @@ module CommentsHelper
   end
 
   def show_comment_status?
-    comment = current_user.present? ? current_user.latest_read_comment_id : session[:seen_comment]
-    comment != Comment.last.id
+    current_user.latest_read_comment_id != latest_comments.first&.id
   end
 end

@@ -11,27 +11,27 @@ class PokemonsHelperTest < ActionView::TestCase
   end
 
   test 'dex_title should return the correct title for case 21' do
-    title = dex_title(21)
+    title = dex_title(31)
     assert_equal 'Школяр (Ранг D)', title
   end
 
   test 'dex_title should return the correct title for case 41' do
-    title = dex_title(41)
+    title = dex_title(51)
     assert_equal 'Тренер (Ранг C)', title
   end
 
   test 'dex_title should return the correct title for case 61' do
-    title = dex_title(61)
+    title = dex_title(71)
     assert_equal 'Висхідна зірка (Ранг B)', title
   end
 
   test 'dex_title should return the correct title for case 81' do
-    title = dex_title(81)
+    title = dex_title(86)
     assert_equal 'Майстер (Ранг A)', title
   end
 
   test 'dex_title should return the correct title for case 91' do
-    title = dex_title(91)
+    title = dex_title(96)
     assert_equal 'Чемпіон (Ранг S)', title
   end
 end

@@ -13,7 +13,7 @@
 <div id="dropdownNotification" class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow font-oswald" aria-labelledby="dropdownNotificationButton">
   <div class="block px-4 py-2 font-light text-center text-gray-700 rounded-t-lg bg-gray-50">Сповіщення</div>
   <div class="divide-y divide-gray-100">
-    <% latest_comments.each do |comment| %>
+    <% latest_comments.first(5).each do |comment| %>
       <%= link_to comment_url(comment), class: 'flex px-4 py-3 hover:bg-gray-100' do %>
         <div class="flex-shrink-0">
           <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'rounded-full w-11 h-11', height: '48', width: '48' %>

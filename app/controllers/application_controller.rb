@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   def latest_comments
-    Rails.cache.fetch('latest_comments', expires_in: 1.hour) do
-      Comment.includes(:commentable, { user: { avatar: { image_attachment: :blob } } }).order(id: :desc).first(5)
+    Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 1.hour) do
+      CommentsFetcher.new(current_user).collect
     end
   end
 

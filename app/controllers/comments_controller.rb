@@ -47,11 +47,7 @@ class CommentsController < ApplicationController
   end
 
   def dropdown
-    if current_user.present?
-      current_user.update(latest_read_comment_id: Comment.last.id)
-    else
-      session[:seen_comment] = Comment.last.id
-    end
+    current_user.update(latest_read_comment_id: latest_comments.first.id)
   end
 
   private
