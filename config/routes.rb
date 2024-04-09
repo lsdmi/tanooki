@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   get :blogs, to: 'users#blogs', as: :blogs
   get :pokemons, to: 'users#pokemons', as: :pokemons
   get :readings, to: 'users#readings', as: :readings
+  get :notifications, to: 'dashboards#notifications', as: :notifications
 
   post :pokemon_details, to: 'users#pokemon_details', as: :pokemon_details
 

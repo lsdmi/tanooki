@@ -35,11 +35,9 @@
       <% end %>
     <% end %>
   </div>
-  <% if false %>
-    <a href="#" class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100">
-      <div class="inline-flex items-center font-light uppercase">
-        стрічка сповіщень
-      </div>
-    </a>
+  <%= link_to notifications_path, class: 'block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100' do  %>
+    <div class="inline-flex items-center font-light uppercase">
+      стрічка сповіщень
+    </div>
   <% end %>
 </div>

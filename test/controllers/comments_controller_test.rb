@@ -45,4 +45,11 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     patch comment_url(@comment, format: :turbo_stream), params: { comment: { content: 'Updated comment' } }
     assert_template 'complete_update'
   end
+
+  test "should get index" do
+    get comments_url
+    assert_response :success
+    assert_not_nil assigns(:pagy)
+    assert_not_nil assigns(:comments)
+  end
 end

@@ -28,3 +28,153 @@ user_two:
   unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
+
+user_101:
+  id: 101
+  email: example101@example.com
+  encrypted_password: password101
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '101'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_102:
+  id: 102
+  email: example102@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '102'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_103:
+  id: 103
+  email: example103@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '103'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_104:
+  id: 104
+  email: example104@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '104'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_105:
+  id: 105
+  email: example105@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '105'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_106:
+  id: 106
+  email: example106@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '106'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_107:
+  id: 107
+  email: example107@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '107'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_108:
+  id: 108
+  email: example108@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '108'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_109:
+  id: 109
+  email: example109@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '109'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+user_110:
+  id: 110
+  email: example110@example.com
+  encrypted_password: password102
+  name: John Oneohone
+  admin: false
+  avatar_id: 1
+  remember_created_at: ''
+  confirmation_token: '110'
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+  unconfirmed_email: ''
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

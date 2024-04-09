@@ -2,5 +2,40 @@ comment_one:
   id: 1
   user_id: 1
   commentable_id: 1
-  commentable_type: Tale
+  commentable_type: Publication
+  content: <%= Faker::Book.title %>
+
+comment_two:
+  id: 2
+  user_id: 2
+  commentable_id: 1
+  commentable_type: Publication
+  content: <%= Faker::Book.title %>
+
+comment_chapter:
+  id: 3
+  user_id: 1
+  commentable_id: 2
+  commentable_type: Chapter
+  content: <%= Faker::Book.title %>
+
+comment_video:
+  id: 4
+  user_id: 1
+  commentable_id: 1
+  commentable_type: YoutubeVideo
+  content: <%= Faker::Book.title %>
+
+comment_fiction:
+  id: 5
+  user_id: 1
+  commentable_id: 2
+  commentable_type: Fiction
+  content: <%= Faker::Book.title %>
+
+comment_publication:
+  id: 6
+  user_id: 1
+  commentable_id: 1
+  commentable_type: Publication
   content: <%= Faker::Book.title %>

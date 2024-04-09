@@ -99,7 +99,7 @@ class FictionTest < ActiveSupport::TestCase
     fiction = fictions(:one)
     fiction.comments << comments(:comment_one)
 
-    assert_difference('Comment.count', -1) { fiction.destroy }
+    assert_difference('Comment.count', -2) { fiction.destroy }
   end
 
   test 'should have many fiction genres' do
