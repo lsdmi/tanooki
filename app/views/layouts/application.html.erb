@@ -11,6 +11,10 @@
       <%= raw profile_page_meta(@scanlator) %>
     <% end if profile_page_meta? %>
 
+    <%= tag.script type: 'application/ld+json' do %>
+      <%= raw video_meta(@youtube_video) %>
+    <% end if video_meta? %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>

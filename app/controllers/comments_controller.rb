@@ -55,7 +55,7 @@ class CommentsController < ApplicationController
   def comments
     Rails.cache.fetch('all_comments', expires_in: 1.hour) do
       Comment.includes(
-        [{commentable: { cover_attachment: :blob }}, { user: { avatar: { image_attachment: :blob } } }]
+        [{ commentable: { cover_attachment: :blob } }, { user: { avatar: { image_attachment: :blob } } }]
       ).order(id: :desc)
     end
   end

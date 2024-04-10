@@ -164,7 +164,7 @@ user_109:
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
-user_110:
+user_one_one_zero:
   id: 110
   email: example110@example.com
   encrypted_password: password102

@@ -14,7 +14,7 @@
             <%= render 'shared/ads', advertisement: @advertisement %>
           </div>
           <ol class="relative mt-8">
-            <%= render "tiles", comments: @comments %>
+            <%= render "tiles", comments: @comments, pagy: @pagy %>
             <%= render "next_page", pagy: @pagy %>
           </ol>
         </div>

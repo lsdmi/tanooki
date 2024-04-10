@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DexLeaderboardTest < ActiveSupport::TestCase
   def setup
-    @user = users(:user_110)
+    @user = users(:user_one_one_zero)
     @service = DexLeaderboard.new(@user)
   end
 

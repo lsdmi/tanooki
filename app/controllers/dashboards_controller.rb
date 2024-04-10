@@ -4,7 +4,7 @@ class DashboardsController < ApplicationController
   before_action :authenticate_user!
 
   def notifications
-    raise ActionController::RoutingError.new('Not Found') if latest_comments.empty?
+    raise ActionController::RoutingError, 'Not Found' if latest_comments.empty?
 
     @pagy, @comments = pagy(my_comments, items: 8)
 

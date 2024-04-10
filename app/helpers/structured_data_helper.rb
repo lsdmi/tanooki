@@ -38,6 +38,22 @@ module StructuredDataHelper
     }.to_json
   end
 
+  def video_meta?
+    controller_name.to_sym == :youtube_videos && action_name.to_sym == :show
+  end
+
+  def video_meta(video)
+    {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: video.title,
+      description: video.description.to_plain_text,
+      thumbnailUrl: [video.thumbnail],
+      uploadDate: video.published_at.iso8601,
+      embedUrl: "https://www.youtube.com/embed/#{video.video_id}"
+    }.to_json
+  end
+
   private
 
   def author_data(publication)

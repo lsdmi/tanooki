@@ -4,6 +4,8 @@ const initializeCommentsHandler = () => {
   const dropdown = document.getElementById('dropdownNotification');
   const dropdownStatus = document.getElementById('dropdownStatus');
 
+  if (!dropdownButton) { return; }
+
   dropdownButton.addEventListener('click', function(event) {
     event.preventDefault();
     dropdown.classList.toggle('hidden');

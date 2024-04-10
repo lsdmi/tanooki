@@ -15,10 +15,10 @@ class CommentsFetcher
 
   def blog_comments
     Comment.where(commentable_type: 'Publication')
-           .joins("INNER JOIN publications ON comments.commentable_id = publications.id")
-           .where("publications.user_id = ?", user.id)
+           .joins('INNER JOIN publications ON comments.commentable_id = publications.id')
+           .where('publications.user_id = ?', user.id)
            .where.not(comments: { user_id: user.id })
-           .includes([:commentable , { user: { avatar: { image_attachment: :blob } } }])
+           .includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
   end
 
   def chapter_comments
@@ -32,20 +32,20 @@ class CommentsFetcher
     fiction_ids = Fiction.joins(:scanlators).where(scanlators: { id: user.scanlators }).pluck(:id)
     Comment.where(commentable_id: fiction_ids, commentable_type: 'Fiction')
            .where.not(user_id: user.id)
-           .includes([:commentable , { user: { avatar: { image_attachment: :blob } } }])
+           .includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
   end
 
   def threads
     grouped_comments = Comment.select(:commentable_id, :commentable_type)
                               .where(user_id: user.id)
                               .group(:commentable_id, :commentable_type)
-                              .having("COUNT(*) > 1")
+                              .having('COUNT(*) > 1')
 
     grouped_ids_and_types = grouped_comments.pluck(:commentable_id, :commentable_type)
 
     Comment.where.not(user_id: user.id)
            .where(commentable_id: grouped_ids_and_types.map(&:first))
            .where(commentable_type: grouped_ids_and_types.map(&:second))
-           .includes([:commentable , { user: { avatar: { image_attachment: :blob } } }])
+           .includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
   end
 end

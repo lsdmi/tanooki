@@ -26,12 +26,12 @@
   <% end %>
 </div>
 
-<% if @pagy.page != @pagy.pages %>
+<% if pagy.page != pagy.pages %>
   <div>
     <div class="relative w-full pr-2 xl:p-0">
       <h2 class="relative w-full text-center mb-4">
         <hr class="absolute l-0 w-full z-0 h-px bottom-1/2">
-        <%= tag.span "Коментарі (#{@pagy.page * 40 + 1} - #{@pagy.page * 40 + 40})", class: "inline-block text-white font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-gradient-to-r from-fuchsia-400 via-fuchsia-500 to-fuchsia-600 hover:bg-gradient-to-br shadow-lg shadow-fuchsia-500/50" %>
+        <%= tag.span "Коментарі (#{pagy.page * 40 + 1} - #{pagy.page * 40 + 40})", class: "inline-block text-white font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-gradient-to-r from-fuchsia-400 via-fuchsia-500 to-fuchsia-600 hover:bg-gradient-to-br shadow-lg shadow-fuchsia-500/50" %>
       </h2>
     </div>
   </div>

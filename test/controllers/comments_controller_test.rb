@@ -46,7 +46,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_template 'complete_update'
   end
 
-  test "should get index" do
+  test 'should get index' do
     get comments_url
     assert_response :success
     assert_not_nil assigns(:pagy)
