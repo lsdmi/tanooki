@@ -1,36 +1,35 @@
-<%= tag.article class: "p-4 lg:p-6 mb-6 text-base border #{ fictions? ? '' : 'border-rose-100' } rounded-lg #{'ml-6 lg:ml-12' if comment.parent_id.present?}" do %>
+<%= tag.article class: "font-oswald p-6 mb-6 text-base rounded-lg border border-gray-200 shadow-sm #{'ml-6 lg:ml-12' if comment.parent_id.present?} #{ 'dark:bg-gray-800 dark:border-gray-700' if comments_dark_mode? }" do %>
   <div class="flex">
     <div class="w-full">
       <footer class="flex justify-between items-center mb-2 w-full">
         <div class="flex items-center">
-          <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-12 h-12 rounded-full', height: '48', width: '48' %>
-          <p class="inline-flex flex-col md:flex-row items-start mr-3">
-            <%= tag.span comment.username, class: "font-oswald text-2xl font-light #{ fictions? ? 'text-emerald-900' : 'text-rose-900' } #{'dark:text-white' if comments_dark_mode?}" %>
-            <%= tag.time "#{time_ago_in_words(comment.created_at)} тому", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-2 #{'dark:text-gray-400' if comments_dark_mode?}" %>
-            <%= tag.time "(відредаговано)", class: "font-oswald text-base font-light #{ fictions? ? 'text-emerald-700' : 'text-rose-600' } md:ml-1 #{'dark:text-gray-400' if comments_dark_mode?}" if comment.created_at != comment.updated_at %>
-          </p>
+          <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-10 h-10 rounded-full', height: '48', width: '48' %>
+          <div class="">
+            <%= tag.span comment.username, class: "text-md font-bold text-gray-900 #{'dark:text-white' if comments_dark_mode?}" %>
+            <%= tag.p "#{time_ago_in_words(comment.created_at)} тому", class: "text-sm font-light text-gray-500 #{'dark:text-gray-400' if comments_dark_mode?}" %>
+          </div>
         </div>
         <% if current_user&.id == comment.user_id %>
-          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 rounded-lg focus:ring-4 focus:outline-none <%= fictions? ? 'focus:ring-emerald-500' : 'focus:ring-rose-100' %> <%= 'dark:focus:ring-gray-600' if comments_dark_mode? %>" type="button">
-            <svg class="w-5 h-5 <%= fictions? ? 'fill-emerald-600' : 'fill-rose-400' %> <%= 'dark:fill-gray-500' if comments_dark_mode? %>" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 <%= 'dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600' if comments_dark_mode? %>" type="button">
+            <svg class="w-5 h-5 <%= 'dark:fill-gray-500' if comments_dark_mode? %>" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
             </svg>
             <span class="sr-only">Comment settings</span>
           </button>
-          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 rounded divide-y <%= fictions? ? 'divide-emerald-500' : 'divide-rose-100' %> shadow">
-            <ul class="rounded-lg py-1 text-sm bg-white <%= 'dark:bg-gray-800' if comments_dark_mode? %> <%= fictions? ? 'text-emerald-900' : 'text-rose-700' %>" aria-labelledby="dropdownMenuIconHorizontalButton">
+          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow <%= 'dark:bg-gray-700 dark:divide-gray-600' if comments_dark_mode? %>">
+            <ul class="py-1 text-sm text-gray-700 <%= 'dark:text-gray-200' if comments_dark_mode? %>" aria-labelledby="dropdownMenuIconHorizontalButton">
               <li>
-                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:text-rose-400'} #{'dark:text-gray-400 dark:hover:text-gray-300' if comments_dark_mode?}" %>
+                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "block py-2 px-4 hover:bg-gray-100 #{'dark:hover:bg-gray-600 dark:hover:text-white' if comments_dark_mode?}" %>
               </li>
               <li>
-                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "font-oswald font-light text-lg block py-2 px-4 #{fictions? ? 'text-emerald-700 hover:text-emerald-600' : 'text-rose-500 hover:text-rose-400'} #{'dark:text-gray-400 dark:hover:text-gray-300' if comments_dark_mode?}" %>
+                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "block py-2 px-4 hover:bg-gray-100 #{'dark:hover:bg-gray-600 dark:hover:text-white' if comments_dark_mode?}" %>
               </li>
             </ul>
           </div>
         <% end %>
       </footer>
       <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: "font-oswald font-light text-gray-500 text-xl whitespace-break-spaces #{'dark:text-gray-400' if comments_dark_mode?}" %>
+        <%= tag.p comment.content, class: "font-oswald text-md font-light mt-4 text-gray-500 whitespace-break-spaces #{'dark:text-gray-400' if comments_dark_mode?}" %>
       <% end %>
       <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
         <%= render 'comments/actions', comment: comment, commentable: @commentable %>

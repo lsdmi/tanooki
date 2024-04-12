@@ -4,34 +4,32 @@
   <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
   <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
 
-  <%= tag.div class: "mb-4 w-full bg-gray-50 rounded-lg border #{ fictions? ? '' : 'border-rose-200' } #{'mb-0 mt-6' if comment.new_record? && comment.parent_id.present?} #{'dark:bg-gray-800 dark:border-gray-600' if comments_dark_mode?}" do %>
-    <div class="py-2 px-4 bg-gray-50 rounded-t-lg <%= 'dark:bg-gray-800' if comments_dark_mode? %>">
-      <%= f.text_area :content,
-                      id: 'comment',
-                      rows: '3',
-                      class: "font-oswald font-light px-0 w-full text-base sm:text-xl md:text-base lg:text-lg xl:text-xl #{ fictions? ? 'text-emerald-900 placeholder-emerald-900' : 'text-rose-900 placeholder-rose-900' } bg-gray-50 border-0 focus:ring-0 #{'dark:bg-gray-800 dark:text-white dark:placeholder-gray-400' if comments_dark_mode?}",
-                      placeholder: fictions? ? 'Лишити відгук...' : 'Лишити коментар...',
-                      required: true %>
-    </div>
-    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex font-medium tracking-wide text-red-500 text-lg ml-2 mb-2 #{'dark:text-red-400 dark:bg-gray-800' if comments_dark_mode?}" if comment.errors.any? %>
+  <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 <%= 'mt-6' if comment.new_record? && comment.parent_id.present? %>">
+    <%= f.text_area :content,
+                    id: 'comment',
+                    rows: '4',
+                    class: "font-oswald font-light px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none #{ 'dark:text-white dark:placeholder-gray-400 dark:bg-gray-800' if comments_dark_mode? }",
+                    placeholder: 'Лишіть відгук чи коментар...',
+                    required: true %>
+    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex tracking-wide text-red-500 text-sm #{'dark:text-red-400 dark:bg-gray-800' if comments_dark_mode?}" if comment.errors.any? %>
+  </div>
 
-    <div class="relative flex justify-end items-center py-2 px-3 border-t <%= fictions? ? '' : 'border-rose-200' %> bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
-      <%= tag.div class: "absolute inset-0 bg-white opacity-90 #{'dark:bg-gray-800' if comments_dark_mode?}" %>
+  <div class="relative flex justify-end items-center px-3">
       <% if comment.persisted? %>
         <%= link_to "Скасувати",
                     cancel_edit_comment_path(comment),
                     method: :get,
                     data: { turbo_stream: "" },
-                    class: "z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl leading-5 font-light rounded-lg transition ease-in-out m-0 hover:cursor-pointer border #{ fictions? ? 'hover:text-emerald-600 text-emerald-700 border-emerald-700' : 'border-rose-200 hover:bg-rose-100 text-rose-500' } #{'dark:hover:text-gray-500 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600' if comments_dark_mode?}" %>
+                    class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-white #{ fictions? ? 'text-emerald-700 focus:ring-emerald-200 hover:text-emerald-800' : 'text-pink-700 focus:ring-pink-200 hover:text-pink-800' } rounded-lg focus:ring-4" %>
       <% end %>
       <% if comment.new_record? && comment.parent_id.present? %>
         <%= link_to "Скасувати",
                   cancel_reply_comment_path(comment.parent_id),
                   method: :get,
                   data: { turbo_stream: "" },
-                  class: "z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl leading-5 font-light bg-white rounded-lg transition ease-in-out m-0 hover:cursor-pointer border #{ fictions? ? 'hover:text-emerald-600 text-emerald-700 border-emerald-700' : 'border-rose-200 hover:bg-rose-100 text-rose-500' } #{'dark:hover:text-gray-500 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600' if comments_dark_mode?}" %>
+                  class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-white border #{ fictions? ? 'text-emerald-700 focus:ring-emerald-200 hover:text-emerald-800 border-emerald-700' : 'text-pink-700 focus:ring-pink-200 hover:text-pink-800 border-pink-700' } rounded-lg focus:ring-4" %>
       <% end %>
-      <%= f.submit 'Надіслати', class: "ml-2 z-10 font-oswald py-2.5 px-4 text-base sm:text-xl md:text-base lg:text-lg xl:text-xl text-white leading-5 font-light #{ fictions? ? 'bg-gradient-to-r from-teal-500 to-teal-600 hover:bg-gradient-to-br shadow-lg shadow-teal-500/50' : 'bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br shadow-lg shadow-pink-500/50' } rounded-lg transition ease-in-out m-0 hover:cursor-pointer" %>
-    </div>
-  <% end %>
+
+    <%= f.submit 'Надіслати', class: "ml-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white #{ fictions? ? 'bg-emerald-700 focus:ring-emerald-200 hover:bg-emerald-800 border-emerald-700' : 'bg-pink-700 focus:ring-pink-200 hover:bg-pink-800 border-pink-700' } rounded-lg focus:ring-4 hover:cursor-pointer" %>
+  </div>
 </div>
