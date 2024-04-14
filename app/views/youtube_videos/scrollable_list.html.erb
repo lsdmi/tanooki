@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "videos-page-#{@pagy.page}" do %>
+  <%= render 'other_videos_desktop', other_videos: @other_youtube_videos %>
+  <%= render 'other_videos_mobile', other_videos: @other_youtube_videos %>
+  <%= render 'next_page', pagy: @pagy %>
+<% end %>

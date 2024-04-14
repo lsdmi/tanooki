@@ -10,10 +10,7 @@ class YoutubeVideosController < ApplicationController
     @latest = latest
     @pagy, @other_youtube_videos = pagy_countless(other, items: 12)
 
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
+    render 'youtube_videos/scrollable_list' if params[:page]
   end
 
   def show

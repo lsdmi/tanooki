@@ -22,16 +22,10 @@
       <%= render 'shared/divider_shiny_pink', caption: 'Відеотека' %>
     </div>
     <div class="flex justify-center">
-      <div class="lg:grid grid-cols-4 gap-2 mb-4 mx-auto lg:mx-0 w-[96%] font-oswald" id="others">
+      <div class="lg:grid grid-cols-4 gap-2 mb-4 mx-auto lg:mx-0 w-[96%] font-oswald">
         <%= render 'other_videos_desktop', other_videos: @other_youtube_videos %>
         <%= render 'other_videos_mobile', other_videos: @other_youtube_videos %>
-      </div>
-    </div>
-    <div id="next_link">
-      <div class="mx-auto text-center">
-        <%= turbo_frame_tag 'new-video-link' do %>
-          <%= button_to 'Більше відео', pagy_url_for(@pagy, @pagy.next), id: 'more-videos', class: 'uppercase w-4/5 xl:w-3/5 font-oswald text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 shadow-lg shadow-pink-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
-        <% end %>
+        <%= render 'next_page', pagy: @pagy %>
       </div>
     </div>
   </section>

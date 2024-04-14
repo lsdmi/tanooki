@@ -1,25 +1,25 @@
-<div class="sm:mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 flex justify-center lg:block">
-  <div class="rounded-md float-left relative w-4/5 lg:w-full overflow-hidden lg:h-36 mb-1">
+<div class="sm:mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 justify-center lg:block">
+  <div class="rounded-md float-left relative w-full overflow-hidden lg:h-36 mb-1">
     <%= link_to youtube_video_path(side_video) do %>
       <%= image_tag url_for(side_video.thumbnail), alt: side_video.title, class: "rounded-md opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] max-h-96 lg:h-36 object-cover", width: 320, height: 144 %>
       <div class="z-10 rounded-md absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
     <% end %>
   </div>
-  <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center ml-4 md:ml-4 lg:ml-0">
+  <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left lg:flex items-center">
     <div class="col-span-6 lg:col-span-5">
       <div class="w-full float-left rounded-md mb-1 text-gray-500">
-        <div class="flex space-x-1 text-gray-500 text-sm mb-2 lg:mb-0 sm:mt-2">
+        <div class="lg:flex space-x-1 text-gray-500 text-sm mb-2 lg:mb-0 mt-2">
           <%= image_tag url_for(side_video.youtube_channel_thumbnail), alt: side_video.youtube_channel.title, class: 'text-rose-700 h-8 w-8 rounded-full max-w-none hover:scale-110 lg:mx-1 hidden lg:block transform transition duration-500', height: '40', width: '40' %>
           <div>
-            <%= link_to side_video.youtube_channel.title, search_index_path(search: [side_video.youtube_channel.title]), class: 'text-rose-700 hidden sm:inline text-sm md:text-base lg:text-sm hover:underline font-light' %>
-            <%= tag.span "∘", class: 'hidden sm:inline text-xs font-light' %>
-            <%= tag.span "#{time_ago_in_words(side_video.published_at)} тому", class: 'hidden sm:inline text-xs font-light mb-1' %>
-            <div class="line-clamp-2 sm:mt-2 sm:mb-1 lg:mb-0 lg:mb-1 lg:mt-1">
-              <%= link_to side_video.title, youtube_video_path(side_video), class: 'tracking-tight sm:leading-5 lg:leading-5 text-gray-700 text-base sm:text-2xl lg:text-xl w-full hover:text-gray-600 hover:underline' %>
+            <%= link_to side_video.youtube_channel.title, search_index_path(search: [side_video.youtube_channel.title]), class: 'text-rose-700 sm:inline text-sm sm:text-lg md:text-xl lg:text-sm hover:underline font-light' %>
+            <%= tag.span "∘", class: 'sm:inline text-base sm:text-lg md:text-xl lg:text-xs font-light' %>
+            <%= tag.span "#{time_ago_in_words(side_video.published_at)} тому", class: 'sm:inline text-sm sm:text-base lg:text-xs font-light mb-1' %>
+            <div class="sm:mt-2 mb-2 lg:mb-1 lg:mt-1 lg:line-clamp-2">
+              <%= link_to side_video.title, youtube_video_path(side_video), class: 'text-gray-900 font-bold leading-tight tracking-tight sm:leading-5 lg:leading-5 text-2xl sm:text-3xl md:text-4xl lg:text-xl w-full hover:text-gray-600 hover:underline' %>
             </div>
-            <%= tag.div class: 'lg:hidden w-full line-clamp-1 md:line-clamp-3 mt-2' do %>
+            <%= tag.div class: 'lg:hidden w-full line-clamp-4 md:line-clamp-3 mt-2' do %>
               <% side_video.tags.split(', ').each do |video_tag| %>
-                <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag-side-video', class: 'bg-rose-100 text-rose-700 text-xs md:text-sm px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+                <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag-side-video', class: 'bg-rose-100 text-rose-700 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
               <% end %>
             <% end if side_video.tags? %>
           </div>
