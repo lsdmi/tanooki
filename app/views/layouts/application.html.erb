@@ -49,6 +49,7 @@
     <%= javascript_include_tag 'masonry_grid' if request.path == comments_path %>
     <%= javascript_include_tag 'mode_toggler' %>
     <%= javascript_include_tag 'comments_handler' %>
+    <%= javascript_include_tag 'fiction_list_filter' if request.path == alphabetical_fictions_path %>
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen">

@@ -1,0 +1,25 @@
+<div class="flex justify-end items-center px-4">
+  <button id="fictionsFilterDefault" data-dropdown-toggle="fictionsFilter" class="flex items-center space-x-1 px-4 py-2 text-gray-800 hover:bg-gray-200">
+    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
+    </svg>
+    <span class="uppercase text-sm">Цідило</span>
+  </button>
+
+  <%= turbo_frame_tag 'fiction-list-filters' do %>
+    <%= simple_form_for :fiction_list, url: alphabetical_fictions_path, method: :get, id: 'fictionsFilter', html: { class: 'z-10 hidden max-w-screen-sm p-3 space-y-4 bg-white rounded-lg shadow' }, aria: { labelledby: 'fictionsFilterDefault' }, data: { turbo_stream: "" } do |f| %>
+      <div>
+        <label class="block mb-2 text-md font-medium text-gray-900">Статус</label>
+        <ul class="w-full">
+          <li>
+            <input type="checkbox" id="only_finished" name="only_finished" class="hidden peer" <%= 'checked' if params[:only_finished] == "on" %> />
+            <label for="only_finished" class="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-lg cursor-pointer peer-checked:border-emerald-600 peer-checked:bg-emerald-600 hover:text-white peer-checked:text-white hover:bg-emerald-500">
+              Завершено
+            </label>
+          </li>
+        </ul>
+      </div>
+      <button type="submit" id="hiddenSubmit" style="display: none;"></button>
+    <% end %>
+  <% end %>
+</div>
