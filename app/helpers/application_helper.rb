@@ -31,9 +31,8 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    [
-      'admin/chapters', 'admin/fictions', 'admin/tales', 'chapters', 'fictions', 'publications'
-    ].any? { |str| request.path.include?(str) }
+    (controller_name == 'publications' && %w[new edit].include?(action_name)) ||
+    (controller_name == 'chapters' && %w[new edit].include?(action_name))
   end
 
   def requires_sweetalert?

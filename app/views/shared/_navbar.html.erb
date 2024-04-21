@@ -1,7 +1,7 @@
 <nav class="relative z-50 bg-white shadow-xl lg:shadow-none mb-2 lg:mb-0">
   <div class="max-w-screen-xl mx-auto px-4 md:px-6">
     <div class="grid grid-cols-3 no-ads">
-      <div class="flex place-items-center mt-2">
+      <div class="flex place-items-center mt-4">
         <%= link_to 'https://t.me/bakaInUa', class: 'inline-flex items-center p-1 text-sm font-medium rounded-lg', area: { current: 'page' } do %>
           <%= image_tag 'telegram.svg', class: 'h-6 sm:h-8 transform transition duration-500 hover:scale-110', alt: 'logo', width: '32', height: '32' %>
         <% end %>
@@ -13,10 +13,10 @@
       </div>
       <div class="flex justify-center place-items-center">
         <a href="/" class="flex items-center">
-          <%= image_tag 'logo-black.svg', class: 'h-10 md:h-12 transition duration-500 hover:scale-110', alt: 'logo', width: '192', height: '64' %>
+          <%= image_tag 'logo-default.svg', class: 'h-14 md:h-16 transition duration-500 hover:scale-110', alt: 'logo', width: '192', height: '64' %>
         </a>
       </div>
-      <div class="flex justify-end place-items-center mt-2">
+      <div class="flex justify-end place-items-center mt-4">
         <%= render "shared/search" %>
         <% if current_user.present? && latest_comments.any? %>
           <%= render 'shared/comments' %>

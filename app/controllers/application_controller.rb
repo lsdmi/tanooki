@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
-  helper_method :latest_comments, :trending_tags
+  helper_method :latest_comments, :trending_tags, :trending_tags_footer
 
   before_action :pokemon_appearance, only: %i[index show]
 
@@ -32,7 +32,11 @@ class ApplicationController < ActionController::Base
   end
 
   def trending_tags
-    TrendingTagsService.call
+    TrendingTagsService.new.navbar
+  end
+
+  def trending_tags_footer
+    TrendingTagsService.new.footer
   end
 
   def track_visit

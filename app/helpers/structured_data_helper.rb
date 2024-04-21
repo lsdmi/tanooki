@@ -25,14 +25,7 @@ module StructuredDataHelper
     {
       '@context': 'https://schema.org',
       '@type': 'ProfilePage',
-      mainEntity: {
-        '@type': 'Organization',
-        description: scanlator.description,
-        identifier: scanlator.slug,
-        image: scanlator.avatar.present? ? url_for(scanlator.avatar) : 'scanlator_avatar.webp',
-        name: scanlator.title,
-        sameAs: ["https://t.me/#{scanlator.telegram_id}"]
-      },
+      mainEntity: organization_data(scanlator),
       dateCreated: scanlator.created_at.iso8601,
       dateModified: scanlator.updated_at.iso8601
     }.to_json
@@ -60,6 +53,17 @@ module StructuredDataHelper
     {
       '@type': 'Person',
       name: publication.username
+    }
+  end
+
+  def organization_data(scanlator)
+    {
+      '@type': 'Organization',
+      description: scanlator.description,
+      identifier: scanlator.slug,
+      image: scanlator.avatar.present? ? url_for(scanlator.avatar) : 'scanlator_avatar.webp',
+      name: scanlator.title,
+      sameAs: ["https://t.me/#{scanlator.telegram_id}"]
     }
   end
 end

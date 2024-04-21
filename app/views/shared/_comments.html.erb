@@ -25,7 +25,7 @@
         </div>
         <div class="w-full ps-3">
           <div class="text-gray-500 text-sm mb-1.5">
-            <%= tag.span comment.user.name, class: 'font-semibold text-gray-900' %>
+            <%= tag.span comment.username, class: 'font-semibold text-gray-900' %>
             <%= tag.span "лишив коментар до #{commentable_type(comment.commentable)}", class: 'font-light' %>
             <%= tag.span commentable_title(comment.commentable), class: 'font-medium text-blue-500' %>
             <%= tag.span "- #{comment.content.truncate(200)}", class: 'font-semibold text-gray-800' %>

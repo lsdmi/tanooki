@@ -3,13 +3,17 @@
 class TrendingTagsService
   include Rails.application.routes.url_helpers
 
-  def self.call
-    new.call
+  def footer
+    Rails.cache.fetch('trending_tags_footer', expires_in: 12.hours) do
+      Tag.where(name: trending_tag_names).map do |tag|
+        { name: tag.name, link: search_index_path(search: [tag.name]) }
+      end.sort_by { |tag| tag[:name] }
+    end
   end
 
-  def call
-    Rails.cache.fetch('trending_tags', expires_in: 1.hour) do
-      build_tag_hash(Tag.where(name: trending_tag_names).order(:name))
+  def navbar
+    Rails.cache.fetch('trending_tags_navbar', expires_in: 12.hours) do
+      build_tag_hash(Tag.where(name: limited(trending_tag_names)).order(:name))
     end
   end
 
@@ -30,21 +34,19 @@ class TrendingTagsService
   end
 
   def trending_tag_names
-    limited(
-      Tag.joins(:publications)
-         .select(:name)
-         .where(publications: { created_at: 14.days.ago.. })
-         .group('tags.id')
-         .order('SUM(publications.views) DESC')
-         .limit(3)
-         .pluck(:name)
-    )
+    Tag.joins(:publications)
+        .select(:name)
+        .where(publications: { created_at: 21.days.ago.. })
+        .group('tags.id')
+        .order('SUM(publications.views) DESC')
+        .limit(16)
+        .pluck(:name)
   end
 
   def limited(names)
     return names.take(1) if names.take(2).join.size > 110
     return names.take(2) if names.take(3).join.size > 110
 
-    names
+    names.take(3)
   end
 end
