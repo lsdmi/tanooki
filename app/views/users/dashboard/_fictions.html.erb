@@ -1,5 +1,5 @@
 <% if current_user.scanlators.any? || current_user.admin? %>
-  <div class="flow-root" data-controller="flowbite">
+  <div class="flow-root xl:min-h-[550px]" data-controller="flowbite">
     <%= tag.h3 "Твори та Переклади (#{pagy.count})", class: 'text-xl' %>
     <ul class="divide-y divide-gray-200">
       <% fictions.each do |fiction| %>

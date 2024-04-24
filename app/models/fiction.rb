@@ -26,6 +26,14 @@ class Fiction < ApplicationRecord
     finished: 'Завершено'
   }
 
+  enum origin: {
+    unknown: 'невідоме',
+    chinese: 'китайське',
+    korean: 'корейське',
+    ukrainian: 'українське',
+    japanese: 'японське'
+  }
+
   before_validation :cleanup_scanlator_ids
 
   validates :cover, presence: true
