@@ -23,7 +23,7 @@ class AvatarsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create avatar' do
     avatar_image = Rack::Test::UploadedFile.new(
-      Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+      Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
       'image/svg'
     )
     assert_difference('Avatar.count') do

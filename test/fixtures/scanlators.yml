@@ -3,3 +3,8 @@ one:
   slug: one
   telegram_id: one
   title: One
+
+two:
+  id: 2
+  slug: two
+  title: Two

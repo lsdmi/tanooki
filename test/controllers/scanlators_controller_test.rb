@@ -30,8 +30,8 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Scanlator.count') do
       post scanlators_url, params: {
         scanlator: {
-          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'), 'image/svg'),
-          banner: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'), 'image/svg'),
+          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'), 'image/svg'),
+          banner: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'), 'image/svg'),
           member_ids: [users(:user_one).id],
           title: 'New Scanlator'
         }
@@ -78,5 +78,14 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_nil assigns(:fictions)
     assert_not_nil assigns(:feeds)
+  end
+
+  test 'should destroy scanlator' do
+    sign_in users(:user_one)
+    scanlator = scanlators(:two)
+
+    assert_difference('Scanlator.count', -1) do
+      delete scanlator_path(scanlator, format: :turbo)
+    end
   end
 end

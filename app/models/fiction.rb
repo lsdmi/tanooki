@@ -28,9 +28,15 @@ class Fiction < ApplicationRecord
 
   enum origin: {
     unknown: 'невідоме',
+    bosnian: 'боснійське',
+    italian: 'італійське',
     chinese: 'китайське',
     korean: 'корейське',
+    dutch: 'нідерландське',
+    polish: 'польське',
+    thai: 'тайське',
     ukrainian: 'українське',
+    french: 'французьке',
     japanese: 'японське'
   }
 

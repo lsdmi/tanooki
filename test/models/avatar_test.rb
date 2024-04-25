@@ -27,7 +27,7 @@ class AvatarTest < ActiveSupport::TestCase
 
   test 'should allow valid image formats' do
     valid_image = Rack::Test::UploadedFile.new(
-      Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+      Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
       'image/svg'
     )
 

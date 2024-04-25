@@ -52,7 +52,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
           author: 'New Author',
           description: 'a' * 50,
           cover: Rack::Test::UploadedFile.new(
-            Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+            Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
             'image/svg'
           ),
           scanlator_ids: [1],
@@ -84,7 +84,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     patch fiction_url(@fiction), params: {
       fiction: {
         cover: Rack::Test::UploadedFile.new(
-          Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+          Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
           'image/svg'
         ),
         scanlator_ids: [1],

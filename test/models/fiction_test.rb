@@ -8,7 +8,7 @@ class FictionTest < ActiveSupport::TestCase
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                            total_chapters: 5, user_id: @user.id)
-    @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+    @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
                                                        'image/svg'))
   end
 

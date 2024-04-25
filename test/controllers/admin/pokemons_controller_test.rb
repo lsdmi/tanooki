@@ -12,7 +12,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @pokemon_params = {
       sprite: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
         'image/svg'
       ),
       name: 'Pikachu',

@@ -8,4 +8,10 @@ class FictionListsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template :alphabetical
   end
+
+  test 'should get alphabetical with only_finished param' do
+    get alphabetical_fictions_url, params: { only_finished: 'on' }
+    assert_response :success
+    assert_template :alphabetical
+  end
 end

@@ -11,11 +11,11 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @ads_params = {
       cover: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
         'image/svg'
       ),
       poster: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
         'image/svg'
       ),
       resource: 'test',

@@ -12,7 +12,7 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @publication_params = {
       cover: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo.svg'),
+        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
         'image/svg'
       ),
       description: action_text_rich_texts(:rich_text_one),
