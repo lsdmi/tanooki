@@ -30,8 +30,10 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Scanlator.count') do
       post scanlators_url, params: {
         scanlator: {
-          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'), 'image/svg'),
-          banner: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'), 'image/svg'),
+          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+                                               'image/svg'),
+          banner: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+                                               'image/svg'),
           member_ids: [users(:user_one).id],
           title: 'New Scanlator'
         }

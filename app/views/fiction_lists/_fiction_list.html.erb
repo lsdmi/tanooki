@@ -1,3 +1,9 @@
-<% fiction_hash_sorted.each do |letter, fictions| %>
-  <%= render 'letter_section', letter:, fictions: %>
+<% if fiction_hash_sorted.any? %>
+  <ol class="relative sm:border-s sm:border-gray-200 mt-4">
+    <% fiction_hash_sorted.each do |letter, fictions| %>
+      <%= render 'letter_section', letter:, fictions: %>
+    <% end %>
+  </ol>
+<% else %>
+  <%= render 'no_results' %>
 <% end %>

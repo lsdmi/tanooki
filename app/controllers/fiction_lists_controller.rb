@@ -4,7 +4,7 @@ class FictionListsController < ApplicationController
   before_action :load_advertisement
 
   def alphabetical
-    @fiction_hash_sorted = fetch_or_generate_cached_fictions
+    @fiction_hash_sorted = generate_alphabetical_fictions_hash
 
     respond_to do |format|
       format.html
@@ -22,18 +22,27 @@ class FictionListsController < ApplicationController
     end
   end
 
-  def fetch_or_generate_cached_fictions
-    generate_alphabetical_fictions_hash
-  end
-
   def fictions
-    params[:only_finished] == "on" ? finished_list : default_list
+    params.except(:controller, :action).values.any?(&:present?) ? filtered_list : default_list
   end
 
-  def finished_list
-    Rails.cache.fetch('finished_fictions_alphabetical', expires_in: 1.day) do
-      Fiction.finished.includes([{ cover_attachment: :blob }, :chapters, :genres]).order(:title)
-    end
+  def filtered_list
+    query = default_list
+    query = filter_by_genre(query)
+    query = filter_by_origin(query)
+    query = filter_by_new(query)
+    query = filter_by_long(query)
+    query = filter_by_finished(query)
+
+    query.all
+  end
+
+  def fictions_in_genre
+    Fiction.joins(:genres).where(genres: { id: params['genre-radio'] }).ids
+  end
+
+  def longreads
+    Chapter.group(:fiction_id).having('COUNT(chapters.id) > ?', 99).pluck(:fiction_id)
   end
 
   def generate_alphabetical_fictions_hash
@@ -73,5 +82,35 @@ class FictionListsController < ApplicationController
       partial: 'fiction_lists/fiction_list',
       locals: { fiction_hash_sorted: @fiction_hash_sorted }
     )
+  end
+
+  def filter_by_genre(query)
+    return query unless params['genre-radio'].present?
+
+    query.includes(:genres).where(fictions: { id: fictions_in_genre })
+  end
+
+  def filter_by_origin(query)
+    return query unless params['origin-radio'].present?
+
+    query.where(origin: params['origin-radio'])
+  end
+
+  def filter_by_new(query)
+    return query unless params[:only_new] == 'on'
+
+    query.where(created_at: 3.months.ago...)
+  end
+
+  def filter_by_long(query)
+    return query unless params[:only_long] == 'on'
+
+    query.where(id: longreads)
+  end
+
+  def filter_by_finished(query)
+    return query unless params[:only_finished] == 'on'
+
+    query.finished
   end
 end

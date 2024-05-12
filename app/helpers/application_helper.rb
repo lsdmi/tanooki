@@ -31,8 +31,8 @@ module ApplicationHelper
   end
 
   def requires_tinymce?
-    (controller_name == 'publications' && %w[new edit].include?(action_name)) ||
-    (controller_name == 'chapters' && %w[new edit].include?(action_name))
+    (controller_name == 'publications' && %w[new edit create update].include?(action_name)) ||
+      (controller_name == 'chapters' && %w[new edit create update].include?(action_name))
   end
 
   def requires_sweetalert?

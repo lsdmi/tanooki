@@ -24,12 +24,10 @@
           <div class="my-4">
             <%= render 'shared/ads', advertisement: @advertisement %>
           </div>
-          <%= render 'filter' %>
-          <ol class="relative sm:border-s sm:border-gray-200 mt-4">
-            <%= turbo_frame_tag 'fiction-list' do %>
-              <%= render 'fiction_list', fiction_hash_sorted: @fiction_hash_sorted %>
-            <% end %>
-          </ol>
+          <%= render 'filter' if @fiction_hash_sorted.any? %>
+          <%= turbo_frame_tag 'fiction-list' do %>
+            <%= render 'fiction_list', fiction_hash_sorted: @fiction_hash_sorted %>
+          <% end %>
         </div>
       </div>
     </div>

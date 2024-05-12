@@ -39,7 +39,7 @@ class PublicationsController < ApplicationController
   end
 
   def new
-    @publication = Tale.new
+    @publication = Publication.new
   end
 
   def edit; end

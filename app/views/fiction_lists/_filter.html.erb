@@ -7,19 +7,6 @@
   </button>
 
   <%= turbo_frame_tag 'fiction-list-filters' do %>
-    <%= simple_form_for :fiction_list, url: alphabetical_fictions_path, method: :get, id: 'fictionsFilter', html: { class: 'z-10 hidden max-w-screen-sm p-3 space-y-4 bg-white rounded-lg shadow' }, aria: { labelledby: 'fictionsFilterDefault' }, data: { turbo_stream: "" } do |f| %>
-      <div>
-        <label class="block mb-2 text-md font-medium text-gray-900">Статус</label>
-        <ul class="w-full">
-          <li>
-            <input type="checkbox" id="only_finished" name="only_finished" class="hidden peer" <%= 'checked' if params[:only_finished] == "on" %> />
-            <label for="only_finished" class="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-lg cursor-pointer peer-checked:border-emerald-600 peer-checked:bg-emerald-600 hover:text-white peer-checked:text-white hover:bg-emerald-500">
-              Завершено
-            </label>
-          </li>
-        </ul>
-      </div>
-      <button type="submit" id="hiddenSubmit" style="display: none;"></button>
-    <% end %>
+    <%= render 'fiction_list_filters' %>
   <% end %>
 </div>

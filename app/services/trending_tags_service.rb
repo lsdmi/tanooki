@@ -35,12 +35,12 @@ class TrendingTagsService
 
   def trending_tag_names
     Tag.joins(:publications)
-        .select(:name)
-        .where(publications: { created_at: 21.days.ago.. })
-        .group('tags.id')
-        .order('SUM(publications.views) DESC')
-        .limit(16)
-        .pluck(:name)
+       .select(:name)
+       .where(publications: { created_at: 21.days.ago.. })
+       .group('tags.id')
+       .order('SUM(publications.views) DESC')
+       .limit(16)
+       .pluck(:name)
   end
 
   def limited(names)

@@ -1,10 +1,19 @@
 const initializeFilter = () => {
-  let hiddenSubmitButton = document.getElementById('hiddenSubmit');
-  let finishedCheckbox = document.getElementById('only_finished');
+  const hiddenSubmitButton = document.getElementById('hiddenSubmit');
 
-  finishedCheckbox.addEventListener('change', function() {
-    hiddenSubmitButton.click();
-  });
+  const checkboxes = [
+    document.getElementById('only_new'),
+    document.getElementById('only_finished'),
+    document.getElementById('only_long'),
+    ...document.getElementById('genre-list').querySelectorAll('input'),
+    ...document.getElementById('origin-list').querySelectorAll('input')
+  ];
+
+  const addChangeListener = (element) => {
+    element.addEventListener('change', () => hiddenSubmitButton.click());
+  };
+
+  checkboxes.forEach(addChangeListener);
 }
 
 document.addEventListener('turbo:load', initializeFilter);
