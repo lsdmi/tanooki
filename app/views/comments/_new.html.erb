@@ -1,4 +1,4 @@
-<div>
+<div class="font-oswald">
   <%= f.input :commentable_id, as: :hidden, input_html: { value: commentable.id }  %>
   <%= f.input :commentable_type, as: :hidden, input_html: { value: application_record_child(commentable) }  %>
   <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>

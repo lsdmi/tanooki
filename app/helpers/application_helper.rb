@@ -38,4 +38,9 @@ module ApplicationHelper
   def requires_sweetalert?
     request.path.in? [blogs_path, library_path, readings_path, scanlators_path]
   end
+
+  def theme_toggler?
+    (controller_name == 'tales' && action_name == 'show') ||
+      (controller_name == 'chapters' && action_name == 'show')
+  end
 end

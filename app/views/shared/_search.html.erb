@@ -1,18 +1,17 @@
-<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "hidden lg:inline-block" } do |form| %>
-  <label for="search-bar" class="text-sm font-medium sr-only text-gray-200">Пошук</label>
-  <div class="relative">
-    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-      <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<%= simple_form_for :search, url: search_index_path, method: :get, html: { class: "flex mb-4 lg:order-2 lg:mb-0" } do |form| %>
+  <div class="relative w-full">
+    <%= form.input nil,
+                    type: 'search',
+                    input_html: {
+                      id: 'search-bar',
+                      class: 'block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-800  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-gray-500'
+                    },
+                    placeholder: 'Пошук',
+                    required: true %>
+    <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-gray-700 rounded-r-lg border border-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
       </svg>
-    </div>
-    <%= form.input nil,
-                  type: 'search',
-                  input_html: {
-                    id: 'search-bar',
-                    class: 'font-oswald font-light block px-5 pl-12 w-full text-lg rounded-lg border border-gray-600 placeholder-gray-400 text-black focus:ring-gray-500 focus:border-gray-500 bg-center'
-                  },
-                  placeholder: 'Пошук',
-                  required: true %>
+    </button>
   </div>
 <% end %>
