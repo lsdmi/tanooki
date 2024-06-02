@@ -41,6 +41,7 @@ module ApplicationHelper
 
   def theme_toggler?
     (controller_name == 'tales' && action_name == 'show') ||
-      (controller_name == 'chapters' && action_name == 'show')
+      (controller_name == 'chapters' && action_name == 'show') ||
+      (controller_name == 'scanlators' && action_name == 'show')
   end
 end

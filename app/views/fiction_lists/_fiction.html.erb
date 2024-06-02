@@ -1,0 +1,15 @@
+<div class="relative overflow-hidden rounded-lg group">
+  <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+    <div class="relative w-full h-[320px] mb-2 rounded-lg bg-transparent border border-gray-300 perspective-1000 flip-card">
+      <%= render 'flip_card', fiction: %>
+    </div>
+  <% end %>
+  <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+    <%= tag.h2 fiction.title, class: 'mt-2 text-center text-lg leading-tight text-gray-700 hover:underline hover:text-gray-800' %>
+  <% end %>
+  <div class="mt-1 overflow-hidden break-words text-center">
+    <% fiction.genres.each do |genre| %>
+      <%= tag.span genre.name, class: 'bg-teal-700 text-white font-bold inline-block uppercase leading-none text-xs whitespace-nowrap uppercase px-2.5 py-1 rounded' %>
+    <% end %>
+  </div>
+</div>

@@ -2,47 +2,7 @@
   <%= tag.span letter, class: 'hidden absolute sm:flex items-center justify-center w-6 h-6 bg-emerald-50 rounded-full -start-3 ring-white' %>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
     <% fictions.each do |fiction| %>
-      <div class="relative overflow-hidden rounded-lg group">
-        <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-          <div class="relative w-full h-[320px] mb-2 rounded-lg bg-transparent border border-gray-300 perspective-1000 flip-card">
-            <div class="flip-card-inner relative w-full h-full text-center transition-transform duration-700 rounded-lg">
-              <div class="flip-card-front absolute w-full h-full rounded-lg">
-                <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "object-cover w-full h-[320px] lg:h-full rounded-lg", height: '320', width: '215' %>
-                <div class="absolute rounded-lg top-0 right-0 bottom-0 left-0 w-full h-[320px] overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out rounded-lg" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-              </div>
-              <div class="bg-gray-50 flex items-center justify-center shadow-lg rounded-lg relative bg-no-repeat bg-cover bg-center bg-fixed absolute w-full h-full flip-card-back" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
-                <div class="flex flex-col items-center justify-center h-full mb-4 rounded-lg">
-                  <div class="absolute inset-0 bg-white opacity-95 rounded-lg"></div>
-                  <div class="relative">
-                    <div class="font-light text-gray-600 p-4 line-clamp-8">
-                      <%= tag.p fiction.description, class: 'font-light text-xs whitespace-break-spaces italic leading-relaxed text-gray-900' %>
-                    </div>
-                    <div class="relative mt-5">
-                      <div class="flex-grow text-sm font-light text-gray-600">
-                        <span class="">Розділів:</span>
-                        <%= tag.span unique_chapters(fiction.chapters).size %> /
-                        <%= tag.span fiction.total_chapters %>
-                      </div>
-                      <div class="flex-grow text-sm font-light text-gray-600">
-                        <span class="">Статус:</span>
-                        <%= tag.span Fiction.statuses[fiction.status], class: "#{FictionsHelper::STATUS_COLORS[fiction.status.to_sym]}" %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-          <%= tag.h2 fiction.title, class: 'mt-2 text-center text-lg leading-tight text-gray-700 hover:underline hover:text-gray-800' %>
-        <% end %>
-        <div class="mt-1 overflow-hidden break-words text-center">
-          <% fiction.genres.each do |genre| %>
-            <%= tag.span genre.name, class: 'bg-teal-700 text-white font-bold inline-block uppercase leading-none text-xs whitespace-nowrap uppercase px-2.5 py-1 rounded' %>
-          <% end %>
-        </div>
-      </div>
+      <%= render 'fiction', fiction: %>
     <% end %>
   </div>
 </li>

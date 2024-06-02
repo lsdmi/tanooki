@@ -1,24 +1,68 @@
-<section class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto font-oswald">
-  <div class="w-full float-left mb-2 z-10 lg:ml-0">
-    <div class="gap-8 mx-4 2xl:pl-2 max-w-screen-3xl lg:grid lg:grid-cols-2 lg:w-full lg:w-[1250px] mt-1">
-      <div class="m-auto z-10 mt-6 min-h-[56rem]">
-        <div class="relative lg:container lg:w-[575px]">
-          <%= render 'banner', scanlator: @scanlator %>
-        </div>
-        <div class="relative lg:container lg:w-[575px]">
-          <%= render 'details', scanlator: @scanlator, fictions: @fictions, pagy: @pagy %>
-        </div>
-      </div>
-      <div class="z-10 mt-6">
-        <div class="mt-1 relative">
-          <%= render 'shared/divider_shiny_green', caption: 'Останні звістки' %>
-          <% if @feeds.any? %>
-            <%= render partial: "feed_card", collection: @feeds, locals: { scanlator: @scanlator } %>
-          <% else %>
-            <%= render 'feed_placeholder' %>
-          <% end %>
+<div class="flex items-center justify-center font-oswald">
+  <div class="relative w-full">
+    <div class="h-80 flex items-center justify-center bg-no-repeat bg-cover bg-center bg-gray-500 bg-blend-multiply" style="background-image: url('<%= @scanlator.banner.present? ? url_for(@scanlator.banner) : asset_path('scanlator_banner.webp') %>');">
+      <div class="text-center mt-8">
+        <div class="w-24 h-24 rounded-full mx-auto bg-no-repeat bg-cover bg-center bg-blend-multiply" style="background-image: url('<%= @scanlator.avatar.present? ? url_for(@scanlator.avatar) : asset_path('scanlator_avatar.webp') %>');"></div>
+        <%= tag.p @scanlator.title, class: "text-2xl text-center text-white font-bold mt-4" %>
+        <%= link_to "@#{@scanlator.telegram_id}", "https://t.me/#{@scanlator.telegram_id}", class: 'text-sm text-center text-gray-300 font-bold uppercase mt-4 hover:underline', area: { current: 'page' } if @scanlator.telegram_id? %>
+        <div class="grid grid-cols-2 gap-2 my-4 sm:mb-0">
+          <div class="justify-center flex">
+            <div class="flex flex-col justify-center">
+              <%= tag.p @scanlator.chapters.size, class: 'text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-white' %>
+              <p class="font-light text-base text-gray-300">розділів</p>
+            </div>
+          </div>
+          <div class="justify-center flex">
+            <div class="flex flex-col justify-center">
+              <%= tag.p @scanlator.chapters.sum(:views), class: "text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-white" %>
+              <p class="font-light text-base text-gray-300 text-center">прочитань</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <section class="dark:bg-gray-900">
+      <div class="gap-16 py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-3 lg:px-6">
+        <div class="text-gray-500 sm:text-lg dark:text-gray-400 mb-8 lg:mb-0">
+          <% if @scanlator.description.present? %>
+            <div class="p-4 rounded-lg" role="tabpanel">
+              <svg class="mb-3 h-8 text-gray-500 dark:text-gray-600" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" fill="currentColor"/>
+              </svg>
+              <%= tag.h3 @scanlator.description, class: 'mb-3 text-2xl font-bold tracking-tight leading-tight text-gray-900 dark:text-white' %>
+            </div>
+          <% end %>
+          <div id="user-content" class="my-4">
+            <%= render 'shared/ads', advertisement: @advertisement %>
+          </div>
+        </div>
+        <div class="col-span-2 mt-4 divide-y divide-gray-200 dark:divide-gray-700 lg:mt-0">
+          <div class="mt-4 mx-4">
+            <div class="overflow-x-auto mx-auto font-oswald">
+              <div class="flex flex-nowrap">
+                <% @fictions.each do |fiction| %>
+                  <div class="inline-block mr-3">
+                    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+                      <div class="relative relative w-56 md:w-64 h-[320px] mb-2 rounded-lg bg-transparent border border-gray-300 perspective-1000 flip-card">
+                        <%= render 'fiction_lists/flip_card', fiction: %>
+                      </div>
+                    <% end %>
+                    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+                      <%= tag.h2 fiction.title, class: 'mt-2 text-center text-lg leading-tight text-gray-700 hover:underline hover:text-gray-800 dark:text-gray-300' %>
+                    <% end %>
+                    <div class="mt-1 overflow-hidden break-words text-center">
+                      <% fiction.genres.each do |genre| %>
+                        <%= tag.span genre.name, class: 'bg-teal-700 text-white font-bold inline-block uppercase leading-none text-xs whitespace-nowrap uppercase px-2.5 py-1 rounded' %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
+</div>
+
