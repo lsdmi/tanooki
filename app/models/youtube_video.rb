@@ -16,6 +16,8 @@ class YoutubeVideo < ApplicationRecord
   scope :last_week, -> { where(published_at: 1.week.ago..) }
   scope :last_month, -> { where(published_at: 1.month.ago..) }
 
+  delegate :title, to: :youtube_channel, prefix: true
+
   def search_data
     {
       published_at:,

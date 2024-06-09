@@ -5,15 +5,6 @@ module ApplicationHelper
 
   PRODUCTION_URL = 'https://baka.in.ua'
 
-  def navbar_style(tag)
-    case tag
-    when 'Блоги' then 'text-sky-600 hover:text-sky-700'
-    when 'Відео' then 'text-rose-600 hover:text-rose-700'
-    when 'Обговорення' then 'text-fuchsia-600 hover:text-fuchsia-700'
-    else 'text-gray-900 hover:text-gray-600'
-    end
-  end
-
   def punch(string)
     sentences = string.scan(/.*?[.?!](?=\s|\z)/)
     result = ''

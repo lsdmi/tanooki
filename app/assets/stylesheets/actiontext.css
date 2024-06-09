@@ -25,6 +25,10 @@
   display: none !important;
 }
 
+header.no-ads > .google-auto-placed {
+  display: none;
+}
+
 .flip-card-inner {
   transform-style: preserve-3d;
 }

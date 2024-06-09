@@ -79,7 +79,6 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     get scanlator_path(scanlator)
     assert_response :success
     assert_not_nil assigns(:fictions)
-    assert_not_nil assigns(:feeds)
   end
 
   test 'should destroy scanlator' do

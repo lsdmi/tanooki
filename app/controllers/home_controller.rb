@@ -8,6 +8,7 @@ class HomeController < ApplicationController
     @videos = videos
     @top_tales = top_tales
     @tales = tales
+    @pokemon_ad = Advertisement.find_by(slug: 'pokemon')
   end
 
   private

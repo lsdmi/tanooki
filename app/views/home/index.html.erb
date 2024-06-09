@@ -39,7 +39,7 @@
       <%= link_to 'Більше відео', youtube_videos_path, class: 'uppercase w-4/5 font-oswald text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
     </div>
     <div class="my-4 w-[95%] mx-auto">
-      <%= render 'shared/ads', advertisement: Advertisement.find('pokemon') if Advertisement.exists?('pokemon') %>
+      <%= render 'shared/ads', advertisement: @pokemon_ad if @pokemon_ad.present? %>
     </div>
     <%= render 'root/tales', tales: @tales, top_tales: @top_tales %>
   </div>
