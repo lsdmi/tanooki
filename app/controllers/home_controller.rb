@@ -30,7 +30,7 @@ class HomeController < ApplicationController
 
   def videos
     Rails.cache.fetch('top_videos', expires_in: 12.hours) do
-      YoutubeVideo.includes(:rich_text_description, :youtube_channel).last_week.order(views: :desc).limit(2)
+      YoutubeVideo.includes(:youtube_channel).last_week.order(views: :desc).limit(2)
     end
   end
 end

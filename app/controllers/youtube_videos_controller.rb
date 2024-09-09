@@ -38,7 +38,7 @@ class YoutubeVideosController < ApplicationController
   end
 
   def base_query
-    YoutubeVideo.includes(:youtube_channel, :rich_text_description)
+    YoutubeVideo.includes(:youtube_channel)
   end
 
   def more_videos

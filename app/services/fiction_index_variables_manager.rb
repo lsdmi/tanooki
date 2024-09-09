@@ -31,7 +31,7 @@ class FictionIndexVariablesManager
   def self.hot_updates
     Rails.cache.fetch('hot_updates', expires_in: 12.hours) do
       Fiction.joins(:readings)
-             .includes([{ cover_attachment: :blob }, :genres, :scanlators])
+             .includes([{ cover_attachment: :blob }, :scanlators])
              .group(:id)
              .where(readings: { created_at: 1.month.ago..Time.now })
              .order('COUNT(readings.fiction_id) DESC')

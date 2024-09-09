@@ -23,7 +23,7 @@ class TalesController < ApplicationController
     return base_search.excluding(@publication).first(5) if base_search.size > 5
 
     (
-      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }]).order(created_at: :desc).first(6)
+      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob }, :rich_text_description]).order(created_at: :desc).first(6)
     ).excluding(@publication).uniq.first(5)
   end
 

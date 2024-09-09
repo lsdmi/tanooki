@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def requires_sweetalert?
-    request.path.in? [blogs_path, library_path, readings_path, scanlators_path]
+    request.path.in? [blogs_path, library_path, readings_path, scanlators_path, admin_tales_path]
   end
 
   def theme_toggler?

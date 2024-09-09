@@ -3,7 +3,7 @@
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
     <%= render @chapter %>
 
-    <div class="bg-gray-100 dark:bg-gray-800 flex mt-8 m-auto w-full lg:w-[1250px] h-full">
+    <div class="bg-gray-100 dark:bg-gray-800 flex m-auto w-[95%] lg:w-[768px] h-full">
       <%= tag.div class: 'p-4 rounded-lg border border-gray-200 font-oswald w-full' do %>
         <h4 class="mb-4 text-sm text-gray-900 dark:text-white uppercase">Далі</h4>
         <div class="mb-6">
@@ -14,7 +14,7 @@
       <% end if @next_chapter %>
     </div>
 
-    <div class="flex mt-8 m-auto w-full lg:w-[1250px] h-full rounded-lg">
+    <div class="flex m-auto w-[95%] lg:w-[768px] h-full rounded-lg">
       <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
     </div>
   </div>
