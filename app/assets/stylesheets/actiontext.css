@@ -9,7 +9,10 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   border-left: 0.25rem solid #d1d5db;
-  background-color: #f9fafb;
+}
+
+#user-content blockquote p {
+  margin-bottom: 0px;
 }
 
 #user-content p {
