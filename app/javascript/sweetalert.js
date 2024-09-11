@@ -68,3 +68,4 @@ function initializeAlert() {
 }
 
 document.addEventListener('turbo:load', initializeAlert);
+document.addEventListener('turbo:frame-load', initializeAlert);

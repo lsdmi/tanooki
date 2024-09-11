@@ -6,6 +6,7 @@ class Comment < ApplicationRecord
   belongs_to :user
 
   has_many :replies, foreign_key: :parent_id, dependent: :destroy, class_name: 'Comment'
+  has_many :users, foreign_key: 'latest_read_comment_id', dependent: :nullify
 
   scope :parents, -> { where(parent_id: nil) }
 

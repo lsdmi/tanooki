@@ -41,7 +41,7 @@
             <div class="overflow-x-auto mx-auto font-oswald">
               <div class="flex flex-nowrap">
                 <% @fictions.each do |fiction| %>
-                  <div class="inline-block mr-3">
+                  <div class="inline-block mr-3 w-56 md:w-64">
                     <%= link_to fiction_path(fiction), data: { turbo: false } do %>
                       <div class="relative relative w-56 md:w-64 h-[320px] mb-2 rounded-lg bg-transparent border border-gray-300 perspective-1000 flip-card">
                         <%= render 'fiction_lists/flip_card', fiction: %>
