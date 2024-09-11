@@ -9,7 +9,7 @@
         <%= render 'users/pokemons/leaderboard_record', user:, dex_overall: %>
       <% end %>
     <% else %>
-      <% dex_leaderboard.first(3).each do |user| %>
+      <% dex_leaderboard.order(battle_win_rate: :desc, id: :asc).first(3).each do |user| %>
         <%= render 'users/pokemons/leaderboard_record', user:, dex_overall: %>
       <% end %>
 
