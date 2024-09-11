@@ -62,7 +62,7 @@ class UserPokemonsController < ApplicationController
     if rand(2).zero?
       train_level(user_pokemon.pokemon)
     else
-      user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1) if experience < 100
+      user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1) if user_pokemon.battle_experience < 100
       @alert = "#{user_pokemon.pokemon_name} набув нового бойового досвіду!"
     end
   end

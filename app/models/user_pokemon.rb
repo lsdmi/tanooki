@@ -4,7 +4,7 @@ class UserPokemon < ApplicationRecord
   belongs_to :user
   belongs_to :pokemon
 
-  enum character: {
+  enum :character, {
     agile: 'Меткий',
     ambitious: 'Амбітний',
     brave: 'Сміливий',

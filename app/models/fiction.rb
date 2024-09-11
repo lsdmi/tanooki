@@ -19,14 +19,14 @@ class Fiction < ApplicationRecord
   has_many :scanlators, through: :fiction_scanlators
   has_many :users, through: :scanlators
 
-  enum status: {
+  enum :status, {
     announced: 'Анонсовано',
     dropped: 'Покинуто',
     ongoing: 'Видається',
     finished: 'Завершено'
   }
 
-  enum origin: {
+  enum :origin, {
     unknown: 'невідоме',
     bosnian: 'боснійське',
     italian: 'італійське',
