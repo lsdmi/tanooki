@@ -1,0 +1,59 @@
+/* General styles */
+.epub-content {
+  font-family: Georgia, serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 20px;
+}
+
+.epub-content h1, .epub-content  h2, .epub-content h3, .epub-content h4, .epub-content h5, .epub-content h6 {
+  font-family: Arial, sans-serif;
+  line-height: 1.2;
+}
+
+/* Paragraphs */
+.epub-content p {
+  margin: 0 0 1em 0;
+  text-indent: 1.5em;
+}
+
+/* Images */
+.epub-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tables */
+.epub-content table {
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.epub-content th, .epub-content td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+}
+
+/* Lists */
+.epub-content ul, .epub-content ol {
+  margin: 1em 0 1em 2em;
+}
+
+/* Blockquotes */
+.epub-content blockquote {
+  margin: 1em 2em;
+  font-style: italic;
+}
+
+/* Links */
+.epub-content a {
+  color: #0000FF;
+  text-decoration: none;
+}
+
+/* Chapter titles */
+.epub-content .chapter-title {
+  font-size: 2em;
+  text-align: center;
+  margin: 2em 0 1em;
+}

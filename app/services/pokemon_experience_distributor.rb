@@ -4,12 +4,12 @@ class PokemonExperienceDistributor
   attr_reader :winner_id, :loser_id
 
   RANK_RANGES = {
-    1 => (-Float::INFINITY..20),
-    2 => (21..40),
-    3 => (41..60),
-    4 => (61..80),
-    5 => (81..90),
-    6 => (91..Float::INFINITY)
+    1 => (-Float::INFINITY..35),
+    2 => (36..55),
+    3 => (56..75),
+    4 => (76..90),
+    5 => (91..98),
+    6 => (99..Float::INFINITY)
   }.freeze
 
   def initialize(winner_id:, loser_id:)

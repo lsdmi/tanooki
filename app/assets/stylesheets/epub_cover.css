@@ -1,0 +1,63 @@
+.epub-cover {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+.epub-cover .container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+.epub-cover .cover-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+.epub-cover .fiction-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 20px 0 10px;
+  color: #2c3e50;
+}
+.epub-cover .display-title {
+  font-size: 24px;
+  font-style: italic;
+  margin: 0 0 30px;
+  color: #34495e;
+}
+.epub-cover .author, .epub-cover .translator {
+  font-size: 18px;
+  margin: 15px 0;
+  color: #7f8c8d;
+}
+.epub-cover .source {
+  font-size: 16px;
+  margin: 30px 0;
+}
+.epub-cover .source a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+.epub-cover .source a:hover {
+  text-decoration: underline;
+}
+.epub-cover .disclaimer {
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 30px;
+  color: #95a5a6;
+  text-align: justify;
+  padding: 20px;
+  border: 1px solid #ecf0f1;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
