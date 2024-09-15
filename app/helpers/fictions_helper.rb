@@ -56,9 +56,9 @@ module FictionsHelper
   end
 
   def genres_size
-    return 0 if @genres.nil?
+    return 0 if @index_presenter.genres.nil?
 
-    @genres.size.to_f
+    @index_presenter.genres.size.to_f
   end
 
   def ratio(size)

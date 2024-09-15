@@ -33,6 +33,10 @@
           <%= tag.p scanlator.errors[:member_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:member_ids].any? %>
         </div>
       </div>
+      <div class="flex items-center">
+        <%= f.input :convertable, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-emerald-600 bg-gray-100 rounded border-gray-300 focus:ring-emerald-500' } %>
+        <label for="inline-checkbox" class="ml-2 text-sm text-gray-500 mt-1">Дозволити конвертацію та завантаження творів у форматі EPUB.</label>
+      </div>
     </div>
     <div class="mt-4 lg:mt-0 space-y-3 sm:space-y-6">
       <div>

@@ -34,9 +34,12 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     get fictions_path
     assert_response :success
 
-    assert_equal advertisements(:advertisement_three), assigns(:hero_ad)
-    assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:popular_novelty).map(&:title)
-    assert_equal [Fiction.find('two').title, Fiction.find('one').title], assigns(:most_reads).map(&:title)
+    index_presenter = assigns(:index_presenter)
+    assert_instance_of FictionIndexPresenter, index_presenter
+
+    assert_equal advertisements(:advertisement_three), index_presenter.hero_ad
+    assert_equal [Fiction.find('two').title, Fiction.find('one').title], index_presenter.popular_novelty.map(&:title)
+    assert_equal [Fiction.find('two').title, Fiction.find('one').title], index_presenter.most_reads.map(&:title)
   end
 
   test 'should get new' do

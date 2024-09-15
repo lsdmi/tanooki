@@ -56,7 +56,7 @@ class ScanlatorsController < ApplicationController
 
   def scanlator_params
     params.require(:scanlator).permit(
-      :avatar, :banner, :description, :telegram_id, :title, member_ids: []
+      :avatar, :banner, :description, :convertable, :telegram_id, :title, member_ids: []
     )
   end
 

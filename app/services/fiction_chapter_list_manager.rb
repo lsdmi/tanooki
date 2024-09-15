@@ -44,7 +44,7 @@ class FictionChapterListManager
 
   def fiction_chapters
     if duplicate_chapters(fiction).any?
-      chapters.select { |chapter| chapter.scanlators.ids.join('-') == translator_id.join('-') }
+      chapters.select { |chapter| chapter.scanlators.ids.join('-') == translator.join('-') }
     else
       chapters
     end

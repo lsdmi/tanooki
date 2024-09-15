@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DownloadsControllerTest < ActionDispatch::IntegrationTest
@@ -7,7 +9,7 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     FileUtils.touch(@dummy_file_path)
   end
 
-  test "should generate and send epub file" do
+  test 'should generate and send epub file' do
     mock_epub_generator = Minitest::Mock.new
     mock_epub_generator.expect :generate, nil
     mock_epub_generator.expect :file_path, @dummy_file_path.to_s
@@ -19,12 +21,13 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 'application/epub+zip', response.content_type
-    assert_equal "attachment; filename=\"generated_book.epub\"; filename*=UTF-8''generated_book.epub", response.headers['Content-Disposition']
+    assert_equal "attachment; filename=\"generated_book.epub\"; filename*=UTF-8''generated_book.epub",
+                 response.headers['Content-Disposition']
 
     mock_epub_generator.verify
   end
 
-  test "should handle error and redirect" do
+  test 'should handle error and redirect' do
     EpubGenerator.stub :new, ->(_) { raise StandardError } do
       get epub_download_path(id: @rich_text)
     end

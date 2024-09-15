@@ -12,35 +12,18 @@ class FictionsController < ApplicationController
   before_action :verify_create_permissions, only: %i[new create]
 
   def index
-    index_variables
-
+    @index_presenter = FictionIndexPresenter.new(params)
     respond_to do |format|
-      format.html { render 'index' }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          'filtered-fictions', partial: 'other_section', locals: { other: @other, genres: @genres,
-                                                                   sample_genre: @sample_genre }
-        )
-      end
+      format.html
+      format.turbo_stream { render_filtered_fictions }
     end
   end
 
   def show
-    show_vars
-
+    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
     respond_to do |format|
-      format.html { render 'show' }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          'sort-chapters', partial: 'chapters', locals: {
-            fiction: @fiction,
-            translator: params[:translator].join('-'),
-            reading_progress: @reading_progress,
-            before_next_chapter: @before_next_chapter,
-            order: @order
-          }
-        )
-      end
+      format.html
+      format.turbo_stream { render_sorted_chapters }
     end
   end
 
@@ -50,13 +33,11 @@ class FictionsController < ApplicationController
 
   def create
     @fiction = Fiction.new(fiction_params)
-
     if @fiction.save
-      FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
-      FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
-      redirect_to fiction_path(@fiction), notice: 'Твір створено.'
+      handle_fiction_creation
+      redirect_to @fiction, notice: 'Твір створено.'
     else
-      render 'fictions/new', status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -64,84 +45,33 @@ class FictionsController < ApplicationController
 
   def update
     if @fiction.update(fiction_params)
-      FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
-      FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
-      update_fiction_status
-      redirect_to fiction_path(@fiction), notice: 'Твір оновлено.'
+      handle_fiction_update
+      redirect_to @fiction, notice: 'Твір оновлено.'
     else
-      render 'fictions/edit', status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @fiction.scanlators.size > 1
-      current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
-    else
-      @fiction.destroy
-    end
-
-    @pagy, @fictions = pagy(
-      ordered_fiction_list,
-      items: 8,
-      request_path: readings_path,
-      page: fiction_page || 1
-    )
+    FictionDestroyService.new(@fiction, current_user).call
+    @pagy, @fictions = paginate_fictions
     setup_paginator
     render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
   def toggle_order
-    show_vars
-
-    render turbo_stream: [
-      turbo_stream.update(
-        'sort-chapters',
-        partial: 'chapters', locals: {
-          before_next_chapter: @before_next_chapter,
-          fiction: @fiction,
-          reading_progress: @reading_progress,
-          order: params[:order].to_sym == :desc ? :asc : :desc,
-          translator: params[:translator]
-        }
-      )
-    ]
+    @show_presenter = FictionShowPresenter.new(@fiction, current_user, toggle_order_params)
+    render turbo_stream: [update_sorted_chapters]
   end
 
   private
 
-  def destroy_association(scanlator)
-    chapters = @fiction.chapters.joins(:scanlators).where(chapter_scanlators: { scanlator_id: scanlator.id })
-    chapters.destroy_all
-
-    fiction_scanlator = FictionScanlator.find_by(fiction_id: @fiction.id, scanlator_id: scanlator.id)
-    fiction_scanlator&.destroy
-  end
-
-  def chapter_manager
-    FictionChapterListManager.new(@fiction, @reading_progress, params[:translator])
-  end
-
-  def index_variables
-    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    @popular_novelty = FictionIndexVariablesManager.popular_novelty
-    @most_reads = FictionIndexVariablesManager.most_reads
-    @latest_updates = FictionIndexVariablesManager.latest_updates
-    @hot_updates = FictionIndexVariablesManager.hot_updates
-    setup_filtered_fictions
+  def set_fiction
+    @fiction = @commentable = Fiction.find(params[:id])
   end
 
   def set_genres
-    @genres = Genre.all.order(:name)
-  end
-
-  def setup_paginator
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
-    fiction_paginator.call
-    @paginators = fiction_paginator.initiate
-  end
-
-  def fiction_page
-    (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
+    @genres = Genre.order(:name)
   end
 
   def fiction_params
@@ -155,65 +85,6 @@ class FictionsController < ApplicationController
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
-  def set_fiction
-    @fiction = @commentable = Fiction.find(params[:id])
-  end
-
-  def split_chapter_list
-    @before_next_chapter = chapter_manager.before_next_chapter
-  end
-
-  def split_chapter_by_user_id
-    params[:translator] ||= chapter_manager.translator
-    params[:translator] = Array(params[:translator]) unless params[:translator].is_a?(Array)
-
-    if params[:translator].any? { |translator| !@fiction.scanlators.ids.include?(translator.to_i) }
-      params[:translator] = chapter_manager.translator
-    end
-
-    @before_next_chapter = chapter_manager.before_next_chapter_by_user
-  end
-
-  def show_vars
-    @comments = @fiction.comments.parents.includes(:replies, :user).order(created_at: :desc)
-    @comment = Comment.new
-    @reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user&.id)
-    @bookmark_stats = bookmark_stats
-    @ranks = fiction_ranks
-    @order = params[:order] || :desc
-    duplicate_chapters(@fiction).any? ? split_chapter_by_user_id : split_chapter_list
-  end
-
-  def bookmark_stats
-    Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do
-      BookmarksAccounter.new(fiction: @fiction).call
-    end
-  end
-
-  def fiction_ranks
-    Rails.cache.fetch("fiction-#{@fiction.slug}-ranks", expires_in: 24.hours) do
-      FictionRanker.new(fiction: @fiction).call.sort_by { |_genre, rank| rank }.to_h
-    end
-  end
-
-  def refresh_list
-    turbo_stream.update(
-      'fictions-list',
-      partial: 'users/dashboard/fictions',
-      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
-    )
-  end
-
-  def setup_filtered_fictions
-    @genres = Genre.joins(:fictions).order(:name).distinct
-    params[:genre_id] ||= @genres.sample.id
-
-    @sample_genre = @genres.find_by(id: params[:genre_id]) || @genres.sample
-    params[:genre_id] = @sample_genre.id
-
-    @other = filtered_fiction_with_max_created_at_query
-  end
-
   def verify_permissions
     redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
   end
@@ -222,9 +93,73 @@ class FictionsController < ApplicationController
     redirect_to new_scanlator_path unless current_user.admin? || current_user.scanlators.any?
   end
 
+  def handle_fiction_creation
+    FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
+    FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
+  end
+
+  def handle_fiction_update
+    handle_fiction_creation
+    update_fiction_status
+  end
+
   def update_fiction_status
     new_status = FictionStatusTracker.new(@fiction).call
-    @fiction.status = new_status
-    @fiction.save(validate: false)
+    @fiction.update_column(:status, new_status)
+  end
+
+  def paginate_fictions
+    pagy(
+      ordered_fiction_list,
+      items: 8,
+      request_path: readings_path,
+      page: fiction_page || 1
+    )
+  end
+
+  def setup_paginator
+    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
+    fiction_paginator.call
+    @paginators = fiction_paginator.initiate
+  end
+
+  def fiction_page
+    (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
+  end
+
+  def render_filtered_fictions
+    render turbo_stream: turbo_stream.replace(
+      'filtered-fictions',
+      partial: 'other_section',
+      locals: @index_presenter.filtered_fictions_locals
+    )
+  end
+
+  def render_sorted_chapters
+    render turbo_stream: turbo_stream.update(
+      'sort-chapters',
+      partial: 'chapters',
+      locals: @show_presenter.sorted_chapters_locals
+    )
+  end
+
+  def update_sorted_chapters
+    turbo_stream.update(
+      'sort-chapters',
+      partial: 'chapters',
+      locals: @show_presenter.sorted_chapters_locals
+    )
+  end
+
+  def toggle_order_params
+    params.merge(order: params[:order].to_sym == :desc ? :asc : :desc)
+  end
+
+  def refresh_list
+    turbo_stream.update(
+      'fictions-list',
+      partial: 'users/dashboard/fictions',
+      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
+    )
   end
 end
