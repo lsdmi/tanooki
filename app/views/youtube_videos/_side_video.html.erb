@@ -13,7 +13,7 @@
           <div>
             <%= link_to side_video.youtube_channel.title, search_index_path(search: [side_video.youtube_channel.title]), class: 'text-rose-700 sm:inline text-sm sm:text-lg md:text-xl lg:text-sm hover:underline font-light' %>
             <%= tag.span "∘", class: 'sm:inline text-base sm:text-lg md:text-xl lg:text-xs font-light' %>
-            <%= tag.span "#{time_ago_in_words(side_video.published_at)} тому", class: 'sm:inline text-sm sm:text-base lg:text-xs font-light mb-1' %>
+            <%= tag.span l(side_video.published_at, format: :short).downcase, class: 'sm:inline text-sm sm:text-base lg:text-xs font-light mb-1' %>
             <div class="sm:mt-2 mb-2 lg:mb-1 lg:mt-1 lg:line-clamp-2">
               <%= link_to side_video.title, youtube_video_path(side_video), class: 'text-gray-900 font-bold leading-tight tracking-tight sm:leading-5 lg:leading-5 text-2xl sm:text-3xl md:text-4xl lg:text-xl w-full hover:text-gray-600 hover:underline' %>
             </div>

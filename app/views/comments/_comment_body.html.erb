@@ -6,7 +6,7 @@
           <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-10 h-10 rounded-full', height: '48', width: '48' %>
           <div class="">
             <%= tag.span comment.username, class: "text-md font-bold text-gray-900 #{'dark:text-white' if comments_dark_mode?}" %>
-            <%= tag.p "#{time_ago_in_words(comment.created_at)} тому", class: "text-sm font-light text-gray-500 #{'dark:text-gray-400' if comments_dark_mode?}" %>
+            <%= tag.p l(comment.created_at, format: :short).downcase, class: "text-sm font-light text-gray-500 #{'dark:text-gray-400' if comments_dark_mode?}" %>
           </div>
         </div>
         <% if current_user&.id == comment.user_id %>

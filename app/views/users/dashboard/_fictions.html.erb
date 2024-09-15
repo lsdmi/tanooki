@@ -8,7 +8,7 @@
             <div class="flex-1 min-w-0">
               <%= tag.p fiction.title, class: 'text-base font-semibold text-gray-900 truncate' %>
               <div class="flex">
-                <%= tag.p "#{time_ago_in_words(fiction.created_at)} тому", class: 'text-sm font-normal text-gray-500 truncate inline-block' %>
+                <%= tag.p l(fiction.created_at, format: :short).downcase, class: 'text-sm font-normal text-gray-500 truncate inline-block' %>
                 <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
                   <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
                   <%= tag.span fiction.comments_count, class: 'ml-1 inline-block' %>

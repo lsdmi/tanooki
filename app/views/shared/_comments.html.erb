@@ -30,7 +30,7 @@
             <%= tag.span commentable_title(comment.commentable), class: 'font-medium text-blue-500 dark:text-blue-400' %>
             <%= tag.span "- #{comment.content.truncate(200)}", class: 'font-semibold text-gray-800 dark:text-gray-200' %>
           </div>
-          <%= tag.div "#{time_ago_in_words(comment.created_at)} тому", class: 'text-xs text-blue-500 dark:text-blue-400' %>
+          <%= tag.div l(comment.created_at, format: :short).downcase, class: 'text-xs text-blue-500 dark:text-blue-400' %>
         </div>
       <% end %>
     <% end %>

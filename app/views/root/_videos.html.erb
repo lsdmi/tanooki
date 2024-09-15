@@ -11,7 +11,7 @@
               <div class="line-clamp-1 sm:mb-1 md:mb-2">
                 <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'text-rose-700 text-sm sm:text-lg md:text-xl font-light hover:underline', target: '_blank' %>
                 <%= tag.span "∘", class: 'text-base sm:text-lg md:text-xl font-light' %>
-                <%= tag.span "#{time_ago_in_words(video.published_at)} тому", class: 'text-sm sm:text-base font-light' %>
+                <%= tag.span l(video.published_at, format: :short).downcase, class: 'text-sm sm:text-base font-light' %>
               </div>
               <%= link_to youtube_video_path(video), class: 'mb-2' do %>
                 <%= tag.h3 video.title, class: 'text-2xl font-bold leading-tight text-gray-900 sm:text-3xl md:text-4xl hover:underline' %>

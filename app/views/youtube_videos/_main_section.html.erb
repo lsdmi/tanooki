@@ -9,7 +9,7 @@
   <div class="text-gray-500 mb-2 lg:mb-1">
     <%= link_to main_highlight.youtube_channel.title, search_index_path(search: [main_highlight.youtube_channel.title]), class: 'text-rose-700 text-base sm:text-lg lg:text-base hover:underline font-light' %>
     <%= tag.span "∘", class: 'text-sm font-light' %>
-    <%= tag.span "#{time_ago_in_words(main_highlight.published_at)} тому", class: 'text-sm font-light' %>
+    <%= tag.span l(main_highlight.published_at, format: :short).downcase, class: 'text-sm font-light' %>
     <div class="mt-2 mb-1">
       <%= link_to main_highlight.title, youtube_video_path(main_highlight), class: 'text-gray-700 text-3xl sm:text-4xl md:leading-8 tracking-tight w-full hover:text-gray-600 hover:underline' %>
     </div>
@@ -37,7 +37,7 @@
           <div>
             <%= link_to highlight.youtube_channel.title, search_index_path(search: [highlight.youtube_channel.title]), class: 'text-rose-700 text-base sm:text-lg lg:text-sm hover:underline font-light' %>
             <%= tag.span "∘", class: 'text-xs font-light' %>
-            <%= tag.span "#{time_ago_in_words(highlight.published_at)} тому", class: 'text-xs font-light' %>
+            <%= tag.span l(highlight.published_at, format: :short).downcase, class: 'text-xs font-light' %>
             <div class="line-clamp-3 my-2">
               <%= link_to highlight.title, youtube_video_path(highlight), class: 'tracking-tight lg:leading-5 text-gray-700 text-xl sm:text-2xl lg:text-xl w-full hover:text-gray-600 hover:underline' %>
             </div>

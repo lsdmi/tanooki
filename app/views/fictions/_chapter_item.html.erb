@@ -9,7 +9,7 @@
           <% end %>
         <% end %>
       <% end %>
-      <%= tag.p "#{time_ago_in_words(chapter.created_at)} тому", class: "text-xs lg:text-sm truncate font-normal text-gray-500" %>
+      <%= tag.p l(chapter.created_at, format: :short).downcase, class: "text-xs lg:text-sm truncate font-normal text-gray-500" %>
     </div>
   </div>
 </li>

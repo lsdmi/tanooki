@@ -17,7 +17,7 @@
             <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'w-10 h-10 rounded-full', height: '44', width: '44' %>
             <div class="font-medium">
               <%= tag.div comment.username %>
-              <%= tag.div "#{time_ago_in_words(comment.created_at)} тому", class: 'text-sm font-normal text-gray-500' %>
+              <%= tag.div l(comment.created_at, format: :short).downcase, class: 'text-sm font-normal text-gray-500' %>
             </div>
           </div>
         </article>

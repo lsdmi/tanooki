@@ -17,7 +17,7 @@
           <%= link_to commentable_title(notification.commentable), comment_url(notification) %>
         <% end %>
       </div>
-      <%= tag.p "#{time_ago_in_words(notification.created_at)} тому", class: 'text-sm font-normal text-gray-500 truncate' %>
+      <%= tag.p l(notification.created_at, format: :short).downcase, class: 'text-sm font-normal text-gray-500 truncate' %>
     </div>
   </div>
   <%= tag.p notification.content, class: 'relative z-10 text-base font-normal text-gray-500 whitespace-break-spaces' %>
