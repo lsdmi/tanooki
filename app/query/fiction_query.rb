@@ -20,12 +20,4 @@ module FictionQuery
       .group('fictions.id, fictions.created_at')
       .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
   end
-
-  def filtered_fiction_with_max_created_at_query
-    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }, :genres, :scanlators])
-           .where(genres: { id: params[:genre_id] })
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group('fictions.id, active_storage_attachments.id, scanlators.id')
-           .order('max_created_at DESC')
-  end
 end

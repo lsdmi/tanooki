@@ -48,10 +48,10 @@ class FictionIndexPresenter
   private
 
   def filtered_fiction_with_max_created_at_query
-    Fiction.joins(:genres)
-           .where(genres: { id: sample_genre.id })
-           .order(created_at: :desc)
-           .limit(10)
-           .distinct
+    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }, :genres, :scanlators])
+           .where(genres: { id: sample_genre })
+           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+           .group('fictions.id, active_storage_attachments.id, scanlators.id')
+           .order('max_created_at DESC')
   end
 end
