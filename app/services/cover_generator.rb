@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class CoverGenerator
-  def self.generate(chapter)
-    new(chapter).generate
+  def self.generate(chapter, volume_title = nil)
+    new(chapter, volume_title).generate
   end
 
-  def initialize(chapter)
+  def initialize(chapter, volume_title = nil)
     @chapter = chapter
+    @volume_title = volume_title
   end
 
   def generate
@@ -15,14 +16,14 @@ class CoverGenerator
 
   private
 
-  attr_reader :chapter
+  attr_reader :chapter, :volume_title
 
   def render_html
     <<-HTML
       <!DOCTYPE html>
       <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
-        <title>#{chapter.title}</title>
+        <title>#{title}</title>
         <style>
           #{cover_styles}
         </style>
@@ -36,11 +37,15 @@ class CoverGenerator
     HTML
   end
 
+  def title
+    volume_title || chapter.title
+  end
+
   def cover_styles
     @cover_styles ||= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'epub_cover.css'))
   end
 
   def cover_content
-    CoverContentBuilder.new(chapter).build
+    CoverContentBuilder.new(chapter, volume_title:).build
   end
 end

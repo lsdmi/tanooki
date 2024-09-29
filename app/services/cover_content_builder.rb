@@ -3,8 +3,9 @@
 class CoverContentBuilder
   include Rails.application.routes.url_helpers
 
-  def initialize(chapter)
+  def initialize(chapter, volume_title: nil)
     @chapter = chapter
+    @volume_title = volume_title
 
     default_url_options[:host] = Rails.env.production? ? 'baka.in.ua' : 'localhost:3000'
   end
@@ -32,7 +33,7 @@ class CoverContentBuilder
   end
 
   def chapter_title
-    @chapter.title.presence || @chapter.display_title
+    @volume_title || @chapter.title.presence || @chapter.display_title
   end
 
   def translators

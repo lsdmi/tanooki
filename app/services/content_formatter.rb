@@ -21,7 +21,7 @@ class ContentFormatter
     end
 
     def title(chapter)
-      chapter.title.presence || chapter.display_title
+      chapter.display_title_no_volume || chapter.title.presence
     end
 
     private

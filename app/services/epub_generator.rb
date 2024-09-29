@@ -1,17 +1,33 @@
 # frozen_string_literal: true
 
 class EpubGenerator
-  def initialize(rich_text_id)
-    @rich_text = ActionText::RichText.find(rich_text_id)
-    @chapter = @rich_text.record
+  attr_reader :file_path, :filename
+
+  def initialize(rich_text_ids, volume_title = nil)
+    @rich_texts = ActionText::RichText.where(id: Array(rich_text_ids))
+    @volume_title = volume_title
+    @chapters = @rich_texts.map(&:record)
     @file_path = File.join(Rails.root, 'tmp', "book_#{Time.now.to_i}.epub")
   end
 
   def generate
-    book = BookBuilder.new(@chapter).build
+    book = build_book
     book.generate_epub(@file_path)
-    @filename = "#{@chapter.fiction_title}. #{ContentFormatter.title(@chapter)}.epub"
+    set_filename
+    self
   end
 
-  attr_reader :file_path, :filename
+  private
+
+  def build_book
+    BookBuilder.new(@chapters, @volume_title).build
+  end
+
+  def set_filename
+    if @chapters.size == 1
+      @filename = "#{@chapters.first.fiction_title}. #{ContentFormatter.title(@chapters.first)}.epub"
+    else
+      @filename = "#{@chapters.first.fiction_title} #{@volume_title}.epub"
+    end
+  end
 end

@@ -1,42 +1,58 @@
-<div id="chapters-accordion" data-accordion="collapse" data-active-classes="text-gray-900" data-inactive-classes="text-gray-500">
+<div id="chapters-accordion" class="my-4 space-y-2">
   <% if chapters.pluck(:volume_number).uniq.size > 1 %>
     <% chapters.pluck(:volume_number).uniq.each do |volume_number| %>
       <% volume_number_integer = volume_number_integer(volume_number) %>
-      <h2 id="chapters-accordion-heading-<%= volume_number_integer %>">
-        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 gap-3" data-accordion-target="#chapters-accordion-body-<%= volume_number_integer %>" aria-expanded="true" aria-controls="chapters-accordion-body-<%= volume_number_integer %>">
-        <%= tag.span "Том #{volume_number || '??'}" %>
-        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-        </svg>
-      </h2>
-      <div id="chapters-accordion-body-<%= volume_number_integer %>" class="hidden" aria-labelledby="chapters-accordion-heading-<%= volume_number_integer %>">
-        <div class="border-b border-gray-200">
-          <ol class="mt-3 divide-y divider-gray-200">
-            <% chapters.where(volume_number:).each_with_index do |chapter, index| %>
-              <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
-            <% end %>
-          </ol>
-        </div>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <h2 class="flex items-center justify-between p-4">
+          <div class="flex items-center space-x-3">
+            <% volume_title = "Том #{volume_number || '??'}" %>
+            <%= tag.span volume_title, class: 'text-lg font-semibold text-gray-800' %>
+            <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.where(volume_number:).pluck(:id), volume_title: }, data: { turbo: false }, class: 'text-green-600 hover:text-green-800 focus:outline-none transition duration-300 ease-in-out mt-2' do %>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+            <% end if chapters.first.scanlators.all?(&:convertable?) %>
+          </div>
+          <button class="accordion-icon transform transition-transform duration-300">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+        </h2>
+        <ol class="accordion-content hidden divide-y divide-gray-200">
+          <% chapters.where(volume_number:).each_with_index do |chapter, index| %>
+            <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
+          <% end %>
+        </ol>
       </div>
     <% end %>
   <% else %>
     <% chapters_collection(chapters).each do |range, chapters| %>
-      <h2 id="chapters-accordion-heading-<%= range %>">
-        <button type="button" class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 gap-3" data-accordion-target="#chapters-accordion-body-<%= range %>" aria-expanded="true" aria-controls="chapters-accordion-body-<%= range %>">
-        <%= tag.span "Розділи #{range}" %>
-        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-        </svg>
-      </h2>
-      <div id="chapters-accordion-body-<%= range %>" class="hidden" aria-labelledby="chapters-accordion-heading-<%= range %>">
-        <div class="border-b border-gray-200">
-          <ol class="mt-3 divide-y divider-gray-200">
-            <% chapters.each_with_index do |chapter, index| %>
-              <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
-            <% end %>
-          </ol>
-        </div>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <h2 class="accordion-header flex items-center justify-between p-4">
+          <div class="flex items-center space-x-3">
+            <% volume_title = "Розділи #{range}" %>
+            <%= tag.span volume_title, class: 'text-lg font-semibold text-gray-800' %>
+            <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.pluck(:id), volume_title: }, data: { turbo: false }, class: 'text-green-600 hover:text-green-800 focus:outline-none transition duration-300 ease-in-out mt-2' do %>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+            <% end if chapters.first.scanlators.all?(&:convertable?) %>
+          </div>
+          <button class="accordion-icon transform transition-transform duration-300">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+        </h2>
+        <ol class="accordion-content hidden divide-y divide-gray-200">
+          <% chapters.each_with_index do |chapter, index| %>
+            <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
+          <% end %>
+        </ol>
       </div>
     <% end %>
   <% end %>
 </div>
+
+<script>initializeAccordion()</script>

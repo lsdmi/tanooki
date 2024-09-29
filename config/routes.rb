@@ -73,5 +73,6 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [] do
     member { get :epub }
+    collection { get :epub_multiple }
   end
 end
