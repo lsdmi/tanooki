@@ -12,6 +12,7 @@ class ChaptersController < ApplicationController
   def show
     @comments = @chapter.comments.parents.order(created_at: :desc)
     @comment = Comment.new
+    @previous_chapter = previous_chapter(@chapter.fiction, @chapter)
     @next_chapter = following_chapter(@chapter.fiction, @chapter)
   end
 

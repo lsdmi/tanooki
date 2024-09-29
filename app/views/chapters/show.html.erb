@@ -1,20 +1,20 @@
-<section class="z-10 relative font-oswald dark:bg-gray-900">
-  <div class="sm:pt-2 md:pt-4 lg:pt-8 pb-4">
+<section class="z-10 relative font-oswald bg-gray-100 dark:bg-gray-900 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
-    <%= render @chapter %>
 
-    <div class="bg-gray-100 dark:bg-gray-800 flex m-auto w-[95%] lg:w-[768px] h-full mt-4">
-      <%= tag.div class: 'p-4 rounded-lg border border-gray-200 font-oswald w-full' do %>
-        <h4 class="mb-4 text-sm text-gray-900 dark:text-white uppercase">Далі</h4>
-        <div class="mb-6">
-          <%= tag.h5 @next_chapter.display_title, class: 'mb-2 text-lg leading-tight text-gray-900 dark:text-white' %>
-          <%= tag.p @next_chapter.content.to_plain_text, class: 'mb-2 font-light text-gray-500 dark:text-gray-300 line-clamp-2' %>
-          <%= link_to 'Читати', chapter_path(@next_chapter), class: 'inline-flex items-center font-medium underline underline-offset-4 text-emerald-600 hover:no-underline' %>
-        </div>
-      <% end if @next_chapter %>
+    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+      <div class="p-6">
+        <%= render @chapter %>
+      </div>
     </div>
+  </div>
 
-    <div class="flex m-auto w-[95%] lg:w-[768px] h-full rounded-lg">
+  <div class="max-w-4xl mx-auto">
+    <%= render 'chapter_navigation', previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
+  </div>
+
+  <div class="max-w-4xl mx-auto rounded-xl overflow-hidden">
+    <div class="p-6">
       <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
     </div>
   </div>

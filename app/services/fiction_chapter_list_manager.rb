@@ -12,7 +12,7 @@ class FictionChapterListManager
   end
 
   def translator
-    chapters.first.scanlators.ids
+    chapters.first&.scanlators&.ids
   end
 
   def before_next_chapter

@@ -1,0 +1,10 @@
+<% if @previous_chapter.present? || @next_chapter.present? %>
+  <div class="grid <%= 'grid-cols-1 md:grid-cols-2' if @previous_chapter.present? && @next_chapter.present? %> gap-6">
+    <% if @previous_chapter.present? %>
+      <%= render 'chapter_nav_card', chapter: @previous_chapter, direction: :previous %>
+    <% end %>
+    <% if @next_chapter.present? %>
+      <%= render 'chapter_nav_card', chapter: @next_chapter, direction: :next %>
+    <% end %>
+  </div>
+<% end %>

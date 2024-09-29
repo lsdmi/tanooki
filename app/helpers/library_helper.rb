@@ -2,25 +2,18 @@
 
 module LibraryHelper
   def ordered_chapters(fiction)
-    fiction.chapters.order(
-      Arel.sql(
-        'CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, chapters.created_at'
-      )
-    )
+    fiction.chapters.order(order_clause)
   end
 
   def ordered_chapters_desc(fiction)
-    fiction.chapters.order(
-      Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, chapters.created_at DESC')
-    )
+    fiction.chapters.order(order_clause_desc)
   end
 
   def ordered_user_chapters_desc(fiction, user)
-    if user.admin?
-      ordered_chapters_desc(fiction)
-    else
-      ordered_chapters_desc(fiction).joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct
-    end
+    chapters = ordered_chapters_desc(fiction)
+    return chapters if user.admin?
+
+    chapters.joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct
   end
 
   def chapters_size(fiction)
@@ -28,49 +21,58 @@ module LibraryHelper
   end
 
   def duplicate_chapters(fiction)
-    fiction.chapters.select('number').group('number').having('COUNT(DISTINCT user_id) > 1')
+    fiction.chapters.select(:number).group(:number).having('COUNT(DISTINCT user_id) > 1')
   end
 
   def grouped_chapters_desc(fiction)
-    ordered_chapters_desc(fiction).joins(:scanlators).group_by { |chapter| chapter.scanlators.map(&:id).sort }
+    ordered_chapters_desc(fiction).joins(:scanlators).group_by { |chapter| chapter.scanlators.pluck(:id).sort }
+  end
+
+  def previous_chapter(fiction, chapter)
+    find_adjacent_chapter(fiction, chapter, :previous)
   end
 
   def following_chapter(fiction, chapter)
-    chapters = unique_chapters(ordered_chapters_desc(fiction))
-    index = chapter_index(chapters, chapter)
-
-    return if index.nil? || !index.positive?
-
-    following_chapter = chapters[index - 1]
-
-    ordered_chapters_desc(fiction).find_by(
-      number: following_chapter.number,
-      volume_number: following_chapter.volume_number,
-      user_id: chapter.user_id
-    ) || following_chapter
+    find_adjacent_chapter(fiction, chapter, :next)
   end
 
   def chapter_index(chapters, chapter)
-    chapters.each_with_index do |obj, index|
-      return index if obj.number == chapter.number && obj.volume_number == chapter.volume_number
-    end
-
-    0
+    chapters.index { |obj| obj.number == chapter.number && obj.volume_number == chapter.volume_number } || 0
   end
 
   def next_chapter_index(chapters, chapter)
-    final_index = -1
-
-    chapters.each_with_index do |obj, index|
-      next if (chapter.volume_number || 0) > (obj.volume_number || 0)
-
-      final_index = index if chapter.number <= obj.number
-    end
-
-    final_index
+    chapters.rindex do |obj|
+      (chapter.volume_number || 0) <= (obj.volume_number || 0) && chapter.number <= obj.number
+    end || -1
   end
 
   def unique_chapters(chapters)
-    chapters.uniq { |obj| [obj.number, obj.volume_number] }
+    chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
+  end
+
+  private
+
+  def order_clause
+    Arel.sql('CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, chapters.created_at')
+  end
+
+  def order_clause_desc
+    Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, chapters.created_at DESC')
+  end
+
+  def find_adjacent_chapter(fiction, chapter, direction)
+    chapters = unique_chapters(ordered_chapters_desc(fiction))
+    index = chapter_index(chapters, chapter)
+    return if index.nil?
+
+    adjacent_index = direction == :previous ? index + 1 : index - 1
+    return if adjacent_index.negative? || adjacent_index >= chapters.size
+
+    adjacent_chapter = chapters[adjacent_index]
+    ordered_chapters_desc(fiction).find_by(
+      number: adjacent_chapter.number,
+      volume_number: adjacent_chapter.volume_number,
+      user_id: chapter.user_id
+    ) || adjacent_chapter
   end
 end
