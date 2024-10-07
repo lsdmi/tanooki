@@ -2,7 +2,7 @@
   <%= video_tag url_for(advertisement.cover),
                 alt: advertisement.cover.blob.filename.to_s,
                 autoplay: true,
-                class: 'top-0 left-0 w-full h-full border border-gray-200 rounded-xl shadow-xl',
+                class: 'top-0 left-0 w-full h-full border border-[#00BFFF] rounded-xl shadow-2xl transform transition duration-300 hover:scale-105',
                 loop: true,
                 muted: true,
                 playsinline: true,
@@ -10,5 +10,9 @@
 <% end %>
 
 <%= link_to advertisement.resource, class: 'sm:hidden relative overflow-hidden', aria: { label: advertisement.cover.blob.filename } do %>
-  <%= image_tag url_for(advertisement.poster), alt: advertisement.cover.blob.filename, class: 'top-0 left-0 w-full h-full border border-gray-200 rounded-xl shadow-xl', height: '144', width: '375' %>
+  <%= image_tag url_for(advertisement.poster),
+                alt: advertisement.cover.blob.filename,
+                class: 'top-0 left-0 w-full h-full border border-[#00BFFF] rounded-xl shadow-2xl transform transition duration-300 hover:scale-105',
+                height: '144',
+                width: '375' %>
 <% end %>

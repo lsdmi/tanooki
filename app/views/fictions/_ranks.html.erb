@@ -1,14 +1,24 @@
-<div class="mt-4 block">
+<div class="mt-8 flex flex-wrap justify-center">
   <% ranks.each do |rank| %>
-    <%= tag.div class: 'mr-2 2xl:mr-4 inline-block w-[70px] 2xl:w-[85px] text-center mb-2' do %>
-      <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"), alt: "badge-#{FictionsHelper::GENRE_BADGES[rank.first]}", class: 'h-16 w-16 2xl:h-20 2xl:w-20 inline-block transform transition duration-500 hover:scale-110' %>
-      <div class="">
-        <%= tag.p class: 'text-center mt-1 -skew-x-12' do %>
-          <%= tag.span "##{rank.second}", class: 'font-bold text-base 2xl:text-lg text-gray-900' %>
-          <%= tag.span "в жанрі", class: 'font-light text-xs text-gray-500' %>
-        <% end %>
-        <%= tag.p rank.first, class: '-skew-x-12 text-center font-bold text-sm text-gray-900 lowercase -mt-1' %>
+    <% if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"].present? %>
+      <div class="mb-4 w-24 text-center">
+        <div class="relative group">
+          <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"),
+                        alt: "badge-#{FictionsHelper::GENRE_BADGES[rank.first]}",
+                        class: 'h-16 w-16 inline-block transition duration-300 ease-in-out group-hover:scale-105' %>
+        </div>
+        <div class="mt-2">
+          <p class="text-indigo-200 text-xs">
+            <span class="font-bold text-indigo-300">#<%= rank.second %></span>
+            <span class="text-xs">в жанрі</span>
+          </p>
+          <div class="mt-1">
+            <span class="px-2 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-indigo-500 to-indigo-700 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition duration-300 ease-in-out inline-block">
+              <%= rank.first %>
+            </span>
+          </div>
+        </div>
       </div>
-    <% end if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank.first]}.webp"].present? %>
+    <% end %>
   <% end %>
 </div>

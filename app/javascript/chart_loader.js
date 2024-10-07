@@ -12,10 +12,11 @@ const getChartOptions = () => {
 
   return {
     series: stats,
-    colors: ['#14b8a6', '#60a5fa', '#fb923c', '#fb7185'],
+    colors: ['#00BFFF', '#009999', '#FF1493', '#FF6B6B'],
     chart: {
       height: 200,
       type: 'donut',
+      background: 'transparent',
     },
     plotOptions: {
       pie: {
@@ -24,25 +25,31 @@ const getChartOptions = () => {
             show: true,
             name: {
               show: true,
-              fontFamily: 'Oswald',
+              fontFamily: 'Oswald, sans-serif',
+              fontWeight: 600,
+              color: '#FFFFFF',
               offsetY: 20,
             },
             total: {
               showAlways: true,
               show: true,
               label: 'закладинок',
-              fontFamily: 'Oswald'
+              fontFamily: 'Oswald, sans-serif',
+              fontWeight: 600,
+              color: '#FFFFFF',
             },
             value: {
               show: true,
-              fontFamily: 'Oswald',
+              fontFamily: 'Oswald, sans-serif',
+              fontWeight: 600,
+              color: '#FFFFFF',
               offsetY: -20,
               formatter: function (value) {
                 return value
               },
             },
           },
-          size: '80%',
+          size: '75%',
         },
       },
     },
@@ -52,9 +59,35 @@ const getChartOptions = () => {
     },
     legend: {
       position: 'bottom',
-      fontFamily: 'Oswald',
-    }
+      fontFamily: 'Oswald, sans-serif',
+      fontWeight: 500,
+      labels: {
+        colors: '#FFFFFF',
+      },
+      markers: {
+        width: 12,
+        height: 12,
+        strokeWidth: 0,
+        strokeColor: '#001F3F',
+        radius: 12,
+      },
+    },
+    stroke: {
+      width: 2,
+      colors: ['#001F3F'],
+    },
+    theme: {
+      mode: 'dark',
+    },
+    tooltip: {
+      theme: 'dark',
+      style: {
+        fontSize: '14px',
+        fontFamily: 'Oswald, sans-serif',
+      },
+    },
   }
 }
 
-document.addEventListener('turbo:load', initializeChart);
+// The rest of your code remains the same
+document.addEventListener('turbo:load', initializeChart)

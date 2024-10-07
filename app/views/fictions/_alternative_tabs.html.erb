@@ -1,13 +1,14 @@
-<div class="border-b border-gray-200 flex justify-center">
-  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
+<div class="flex justify-center mb-4">
+  <ul class="flex flex-wrap -mx-2 text-sm font-medium">
     <% grouped_chapters_desc(fiction).each do |scanlator_id, chapters|
       selected = (scanlator_id.join('-') == selected_scanlator_id.join('-'))
       scanlator_ids = scanlator_id
     %>
-
-      <li class="mr-2">
+      <li class="px-2 mb-2">
         <%= turbo_frame_tag 'alternative-tabs' do %>
-          <%= link_to fiction_path(fiction, translator: scanlator_id, order:), data: { turbo_stream: "" }, class: "inline-flex items-center justify-center p-4 rounded-t-lg group #{selected ? 'text-emerald-700 border-b-2 border-emerald-700' : 'border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-300' }" do %>
+          <%= link_to fiction_path(fiction, translator: scanlator_id, order:),
+                      data: { turbo_stream: "" },
+                      class: "inline-block px-4 py-2 rounded-full #{selected ? 'bg-gradient-to-r from-[#00BFFF] to-[#FF78AC] text-white' : 'bg-[#001F3F] text-[#00BFFF] hover:bg-[#1E3A8A] hover:text-[#FFFF00]'} transition duration-300 shadow-md border border-[#00BFFF]/30" do %>
             <%= Scanlator.where(id: scanlator_ids).pluck(:title).to_sentence %>
           <% end %>
         <% end %>

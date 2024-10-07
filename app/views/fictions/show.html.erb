@@ -1,45 +1,55 @@
-<section class="z-10 relative font-oswald mt-4 md:mt-6">
-  <div class="gap-4 py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-3xl grid-cols-5 lg:grid lg:grid-cols-8 w-[95%] mx-auto justify-center">
-    <div class="col-span-5 grid grid-cols-5 self-start bg-gray-50 shadow-lg pt-4 md:pt-8 pb-4 lg:pb-0 rounded-lg relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('modal-bg.webp') %>);">
-      <div class="col-span-5 md:block flex flex-col items-center justify-center h-full mb-4">
-        <div class="absolute inset-0 bg-white opacity-95"></div>
-        <div class="mx-auto w-auto md:w-[95%] flex relative z-10">
-          <div class="hidden md:block h-full max-h-full mx-2.5 mb-8" style="flex: 0 0 314px;">
-            <figure class="w-full h-full">
-              <%= image_tag url_for(@fiction.cover), class: 'hidden md:flex rounded-lg object-cover shadow-xl', alt: @fiction.cover.blob.filename, width: 314, height: 418 %>
-            </figure>
-          </div>
-          <div class="inline-flex mx-2.5 mb-4 text-center md:text-left">
-            <%= render 'details', fiction: @fiction, ranks: @show_presenter.ranks %>
+<section class="z-10 relative font-oswald text-white inset-0 bg-[#1A1A1A]">
+  <div class="absolute inset-0 opacity-20" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center;"></div>
+  <div class="relative z-10 bg-opacity-50 py-8">
+    <div class="container mx-auto px-4 max-w-screen-3xl">
+      <div class="grid lg:grid-cols-8 gap-8">
+        <!-- Main Content Area -->
+        <div class="lg:col-span-5">
+          <div class="bg-[#001F3F] rounded-xl shadow-xl overflow-hidden border border-[#00BFFF]">
+            <div class="relative">
+              <!-- Colorful top border -->
+              <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
+
+              <!-- Fiction Details -->
+              <%= render 'details', fiction: @fiction, ranks: @show_presenter.ranks %>
+            </div>
           </div>
         </div>
-        <div class="mx-auto w-[95%] text-gray-600 relative z-10 mb-8">
-          <%= render 'shared/divider_shiny_green', caption: 'Опис'  %>
-          <blockquote class="p-4 my-4 border-s-4 border-gray-300">
-            <%= tag.p @fiction.description, class: 'font-light text-sm sm:text-base whitespace-break-spaces italic leading-relaxed text-gray-900' %>
-          </blockquote>
+
+        <!-- Chapters and Sidebar -->
+        <div class="lg:col-span-3">
+          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-xl shadow-xl overflow-hidden border border-[#00BFFF]">
+            <% if @fiction.chapters.any? %>
+              <%= turbo_frame_tag 'sort-chapters' do %>
+                <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order %>
+              <% end %>
+            <% else %>
+              <%= render 'first_chapter_cta', fiction: @fiction %>
+            <% end %>
+          </div>
+
+          <!-- Advertisement -->
+          <div class="mt-8 bg-[#001F3F] rounded-xl overflow-hidden shadow-xl border border-[#00BFFF]">
+            <%= render 'shared/ads', advertisement: @advertisement %>
+          </div>
+
+          <!-- Add Chapter CTA -->
+          <div class="mt-8 rounded-xl shadow-xl overflow-hidden">
+            <%= render 'add_chapter_cta', fiction: @fiction %>
+          </div>
         </div>
-        <%= tag.div class: 'mx-auto w-[95%] text-gray-600 relative z-10' do %>
-          <%= render 'shared/divider_shiny_green', caption: 'Статистика закладинок'  %>
-          <%= render 'bookmark_stats', bookmark_stats: @show_presenter.bookmark_stats %>
-        <% end if @show_presenter.bookmark_stats.sum > 0 %>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="mt-12 w-full relative">
+        <!-- Colorful Ribbon -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
+        <div class="bg-[#001F3F] rounded-xl shadow-xl overflow-hidden pt-2 border border-[#00BFFF]">
+          <div class="p-6 md:px-8">
+            <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-span-5 lg:col-span-3 mt-8 lg:mt-0 px-4 2xl:px-8">
-      <% if @fiction.chapters.any? %>
-        <%= turbo_frame_tag 'sort-chapters' do %>
-          <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order %>
-        <% end %>
-        <div class="my-4">
-          <%= render 'shared/ads', advertisement: @advertisement %>
-        </div>
-        <%= render 'add_chapter_cta', fiction: @fiction %>
-      <% else %>
-        <%= render 'first_chapter_cta', fiction: @fiction %>
-      <% end %>
-    </div>
-  </div>
-  <div class="px-4 w-[90%] justify-center mx-auto">
-    <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
   </div>
 </section>

@@ -1,14 +1,20 @@
-<div class="text-gray-500 sm:text-lg col-span-3 self-start">
-  <div class="flex items-center justify-between">
-    <h2 class="text-lg font-extrabold leading-tight tracking-tight text-gray-900 sm:text-xl">Перелік розділів</h2>
-    <%= button_to toggle_order_fictions_path(id: fiction, order:, translator: @show_presenter.translator), data: { turbo_stream: "", "turbo-method": :post }, id: 'toggle-fictions-order', class: 'text-gray-500 hover:bg-gray-100 rounded-lg text-sm float-right mr-2 mt-2 p-2' do %>
-      <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+<div class="bg-[#001F3F] rounded-lg shadow-lg p-6 relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
+
+  <div class="flex flex-row items-center justify-between mb-6 mt-4">
+    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF78AC]">Розділи</h2>
+    <%= button_to toggle_order_fictions_path(id: fiction, order:, translator: @show_presenter.translator),
+                  data: { turbo_stream: "", "turbo-method": :post },
+                  id: 'toggle-fictions-order',
+                  class: 'bg-gradient-to-r from-[#00BFFF] to-[#FF78AC] text-white px-4 py-2 rounded-md text-sm font-medium hover:from-[#FF78AC] hover:to-[#FFFF00] transition duration-300 flex items-center shadow-md' do %>
+      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17V1m0 0L1 4m3-3 3 3m4-3h6l-6 6h6m-7 10 3.5-7 3.5 7m-6.125-2H16"/>
       </svg>
     <% end %>
   </div>
+
   <%= turbo_frame_tag "chapter-list" do %>
-    <div data-controller="flowbite">
+    <div data-controller="flowbite" class="rounded-lg">
       <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, translator: @show_presenter.translator, order: %>
     </div>
   <% end %>

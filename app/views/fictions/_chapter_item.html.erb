@@ -1,15 +1,24 @@
-<li class="">
-  <div class="flex items-center space-x-4 p-3">
+<li class="bg-[#001F3F] hover:bg-[#003366] transition duration-300 border-b border-[#00BFFF]/30">
+  <div class="flex items-center space-x-4 p-4">
     <div class="flex-1 min-w-0">
-      <%= tag.span class: "items-center text-green-800 font-medium font-medium truncate" do %>
+      <%= tag.span class: "items-center text-[#00BFFF] font-medium truncate" do %>
         <%= tag.div class: "flex items-center" do %>
-          <%= image_tag 'new.webp', class: 'h-4 w-auto inline-block mr-2 transform transition duration-500 hover:scale-110', alt: 'new badge', height: '16', width: '16' if color == :green %>
-          <%= link_to chapter_path(chapter), data: { turbo: false } do %>
-            <%= tag.p chapter.display_title_no_volume, class: "text-sm lg:text-base font-medium truncate text-gray-900 hover:underline" %>
+          <% if color == :green %>
+            <%= image_tag 'new.webp', class: 'h-4 w-auto inline-block mr-2 transform transition duration-500 hover:scale-110', alt: 'new badge', height: '16', width: '16' %>
+          <% end %>
+          <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'line-clamp-1 hover:text-[#FF78AC] transition duration-300' do %>
+            <%= tag.p chapter.display_title_no_volume, class: "text-sm lg:text-base font-medium truncate text-white" %>
           <% end %>
         <% end %>
       <% end %>
-      <%= tag.p l(chapter.created_at, format: :short).downcase, class: "text-xs lg:text-sm truncate font-normal text-gray-500" %>
+      <%= tag.p l(chapter.created_at, format: :short).downcase, class: "text-xs lg:text-sm truncate font-normal text-[#FFFF00] mt-1" %>
+    </div>
+    <div class="flex-shrink-0">
+      <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'text-[#00BFFF] hover:text-[#FF78AC] transition duration-300' do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      <% end %>
     </div>
   </div>
 </li>

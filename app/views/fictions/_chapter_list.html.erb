@@ -1,18 +1,24 @@
-<div class="overflow-y-auto max-h-[56rem]" id="chapters-list">
-  <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction) : ordered_chapters(fiction) %>
-  <% if reading_progress.present? && following_chapter(reading_progress.fiction, reading_progress.chapter) %>
-    <% if duplicate_chapters(fiction).any? %>
+<div class="rounded-lg shadow-lg mt-4 overflow-y-auto max-h-[40rem]">
+  <% if duplicate_chapters(fiction).any? %>
+    <div class="mb-4">
       <%= render 'alternative_tabs', fiction:, selected_scanlator_id: translator, order: %>
-      <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter:, order: %>
-    <% else %>
-      <%= render 'chapter_collection', chapters:, before_next_chapter: %>
-    <% end %>
-  <% else %>
-    <% if duplicate_chapters(fiction).any? %>
-      <%= render 'alternative_tabs', fiction:, selected_scanlator_id: translator, order: %>
-      <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter: nil, order: %>
-    <% else %>
-      <%= render 'chapter_collection', chapters:, before_next_chapter: nil, order: %>
-    <% end %>
+    </div>
   <% end %>
+
+  <div class="" id="chapters-list">
+    <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction) : ordered_chapters(fiction) %>
+    <% if reading_progress.present? && following_chapter(reading_progress.fiction, reading_progress.chapter) %>
+      <% if duplicate_chapters(fiction).any? %>
+        <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter:, order: %>
+      <% else %>
+        <%= render 'chapter_collection', chapters:, before_next_chapter: %>
+      <% end %>
+    <% else %>
+      <% if duplicate_chapters(fiction).any? %>
+        <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter: nil, order: %>
+      <% else %>
+        <%= render 'chapter_collection', chapters:, before_next_chapter: nil, order: %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

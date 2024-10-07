@@ -11,10 +11,10 @@ module FictionsHelper
   }.freeze
 
   STATUS_COLORS = {
-    announced: 'text-amber-700',
-    dropped: 'text-red-700',
-    ongoing: 'text-sky-700',
-    finished: 'text-emerald-700'
+    announced: 'text-[#FFFF00]', # Bright Yellow
+    dropped: 'text-[#FF1493]',   # Hot Pink (for a more neon "red")
+    ongoing: 'text-[#00BFFF]',   # Electric Blue
+    finished: 'text-[#39FF14]'   # Neon Green
   }.freeze
 
   def fiction_author(fiction)

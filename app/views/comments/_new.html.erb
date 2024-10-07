@@ -4,14 +4,22 @@
   <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id }  %>
   <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present?  %>
 
-  <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 <%= 'mt-6' if comment.new_record? && comment.parent_id.present? %>">
+  <div class="py-2 px-4 mb-4 rounded-lg rounded-t-lg border <%= fictions? ? 'bg-[#001F3F] border-[#00BFFF]/30' : 'bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700' %> <%= 'mt-6' if comment.new_record? && comment.parent_id.present? %>">
     <%= f.text_area :content,
                     id: 'comment',
                     rows: '4',
-                    class: "font-oswald font-light px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none #{ 'dark:text-white dark:placeholder-gray-400 dark:bg-gray-800' if comments_dark_mode? }",
+                    class: "font-oswald font-light px-0 w-full text-sm border-0 focus:ring-0 focus:outline-none #{
+                      if fictions?
+                        'text-white placeholder-[#00BFFF]/70 bg-[#001F3F]'
+                      else
+                        'text-gray-900 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800'
+                      end
+                    }",
                     placeholder: 'Лишіть відгук чи коментар...',
                     required: true %>
-    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex tracking-wide text-red-500 text-sm #{'dark:text-red-400 dark:bg-gray-800' if comments_dark_mode?}" if comment.errors.any? %>
+    <%= tag.span comment.errors[:content].to_sentence, class: "font-oswald font-light flex tracking-wide text-sm #{
+      fictions? ? 'text-[#FF1493]' : 'text-red-500 dark:text-red-400 dark:bg-gray-800'
+    }" if comment.errors.any? %>
   </div>
 
   <div class="relative flex justify-end items-center px-3">
@@ -20,16 +28,22 @@
                     cancel_edit_comment_path(comment),
                     method: :get,
                     data: { turbo_stream: "" },
-                    class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-white #{ fictions? ? 'text-emerald-700 focus:ring-emerald-200 hover:text-emerald-800' : 'text-pink-700 focus:ring-pink-200 hover:text-pink-800' } rounded-lg focus:ring-4" %>
+                    class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center rounded-lg focus:ring-4 #{
+                      fictions? ? 'bg-[#001F3F] text-[#00BFFF] hover:text-[#FF1493] focus:ring-[#00BFFF]/50' : 'bg-white text-emerald-700 focus:ring-emerald-200 hover:text-emerald-800'
+                    }" %>
       <% end %>
       <% if comment.new_record? && comment.parent_id.present? %>
         <%= link_to "Скасувати",
                   cancel_reply_comment_path(comment.parent_id),
                   method: :get,
                   data: { turbo_stream: "" },
-                  class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-white border #{ fictions? ? 'text-emerald-700 focus:ring-emerald-200 hover:text-emerald-800 border-emerald-700' : 'text-pink-700 focus:ring-pink-200 hover:text-pink-800 border-pink-700' } rounded-lg focus:ring-4" %>
+                  class: "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center rounded-lg focus:ring-4 #{
+                    fictions? ? 'bg-[#001F3F] text-[#00BFFF] hover:text-[#FF1493] border border-[#00BFFF] focus:ring-[#00BFFF]/50' : 'bg-white border text-pink-700 focus:ring-pink-200 hover:text-pink-800 border-pink-700'
+                  }" %>
       <% end %>
 
-    <%= f.submit 'Надіслати', class: "ml-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white #{ fictions? ? 'bg-emerald-700 focus:ring-emerald-200 hover:bg-emerald-800 border-emerald-700' : 'bg-pink-700 focus:ring-pink-200 hover:bg-pink-800 border-pink-700' } rounded-lg focus:ring-4 hover:cursor-pointer" %>
+    <%= f.submit 'Надіслати', class: "ml-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg focus:ring-4 hover:cursor-pointer #{
+      fictions? ? 'bg-[#00BFFF] hover:bg-[#FF1493] focus:ring-[#00BFFF]/50' : 'bg-pink-700 focus:ring-pink-200 hover:bg-pink-800 border-pink-700'
+    }" %>
   </div>
 </div>

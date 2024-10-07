@@ -1,3 +1,10 @@
-<div class="w-full rounded-lg my-4">
-  <%= tag.div id: 'donut-chart', data: { stats: bookmark_stats } %>
+<div class="pt-6 pb-12 shadow-md flex flex-col items-center bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg">
+  <h3 class="w-full text-center mb-4">
+    <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF78AC]">
+      Статистика закладинок
+    </span>
+  </h3>
+  <%= tag.div id: 'donut-chart',
+              data: { stats: bookmark_stats },
+              class: 'w-full bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg shadow-inner' %>
 </div>

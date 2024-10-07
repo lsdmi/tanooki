@@ -25,3 +25,12 @@ function initializeAccordion() {
     });
   });
 }
+
+const switchToDark = () => {
+  const siteLogo = document.getElementById('site-logo');
+
+  siteLogo.src = siteLogo.getAttribute('data-dark-logo');
+  document.documentElement.classList.add('dark');
+}
+
+document.addEventListener('turbo:load', switchToDark);
