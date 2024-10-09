@@ -28,6 +28,9 @@ class Chapter < ApplicationRecord
   validates :title, length: { maximum: 100 }
 
   scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
+  scope :ordered_by_volume_and_number, lambda {
+    order(Arel.sql('COALESCE(volume_number, 0), number, chapters.created_at'))
+  }
   scope :recent, -> { where(created_at: 12.hours.ago..) }
 
   def author

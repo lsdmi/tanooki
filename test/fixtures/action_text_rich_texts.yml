@@ -1,4 +1,5 @@
 rich_text_one:
+  id: 1
   name: description
   record_type: Publication
   record_id: 1
@@ -7,6 +8,7 @@ rich_text_one:
   updated_at: <%= Time.now %>
 
 rich_text_two:
+  id: 2
   name: description
   record_type: Publication
   record_id: 2
@@ -15,6 +17,7 @@ rich_text_two:
   updated_at: <%= Time.now %>
 
 rich_text_four:
+  id: 3
   name: content
   record_type: Chapter
   record_id: 1

@@ -63,16 +63,28 @@ module LibraryHelper
   def find_adjacent_chapter(fiction, chapter, direction)
     chapters = unique_chapters(ordered_chapters_desc(fiction))
     index = chapter_index(chapters, chapter)
-    return if index.nil?
 
-    adjacent_index = direction == :previous ? index + 1 : index - 1
-    return if adjacent_index.negative? || adjacent_index >= chapters.size
+    return nil if index.nil?
 
-    adjacent_chapter = chapters[adjacent_index]
+    adjacent_index = calculate_adjacent_index(index, direction)
+    return nil if invalid_index?(adjacent_index, chapters.size)
+
+    find_matching_chapter(fiction, chapters[adjacent_index], chapter.user_id)
+  end
+
+  def calculate_adjacent_index(index, direction)
+    direction == :previous ? index + 1 : index - 1
+  end
+
+  def invalid_index?(index, size)
+    index.negative? || index >= size
+  end
+
+  def find_matching_chapter(fiction, adjacent_chapter, user_id)
     ordered_chapters_desc(fiction).find_by(
       number: adjacent_chapter.number,
       volume_number: adjacent_chapter.volume_number,
-      user_id: chapter.user_id
+      user_id:
     ) || adjacent_chapter
   end
 end

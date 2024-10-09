@@ -31,7 +31,7 @@ class ContentFormatter
     end
 
     def format_content(content)
-      content.gsub(/<\/br>/i, '')
+      content.gsub(%r{</br>}i, '')
              .gsub(/<br\s*>/i, '<br></br>')
              .gsub(/<hr\s*>/i, '<hr></hr>')
              .gsub(/<img(.*?)>/, '<img\1></img>')

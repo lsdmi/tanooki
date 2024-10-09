@@ -4,7 +4,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
       <section class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
-        <%= render 'details', fiction: @fiction, ranks: @show_presenter.ranks %>
+        <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
       </section>
 
       <!-- Right Column: Chapters, CTA, and Banner -->

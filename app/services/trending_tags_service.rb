@@ -5,9 +5,13 @@ class TrendingTagsService
 
   def footer
     Rails.cache.fetch('trending_tags_footer', expires_in: 12.hours) do
-      Tag.where(name: trending_tag_names).map do |tag|
+      tags = Tag.where(name: trending_tag_names)
+
+      tag_data = tags.map do |tag|
         { name: tag.name, link: search_index_path(search: [tag.name]) }
-      end.sort_by { |tag| tag[:name] }
+      end
+
+      tag_data.sort_by { |tag| tag[:name] }
     end
   end
 

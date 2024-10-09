@@ -36,11 +36,11 @@
         </div>
 
         <!-- You May Also Like Section -->
-        <% if @show_presenter.related_fictions.any? %>
+        <% if show_presenter.related_fictions.any? %>
           <div class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition duration-300">
             <h4 class="text-xl sm:text-2xl font-bold text-stone-800 mb-4">Вам також може сподобатися</h4>
             <div class="space-y-4">
-              <% @show_presenter.related_fictions.each do |similar_fiction| %>
+              <% show_presenter.related_fictions.each do |similar_fiction| %>
                 <%= link_to fiction_path(similar_fiction), class: "flex items-center space-x-4 group hover:bg-stone-50 p-2 rounded-lg transition duration-300" do %>
                   <div class="w-16 sm:w-20 h-20 sm:h-24 bg-stone-200 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition duration-300">
                     <%= image_tag url_for(similar_fiction.cover), class: 'w-full h-full object-cover' %>
@@ -61,10 +61,10 @@
     <div class="lg:w-2/3 px-4 sm:px-6 py-6 flex flex-col justify-between">
       <div>
         <h2 class="text-xl sm:text-2xl font-bold text-stone-800 mb-2"><%= fiction.title %></h2>
-        <% if fiction.alternative_title.present? %>
+        <% if fiction.alternative_title? %>
           <p class="text-sm sm:text-base text-stone-600 italic mb-1"><%= fiction.alternative_title %></p>
         <% end %>
-        <% if fiction.english_title.present? %>
+        <% if fiction.english_title? %>
           <p class="text-sm sm:text-base text-stone-600 italic mb-4"><%= fiction.english_title %></p>
         <% end %>
 
@@ -120,11 +120,11 @@
       </div>
 
       <!-- Badges and Awards -->
-      <% if @show_presenter.ranks.any? %>
+      <% if show_presenter.ranks.any? %>
         <div class="bg-stone-50 p-4 sm:p-6 mt-auto">
           <h4 class="text-lg font-semibold text-stone-800 mb-4">Відзнаки та нагороди</h4>
           <div class="flex flex-wrap gap-4 sm:gap-6">
-            <% @show_presenter.ranks.each do |rank, value| %>
+            <% show_presenter.ranks.each do |rank, value| %>
               <% if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank]}.webp"].present? %>
                 <div class="group">
                   <div class="relative mb-2">
@@ -146,25 +146,25 @@
       <% end %>
 
       <!-- Bookmarks -->
-      <% if @show_presenter.bookmark_stats.sum > 0 %>
+      <% if show_presenter.bookmark_stats.sum > 0 %>
         <div class="bg-stone-100 p-4 sm:p-6 mt-2">
           <h4 class="text-lg font-semibold text-stone-800 mb-4">Закладинки</h4>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
             <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
               <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Читають</h5>
-              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[0] %></p>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= show_presenter.bookmark_stats[0] %></p>
             </div>
             <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
               <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Прочитано</h5>
-              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[1] %></p>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= show_presenter.bookmark_stats[1] %></p>
             </div>
             <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
               <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Відкладено</h5>
-              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[2] %></p>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= show_presenter.bookmark_stats[2] %></p>
             </div>
             <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
               <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Покинуто</h5>
-              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[3] %></p>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= show_presenter.bookmark_stats[3] %></p>
             </div>
           </div>
         </div>

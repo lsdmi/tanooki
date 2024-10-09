@@ -24,10 +24,10 @@ class EpubGenerator
   end
 
   def set_filename
-    if @chapters.size == 1
-      @filename = "#{@chapters.first.fiction_title}. #{ContentFormatter.title(@chapters.first)}.epub"
-    else
-      @filename = "#{@chapters.first.fiction_title} #{@volume_title}.epub"
-    end
+    @filename = if @chapters.size == 1
+                  "#{@chapters.first.fiction_title}. #{ContentFormatter.title(@chapters.first)}.epub"
+                else
+                  "#{@chapters.first.fiction_title} #{@volume_title}.epub"
+                end
   end
 end

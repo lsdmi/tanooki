@@ -101,8 +101,8 @@ class PokemonBattleService
     attacker_got_experience = calculate_experience_gain(attacker_experience, defender_experience)
     defender_got_experience = calculate_experience_gain(defender_experience, attacker_experience)
 
-    attacker.update(battle_experience: handle_experience_gain(attacker.character, attacker_experience, attacker_got_experience))
-    defender.update(battle_experience: handle_experience_gain(defender.character, defender_experience, defender_got_experience))
+    attacker.update(battle_experience: exp_gain(attacker.character, attacker_experience, attacker_got_experience))
+    defender.update(battle_experience: exp_gain(defender.character, defender_experience, defender_got_experience))
 
     CharacterHandler.handle_persistent_character(attacker, attacker_experience) if attacker.character == 'persistent'
     CharacterHandler.handle_persistent_character(defender, defender_experience) if defender.character == 'persistent'
@@ -177,7 +177,7 @@ class PokemonBattleService
     stats[:type] = effectiveness
   end
 
-  def handle_experience_gain(character, experience, got_experience)
+  def exp_gain(character, experience, got_experience)
     if got_experience.nonzero? && experience < 115 && character == 'confident'
       got_experience *= 2
       experience += got_experience

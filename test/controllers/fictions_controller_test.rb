@@ -86,10 +86,8 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   test 'should update fiction' do
     patch fiction_url(@fiction), params: {
       fiction: {
-        cover: Rack::Test::UploadedFile.new(
-          Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
-          'image/svg'
-        ),
+        cover: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+                                            'image/svg'),
         scanlator_ids: [1],
         title: 'Updated Title'
       }
