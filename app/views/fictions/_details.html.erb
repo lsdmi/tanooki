@@ -1,132 +1,174 @@
-<div class="bg-[#001F3F] rounded-xl shadow-2xl overflow-hidden">
-  <!-- Blurred banner -->
-  <div class="relative h-24 sm:h-32 md:h-40 overflow-hidden">
-    <div class="absolute inset-0" style="background-image: url(<%= url_for(@fiction.cover) %>); background-size: cover; background-position: center; filter: blur(8px); z-index: 0;"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#00BFFF]/70 to-[#FF78AC]/30 z-10"></div>
-    <div class="relative z-20 h-full flex items-center justify-center">
-      <h1 class="uppercase font-oswald text-2xl md:text-3xl lg:text-4xl font-extrabold text-center px-2 sm:px-4 hover:scale-105 transition-transform duration-300"
-          style="text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;">
-        <%= @fiction.title %>
-      </h1>
-    </div>
-  </div>
-
-  <div class="relative">
-    <!-- Colorful top border -->
-    <div class="absolute top-0 left-0 w-full h-1 sm:h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
-
-    <!-- Main content -->
-    <div class="flex flex-col lg:flex-row px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-2">
-      <!-- Cover Image and Bookmark Stats -->
-      <div class="lg:w-2/5 xl:w-1/3 mb-6 lg:mb-0 lg:mr-8 flex flex-col items-center">
-        <figure class="relative overflow-hidden rounded-lg mb-4 sm:mb-6 w-full max-w-xs sm:max-w-sm mx-auto shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
-          <div class="aspect-w-3 aspect-h-4">
-            <%= image_tag url_for(@fiction.cover),
-                class: 'w-full h-full object-cover',
-                alt: @fiction.cover.blob.filename %>
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#00BFFF]/50 to-[#FF78AC]/50 opacity-0 group-hover:opacity-75 transition duration-300 ease-in-out"></div>
-        </figure>
-
-        <!-- Bookmark Stats -->
-        <%= tag.div class: 'w-full text-white relative z-10 flex justify-center' do %>
-          <div class="w-full max-w-sm">
-            <%= render 'bookmark_stats', bookmark_stats: @show_presenter.bookmark_stats %>
-          </div>
-        <% end if @show_presenter.bookmark_stats.sum > 0 %>
+<section class="lg:col-span-2 bg-white overflow-hidden">
+  <div class="flex flex-col lg:flex-row">
+    <!-- Left Column: Cover and Additional Info -->
+    <div class="lg:w-1/3 bg-gradient-to-b from-stone-50 to-stone-100">
+      <div class="relative aspect-[3/4] w-full sm:w-2/3 md:w-1/2 lg:w-full mx-auto shadow-lg overflow-hidden">
+        <%= image_tag url_for(fiction.cover),
+                      class: 'absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105',
+                      alt: fiction.cover.blob.filename %>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
       </div>
 
-      <!-- Details -->
-      <div class="lg:w-3/5 xl:w-2/3">
-        <div class="mb-4 sm:mb-6 text-center lg:text-left">
-          <% if @fiction.alternative_title.present? %>
-            <h3 class="text-base sm:text-lg text-[#FF78AC] mb-1">
-              <%= @fiction.alternative_title %>
-            </h3>
-          <% end %>
+      <div class="p-4 space-y-6 lg:space-y-8">
+        <!-- Monthly Ranking Section -->
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-300">
+          <h4 class="text-xl sm:text-2xl font-bold text-stone-800 mb-4">Славомір</h4>
+          <% hot_updates = FictionIndexVariablesManager.hot_updates.count %>
+          <% current_reads = hot_updates[fiction.id] || 0 %>
+          <% total_fictions = hot_updates.keys.count %>
+          <% current_rank = hot_updates.values.sort.reverse.index(current_reads)&.+(1) || total_fictions %>
 
-          <% if @fiction.english_title.present? %>
-            <h3 class="text-base sm:text-lg text-[#FF78AC]">
-              <%= @fiction.english_title %>
-            </h3>
-          <% end %>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs sm:text-sm font-medium text-stone-600">Щабель цього місяця:</span>
+            <span class="text-2xl sm:text-4xl font-extrabold text-stone-800 bg-stone-100 px-3 py-1 rounded-lg">#<%= current_rank %></span>
+          </div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs sm:text-sm font-medium text-stone-600">Прочитань цього місяця:</span>
+            <span class="text-xl sm:text-2xl font-bold text-stone-800"><%= current_reads %></span>
+          </div>
+          <div class="w-full bg-stone-200 rounded-full h-3 sm:h-4 overflow-hidden">
+            <div class="bg-stone-600 h-full rounded-full transition-all duration-500 ease-out"
+                style="width: <%= [100 - (current_rank.to_f / total_fictions * 100), 100].min %>%"></div>
+          </div>
+          <p class="text-xs font-medium text-stone-500 mt-2 text-right">
+            Перші <%= ((current_rank.to_f / total_fictions) * 100).round(1) %>% цього місяця
+          </p>
         </div>
 
-        <!-- Author and Translator -->
-        <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 shadow-md">
-          <div class="grid grid-cols-2 gap-4 sm:gap-6">
-            <div class="flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
-              <div class="hidden xl:flex w-8 h-8 sm:w-10 sm:h-10 bg-[#FF78AC] rounded-full flex items-center justify-center mr-3 sm:mr-4">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-              </div>
-              <div>
-                <p class="text-[#00BFFF] text-xs uppercase tracking-wide">Автор</p>
-                <%= button_to @fiction.author, search_index_path, method: :get, id: 'fictions-author-search',
-                    class: 'text-sm sm:text-lg font-semibold text-white hover:text-[#FFFF00] transition duration-300 mt-1 line-clamp-1',
-                    params: { search: [@fiction.author] } %>
-              </div>
+        <!-- You May Also Like Section -->
+        <% if @show_presenter.related_fictions.any? %>
+          <div class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition duration-300">
+            <h4 class="text-xl sm:text-2xl font-bold text-stone-800 mb-4">Вам також може сподобатися</h4>
+            <div class="space-y-4">
+              <% @show_presenter.related_fictions.each do |similar_fiction| %>
+                <%= link_to fiction_path(similar_fiction), class: "flex items-center space-x-4 group hover:bg-stone-50 p-2 rounded-lg transition duration-300" do %>
+                  <div class="w-16 sm:w-20 h-20 sm:h-24 bg-stone-200 rounded-lg overflow-hidden flex-shrink-0 shadow-sm group-hover:shadow-md transition duration-300">
+                    <%= image_tag url_for(similar_fiction.cover), class: 'w-full h-full object-cover' %>
+                  </div>
+                  <div class="flex-grow">
+                    <h5 class="font-semibold text-sm sm:text-base text-stone-700 group-hover:text-stone-900 transition duration-300 line-clamp-2"><%= similar_fiction.title %></h5>
+                    <p class="text-xs text-stone-500 mt-1"><%= similar_fiction.author %></p>
+                  </div>
+                <% end %>
+              <% end %>
             </div>
-            <div class="flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
-              <div class="hidden xl:flex w-8 h-8 sm:w-10 sm:h-10 bg-[#FF78AC] rounded-full flex items-center justify-center mr-3 sm:mr-4">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-              </div>
-              <div class="">
-                <p class="text-[#00BFFF] text-xs uppercase tracking-wide">Перекладач</p>
-                <div class="mt-1 text-white">
-                  <%= @fiction.scanlators.map { |scanlator|
-                        link_to(scanlator.title, scanlator_path(scanlator),
-                        class: 'text-sm sm:text-lg font-semibold hover:text-[#FFFF00] transition duration-300')
-                      }.join(', ').html_safe %>
-                </div>
-              </div>
-            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Right Column: Novel Details -->
+    <div class="lg:w-2/3 px-4 sm:px-6 py-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-stone-800 mb-2"><%= fiction.title %></h2>
+        <% if fiction.alternative_title.present? %>
+          <p class="text-sm sm:text-base text-stone-600 italic mb-1"><%= fiction.alternative_title %></p>
+        <% end %>
+        <% if fiction.english_title.present? %>
+          <p class="text-sm sm:text-base text-stone-600 italic mb-4"><%= fiction.english_title %></p>
+        <% end %>
+
+        <div class="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div class="flex items-center">
+            <span class="text-sm sm:text-base font-semibold text-stone-700 mr-2">Автор:</span>
+            <%= button_to fiction.author, search_index_path, method: :get, id: 'fictions-author-search',
+                class: 'bg-stone-200 hover:bg-stone-300 text-stone-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm transition duration-300',
+                params: { search: [fiction.author] } %>
+          </div>
+          <div class="flex items-center flex-wrap gap-2">
+            <span class="text-sm sm:text-base font-semibold text-stone-700">Перекладач:</span>
+            <% fiction.scanlators.each do |scanlator| %>
+              <%= link_to scanlator.title, scanlator_path(scanlator),
+                  class: 'bg-stone-200 hover:bg-stone-300 text-stone-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm transition duration-300' %>
+            <% end %>
           </div>
         </div>
 
-        <!-- Ranks -->
-        <%= render 'ranks', ranks: @show_presenter.ranks.first(8) if @show_presenter.ranks.any? %>
-
-        <!-- Statistics -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 my-4 sm:my-6 md:my-8">
-          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center">
-            <p class="text-lg sm:text-xl md:text-2xl font-bold text-[#00BFFF] text-center"><%= "#{unique_chapters(@fiction.chapters).size} з #{@fiction.total_chapters}" %></p>
-            <p class="text-xs sm:text-sm text-[#FF78AC] mt-1 sm:mt-2">розділів</p>
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div class="bg-stone-100 p-2 sm:p-3 rounded-lg text-center transform hover:scale-105 transition duration-300">
+            <p class="text-xs sm:text-sm text-stone-600">Розділи</p>
+            <p class="text-lg sm:text-xl font-semibold text-stone-800"><%= fiction.total_chapters %></p>
           </div>
-          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center">
-            <p class="text-lg sm:text-xl md:text-2xl font-bold text-[#00BFFF] text-center"><%= @fiction.views %></p>
-            <p class="text-xs sm:text-sm text-[#FF78AC] mt-1 sm:mt-2">переглядів</p>
+          <div class="bg-stone-100 p-2 sm:p-3 rounded-lg text-center transform hover:scale-105 transition duration-300">
+            <p class="text-xs sm:text-sm text-stone-600">Перегляди</p>
+            <p class="text-lg sm:text-xl font-semibold text-stone-800"><%= fiction.views %></p>
           </div>
-          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center sm:col-span-2 md:col-span-1">
-            <p class="text-lg sm:text-xl md:text-2xl font-bold text-center <%= FictionsHelper::STATUS_COLORS[@fiction.status.to_sym] %>"><%= Fiction.statuses[@fiction.status] %></p>
-            <p class="text-xs sm:text-sm text-[#FF78AC] mt-1 sm:mt-2">статус</p>
+          <div class="bg-stone-100 p-2 sm:p-3 rounded-lg text-center transform hover:scale-105 transition duration-300">
+            <p class="text-xs sm:text-sm text-stone-600">Статус</p>
+            <p class="text-lg sm:text-xl font-semibold text-stone-800"><%= Fiction.statuses[fiction.status] %></p>
           </div>
         </div>
 
         <!-- Genres -->
-        <% if @fiction.genres.any? %>
-          <div class="shadow-inner mt-6 sm:mt-8">
-            <div class="flex flex-wrap justify-center -m-1">
-              <% @fiction.genres.each do |genre| %>
-                <span class="m-1 px-3 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-[#00BFFF] to-[#FF78AC] rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
-                  <%= genre.name %>
-                </span>
+        <% if fiction.genres.any? %>
+          <div class="mb-4 sm:mb-6">
+            <h4 class="text-sm font-semibold text-stone-700 mb-2">Жанри</h4>
+            <div class="flex flex-wrap gap-2">
+              <% fiction.genres.each do |genre| %>
+                <%= tag.span genre.name, class: 'bg-stone-200 text-stone-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm hover:bg-stone-300 transition duration-300' %>
               <% end %>
             </div>
           </div>
         <% end %>
 
-        <div class="flex flex-col bg-[#001F3F] rounded-xl shadow-lg mt-6 sm:mt-8">
-          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-lg p-4 sm:p-6 shadow-inner">
-            <blockquote class="border-l-4 border-[#FF78AC] pl-4 sm:pl-6">
-              <%= tag.p @fiction.description, class: 'text-white text-xs sm:text-sm md:text-base italic leading-relaxed whitespace-break-spaces' %>
-            </blockquote>
-          </div>
+        <!-- Description -->
+        <div class="mb-4 sm:mb-6">
+          <h4 class="text-sm font-semibold text-stone-700 mb-2">Опис</h4>
+          <p class="text-sm sm:text-base text-stone-600 whitespace-pre-line leading-relaxed"><%= fiction.description %></p>
         </div>
       </div>
+
+      <!-- Badges and Awards -->
+      <% if @show_presenter.ranks.any? %>
+        <div class="bg-stone-50 p-4 sm:p-6 mt-auto">
+          <h4 class="text-lg font-semibold text-stone-800 mb-4">Відзнаки та нагороди</h4>
+          <div class="flex flex-wrap gap-4 sm:gap-6">
+            <% @show_presenter.ranks.each do |rank, value| %>
+              <% if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank]}.webp"].present? %>
+                <div class="group">
+                  <div class="relative mb-2">
+                    <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank]}.webp"),
+                                  alt: "badge-#{FictionsHelper::GENRE_BADGES[rank]}",
+                                  class: "h-12 w-12 sm:h-16 sm:w-16 transition-transform duration-300 group-hover:scale-110" %>
+                    <div class="absolute -bottom-1 -right-1 bg-stone-800 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                      #<%= value %>
+                    </div>
+                  </div>
+                  <p class="text-xs text-center text-stone-600 font-medium leading-tight">
+                    <%= rank.to_s.titleize.length >= 9 ? "#{rank.to_s.titleize[0...7]}..." : rank.to_s.titleize %>
+                  </p>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Bookmarks -->
+      <% if @show_presenter.bookmark_stats.sum > 0 %>
+        <div class="bg-stone-100 p-4 sm:p-6 mt-2">
+          <h4 class="text-lg font-semibold text-stone-800 mb-4">Закладинки</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+            <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
+              <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Читають</h5>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[0] %></p>
+            </div>
+            <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
+              <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Прочитано</h5>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[1] %></p>
+            </div>
+            <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
+              <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Відкладено</h5>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[2] %></p>
+            </div>
+            <div class="bg-white p-3 sm:p-4 rounded-lg text-center shadow-sm hover:shadow-md transition duration-300">
+              <h5 class="text-xs sm:text-sm text-stone-600 font-semibold mb-2">Покинуто</h5>
+              <p class="text-xl sm:text-2xl font-bold text-stone-800"><%= @show_presenter.bookmark_stats[3] %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
-</div>
+</section>

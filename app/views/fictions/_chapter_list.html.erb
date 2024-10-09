@@ -1,24 +1,26 @@
-<div class="rounded-lg shadow-lg mt-4 overflow-y-auto max-h-[40rem]">
+<div class="rounded-lg">
   <% if duplicate_chapters(fiction).any? %>
-    <div class="mb-4">
-      <%= render 'alternative_tabs', fiction:, selected_scanlator_id: translator, order: %>
+    <div class="mb-6">
+      <%= render 'alternative_tabs', fiction: fiction, selected_scanlator_id: translator, order: order %>
     </div>
   <% end %>
 
-  <div class="" id="chapters-list">
+  <div id="chapters-list" class="space-y-6">
     <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction) : ordered_chapters(fiction) %>
-    <% if reading_progress.present? && following_chapter(reading_progress.fiction, reading_progress.chapter) %>
-      <% if duplicate_chapters(fiction).any? %>
-        <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter:, order: %>
-      <% else %>
-        <%= render 'chapter_collection', chapters:, before_next_chapter: %>
-      <% end %>
-    <% else %>
-      <% if duplicate_chapters(fiction).any? %>
-        <%= render 'chapter_collection', chapters: chapters.joins(:scanlators).where(scanlators: { id: translator }).group("chapters.id").having("COUNT(scanlators.id) = ?", translator.length), before_next_chapter: nil, order: %>
-      <% else %>
-        <%= render 'chapter_collection', chapters:, before_next_chapter: nil, order: %>
-      <% end %>
-    <% end %>
+
+    <% filtered_chapters = if duplicate_chapters(fiction).any?
+                            chapters.joins(:scanlators)
+                                    .where(scanlators: { id: translator })
+                                    .group("chapters.id")
+                                    .having("COUNT(scanlators.id) = ?", translator.length)
+                          else
+                            chapters
+                          end %>
+
+
+    <%= render 'chapter_collection',
+               chapters: filtered_chapters,
+               before_next_chapter: reading_progress.present? ? following_chapter(reading_progress.fiction, reading_progress.chapter) : nil,
+               order: order %>
   </div>
 </div>

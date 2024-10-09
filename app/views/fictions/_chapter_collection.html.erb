@@ -1,55 +1,61 @@
-<div id="chapters-accordion" class="my-4 space-y-3">
+<div id="chapters-accordion" class="my-6 space-y-4">
   <% if chapters.pluck(:volume_number).uniq.size > 1 %>
     <% chapters.pluck(:volume_number).uniq.each do |volume_number| %>
       <% volume_number_integer = volume_number_integer(volume_number) %>
-      <div class="bg-[#001F3F] rounded-lg shadow-lg overflow-hidden border border-[#00BFFF]/30">
-        <h2 class="flex items-center justify-between p-4 border-b border-[#00BFFF]/30">
-          <div class="flex items-center space-x-3">
-            <% volume_title = "Том #{volume_number || '??'}" %>
-            <%= tag.span volume_title, class: 'text-lg font-semibold text-[#00BFFF]' %>
-            <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.where(volume_number:).pluck(:id), volume_title: }, data: { turbo: false }, class: 'text-[#FF78AC] hover:text-[#FFFF00] focus:outline-none transition duration-300 ease-in-out' do %>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      <div class="accordion bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md">
+        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 p-4 cursor-pointer">
+          <h3 class="text-lg font-semibold text-stone-800">Том <%= volume_number || '??' %></h3>
+          <div class="flex items-center space-x-2">
+            <% if chapters.first.scanlators.all?(&:convertable?) %>
+              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.where(volume_number: volume_number).pluck(:id), volume_title: "Том #{volume_number}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 hover:bg-stone-300 text-stone-700 py-1 px-2 rounded' do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              <% end %>
+            <% end %>
+            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 hover:text-stone-800">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-            <% end if chapters.first.scanlators.all?(&:convertable?) %>
+            </button>
           </div>
-          <button class="accordion-icon transform transition-transform duration-300 text-[#00BFFF] hover:text-[#FF78AC]">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-        </h2>
-        <ol class="accordion-content hidden divide-y divide-[#00BFFF]/30">
-          <% chapters.where(volume_number:).each_with_index do |chapter, index| %>
-            <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
-          <% end %>
-        </ol>
+        </div>
+        <div class="accordion-content hidden bg-white border border-stone-200 rounded-b max-h-96 overflow-y-auto">
+          <ul class="divide-y divide-stone-100">
+            <% chapters.where(volume_number: volume_number).each do |chapter| %>
+              <%= render 'chapter_item', chapter: chapter %>
+            <% end %>
+          </ul>
+        </div>
       </div>
     <% end %>
   <% else %>
     <% chapters_collection(chapters).each do |range, chapters| %>
-      <div class="bg-[#001F3F] rounded-lg shadow-lg overflow-hidden border border-[#00BFFF]/30">
-        <h2 class="accordion-header flex items-center justify-between p-4 border-b border-[#00BFFF]/30">
-          <div class="flex items-center space-x-3">
-            <% volume_title = "Розділи #{range}" %>
-            <%= tag.span volume_title, class: 'text-lg font-semibold text-[#00BFFF]' %>
-            <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.pluck(:id), volume_title: }, data: { turbo: false }, class: 'text-[#FF78AC] hover:text-[#FFFF00] focus:outline-none transition duration-300 ease-in-out' do %>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      <div class="accordion bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md">
+        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 p-4 cursor-pointer">
+          <h3 class="text-lg font-semibold text-stone-800">Розділи <%= range %></h3>
+          <div class="flex items-center space-x-2">
+            <% if chapters.first.scanlators.all?(&:convertable?) %>
+              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.pluck(:id), volume_title: "Розділи #{range}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 hover:bg-stone-300 text-stone-700 py-1 px-2 rounded' do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              <% end %>
+            <% end %>
+            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 hover:text-stone-800">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
-            <% end if chapters.first.scanlators.all?(&:convertable?) %>
+            </button>
           </div>
-          <button class="accordion-icon transform transition-transform duration-300 text-[#00BFFF] hover:text-[#FF78AC]">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-        </h2>
-        <ol class="accordion-content hidden divide-y divide-[#00BFFF]/30">
-          <% chapters.each_with_index do |chapter, index| %>
-            <%= render 'chapter_item', chapter:, index:, color: new_chapter?(before_next_chapter, chapter.id) %>
-          <% end %>
-        </ol>
+        </div>
+        <div class="accordion-content hidden bg-white border border-stone-200 rounded-b max-h-96 overflow-y-auto">
+          <ul class="divide-y divide-stone-100">
+            <% chapters.each do |chapter| %>
+              <%= render 'chapter_item', chapter: chapter %>
+            <% end %>
+          </ul>
+        </div>
       </div>
     <% end %>
   <% end %>

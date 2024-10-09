@@ -35,7 +35,6 @@ class FictionIndexVariablesManager
              .group(:id)
              .where(readings: { created_at: 1.month.ago..Time.now })
              .order('COUNT(readings.fiction_id) DESC')
-             .limit(10)
     end
   end
 end

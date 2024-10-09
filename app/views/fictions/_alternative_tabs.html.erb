@@ -1,18 +1,26 @@
-<div class="flex justify-center mb-4">
-  <ul class="flex flex-wrap -mx-2 text-sm font-medium">
+<div class="mb-6">
+  <div class="flex flex-wrap gap-2">
     <% grouped_chapters_desc(fiction).each do |scanlator_id, chapters|
-      selected = (scanlator_id.join('-') == selected_scanlator_id.join('-'))
-      scanlator_ids = scanlator_id
-    %>
-      <li class="px-2 mb-2">
-        <%= turbo_frame_tag 'alternative-tabs' do %>
-          <%= link_to fiction_path(fiction, translator: scanlator_id, order:),
+        selected = (scanlator_id.join('-') == selected_scanlator_id.join('-'))
+        scanlator_ids = scanlator_id
+        scanlator_names = Scanlator.where(id: scanlator_ids).pluck(:title).to_sentence
+      %>
+      <%= turbo_frame_tag 'alternative-tabs' do %>
+        <%= button_to fiction_path(fiction),
+                      params: { translator: scanlator_id, order: order },
+                      method: :get,
                       data: { turbo_stream: "" },
-                      class: "inline-block px-4 py-2 rounded-full #{selected ? 'bg-gradient-to-r from-[#00BFFF] to-[#FF78AC] text-white' : 'bg-[#001F3F] text-[#00BFFF] hover:bg-[#1E3A8A] hover:text-[#FFFF00]'} transition duration-300 shadow-md border border-[#00BFFF]/30" do %>
-            <%= Scanlator.where(id: scanlator_ids).pluck(:title).to_sentence %>
-          <% end %>
+                      class: "py-2 px-4 rounded-full text-sm font-medium transition-all duration-300 ease-in-out #{selected ? 'bg-stone-800 text-white shadow-md' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}" do %>
+          <div class="flex items-center space-x-2">
+            <% if selected %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            <% end %>
+            <span><%= scanlator_names %></span>
+          </div>
         <% end %>
-      </li>
+      <% end %>
     <% end %>
-  </ul>
+  </div>
 </div>

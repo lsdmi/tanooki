@@ -1,31 +1,47 @@
-<div class="w-full relative sm:pb-8">
-  <div class="flex justify-between items-center mb-2 <%= fictions? ? 'mt-6' : 'mt-2' %>">
-    <% if fictions? %>
-      <%= render 'shared/divider_shiny_green', caption: 'Відгуки'  %>
-    <% else %>
-      <%= render 'shared/divider_shiny_pink', caption: 'Коментарі'  %>
-    <% end %>
+<div class="w-full relative pb-8">
+  <div class="mb-8 relative">
+    <h2 class="text-3xl font-bold text-rose-800 inline-block">Коментарі</h2>
+    <div class="mt-2 h-1 w-24 bg-gradient-to-r from-rose-500 to-rose-300 rounded-full"></div>
+    <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-100 rounded-full opacity-50"></div>
   </div>
+
   <% if current_user || comments.any? %>
     <%= turbo_frame_tag "new_comment" do %>
-      <%= simple_form_for comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-        <%= render "comments/new", comment: comment, commentable: commentable, f: f %>
-      <% end %>
-    <% end if current_user %>
-    <%= turbo_frame_tag "comments" do %>
-      <%= render comments %>
-    <% end %>
-  <% else %>
-    <div class="py-2 px-4 mx-auto max-w-screen-xl lg:px-6 font-oswald">
-      <div class="mx-auto max-w-screen-sm text-center">
-        <%= tag.h2 no_comments_prompt, class: "mb-4 text-4xl tracking-tight font-extrabold leading-tight text-gray-900 #{'dark:text-white' if comments_dark_mode?}" %>
-        <%= tag.p class: "font-light text-gray-500 md:text-lg #{'dark:text-gray-400' if comments_dark_mode?}" do %>
-          <%= link_to 'Зареєструйтеся', register_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
-          або
-          <%= link_to 'увійдіть,', new_user_session_path, class: "hover:underline #{comments_green? ? 'text-emerald-600' : 'text-rose-700' }" %>
-          аби лишити Ваш коментар!
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-8 transition-all duration-300 hover:shadow-md">
+        <%= simple_form_for comment, url: comments_path, method: :post do |f| %>
+          <%= render "comments/new", comment: comment, commentable: commentable, f: f %>
         <% end %>
       </div>
+    <% end if current_user %>
+
+    <%= turbo_frame_tag "comments" do %>
+      <div class="space-y-6">
+        <%= render comments %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="bg-gradient-to-br from-stone-50 to-stone-100 rounded-lg p-8 text-center relative overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md">
+      <div class="absolute top-0 right-0 w-24 h-24 bg-rose-100 rounded-full transform translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+      <h3 class="text-2xl font-semibold text-stone-800 mb-4 relative z-10">
+        <%= no_comments_prompt %>
+      </h3>
+      <p class="text-stone-600 mb-6 relative z-10">
+        <%= link_to 'Зареєструйтеся', register_path, class: "font-medium hover:underline text-rose-600 transition-colors duration-300" %>
+        або
+        <%= link_to 'увійдіть,', new_user_session_path, class: "font-medium hover:underline text-rose-600 transition-colors duration-300" %>
+        аби лишити Ваш коментар!
+      </p>
+      <%= link_to 'Зареєструватися', register_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-full text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition-all duration-300 transform hover:scale-105 relative z-10" %>
     </div>
   <% end %>
 </div>
+
+<style>
+  @keyframes gentle-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  .animate-gentle-pulse {
+    animation: gentle-pulse 4s infinite;
+  }
+</style>

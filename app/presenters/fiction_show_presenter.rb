@@ -34,6 +34,13 @@ class FictionShowPresenter
     end
   end
 
+  def related_fictions
+    Rails.cache.fetch("related-to-#{@fiction.slug}", expires_in: 24.hours) do
+      Fiction.joins(:scanlators).where(scanlators: { id: @fiction.scanlators.pluck(:id) })
+             .includes(cover_attachment: :blob).where.not(id: @fiction.id).order(views: :desc).distinct.limit(3)
+    end
+  end
+
   def order
     @params[:order] || :desc
   end

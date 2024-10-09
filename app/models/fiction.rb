@@ -28,6 +28,7 @@ class Fiction < ApplicationRecord
 
   enum :origin, {
     unknown: 'невідоме',
+    english: 'англійське',
     bosnian: 'боснійське',
     italian: 'італійське',
     chinese: 'китайське',

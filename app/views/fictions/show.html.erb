@@ -1,55 +1,37 @@
-<section class="z-10 relative font-oswald text-white inset-0 bg-[#1A1A1A]">
-  <div class="absolute inset-0 opacity-20" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center;"></div>
-  <div class="relative z-10 bg-opacity-50 py-8">
-    <div class="container mx-auto px-4 max-w-screen-3xl">
-      <div class="grid lg:grid-cols-8 gap-8">
-        <!-- Main Content Area -->
-        <div class="lg:col-span-5">
-          <div class="bg-[#001F3F] rounded-xl shadow-xl overflow-hidden border border-[#00BFFF]">
-            <div class="relative">
-              <!-- Colorful top border -->
-              <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
+<div class="bg-stone-50 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+  <div class="absolute inset-0 bg-stone-50 bg-opacity-95"></div>
+  <main class="container mx-auto px-4 py-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Details Section -->
+      <section class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+        <%= render 'details', fiction: @fiction, ranks: @show_presenter.ranks %>
+      </section>
 
-              <!-- Fiction Details -->
-              <%= render 'details', fiction: @fiction, ranks: @show_presenter.ranks %>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chapters and Sidebar -->
-        <div class="lg:col-span-3">
-          <div class="bg-gradient-to-br from-[#001F3F] to-[#000C1F] rounded-xl shadow-xl overflow-hidden border border-[#00BFFF]">
-            <% if @fiction.chapters.any? %>
-              <%= turbo_frame_tag 'sort-chapters' do %>
-                <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order %>
-              <% end %>
-            <% else %>
-              <%= render 'first_chapter_cta', fiction: @fiction %>
+      <!-- Right Column: Chapters, CTA, and Banner -->
+      <div class="space-y-8">
+        <!-- Chapters List -->
+        <section class="bg-stone-100 rounded-lg shadow-md p-6">
+          <% if @fiction.chapters.any? %>
+            <%= turbo_frame_tag 'sort-chapters' do %>
+              <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order %>
             <% end %>
-          </div>
+          <% else %>
+            <%= render 'first_chapter_cta', fiction: @fiction %>
+          <% end %>
+        </section>
 
-          <!-- Advertisement -->
-          <div class="mt-8 bg-[#001F3F] rounded-xl overflow-hidden shadow-xl border border-[#00BFFF]">
-            <%= render 'shared/ads', advertisement: @advertisement %>
-          </div>
+        <!-- CTA Section -->
+        <%= render 'add_chapter_cta', fiction: @fiction %>
 
-          <!-- Add Chapter CTA -->
-          <div class="mt-8 rounded-xl shadow-xl overflow-hidden">
-            <%= render 'add_chapter_cta', fiction: @fiction %>
-          </div>
-        </div>
+        <!-- Ad Banner -->
+        <%= render 'shared/ads', advertisement: @advertisement %>
       </div>
 
       <!-- Comments Section -->
-      <div class="mt-12 w-full relative">
-        <!-- Colorful Ribbon -->
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
-        <div class="bg-[#001F3F] rounded-xl shadow-xl overflow-hidden pt-2 border border-[#00BFFF]">
-          <div class="p-6 md:px-8">
-            <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
-          </div>
-        </div>
-      </div>
+      <section class="lg:col-span-3 bg-white rounded-lg shadow-md p-6 mt-8">
+        <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
+      </section>
     </div>
-  </div>
-</section>
+  </main>
+</div>
+

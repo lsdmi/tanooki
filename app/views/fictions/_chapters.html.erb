@@ -1,21 +1,38 @@
-<div class="bg-[#001F3F] rounded-lg shadow-lg p-6 relative overflow-hidden">
-  <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#00BFFF] via-[#FF78AC] to-[#FFFF00]"></div>
-
-  <div class="flex flex-row items-center justify-between mb-6 mt-4">
-    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF78AC]">Розділи</h2>
-    <%= button_to toggle_order_fictions_path(id: fiction, order:, translator: @show_presenter.translator),
-                  data: { turbo_stream: "", "turbo-method": :post },
-                  id: 'toggle-fictions-order',
-                  class: 'bg-gradient-to-r from-[#00BFFF] to-[#FF78AC] text-white px-4 py-2 rounded-md text-sm font-medium hover:from-[#FF78AC] hover:to-[#FFFF00] transition duration-300 flex items-center shadow-md' do %>
-      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17V1m0 0L1 4m3-3 3 3m4-3h6l-6 6h6m-7 10 3.5-7 3.5 7m-6.125-2H16"/>
-      </svg>
-    <% end %>
+<section class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+  <div class="flex justify-between items-center mb-4 sm:mb-6">
+    <div class="flex-shrink-0">
+      <h3 class="text-xl sm:text-2xl font-bold text-stone-800">Розділи</h3>
+    </div>
+    <div class="flex items-center space-x-2 sm:space-x-4">
+      <%= button_to toggle_order_fictions_path(id: fiction, order: order, translator: @show_presenter.translator),
+                    data: { turbo_stream: "", "turbo-method": :post },
+                    id: 'toggle-fictions-order',
+                    class: 'bg-stone-100 hover:bg-stone-200 text-stone-700 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group' do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
+      <% end %>
+    </div>
   </div>
 
+  <!-- Translator Tabs -->
   <%= turbo_frame_tag "chapter-list" do %>
-    <div data-controller="flowbite" class="rounded-lg">
-      <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, translator: @show_presenter.translator, order: %>
+    <div data-controller="flowbite" class="mt-4 sm:mt-6">
+      <%= render 'chapter_list', fiction: fiction, reading_progress: reading_progress, before_next_chapter: before_next_chapter, translator: @show_presenter.translator, order: order %>
     </div>
   <% end %>
-</div>
+</section>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const toggleButton = document.getElementById('toggle-fictions-order');
+    if (toggleButton) {
+      toggleButton.addEventListener('click', function() {
+        this.classList.add('animate-spin');
+        setTimeout(() => {
+          this.classList.remove('animate-spin');
+        }, 500);
+      });
+    }
+  });
+</script>

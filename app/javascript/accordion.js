@@ -2,7 +2,7 @@ function initializeAccordion() {
   const accordionContainers = document.querySelectorAll('#chapters-accordion > div');
 
   accordionContainers.forEach(container => {
-    const header = container.querySelector('h2');
+    const header = container.querySelector('div');
     const icon = header.querySelector('.accordion-icon');
     const content = container.querySelector('.accordion-content');
 
@@ -25,12 +25,3 @@ function initializeAccordion() {
     });
   });
 }
-
-const switchToDark = () => {
-  const siteLogo = document.getElementById('site-logo');
-
-  siteLogo.src = siteLogo.getAttribute('data-dark-logo');
-  document.documentElement.classList.add('dark');
-}
-
-document.addEventListener('turbo:load', switchToDark);

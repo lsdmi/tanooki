@@ -17,7 +17,7 @@
       <% end %>
     </div>
     <div class="mt-4 mx-4">
-      <%= render 'root/fictions', fictions: @top_fictions %>
+      <%= render 'root/fictions', fictions: @top_fictions.limit(10) %>
     </div>
     <div class="my-4 w-[95%] mx-auto">
       <%= render 'shared/ads', advertisement: @advertisement %>
