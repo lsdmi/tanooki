@@ -1,19 +1,22 @@
-<div class="bg-stone-50 dark:bg-stone-900 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+<div class="bg-stone-50 dark:bg-stone-900 min-h-screen z-10 relative">
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95 dark:bg-opacity-95"></div>
-  <!-- Hero Section -->
+
   <main class="relative z-10">
+    <!-- Hero Section -->
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
 
     <!-- Main Content and Comments -->
-    <div class="container mx-auto px-4 py-12">
-      <div class="flex flex-col lg:flex-row gap-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
         <!-- Content Section -->
         <%= render @chapter %>
 
         <!-- Comments Section -->
-        <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
+        <div class="w-full lg:w-1/3 mt-8 lg:mt-0">
+          <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
+        </div>
       </div>
     </div>
   </main>
 </div>
-
