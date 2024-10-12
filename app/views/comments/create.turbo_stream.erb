@@ -1,7 +1,7 @@
 <% if @created_comment.invalid? && @created_comment.parent_id.present? %>
   <% @created_comment.update(parent_id: @reply_parent.id) if @reply_parent %>
   <%= turbo_stream.update "comment-reply-#{@reply_parent.id || @created_comment.parent_id}" do %>
-    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6 mt-2.5" } do |f| %>
+    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mt-2.5" } do |f| %>
       <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
     <% end %>
   <% end %>

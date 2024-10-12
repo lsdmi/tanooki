@@ -1,9 +1,9 @@
 <%= turbo_frame_tag comment do %>
-  <div data-controller="flowbite">
+  <div data-controller="flowbite" class="space-y-6">
     <%= render 'comments/comment_body', comment: comment %>
     <%= turbo_frame_tag "replies-#{comment.id}" do %>
       <% comment.replies.each do |reply| %>
-        <%= render 'comments/reply', reply: reply %>
+        <%= render 'comments/reply', reply: %>
       <% end %>
     <% end %>
   </div>

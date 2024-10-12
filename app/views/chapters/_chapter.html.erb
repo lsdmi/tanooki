@@ -1,5 +1,29 @@
-<div class="p-px sm:p-6 lg:p-8">
-  <div id="user-content" class="prose prose-lg dark:prose-invert max-w-none">
+<section class="lg:w-2/3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 transition-all duration-300 hover:shadow-lg relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-stone-300 to-stone-400 dark:from-gray-600 dark:to-gray-700"></div>
+
+  <div id="user-content" class="prose dark:prose-invert max-w-none text-lg leading-relaxed text-stone-700 dark:text-gray-300">
     <%= chapter.content %>
   </div>
-</div>
+
+  <% if @previous_chapter.present? || @next_chapter.present? %>
+    <div class="mt-12 pt-8 border-t border-stone-200 dark:border-gray-700 flex justify-between items-center">
+      <% if @previous_chapter.present? %>
+        <%= link_to chapter_path(@previous_chapter), class: "text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Попередній розділ
+        <% end %>
+      <% else %>
+        <span></span>
+      <% end %>
+      <%= link_to chapter_path(@next_chapter), class: "text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center" do %>
+        Наступний розділ
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end if @next_chapter.present? %>
+    </div>
+  <% end %>
+</section>

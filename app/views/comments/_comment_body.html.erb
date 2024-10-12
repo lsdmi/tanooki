@@ -1,39 +1,39 @@
-<%= tag.article class: "font-oswald p-6 mb-6 text-base rounded-lg border border-gray-200 shadow-sm #{'ml-6 lg:ml-12' if comment.parent_id.present?} #{ 'dark:bg-gray-800 dark:border-gray-700' if comments_dark_mode? }" do %>
-  <div class="flex">
-    <div class="w-full">
-      <footer class="flex justify-between items-center mb-2 w-full">
-        <div class="flex items-center">
-          <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'mr-2 w-10 h-10 rounded-full', height: '48', width: '48' %>
-          <div class="">
-            <%= tag.span comment.username, class: "text-md font-bold text-gray-900 #{'dark:text-white' if comments_dark_mode?}" %>
-            <%= tag.p l(comment.created_at, format: :short).downcase, class: "text-sm font-light text-gray-500 #{'dark:text-gray-400' if comments_dark_mode?}" %>
-          </div>
+<div class="<%= comment.parent_id.present? ? 'ml-12 border-l-2 border-stone-200 dark:border-stone-700 pl-4' : '' %> bg-white dark:bg-stone-800 shadow-sm border border-stone-200 dark:border-stone-700 rounded-lg p-4 my-4 transition duration-300 hover:shadow-md">
+  <div class="flex items-start space-x-4">
+    <!-- Avatar -->
+    <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'w-10 h-10 rounded-full object-cover shadow-sm', height: '40', width: '40' %>
+
+    <div class="flex-grow">
+      <div class="flex items-center justify-between mb-2">
+        <div>
+          <!-- Username and timestamp -->
+          <%= tag.h4 comment.username, class: "text-stone-800 dark:text-stone-200 font-semibold text-#{comment.parent_id.present? ? 'sm' : 'base'}" %>
+          <%= tag.p l(comment.created_at, format: :short).downcase, class: "text-stone-400 dark:text-stone-500 text-xs mt-1" %>
         </div>
-        <% if current_user&.id == comment.user_id %>
-          <button id="dropdownComment<%= comment.id %>Button" data-dropdown-toggle="dropdownComment<%= comment.id %>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 <%= 'dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600' if comments_dark_mode? %>" type="button">
-            <svg class="w-5 h-5 <%= 'dark:fill-gray-500' if comments_dark_mode? %>" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+
+        <!-- Edit and Delete icons -->
+        <div class="flex space-x-2">
+          <%= link_to edit_comment_path(comment), data: { turbo_stream: "" }, class: "text-stone-400 hover:text-stone-600 dark:text-stone-500 dark:hover:text-stone-300 transition duration-300" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </svg>
-            <span class="sr-only">Comment settings</span>
-          </button>
-          <div id="dropdownComment<%= comment.id %>" class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow <%= 'dark:bg-gray-700 dark:divide-gray-600' if comments_dark_mode? %>">
-            <ul class="py-1 text-sm text-gray-700 <%= 'dark:text-gray-200' if comments_dark_mode? %>" aria-labelledby="dropdownMenuIconHorizontalButton">
-              <li>
-                <%= link_to "Редагувати", edit_comment_path(comment), data: { turbo_stream: "" }, class: "block py-2 px-4 hover:bg-gray-100 #{'dark:hover:bg-gray-600 dark:hover:text-white' if comments_dark_mode?}" %>
-              </li>
-              <li>
-                <%= link_to "Видалити", comment_path(comment), data: { "turbo-method": :delete }, class: "block py-2 px-4 hover:bg-gray-100 #{'dark:hover:bg-gray-600 dark:hover:text-white' if comments_dark_mode?}" %>
-              </li>
-            </ul>
-          </div>
-        <% end %>
-      </footer>
+          <% end if current_user&.id == comment.user_id %>
+          <%= link_to comment_path(comment), data: { "turbo-method": :delete }, class: "text-stone-400 hover:text-stone-600 dark:text-stone-500 dark:hover:text-stone-300 transition duration-300" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+          <% end if current_user&.id == comment.user_id %>
+        </div>
+      </div>
+
+      <!-- Comment content -->
       <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: "font-oswald text-md font-light mt-4 text-gray-500 whitespace-break-spaces #{'dark:text-gray-400' if comments_dark_mode?}" %>
+        <%= tag.p comment.content, class: "text-stone-600 dark:text-stone-300 text-sm leading-relaxed pr-4 pb-2" %>
       <% end %>
+
       <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-        <%= render 'comments/actions', comment: comment, commentable: @commentable %>
-      <% end if current_user %>
+        <%= render 'comments/actions', comment:, commentable: @commentable %>
+      <% end if current_user && !comment.parent_id.present? %>
     </div>
   </div>
-<% end %>
+</div>

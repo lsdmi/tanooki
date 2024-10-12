@@ -16,6 +16,14 @@ module ApplicationHelper
     result.presence || string
   end
 
+  def chapters_show_page?
+    controller_name.to_sym == :chapters && action_name.to_sym == :show
+  end
+
+  def chapters_show_referer?
+    request.referer&.include?('chapters') && controller_name.to_sym == :comments
+  end
+
   def requires_font?
     (controller_name.to_sym == :tales && action_name.to_sym == :show) ||
       (controller_name.to_sym == :chapters && action_name.to_sym == :show)

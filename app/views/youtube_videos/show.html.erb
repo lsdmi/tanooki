@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-span-7 lg:col-span-6">
                   <%= link_to youtube_video_path(video) do %>
-                    <%= tag.h2 video.title, class: 'font-oswald text-gray-700 float-left text-lg sm:text-base lg:text-base md:leading-6 lg:leading-6 tracking-tight line-clamp-2 w-full hover:text-gray-600 hover:pointer' %>
+                    <%= tag.h2 video.title, class: 'font-oswald text-gray-700 float-left text-lg sm:text-base lg:text-base md:leading-6 lg:leading-6 tracking-tight line-clamp-2 w-full hover:text-gray-600 cursor-pointer' %>
                   <% end %>
                   <div class="font-light w-full">
                     <%= tag.span video.youtube_channel.title, class: 'text-gray-500 text-base sm:text-sm' %>

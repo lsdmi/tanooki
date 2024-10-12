@@ -1,47 +1,52 @@
-<div class="font-sans">
-  <%= f.input :commentable_id, as: :hidden, input_html: { value: commentable.id } %>
-  <%= f.input :commentable_type, as: :hidden, input_html: { value: application_record_child(commentable) } %>
-  <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
-  <%= f.input :parent_id, as: :hidden, input_html: { value: comment.parent_id } if comment.parent_id.present? %>
+<div class="mb-4">
+  <% if comment.errors.any? %>
+    <div class="bg-red-50 dark:bg-red-900 border-l-4 border-red-400 p-3 mb-4">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 mr-2">
+          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+            <%= comment.errors.messages[:content].to_sentence %>
+          </h3>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
-  <div class="mb-4 rounded-lg border <%= fictions? ? 'bg-stone-100 border-stone-200' : 'bg-white border-stone-200' %> <%= 'mt-6' if comment.new_record? && comment.parent_id.present? %>">
-    <%= f.text_area :content,
-                    id: 'comment',
-                    rows: '4',
-                    class: "px-4 py-2 w-full text-sm border-0 focus:ring-0 focus:outline-none rounded-lg #{
-                      fictions? ? 'text-stone-800 placeholder-stone-500 bg-stone-100' : 'text-stone-800 placeholder-stone-500 bg-white'
-                    }",
-                    placeholder: 'Лишіть відгук чи коментар...',
-                    required: true %>
-  </div>
+  <%= f.hidden_field :commentable_id, value: commentable.id %>
+  <%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
 
-  <%= tag.p comment.errors[:content].to_sentence, class: "mb-4 text-sm #{
-    fictions? ? 'text-yellow-600' : 'text-rose-600'
-  }" if comment.errors.any? %>
+  <%= f.text_area :content,
+                  id: 'comment',
+                  rows: '3',
+                  class: "w-full p-3 border border-stone-300 dark:border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-500 focus:border-transparent transition duration-300 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}",
+                  placeholder: 'Лишіть коментар...',
+                  required: true %>
 
-  <div class="flex justify-end items-center space-x-2">
-    <% if comment.persisted? %>
-      <%= link_to "Скасувати",
-                  cancel_edit_comment_path(comment),
-                  method: :get,
-                  data: { turbo_stream: "" },
-                  class: "px-4 py-2 text-sm font-medium rounded-md border #{
-                    fictions? ? 'border-stone-300 text-stone-600 hover:bg-stone-100' : 'border-stone-300 text-stone-600 hover:bg-stone-100'
-                  }" %>
-    <% end %>
+  <div class="mt-3 flex <%= chapters_show_page? || chapters_show_referer? ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
+    <%= f.submit 'Надіслати', class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-600 dark:bg-stone-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-stone-600 transition duration-300 transform hover:scale-105 cursor-pointer" %>
 
-    <% if comment.new_record? && comment.parent_id.present? %>
-      <%= link_to "Скасувати",
-                cancel_reply_comment_path(comment.parent_id),
-                method: :get,
-                data: { turbo_stream: "" },
-                class: "px-4 py-2 text-sm font-medium rounded-md border #{
-                  fictions? ? 'border-stone-300 text-stone-600 hover:bg-stone-100' : 'border-stone-300 text-stone-600 hover:bg-stone-100'
-                }" %>
-    <% end %>
+    <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
+      <%= button_to cancel_reply_comment_path(comment.parent_id),
+        method: :get,
+        class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-200 rounded-full hover:bg-stone-300 dark:hover:bg-stone-600 transition duration-300 transform hover:scale-105",
+        data: { turbo_stream: "" } do %>
+          <span>Скасувати</span>
+      <% end %>
+    <% end if comment.new_record? && comment.parent_id.present? %>
 
-    <%= f.submit 'Надіслати', class: "px-4 py-2 text-sm font-medium text-white rounded-md #{
-      fictions? ? 'bg-stone-600 hover:bg-stone-700' : 'bg-stone-600 hover:bg-stone-700'
-    }" %>
+    <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
+      <%= button_to cancel_edit_comment_path(comment),
+        method: :get,
+        class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-200 dark:bg-stone-700 text-stone-600 dark:text-stone-200 rounded-full hover:bg-stone-300 dark:hover:bg-stone-600 transition duration-300 transform hover:scale-105",
+        data: { turbo_stream: "" } do %>
+          <span>Скасувати</span>
+      <% end %>
+    <% end if comment.persisted? %>
   </div>
 </div>

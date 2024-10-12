@@ -1,21 +1,19 @@
-<section class="z-10 relative font-oswald bg-gray-100 dark:bg-gray-900 min-h-screen">
-  <div class="container mx-auto px-4 py-8">
+<div class="bg-stone-50 dark:bg-stone-900 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+  <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95 dark:bg-opacity-95"></div>
+  <!-- Hero Section -->
+  <main class="relative z-10">
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
 
-    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-      <div class="p-6">
+    <!-- Main Content and Comments -->
+    <div class="container mx-auto px-4 py-12">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Content Section -->
         <%= render @chapter %>
+
+        <!-- Comments Section -->
+        <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
       </div>
     </div>
-  </div>
+  </main>
+</div>
 
-  <div class="max-w-4xl mx-auto">
-    <%= render 'chapter_navigation', previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
-  </div>
-
-  <div class="max-w-4xl mx-auto rounded-xl overflow-hidden">
-    <div class="p-6">
-      <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
-    </div>
-  </div>
-</section>

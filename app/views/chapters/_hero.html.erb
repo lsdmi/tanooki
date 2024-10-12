@@ -1,51 +1,41 @@
-<div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
-  <div class="p-6">
-    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4" aria-label="Breadcrumb">
-      <%= link_to "Усі Твори", root_path, class: "hover:text-green-600 dark:hover:text-green-400 line-clamp-1" %>
-      <svg class="w-5 h-5 mx-2" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-      </svg>
-      <%= link_to fiction.title, fiction_path(fiction), class: "hover:text-green-600 dark:hover:text-green-400 line-clamp-1" %>
-      <svg class="w-5 h-5 mx-2" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-      </svg>
-      <span class="text-gray-700 dark:text-gray-300 line-clamp-1"><%= chapter.display_chapter_numbers %></span>
-    </nav>
-
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4"><%= chapter.title %></h1>
-
-    <div class="flex flex-wrap gap-2 mb-4">
-      <% fiction.genres.each do |genre| %>
-        <span class="px-3 py-1 text-xs font-semibold text-white bg-green-600 rounded-full"><%= genre.name %></span>
-      <% end %>
-    </div>
-
-    <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
-      <div class="text-sm text-gray-600 dark:text-gray-400">
-        <% chapter.scanlators.each_with_index do |scanlator, index| %>
-          <%= link_to scanlator.title, scanlator_path(scanlator), class: 'hover:underline' %><%= ', ' unless index == chapter.scanlators.length - 1 %>
-        <% end %>
+<section class="bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 py-16 relative overflow-hidden">
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div class="max-w-2xl">
+        <%= tag.h1 chapter.title, class: 'text-4xl md:text-5xl font-bold text-stone-800 dark:text-white mb-3 leading-tight' %>
+        <%= link_to fiction.title, fiction_path(fiction), class: "text-xl text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300 border-b-2 border-transparent hover:border-stone-800 dark:hover:border-white" %>
       </div>
-      <div class="flex items-center">
-        <%= button_to epub_download_path(chapter.content), method: :get, data: { turbo: false }, class: 'text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 p-2.5' do %>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      <div class="mt-6 md:mt-0 flex items-center space-x-4">
+        <%= button_to epub_download_path(chapter.content), method: :get, data: { turbo: false }, class: 'text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300 pt-2' do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
         <% end if chapter.scanlators.all?(&:convertable?) %>
-
-        <% if current_user && current_user.admin? || current_user == chapter.user %>
-          <%= link_to edit_chapter_path(chapter), class: 'text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 p-2.5' do %>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-            </svg>
-          <% end %>
-        <% end %>
-
-        <button id="font-toggle" type="button" class="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 p-2.5">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+        <%= link_to edit_chapter_path(chapter), class: "text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300", title: "Edit Chapter" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        <% end if current_user && current_user.admin? || current_user == chapter.user %>
+        <button id="font-toggle" class="text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300" title="Toggle Font">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
         </button>
       </div>
     </div>
-</div>
+    <div class="flex flex-wrap items-center text-stone-600 dark:text-gray-300 bg-white dark:bg-gray-700 bg-opacity-50 dark:bg-opacity-50 rounded-full px-4 py-2 inline-block">
+      <span class="mr-2 text-sm">Перекладачі:</span>
+      <div class="flex flex-wrap gap-2">
+        <% chapter.scanlators.each do |scanlator| %>
+          <%= link_to scanlator_path(scanlator), class: "text-sm font-medium bg-stone-200 dark:bg-gray-600 text-stone-700 dark:text-gray-200 px-3 py-1 rounded-full hover:bg-stone-300 dark:hover:bg-gray-500 hover:text-stone-800 dark:hover:text-white transition duration-300" do %>
+            <%= scanlator.title %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="absolute top-0 right-0 w-96 h-96 bg-stone-300 dark:bg-gray-600 rounded-full transform translate-x-1/3 -translate-y-1/3 opacity-20"></div>
+  <div class="absolute bottom-0 left-0 w-72 h-72 bg-stone-300 dark:bg-gray-600 rounded-full transform -translate-x-1/3 translate-y-1/3 opacity-20"></div>
+  <div class="absolute top-1/2 left-1/4 w-20 h-20 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse"></div>
+  <div class="absolute bottom-1/4 right-1/3 w-16 h-16 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+</section>
