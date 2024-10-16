@@ -21,10 +21,6 @@ class FictionIndexPresenter
     @latest_updates ||= FictionIndexVariablesManager.latest_updates
   end
 
-  def hot_updates
-    @hot_updates ||= FictionIndexVariablesManager.hot_updates
-  end
-
   def genres
     @genres ||= Genre.joins(:fictions).order(:name).distinct
   end
@@ -39,7 +35,7 @@ class FictionIndexPresenter
 
   def filtered_fictions_locals
     {
-      other:,
+      fictions: other,
       genres:,
       sample_genre:
     }
@@ -48,10 +44,16 @@ class FictionIndexPresenter
   private
 
   def filtered_fiction_with_max_created_at_query
-    Fiction.joins(:chapters).includes([{ cover_attachment: :blob }, :genres, :scanlators])
+    latest_chapters = Chapter.select('fiction_id, MAX(created_at) AS max_created_at')
+                             .group(:fiction_id)
+                             .to_sql
+
+    Fiction.joins(:genres)
+           .joins("INNER JOIN (#{latest_chapters}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
+           .includes([{ cover_attachment: :blob }, :genres, :scanlators])
            .where(genres: { id: sample_genre })
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-           .group('fictions.id, active_storage_attachments.id, scanlators.id')
-           .order('max_created_at DESC')
+           .select('fictions.*, latest_chapters.max_created_at')
+           .order('latest_chapters.max_created_at DESC')
+           .limit(8)
   end
 end

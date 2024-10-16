@@ -4,11 +4,11 @@ class FictionsController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
-  before_action :authenticate_user!, except: %i[index show toggle_order]
+  before_action :authenticate_user!, except: %i[index show toggle_order details]
   before_action :set_fiction, only: %i[show edit update destroy toggle_order]
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, :track_visit, only: :show
-  before_action :verify_permissions, except: %i[index new create show toggle_order]
+  before_action :verify_permissions, except: %i[index new create show toggle_order details]
   before_action :verify_create_permissions, only: %i[new create]
 
   def index
@@ -62,6 +62,19 @@ class FictionsController < ApplicationController
   def toggle_order
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, toggle_order_params)
     render turbo_stream: [update_sorted_chapters]
+  end
+
+  def details
+    @fiction = Fiction.find(params[:id])
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          'fiction_details',
+          partial: 'fiction_details',
+          locals: { fiction: @fiction }
+        )
+      end
+    end
   end
 
   private
@@ -130,7 +143,7 @@ class FictionsController < ApplicationController
   def render_filtered_fictions
     render turbo_stream: turbo_stream.replace(
       'filtered-fictions',
-      partial: 'other_section',
+      partial: 'filtered_fiction_list',
       locals: @index_presenter.filtered_fictions_locals
     )
   end

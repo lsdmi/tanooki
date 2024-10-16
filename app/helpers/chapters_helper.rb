@@ -18,12 +18,6 @@ module ChaptersHelper
     end
   end
 
-  def new_chapter?(list, chapter_id)
-    return :black if list.nil?
-
-    list.pluck(:id).include?(chapter_id) ? :green : :black
-  end
-
   def volume_number_integer(number)
     return 'NA' if number.nil?
 

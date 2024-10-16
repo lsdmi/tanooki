@@ -56,12 +56,6 @@ class Chapter < ApplicationRecord
     header
   end
 
-  def display_chapter_numbers
-    volume_text = "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?
-    chapter_text = "Розділ #{check_decimal(number)}"
-    "#{volume_text}#{chapter_text}"
-  end
-
   def fiction_description
     fiction.description
   end

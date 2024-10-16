@@ -40,6 +40,9 @@ Rails.application.routes.draw do
   end
   resources :chapters, except: :index
   resources :fictions do
+    member do
+      get :details
+    end
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'
       post :toggle_order

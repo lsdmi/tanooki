@@ -1,8 +1,0 @@
-<div class="">
-  <%= render 'shared/divider_shiny_green', caption: "ТОП-5 творів року" %>
-  <div class="relative float-left w-full mt-0">
-    <% most_reads.each_with_index do |fiction, i| %>
-      <%= render 'top_list', fiction: fiction, i: i %>
-    <% end %>
-  </div>
-</div>

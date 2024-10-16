@@ -4,17 +4,17 @@ class FictionIndexVariablesManager
   def self.popular_novelty
     Rails.cache.fetch('popular_novelty', expires_in: 24.hours) do
       Fiction.joins(:readings)
-             .includes([{ cover_attachment: :blob }, :genres, :scanlators])
+             .includes([{ cover_attachment: :blob }, :genres])
              .group(:id)
              .where(id: Fiction.last(10).pluck(:id))
              .order('COUNT(reading_progresses.fiction_id) DESC')
-             .limit(5)
+             .limit(8)
     end
   end
 
   def self.most_reads
-    Rails.cache.fetch('most_reads', expires_in: 12.hours) do
-      Fiction.includes([{ cover_attachment: :blob }, :genres, :scanlators]).most_reads.limit(5)
+    Rails.cache.fetch('most_reads', expires_in: 24.hours) do
+      Fiction.includes([{ cover_attachment: :blob }, :genres]).most_reads.limit(7)
     end
   end
 
@@ -31,7 +31,7 @@ class FictionIndexVariablesManager
   def self.hot_updates
     Rails.cache.fetch('hot_updates', expires_in: 12.hours) do
       Fiction.joins(:readings)
-             .includes([{ cover_attachment: :blob }, :scanlators])
+             .includes([{ cover_attachment: :blob }])
              .group(:id)
              .where(readings: { created_at: 1.month.ago..Time.now })
              .order('COUNT(readings.fiction_id) DESC')
