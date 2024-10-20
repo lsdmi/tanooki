@@ -9,10 +9,10 @@
 <div class="grid grid-cols-4 gap-4">
   <% fictions.each do |fiction| %>
     <div class="flex flex-col">
-      <%= link_to fiction_path(fiction), class: 'w-full aspect-[2/3] mb-2' do %>
+      <%= link_to fiction_path(fiction), class: 'w-full lg:h-36 aspect-[2/3] mb-2' do %>
         <%= image_tag url_for(fiction.cover),
           alt: fiction.cover.blob.filename.to_s,
-          class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
+          class: "w-full h-full lg:h-36 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
           loading: "lazy",
           data: {
             controller: "lazy-image",

@@ -6,7 +6,7 @@
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
-    <%= link_to fiction_path(fiction) do %>
+    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
       <%= image_tag url_for(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,
         class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
@@ -21,7 +21,7 @@
 
   <div class="col-span-2 md:col-span-3 lg:col-span-2 my-1">
     <div>
-      <%= link_to fiction_path(fiction), class: 'group' do %>
+      <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
         <h3 class="text-base lg:text-lg font-semibold text-stone-800 line-clamp-1 group-hover:text-stone-600 transition-colors duration-300">
           <%= fiction.title %>
         </h3>

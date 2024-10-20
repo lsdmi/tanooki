@@ -239,6 +239,7 @@ uk:
     am: до полудня
     formats:
       default: "%d.%m.%Y %H:%M:%S"
+      shortest: "%d/%m/%Y"
       short: "%d %B %Y"
       long: "%d %b %Y, %H:%M"
     pm: по полудні

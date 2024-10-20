@@ -6,7 +6,7 @@ class FictionIndexVariablesManager
       Fiction.joins(:readings)
              .includes([{ cover_attachment: :blob }, :genres])
              .group(:id)
-             .where(id: Fiction.last(10).pluck(:id))
+             .where(id: Fiction.last(15).pluck(:id))
              .order('COUNT(reading_progresses.fiction_id) DESC')
              .limit(8)
     end
