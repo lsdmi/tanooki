@@ -14,7 +14,7 @@ gem 'sprockets-rails'
 gem 'mysql2'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 6.1'
+gem 'puma', '~> 6.4'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem 'importmap-rails'
