@@ -36,16 +36,6 @@ class CommentsFetcher
   end
 
   def threads
-    grouped_comments = Comment.select(:commentable_id, :commentable_type)
-                              .where(user_id: user.id)
-                              .group(:commentable_id, :commentable_type)
-                              .having('COUNT(*) > 1')
-
-    grouped_ids_and_types = grouped_comments.pluck(:commentable_id, :commentable_type)
-
-    Comment.where.not(user_id: user.id)
-           .where(commentable_id: grouped_ids_and_types.map(&:first))
-           .where(commentable_type: grouped_ids_and_types.map(&:second))
-           .includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
+    Comment.where.not(user_id: user.id).where(parent_id: user.comments).includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
   end
 end
