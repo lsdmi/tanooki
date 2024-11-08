@@ -29,6 +29,12 @@ Rails.application.routes.draw do
     resources :tales, only: :index
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :fictions, only: :index
+    end
+  end
+
   resources :comments, except: %i[show] do
     collection do
       post :dropdown
