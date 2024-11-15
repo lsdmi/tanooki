@@ -13,7 +13,6 @@
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
   border-left: 0.25rem solid #d1d5db;
-  background-color: #f8f8f8;
   border-radius: 0.25rem;
   font-style: italic;
 }
@@ -71,4 +70,19 @@ header.no-ads > .google-auto-placed {
 .comments-grid {
   grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
   grid-auto-rows: 20px;
+}
+
+.innermost-element {
+  transition: background-color 0.3s ease;
+}
+
+.innermost-element:hover {
+  background-color: rgba(209, 213, 219, 0.5);
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .innermost-element:hover {
+    background-color: rgba(75, 85, 99, 0.5);
+  }
 }
