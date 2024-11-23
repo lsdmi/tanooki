@@ -36,6 +36,7 @@ class CommentsFetcher
   end
 
   def threads
-    Comment.where.not(user_id: user.id).where(parent_id: user.comments).includes([:commentable, { user: { avatar: { image_attachment: :blob } } }])
+    Comment.where.not(user_id: user.id).where(parent_id: user.comments).includes([:commentable,
+                                                                                  { user: { avatar: { image_attachment: :blob } } }])
   end
 end

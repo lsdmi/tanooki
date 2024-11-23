@@ -5,10 +5,10 @@
     <%= chapter.content %>
   </div>
 
-  <% if @previous_chapter.present? || @next_chapter.present? %>
+  <% if previous_chapter.present? || next_chapter.present? %>
     <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-stone-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-      <% if @previous_chapter.present? %>
-        <%= link_to chapter_path(@previous_chapter), class: "w-full sm:w-auto text-center sm:text-left text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center justify-center sm:justify-start" do %>
+      <% if previous_chapter.present? %>
+        <%= link_to chapter_path(previous_chapter), class: "w-full sm:w-auto text-center sm:text-left text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center justify-center sm:justify-start" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
           </svg>
@@ -17,8 +17,8 @@
       <% else %>
         <span class="w-full sm:w-auto"></span>
       <% end %>
-      <% if @next_chapter.present? %>
-        <%= link_to chapter_path(@next_chapter), class: "w-full sm:w-auto text-center sm:text-right text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center justify-center sm:justify-end" do %>
+      <% if next_chapter.present? %>
+        <%= link_to chapter_path(next_chapter), class: "w-full sm:w-auto text-center sm:text-right text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors duration-300 flex items-center justify-center sm:justify-end" do %>
           <span class="text-sm sm:text-base">Наступний розділ</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />

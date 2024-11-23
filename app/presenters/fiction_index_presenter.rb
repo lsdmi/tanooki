@@ -22,7 +22,7 @@ class FictionIndexPresenter
   end
 
   def genres
-    @genres ||= Genre.joins(:fictions).order(:name).distinct
+    @genres ||= Genre.order(:name).distinct
   end
 
   def sample_genre
@@ -50,7 +50,7 @@ class FictionIndexPresenter
 
     Fiction.joins(:genres)
            .joins("INNER JOIN (#{latest_chapters}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
-           .includes([{ cover_attachment: :blob }, :genres, :scanlators])
+           .includes(:cover_attachment)
            .where(genres: { id: sample_genre })
            .select('fictions.*, latest_chapters.max_created_at')
            .order('latest_chapters.max_created_at DESC')
