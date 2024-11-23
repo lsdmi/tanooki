@@ -66,23 +66,3 @@ header.no-ads > .google-auto-placed {
 .flip-card-front, .flip-card-back {
   backface-visibility: hidden;
 }
-
-.comments-grid {
-  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-  grid-auto-rows: 20px;
-}
-
-.innermost-element {
-  transition: background-color 0.3s ease;
-}
-
-.innermost-element:hover {
-  background-color: rgba(209, 213, 219, 0.5);
-  cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-  .innermost-element:hover {
-    background-color: rgba(75, 85, 99, 0.5);
-  }
-}

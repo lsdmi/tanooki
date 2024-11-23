@@ -30,8 +30,7 @@ module MetaDescriptionHelper
   def consts_paths?
     request.path == fictions_path ||
       request.path == youtube_videos_path ||
-      request.path == alphabetical_fictions_path ||
-      request.path == comments_path
+      request.path == alphabetical_fictions_path
   end
 
   def description_object

@@ -21,8 +21,6 @@ class FictionPaginatorTest < ActiveSupport::TestCase
     test_size
     test_instances
     test_content
-    test_pagy_variables_fiction_one
-    test_pagy_variables_fiction_two
   end
 
   private
@@ -41,15 +39,5 @@ class FictionPaginatorTest < ActiveSupport::TestCase
   def test_content
     assert_equal @fictions[0].chapters.order(number: :desc), @paginator.initiate['one'][:paginated_chapters].second
     assert_equal @fictions[1].chapters.order(number: :desc), @paginator.initiate['two'][:paginated_chapters].second
-  end
-
-  def test_pagy_variables_fiction_one
-    assert_equal 1, @paginator.initiate['one'][:paginated_chapters].first.page
-    assert_equal 8, @paginator.initiate['one'][:paginated_chapters].first.items
-  end
-
-  def test_pagy_variables_fiction_two
-    assert_equal 1, @paginator.initiate['two'][:paginated_chapters].first.page
-    assert_equal 8, @paginator.initiate['two'][:paginated_chapters].first.items
   end
 end

@@ -40,38 +40,6 @@ module CommentsHelper
     end
   end
 
-  def comment_alt(commentable)
-    case commentable
-    when Chapter, Fiction, Tale
-      commentable.cover.blob.filename.to_s
-    else
-      commentable.title
-    end
-  end
-
-  def comment_cover(commentable)
-    case commentable
-    when Chapter, Fiction, Tale then commentable.cover
-    else commentable.thumbnail
-    end
-  end
-
-  def comment_class(commentable)
-    case commentable
-    when Chapter, Fiction then 'Ранобе'
-    when Tale then 'Блог'
-    else 'Відео'
-    end
-  end
-
-  def klass_styles(commentable)
-    case commentable
-    when Chapter, Fiction then 'bg-emerald-100 text-emerald-800'
-    when YoutubeVideo then 'bg-rose-100 text-rose-800'
-    when Publication then 'bg-sky-100 text-sky-800'
-    end
-  end
-
   def commentable_title(commentable)
     commentable.is_a?(Chapter) ? commentable.fiction_title : commentable.title
   end

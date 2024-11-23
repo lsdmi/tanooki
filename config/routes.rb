@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :comments, except: %i[show] do
+  resources :comments, except: %i[index show] do
     collection do
       post :dropdown
     end
