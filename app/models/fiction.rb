@@ -57,7 +57,7 @@ class Fiction < ApplicationRecord
   scope :most_reads, lambda {
     joins(:readings)
       .where(readings: { created_at: 1.year.ago..Time.now })
-      .group(:fiction_id)
+      .group('readings.fiction_id')
       .order('COUNT(readings.fiction_id) DESC')
   }
 

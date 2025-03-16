@@ -4,7 +4,7 @@ class FictionIndexVariablesManager
   def self.popular_novelty
     Rails.cache.fetch('popular_novelty', expires_in: 24.hours) do
       Fiction.joins(:readings)
-             .includes([:cover_attachment, :genres])
+             .includes(%i[cover_attachment genres])
              .group(:id)
              .where(id: Fiction.last(15).pluck(:id))
              .order('COUNT(reading_progresses.fiction_id) DESC')
@@ -14,14 +14,14 @@ class FictionIndexVariablesManager
 
   def self.most_reads
     Rails.cache.fetch('most_reads', expires_in: 24.hours) do
-      Fiction.includes([:cover_attachment, :genres]).most_reads.limit(7)
+      Fiction.includes(%i[cover_attachment genres]).most_reads.limit(7)
     end
   end
 
   def self.latest_updates
     Fiction
       .joins(:chapters)
-      .includes([:cover_attachment, :genres])
+      .includes(%i[cover_attachment genres])
       .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
       .group('fictions.id')
       .order('max_created_at DESC')
