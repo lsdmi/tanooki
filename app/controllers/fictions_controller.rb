@@ -55,7 +55,6 @@ class FictionsController < ApplicationController
   def destroy
     FictionDestroyService.new(@fiction, current_user).call
     @pagy, @fictions = paginate_fictions
-    setup_paginator
     render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
@@ -124,16 +123,10 @@ class FictionsController < ApplicationController
   def paginate_fictions
     pagy(
       ordered_fiction_list,
-      items: 8,
+      limit: 6,
       request_path: readings_path,
       page: fiction_page || 1
     )
-  end
-
-  def setup_paginator
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
-    fiction_paginator.call
-    @paginators = fiction_paginator.initiate
   end
 
   def fiction_page
@@ -172,7 +165,7 @@ class FictionsController < ApplicationController
     turbo_stream.update(
       'fictions-list',
       partial: 'users/dashboard/fictions',
-      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
+      locals: { fictions: @fictions, pagy: @pagy }
     )
   end
 end

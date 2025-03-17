@@ -30,7 +30,7 @@ class PublicationsController < ApplicationController
     @publication.destroy
     @pagy, @publications = pagy(
       publications,
-      items: 8,
+      limit: 8,
       request_path:,
       page: params[:page] || 1
     )

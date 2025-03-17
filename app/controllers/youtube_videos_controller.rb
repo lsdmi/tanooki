@@ -8,7 +8,7 @@ class YoutubeVideosController < ApplicationController
     @highlights = highlights
     @popular = popular
     @latest = latest
-    @pagy, @other_youtube_videos = pagy_countless(other, items: 12)
+    @pagy, @other_youtube_videos = pagy_countless(other, limit: 12)
 
     render 'youtube_videos/scrollable_list' if params[:page]
   end

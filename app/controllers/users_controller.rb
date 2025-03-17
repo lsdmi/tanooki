@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def blogs
-    @pagy, @publications = pagy(current_user.publications.order(created_at: :desc), items: 8)
+    @pagy, @publications = pagy(current_user.publications.order(created_at: :desc), limit: 8)
 
     render 'show'
   end
@@ -45,10 +45,7 @@ class UsersController < ApplicationController
   end
 
   def readings
-    @pagy, @fictions = pagy(fiction_list, items: 8)
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
-    fiction_paginator.call
-    @paginators = fiction_paginator.initiate
+    @pagy, @fictions = pagy(fiction_list, limit: 6)
 
     render 'show'
   end

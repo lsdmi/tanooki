@@ -1,13 +1,13 @@
-<div class="grid grid-cols-1 px-6 xl:grid-cols-6 xl:gap-6 z-10 relative font-oswald mt-6">
+<div class="grid grid-cols-1 px-6 xl:grid-cols-6 xl:gap-6 z-10 relative my-6">
   <div class="col-span-full xl:col-auto mb-4">
-    <div class="bg-stone-100 border border-stone-300 shadow-lg rounded-3xl p-5 relative overflow-hidden">
+    <div class="bg-stone-50 border border-stone-300 shadow-lg rounded-3xl p-5 relative overflow-hidden">
       <div class="absolute inset-0 border border-stone-200 rounded-3xl blur-lg opacity-50"></div>
       <%= render 'users/dashboard/sidebar' %>
     </div>
   </div>
   <div class="col-span-5">
     <% if action_name.to_sym == :readings %>
-      <%= render 'users/dashboard/readings', fictions: @fictions, pagy: @pagy, paginators: @paginators %>
+      <%= render 'users/dashboard/readings', fictions: @fictions, pagy: @pagy %>
     <% elsif action_name.to_sym == :avatars %>
       <%= render 'users/dashboard/avatars', avatars: @avatars %>
     <% elsif action_name.to_sym == :blogs %>

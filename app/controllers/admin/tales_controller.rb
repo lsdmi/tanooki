@@ -5,7 +5,7 @@ module Admin
     before_action :authenticate_user!, :verify_user_permissions
 
     def index
-      @pagy, @tales = pagy(Publication.order(created_at: :desc), items: 8)
+      @pagy, @tales = pagy(Publication.order(created_at: :desc), limit: 8)
     end
   end
 end

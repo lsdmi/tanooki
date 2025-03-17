@@ -43,64 +43,15 @@ class ChaptersController < ApplicationController
     end
   end
 
-  def destroy
-    stack_size = @chapter.fiction.chapters.by_user_scanlators(current_user).size
-
-    @chapter.destroy
-
-    handle_scanlators_destruction(stack_size)
-
-    @pagy, @fictions = pagy(ordered_fiction_list, items: 8, request_path: readings_path, page: fiction_page || 1)
-
-    setup_paginator
-    render turbo_stream: [refresh_list, refresh_sweetalert]
-  end
-
   private
-
-  def handle_scanlators_destruction(stack_size)
-    return unless @chapter.fiction.scanlators.size > 1 && stack_size == 1
-
-    current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
-  end
-
-  def setup_paginator
-    fiction_paginator = FictionPaginator.new(@pagy, @fictions, params, current_user)
-    fiction_paginator.call
-    @paginators = fiction_paginator.initiate
-  end
-
-  def fiction_page
-    (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
-  end
-
-  def ordered_fiction_list
-    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
-  end
-
-  def destroy_association(scanlator)
-    FictionScanlator.find_by(fiction_id: @chapter.fiction.id, scanlator_id: scanlator.id)&.destroy
-  end
 
   def set_chapter
     @chapter = @commentable = Chapter.find(params[:id])
   end
 
-  def chapters
-    ordered_chapters_desc(@chapter.fiction)
-  end
-
   def chapter_params
     params.require(:chapter).permit(
       :content, :fiction_id, :number, :title, :user_id, :volume_number, scanlator_ids: []
-    )
-  end
-
-  def refresh_list
-    turbo_stream.update(
-      'fictions-list',
-      partial: 'users/dashboard/fictions',
-      locals: { fictions: @fictions, pagy: @pagy, paginators: @paginators }
     )
   end
 

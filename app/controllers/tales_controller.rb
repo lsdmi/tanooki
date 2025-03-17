@@ -6,7 +6,7 @@ class TalesController < ApplicationController
 
   def index
     @highlights = highlights
-    @pagy, @publications = pagy_countless(publications, items: 17)
+    @pagy, @publications = pagy_countless(publications, limit: 17)
 
     render 'home/scrollable_list' if params[:page]
   end

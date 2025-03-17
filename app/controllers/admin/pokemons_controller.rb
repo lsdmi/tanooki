@@ -7,7 +7,7 @@ module Admin
     before_action :set_types, only: %i[new create edit update]
 
     def index
-      @pagy, @pokemons = pagy(Pokemon.includes(sprite_attachment: :blob).order(:dex_id), items: 10)
+      @pagy, @pokemons = pagy(Pokemon.includes(sprite_attachment: :blob).order(:dex_id), limit: 10)
     end
 
     def create
@@ -34,7 +34,7 @@ module Admin
       @pokemon.destroy
       @pagy, @pokemons = pagy(
         Pokemon.includes(sprite_attachment: :blob).order(:name),
-        items: 10,
+        limit: 10,
         request_path: admin_pokemons_path,
         page: params[:page] || 1
       )

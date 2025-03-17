@@ -1,47 +1,34 @@
-<% if current_user.scanlators.any? || current_user.admin? %>
-  <div class="flow-root xl:min-h-[550px]" data-controller="flowbite">
-    <%= tag.h3 "Твори та Переклади (#{pagy.count})", class: 'text-xl' %>
-    <ul class="divide-y divide-gray-200">
-      <% fictions.each do |fiction| %>
-        <li class="py-4">
-          <div class="flex items-center space-x-4">
-            <div class="flex-1 min-w-0">
-              <%= tag.p fiction.title, class: 'text-base font-semibold text-gray-900 truncate' %>
-              <div class="flex">
-                <%= tag.p l(fiction.created_at, format: :short).downcase, class: 'text-sm font-normal text-gray-500 truncate inline-block' %>
-                <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
-                  <%= image_tag 'comment.svg', class: 'h-4 inline-block', alt: 'comments', height: '16', width: '16' %>
-                  <%= tag.span fiction.comments_count, class: 'ml-1 inline-block' %>
-                </span>
-                <span class="text-gray-500 ml-3 text-xs mt-1 flex align-center">
-                  <%= image_tag 'eye.svg', class: 'h-4 inline-block', alt: 'views', height: '16', width: '16' %>
-                  <%= tag.span fiction.views, class: 'ml-1 inline-block' %>
-                </span>
-              </div>
-            </div>
-            <%= render 'users/dashboard/fiction_controls', fiction: fiction %>
-          </div>
-          <div id="chapters-accordion-collapse" data-accordion="collapse">
-            <h2 id="chapters-accordion-collapse-heading-<%= fiction.id %>">
-              <button type="button" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-500 bg-gray-50 border-gray-200 sm:px-5" data-accordion-target="#chapters-accordion-collapse-body-<%= fiction.id %>" aria-expanded="false" aria-controls="chapters-accordion-collapse-body-<%= fiction.id %>">
-                <span>Розділи</span>
-                <svg data-accordion-icon="" class="w-6 h-6 transform shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-              </button>
-            </h2>
-            <%= render 'users/dashboard/chapter_list', fiction: fiction, pagination: paginators[fiction.slug][:paginated_chapters] %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-    <div class="">
-      <div class="float-left mt-3">
-        <%= link_to "Додати Роботу", new_fiction_path, data: { turbo: false }, class: 'text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center' %>
-      </div>
-      <div class="pagy-nav mt-8 sm:mt-0 float-right my-2">
-        <%== pagy_nav(pagy) if pagy.pages > 1 %>
-      </div>
+<div class="relative z-10 space-y-12">
+  <% if current_user.scanlators.any? || current_user.admin? %>
+    <div class="flex items-center justify-between">
+      <%= tag.h2 "Мої Твори", class: 'text-4xl font-extrabold text-stone-900 tracking-tight' %>
+      <%= link_to "Додати Роботу", new_fiction_path, data: { turbo: false }, class: 'bg-gradient-to-r from-stone-900 to-stone-700 text-white font-semibold rounded-full px-8 py-3 text-sm shadow-lg hover:scale-105 transition-all' %>
     </div>
-  </div>
-<% else %>
-  <%= render 'users/dashboard/no_scanlators_screen' %>
-<% end %>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <% fictions.each do |fiction| %>
+        <div class="relative flex flex-col bg-white/70 backdrop-blur-lg border border-stone-300 rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
+          <div class="p-6 flex flex-col flex-1">
+            <%= link_to fiction_path(fiction), class: "text-xl font-semibold text-stone-900 group-hover:text-stone-700 transition-colors" do %>
+              <%= fiction.title %>
+            <% end %>
+            <p class="text-sm text-stone-600 mt-2">Перегляди: <%= fiction.views %> | Коментарі: <%= fiction.comments_count %></p>
+            <div class="mt-4">
+              <%= render 'users/dashboard/fiction_controls', fiction: %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if pagy.pages > 1 %>
+      <div class="flex justify-center mt-12">
+        <div class="pagy-nav">
+          <%== pagy_nav(pagy) %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <%= render 'users/dashboard/no_scanlators_screen' %>
+  <% end %>
+</div>

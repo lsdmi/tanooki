@@ -78,12 +78,4 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     patch chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
     assert_response :unprocessable_entity
   end
-
-  test 'should destroy chapter' do
-    assert_difference('Chapter.count', -1) do
-      delete chapter_url(@chapter)
-    end
-
-    assert_response :success
-  end
 end

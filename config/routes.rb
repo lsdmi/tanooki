@@ -44,7 +44,7 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
-  resources :chapters, except: :index
+  resources :chapters, except: %i[index destroy]
   resources :fictions do
     member do
       get :details
@@ -68,7 +68,10 @@ Rails.application.routes.draw do
   get :avatars, to: 'users#avatars', as: :avatars
   get :blogs, to: 'users#blogs', as: :blogs
   get :pokemons, to: 'users#pokemons', as: :pokemons
+
   get :readings, to: 'users#readings', as: :readings
+  resources :readings, only: [:show, :destroy]
+
   get :notifications, to: 'dashboards#notifications', as: :notifications
 
   post :pokemon_details, to: 'users#pokemon_details', as: :pokemon_details

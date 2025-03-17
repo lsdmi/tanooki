@@ -6,7 +6,7 @@ class DashboardsController < ApplicationController
   def notifications
     raise ActionController::RoutingError, 'Not Found' if latest_comments.empty?
 
-    @pagy, @comments = pagy(my_comments, items: 8)
+    @pagy, @comments = pagy(my_comments, limit: 8)
 
     current_user.update(latest_read_comment_id: latest_comments.first.id)
     render 'users/show'
