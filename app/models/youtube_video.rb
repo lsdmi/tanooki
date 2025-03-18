@@ -33,10 +33,6 @@ class YoutubeVideo < ApplicationRecord
     ]
   end
 
-  def youtube_channel_thumbnail
-    youtube_channel.thumbnail
-  end
-
   def youtube_channel_title
     youtube_channel.title
   end

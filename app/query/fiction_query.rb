@@ -11,7 +11,7 @@ module FictionQuery
   end
 
   def fiction_all_query
-    Fiction.left_joins(:chapters).joins(:users)
+    Fiction.left_joins(:chapters).joins(:users).includes(:cover_attachment)
   end
 
   def fiction_all_ordered_by_latest_chapter

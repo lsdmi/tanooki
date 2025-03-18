@@ -6,7 +6,6 @@
   <div class="relative mt-1">
     <div class="w-full relative mb-2">
       <div class="flex space-x-1 text-gray-500 text-sm mb-2 lg:mb-0 mt-3">
-        <%= image_tag url_for(youtube_video.youtube_channel_thumbnail), alt: youtube_video.youtube_channel_title, class: 'text-rose-700 h-8 w-8 rounded-full max-w-none hover:scale-110 lg:mx-1 hidden lg:block transform transition duration-500', height: '40', width: '40' %>
         <div>
           <%= link_to youtube_video.youtube_channel_title, search_index_path(search: [youtube_video.youtube_channel_title]), class: 'text-rose-700 text-base sm:text-lg lg:text-sm hover:underline font-light' %>
           <%= tag.span "∘", class: 'text-sm lg:text-xs font-light' %>

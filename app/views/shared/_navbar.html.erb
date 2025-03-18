@@ -30,12 +30,8 @@
       <div class="flex items-center justify-center lg:justify-start lg:order-1">
         <ul class="flex flex-row mt-0 space-x-8 text-sm font-medium">
           <% trending_tags.each do |tg| %>
-            <% if tg[:name] == 'Ранобе' %>
-              <%= render 'shared/fictions_nav_dropdown' %>
-            <% else %>
-              <%= tag.li class: "#{'hidden lg:block' if tg[:link].include?('search')}" do %>
-                <%= link_to tg[:name], tg[:link], class: 'text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-500' %>
-              <% end %>
+            <%= tag.li class: "#{'hidden lg:block' if tg[:link].include?('search')}" do %>
+              <%= link_to tg[:name], tg[:link], class: 'text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-500' %>
             <% end %>
           <% end %>
         </ul>

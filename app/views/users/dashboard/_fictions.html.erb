@@ -7,15 +7,18 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
       <% fictions.each do |fiction| %>
-        <div class="relative flex flex-col bg-white/70 backdrop-blur-lg border border-stone-300 rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
+        <div class="relative flex bg-white/70 backdrop-blur-lg border border-stone-300 rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
           <div class="p-6 flex flex-col flex-1">
             <%= link_to fiction_path(fiction), data: { turbo: false }, class: "text-xl font-semibold text-stone-900 group-hover:text-stone-700 transition-colors" do %>
               <%= fiction.title %>
             <% end %>
             <p class="text-sm text-stone-600 mt-2">Перегляди: <%= fiction.views %> | Коментарі: <%= fiction.comments_count %></p>
             <div class="mt-4">
-              <%= render 'users/dashboard/fiction_controls', fiction: %>
+              <%= render 'users/dashboard/fiction_controls', fiction: fiction %>
             </div>
+          </div>
+          <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
+            <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "h-full w-full object-cover" %>
           </div>
         </div>
       <% end %>

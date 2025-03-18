@@ -9,7 +9,9 @@ class ReadingsController < ApplicationController
   before_action :authorize_chapter_deletion, only: :destroy
 
   def show
-    @pagy, @chapters = pagy(ordered_user_chapters_desc(@fiction, current_user), limit: 10)
+    redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
+
+    @pagy, @chapters = pagy(ordered_user_chapters_desc(@fiction, current_user), limit: 36)
   end
 
   def destroy
