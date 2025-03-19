@@ -3,6 +3,8 @@
 class FictionRanker
   attr_reader :fiction
 
+  RANK_OUT_OF_SCOPE = 11
+
   def initialize(fiction:)
     @fiction = fiction
   end
@@ -17,9 +19,8 @@ class FictionRanker
   private
 
   def calculate_genre_index(genre)
-    Fiction.joins(:genres)
-           .where(genres: { id: genre.id })
-           .most_reads
-           .index(fiction) + 1
+    index = Fiction.joins(:genres).where(genres: { id: genre.id }).most_reads.index(fiction)
+
+    index.nil? ? RANK_OUT_OF_SCOPE : index + 1
   end
 end

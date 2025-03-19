@@ -17,9 +17,6 @@
               <%= render 'users/dashboard/fiction_controls', fiction: fiction %>
             </div>
           </div>
-          <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
-            <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "h-full w-full object-cover" %>
-          </div>
         </div>
       <% end %>
     </div>
