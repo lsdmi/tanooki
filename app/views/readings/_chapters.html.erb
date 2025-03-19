@@ -16,12 +16,12 @@
               <%= render 'users/dashboard/chapter_controls', chapter: chapter, fiction:, page: pagy.page %>
             </div>
             <h3 class="text-xl font-semibold text-stone-900 group-hover:text-stone-700 transition-all w-4/5">
-              <%= link_to chapter.display_title, chapter_path(chapter),
+              <%= link_to chapter.display_title, chapter_path(chapter), data: { turbo: false },
                     class: 'hover:underline' %>
             </h3>
             <div class="flex items-center space-x-4 mt-2 text-stone-600 text-sm">
               <span><%= l(chapter.created_at, format: :short).downcase %></span>
-              <span>Перегляди: <%= fiction.views %> | Коментарі: <%= fiction.comments_count %></p>
+              <span>Перегляди: <%= chapter.views %> | Коментарі: <%= chapter.comments_count %></p>
             </div>
           </div>
         <% end %>
