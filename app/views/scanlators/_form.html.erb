@@ -1,77 +1,82 @@
-<div class="py-4 border-gray-200 sm:py-5">
-  <div class="lg:grid gap-4 md:gap-6 lg:grid-cols-3">
-    <div class="space-y-3 sm:space-y-6">
-      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full">
-          <%= f.label :title, 'Назва', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if scanlator.errors[:title].any?}" }, label: false, placeholder: 'Додайте назву' %>
-          <%= tag.p scanlator.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:title].any? %>
-        </div>
+<div class="bg-stone-100 p-8 rounded-xl shadow-xl border border-stone-300">
+  <h2 class="text-3xl font-bold text-stone-800 mb-6">Профіль Перекладача</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="space-y-6">
+      <div class="relative">
+        <%= f.label :title, 'Назва', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :title, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: 'Назва Команди' %>
+        <%= tag.p scanlator.errors[:title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:title].any? %>
       </div>
-      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full">
-          <%= f.label :description, 'Опис', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.text_area :description, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 #{'border-red-300' if scanlator.errors[:description].any?}", rows: 3, label: false, placeholder: "Додайте опис (необов'язково)" %>
-          <%= tag.p scanlator.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:description].any? %>
-        </div>
+
+      <div class="relative">
+        <%= f.label :description, 'Опис', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.text_area :description, class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500", rows: 4, placeholder: "Ваша Історія (необов'язково)" %>
+        <%= tag.p scanlator.errors[:description].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:description].any? %>
       </div>
-      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full">
-          <%= f.label :telegram_id, 'Телеграм ID', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :telegram_id, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if scanlator.errors[:telegram_id].any?}" }, label: false, placeholder: "Додайте ID акаунту без @ (необов'язково)" %>
-          <%= tag.p scanlator.errors[:telegram_id].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:telegram_id].any? %>
-        </div>
+
+      <div class="relative">
+        <%= f.label :telegram_id, 'Телеграм ID', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :telegram_id, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: "ID акаунту без @ (необов'язково)" %>
+        <%= tag.p scanlator.errors[:telegram_id].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:telegram_id].any? %>
       </div>
-      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full">
-          <%= f.label :member_ids, 'Учасники', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <% if params[:scanlator].present? %>
-            <%= f.select :member_ids, options_for_select(User.order(:name).pluck(:name, :id), selected: params[:scanlator][:member_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: "font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if scanlator.errors[:member_ids].any? }" } %>
-          <% else %>
-            <%= f.select :member_ids, options_for_select(User.order(:name).pluck(:name, :id), selected: f.object.users.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "font-oswald bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if scanlator.errors[:member_ids].any? }" } %>
-          <% end %>
-          <%= tag.p scanlator.errors[:member_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:member_ids].any? %>
-        </div>
+
+      <div class="relative">
+        <%= f.label :bank_url, 'Посилання на Банку', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :bank_url, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: "Посилання на Банку (необов'язково)" %>
+        <%= tag.p scanlator.errors[:bank_url].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:bank_url].any? %>
       </div>
-      <div class="flex items-center">
-        <%= f.input :convertable, as: :boolean, type: 'checkbox', label: false, input_html: { class: 'w-4 h-4 text-emerald-600 bg-gray-100 rounded border-gray-300 focus:ring-emerald-500' } %>
-        <label for="inline-checkbox" class="ml-2 text-sm text-gray-500 mt-1">Дозволити конвертацію та завантаження творів у форматі EPUB.</label>
+
+      <div class="relative">
+        <%= f.label :extra_url, 'Додаткове Посилання', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :extra_url, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: "Додаткове Посилання (необов'язково)" %>
+        <%= tag.p scanlator.errors[:extra_url].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:extra_url].any? %>
       </div>
     </div>
-    <div class="mt-4 lg:mt-0 space-y-3 sm:space-y-6">
-      <div>
-        <%= f.label :banner, 'Банер', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <div class="flex justify-center items-center w-full">
-          <%= f.label :banner, class: "flex flex-col justify-center items-center w-full h-96 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:banner].any?}" do %>
-            <div class="flex flex-col justify-center items-center pt-5 pb-6">
-              <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
-              <p class="mb-4 text-xs text-gray-500">SVG, PNG, JPEG чи WebP</p>
-            </div>
+
+    <div class="space-y-6">
+      <div class="relative">
+        <%= f.label :member_ids, 'Учасники', class: 'text-stone-700 text-lg font-semibold mb-2' %>
+        <% if params[:scanlator].present? %>
+          <%= f.select :member_ids, options_for_select(User.order(:name).pluck(:name, :id), selected: params[:scanlator][:member_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-stone-200 text-stone-800 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 #{'border-red-300' if scanlator.errors[:member_ids].any? }" } %>
+        <% else %>
+          <%= f.select :member_ids, options_for_select(User.order(:name).pluck(:name, :id), selected: f.object.users.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-stone-200 text-stone-800 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 #{'border-red-300' if scanlator.errors[:member_ids].any? }" } %>
+        <% end %>
+        <%= tag.p scanlator.errors[:member_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:member_ids].any? %>
+      </div>
+
+      <div class="flex items-center space-x-3 bg-stone-200 p-4 rounded-lg border border-stone-300">
+        <%= f.input :convertable, as: :boolean, label: false, input_html: { class: 'w-6 h-6 text-stone-600 bg-stone-100 rounded border-stone-300 focus:ring-stone-500' } %>
+        <label for="convertable" class="text-stone-700">Дозволити конвертацію та завантаження творів у EPUB.</label>
+      </div>
+
+      <div class="space-y-4">
+        <%= f.label :banner, 'Банер', class: 'text-stone-700 text-lg font-semibold' %>
+        <div class="relative group">
+          <%= f.label :banner, class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 border-2 border-dashed border-stone-400 rounded-lg cursor-pointer hover:bg-stone-300 transition duration-300" do %>
+            <svg class="w-12 h-12 text-stone-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            <span class="text-stone-600">SVG, PNG, JPEG чи WebP</span>
             <%= f.file_field :banner, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-center text-sm text-gray-500' %>
+            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600' %>
           <% end %>
+          <%= tag.p scanlator.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:banner].any? %>
         </div>
-        <%= tag.p scanlator.errors[:banner].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:banner].any? %>
       </div>
-    </div>
-    <div class="mt-4 lg:mt-0 space-y-3 sm:space-y-6">
-      <div>
-        <%= f.label :avatar, 'Портретик', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <div class="flex justify-center items-center w-full">
-          <%= f.label :avatar, class: "flex flex-col justify-center items-center w-full h-96 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if scanlator.errors[:avatar].any?}" do %>
-            <div class="flex flex-col justify-center items-center pt-5 pb-6">
-              <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
-              <p class="mb-4 text-xs text-gray-500">SVG, PNG, JPEG чи WebP</p>
-            </div>
+
+      <div class="space-y-4">
+        <%= f.label :avatar, 'Портретик', class: 'text-stone-700 text-lg font-semibold' %>
+        <div class="relative group">
+          <%= f.label :avatar, class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 border-2 border-dashed border-stone-400 rounded-lg cursor-pointer hover:bg-stone-300 transition duration-300" do %>
+            <svg class="w-12 h-12 text-stone-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            <span class="text-stone-600">SVG, PNG, JPEG чи WebP</span>
             <%= f.file_field :avatar, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.avatar.blob&.filename || nil, id: 'avatar_name', class: 'text-center text-sm text-gray-500' %>
+            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600' %>
           <% end %>
+          <%= tag.p scanlator.errors[:avatar].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:avatar].any? %>
         </div>
-        <%= tag.p scanlator.errors[:avatar].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if scanlator.errors[:avatar].any? %>
       </div>
     </div>
   </div>
-  <%= f.submit "Надіслати", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-800" %>
+
+  <%= f.submit "Надіслати Профіль", class: "mt-8 w-full bg-stone-700 text-stone-100 font-bold py-3 px-6 rounded-lg hover:bg-stone-600 transition duration-300" %>
 </div>

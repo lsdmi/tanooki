@@ -53,7 +53,7 @@ class FictionListsController < ApplicationController
       add_fiction_to_hash(fiction_hash, first_letter, fiction)
     end
 
-    fiction_hash.sort.to_h
+    fiction_hash.to_h
   end
 
   def initialize_fiction_hash
