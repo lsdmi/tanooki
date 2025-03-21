@@ -47,14 +47,6 @@
   box-shadow: 0 0 5px pink;
 }
 
-.no-ads .google-auto-placed:nth-child(1) {
-  display: none !important;
-}
-
-header.no-ads > .google-auto-placed {
-  display: none;
-}
-
 .flip-card-inner {
   transform-style: preserve-3d;
 }

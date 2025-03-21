@@ -57,7 +57,7 @@
             <svg class="w-12 h-12 text-stone-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             <span class="text-stone-600">SVG, PNG, JPEG чи WebP</span>
             <%= f.file_field :banner, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600' %>
+            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600 text-center text-sm' %>
           <% end %>
           <%= tag.p scanlator.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:banner].any? %>
         </div>
@@ -70,7 +70,7 @@
             <svg class="w-12 h-12 text-stone-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             <span class="text-stone-600">SVG, PNG, JPEG чи WebP</span>
             <%= f.file_field :avatar, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600' %>
+            <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600 text-center text-sm' %>
           <% end %>
           <%= tag.p scanlator.errors[:avatar].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if scanlator.errors[:avatar].any? %>
         </div>

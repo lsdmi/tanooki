@@ -6,7 +6,6 @@ class ScanlatorsController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_scanlator, only: %i[show edit update destroy]
   before_action :verify_permissions, only: %i[edit update destroy]
-  before_action :load_advertisement, only: :show
 
   def index
     @scanlators = current_user.admin? ? Scanlator.order(:title) : current_user.scanlators.order(:title)
@@ -15,7 +14,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def show
-    @fictions = @scanlator.fictions.includes([{ cover_attachment: :blob }, :chapters, :genres]).order(:title)
+    @fictions = @scanlator.fictions.most_reads.includes(%i[cover_attachment genres])
   end
 
   def create

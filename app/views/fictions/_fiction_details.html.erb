@@ -1,7 +1,7 @@
-<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active">
+<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active dark:bg-gray-800">
   <div class="relative sm:h-64">
-    <div class="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-md">
-      <svg class="animate-spin h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <div class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
+      <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
@@ -22,7 +22,7 @@
   <div class="col-span-2 md:col-span-3 lg:col-span-2 my-1">
     <div>
       <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
-        <h3 class="text-base lg:text-lg font-semibold text-stone-800 line-clamp-1 group-hover:text-stone-600 transition-colors duration-300">
+        <h3 class="text-base lg:text-lg font-semibold text-stone-800 dark:text-stone-200 line-clamp-1 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300">
           <%= fiction.title %>
         </h3>
       <% end %>
@@ -30,50 +30,17 @@
       <% if fiction.genres.any? %>
         <div class="mt-2 flex flex-wrap">
           <% fiction.genres.first(3).each do |genre| %>
-            <%= tag.span genre.name, class: 'text-xs bg-stone-200 text-stone-700 px-2 py-1 m-1 rounded-full' %>
+            <%= tag.span genre.name, class: 'text-xs bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 py-1 m-1 rounded-full' %>
           <% end %>
           <% if fiction.genres.size > 3 %>
-            <%= tag.span "+#{fiction.genres.size - 3}", class: 'text-xs bg-stone-200 text-stone-700 px-2 py-1 m-1 rounded-full' %>
+            <%= tag.span "+#{fiction.genres.size - 3}", class: 'text-xs bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 py-1 m-1 rounded-full' %>
           <% end %>
         </div>
       <% end %>
     </div>
 
-    <p class="text-stone-600 text-xs line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
+    <p class="text-stone-600 dark:text-stone-400 text-xs line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
 
-    <%= link_to "Читати", fiction_path(fiction), class: "inline-block bg-stone-700 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 transition duration-300" %>
+    <%= link_to "Читати", fiction_path(fiction), class: "inline-block bg-stone-700 dark:bg-stone-600 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 dark:hover:bg-stone-500 transition duration-300" %>
   </div>
 </div>
-
-
-<style>
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slide-out {
-  to { transform: translateX(-30px); }
-}
-
-@keyframes slide-in {
-  from { transform: translateX(30px); }
-}
-
-#fiction_details {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#fiction_details[data-transitioning] {
-  animation: fade-out 0.3s ease, slide-out 0.3s ease;
-}
-
-#fiction_details:not([data-transitioning]) {
-  animation: fade-in 0.3s ease, slide-in 0.3s ease;
-}
-</style>

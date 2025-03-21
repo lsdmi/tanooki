@@ -1,68 +1,107 @@
-<div class="flex items-center justify-center font-oswald">
+<div class="bg-stone-100">
   <div class="relative w-full">
-    <div class="h-80 flex items-center justify-center bg-no-repeat bg-cover bg-center bg-gray-500 bg-blend-multiply" style="background-image: url('<%= @scanlator.banner.present? ? url_for(@scanlator.banner) : asset_path('scanlator_banner.webp') %>');">
-      <div class="text-center mt-8">
-        <div class="w-24 h-24 rounded-full mx-auto bg-no-repeat bg-cover bg-center bg-blend-multiply" style="background-image: url('<%= @scanlator.avatar.present? ? url_for(@scanlator.avatar) : asset_path('scanlator_avatar.webp') %>');"></div>
-        <%= tag.p @scanlator.title, class: "text-2xl text-center text-white font-bold mt-4" %>
-        <%= link_to "@#{@scanlator.telegram_id}", "https://t.me/#{@scanlator.telegram_id}", class: 'text-sm text-center text-gray-300 font-bold uppercase mt-4 hover:underline', area: { current: 'page' } if @scanlator.telegram_id? %>
-        <div class="grid grid-cols-2 gap-2 my-4 sm:mb-0">
-          <div class="justify-center flex">
-            <div class="flex flex-col justify-center">
-              <%= tag.p @scanlator.chapters.size, class: 'text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-white' %>
-              <p class="font-light text-base text-gray-300">розділів</p>
+    <!-- Anime-style Header Section -->
+    <div class="bg-stone-800 bg-blend-overlay bg-no-repeat bg-cover bg-center relative overflow-hidden" style="background-image: url('<%= @scanlator.banner.present? ? url_for(@scanlator.banner) : asset_path('scanlator_banner.webp') %>');">
+      <div class="absolute inset-0 bg-gradient-to-r from-stone-900 via-transparent to-stone-900 opacity-70"></div>
+      <div class="container mx-auto px-4 py-8 relative z-10">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <div class="flex items-center mb-4 md:mb-0">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-no-repeat bg-cover bg-center border-4 border-stone-300 shadow-lg transform hover:scale-110 transition-transform duration-300" style="background-image: url('<%= @scanlator.avatar.present? ? url_for(@scanlator.avatar) : asset_path('scanlator_avatar.webp') %>');"></div>
+            <div class="ml-4">
+              <%= tag.h1 @scanlator.title, class: "text-3xl md:text-4xl text-stone-100 font-bold mb-2 text-shadow-lg anime-text" %>
+              <%= link_to "https://t.me/#{@scanlator.telegram_id}", target: '_blank', rel: 'noopener noreferrer', class: 'text-lg text-stone-300 hover:text-stone-100 transition-colors duration-300 hover:underline anime-text' do %>
+                @<%= @scanlator.telegram_id %>
+              <% end if @scanlator.telegram_id? %>
             </div>
           </div>
-          <div class="justify-center flex">
-            <div class="flex flex-col justify-center">
-              <%= tag.p @scanlator.chapters.sum(:views), class: "text-center text-lg sm:text-xl font-extrabold tracking-tight line-clamp-1 text-white" %>
-              <p class="font-light text-base text-gray-300 text-center">прочитань</p>
+
+          <div class="flex items-center space-x-4">
+            <!-- Anime-style Stats -->
+            <div class="text-center bg-stone-800 bg-opacity-50 rounded-lg p-3 shadow-lg">
+              <%= tag.p @scanlator.chapters.size, class: 'text-2xl md:text-3xl font-bold anime-text text-stone-100' %>
+              <p class="text-sm md:text-base text-stone-300">Розділів</p>
             </div>
+            <div class="text-center bg-stone-800 bg-opacity-50 rounded-lg p-3 shadow-lg">
+              <%= tag.p @scanlator.chapters.sum(:views), class: "text-2xl md:text-3xl font-bold anime-text text-stone-100" %>
+              <p class="text-sm md:text-base text-stone-300">Прочитань</p>
+            </div>
+
+            <!-- External Links -->
+            <% if @scanlator.bank_url.present? || @scanlator.extra_url.present? %>
+              <div class="flex space-x-3">
+                <% if @scanlator.bank_url.present? %>
+                  <%= link_to format_url(@scanlator.bank_url), class: "group relative w-12 h-12 bg-gradient-to-br from-stone-700 to-stone-900 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
+                    <div class="absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <svg class="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    </svg>
+                  <% end %>
+                <% end %>
+
+                <% if @scanlator.extra_url.present? %>
+                  <%= link_to format_url(@scanlator.extra_url), class: "group relative w-12 h-12 bg-gradient-to-br from-stone-500 to-stone-700 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
+                    <div class="absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <svg class="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                    </svg>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
-    <section class="dark:bg-gray-900">
-      <div class="gap-16 py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-3 lg:px-6">
-        <div class="text-gray-500 sm:text-lg dark:text-gray-400 mb-8 lg:mb-0">
-          <% if @scanlator.description? %>
-            <div class="p-4 rounded-lg" role="tabpanel">
-              <svg class="mb-3 h-8 text-gray-500 dark:text-gray-600" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" fill="currentColor"/>
-              </svg>
-              <%= tag.h3 @scanlator.description, class: 'mb-3 text-2xl font-bold tracking-tight leading-tight text-gray-900 dark:text-white' %>
-            </div>
-          <% end %>
-          <div id="user-content" class="my-4">
-            <%= render 'shared/ads', advertisement: @advertisement %>
+
+    <!-- Main Content -->
+    <div id="user-content"></div>
+    <div class="container mx-auto px-4 py-16 <%= @scanlator.description.present? ? 'max-w-5xl' : 'max-w-3xl' %>">
+      <div class="grid grid-cols-1 <%= @scanlator.description.present? ? 'lg:grid-cols-3 ' : 'lg:grid-cols-2' %> gap-16">
+        <!-- Sidebar -->
+        <% if @scanlator.description.present? %>
+          <div class="lg:col-span-1">
+            <section class="bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 rounded-lg shadow-md p-4 sm:p-6 md:p-8 border border-stone-200 dark:border-stone-700 relative overflow-hidden">
+              <div class="relative z-10">
+                <p class="text-stone-800 dark:text-stone-200 leading-relaxed text-xl font-light">
+                  <%= @scanlator.description %>
+                </p>
+                <div class="absolute bottom-6 right-6 text-6xl text-stone-400 dark:text-stone-600 opacity-20 transform -rotate-12">(^o^)</div>
+              </div>
+
+              <div class="absolute bottom-0 left-0 w-20 sm:w-24 h-20 sm:h-24 bg-stone-200 dark:bg-stone-700 rounded-full transform -translate-x-1/2 translate-y-1/2 opacity-30"></div>
+            </section>
           </div>
-        </div>
-        <div class="col-span-2 mt-4 divide-y divide-gray-200 dark:divide-gray-700 lg:mt-0">
-          <div class="mt-4 mx-4">
-            <div class="overflow-x-auto mx-auto font-oswald">
-              <div class="flex flex-nowrap">
-                <% @fictions.each do |fiction| %>
-                  <div class="inline-block mr-3 w-56 md:w-64">
-                    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-                      <div class="relative relative w-56 md:w-64 h-[320px] mb-2 rounded-lg bg-transparent border border-gray-300 perspective-1000 flip-card">
-                        <%= render 'fiction_lists/flip_card', fiction: %>
-                      </div>
-                    <% end %>
-                    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-                      <%= tag.h2 fiction.title, class: 'mt-2 text-center text-lg leading-tight text-gray-700 hover:underline hover:text-gray-800 dark:text-gray-300' %>
-                    <% end %>
-                    <div class="mt-1 overflow-hidden break-words text-center">
-                      <% fiction.genres.each do |genre| %>
-                        <%= tag.span genre.name, class: 'bg-teal-700 text-white font-bold inline-block uppercase leading-none text-xs whitespace-nowrap uppercase px-2.5 py-1 rounded' %>
-                      <% end %>
-                    </div>
-                  </div>
+        <% end %>
+        <!-- Fictions Grid -->
+        <div data-controller="fiction-picker" class="lg:col-span-2">
+          <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0 tracking-widest">
+            <% if @fictions.ids.size > 1 %>
+              <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">
+                <% @fictions.each_with_index do |fiction, index| %>
+                  <%= image_tag url_for(fiction.cover),
+                      alt: fiction.cover.blob.filename.to_s,
+                      class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-stone-500' : ''}",
+                      data: {
+                        action: "click->fiction-picker#selectFiction",
+                        fiction_picker_target: "image",
+                        fiction_picker_id_param: fiction.id
+                      } %>
                 <% end %>
               </div>
-            </div>
+            <% end %>
+            <%= turbo_frame_tag "fiction_details" do %>
+              <%= render partial: 'fictions/fiction_details', locals: { fiction: @fictions.first } %>
+            <% end %>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </div>
 
+<style>
+  .anime-text {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+  }
+</style>
