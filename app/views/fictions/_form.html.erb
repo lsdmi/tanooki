@@ -1,2 +1,76 @@
-<%= render 'form_general', fiction: fiction, f: f, genres: genres %>
-<%= f.submit "Надіслати", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-800" %>
+<div class="bg-stone-100 p-8 rounded-xl shadow-xl border border-stone-300">
+  <h2 class="text-3xl font-bold text-stone-800 mb-6">Налаштування Твору</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <div class="relative mb-4">
+        <%= f.label :title, 'Заголовок', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :title, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: 'Вкажіть заголовок' %>
+        <%= tag.p fiction.errors[:title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:title].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :alternative_title, 'Альтернативний заголовок', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :alternative_title, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: "Альтернативний заголовок (необов'язково)" %>
+        <%= tag.p fiction.errors[:alternative_title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:alternative_title].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :english_title, 'Заголовок англійською', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :english_title, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: "Англійський заголовок (необов'язково)" %>
+        <%= tag.p fiction.errors[:english_title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:english_title].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :author, 'Автор', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :author, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" }, label: false, placeholder: 'Ім\'я Автора' %>
+        <%= tag.p fiction.errors[:author].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:author].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-stone-200 text-stone-800 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" } %>
+        <%= tag.p fiction.errors[:scanlator_ids].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:scanlator_ids].any? %>
+      </div>
+    </div>
+
+    <div>
+      <div class="relative mb-4">
+        <%= f.label :total_chapters, 'Кількість розділів', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.input :total_chapters, input_html: { class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+        <%= tag.p fiction.errors[:total_chapters].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:total_chapters].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :origin, 'Походження', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.select :origin, options_for_select(Fiction.origins.map { |key, value| value }, selected: Fiction.origins[f.object.origin]), {}, { class: "w-full bg-stone-200 text-stone-800 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500" } %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :genre_ids, 'Жанри', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'w-full bg-stone-200 text-stone-800 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500' } %>
+      </div>
+
+      <div class="relative mb-4">
+        <%= f.label :description, 'Опис', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <%= f.text_area :description, class: "w-full bg-stone-200 text-stone-800 placeholder-stone-500 border border-stone-300 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500", rows: 4, placeholder: 'Короткий опис твору' %>
+        <%= tag.p fiction.errors[:description].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:description].any? %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :cover, 'Обкладинка', class: 'block text-stone-700 text-lg font-semibold mb-2' %>
+        <div class="relative group">
+          <%= f.label :cover, class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 border-2 border-dashed border-stone-400 rounded-lg cursor-pointer hover:bg-stone-300 transition duration-300" do %>
+            <svg class="w-12 h-12 text-stone-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            <span class="text-stone-600">SVG, PNG, JPEG чи WebP</span>
+            <%= f.file_field :cover, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'text-stone-600 text-center text-sm' %>
+          <% end %>
+          <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:cover].any? %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= f.submit "Зберегти Налаштування", class: "cursor-pointer w-full bg-stone-700 text-stone-100 font-bold py-3 px-6 rounded-lg hover:bg-stone-600 transition duration-300 mt-8" %>
+</div>

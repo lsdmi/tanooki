@@ -11,10 +11,10 @@ module FictionsHelper
   }.freeze
 
   STATUS_COLORS = {
-    announced: 'text-[#FFFF00]', # Bright Yellow
-    dropped: 'text-[#FF1493]',   # Hot Pink (for a more neon "red")
-    ongoing: 'text-[#00BFFF]',   # Electric Blue
-    finished: 'text-[#39FF14]'   # Neon Green
+    announced: 'text-[#D4AF37]', # Metallic Gold
+    dropped: 'text-[#8B0000]',   # Dark Red
+    ongoing: 'text-[#4682B4]',   # Steel Blue
+    finished: 'text-[#2E8B57]'   # Sea Green
   }.freeze
 
   def format_view_count(count)

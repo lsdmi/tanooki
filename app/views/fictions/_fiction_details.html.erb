@@ -41,6 +41,6 @@
 
     <p class="text-stone-600 dark:text-stone-400 text-xs line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
 
-    <%= link_to "Читати", fiction_path(fiction), class: "inline-block bg-stone-700 dark:bg-stone-600 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 dark:hover:bg-stone-500 transition duration-300" %>
+    <%= link_to "Читати", fiction_path(fiction), data: { turbo: false }, class: "inline-block bg-stone-700 dark:bg-stone-600 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 dark:hover:bg-stone-500 transition duration-300" %>
   </div>
 </div>
