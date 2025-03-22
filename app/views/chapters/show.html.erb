@@ -14,6 +14,11 @@
 
         <!-- Comments Section -->
         <div class="w-full lg:w-1/3 mt-8 lg:mt-0">
+          <!-- Support Creator Section -->
+          <% if @chapter.fiction.scanlators.pluck(:bank_url).any? %>
+            <%= render 'fictions/support', fiction: @chapter.fiction %>
+          <% end %>
+
           <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
         </div>
       </div>

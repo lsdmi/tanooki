@@ -1,9 +1,20 @@
-<div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
+<div class="p-8 bg-gradient-to-br from-white to-stone-100 rounded-3xl shadow-xl relative overflow-hidden border border-stone-200">
+  <div class="absolute inset-0 opacity-40 bg-[url('/assets/abstract-pattern.svg')] bg-cover bg-center"></div>
   <% if publications.any? %>
     <%= turbo_frame_tag 'publications-list' do %>
-      <%= render 'users/dashboard/publications', publications: publications, pagy: pagy %>
+      <div class="relative z-10 space-y-12">
+        <div class="flex items-center justify-between">
+          <%= tag.h3 "Мій Блог", class: 'text-4xl font-extrabold text-stone-900 tracking-tight' %>
+          <div class="mt-6 text-center">
+            <%= link_to "Створити Звістку", new_publication_path, data: { turbo: false }, class: 'bg-gradient-to-r from-stone-900 to-stone-700 text-white font-semibold rounded-full px-8 py-3 text-sm shadow-lg hover:scale-105 transition-all' %>
+          </div>
+        </div>
+        <%= render 'users/dashboard/publications', publications: publications, pagy: pagy %>
+      </div>
     <% end %>
   <% else %>
-    <%= render 'publications/cta_create_publication' %>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center bg-white p-8 rounded-lg shadow-md">
+      <%= render 'publications/cta_create_publication' %>
+    </div>
   <% end %>
 </div>
