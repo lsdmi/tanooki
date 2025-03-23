@@ -1,4 +1,4 @@
-const FONT_CLASSES = ['font-oswald', 'font-georgia', 'font-helvetica', 'font-times'];
+const FONT_CLASSES = ['', 'font-oswald', 'font-georgia', 'font-helvetica', 'font-times'];
 
 const initializeFontToggler = () => {
   const content = document.getElementById('user-content');
@@ -21,16 +21,14 @@ const initializeFontToggler = () => {
 };
 
 const applyFontStyles = (element) => {
-  const currentStyle = element.getAttribute('style') || '';
-  const updatedStyle = currentStyle.replace(/font-family:[^;]+;?/i, '');
   const savedFont = localStorage.getItem('selected-font');
 
-  element.setAttribute('style', updatedStyle.trim());
+  FONT_CLASSES.filter((cls) => cls).forEach((cls) => element.classList.remove(cls));
 
-  element.classList.remove(...FONT_CLASSES);
-  element.classList.add(savedFont);
+  if (savedFont && savedFont !== '') {
+    element.classList.add(savedFont);
+  }
 
-  // Recursively apply styles to child elements
   Array.from(element.children).forEach((child) => applyFontStyles(child));
 };
 
