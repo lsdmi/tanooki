@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'
+      get :calendar, to: 'chapters_calendar#index'
       post :toggle_order
     end
   end

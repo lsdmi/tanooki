@@ -10,7 +10,7 @@
       Допоможемо створити та перекласти ще більше захоплюючих історій рідною мовою!
     </p>
     <div class="flex items-center space-x-4 relative z-10">
-      <%= link_to "Підтримати", format_url(fiction.scanlators.pluck(:bank_url).sample), class: "text-white bg-stone-700 dark:bg-stone-600 hover:bg-stone-800 dark:hover:bg-stone-500 focus:ring-4 focus:ring-stone-300 dark:focus:ring-stone-700 font-medium rounded-lg text-sm px-6 py-3 text-center transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" %>
+      <%= link_to "Підтримати", format_url(fiction.scanlators.pluck(:bank_url).compact_blank.sample), class: "text-white bg-stone-700 dark:bg-stone-600 hover:bg-stone-800 dark:hover:bg-stone-500 focus:ring-4 focus:ring-stone-300 dark:focus:ring-stone-700 font-medium rounded-lg text-sm px-6 py-3 text-center transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" %>
     </div>
   </div>
 </div>

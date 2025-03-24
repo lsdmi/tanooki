@@ -27,9 +27,9 @@
             </div>
 
             <!-- External Links -->
-            <% if @scanlator.bank_url.present? || @scanlator.extra_url.present? %>
+            <% if @scanlator.bank_url? || @scanlator.extra_url? %>
               <div class="flex space-x-3">
-                <% if @scanlator.bank_url.present? %>
+                <% if @scanlator.bank_url? %>
                   <%= link_to format_url(@scanlator.bank_url), class: "group relative w-12 h-12 bg-gradient-to-br from-stone-700 to-stone-900 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
                     <div class="absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                     <svg class="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@
                   <% end %>
                 <% end %>
 
-                <% if @scanlator.extra_url.present? %>
+                <% if @scanlator.extra_url? %>
                   <%= link_to format_url(@scanlator.extra_url), class: "group relative w-12 h-12 bg-gradient-to-br from-stone-500 to-stone-700 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
                     <div class="absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                     <svg class="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -55,10 +55,10 @@
 
     <!-- Main Content -->
     <div id="user-content"></div>
-    <div class="container mx-auto px-4 py-16 <%= @scanlator.description.present? ? 'max-w-5xl' : 'max-w-3xl' %>">
-      <div class="grid grid-cols-1 <%= @scanlator.description.present? ? 'lg:grid-cols-3 ' : 'lg:grid-cols-2' %> gap-16">
+    <div class="container mx-auto px-4 py-16 <%= @scanlator.description? ? 'max-w-5xl' : 'max-w-3xl' %>">
+      <div class="grid grid-cols-1 <%= @scanlator.description? ? 'lg:grid-cols-3 ' : 'lg:grid-cols-2' %> gap-16">
         <!-- Sidebar -->
-        <% if @scanlator.description.present? %>
+        <% if @scanlator.description? %>
           <div class="lg:col-span-1">
             <section class="bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 rounded-lg shadow-md p-4 sm:p-6 md:p-8 border border-stone-200 dark:border-stone-700 relative overflow-hidden">
               <div class="relative z-10">

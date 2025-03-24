@@ -19,12 +19,12 @@ class TrendingTagsServiceTest < ActiveSupport::TestCase
 
   test 'should return trending tags ordered by name' do
     result = @service.navbar
-    assert_equal [tags(:one).name, 'Блоги', 'Відео', 'Ранобе'], result.pluck(:name)
+    assert_equal [tags(:one).name, 'Блоги', 'Відео', 'Ранобе', 'Сховище'], result.pluck(:name)
   end
 
   test 'should return cached result if available' do
     Rails.cache.write('trending_tags', [tags(:one), tags(:two)])
     result = @service.navbar
-    assert_equal [tags(:one).name, 'Блоги', 'Відео', 'Ранобе'], result.pluck(:name)
+    assert_equal [tags(:one).name, 'Блоги', 'Відео', 'Ранобе', 'Сховище'], result.pluck(:name)
   end
 end

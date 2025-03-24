@@ -15,7 +15,7 @@
         <!-- Comments Section -->
         <div class="w-full lg:w-1/3 mt-8 lg:mt-0">
           <!-- Support Creator Section -->
-          <% if @chapter.fiction.scanlators.pluck(:bank_url).any? %>
+          <% if @chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
             <%= render 'fictions/support', fiction: @chapter.fiction %>
           <% end %>
 

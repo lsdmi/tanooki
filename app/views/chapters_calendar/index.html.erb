@@ -1,0 +1,108 @@
+<section class="tracking-widest bg-gradient-to-br from-stone-50 to-stone-200 min-h-screen flex flex-col items-center p-8 font-sans relative overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
+  <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95"></div>
+
+  <header class="w-full max-w-7xl mb-16 relative z-10 bg-stone-50 p-10 rounded-3xl shadow-xl">
+    <div class="relative">
+      <!-- Title Section -->
+      <h1 class="text-7xl font-black text-stone-800 mb-6 tracking-tighter relative z-10 drop-shadow-lg">
+        Горизонт Оновлень
+      </h1>
+
+      <!-- Subheading Section -->
+      <p class="text-2xl text-stone-600 font-light relative z-10">
+        <%= "#{l(Date.today - 2, format: '%B %d')} - #{l(Date.today, format: '%B %d')}, #{Date.today.year}" %>
+      </p>
+
+      <!-- Stylish Icon -->
+      <svg class="absolute top-10 right-10 w-24 h-24 text-stone-400 opacity-20 z-0" fill="currentColor" viewBox="0 0 64 64">
+        <!-- Large Sparkle -->
+        <path d="M32 4l4 12 12 4-12 4-4 12-4-12-12-4 12-4 4-12z"/>
+        <!-- Small Sparkles -->
+        <path d="M8 24l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
+        <path d="M56 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
+      </svg>
+    </div>
+  </header>
+
+  <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+    <% @fictions.each do |day_update| %>
+      <div class="border border-stone-200 bg-white bg-opacity-80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#000" stroke-width="2"/>
+            <path d="M50 10v80M10 50h80" stroke="#000" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <!-- Background pattern -->
+        <div class="absolute inset-0 z-0 opacity-5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <pattern id="subtle-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M0 0h40v40H0z" fill="none"/>
+              <path d="M0 20h40M20 0v40" stroke="#000" stroke-width="0.5"/>
+              <circle cx="20" cy="20" r="1" fill="#000"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#subtle-pattern)"/>
+          </svg>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+          <p class="text-md font-bold text-stone-500"><%= day_update[:date] %></p>
+          <h2 class="text-2xl font-extrabold text-stone-700"><%= day_update[:day] %></h2>
+        </div>
+
+        <div class="space-y-8">
+          <% day_update[:updates].each do |fiction_update| %>
+            <div class="event-card relative pl-6 py-2">
+              <div class="absolute left-0 top-0 h-full w-0.5 bg-stone-300"></div>
+              <div class="absolute left-[-5px] top-0 w-[10px] h-[10px] bg-stone-400 rounded-full"></div>
+              <div>
+                <span class="text-xs font-semibold text-stone-500 bg-stone-100 px-3 py-1 rounded-full inline-block mb-2 shadow-sm">
+                  <%= fiction_update[:chapters_created_at] %>
+                </span>
+                <h3 class="text-md font-bold text-stone-800 mb-1">
+                  <%= link_to fiction_update[:fiction_title], fiction_path(fiction_update[:fiction_slug]), class: 'text-stone-800 hover:text-stone-600 transition-colors duration-300' %>
+                </h3>
+                <p class="text-xs text-stone-500">
+                  <%= fiction_update[:chapters_count] %>
+                  <%= t('chapters_added', count: fiction_update[:chapters_count]) %>
+                </p>
+              </div>
+            </div>
+
+            <% if rand < 0.25 %>
+              <div class="mt-4 bg-stone-100 rounded-lg p-4 border border-stone-200 relative overflow-hidden">
+                <div class="absolute bottom-0 right-0 w-16 h-16 opacity-10">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <path d="M10 90l80-80M30 90l60-60M50 90l40-40M70 90l20-20" stroke="#000" stroke-width="2"/>
+                  </svg>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                  <%= image_tag fiction_update[:scanlator_avatar].present? ? url_for(fiction_update[:scanlator_avatar]): scanlator_avatar, alt: 'Translator Avatar', class: 'w-16 h-16 rounded-full object-cover' %>
+                  <div>
+                    <div>
+                      <%= link_to fiction_update[:scanlator_title], scanlator_path(fiction_update[:scanlator_slug]), class: 'text-stone-800 hover:text-stone-600 transition-colors duration-300 text-sm font-semibold' %>
+                    </div>
+                    <%= link_to 'Підтримка', format_url(fiction_update[:scanlator_bank_url]), class: 'text-stone-600 hover:text-stone-500 transition-colors duration-300 text-xs' if fiction_update[:scanlator_bank_url].present? %>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <p class="text-xs text-stone-600">
+                    <b>Завантажено:</b>
+                    <%= link_to fiction_update[:latest_chapter_title], chapter_path(fiction_update[:latest_chapter_slug]), class: 'hover:underline' %>
+                  </p>
+                  <p class="text-xs text-stone-600"><b>Переглядів:</b> <%= format_view_count(fiction_update[:fiction_views]) %></p>
+                  <%= tag.p class: 'text-xs text-stone-600' do %>
+                    <b>Жанри:</b> <%= fiction_update[:fiction_genres].to_sentence %>
+                  <% end if fiction_update[:fiction_genres].present?  %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
