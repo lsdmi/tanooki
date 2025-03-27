@@ -12,7 +12,7 @@ class FictionUpdatesPresenter
 
   def last_three_days_updates
     ukraine_time_now = Time.current.in_time_zone(UKRAINE_TIME_ZONE)
-    start_date = 7.days.ago(ukraine_time_now).beginning_of_day
+    start_date = 2.days.ago(ukraine_time_now).beginning_of_day
     end_date = ukraine_time_now.end_of_day
 
     chapters = Chapter.joins(:fiction)
