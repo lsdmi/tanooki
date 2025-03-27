@@ -29,16 +29,7 @@ job_type :runner, "cd :path && :bundle_command rails runner -e :environment ':ta
 case @environment
 when 'production'
   every 12.hours do
-    runner 'puts Time.now'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
-  end
-
-  every 1.day, at: '4am' do
-    runner 'ChaptersTelegramJob.perform_now'
-  end
-
-  every 1.day, at: '4pm' do
-    runner 'ChaptersTelegramJob.perform_now'
   end
 
   every 3.days, at: '2pm' do
@@ -50,9 +41,7 @@ when 'production'
   end
 
   every :sunday, at: '12pm' do
-    runner 'puts "Weekly job started"'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'
     runner 'Youtube::TelegramJob.perform_now'
-    runner 'puts "Weekly job finished"'
   end
 end

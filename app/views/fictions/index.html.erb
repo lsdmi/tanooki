@@ -2,11 +2,22 @@
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
   <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95"></div>
 
-  <div class="max-w-5xl mx-auto px-4 py-8 z-10 relative">
-    <!-- Welcome Banner -->
-    <div class="rounded-lg shadow-lg p-4 lg:p-8 mb-8 lg:mb-12 text-center">
-      <h1 class="text-2xl lg:text-4xl font-extrabold text-stone-900 tracking-wide">Ласкаво просимо до Баки!</h1>
-      <p class="text-stone-700 mt-2 lg:mt-4 text-base lg:text-lg">Відкрийте для себе світ ранобе українською!</p>
+  <div class="max-w-5xl mx-auto px-4 pb-8 z-10 relative">
+    <div class="p-4 sm:p-8 mt-8 mb-4">
+      <div class="flex flex-row items-center justify-between">
+        <div class="text-center sm:text-left mb-8 sm:mb-0 w-full">
+          <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-stone-800 tracking-tight leading-none mb-4">
+            Світ Ранобе<br><span class="text-stone-600">Українською</span>
+          </h1>
+          <p class="text-stone-700 text-lg sm:text-xl lg:text-2xl font-light">Відкрийте нові горизонти літератури!</p>
+          <div class="mt-4 md:mt-8">
+            <%= link_to 'Календар Оновлень', calendar_fictions_path, class: 'inline-block bg-stone-800 text-stone-100 font-bold py-3 px-6 rounded-xl hover:bg-stone-700 transition duration-300' %>
+          </div>
+        </div>
+        <div class="max-h-96">
+          <%= image_tag 'reader.webp', alt: 'reader', class: 'max-h-96 object-cover', height: 384, width: 384  %>
+        </div>
+      </div>
     </div>
 
     <!-- First Section: Rising and Cheering Fictions -->

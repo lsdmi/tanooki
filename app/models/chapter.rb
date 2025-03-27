@@ -31,7 +31,6 @@ class Chapter < ApplicationRecord
   scope :ordered_by_volume_and_number, lambda {
     order(Arel.sql('COALESCE(volume_number, 0), number, chapters.created_at'))
   }
-  scope :recent, -> { where(created_at: 12.hours.ago..) }
 
   def author
     fiction.author

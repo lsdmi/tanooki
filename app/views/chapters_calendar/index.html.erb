@@ -2,28 +2,21 @@
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
   <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95"></div>
 
-  <header class="w-full max-w-7xl mb-16 relative z-10 bg-stone-50 p-10 rounded-3xl shadow-xl">
-    <div class="relative">
-      <!-- Title Section -->
-      <h1 class="text-7xl font-black text-stone-800 mb-6 tracking-tighter relative z-10 drop-shadow-lg">
-        Горизонт Оновлень
-      </h1>
-
-      <!-- Subheading Section -->
-      <p class="text-2xl text-stone-600 font-light relative z-10">
+  <div class="max-w-5xl mx-auto px-4 pb-8 z-10 relative">
+    <div class="p-4 sm:p-8 mb-4">
+      <div class="flex flex-row items-center justify-center">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-stone-800 tracking-tight leading-none mr-4">
+          Календар<br><span class="text-stone-600">Оновлень</span>
+        </h1>
+        <div class="max-h-64">
+          <%= image_tag 'calendar.webp', alt: 'reader', class: 'max-h-64 object-cover', height: 128, width: 128 %>
+        </div>
+      </div>
+      <p class="text-stone-700 text-lg sm:text-xl lg:text-2xl font-light mt-4 text-center">
         <%= "#{l(Date.today - 2, format: '%B %d')} - #{l(Date.today, format: '%B %d')}, #{Date.today.year}" %>
       </p>
-
-      <!-- Stylish Icon -->
-      <svg class="absolute top-10 right-10 w-24 h-24 text-stone-400 opacity-20 z-0" fill="currentColor" viewBox="0 0 64 64">
-        <!-- Large Sparkle -->
-        <path d="M32 4l4 12 12 4-12 4-4 12-4-12-12-4 12-4 4-12z"/>
-        <!-- Small Sparkles -->
-        <path d="M8 24l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
-        <path d="M56 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
-      </svg>
     </div>
-  </header>
+  </div>
 
   <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
     <% @fictions.each do |day_update| %>

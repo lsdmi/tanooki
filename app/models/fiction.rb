@@ -62,13 +62,6 @@ class Fiction < ApplicationRecord
   }
 
   scope :recent, -> { where(created_at: 3.days.ago..) }
-  scope :recent_chapters, lambda {
-    joins(:chapters)
-      .joins(:readings)
-      .where('chapters.created_at >= ?', 12.hours.ago)
-      .group('fictions.id')
-      .order('COUNT(reading_progresses.fiction_id) DESC')
-  }
 
   def search_data
     {
