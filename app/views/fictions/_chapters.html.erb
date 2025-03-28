@@ -4,7 +4,7 @@
       <h3 class="text-xl sm:text-2xl font-bold text-stone-800">Розділи</h3>
     </div>
     <div class="flex items-center space-x-2 sm:space-x-4">
-      <%= button_to toggle_order_fictions_path(id: fiction, order: order, translator: @show_presenter.translator),
+      <%= button_to toggle_order_fictions_path(id: fiction, order:, translator:),
                     data: { turbo_stream: "", "turbo-method": :post },
                     id: 'toggle-fictions-order',
                     class: 'bg-stone-100 hover:bg-stone-200 text-stone-700 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group' do %>
@@ -18,7 +18,7 @@
   <!-- Translator Tabs -->
   <%= turbo_frame_tag "chapter-list" do %>
     <div data-controller="flowbite" class="mt-4 sm:mt-6">
-      <%= render 'chapter_list', fiction: fiction, reading_progress: reading_progress, before_next_chapter: before_next_chapter, translator: @show_presenter.translator, order: order %>
+      <%= render 'chapter_list', fiction:, reading_progress:, before_next_chapter:, translator:, order: %>
     </div>
   <% end %>
 </section>

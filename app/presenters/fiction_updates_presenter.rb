@@ -15,7 +15,7 @@ class FictionUpdatesPresenter
     start_date = 2.days.ago(ukraine_time_now).beginning_of_day
     end_date = ukraine_time_now.end_of_day
 
-    chapters = Chapter.joins(:fiction)
+    chapters = Chapter.includes([fiction: %i[scanlators genres]])
                       .where(fictions: { id: @fictions.pluck(:id) })
                       .where(created_at: start_date..end_date)
                       .order(:created_at)
@@ -33,14 +33,9 @@ class FictionUpdatesPresenter
           {
             chapters_count: fiction_chapters.count,
             chapters_created_at: fiction_chapters.min_by(&:created_at).created_at.in_time_zone(UKRAINE_TIME_ZONE).strftime('%H:%M'),
-            fiction_cover: fiction.cover,
             fiction_genres: fiction.genres.sample(3).pluck(:name),
             fiction_slug: fiction_slug,
             fiction_title: fiction.title,
-            fiction_views: fiction.views,
-            latest_chapter_slug: fiction_chapters.last.slug,
-            latest_chapter_title: fiction_chapters.last.display_title_no_volume,
-            scanlator_avatar: scanlator.avatar,
             scanlator_bank_url: scanlator.bank_url.presence,
             scanlator_slug: scanlator.slug,
             scanlator_title: scanlator.title

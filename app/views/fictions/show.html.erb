@@ -13,7 +13,7 @@
         <section class="bg-stone-100 rounded-lg shadow-md p-6">
           <% if @fiction.chapters.any? %>
             <%= turbo_frame_tag 'sort-chapters' do %>
-              <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order %>
+              <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order, translator: @show_presenter.translator %>
             <% end %>
           <% else %>
             <%= render 'first_chapter_cta', fiction: @fiction %>

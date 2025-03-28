@@ -2,6 +2,14 @@
 
 class ChaptersCalendarController < ApplicationController
   def index
-    @fictions = FictionUpdatesPresenter.new.last_three_days_updates
+    @fictions = cached_fictions
+  end
+
+  private
+
+  def cached_fictions
+    Rails.cache.fetch('cached_fictions', expires_in: 15.minutes) do
+      FictionUpdatesPresenter.new.last_three_days_updates
+    end
   end
 end
