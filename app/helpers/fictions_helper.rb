@@ -7,7 +7,7 @@ module FictionsHelper
     'ЛГБТ' => 'lgbt', 'Містика' => 'mystic', 'Повсякденність' => 'lifeslice', 'Пригоди' => 'adventure',
     'Психологія' => 'psychological', 'Романтика' => 'romance', 'Спорт' => 'sport', 'Сюаньхвань' => 'xuanhuan',
     'Сянься' => 'xianxia', 'Трагедія' => 'tragedy', 'Трилер' => 'thriller', 'Фантастика' => 'scifi',
-    'Фентезі' => 'fantasy', 'Школа' => 'school'
+    'Фентезі' => 'fantasy', 'Школа' => 'school', 'Омегаверс' => 'omegaverse', 'Фанфік' => 'fanfiction'
   }.freeze
 
   STATUS_COLORS = {
