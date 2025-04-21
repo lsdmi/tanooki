@@ -56,7 +56,7 @@ class FictionShowPresenter
   def sorted_chapters_locals
     {
       fiction: @fiction,
-      translator: translator.join('-'),
+      translator:,
       reading_progress:,
       before_next_chapter:,
       order:
