@@ -96,6 +96,7 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
+    bcrypt_pbkdf (1.1.1-arm64-darwin)
     bcrypt_pbkdf (1.1.1-x86_64-darwin)
     benchmark (0.4.0)
     bigdecimal (3.1.9)
@@ -298,6 +299,8 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
+    nokogiri (1.18.6-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.6-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.6-x86_64-linux-gnu)
@@ -483,6 +486,7 @@ GEM
     tailwindcss-rails (3.0.0)
       railties (>= 7.0.0)
       tailwindcss-ruby
+    tailwindcss-ruby (3.4.14-arm64-darwin)
     tailwindcss-ruby (3.4.14-x86_64-darwin)
     tailwindcss-ruby (3.4.14-x86_64-linux)
     telegram-bot-ruby (2.0.0)
@@ -532,6 +536,7 @@ GEM
     zeitwerk (2.7.2)
 
 PLATFORMS
+  arm64-darwin-24
   x86_64-darwin-21
   x86_64-linux
 
