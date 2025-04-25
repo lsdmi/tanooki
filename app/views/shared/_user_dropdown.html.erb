@@ -1,34 +1,58 @@
-<button type="button" data-dropdown-toggle="dropdown" class="inline-flex items-center text-gray-900 dark:text-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-4 py-2 lg:py-2.5 mr-2 md:mr-3 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-  <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-10 h-10 rounded-full' %>
-</button>
-<!-- Dropdown -->
-<div class="hidden z-50 my-4 w-48 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700" id="dropdown">
-  <ul class="py-1" role="none">
-    <li>
-      <div class="block py-2 px-4 text-sm text-gray-700 dark:text-gray-400">
-        <%= tag.span current_user.name, class: "font-semibold" %>
-        <%= tag.span current_user.email, class: "font-light truncate" %>
-      </div>
-    </li>
-  </ul>
-  <ul class="py-1" role="none">
-    <li><%= link_to "Майстерня", blogs_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-  </ul>
-  <ul class="py-1" role="none">
-    <li><%= link_to "Читальня", library_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-  </ul>
-    <% if current_user.admin? %>
-      <ul class="py-1" role="none">
-        <li><%= link_to "Жанри", admin_genres_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-        <li><%= link_to "Звістки", admin_tales_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-        <li><%= link_to "Оголошення", admin_advertisements_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-        <li><%= link_to "Покемони", admin_pokemons_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-        <li><%= link_to "Портретики", admin_avatars_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white0" %></li>
-        <li><%= link_to "Теги", admin_tags_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
-      </ul>
-    <% end %>
-    <ul class="py-1" role="none">
-      <li><%= link_to "Вийти", destroy_user_session_path, class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" %></li>
+<div class="relative shrink-0">
+  <button id="accountDropdownButton2" data-dropdown-toggle="accountDropdown2" type="button" class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-200 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+    <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-6 h-6 rounded-full me-1.5 rounded-full' %>
+  </button>
+
+  <div id="accountDropdown2" class="z-10 hidden w-52 divide-y divide-gray-200 overflow-hidden overflow-y-auto rounded-lg bg-gray-200 antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+    <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+      <li>
+        <%= link_to library_path, class: 'group flex items-center gap-2 rounded-md px-3 py-2 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600' do %>
+          <svg class="h-4 w-4 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>library</title> <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd"> <g id="Combined-Shape" fill="currentColor" transform="translate(42.666667, 85.333333)"> 
+            <path d="M3.55271368e-14,298.666667 L426.666667,298.666667 L426.666667,341.333333 L3.55271368e-14,341.333333 L3.55271368e-14,298.666667 Z M42.6666667,1.42108547e-14 L106.666667,1.42108547e-14 L106.666667,277.333333 L42.6666667,277.333333 L42.6666667,1.42108547e-14 Z M128,21.3333333 L192,21.3333333 L192,277.333333 L128,277.333333 L128,21.3333333 Z M288.933802,36.9522088 L351.961498,25.8387255 L399.909944,277.333333 L330.641827,277.70319 L288.933802,36.9522088 Z M213.333333,21.3333333 L277.333333,21.3333333 L277.333333,277.333333 L213.333333,277.333333 L213.333333,21.3333333 Z"> </path> </g> </g> </g>
+          </svg>
+          Читальня
+        <% end %>
+      </li>
     </ul>
-  </ul>
+
+    <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+      <% menu_items = [
+        { path: blogs_path, action: %w[blogs show], controller: 'blogs', icon: "M3 5h18M3 12h18M3 19h18", label: 'Блог' },
+        { path: scanlators_path, action: [], controller: 'scanlators', icon: "M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z", label: 'Команди' },
+        { path: readings_path, action: %w[readings], controller: 'fictions', icon: "M12 20h9M16.5 3.5L20 7l-8.5 8.5-4 1 1-4L16.5 3.5z", label: 'Писальня' },
+        { path: pokemons_path, action: %w[pokemons], controller: '', icon: "M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 8a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM2 12h4m12 0h4", label: 'Покемони' },
+        { path: avatars_path, action: %w[avatars], controller: '', icon: "M12 14c3.31 0 6-2.69 6-6S15.31 2 12 2 6 4.69 6 8s2.69 6 6 6zm0 2c-4.42 0-8 3.58-8 8h16c0-4.42-3.58-8-8-8z", label: 'Профіль' },
+        { path: notifications_path, action: %w[notifications], controller: '', icon: "M12 5.4V3m0 2.4a5.3 5.3 0 0 1 5.1 5.3v1.8c0 2.4 1.9 3 1.9 4.2 0 .6 0 1.3-.5 1.3h-13c-.5 0-.5-.7-.5-1.3 0-1.2 1.9-1.8 1.9-4.2v-1.8A5.3 5.3 0 0 1 12 5.4ZM8.7 18c.1.9.3 1.5 1 2.1a3.5 3.5 0 0 0 4.6 0c.7-.6 1.3-1.2 1.4-2.1h-7Z", label: 'Сповіщення' }
+      ] %>
+
+
+      <% menu_items.each do |item| %>
+        <%= tag.li do %>
+          <%= link_to item[:path], remote: true, class: 'group flex items-center gap-2 rounded-md px-3 py-2 text-gray-900 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600' do %>
+            <svg class="h-4 w-4 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= item[:icon] %>"/>
+            </svg>
+            <%= item[:label] %>
+
+            <% if item[:path] == notifications_path && show_comment_status? %>
+              <svg class="h-5 w-5 text-red-600 hover:bg-red-50 dark:text-red-500 dark:hover:bg-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+              </svg>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+      <li>
+        <%= link_to destroy_user_session_path, class: "group flex items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-500 dark:hover:bg-gray-600" do %>
+          <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2" />
+          </svg>
+          Вийти
+        <% end %>
+      </li>
+    </ul>
+  </div>
 </div>

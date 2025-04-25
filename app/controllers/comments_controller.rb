@@ -39,10 +39,6 @@ class CommentsController < ApplicationController
     render 'complete_update'
   end
 
-  def dropdown
-    current_user.update(latest_read_comment_id: latest_comments.first.id)
-  end
-
   private
 
   def set_comment

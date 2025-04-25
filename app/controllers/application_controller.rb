@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
-  helper_method :latest_comments, :trending_tags, :trending_tags_footer
+  helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
 
   before_action :pokemon_appearance, only: %i[index show]
 
@@ -32,11 +32,7 @@ class ApplicationController < ActionController::Base
   end
 
   def trending_tags
-    TrendingTagsService.new.navbar
-  end
-
-  def trending_tags_footer
-    TrendingTagsService.new.footer
+    TrendingTagsService.new.tags
   end
 
   def track_visit
@@ -66,5 +62,23 @@ class ApplicationController < ActionController::Base
 
   def load_advertisement
     @advertisement = Advertisement.includes(%i[cover_attachment poster_attachment]).enabled.sample
+  end
+
+  def recent_ranobe
+    Rails.cache.fetch('recent_ranobe', expires_in: 1.hour) do
+      ReadingProgress.includes(:fiction).order(:updated_at).last(3)
+    end
+  end
+
+  def popular_blogs
+    Rails.cache.fetch('popular_blogs', expires_in: 1.hour) do
+      Publication.highlights.last_month.order(views: :desc).limit(2)
+    end
+  end
+
+  def popular_videos
+    Rails.cache.fetch('popular_videos', expires_in: 1.hour) do
+      YoutubeVideo.last_week.order(views: :desc).limit(2)
+    end
   end
 end

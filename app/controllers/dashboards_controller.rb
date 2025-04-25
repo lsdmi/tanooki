@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DashboardsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :latest_comments
 
   def notifications
     raise ActionController::RoutingError, 'Not Found' if latest_comments.empty?

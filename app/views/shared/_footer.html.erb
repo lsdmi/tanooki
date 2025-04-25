@@ -7,7 +7,7 @@
         </a>
         <p class="my-4 font-light text-gray-400">baka.in.ua - українська аніме-платформа, де зібрано сотні блогів, статей, ранобе та веб-новел, а також відео вітчизняних ютуберів!</p>
       </div>
-      <% trending_tags_footer.in_groups_of(4).each_with_index do |group, index| %>
+      <% trending_tags.in_groups_of(4).each_with_index do |group, index| %>
         <div class="lg:mx-auto">
           <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
           <ul class="text-gray-400">
