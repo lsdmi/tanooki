@@ -1,24 +1,26 @@
 <div class="mb-8 mx-4">
-  <section class="bg-no-repeat bg-cover bg-center bg-gray-700 bg-blend-multiply rounded-lg" style="background-image: url(<%= asset_path('writer.webp') %>);">
+  <section class="bg-no-repeat bg-cover bg-center bg-gray-700 dark:bg-gray-900 bg-blend-multiply rounded-lg" style="background-image: url(<%= asset_path('writer.webp') %>);">
     <div class="pt-8 px-4 mx-auto max-w-screen-xl sm:pt-16 sm:pb-4 lg:px-6">
       <div class="mx-auto max-w-screen-sm text-center">
         <%= link_to 'Новини та Блоги', tales_path, class: 'text-3xl lg:text-4xl tracking-tight font-extrabold text-white hover:underline' %>
-        <p class="mt-4 mb-8 lg:mb-16 font-light text-gray-400 sm:text-xl">Відкрий для себе яскравий світ аніме із нашим захоплюючим розділом новин та блогів.</p>
+        <p class="mt-4 mb-8 lg:mb-16 font-light text-gray-400 dark:text-gray-300 sm:text-xl">
+          Відкрий для себе яскравий світ аніме із нашим захоплюючим розділом новин та блогів.
+        </p>
       </div>
-      <div class="grid gap-8 mb-12 lg:divide-x lg:divide-gray-700 lg:grid-cols-3">
+      <div class="grid gap-8 mb-12 lg:divide-x lg:divide-gray-700 dark:lg:divide-gray-800 lg:grid-cols-3">
         <div>
           <% top_tales.each do |top_tale| %>
             <article>
               <%= link_to tale_path(top_tale) do %>
                 <div class="float-left relative mb-5">
                   <%= image_tag url_for(top_tale.cover), alt: top_tale.cover.blob.filename.to_s, class: "rounded-lg" %>
-                  <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
+                  <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
                 </div>
               <% end %>
               <%= tag.h2 class: 'my-2 text-2xl font-bold tracking-tight text-white hover:underline' do %>
                 <%= link_to top_tale.title, tale_path(top_tale) %>
               <% end %>
-              <%= tag.p punch(top_tale.description.to_plain_text), class: 'mb-4 font-light text-gray-300' %>
+              <%= tag.p punch(top_tale.description.to_plain_text), class: 'mb-4 font-light text-gray-300 dark:text-gray-200' %>
             </article>
           <% end %>
         </div>

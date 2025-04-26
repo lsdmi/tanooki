@@ -4,12 +4,15 @@
       <%= render 'root/hero' %>
     </div>
     <div class="my-4 mx-5">
-      <p class="uppercase leading-5 text-gray-900 text-4xl font-extrabold">
-      Популярне <span class="text-emerald-600">ранобе</span></p>
+      <p class="uppercase leading-5 text-gray-900 dark:text-gray-100 text-4xl font-extrabold">
+        Популярне <span class="text-emerald-600 dark:text-emerald-400">ранобе</span>
+      </p>
     </div>
     <div class="mb-4 mx-5 flex">
-      <p class="leading-5 text-gray-600 text-base font-light flex-1">Цього місяця читачі обирають такі тайтли:</p>
-      <%= link_to fictions_path, class: 'inline-flex text-emerald-700 text-base hover:text-emerald-600 font-light hover:underline' do %>
+      <p class="leading-5 text-gray-600 dark:text-gray-300 text-base font-light flex-1">
+        Цього місяця читачі обирають такі тайтли:
+      </p>
+      <%= link_to fictions_path, class: 'inline-flex text-emerald-700 dark:text-emerald-400 text-base hover:text-emerald-600 dark:hover:text-emerald-300 font-light hover:underline' do %>
         Усі ранобе
         <svg class="w-4 h-4 mt-2 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"/>
@@ -19,7 +22,7 @@
     <div class="mt-4 mx-4">
       <%= render 'root/fictions', fictions: @top_fictions.limit(10) %>
     </div>
-    <div class="my-4 w-[95%] mx-auto">
+    <div class="my-4 w-[95%] mx-auto" id="user-content">
       <%= render 'shared/ads', advertisement: @advertisement %>
     </div>
     <div class="flex mb-2 mx-2">
@@ -27,8 +30,8 @@
         <%= image_tag 'youtube.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'youtube icon', width: '80', height: '80' %>
       </div>
       <div class="flex flex-col justify-center ml-2 sm:ml-0 my-2 sm:my-0">
-        <p class="uppercase leading-5 text-gray-900 text-4xl font-extrabold">
-          Краще на <span class="text-red-600">YouTube</span>
+        <p class="uppercase leading-5 text-gray-900 dark:text-gray-100 text-4xl font-extrabold">
+          Краще на <span class="text-red-600 dark:text-red-400">YouTube</span>
         </p>
       </div>
     </div>
@@ -36,11 +39,11 @@
       <%= render 'root/videos', videos: @videos %>
     </div>
     <div class="mb-4 flex text-center justify-center">
-      <%= link_to 'Більше відео', youtube_videos_path, class: 'uppercase w-4/5 text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
+      <%= link_to 'Більше відео', youtube_videos_path, class: 'uppercase w-4/5 text-white text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl bg-gradient-to-r from-red-400 via-red-500 to-red-600 dark:from-red-600 dark:via-red-700 dark:to-red-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm py-2.5 mb-8 mt-4 lg:mt-0' %>
     </div>
     <div class="my-4 w-[95%] mx-auto">
       <%= render 'shared/ads', advertisement: @pokemon_ad if @pokemon_ad.present? %>
     </div>
     <%= render 'root/tales', tales: @tales, top_tales: @top_tales %>
   </div>
-</div>
+</section>

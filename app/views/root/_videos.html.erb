@@ -9,16 +9,16 @@
           <div class="w-full space-y-6 lg:max-w-lg shrink-0">
             <div class="space-y-3">
               <div class="line-clamp-1 sm:mb-1 md:mb-2">
-                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'text-rose-700 text-sm sm:text-lg md:text-xl font-light hover:underline', target: '_blank' %>
-                <%= tag.span "∘", class: 'text-base sm:text-lg md:text-xl font-light' %>
-                <%= tag.span l(video.published_at, format: :short).downcase, class: 'text-sm sm:text-base font-light' %>
+                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'text-rose-700 dark:text-rose-400 text-sm sm:text-lg md:text-xl font-light hover:underline', target: '_blank' %>
+                <%= tag.span "∘", class: 'text-base sm:text-lg md:text-xl font-light text-gray-600 dark:text-gray-400' %>
+                <%= tag.span l(video.published_at, format: :short).downcase, class: 'text-sm sm:text-base font-light text-gray-500 dark:text-gray-400' %>
               </div>
               <%= link_to youtube_video_path(video), class: 'mb-2' do %>
-                <%= tag.h3 video.title, class: 'text-2xl font-bold leading-tight text-gray-900 sm:text-3xl md:text-4xl hover:underline' %>
+                <%= tag.h3 video.title, class: 'text-2xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:text-3xl md:text-4xl hover:underline' %>
               <% end %>
               <%= tag.div class: 'w-full line-clamp-4' do %>
                 <% video.tags.split(', ').each do |video_tag| %>
-                  <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: 'bg-rose-100 text-rose-700 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
+                  <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 dark:hover:bg-rose-700 dark:hover:text-white inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
                 <% end %>
               <% end if video.tags? %>
             </div>
