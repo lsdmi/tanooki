@@ -17,6 +17,15 @@
   --ss-border-radius: 4px
 }
 
+.dark {
+  --ss-primary-color: #2563eb; /* Darker blue */
+  --ss-bg-color: #1f2937; /* Dark gray */
+  --ss-font-color: #d1d5db; /* Light gray */
+  --ss-font-placeholder-color: #9ca3af; /* Medium gray */
+  --ss-disabled-color: #4b5563;
+  --ss-border-color: #4b5563;
+}
+
 @keyframes ss-valueIn {
   0% {
       transform: scale(0);
@@ -47,6 +56,9 @@
 
 .ss-main {
   display: flex;
+  background-color: var(--ss-bg-color);
+  color: var(--ss-font-color);
+  border: 1px solid var(--ss-border-color);
 }
 
 .ss-main:focus {

@@ -52,7 +52,7 @@
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen">
     <div class="relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
-      <div class="absolute inset-0 bg-white opacity-95 dark:bg-gray-900 dark:opacity-100"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
       <%= render "shared/navbar" %>
       <%= turbo_frame_tag 'application-notice' do %>

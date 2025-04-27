@@ -4,5 +4,5 @@
   <% end %>
 <% end %>
 <%= turbo_stream.update "comment-content-#{@comment.parent_id}" do %>
-  <%= tag.p @comment.parent.content, class: "text-stone-600 dark:text-stone-300 text-sm leading-relaxed pr-4 pb-2" %>
+  <%= tag.p @comment.parent.content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
 <% end %>

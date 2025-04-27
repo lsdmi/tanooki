@@ -43,6 +43,7 @@ module ApplicationHelper
     (controller_name == 'tales' && action_name == 'show') ||
       (controller_name == 'chapters' && action_name == 'show') ||
       (controller_name == 'scanlators' && action_name == 'show') ||
-      (controller_name == 'chapters_calendar') || (controller_name == 'home')
+      (controller_name == 'chapters_calendar') || (controller_name == 'home') ||
+      (controller_name == 'fictions')
   end
 end

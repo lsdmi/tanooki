@@ -1,10 +1,10 @@
 <% if current_user.nil? %>
-  <section class="bg-gradient-to-br from-white to-stone-100 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-stone-800 mb-4 relative z-10">Приєднайтеся до спільноти!</h3>
-    <p class="text-stone-600 mb-6 relative z-10">Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.</p>
+  <section class="bg-gradient-to-br from-white dark:from-gray-900 to-stone-100 dark:to-gray-800 rounded-lg shadow-md p-8 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200 dark:bg-gray-700 rounded-full transform translate-x-16 -translate-y-16"></div>
+    <h3 class="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4 relative z-10">Приєднайтеся до спільноти!</h3>
+    <p class="text-stone-600 dark:text-stone-400 mb-6 relative z-10">Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.</p>
     <div class="flex justify-start relative z-10">
-      <%= link_to register_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-stone-600 hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500 transition-all duration-300 transform hover:scale-105" do %>
+      <%= link_to register_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-stone-600 dark:bg-gray-700 hover:bg-stone-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500 transition-all duration-300 transform hover:scale-105" do %>
         <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
         </svg>
@@ -13,20 +13,20 @@
     </div>
   </section>
 <% elsif unique_chapters(fiction.chapters).size >= fiction.total_chapters && fiction.status.to_sym == :finished %>
-  <section class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-green-800 mb-4 relative z-10">Ранобе завершено!</h3>
-    <p class="text-green-700 relative z-10">Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!</p>
+  <section class="bg-gradient-to-br from-green-50 dark:from-green-900 to-green-100 dark:to-green-800 rounded-lg shadow-md p-8 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 dark:bg-green-700 rounded-full transform translate-x-16 -translate-y-16"></div>
+    <h3 class="text-xl font-bold text-green-800 dark:text-green-200 mb-4 relative z-10">Ранобе завершено!</h3>
+    <p class="text-green-700 dark:text-green-300 relative z-10">Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!</p>
   </section>
 <% else %>
-  <section class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-yellow-800 mb-4 relative z-10">Додайте нові розділи!</h3>
-    <p class="text-yellow-700 mb-6 relative z-10">Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!</p>
+  <section class="bg-gradient-to-br from-yellow-50 dark:from-yellow-900 to-yellow-100 dark:to-yellow-800 rounded-lg shadow-md p-8 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 dark:bg-yellow-700 rounded-full transform translate-x-16 -translate-y-16"></div>
+    <h3 class="text-xl font-bold text-yellow-800 dark:text-yellow-200 mb-4 relative z-10">Додайте нові розділи!</h3>
+    <p class="text-yellow-700 dark:text-yellow-300 mb-6 relative z-10">Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!</p>
     <div class="flex justify-start relative z-10">
-      <%= link_to new_chapter_path(fiction: fiction), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-300 transform hover:scale-105" do %>
+      <%= link_to new_chapter_path(fiction: fiction), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-yellow-600 dark:bg-yellow-700 hover:bg-yellow-700 dark:hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-300 transform hover:scale-105" do %>
         <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 010-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
         Додати розділ
       <% end %>

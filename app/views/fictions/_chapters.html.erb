@@ -1,13 +1,13 @@
 <section class="">
   <div class="flex justify-between items-center mb-4 sm:mb-6">
     <div class="flex-shrink-0">
-      <h3 class="text-xl sm:text-2xl font-bold text-stone-800">Розділи</h3>
+      <h3 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200">Розділи</h3>
     </div>
     <div class="flex items-center space-x-2 sm:space-x-4">
       <%= button_to toggle_order_fictions_path(id: fiction, order:, translator:),
                     data: { turbo_stream: "", "turbo-method": :post },
                     id: 'toggle-fictions-order',
-                    class: 'bg-stone-100 hover:bg-stone-200 text-stone-700 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group' do %>
+                    class: 'bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group' do %>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
         </svg>

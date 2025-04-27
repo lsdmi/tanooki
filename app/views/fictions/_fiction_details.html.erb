@@ -1,4 +1,4 @@
-<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active dark:bg-gray-800">
+<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active bg-white dark:bg-gray-800 rounded-lg">
   <div class="relative sm:h-64">
     <div class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
       <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
   <div class="col-span-2 md:col-span-3 lg:col-span-2 my-1">
     <div>
       <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
-        <h3 class="text-base lg:text-lg font-semibold text-stone-800 dark:text-stone-200 line-clamp-1 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300">
+        <h3 class="text-base lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-stone-600 dark:group-hover:text-gray-400 transition-colors duration-300">
           <%= fiction.title %>
         </h3>
       <% end %>
@@ -30,17 +30,17 @@
       <% if fiction.genres.any? %>
         <div class="mt-2 flex flex-wrap">
           <% fiction.genres.first(3).each do |genre| %>
-            <%= tag.span genre.name, class: 'text-xs bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 py-1 m-1 rounded-full' %>
+            <%= tag.span genre.name, class: 'text-xs bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 py-1 m-1 rounded-full' %>
           <% end %>
           <% if fiction.genres.size > 3 %>
-            <%= tag.span "+#{fiction.genres.size - 3}", class: 'text-xs bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 py-1 m-1 rounded-full' %>
+            <%= tag.span "+#{fiction.genres.size - 3}", class: 'text-xs bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 py-1 m-1 rounded-full' %>
           <% end %>
         </div>
       <% end %>
     </div>
 
-    <p class="text-stone-600 dark:text-stone-400 text-xs line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
+    <p class="text-stone-600 dark:text-gray-400 text-xs line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
 
-    <%= link_to "Читати", fiction_path(fiction), data: { turbo: false }, class: "inline-block bg-stone-700 dark:bg-stone-600 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 dark:hover:bg-stone-500 transition duration-300" %>
+    <%= link_to "Читати", fiction_path(fiction), data: { turbo: false }, class: "inline-block bg-stone-700 dark:bg-gray-600 text-white text-sm font-semibold px-3 py-1 lg:px-4 lg:py-2 rounded-md hover:bg-stone-600 dark:hover:bg-gray-500 transition duration-300" %>
   </div>
 </div>

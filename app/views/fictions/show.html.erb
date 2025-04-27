@@ -1,16 +1,16 @@
-<div class="bg-stone-50 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <div class="absolute inset-0 bg-stone-50 bg-opacity-95"></div>
+<div class="bg-stone-50 dark:bg-gray-900 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+  <div class="absolute inset-0 bg-stone-50 dark:bg-gray-900 bg-opacity-95"></div>
   <main class="container mx-auto px-4 py-8 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
-      <section class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+      <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
       </section>
 
       <!-- Right Column: Chapters, CTA, and Banner -->
       <div class="space-y-8">
         <!-- Chapters List -->
-        <section class="bg-stone-100 rounded-lg shadow-md p-6">
+        <section class="bg-stone-100 dark:bg-gray-700 rounded-lg shadow-md p-6">
           <% if @fiction.chapters.any? %>
             <%= turbo_frame_tag 'sort-chapters' do %>
               <%= render 'chapters', fiction: @fiction, reading_progress: @show_presenter.reading_progress, before_next_chapter: @show_presenter.before_next_chapter, order: @show_presenter.order, translator: @show_presenter.translator %>
@@ -28,13 +28,13 @@
 
         <!-- Ad Banner -->
         <%= render 'shared/ads', advertisement: @advertisement %>
+        <div id="user-content"></div>
       </div>
 
       <!-- Comments Section -->
-      <section class="lg:col-span-3 bg-white rounded-lg shadow-md p-6 mt-8">
+      <section class="lg:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-8">
         <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
       </section>
     </div>
   </main>
 </div>
-

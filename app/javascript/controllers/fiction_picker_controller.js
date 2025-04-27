@@ -15,7 +15,7 @@ export default class extends Controller {
 
     // Remove highlight from all images
     this.imageTargets.forEach(img => {
-      img.classList.remove('ring-2', 'ring-stone-500')
+      img.classList.remove('ring-2', 'ring-stone-500', 'dark:ring-gray-300')
     })
 
     // Add highlight to the clicked image
@@ -53,6 +53,6 @@ export default class extends Controller {
   }
 
   highlightImage(image) {
-    image.classList.add('ring-2', 'ring-stone-500')
+    image.classList.add('ring-2', 'ring-stone-500', 'dark:ring-gray-300')
   }
 }

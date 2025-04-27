@@ -1,7 +1,7 @@
 <%= button_to new_comment_path,
     params: { comment: { parent_id: comment.id, commentable_id: commentable.id, commentable_type: application_record_child(commentable), user_id: current_user.id } },
     method: :get,
-    class: "text-stone-500 dark:text-stone-400 text-sm hover:text-stone-700 dark:hover:text-stone-300 transition duration-300 flex items-center space-x-1 bg-stone-100 dark:bg-stone-800 px-3 py-1 rounded-full hover:bg-stone-200 dark:hover:bg-stone-700",
+    class: "text-stone-500 dark:text-gray-400 text-sm hover:text-stone-700 dark:hover:text-gray-300 transition duration-300 flex items-center space-x-1 bg-stone-100 dark:bg-gray-800 px-3 py-1 rounded-full hover:bg-stone-200 dark:hover:bg-gray-700",
     data: { turbo_stream: "" } do %>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
     <path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />

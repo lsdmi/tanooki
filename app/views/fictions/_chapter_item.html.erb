@@ -1,19 +1,19 @@
 <li class="group">
-  <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'block p-3 hover:bg-stone-50 transition duration-150 ease-in-out' do %>
+  <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'block p-3 hover:bg-stone-50 dark:hover:bg-gray-700 transition duration-150 ease-in-out' do %>
     <div class="flex items-center justify-between space-x-4">
       <div class="flex items-center space-x-3 flex-grow min-w-0">
-        <span class="flex-shrink-0 w-6 h-6 bg-stone-200 text-stone-600 rounded-full flex items-center justify-center text-xs font-medium">
+        <span class="flex-shrink-0 w-6 h-6 bg-stone-200 dark:bg-gray-600 text-stone-600 dark:text-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
           <%= chapter.number %>
         </span>
-        <span class="text-stone-700 group-hover:text-stone-900 truncate">
+        <span class="text-stone-700 dark:text-gray-300 group-hover:text-stone-900 dark:group-hover:text-gray-100 truncate">
           <%= chapter.display_title_no_volume %>
         </span>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="text-xs text-stone-500 whitespace-nowrap">
+        <span class="text-xs text-stone-500 dark:text-gray-400 whitespace-nowrap">
           <%= l(chapter.created_at, format: :shortest).downcase %>
         </span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-stone-400 group-hover:text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-stone-400 dark:text-gray-500 group-hover:text-stone-600 dark:group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
       </div>

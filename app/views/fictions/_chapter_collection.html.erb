@@ -2,26 +2,26 @@
   <% if chapters.pluck(:volume_number).uniq.size > 1 %>
     <% chapters.pluck(:volume_number).uniq.each do |volume_number| %>
       <% volume_number_integer = volume_number_integer(volume_number) %>
-      <div class="accordion bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md">
-        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 p-4 cursor-pointer">
-          <h3 class="text-lg font-semibold text-stone-800">Том <%= volume_number || '??' %></h3>
+      <div class="accordion bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg">
+        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4 cursor-pointer">
+          <h3 class="text-lg font-semibold text-stone-800 dark:text-gray-200">Том <%= volume_number || '??' %></h3>
           <div class="flex items-center space-x-2">
             <% if chapters.first.scanlators.all?(&:convertable?) %>
-              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.where(volume_number: volume_number).pluck(:id), volume_title: "Том #{volume_number}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 hover:bg-stone-300 text-stone-700 py-1 px-2 rounded' do %>
+              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.where(volume_number: volume_number).pluck(:id), volume_title: "Том #{volume_number}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded' do %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
               <% end %>
             <% end %>
-            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 hover:text-stone-800">
+            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
           </div>
         </div>
-        <div class="accordion-content hidden bg-white border border-stone-200 rounded-b max-h-96 overflow-y-auto">
-          <ul class="divide-y divide-stone-100">
+        <div class="accordion-content hidden bg-white dark:bg-gray-900 border border-stone-200 dark:border-gray-700 rounded-b max-h-96 overflow-y-auto">
+          <ul class="divide-y divide-stone-100 dark:divide-gray-700">
             <% chapters.where(volume_number: volume_number).each do |chapter| %>
               <%= render 'chapter_item', chapter: chapter %>
             <% end %>
@@ -31,26 +31,26 @@
     <% end %>
   <% else %>
     <% chapters_collection(chapters).each do |range, chapters| %>
-      <div class="accordion bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md">
-        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 p-4 cursor-pointer">
-          <h3 class="text-lg font-semibold text-stone-800">Розділи <%= range %></h3>
+      <div class="accordion bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg">
+        <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4 cursor-pointer">
+          <h3 class="text-lg font-semibold text-stone-800 dark:text-gray-200">Розділи <%= range %></h3>
           <div class="flex items-center space-x-2">
             <% if chapters.first.scanlators.all?(&:convertable?) %>
-              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.pluck(:id), volume_title: "Розділи #{range}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 hover:bg-stone-300 text-stone-700 py-1 px-2 rounded' do %>
+              <%= button_to epub_multiple_downloads_path, method: :get, params: { chapter_ids: chapters.pluck(:id), volume_title: "Розділи #{range}" }, data: { turbo: false }, class: 'text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded' do %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
               <% end %>
             <% end %>
-            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 hover:text-stone-800">
+            <button class="accordion-icon transform transition-transform duration-200 text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
           </div>
         </div>
-        <div class="accordion-content hidden bg-white border border-stone-200 rounded-b max-h-96 overflow-y-auto">
-          <ul class="divide-y divide-stone-100">
+        <div class="accordion-content hidden bg-white dark:bg-gray-900 border border-stone-200 dark:border-gray-700 rounded-b max-h-96 overflow-y-auto">
+          <ul class="divide-y divide-stone-100 dark:divide-gray-700">
             <% chapters.each do |chapter| %>
               <%= render 'chapter_item', chapter: chapter %>
             <% end %>
