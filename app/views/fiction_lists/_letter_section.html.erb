@@ -1,8 +1,0 @@
-<li id="letter-<%= letter %>" class="mb-10 sm:ms-12 p-4 sm:border sm:border-gray-200 rounded-lg shadow-xl">
-  <%= tag.span letter, class: 'hidden absolute sm:flex items-center justify-center w-6 h-6 bg-emerald-50 rounded-full -start-3 ring-white' %>
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-    <% fictions.each do |fiction| %>
-      <%= render 'fiction', fiction: %>
-    <% end %>
-  </div>
-</li>

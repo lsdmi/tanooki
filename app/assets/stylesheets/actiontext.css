@@ -45,15 +45,3 @@
   border: 3px solid pink;
   box-shadow: 0 0 5px pink;
 }
-
-.flip-card-inner {
-  transform-style: preserve-3d;
-}
-
-.flip-card:hover .flip-card-inner, .flip-card-back {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-  backface-visibility: hidden;
-}

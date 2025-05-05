@@ -1,35 +1,17 @@
-<div class="z-10 relative font-oswald">
-  <div id="bottom-banner" tabindex="-1" class="fixed bottom-0 start-0 z-50 flex justify-between w-full p-4 border-t border-gray-200 bg-gray-50 bg-no-repeat bg-cover bg-center bg-fixed bg-gray-500 bg-blend-multiply font-oswald" style="background-image: url(<%= asset_path('writer.webp') %>);">
-    <div class="absolute inset-0 bg-white opacity-95"></div>
-    <div class="hidden lg:flex items-center mx-auto z-10 relative tracking-tight font-extrabold my-4 text-4xl text-gray-900 flex justify-center items-center uppercase leading-5">
-      Покажчик <span class="text-emerald-600 ml-2">Творів</span>
-    </div>
-    <div class="flex items-center mx-auto z-10 relative">
-      <p class="flex items-center text-sm font-normal text-gray-500">
-        <div class="flex justify-center">
-          <div class="flex flex-row">
-            <%= turbo_frame_tag 'letter-list' do %>
-              <%= render 'letter_list', fiction_hash_sorted: @fiction_hash_sorted %>
-            <% end %>
-          </div>
-        </div>
-      </p>
-    </div>
-  </div>
-  <div class="bg-gray-50 shadow-lg pb-4 lg:pb-0 rounded-lg relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('writer.webp') %>);">
-    <div class="col-span-5 md:block flex flex-col items-center justify-center h-full">
-      <div class="absolute inset-0 bg-white opacity-95"></div>
-      <div class="mx-auto w-auto md:w-[95%] flex relative z-10">
-        <div class="pb-8 px-4 mx-auto max-w-screen-xl lg:px-6">
-          <div class="my-4">
-            <%= render 'shared/ads', advertisement: @advertisement %>
-          </div>
-          <%= render 'filter' if @fiction_hash_sorted.any? %>
-          <%= turbo_frame_tag 'fiction-list' do %>
-            <%= render 'fiction_list', fiction_hash_sorted: @fiction_hash_sorted %>
-          <% end %>
-        </div>
+<section class="py-8 antialiased z-10 relative">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <div id="user-content"></div>
+    <!-- TOP BAR -->
+    <div class="mb-4 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800 md:p-6">
+      <div class="items-center justify-between md:flex">
+        <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white md:mb-0">Покажчик Творів <span class="ms-2 text-lg font-medium text-gray-500 dark:text-gray-400"><%= @pagy.count %> твори</span></h2>
       </div>
     </div>
+    <div class="my-4">
+      <%= render 'shared/ads', advertisement: @advertisement %>
+    </div>
+    <%= turbo_frame_tag 'fiction-list-page' do %>
+      <%= render 'dynamic_content', fictions: @fictions, pagy: @pagy %>
+    <% end %>
   </div>
 </section>
