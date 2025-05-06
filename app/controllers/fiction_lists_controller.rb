@@ -4,7 +4,7 @@ class FictionListsController < ApplicationController
   before_action :load_advertisement
 
   def alphabetical
-    @pagy, @fictions = pagy(filtered_list, limit: 8)
+    @pagy, @fictions = pagy(filtered_fictions, limit: 8)
 
     respond_to do |format|
       format.html
@@ -22,20 +22,43 @@ class FictionListsController < ApplicationController
     )
   end
 
-  def default_list
-    Rails.cache.fetch('default_fictions_alphabetical', expires_in: 1.day) do
-      Fiction.left_joins(:chapters).joins(:users).includes(:cover_attachment,
-                                                           :genres,
-                                                           :scanlators)
-             .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
-             .group('fictions.id, fictions.created_at')
-             .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
+  def filtered_fictions
+    Fiction.from(fiction_subquery, :fictions)
+           .includes(:cover_attachment, :genres, :scanlators)
+           .order(Arel.sql('COALESCE(max_created_at, fictions.created_at) DESC'))
+  end
+
+  def fiction_subquery
+    Fiction.where(id: cached_fiction_ids)
+           .left_joins(:chapters)
+           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+           .group('fictions.id, fictions.created_at')
+  end
+
+  def cached_fiction_ids
+    Rails.cache.fetch(fiction_ids_cache_key, expires_in: 1.day) do
+      fiction_ids_query.pluck(:id)
     end
   end
 
-  def filtered_list
-    query = default_list
+  def fiction_ids_cache_key
+    if genre_id.present?
+      "fictions_genre_#{genre_id}_ids"
+    else
+      'default_fictions_alphabetical_ids'
+    end
+  end
 
-    query.all
+  def fiction_ids_query
+    scope = Fiction.left_joins(:chapters)
+                   .select('fictions.id')
+                   .group('fictions.id, fictions.created_at')
+                   .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
+
+    genre_id.present? ? scope.joins(:genres).where(genres: { id: genre_id }) : scope
+  end
+
+  def genre_id
+    params['genre-radio'].presence
   end
 end

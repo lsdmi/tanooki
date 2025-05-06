@@ -9,19 +9,19 @@
               class: "text-stone-600 hover:text-stone-800 text-lg font-medium transition-all" %>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-10">
         <% chapters.each do |chapter| %>
-          <div class="relative bg-stone-100 transition-all duration-300 p-6 rounded-xl shadow-lg border border-stone-300 group">
-            <div class="absolute top-3 right-3 opacity-100 transition-opacity">
-              <%= render 'users/dashboard/chapter_controls', chapter: chapter, fiction:, page: pagy.page %>
+          <div class="relative bg-stone-100 transition-all duration-300 p-4 sm:p-6 rounded-xl shadow-lg border border-stone-300 group">
+            <div class="absolute top-2 right-2 sm:top-3 sm:right-3 opacity-100 transition-opacity z-10">
+              <%= render 'users/dashboard/chapter_controls', chapter: chapter, fiction: fiction, page: pagy.page %>
             </div>
-            <h3 class="text-xl font-semibold text-stone-900 group-hover:text-stone-700 transition-all w-4/5">
+            <h3 class="text-lg sm:text-xl font-semibold text-stone-900 group-hover:text-stone-700 transition-all break-words">
               <%= link_to chapter.display_title, chapter_path(chapter), data: { turbo: false },
                     class: 'hover:underline' %>
             </h3>
-            <div class="flex items-center space-x-4 mt-2 text-stone-600 text-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-2 text-stone-600 text-sm space-y-1 sm:space-y-0">
               <span><%= l(chapter.created_at, format: :short).downcase %></span>
-              <span>Перегляди: <%= chapter.views %> | Коментарі: <%= chapter.comments_count %></p>
+              <span>Перегляди: <%= chapter.views %> | Коментарі: <%= chapter.comments_count %></span>
             </div>
           </div>
         <% end %>
