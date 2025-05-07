@@ -1,4 +1,4 @@
-const FONT_CLASSES = ['', 'font-oswald', 'font-georgia', 'font-helvetica', 'font-times'];
+const FONT_CLASSES = ['', 'font-georgia', 'font-helvetica', 'font-times'];
 const FONT_SIZE_CLASSES = ['', 'text-sm', 'text-base', 'text-lg', 'text-xl'];
 
 const initializeFontToggler = () => {
