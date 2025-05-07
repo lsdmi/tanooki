@@ -4,6 +4,7 @@ require 'rss'
 require 'open-uri'
 require 'faraday'
 require 'nokogiri'
+require 'time'
 
 class BlogScraper
   RSS_URL = 'https://www.cbr.com/feed/category/anime-news/'
@@ -12,24 +13,60 @@ class BlogScraper
   HIGHLIGHT = true
   USER_ID = 1
 
-  def self.fetch_content
+  def self.fetch_content(hours: nil, numbers: nil)
     feed = fetch_rss_feed
-    nil unless feed
+    return unless feed
 
-    # feed.items.each do |item|
-    #   process_item(item)
-    # end
+    items = feed.items
 
-    process_item(feed.items.third)
+    # Filter by hours if given
+    if hours
+      cutoff_time = Time.now - (hours * 3600)
+      items = items.select do |item|
+        pub_date = item.pubDate
+        pub_date && pub_date >= cutoff_time
+      end
+    end
+
+    # Filter by indices if given (overrides hours if both are present)
+    items = numbers.map { |i| items[i] }.compact if numbers&.any?
+
+    items.each do |item|
+      process_item(item)
+    end
   end
 
   def self.fetch_rss_feed
-    response = Faraday.get(RSS_URL)
-    return unless response.success?
+    response = HTTPX.get(RSS_URL)
 
-    RSS::Parser.parse(response.body, false)
+    if response.is_a?(HTTPX::ErrorResponse)
+      Rails.logger.error("HTTPX ErrorResponse: #{response.inspect}")
+      Rails.logger.error("Raw body: #{response.body.inspect}")
+      return
+    end
+
+    unless response.status == 200
+      Rails.logger.error("Failed to fetch RSS feed: HTTP #{response.status}, headers: #{response.headers.inspect}")
+      Rails.logger.error("Body: #{response.body[0..1000]}") # log the first 1000 chars
+      return
+    end
+
+    begin
+      RSS::Parser.parse(response.body, false)
+    rescue RSS::NotWellFormedError => e
+      Rails.logger.error("Failed to parse RSS feed: #{e.class} - #{e.message}")
+      Rails.logger.error("Raw response body (first 2000 chars):\n#{response.body[0..1999]}")
+      # Optionally, write the body to a file for inspection:
+      begin
+        File.write('/tmp/rss_debug.xml', response.body)
+      rescue StandardError
+        nil
+      end
+      nil
+    end
   rescue StandardError => e
-    Rails.logger.error("Failed to fetch or parse RSS feed: #{e}")
+    Rails.logger.error("Failed to fetch or parse RSS feed: #{e.class} - #{e.message}")
+    Rails.logger.error(e.backtrace.join("\n")) if e.backtrace
     nil
   end
 
@@ -40,8 +77,7 @@ class BlogScraper
     summary_html = translate_to_ukrainian(article_text, item.title)
     return unless summary_html.present?
 
-    # Insert article image after first paragraph, if present
-    summary_html = insert_image_after_first_paragraph(summary_html, article_image_url) if article_image_url
+    summary_html = insert_image_after_nth_paragraph(summary_html, article_image_url, 2) if article_image_url
 
     title, description = extract_title_and_description(summary_html)
     return unless title && description
@@ -52,7 +88,6 @@ class BlogScraper
     Rails.logger.error("Error processing item #{item.link}: #{e}")
   end
 
-  # Fetches article text and the first main article image URL
   def self.fetch_article_text_and_image(url)
     response = Faraday.get(url)
     return [nil, nil] unless response.success?
@@ -71,14 +106,20 @@ class BlogScraper
     [nil, nil]
   end
 
-  # Inserts image after the first <p> in the summary HTML
-  def self.insert_image_after_first_paragraph(html, img_url)
+  # Inserts image after the nth <p> in the summary HTML (n is 0-based)
+  def self.insert_image_after_nth_paragraph(html, img_url, n)
     return html unless img_url
 
     doc = Nokogiri::HTML::DocumentFragment.parse(html)
-    img_tag = %(<img style="display: block; margin-left: auto; margin-right: auto;" src="#{img_url}" alt="" width="481px" height="240">)
-    fifth_p = doc.css('p')[4]
-    fifth_p.add_next_sibling(img_tag) if fifth_p
+    nth_p = doc.css('p')[n]
+
+    if nth_p
+      img_tag = %(<img style="display: block; margin-left: auto; margin-right: auto;" src="#{img_url}" alt="" width="712px" height="430px">)
+      br_tag = '<br>'
+      nth_p.add_next_sibling(img_tag)
+      nth_p.next_sibling.add_next_sibling(br_tag)
+    end
+
     doc.to_html
   end
 
