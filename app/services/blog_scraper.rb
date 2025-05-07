@@ -190,7 +190,6 @@ class BlogScraper
       attach_cover(publication, cover_url) if cover_url
       publication.save!
 
-      debugger
       tag_ids.each { |tag_id| publication.publication_tags.create(tag_id: tag_id) }
     end
 
