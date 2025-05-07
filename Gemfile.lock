@@ -187,6 +187,7 @@ GEM
       multi_json
     erubi (1.13.1)
     erubis (2.7.0)
+    event_stream_parser (1.0.0)
     faker (3.3.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.12.2)
@@ -420,6 +421,8 @@ GEM
       railties (>= 5.2)
     retriable (3.1.2)
     rexml (3.4.1)
+    rss (0.3.0)
+      rexml
     rubocop (1.75.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -434,6 +437,10 @@ GEM
     rubocop-ast (1.43.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
+    ruby-openai (8.1.0)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby-vips (2.2.1)
       ffi (~> 1.12)
@@ -575,7 +582,9 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   rails_best_practices
+  rss
   rubocop
+  ruby-openai
   searchkick
   selenium-webdriver
   simple_form

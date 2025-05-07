@@ -76,7 +76,8 @@ const initializeTinymce = () => {
     menubar: false,
     toolbar: 'undo redo | bold italic underline | link | fontfamily fontsize align lineheight | backcolor | removeformat | outdent indent | image media | hr | code | wordcount',
     quickbars_insert_toolbar: 'image media',
-    quickbars_selection_toolbar: false,
+    quickbars_selection_toolbar: 'bold italic underline | blockquote quicklink',
+    contextmenu: false,
     statusbar: false,
     newline_behavior: 'linebreak',
     link_title: false
