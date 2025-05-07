@@ -45,9 +45,9 @@ class Publication < ApplicationRecord
 
   def cover_format
     return unless cover.attached?
-    return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
+    return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp image/avif])
 
-    errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
+    errors.add(:cover, 'має бути JPEG, PNG, SVG, WebP або AVIF')
   end
 
   def username
