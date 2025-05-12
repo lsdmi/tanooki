@@ -1,16 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/*
-
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
-  }
-}
-
-*/
 @import 'actiontext.css';
 @import 'slimselect.css';
 @import 'pagy.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

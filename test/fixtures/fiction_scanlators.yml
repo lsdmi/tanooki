@@ -2,3 +2,8 @@ one:
   id: 1
   fiction_id: 1
   scanlator_id: 1
+
+two:
+  id: 2
+  fiction_id: 2
+  scanlator_id: 1
