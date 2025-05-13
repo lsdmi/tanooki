@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center mb-2">
     <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100">Топ Ранобе</h2>
   </div>
-  <div class="border-b border-stone-200 dark:border-gray-700"></div>
+  <div class="border-b border-stone-300 dark:border-gray-700"></div>
 </div>
 
 <div class="flex lg:block overflow-x-auto lg:overflow-x-visible -mx-4 lg:mx-0 px-4 lg:px-0">
@@ -10,6 +10,8 @@
     <% fictions.each_with_index do |fiction, index| %>
       <div class="flex-shrink-0 w-32 lg:w-full lg:flex lg:items-center">
         <div class="lg:grid lg:grid-cols-12 lg:gap-4 lg:w-full">
+          <span class="hidden lg:flex lg:items-center lg:col-span-1 text-sm font-bold text-stone-500 dark:text-gray-500"><%= index+1 %></span>
+
           <%= link_to fiction_path(fiction), class: 'block lg:col-span-3' do %>
             <%= image_tag url_for(fiction.cover),
               alt: fiction.cover.blob.filename.to_s,
@@ -22,20 +24,28 @@
               } %>
           <% end %>
 
-          <span class="hidden lg:block lg:col-span-1 text-sm font-bold text-stone-400 dark:text-gray-500">#<%= index+1 %></span>
-
-          <div class="mt-2 lg:mt-0 lg:col-span-8 lg:pl-0">
+          <div class="mt-2 lg:mt-1 lg:col-span-8 lg:pl-0 flex flex-col space-y-2">
             <%= link_to fiction_path(fiction), class: 'group' do %>
-              <h3 class="text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-stone-600 dark:group-hover:text-gray-400 transition-colors duration-300">
+              <p class="leading-tight text-md font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-stone-600 dark:group-hover:text-gray-400 transition-colors duration-300">
                 <%= fiction.title %>
-              </h3>
+              </p>
             <% end %>
+            <div class="text-xs text-stone-500 mx-1 dark:text-gray-400 flex flex-row gap-1">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+              </svg>
+              <%= tag.span format_view_count(fiction.views), class: '' %>
+            </div>
             <% if fiction.genres.any? %>
-              <div class="text-xs my-2 lg:my-4">
-                <%= tag.span fiction.genres.sample.name, class: 'bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 py-1 rounded-full' %>
+              <div class="text-xs flex flex-wrap gap-2">
+                <% genres = fiction.genres.sample(2) %>
+                <% genres.each_with_index do |genre, i| %>
+                  <%= tag.span genre.name,
+                    class: "shadow-sm ring-1 ring-stone-100 dark:ring-gray-600 bg-stone-300 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i == 1}" %>
+                <% end %>
               </div>
             <% end %>
-            <p class="text-xs text-stone-500 dark:text-gray-400">Переглядів: <%= format_view_count(fiction.views) %></p>
           </div>
         </div>
       </div>

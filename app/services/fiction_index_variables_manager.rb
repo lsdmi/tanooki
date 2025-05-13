@@ -4,7 +4,7 @@ class FictionIndexVariablesManager
   def self.popular_novelty
     Rails.cache.fetch('popular_novelty', expires_in: 24.hours) do
       Fiction.joins(:readings)
-             .includes(%i[cover_attachment genres])
+             .includes(%i[cover_attachment])
              .group(:id)
              .where(id: Fiction.last(15).pluck(:id))
              .order('COUNT(reading_progresses.fiction_id) DESC')
