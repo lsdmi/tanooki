@@ -77,7 +77,7 @@ module MetaHelper
   end
 
   def youtube_video_cover
-    @highlights.first&.thumbnail
+    @highlight&.thumbnail
   end
 
   def highlights_cover

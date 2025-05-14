@@ -5,12 +5,10 @@ class YoutubeVideosController < ApplicationController
   before_action :set_video, :track_visit, only: :show
 
   def index
-    @highlights = highlights
+    @highlight = highlight
     @popular = popular
     @latest = latest
     @pagy, @other_youtube_videos = pagy_countless(other, limit: 12)
-
-    render 'youtube_videos/scrollable_list' if params[:page]
   end
 
   def show
@@ -21,24 +19,20 @@ class YoutubeVideosController < ApplicationController
 
   private
 
-  def highlights
-    base_query.order(published_at: :desc).first(4)
+  def highlight
+    YoutubeVideo.order(published_at: :desc).first
   end
 
   def popular
-    base_query.excluding(@highlights).last_month.order(views: :desc).first(4)
+    YoutubeVideo.excluding(@highlight).last_month.order(views: :desc).first(4)
   end
 
   def latest
-    base_query.excluding(@highlights, @popular).order(published_at: :desc).first(4)
+    YoutubeVideo.includes(:youtube_channel).excluding(@highlight, @popular).order(published_at: :desc).first(3)
   end
 
   def other
-    base_query.excluding(@highlights, @popular, @latest).order(published_at: :desc)
-  end
-
-  def base_query
-    YoutubeVideo.includes(:youtube_channel)
+    YoutubeVideo.excluding(@highlight, @popular, @latest).order(published_at: :desc)
   end
 
   def more_videos

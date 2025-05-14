@@ -89,7 +89,7 @@ class Fiction < ApplicationRecord
   def set_dropped_status
     return if finished? || chapters.maximum(:created_at).nil? || (Time.now - chapters.maximum(:created_at)) < 90.days
 
-    update(status: Fiction.statuses[:dropped])
+    update_column(:status, Fiction.statuses[:dropped])
   end
 
   private

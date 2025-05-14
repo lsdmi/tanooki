@@ -1,9 +1,0 @@
-<% if pagy.next.present? %>
-  <%= turbo_frame_tag(
-        "videos-page-#{pagy.next}",
-        loading: :defer,
-        src: pagy_url_for(pagy, pagy.next),
-        target: "_top",
-        class: 'lg:contents'
-      ) %>
-<% end %>
