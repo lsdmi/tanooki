@@ -141,3 +141,110 @@
   min-width: 2rem;
   pointer-events: none;
 }
+
+.pagy-nav.watch .pagy a,
+.pagy-nav.watch .pagy .current,
+.pagy-nav.watch .pagy .prev.disabled,
+.pagy-nav.watch .pagy .next.disabled {
+  display: block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #06b6d4;        /* cyan-600 */
+  color: #fff;
+  border: 1px solid #0e7490;        /* cyan-700 */
+  box-shadow: none;
+  transition: background 0.2s, color 0.2s, border 0.2s, transform 0.2s;
+  text-align: center;
+  min-width: 2rem;
+}
+
+.pagy-nav.watch .pagy a:hover {
+  background-color: #0891b2;        /* cyan-700 */
+  border-color: #155e75;            /* cyan-800 */
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.pagy-nav.watch .pagy a:active {
+  background-color: #155e75;        /* cyan-800 */
+  border-color: #155e75;
+  color: #fff;
+}
+
+.pagy-nav.watch .pagy .prev.disabled,
+.pagy-nav.watch .pagy .next.disabled {
+  color: #bae6fd;                   /* cyan-200 */
+  background-color: #e0f2fe;        /* cyan-100 */
+  cursor: default;
+  border-color: #bae6fd;
+}
+
+.pagy-nav.watch .pagy .current {
+  color: #fff;
+  background-color: #0e7490;        /* cyan-700 */
+  border-color: #0e7490;
+  cursor: default;
+  pointer-events: none;
+}
+
+.pagy-nav.watch .pagy .gap {
+  color: #06b6d4;                   /* cyan-600 */
+  background: transparent;
+  border: none;
+  cursor: default;
+  box-shadow: none;
+  font-size: 0.875rem;
+  min-width: 2rem;
+  pointer-events: none;
+}
+
+/* Dark mode overrides */
+.dark .pagy-nav.watch .pagy a,
+.dark .pagy-nav.watch .pagy .current,
+.dark .pagy-nav.watch .pagy .prev.disabled,
+.dark .pagy-nav.watch .pagy .next.disabled {
+  background-color: #881337;        /* rose-900 */
+  color: #fff;
+  border: 1px solid #7f1d1d;        /* rose-900 */
+}
+
+.dark .pagy-nav.watch .pagy a:hover {
+  background-color: #be123c;        /* rose-700 */
+  border-color: #be123c;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.dark .pagy-nav.watch .pagy a:active {
+  background-color: #9f1239;        /* rose-800 */
+  border-color: #9f1239;
+  color: #fff;
+}
+
+.dark .pagy-nav.watch .pagy .prev.disabled,
+.dark .pagy-nav.watch .pagy .next.disabled {
+  color: #fecdd3;                   /* rose-200 */
+  background-color: #f43f5e;        /* rose-500 */
+  cursor: default;
+  border-color: #fecdd3;
+}
+
+.dark .pagy-nav.watch .pagy .current {
+  color: #fff;
+  background-color: #be123c;        /* rose-700 */
+  border-color: #be123c;
+  cursor: default;
+  pointer-events: none;
+}
+
+.dark .pagy-nav.watch .pagy .gap {
+  color: #fda4af;                   /* rose-300 */
+  background: transparent;
+  border: none;
+  cursor: default;
+  box-shadow: none;
+  font-size: 0.875rem;
+  min-width: 2rem;
+  pointer-events: none;
+}

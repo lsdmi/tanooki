@@ -8,7 +8,7 @@ class YoutubeVideosController < ApplicationController
     @highlight = highlight
     @popular = popular
     @latest = latest
-    @pagy, @other_youtube_videos = pagy_countless(other, limit: 12)
+    @pagy, @other_youtube_videos = pagy(other, limit: 4)
   end
 
   def show

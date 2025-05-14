@@ -44,6 +44,7 @@ module ApplicationHelper
       (controller_name == 'chapters' && action_name == 'show') ||
       (controller_name == 'scanlators' && action_name == 'show') ||
       (controller_name == 'chapters_calendar') || (controller_name == 'home') ||
-      (controller_name == 'fictions') || (controller_name == 'fiction_lists')
+      (controller_name == 'fictions') || (controller_name == 'fiction_lists') ||
+      (controller_name == 'youtube_videos')
   end
 end
