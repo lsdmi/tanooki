@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class YoutubeVideosController < ApplicationController
-  before_action :load_advertisement, only: :index
+  before_action :load_advertisement
   before_action :set_video, :track_visit, only: :show
 
   def index
@@ -13,8 +13,6 @@ class YoutubeVideosController < ApplicationController
 
   def show
     @more_videos = more_videos
-    @comments = @youtube_video.comments.parents.order(created_at: :desc)
-    @comment = Comment.new
   end
 
   private
@@ -36,19 +34,13 @@ class YoutubeVideosController < ApplicationController
   end
 
   def more_videos
-    videos = YoutubeVideo.includes(:youtube_channel)
-                         .where(youtube_channel_id: @youtube_video.youtube_channel_id)
-                         .excluding(@youtube_video).order(published_at: :desc)
-
-    return videos.first(4) if videos.size > 3
-
-    (
-      videos.to_a + YoutubeVideo.includes(:youtube_channel).order(published_at: :desc).first(8)
-    ).excluding(videos, @youtube_video).uniq.first(4)
+    YoutubeVideo
+      .where(youtube_channel_id: @youtube_video.youtube_channel_id)
+      .excluding(@youtube_video).order(published_at: :desc).first(2)
   end
 
   def set_video
-    @youtube_video = @commentable = Rails.cache.fetch("video_#{params[:id]}", expires_in: 1.hour) do
+    @youtube_video = Rails.cache.fetch("video_#{params[:id]}", expires_in: 1.hour) do
       YoutubeVideo.find(params[:id])
     end
   end
