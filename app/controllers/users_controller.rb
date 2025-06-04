@@ -31,16 +31,7 @@ class UsersController < ApplicationController
   end
 
   def pokemons
-    @pokemons = pokemon_list
-
-    if @pokemons.any?
-      @selected_pokemon = @pokemons.first
-      @descendant = @selected_pokemon.pokemon.descendant
-      @dex_overall = User.dex_leaders
-      @dex_leaderboard = DexLeaderboard.new(current_user).call
-      @battle_history = current_user.battle_logs_includes_details.sort_by { |log| -log.id }.first(10)
-    end
-
+    @pokemon_show = PokemonShow.new(current_user)
     render 'show'
   end
 
@@ -77,10 +68,6 @@ class UsersController < ApplicationController
 
   def fiction_list
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
-  end
-
-  def pokemon_list
-    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
   end
 
   def fetch_avatars

@@ -17,7 +17,7 @@
         <%= render 'scanlators/dashboard', scanlators: @scanlators %>
       <% end %>
     <% elsif action_name.to_sym == :pokemons %>
-      <%= render 'users/dashboard/pokemons', pokemons: @pokemons, dex_leaderboard: @dex_leaderboard, selected_pokemon: @selected_pokemon, descendant: @descendant, battle_history: @battle_history, dex_overall: @dex_overall %>
+      <%= render 'users/dashboard/pokemons', pokemon_show: @pokemon_show %>
     <% else %>
       <div class="relative bg-white border border-stone-300 shadow-xl rounded-3xl p-8 bg-cover bg-center overflow-hidden" style="background-image: url(<%= asset_path('writer.webp') %>);">
         <div class="absolute inset-0 bg-stone-50 opacity-90 backdrop-blur-md"></div>

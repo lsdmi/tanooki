@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 class DexLeaderboard
-  attr_reader :user
+  attr_reader :rank, :dex_overall
 
-  def initialize(user)
-    @user = user
+  def initialize(rank, dex_overall)
+    @rank = rank
+    @dex_overall = dex_overall
   end
 
   def call
-    dex_list = User.dex_leaders
-    user_index = dex_list.index(user)
+    min_index = [rank - 5, 0].max
+    max_index = [rank + 5, dex_overall - 1].min
 
-    if user_index < 10
-      dex_list.first(10)
-    else
-      selected_user_ids = dex_list[user_index - 2..user_index + 2].pluck(:id)
-      dex_list.where(id: dex_list.first(3).pluck(:id) + selected_user_ids)
-    end
+    eligible_indices = (min_index..max_index).to_a - [rank]
+
+    eligible_indices.sample
   end
 end

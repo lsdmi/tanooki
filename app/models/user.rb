@@ -30,13 +30,13 @@ class User < ApplicationRecord
 
   scope :dex_leaders, lambda {
     joins(:user_pokemons)
-      .includes([{ avatar: { image_attachment: :blob } }, :attacker_battle_logs, :defender_battle_logs])
+      .includes(avatar: :image_attachment)
       .group(:user_id)
       .order(battle_win_rate: :desc)
   }
 
-  def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
+  def send_devise_notification(notification, *)
+    devise_mailer.send(notification, self, *).deliver_later
   end
 
   def self.from_omniauth(access_token)

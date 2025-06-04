@@ -51,8 +51,13 @@ class PokemonBattlesController < ApplicationController
     selected_pokemon.pokemon.descendant
   end
 
-  def dex_leaderboard
-    DexLeaderboard.new(current_user).call
+  def opponent
+    dex_overall = User.dex_leaders
+
+    DexLeaderboard.new(
+      dex_overall.index(current_user),
+      dex_overall.size
+    ).call.then { |idx| dex_overall[idx] }
   end
 
   def pokemons
@@ -67,7 +72,7 @@ class PokemonBattlesController < ApplicationController
     turbo_stream.update(
       'pokemon-leaderboard-screen',
       partial: 'users/pokemons/dex_leaderboard',
-      locals: { dex_leaderboard:, dex_overall: User.dex_leaders }
+      locals: { dex_overall: User.dex_leaders, opponent: }
     )
   end
 
