@@ -1,46 +1,59 @@
-<div class="items-center space-x-4 rounded-lg shadow p-2 mb-1 border border-gray-200">
-  <div id="accordion-collapse-<%= battle_log.id %>" data-accordion="collapse">
-    <h2 id="accordion-collapse-heading-<%= battle_log.id %>">
-      <div class="grid grid-cols-3 gap-2 py-2 flex">
-        <div class="flex flex-col items-center">
-          <div class="relative flex flex-col items-center">
-            <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
-          </div>
-          <%= tag.h5 battle_log.attacker.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
-          <% if battle_log.attacker == battle_log.winner %>
-            <span class="text-sm text-gray-500 font-light">Перемога</span>
-          <% else %>
-            <span class="text-sm text-gray-500 font-light">Поразка</span>
-          <% end %>
-        </div>
-        <div class="flex flex-col items-center" data-controller="flowbite">
-          <% if current_user == battle_log.winner %>
-            <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= battle_log.id %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= battle_log.id %>">
-              <%= image_tag 'winner.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
-            </button>
-          <% else %>
-            <button class="px-5 font-medium text-left text-gray-500 rounded-t-xl bg-transparent" data-accordion-target="#accordion-collapse-body-<%= battle_log.id %>" aria-expanded="false" aria-controls="accordion-collapse-body-<%= battle_log.id %>">
-              <%= image_tag 'loser.svg', class: 'h-20 transform transition duration-500 hover:scale-110', alt: 'loser' %>
-            </button>
-          <% end %>
-        </div>
-        <div class="flex flex-col items-center">
-          <div class="relative flex flex-col items-center">
-            <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: "w-10 h-10 rounded-full" %>
-          </div>
-          <%= tag.h5 battle_log.defender.name, class: 'mt-1 text-xl font-medium text-gray-900 text-center' %>
-          <% if battle_log.defender == battle_log.winner %>
-            <span class="text-sm text-gray-500 font-light">Перемога</span>
-          <% else %>
-            <span class="text-sm text-gray-500 font-light">Поразка</span>
-          <% end %>
-        </div>
-      </div>
-    </h2>
-    <div id="accordion-collapse-body-<%= battle_log.id %>" class="hidden" aria-labelledby="accordion-collapse-heading-<%= battle_log.id %>">
-      <div class="p-5 text-center">
-        <%= tag.p battle_log.details.body, class: 'mb-2 text-gray-600 whitespace-break-spaces font-light' %>
-      </div>
+<div class="relative mx-auto my-4 border border-gray-300 overflow-hidden">
+  <div class="relative z-10 flex items-center justify-between px-8 pt-6 pb-2">
+    <!-- Attacker -->
+    <div class="flex flex-col items-center w-1/3">
+      <%= image_tag url_for(battle_log.attacker.avatar.image), alt: battle_log.attacker.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
+      <span class="flex items-center text-sm sm:text-base font-bold text-gray-900">
+        <!-- Sword SVG -->
+        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 0H13L3.70711 9.29289L2.20711 7.79289L0.792893 9.20711L3.08579 11.5L1.5835 13.0023C1.55586 13.0008 1.52802 13 1.5 13C0.671573 13 0 13.6716 0 14.5C0 15.3284 0.671573 16 1.5 16C2.32843 16 3 15.3284 3 14.5C3 14.472 2.99923 14.4441 2.99771 14.4165L4.5 12.9142L6.79289 15.2071L8.20711 13.7929L6.70711 12.2929L16 3V0Z" fill="#000000"></path> </g></svg>
+        <%= battle_log.attacker.name %>
+      </span>
+      <span class="mt-1 px-3 py-1 text-xs uppercase tracking-widest flex items-center <%= battle_log.attacker == battle_log.winner ? 'text-emerald-700' : 'text-rose-600' %>">
+        <% if battle_log.attacker == battle_log.winner %>
+          <!-- Trophy SVG -->
+          <svg class="w-4 h-4 mr-1 text-emerald-700" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4 0H12V2H16V4C16 6.45641 14.2286 8.49909 11.8936 8.92038C11.5537 10.3637 10.432 11.5054 9 11.874V14H12V16H4V14H7V11.874C5.56796 11.5054 4.44628 10.3637 4.1064 8.92038C1.77136 8.49909 0 6.45641 0 4V2H4V0ZM12 6.82929V4H14C14 5.30622 13.1652 6.41746 12 6.82929ZM4 4H2C2 5.30622 2.83481 6.41746 4 6.82929V4Z" fill="#047857"></path> </g></svg>
+          Перемога
+        <% else %>
+          <!-- Broken Shield SVG -->
+          <svg class="w-4 h-4 mr-1 text-emerald-700" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#e11d48" d="M45.906 23.625v9.344c0 102.68 10.49 205.087 41.125 288.155 30.637 83.068 82.364 147.415 163.75 169.78l2.22.626 2.22-.5C344.49 472 396.864 407.39 425.593 323.47c28.728-83.92 35.25-187.777 35.25-290.5v-9.345H45.906zM64.72 42.313H442.06c-.413 98.8-7.497 197.342-34.125 275.125-27.21 79.487-73.39 136.637-154.375 154.78-73.28-21.03-119.914-78.696-149-157.562-28.475-77.212-39.206-174.13-39.843-272.344zm18.81 18.75c.807 84.13 12.486 172.823 39.314 244.812 7.825 20.998 16.874 40.495 27.25 58.063l45.844-38.438-40.75-75.063-5.47-10.062 10.97-3.344s38.865-11.786 60.406-18.25l20.437-7.25-94.843-150.468H83.53zm160.25 0l45.782 91.5 132.407-43.157c.69-16.205 1.053-32.366 1.155-48.344H243.78zm177.157 68.343L298.031 169.47l24.908 49.78 25.875 48.72 53.28-1.845c10.245-42.834 16.03-89.664 18.844-136.72zM310.908 236.47l-30.75 10.374 67.25 145.187c17.813-23.2 31.737-51.6 42.624-83.686 2.578-7.595 4.966-15.39 7.19-23.344l-53.626 1.844-5.844.22-2.75-5.158-24.094-45.437zm-99.22 4.686c-13.133 3.972-27.346 8.262-34.625 10.47L216 323.28l3.625 6.72-5.844 4.906-53.56 44.906c24.67 35.91 55.887 61.828 94.655 73.125 30.34-6.91 55.36-21.496 76.03-42.062L211.69 241.155z"></path></g></svg>
+          Поразка
+        <% end %>
+      </span>
     </div>
+
+    <!-- Center Trophy / VS -->
+    <div class="flex flex-col items-center w-1/3">
+      <span class="mt-4 text-2xl font-extrabold text-cyan-600 dark:text-rose-700 tracking-wider drop-shadow flex items-center">
+        <!-- Crossed Swords SVG -->
+        <svg class="w-8 h-8 sm:w-12 sm:h-12 mr-2 text-cyan-600 dark:text-rose-700" fill="#00acc1" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 332.441 332.44" xml:space="preserve" stroke="#00acc1"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g id="Layer_5_34_"> <g> <g> <path d="M260.777,217.262l-49.705,49.705c-0.658,0.658-0.658,1.738,0,2.398l14.825,14.824c0.658,0.656,1.738,0.656,2.396,0 l7.603-7.604c0.657-0.656,1.735-0.656,2.395,0.002l40.512,40.508c20.321,20.324,21.556,19.092,36.378,4.271 c14.821-14.822,16.057-16.057-4.269-36.379l-40.51-40.512c-0.658-0.656-0.661-1.732-0.003-2.393l7.601-7.602 c0.661-0.66,0.657-1.736,0-2.396l-14.824-14.828C262.513,216.604,261.436,216.604,260.777,217.262z M298.662,290.619 l-14.239,14.242c-1.842,1.84-4.826,1.84-6.666,0c-1.841-1.844-1.841-4.826,0-6.668l14.24-14.24c1.842-1.84,4.825-1.842,6.666,0 C300.503,285.793,300.503,288.778,298.662,290.619z M278.169,270.127l-14.24,14.242c-1.84,1.84-4.824,1.84-6.665,0 c-1.84-1.84-1.841-4.826-0.001-6.666l14.242-14.24c1.84-1.842,4.824-1.842,6.664-0.002 C280.012,265.303,280.012,268.287,278.169,270.127z"></path> <g> <path d="M205.74,189.598c-10.196,8.846-19.131,16.229-28.599,23.863c-0.467,0.377-1.216,1.322-0.272,2.021 c16.28,12.842,28.107,21.561,33.939,25.824c2.174,1.594,3.363,2.434,4.822,0.977c4.895-4.896,14.315-14.318,19.578-19.58 c1.463-1.461,1.084-2.674-0.316-4.188c-4.26-4.602-14.407-15.562-26.838-28.982 C207.724,189.174,207.05,188.471,205.74,189.598z"></path> <path d="M125.765,170.701c10.861-11.724,20.655-22.288,31.522-33.999c0.535-0.711,0.053-1.865-0.364-2.314 c-8.375-9.016-15.716-16.908-20.923-22.48C110.686,84.803,45.448,2.472,45.448,2.472s-4.549-6.025-6.226,0.736 c-2.779,11.213-7.844,37.059,4.221,72.381c9.189,26.9,43.862,63.051,79.581,94.941 C123.553,171.004,124.738,171.576,125.765,170.701z"></path> </g> </g> <g> <path d="M293.214,3.209c-1.677-6.762-6.227-0.736-6.227-0.736s-65.236,82.33-90.552,109.436 c-22.774,24.381-86.349,93.055-98.892,106.606c-1.401,1.516-1.778,2.729-0.317,4.188c5.262,5.262,14.685,14.684,19.579,19.58 c1.458,1.457,2.65,0.617,4.823-0.977c22.286-16.305,148.499-110.501,167.362-165.719 C301.058,40.268,295.994,14.422,293.214,3.209z"></path> <path d="M69.266,217.262L54.439,232.09c-0.658,0.658-0.659,1.734,0,2.396l7.601,7.602c0.659,0.658,0.656,1.734-0.002,2.394 l-40.509,40.511c-20.324,20.324-19.09,21.557-4.268,36.379c14.822,14.821,16.054,16.055,36.378-4.271l40.509-40.508 c0.659-0.658,1.737-0.658,2.395-0.002l7.602,7.604c0.657,0.656,1.737,0.656,2.396,0l14.826-14.824 c0.659-0.66,0.658-1.74,0-2.398l-49.706-49.705C71.004,216.604,69.924,216.604,69.266,217.262z M33.775,283.953 c1.841-1.842,4.826-1.84,6.667,0l14.241,14.24c1.84,1.842,1.84,4.824,0,6.668c-1.841,1.84-4.826,1.84-6.666,0l-14.241-14.242 C31.936,288.778,31.935,285.793,33.775,283.953z M54.268,263.461c1.84-1.84,4.826-1.84,6.667,0.002l14.241,14.24 c1.841,1.84,1.84,4.826,0,6.666c-1.84,1.84-4.825,1.84-6.666,0l-14.241-14.242C52.427,268.287,52.426,265.303,54.268,263.461z"></path> </g> </g> </g> </g> </g> </g></svg>
+      </span>
+      <span class="hidden sm:flex mt-2 text-xs font-light text-gray-400 uppercase tracking-widest">Журнал Бою</span>
+    </div>
+
+    <!-- Defender -->
+    <div class="flex flex-col items-center w-1/3">
+      <%= image_tag url_for(battle_log.defender.avatar.image), alt: battle_log.defender.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
+      <span class="flex items-center text-sm sm:text-base font-bold text-gray-900">
+        <!-- Shield SVG -->
+        <svg class="w-4 h-4 mr-1 text-gray-500" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.35009 13.3929L8 16L11.6499 13.3929C13.7523 11.8912 15 9.46667 15 6.88306V3L8 0L1 3V6.88306C1 9.46667 2.24773 11.8912 4.35009 13.3929Z" fill="#000000"></path> </g></svg>
+        <%= battle_log.defender.name %>
+      </span>
+      <span class="mt-1 px-3 py-1 text-xs uppercase tracking-widest flex items-center <%= battle_log.defender == battle_log.winner ? 'text-emerald-700' : 'text-rose-600' %>">
+        <% if battle_log.defender == battle_log.winner %>
+          <!-- Trophy SVG -->
+          <svg class="w-4 h-4 mr-1 text-emerald-700" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4 0H12V2H16V4C16 6.45641 14.2286 8.49909 11.8936 8.92038C11.5537 10.3637 10.432 11.5054 9 11.874V14H12V16H4V14H7V11.874C5.56796 11.5054 4.44628 10.3637 4.1064 8.92038C1.77136 8.49909 0 6.45641 0 4V2H4V0ZM12 6.82929V4H14C14 5.30622 13.1652 6.41746 12 6.82929ZM4 4H2C2 5.30622 2.83481 6.41746 4 6.82929V4Z" fill="#047857"></path> </g></svg>
+          Перемога
+        <% else %>
+          <!-- Broken Shield SVG -->
+          <svg class="w-4 h-4 mr-1 text-emerald-700" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#e11d48" d="M45.906 23.625v9.344c0 102.68 10.49 205.087 41.125 288.155 30.637 83.068 82.364 147.415 163.75 169.78l2.22.626 2.22-.5C344.49 472 396.864 407.39 425.593 323.47c28.728-83.92 35.25-187.777 35.25-290.5v-9.345H45.906zM64.72 42.313H442.06c-.413 98.8-7.497 197.342-34.125 275.125-27.21 79.487-73.39 136.637-154.375 154.78-73.28-21.03-119.914-78.696-149-157.562-28.475-77.212-39.206-174.13-39.843-272.344zm18.81 18.75c.807 84.13 12.486 172.823 39.314 244.812 7.825 20.998 16.874 40.495 27.25 58.063l45.844-38.438-40.75-75.063-5.47-10.062 10.97-3.344s38.865-11.786 60.406-18.25l20.437-7.25-94.843-150.468H83.53zm160.25 0l45.782 91.5 132.407-43.157c.69-16.205 1.053-32.366 1.155-48.344H243.78zm177.157 68.343L298.031 169.47l24.908 49.78 25.875 48.72 53.28-1.845c10.245-42.834 16.03-89.664 18.844-136.72zM310.908 236.47l-30.75 10.374 67.25 145.187c17.813-23.2 31.737-51.6 42.624-83.686 2.578-7.595 4.966-15.39 7.19-23.344l-53.626 1.844-5.844.22-2.75-5.158-24.094-45.437zm-99.22 4.686c-13.133 3.972-27.346 8.262-34.625 10.47L216 323.28l3.625 6.72-5.844 4.906-53.56 44.906c24.67 35.91 55.887 61.828 94.655 73.125 30.34-6.91 55.36-21.496 76.03-42.062L211.69 241.155z"></path></g></svg>
+          Поразка
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <!-- Battle Details -->
+  <div class="px-10 pb-4 text-center text-xs text-gray-600 uppercase tracking-widest relative">
+    <%= battle_log.details.body %>
   </div>
 </div>

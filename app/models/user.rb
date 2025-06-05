@@ -56,9 +56,11 @@ class User < ApplicationRecord
     attacker_battle_logs + defender_battle_logs
   end
 
-  def battle_logs_includes_details
-    attacker_battle_logs.includes(%i[rich_text_details attacker defender winner])
-                        .includes(attacker: :avatar, defender: :avatar, winner: :avatar) +
-      defender_battle_logs.includes(%i[rich_text_details attacker defender winner])
+  def latest_battle_log
+    logs = PokemonBattleLog
+           .includes(:rich_text_details, :attacker, :defender, :winner)
+           .where('attacker_id = :user_id OR defender_id = :user_id', user_id: id)
+           .order(created_at: :desc)
+    logs.first
   end
 end

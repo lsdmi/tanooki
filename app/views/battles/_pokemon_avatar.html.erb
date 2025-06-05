@@ -1,0 +1,12 @@
+<div class="flex flex-col items-center justify-center text-center">
+  <div class="flex items-center justify-center h-14 w-14 border-2 border-gray-200 shadow rounded-full mb-2 transition-transform duration-300 hover:scale-105">
+    <%= image_tag(
+      url_for(player.pokemon.sprite),
+      alt: player.pokemon.sprite.blob.filename,
+      class: "w-10 h-10 object-contain rounded-full"
+    ) %>
+  </div>
+  <span class="font-semibold text-xs sm:text-sm text-gray-900 mt-1 tracking-wide">
+    <%= player.pokemon.name %>
+  </span>
+</div>

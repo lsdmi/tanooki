@@ -30,7 +30,7 @@ class PokemonShow
 
   def fetch_battle_history
     Rails.cache.fetch("user:#{user.id}:battle_history", expires_in: 5.minutes) do
-      user.battle_logs_includes_details.sort_by { |log| -log.id }.first(10)
+      user.latest_battle_log
     end
   end
 

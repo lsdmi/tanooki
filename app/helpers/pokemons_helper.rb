@@ -14,7 +14,7 @@ module PokemonsHelper
   end
 
   def reason_for_cooldown(current_user)
-    user_fight = current_user.battle_logs.maximum(:updated_at)
+    user_fight = current_user.battle_logs.maximum(:updated_at) || 1.year.ago
     cooldown_message_for(user_fight)
   end
 

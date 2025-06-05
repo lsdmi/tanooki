@@ -14,7 +14,7 @@ class PokemonBattlesController < ApplicationController
   private
 
   def battle_history
-    current_user.battle_logs_includes_details.sort_by { |log| -log.id }
+    current_user.latest_battle_log
   end
 
   def battle_service
@@ -77,10 +77,10 @@ class PokemonBattlesController < ApplicationController
   end
 
   def refresh_history
-    turbo_stream.prepend(
+    turbo_stream.update(
       'pokemon-history-list',
       partial: 'users/pokemons/history_record',
-      locals: { battle_log: battle_history.first }
+      locals: { battle_log: battle_history }
     )
   end
 

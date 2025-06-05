@@ -1,32 +1,45 @@
 <div class="col-span-12 lg:col-span-4 mt-4 sm:mt-0">
-  <div class="inline-flex items-center justify-between mb-3 mx-2">
+  <div class="inline-flex items-center justify-between mx-2">
     <%= image_tag 'battle_history.svg', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'stars' %>
-    <h5 class="text-xl font-bold leading-none text-gray-900">Останні Сутички</h5>
+    <h5 class="text-xl font-bold leading-none text-gray-900">Остання Сутичка</h5>
   </div>
-  <div class="flow-root py-3 px-4 border border-gray-200 rounded-lg shadow mt-2 overflow-y-auto max-h-[24rem] lg:max-h-[40rem] xl:max-h-[56rem] 2xl:max-h-[40rem]">
-    <% if battle_history.any? %>
+  <div class="border border-gray-200 rounded-md shadow">
+    <% if battle_history.present? %>
       <%= turbo_frame_tag "pokemon-history-list" do %>
-        <% battle_history.each do |battle_log| %>
-          <%= render 'users/pokemons/history_record', battle_log: %>
-        <% end %>
+        <%= render 'users/pokemons/history_record', battle_log: battle_history %>
       <% end %>
     <% else %>
       <%= turbo_frame_tag "pokemon-history-list" do %>
       <% end %>
       <%= turbo_frame_tag "pokemon-history-call" do %>
-        <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-8">
-          <div class="space-y-4 sm:space-y-6 lg:space-y-8 lg:col-span-2">
-            <h2 class="font-extrabold leading-tight text-gray-900 text-2xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
-              Вперед до бою!
-            </h2>
-            <p class="mt-4 text-gray-500 text-base sm:text-lg xl:text-xl 2xl:text-2xl font-light">
-              Ви маєте покемонів, що зриваються до бою! Натисніть на одну із червоних рукавичок <%= image_tag 'battle.webp', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %> на екрані <b>"Рейтинг Тренерів"</b>, аби розпочати поєдинок!
-            </p>
-            <div class="relative shadow-2xl hidden lg:block">
-              <%= image_tag 'pokemon_cta.webp', alt: 'pokemon cta', class: 'object-cover shadow-2xl' %>
+        <div class="relative mx-auto my-2 border border-gray-300 overflow-hidden">
+          <!-- Main Content Area -->
+          <div class="flex items-center px-4 py-3">
+            <!-- Pokéball SVG or Icon (optional, for visual echo) -->
+            <div class="hidden sm:flex items-center pr-3">
+              <svg class="h-7 w-7 text-cyan-600" fill="none" viewBox="0 0 48 48" stroke="currentColor">
+                <circle cx="24" cy="24" r="22" stroke-width="3" />
+                <circle cx="24" cy="24" r="8" stroke-width="3" />
+                <circle cx="24" cy="24" r="4" fill="currentColor" class="text-white" />
+                <line x1="2" y1="24" x2="46" y2="24" stroke-width="3" />
+              </svg>
+            </div>
+            <!-- Text Content -->
+            <div class="flex-1">
+              <div class="text-base sm:text-lg font-extrabold text-gray-900 uppercase">
+                Вперед до бою!
+              </div>
+              <div class="mt-1 text-xs sm:text-sm text-gray-600 font-light">
+                Ви маєте покемонів, що зриваються до бою! Натисніть на червону рукавичку 
+                <%= image_tag 'battle.webp', class: 'h-5 w-5 inline-block mx-1 transform transition duration-300 hover:scale-110', alt: 'battle call' %>
+                на екрані <span class="font-semibold">"Мій Виклик"</span>, аби розпочати поєдинок!
+              </div>
             </div>
           </div>
+          <!-- Decorative Bottom Glow -->
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-4 bg-gradient-to-r from-blue-200 via-fuchsia-200 to-indigo-200 opacity-40 blur-sm"></div>
         </div>
+
       <% end %>
     <% end %>
   </div>

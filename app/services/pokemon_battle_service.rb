@@ -11,10 +11,20 @@ class PokemonBattleService
     @battle_log = ''
     @winner_id = nil
     @loser_id = nil
+    @outcome_blocks = []
+    @start_message = nil
+    @conclusion_message = nil
   end
 
-  def append_log(message)
-    @battle_log += "#{message}\n"
+  def append_log(message, type = :outcome)
+    case type
+    when :start
+      @start_message = message
+    when :conclusion
+      @conclusion_message = message
+    else
+      @outcome_blocks << message
+    end
   end
 
   def assign_winner(id)
@@ -26,12 +36,26 @@ class PokemonBattleService
   end
 
   def fight_details
-    @battle_log
+    grid_content = @outcome_blocks.dup
+    if grid_content.size.odd?
+      grid_content << @conclusion_message
+      conclusion_html = ''
+    else
+      conclusion_html = @conclusion_message
+    end
+
+    <<~HTML.html_safe
+      #{@start_message}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
+        #{grid_content.join}
+      </div>
+      #{conclusion_html}
+    HTML
   end
 
   def start_battle
     logger = BattleLogger.new(attacker_id, defender_id)
-    append_log(logger.start)
+    append_log(logger.start, :start)
 
     attacker_team = initialize_team(@attacker_pokemons)
     defender_team = initialize_team(@defender_pokemons)
@@ -80,7 +104,7 @@ class PokemonBattleService
   private
 
   def handle_victory(attacker, defender, attacker_team, defender_team, attacker_stats, defender_stats, logger)
-    append_log(logger.outcome(attacker, defender, :victory))
+    append_log(logger.outcome(attacker, defender, :victory, @outcome_blocks.size + 1))
     defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:active] = false
     tiredness_to_add = tiredness_stat(attacker_stats, defender_stats)
     attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:tiredness] += tiredness_to_add
@@ -89,7 +113,7 @@ class PokemonBattleService
   end
 
   def handle_defeat(attacker, defender, attacker_team, defender_team, attacker_stats, defender_stats, logger)
-    append_log(logger.outcome(attacker, defender, :defeat))
+    append_log(logger.outcome(attacker, defender, :defeat, @outcome_blocks.size + 1))
     attacker_team.find { |pokemon| pokemon[:id] == attacker_stats[:id] }[:active] = false
     tiredness_to_add = tiredness_stat(defender_stats, attacker_stats)
     defender_team.find { |pokemon| pokemon[:id] == defender_stats[:id] }[:tiredness] += tiredness_to_add
@@ -110,7 +134,7 @@ class PokemonBattleService
 
   def conclude_battle(attacker_team, logger)
     result = active_pokemon?(attacker_team) ? :victory : :defeat
-    append_log(logger.conclusion(result))
+    append_log(logger.conclusion(result), :conclusion)
     assign_winner_and_loser(result)
   end
 
