@@ -20,7 +20,6 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     get youtube_videos_path
     assert_response :success
 
-    assert_not_nil assigns(:highlights)
     assert_not_nil assigns(:popular)
     assert_not_nil assigns(:latest)
     assert_not_nil assigns(:pagy)

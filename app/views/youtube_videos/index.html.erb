@@ -1,19 +1,19 @@
 <div class="min-h-screen">
-  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
-  <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95 md:opacity-95"></div>
   <div id="user-content"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pb-8 pt-4 z-10 relative">
     <section class="my-10">
       <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
-        Останні <span class="text-cyan-600 dark:text-rose-700">Оновлення</span>
+        Останні <span class="text-cyan-800 dark:text-rose-700">Оновлення</span>
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8 p-2">
         <% @latest.each_with_index do |video, idx| %>
           <div class="<%= idx >= 2 ? 'hidden md:block' : '' %> overflow-hidden">
             <%= link_to youtube_video_path(video), class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
-              <%= image_tag url_for(video.thumbnail), 
+              <%= image_tag url_for(video.thumbnail),
                 alt: video.title,
+                width: 374,
+                height: 210,
                 class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
                 loading: "lazy",
                 data: {
@@ -23,15 +23,15 @@
                 } %>
             <% end %>
             <div class="py-2 px-2">
-              <%= link_to video.title, youtube_video_path(video), class: 'drop-shadow lg:leading-tight text-sm sm:text-xs lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-600 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
+              <%= link_to video.title, youtube_video_path(video), class: 'drop-shadow lg:leading-tight text-sm sm:text-xs lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
               <p class="drop-shadow text-stone-700 dark:text-gray-300 text-xs lg:text-sm my-2 line-clamp-1">
-                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-600 dark:hover:text-rose-700 transition-colors duration-300' %> • 
+                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300' %> •
                 <%= tag.span l(video.published_at, format: :short).downcase, class: 'inline' %>
               </p>
               <% if video.tags? %>
                 <div class="text-xs flex flex-wrap gap-2 drop-shadow">
                   <% video.tags.split(', ').first(2).each do |video_tag| %>
-                    <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: "px-2 lg:px-3 py-1 rounded-md text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap hover:cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500 bg-cyan-600 dark:bg-rose-900 text-white dark:text-white ring-cyan-700 dark:ring-rose-900 hover:bg-cyan-700 dark:hover:bg-rose-800 hover:ring-cyan-800 dark:hover:ring-rose-700 hover:scale-105", form_class: 'inline-block', params: { search: [video_tag] } %>
+                    <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: "px-2 lg:px-3 py-1 rounded-md text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap hover:cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-600 dark:focus-visible:ring-rose-500 bg-cyan-700 dark:bg-rose-900 text-white dark:text-white ring-cyan-800 dark:ring-rose-900 hover:bg-cyan-800 dark:hover:bg-rose-800 hover:ring-cyan-900 dark:hover:ring-rose-700 hover:scale-105", form_class: 'inline-block', params: { search: [video_tag] } %>
                   <% end %>
                 </div>
               <% end %>
@@ -46,13 +46,16 @@
       <div class="lg:w-2/3 w-full rounded-lg overflow-hidden">
         <div class="aspect-[16/9] w-full overflow-hidden">
           <%= link_to youtube_video_path(@highlight), class: 'block w-full h-full' do %>
-            <%= tag.iframe src: "https://www.youtube.com/embed/#{@highlight.video_id}", class: 'w-full h-full object-cover rounded-md shadow-sm', allowfullscreen: true %>
+            <span class="sr-only">
+              Watch <%= @highlight.title %> on YouTube
+            </span>
+            <%= tag.iframe src: "https://www.youtube.com/embed/#{@highlight.video_id}", class: 'w-full h-full object-cover rounded-md shadow-sm', allowfullscreen: true, title: @highlight.title %>
           <% end %>
         </div>
         <div class="p-4">
-          <%= link_to @highlight.title, youtube_video_path(@highlight), class: 'lg:leading-tight text-sm sm:text-2xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-600 dark:hover:text-rose-700 transition-colors duration-300 mb-2 line-clamp-1 drop-shadow' %>
+          <%= link_to @highlight.title, youtube_video_path(@highlight), class: 'lg:leading-tight text-sm sm:text-2xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-2 line-clamp-1 drop-shadow' %>
           <p class="text-stone-700 dark:text-gray-300 mb-2 drop-shadow text-xs lg:text-base">
-            <%= link_to @highlight.youtube_channel.title, search_index_path(search: [@highlight.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-600 dark:hover:text-rose-700 transition-colors duration-300' %> • 
+            <%= link_to @highlight.youtube_channel.title, search_index_path(search: [@highlight.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300' %> •
             <%= tag.span l(@highlight.published_at, format: :short).downcase, class: 'inline' %>
           </p>
           <% if @highlight.tags? %>
@@ -61,7 +64,7 @@
                 <%= button_to video_tag, search_index_path, method: :get,
                   id: 'search-video-tag',
                   class: [
-                    'drop-shadow px-2 lg:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap hover:cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-cyan-600 dark:bg-rose-900 text-white dark:text-white ring-cyan-700 dark:ring-rose-900 hover:bg-cyan-700 dark:hover:bg-rose-800 hover:ring-cyan-800 dark:hover:ring-rose-700 hover:scale-105 inline-block',
+                    'drop-shadow px-2 lg:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap hover:cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-cyan-700 dark:bg-rose-900 text-white dark:text-white ring-cyan-800 dark:ring-rose-900 hover:bg-cyan-800 dark:hover:bg-rose-800 hover:ring-cyan-900 dark:hover:ring-rose-700 hover:scale-105 inline-block',
                     (idx > 1 ? 'hidden md:inline-block' : nil)
                   ].compact.join(' '),
                   form_class: 'inline-block',
@@ -82,8 +85,10 @@
             <% @other_youtube_videos.each do |video| %>
               <div class="overflow-hidden">
                 <%= link_to youtube_video_path(video), data: { turbo: false }, class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
-                  <%= image_tag url_for(video.thumbnail), 
+                  <%= image_tag url_for(video.thumbnail),
                     alt: video.title,
+                    width: 185,
+                    height: 103,
                     class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
                     loading: "lazy",
                     data: {
@@ -93,7 +98,7 @@
                     } %>
                 <% end %>
                 <div class="py-2">
-                  <%= link_to video.title, youtube_video_path(video), data: { turbo: false }, class: 'drop-shadow lg:leading-tight text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-600 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
+                  <%= link_to video.title, youtube_video_path(video), data: { turbo: false }, class: 'drop-shadow lg:leading-tight text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
                 </div>
               </div>
             <% end %>
@@ -110,7 +115,7 @@
     <!-- Popular Section -->
     <section>
       <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4">
-        Популярні <span class="text-cyan-600 dark:text-rose-700">Відео</span>
+        Популярні <span class="text-cyan-700 dark:text-rose-700">Відео</span>
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 gap-y-4 lg:gap-y-8">
         <% @popular.each do |video| %>

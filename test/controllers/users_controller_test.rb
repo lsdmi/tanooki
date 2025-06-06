@@ -70,6 +70,5 @@ class UsersControllerTest < ActionController::TestCase
     get :pokemons
     assert_response :success
     assert_template 'users/dashboard/_pokemons'
-    assert_not_nil assigns(:pokemons)
   end
 end

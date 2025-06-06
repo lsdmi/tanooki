@@ -15,4 +15,8 @@ class Comment < ApplicationRecord
   def username
     user.name
   end
+
+  def parent_content
+    parent&.content
+  end
 end

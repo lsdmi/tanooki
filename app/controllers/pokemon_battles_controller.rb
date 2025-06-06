@@ -7,6 +7,7 @@ class PokemonBattlesController < ApplicationController
     else
       battle_service.start_battle
       create_battle_log
+      Rails.cache.delete("user:#{current_user.id}:battle_history")
       render turbo_stream: [refresh_leaders, refresh_history, remove_call]
     end
   end

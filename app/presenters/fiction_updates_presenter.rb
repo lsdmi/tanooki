@@ -26,7 +26,7 @@ class FictionUpdatesPresenter
       {
         day: I18n.l(date.in_time_zone(UKRAINE_TIME_ZONE), format: '%A'),
         date: I18n.l(date.in_time_zone(UKRAINE_TIME_ZONE), format: '%d/%m'),
-        updates: day_chapters.group_by { |chapter| chapter.fiction.slug }
+        updates: day_chapters.group_by { |chapter| chapter.fiction_slug }
                              .map do |fiction_slug, fiction_chapters|
           fiction = fiction_chapters.first.fiction
           scanlator = fiction.scanlators.sample

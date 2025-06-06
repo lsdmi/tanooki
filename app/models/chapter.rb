@@ -63,6 +63,10 @@ class Chapter < ApplicationRecord
     fiction.title
   end
 
+  def fiction_slug
+    fiction.slug
+  end
+
   def manage_users
     scanlator_ids.each do |scanlator_id|
       FictionScanlator.find_or_create_by(fiction_id:, scanlator_id:)

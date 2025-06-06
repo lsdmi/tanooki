@@ -3,6 +3,9 @@
 require 'test_helper'
 
 class BlogScraperTest < ActiveSupport::TestCase
+  # Helper struct to replace OpenStruct
+  Item = Struct.new(:pubDate)
+
   test 'fetch_content returns nil when no RSS items' do
     BlogScraper.stub :fetch_rss_items, [] do
       assert_nil BlogScraper.fetch_content
@@ -11,8 +14,8 @@ class BlogScraperTest < ActiveSupport::TestCase
 
   test 'filter_by_time returns only recent items' do
     now = Time.current
-    old_item = OpenStruct.new(pubDate: now - 3.hours)
-    new_item = OpenStruct.new(pubDate: now - 1.hour)
+    old_item = Item.new(now - 3.hours)
+    new_item = Item.new(now - 1.hour)
     result = BlogScraper.send(:filter_by_time, [old_item, new_item], 2)
     assert_equal [new_item], result
   end

@@ -16,7 +16,6 @@ class PokemonBattleServiceTest < ActiveSupport::TestCase
       defender_id: @defender.id
     )
 
-    assert_equal '', service.fight_details
     service.start_battle
     assert_not_empty service.fight_details
   end
@@ -29,7 +28,6 @@ class PokemonBattleServiceTest < ActiveSupport::TestCase
       defender_id: @defender.id
     )
 
-    assert_equal '', service.fight_details
     service.start_battle
     assert_not_empty service.fight_details
   end

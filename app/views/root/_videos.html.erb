@@ -4,7 +4,7 @@
       <div class="mt-4 mb-8 lg:mb-1">
         <div class="flex flex-col lg:items-center lg:flex-row gap-y-4 sm:gap-y-4 lg:gap-x-8 xl:gap-x-12">
           <div class="rounded-xl float-left relative w-full overflow-hidden mb-1">
-            <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}", width: '672', height: '384', class: 'w-full md:w-full lg:w-[672px] rounded-xl m-auto object-cover h-48 sm:h-72 md:h-96', allowfullscreen: true %>
+            <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}", width: '672', height: '384', class: 'w-full md:w-full lg:w-[672px] rounded-xl m-auto object-cover h-48 sm:h-72 md:h-96', allowfullscreen: true, title: video.title %>
           </div>
           <div class="w-full space-y-6 lg:max-w-lg shrink-0">
             <div class="space-y-3">

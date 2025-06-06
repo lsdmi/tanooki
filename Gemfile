@@ -43,6 +43,7 @@ end
 
 group :development do
   gem 'bullet'
+  gem 'bundler-audit'
   gem 'capistrano'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'

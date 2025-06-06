@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center mb-2">
     <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100">Топ Ранобе</h2>
   </div>
-  <div class="border border-cyan-600 dark:border-rose-700"></div>
+  <div class="border border-cyan-700 dark:border-rose-700"></div>
 </div>
 
 <div class="flex lg:block overflow-x-auto lg:overflow-x-visible -mx-4 lg:mx-0 px-4 lg:px-0">
@@ -26,7 +26,7 @@
 
           <div class="mt-2 lg:mt-1 lg:col-span-8 lg:pl-0 flex flex-col space-y-2">
             <%= link_to fiction_path(fiction), class: 'group' do %>
-              <p class="leading-tight text-md font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-600 dark:group-hover:text-rose-700 transition-colors duration-300">
+              <p class="leading-tight text-md font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
                 <%= fiction.title %>
               </p>
             <% end %>
@@ -42,7 +42,7 @@
                 <% genres = fiction.genres.sample(2) %>
                 <% genres.each_with_index do |genre, i| %>
                   <%= tag.span genre.name,
-                    class: "shadow-sm ring-1 ring-cyan-700 dark:ring-rose-800 bg-cyan-600 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i == 1}" %>
+                    class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i == 1}" %>
                 <% end %>
               </div>
             <% end %>

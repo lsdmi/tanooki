@@ -2,12 +2,12 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100">Нові Релізи</h2>
   </div>
-  <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-600 dark:border-rose-700">
+  <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
     <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-2 -mx-2 px-2">
       <% fictions.each_with_index do |fiction, index| %>
         <%= image_tag url_for(fiction.cover),
             alt: fiction.cover.blob.filename.to_s,
-            class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-cyan-700 dark:ring-rose-800' : ''}",
+            class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-cyan-800 dark:ring-rose-800' : ''}",
             data: {
               action: "click->fiction-picker#selectFiction",
               fiction_picker_target: "image",

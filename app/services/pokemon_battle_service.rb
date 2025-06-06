@@ -152,19 +152,6 @@ class PokemonBattleService
     team.any? { |pokemon| pokemon[:active] }
   end
 
-  def build_team_member_data(pokemon, experience, luck, power)
-    { active: true,
-      all_types: pokemon.pokemon.types.pluck(:name),
-      character: pokemon.character,
-      experience:,
-      id: pokemon.id,
-      luck:,
-      power:,
-      raw_total: (power + experience) * luck,
-      tiredness: 1,
-      type: 1 }
-  end
-
   def calculate_battle_result(stats)
     stats[:raw_total] * stats[:type] / stats[:tiredness]
   end
@@ -176,16 +163,6 @@ class PokemonBattleService
       1
     else
       0
-    end
-  end
-
-  def calculate_team_data(pokemon_list)
-    pokemon_list.map do |pokemon|
-      power = calculate_power(pokemon)
-      luck = calculate_luck(pokemon)
-      experience = calculate_experience(pokemon)
-
-      build_team_member_data(pokemon, experience, luck, power)
     end
   end
 
@@ -228,21 +205,6 @@ class PokemonBattleService
   end
 
   def initialize_team(pokemon_list)
-    team_data = calculate_team_data(pokemon_list)
-    sorted_team = team_data.sort_by { |data| -data[:raw_total] }
-    sorted_team.first(pokemon_limit)
-  end
-
-  def calculate_power(user_pokemon)
-    Pokemon::POWER_LEVELS[user_pokemon.pokemon_power_level] * (user_pokemon.character == 'independent' ? 120 : 100)
-  end
-
-  def calculate_experience(user_pokemon)
-    user_pokemon.battle_experience * (user_pokemon.character == 'brave' ? 2 : 1)
-  end
-
-  def calculate_luck(user_pokemon)
-    luck_range = user_pokemon.character == 'lucky' ? (1.0..1.2) : (0.9..1.1)
-    rand(luck_range)
+    PokemonTeamBuilder.new(pokemon_list, pokemon_limit).build_team
   end
 end
