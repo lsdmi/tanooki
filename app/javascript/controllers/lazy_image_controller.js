@@ -1,33 +1,34 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["image"]
-  static values = { url: String }
-
   connect() {
+    const imageId = this.element.dataset.lazyImageImageId
+    const spinner = document.getElementById(`spinner-${imageId}`)
+    const image = document.getElementById(`image-${imageId}`)
+
+    if (!image || !spinner) return
+
+    // Set up lazy loading and spinner logic
     if ('IntersectionObserver' in window) {
-      this.observer = new IntersectionObserver(this.onIntersection.bind(this))
-      this.observer.observe(this.imageTarget)
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect()
+          image.src = image.dataset.url
+        }
+      })
+      observer.observe(image)
     } else {
-      this.loadImage()
+      image.src = image.dataset.url
     }
-  }
 
-  disconnect() {
-    if (this.observer) {
-      this.observer.disconnect()
+    image.onload = () => {
+      image.classList.remove("opacity-0")
+      spinner.classList.add("hidden")
     }
-  }
 
-  onIntersection(entries) {
-    if (entries[0].isIntersecting) {
-      this.observer.disconnect()
-      this.loadImage()
+    // Optional: Handle image load errors
+    image.onerror = () => {
+      console.error("Image failed to load")
     }
-  }
-
-  loadImage() {
-    this.imageTarget.src = this.urlValue
-    this.imageTarget.classList.remove("opacity-0")
   }
 }

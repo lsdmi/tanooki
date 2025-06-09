@@ -10,8 +10,8 @@
       <%= tag.h3 class: 'hidden md:block text-left mb-4 relative w-full' do %>
         <%= tag.span params[:search].join.split.map(&:capitalize).join(' '), class: 'inline-block text-white font-bold leading-none px-4 py-2 relative uppercase -skew-x-12 z-10 bg-rose-500' %>
       <% end %>
-      <%= tag.h2 publication.title, class: 'font-oswald text-white font-bold sm:text-2xl md:text-2xl lg:text-4xl' %>
-      <%= tag.h2 punch(publication.description.to_plain_text), class: "#{main_state(publication)} lg:block font-oswald font-thin text-white mt-8 lg:text-xl w-11/12" %>
+      <%= tag.h2 publication.title, class: ' text-white font-bold sm:text-2xl md:text-2xl lg:text-4xl' %>
+      <%= tag.h2 punch(publication.description.to_plain_text), class: "#{main_state(publication)} lg:block  font-thin text-white mt-8 lg:text-xl w-11/12" %>
     </div>
   </div>
 <% end if publication.present? %>

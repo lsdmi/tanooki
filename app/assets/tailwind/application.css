@@ -1,0 +1,6 @@
+@import "../stylesheets/pagy.css";
+@import "../stylesheets/actiontext.css";
+@import "../stylesheets/slimselect.css";
+
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));

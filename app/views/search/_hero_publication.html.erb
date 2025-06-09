@@ -3,7 +3,7 @@
     <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: 'object-cover w-full h-56 scale-100 ease-in duration-300 group-hover:scale-125' %>
     <div class="absolute inset-0 grid items-end justify-center p-4 bg-gradient-to-b from-transparent to-black/60">
       <div class="text-center">
-        <%= tag.p publication.title, class: 'text-2xl font-bold text-white font-oswald' %>
+        <%= tag.p publication.title, class: 'text-2xl font-bold text-white ' %>
       </div>
     </div>
   <% end %>

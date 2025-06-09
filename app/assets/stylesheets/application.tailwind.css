@@ -1,7 +1,0 @@
-@import 'actiontext.css';
-@import 'slimselect.css';
-@import 'pagy.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

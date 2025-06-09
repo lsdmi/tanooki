@@ -1,5 +1,5 @@
 <div id="genre-<%= genre.id %>" class="inline-flex flex-col mb-2">
-  <%= tag.span class: 'items-center px-2 py-1 mr-2 text-lg font-medium text-blue-800 bg-blue-100 rounded font-oswald' do %>
+  <%= tag.span class: 'items-center px-2 py-1 mr-2 text-lg font-medium text-blue-800 bg-blue-100 rounded ' do %>
     <%= genre.name %>
 
     <%= link_to edit_admin_genre_path(genre),
@@ -18,5 +18,5 @@
       </svg>
     <% end %>
   <% end %>
-  <%= tag.span genre.errors[:publication_id].uniq.join(""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1" if genre.errors[:publication_id].any? %>
+  <%= tag.span genre.errors[:publication_id].uniq.join(""), class: " flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1" if genre.errors[:publication_id].any? %>
 </div>

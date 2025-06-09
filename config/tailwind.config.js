@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-
 module.exports = {
   content: [
     './public/*.html',
@@ -12,7 +10,6 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography')
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -34,7 +31,6 @@ module.exports = {
         'Montserrat',
         'sans-serif'
       ],
-      oswald: ['Oswald', ...defaultTheme.fontFamily.sans],
       georgia: ['Georgia,Times,Times New Roman,serif'],
       helvetica: ['"Helvetica Neue",sans-serif'],
       times: ['Times New Roman' , 'serif']

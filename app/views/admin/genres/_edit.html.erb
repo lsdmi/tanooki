@@ -1,5 +1,5 @@
 <div id="genre-<%= genre.id %>" class="inline-flex flex-col mb-2">
-  <%= tag.span class: 'inline-flex items-center px-2 py-1 mr-2 text-lg font-medium text-blue-800 bg-blue-50 rounded font-oswald border border-blue-500' do %>
+  <%= tag.span class: 'inline-flex items-center px-2 py-1 mr-2 text-lg font-medium text-blue-800 bg-blue-50 rounded  border border-blue-500' do %>
     <%= simple_form_for genre, url: admin_genre_path(genre), method: :put, html: { class: "form" } do |f| %>
       <%= f.input :name, label: false, required: true, wrapper_html: { class: 'inline-block' }, input_html: { class: 'rounded bg-blue-50 text-sm border-none focus:border-transparent focus:ring-0 p-1' } %>
       <%= button_tag type: 'submit', class: "inline-flex items-center p-0.5 ml-2 text-base text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900" do %>
@@ -9,5 +9,5 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= tag.span genre.errors[:name].uniq.join(""), class: "font-oswald flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1" if genre.errors[:name].any? %>
+  <%= tag.span genre.errors[:name].uniq.join(""), class: " flex items-center font-medium tracking-wide text-red-500 text-sm mt-1 ml-1" if genre.errors[:name].any? %>
 </div>
