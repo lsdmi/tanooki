@@ -1,7 +1,7 @@
-<div class="p-4 space-y-2 bg-gray-50 shadow-lg xl:p-6 2xl:p-8 lg:space-y-4 mb-2 rounded-lg relative bg-no-repeat bg-cover bg-center bg-fixed" style="background-image: url(<%= asset_path('writer.webp') %>);">
-  <div class="absolute inset-0 bg-white opacity-95"></div>
-  <div class="flex items-center space-x-4 relative z-10">
-    <div class="flex-shrink-0">
+<div class="relative rounded-md shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 mb-2 bg-no-repeat bg-cover bg-center bg-fixed overflow-hidden" style="background-image: url(<%= asset_path('writer.webp') %>);">
+  <div class="absolute inset-0 bg-stone-50 dark:bg-gray-900 opacity-90"></div>
+  <div class="flex items-center gap-4 relative z-10">
+    <div class="flex-shrink-0 relative">
       <%= image_tag url_for(notification.user.avatar.image), alt: notification.user.avatar.blob.filename.to_s, class: 'w-10 h-10 rounded-full', height: '48', width: '48' %>
       <div class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-green-500 border border-white rounded-full">
         <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
@@ -10,15 +10,15 @@
       </div>
     </div>
     <div class="flex-1 min-w-0">
-      <div class="text-gray-500">
-        <%= tag.span notification.user.name, class: 'font-semibold text-gray-900' %>
-        <%= tag.span "лишив коментар до #{commentable_type(notification.commentable)}", class: 'font-light' %>
-        <%= tag.span class: 'font-medium text-blue-500 hover:underline' do %>
-          <%= link_to commentable_title(notification.commentable), comment_url(notification) %>
+      <div class="text-stone-800 dark:text-gray-200 font-light tracking-tight">
+        <%= tag.span notification.user.name, class: 'font-semibold text-stone-900 dark:text-gray-100' %>
+        <%= tag.span " лишив коментар до #{commentable_type(notification.commentable)}", class: '' %>
+        <%= tag.span class: 'font-medium text-cyan-200 dark:text-rose-200 hover:underline' do %>
+          <%= link_to commentable_title(notification.commentable), comment_url(notification), class: 'inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-rose-700 hover:underline' %>
         <% end %>
       </div>
-      <%= tag.p l(notification.created_at, format: :short).downcase, class: 'text-sm font-normal text-gray-500 truncate' %>
+      <%= tag.p l(notification.created_at, format: :short).downcase, class: 'text-xs font-light text-stone-700 dark:text-gray-300 truncate' %>
     </div>
   </div>
-  <%= tag.p notification.content, class: 'relative z-10 text-base font-normal text-gray-500 whitespace-break-spaces' %>
+  <%= tag.p notification.content, class: 'relative z-10 text-stone-800 dark:text-gray-200 font-light tracking-tight mt-2 whitespace-break-spaces' %>
 </div>

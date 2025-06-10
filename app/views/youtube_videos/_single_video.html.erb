@@ -1,16 +1,18 @@
 <div class="rounded-lg overflow-hidden p-2">
     <%= link_to youtube_video_path(video), class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
-    <%= image_tag url_for(video.thumbnail),
-        alt: video.title,
-        width: 263,
-        height: 148,
-        class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
-        loading: "lazy",
-        data: {
-        controller: "lazy-image",
-        lazy_image_target: "image",
-        lazy_image_url_value: url_for(video.thumbnail)
-        } %>
+        <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative">
+            <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
+                <!-- Spinner SVG or content here -->
+            </div>
+            <%= image_tag url_for(video.thumbnail),
+                alt: video.title,
+                id: "image-#{video.id}",
+                width: 263,
+                height: 148,
+                class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
+                loading: "lazy",
+                data: { url: url_for(video.thumbnail) } %>
+        </div>
     <% end %>
     <div class="py-1 lg:py-2">
     <%= link_to video.title, youtube_video_path(video), class: 'drop-shadow text-sm md:text-base md:leading-tight font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>

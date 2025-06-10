@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="uk">
   <head>
+    <script>
+      // Immediately set the dark class before CSS loads
+      (function() {
+        try {
+          if (
+            localStorage.getItem('color-theme') === 'dark' ||
+            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          ) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
+
     <%= render 'shared/meta' %>
 
     <%= tag.script type: 'application/ld+json' do %>
