@@ -1,9 +1,22 @@
-<nav class="py-4 bg-white dark:bg-gray-900 antialiased relative z-50 shadow-md">
+<nav class="py-4 bg-white dark:bg-gray-900 antialiased relative z-50 shadow-md border-b border-gray-200 dark:border-gray-700">
   <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
     <div class="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap">
       <div class="sm:order-1 shrink-0">
+        <% theme = cookies[:color_theme] || 'light' %>
         <a href="/" class="flex items-center">
-          <%= image_tag 'logo-default.svg', id: 'site-logo', class: 'mr-3 h-10 md:h-14 w-auto', alt: 'logo', width: '105', height: '40', data: { "default-logo": asset_path('logo-default.svg'), "dark-logo": asset_path('logo-dark.svg') } %>
+          <%= image_tag(
+                theme == 'dark' ? 'logo-dark.svg' : 'logo-default.svg',
+                id: 'site-logo',
+                class: 'mr-3 h-10 md:h-14 w-auto',
+                alt: 'logo',
+                width: '105',
+                height: '40',
+                data: {
+                  "default-logo": asset_path('logo-default.svg'),
+                  "dark-logo": asset_path('logo-dark.svg')
+                }
+              )
+          %>
         </a>
       </div>
 

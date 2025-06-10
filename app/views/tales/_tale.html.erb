@@ -1,6 +1,6 @@
 <article>
-  <h2 class="mb-2 text-2xl font-bold tracking-tight text-white hover:underline">
+  <h2 class="line-clamp-3 leading-tight mb-2 text-2xl font-bold tracking-tight text-white hover:underline hover:text-cyan-200 dark:hover:text-rose-800">
     <%= link_to tale.title, tale_path(tale) %>
   </h2>
-  <%= tag.p punch(tale.description.to_plain_text), class: 'mb-4 font-light text-gray-300 text-base' %>
+  <%= tag.p punch(tale.description.to_plain_text), class: 'line-clamp-3 mb-4 font-light text-gray-300 text-base' %>
 </article>

@@ -33,10 +33,10 @@ const initializeModeToggler = () => {
   var themeToggleBtn = document.getElementById('theme-toggle');
 
   themeToggleBtn.addEventListener('click', function() {
-
+    
     themeToggleDarkIcon.classList.toggle('hidden');
     themeToggleLightIcon.classList.toggle('hidden');
-
+  
     if (localStorage.getItem('color-theme')) {
       if (localStorage.getItem('color-theme') === 'light') {
         document.documentElement.classList.add('dark');
@@ -58,7 +58,10 @@ const initializeModeToggler = () => {
         setLogo(true);
       }
     }
-  });
+  
+    // Set the Rails cookie for server-side theme detection
+    document.cookie = `color_theme=${document.documentElement.classList.contains('dark') ? 'dark' : 'light'}; path=/; max-age=31536000`;
+  });  
 }
 
 document.addEventListener('turbo:load', initializeModeToggler);

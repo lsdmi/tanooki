@@ -2,15 +2,16 @@
 <html lang="uk">
   <head>
     <script>
-      // Immediately set the dark class before CSS loads
       (function() {
         try {
-          if (
+          var isDark =
             localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-          ) {
+            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
             document.documentElement.classList.add('dark');
           }
+          // Set the cookie for Rails to read on next request
+          document.cookie = `color_theme=${isDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
         } catch(e) {}
       })();
     </script>

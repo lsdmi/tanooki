@@ -2,25 +2,33 @@
   <div class="max-w-screen-xl px-4 mx-auto lg:px-6">
     <% videos.each do |video| %>
       <div class="mt-4 mb-8 lg:mb-1">
-        <div class="flex flex-col lg:items-center lg:flex-row gap-y-4 sm:gap-y-4 lg:gap-x-8 xl:gap-x-12">
-          <div class="rounded-xl float-left relative w-full overflow-hidden mb-1">
+        <div class="flex flex-col lg:items-center lg:flex-row gap-y-4 sm:gap-y-4 lg:gap-x-8 xl:gap-x-12 p-4">
+          <div class="rounded-xl relative w-full overflow-hidden mb-1">
             <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}", width: '672', height: '384', class: 'w-full md:w-full lg:w-[672px] rounded-xl m-auto object-cover h-48 sm:h-72 md:h-96', allowfullscreen: true, title: video.title %>
           </div>
           <div class="w-full space-y-6 lg:max-w-lg shrink-0">
             <div class="space-y-3">
-              <div class="line-clamp-1 sm:mb-1 md:mb-2">
-                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'text-rose-700 dark:text-rose-400 text-sm sm:text-lg md:text-xl font-light hover:underline', target: '_blank' %>
-                <%= tag.span "∘", class: 'text-base sm:text-lg md:text-xl font-light text-gray-600 dark:text-gray-400' %>
-                <%= tag.span l(video.published_at, format: :short).downcase, class: 'text-sm sm:text-base font-light text-gray-500 dark:text-gray-400' %>
+              <div class="line-clamp-1 sm:mb-1 md:mb-2 flex items-center gap-2">
+                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-600 hover:underline dark:hover:text-rose-700 font-light tracking-tight', target: '_blank' %>
               </div>
               <%= link_to youtube_video_path(video), class: 'mb-2' do %>
-                <%= tag.h3 video.title, class: 'text-2xl font-bold leading-tight text-gray-900 dark:text-gray-100 sm:text-3xl md:text-4xl hover:underline' %>
+                <%= tag.h3 video.title, class: 'lg:leading-tight text-sm sm:text-3xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-3 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-2 line-clamp-1 drop-shadow' %>
               <% end %>
-              <%= tag.div class: 'w-full line-clamp-4' do %>
-                <% video.tags.split(', ').each do |video_tag| %>
-                  <%= button_to video_tag, search_index_path, method: :get, id: 'search-video-tag', class: 'bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300 text-xs sm:text-sm md:text-base px-2.5 py-0.5 my-1 rounded hover:bg-rose-700 hover:text-rose-100 dark:hover:bg-rose-700 dark:hover:text-white inline-block', form_class: 'inline-block', params: { search: [video_tag] } %>
-                <% end %>
-              <% end if video.tags? %>
+              <% if video.tags? %>
+                <div class="flex flex-wrap gap-2 mt-4">
+                  <% video.tags.split(', ').first(8).each_with_index do |video_tag, idx| %>
+                    <%= button_to video_tag, search_index_path, method: :get,
+                      id: 'search-video-tag',
+                      class: [
+                        'drop-shadow px-2 lg:px-3 py-1 rounded-md text-xs sm:text-sm font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap hover:cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-cyan-700 dark:bg-rose-900 text-white dark:text-white ring-cyan-800 dark:ring-rose-900 hover:bg-cyan-800 dark:hover:bg-rose-800 hover:ring-cyan-900 dark:hover:ring-rose-700 hover:scale-105 inline-block',
+                        (idx > 1 ? 'hidden md:inline-block' : nil)
+                      ].compact.join(' '),
+                      form_class: 'inline-block',
+                      params: { search: [video_tag] }
+                    %>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
