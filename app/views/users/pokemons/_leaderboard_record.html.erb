@@ -3,8 +3,8 @@
   <div class="flex flex-col items-center w-36 sm:w-44">
     <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
     <div class="text-center">
-      <%= tag.div current_user.name, class: 'text-sm sm:text-base font-bold text-gray-900' %>
-      <%= tag.div "#{dex_title(current_user.battle_win_rate)} ##{dex_overall.index(current_user) + 1}", class: 'text-xs font-light text-gray-600 uppercase tracking-widest' %>
+      <%= tag.div current_user.name, class: 'text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100' %>
+      <%= tag.div "#{dex_title(current_user.battle_win_rate)} ##{dex_overall.index(current_user) + 1}", class: 'text-xs font-light text-gray-600 dark:text-gray-400 uppercase tracking-widest' %>
     </div>
   </div>
 
@@ -19,8 +19,8 @@
   <div class="flex flex-col items-center w-36 sm:w-44">
     <%= image_tag url_for(opponent.avatar.image), alt: opponent.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
     <div class="text-center">
-      <%= tag.div opponent.name, class: 'text-sm sm:text-base font-bold text-gray-900' %>
-      <%= tag.div "#{dex_title(opponent.battle_win_rate)} ##{dex_overall.index(opponent) + 1}", class: 'text-xs font-light text-gray-600 uppercase tracking-widest' %>
+      <%= tag.div opponent.name, class: 'text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100' %>
+      <%= tag.div "#{dex_title(opponent.battle_win_rate)} ##{dex_overall.index(opponent) + 1}", class: 'text-xs font-light text-gray-600 dark:text-gray-400 uppercase tracking-widest' %>
     </div>
   </div>
 </div>

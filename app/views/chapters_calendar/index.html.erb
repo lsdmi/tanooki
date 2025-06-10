@@ -1,6 +1,6 @@
 <section class="tracking-widest bg-gradient-to-br from-stone-50 to-stone-200 dark:from-stone-900 dark:to-stone-800 min-h-screen flex flex-col items-center p-8 font-sans relative overflow-hidden">
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
-  <div class="absolute inset-0 bg-stone-50 dark:bg-stone-900 bg-opacity-95"></div>
+  <div class="absolute inset-0 bg-stone-50/95 dark:bg-stone-900"></div>
 
   <div class="max-w-5xl mx-auto px-4 pb-8 z-10 relative">
     <div class="p-4 sm:p-8 mb-4">
@@ -8,7 +8,7 @@
         <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-stone-800 dark:text-stone-100 tracking-tight leading-none mr-4">
           Календар<br><span class="text-stone-600 dark:text-stone-400">Оновлень</span>
         </h1>
-        <div class="max-h-64" id="user-content">
+        <div class="max-h-64">
           <%= image_tag 'calendar.webp', alt: 'reader', class: 'max-h-64 object-cover', height: 128, width: 128 %>
         </div>
       </div>
@@ -20,7 +20,7 @@
 
   <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
     <% @fictions.each do |day_update| %>
-      <div class="border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 bg-opacity-80 dark:bg-opacity-80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+      <div class="border border-stone-200 dark:border-stone-700 bg-white/80 dark:bg-stone-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2"/>

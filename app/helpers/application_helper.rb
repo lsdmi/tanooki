@@ -38,13 +38,4 @@ module ApplicationHelper
     (request.path.in? [blogs_path, library_path, readings_path, scanlators_path, admin_tales_path]) ||
       (controller_name == 'readings')
   end
-
-  def theme_toggler?
-    (controller_name == 'tales' && action_name == 'show') ||
-      (controller_name == 'chapters' && action_name == 'show') ||
-      (controller_name == 'scanlators' && action_name == 'show') ||
-      (controller_name == 'chapters_calendar') || (controller_name == 'home') ||
-      (controller_name == 'fictions') || (controller_name == 'fiction_lists') ||
-      (controller_name == 'youtube_videos')
-  end
 end

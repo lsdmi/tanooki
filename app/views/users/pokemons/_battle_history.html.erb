@@ -1,7 +1,6 @@
 <div class="col-span-12 lg:col-span-4 mt-4 sm:mt-0">
-  <div class="inline-flex items-center justify-between mx-2">
-    <%= image_tag 'battle_history.svg', class: 'h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'stars' %>
-    <h5 class="text-xl font-bold leading-none text-gray-900">Остання Сутичка</h5>
+  <div class="inline-flex items-center justify-between">
+    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-gray-100 mb-4">Остання Сутичка</h5>
   </div>
   <div class="border border-gray-200 rounded-md shadow">
     <% if battle_history.present? %>
@@ -12,12 +11,12 @@
       <%= turbo_frame_tag "pokemon-history-list" do %>
       <% end %>
       <%= turbo_frame_tag "pokemon-history-call" do %>
-        <div class="relative mx-auto my-2 border border-gray-300 overflow-hidden">
+        <div class="relative mx-auto my-2 overflow-hidden">
           <!-- Main Content Area -->
           <div class="flex items-center px-4 py-3">
             <!-- Pokéball SVG or Icon (optional, for visual echo) -->
             <div class="hidden sm:flex items-center pr-3">
-              <svg class="h-7 w-7 text-cyan-700" fill="none" viewBox="0 0 48 48" stroke="currentColor">
+              <svg class="h-7 w-7 text-cyan-700 dark:text-cyan-300" fill="none" viewBox="0 0 48 48" stroke="currentColor">
                 <circle cx="24" cy="24" r="22" stroke-width="3" />
                 <circle cx="24" cy="24" r="8" stroke-width="3" />
                 <circle cx="24" cy="24" r="4" fill="currentColor" class="text-white" />
@@ -26,20 +25,17 @@
             </div>
             <!-- Text Content -->
             <div class="flex-1">
-              <div class="text-base sm:text-lg font-extrabold text-gray-900 uppercase">
+              <div class="text-base sm:text-lg font-extrabold text-gray-900 dark:text-gray-100 uppercase">
                 Вперед до бою!
               </div>
-              <div class="mt-1 text-xs sm:text-sm text-gray-600 font-light">
+              <div class="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300 font-light">
                 Ви маєте покемонів, що зриваються до бою! Натисніть на червону рукавичку
                 <%= image_tag 'battle.webp', class: 'h-5 w-5 inline-block mx-1 transform transition duration-300 hover:scale-110', alt: 'battle call' %>
                 на екрані <span class="font-semibold">"Мій Виклик"</span>, аби розпочати поєдинок!
               </div>
             </div>
           </div>
-          <!-- Decorative Bottom Glow -->
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-4 bg-gradient-to-r from-blue-200 via-fuchsia-200 to-indigo-200 opacity-40 blur-sm"></div>
         </div>
-
       <% end %>
     <% end %>
   </div>

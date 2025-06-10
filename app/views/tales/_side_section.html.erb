@@ -12,12 +12,12 @@
       <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0">
         <div class="col-span-6 lg:col-span-5">
           <% highlight.tags.each do |tg| %>
-            <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 text-purple-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100' %>
+            <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 dark:hover:text-purple-100' %>
           <% end %>
-          <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 hover:underline">
+          <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline">
             <%= link_to highlight.title, tale_path(highlight) %>
           </h2>
-          <%= tag.p highlight.description.to_plain_text, class: 'mb-4 mt-2 font-light text-base lg:text-sm text-gray-500 line-clamp-2 md:line-clamp-3 lg:line-clamp-2' %>
+          <%= tag.p highlight.description.to_plain_text, class: 'mb-4 mt-2 font-light text-base lg:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 md:line-clamp-3 lg:line-clamp-2' %>
         </div>
       </div>
     </article>

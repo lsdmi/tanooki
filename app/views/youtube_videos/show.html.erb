@@ -33,7 +33,7 @@
         <!-- Video Player Section -->
         <div class="flex-1 overflow-hidden flex flex-col">
           <%= tag.iframe src: "https://www.youtube.com/embed/#{@youtube_video.video_id}", width: '1280', height: '720', frameborder: 0, class: 'shadow-xl rounded-xl w-full h-52 sm:h-96 lg:h-full rounded-lg w-full aspect-video object-cover', allowfullscreen: true, title: @youtube_video.title %>
-          <div class="mt-8 lg:my-8" id="user-content">
+          <div class="mt-8 lg:my-8">
             <%= render 'shared/ads', advertisement: @advertisement %>
           </div>
         </div>

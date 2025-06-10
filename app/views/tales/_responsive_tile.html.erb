@@ -7,18 +7,18 @@
   </div>
   <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4">
     <div class="col-span-6 lg:col-span-5">
-      <div class="w-full float-left rounded-xl mb-1 text-gray-500">
+      <div class="w-full float-left rounded-xl mb-1 text-gray-500 dark:text-gray-400">
         <div class="block">
           <div class="sm:mb-1 lg:mb-0">
             <% publication.tags.each do |tg| %>
-              <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100' %>
+              <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 dark:hover:text-purple-100' %>
             <% end %>
           </div>
         </div>
-        <h2 class="mt-2 mb-1 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 hover:underline line-clamp-2">
+        <h2 class="mt-2 mb-1 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline line-clamp-2">
           <%= link_to publication.title, tale_path(publication) %>
         </h2>
-        <%= tag.p publication.description.to_plain_text, class: 'text-base lg:text-sm font-light text-gray-500 mr-1 w-full whitespace-break-spaces font-light line-clamp-2 md:line-clamp-3 lg:line-clamp-2 mt-2 lg:mt-1 lg:leading-6' %>
+        <%= tag.p publication.description.to_plain_text, class: 'text-base lg:text-sm font-light text-gray-500 dark:text-gray-400 mr-1 w-full whitespace-break-spaces font-light line-clamp-2 md:line-clamp-3 lg:line-clamp-2 mt-2 lg:mt-1 lg:leading-6' %>
       </div>
     </div>
   </div>

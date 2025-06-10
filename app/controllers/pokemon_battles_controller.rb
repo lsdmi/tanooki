@@ -66,7 +66,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def possible_fraud?
-    self_fight || user_last_battle > 4.hours.ago || defender_last_battle > 4.hours.ago
+    self_fight || user_last_battle > 4.hours.ago
   end
 
   def refresh_leaders

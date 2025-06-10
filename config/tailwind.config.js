@@ -31,9 +31,6 @@ module.exports = {
         'Montserrat',
         'sans-serif'
       ],
-      georgia: ['Georgia,Times,Times New Roman,serif'],
-      helvetica: ['"Helvetica Neue",sans-serif'],
-      times: ['Times New Roman' , 'serif']
     }
   },
   variants: {

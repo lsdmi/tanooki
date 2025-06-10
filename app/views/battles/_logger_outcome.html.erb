@@ -1,14 +1,14 @@
 <div class="flex justify-center text-center">
-  <div class="mb-1 px-2 py-2 border border-gray-200 rounded-lg shadow grid grid-cols-3 gap-1 items-center max-w-xs relative">
-    <span class="absolute top-1 left-2 text-[6px] sm:text-[10px] text-gray-400 font-semibold bg-white bg-opacity-80 px-1 rounded">
+  <div class="mb-1 px-2 py-2 border border-gray-200 rounded-lg shadow dark:shadow-lg grid grid-cols-3 gap-1 items-center max-w-xs relative">
+    <span class="absolute top-1 left-2 text-[6px] sm:text-[10px] text-gray-400 dark:text-gray-500 font-semibold bg-white/80 dark:bg-gray-900/80 px-1 rounded">
       Раунд <%= round_number %>
     </span>
     <%= render partial: 'battles/pokemon_avatar', locals: { player: attacker, outcome: outcome, is_attacker: true, small: true } %>
     <div class="flex flex-col items-center justify-center px-1">
-      <span class="text-[10px] sm:text-xs font-semibold mb-0.5 uppercase tracking-wide <%= outcome == :victory ? 'text-cyan-700' : 'text-red-700' %>">
+      <span class="text-[10px] sm:text-xs font-semibold mb-0.5 uppercase tracking-wide <%= outcome == :victory ? 'text-cyan-700 dark:text-cyan-400' : 'text-red-700 dark:text-red-400' %>">
         <%= outcome == :victory ? 'Перемога' : 'Поразка' %>
       </span>
-      <span class="text-[6px] sm:text-[10px] text-gray-500 font-light leading-tight">
+      <span class="text-[6px] sm:text-[10px] text-gray-500 dark:text-gray-300 font-light leading-tight">
         <%= outcome == :victory ? "ваш #{attacker.pokemon.name} святкує успіх" : "ваш #{attacker.pokemon.name} вибуває з бою" %>
       </span>
     </div>

@@ -1,11 +1,5 @@
 const initializeModeToggler = () => {
-  const userContent = document.getElementById('user-content');
   const siteLogo = document.getElementById('site-logo');
-
-  if (!userContent || !siteLogo) {
-    return;
-  }
-
   const defaultLogo = siteLogo.getAttribute('data-default-logo');
   const darkLogo = siteLogo.getAttribute('data-dark-logo');
 

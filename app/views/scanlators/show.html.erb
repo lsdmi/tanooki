@@ -17,11 +17,11 @@
 
           <div class="flex items-center space-x-4">
             <!-- Anime-style Stats -->
-            <div class="text-center bg-stone-800 bg-opacity-50 rounded-lg p-3 shadow-lg">
+            <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
               <%= tag.p @scanlator.chapters.size, class: 'text-2xl md:text-3xl font-bold anime-text text-stone-100' %>
               <p class="text-sm md:text-base text-stone-300">Розділів</p>
             </div>
-            <div class="text-center bg-stone-800 bg-opacity-50 rounded-lg p-3 shadow-lg">
+            <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
               <%= tag.p @scanlator.chapters.sum(:views), class: "text-2xl md:text-3xl font-bold anime-text text-stone-100" %>
               <p class="text-sm md:text-base text-stone-300">Прочитань</p>
             </div>
@@ -54,7 +54,6 @@
     </div>
 
     <!-- Main Content -->
-    <div id="user-content"></div>
     <div class="container mx-auto px-4 py-16 <%= @scanlator.description? ? 'max-w-5xl' : 'max-w-3xl' %>">
       <div class="grid grid-cols-1 <%= @scanlator.description? ? 'lg:grid-cols-3 ' : 'lg:grid-cols-2' %> gap-16">
         <!-- Sidebar -->

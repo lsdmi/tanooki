@@ -1,5 +1,5 @@
 <div class="bg-stone-50 dark:bg-gray-900 min-h-screen z-10 relative" style="background-image: url('<%= url_for(@fiction.cover) %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <div class="absolute inset-0 bg-stone-50 dark:bg-gray-900 bg-opacity-95"></div>
+  <div class="absolute inset-0 bg-stone-50/95 dark:bg-gray-900"></div>
   <main class="container mx-auto px-4 py-8 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
@@ -28,7 +28,6 @@
 
         <!-- Ad Banner -->
         <%= render 'shared/ads', advertisement: @advertisement %>
-        <div id="user-content"></div>
       </div>
 
       <!-- Comments Section -->

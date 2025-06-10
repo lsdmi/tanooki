@@ -1,6 +1,6 @@
-<div class="relative mx-auto my-4 border border-gray-300 rounded-md shadow-2xl overflow-hidden">
+<div class="relative my-4 border border-gray-300 rounded-md shadow-2xl overflow-hidden">
   <!-- Decorative Top Bar -->
-  <div class="h-2 bg-gradient-to-r from-blue-400 via-fuchsia-400 to-indigo-400"></div>
+  <div class="h-2 bg-gradient-to-r from-blue-400 via-fuchsia-400 to-indigo-400 dark:from-blue-900 dark:via-fuchsia-900 dark:to-indigo-900"></div>
 
   <!-- Main Content Area -->
   <div class="relative z-10 flex items-center justify-between px-8 py-6">
@@ -9,13 +9,13 @@
       <div class="overflow-hidden rounded-full shadow-md mb-3 transition-transform duration-500 hover:scale-110">
         <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 object-cover' %>
       </div>
-      <span class="flex items-center text-sm sm:text-base font-bold text-gray-900">
+      <span class="flex items-center text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100">
         <%= current_user.name %>
       </span>
-      <span class="px-3 text-[10px] sm:text-xs uppercase tracking-widest text-cyan-800 rounded-md shadow-sm line-clamp-1">
+      <span class="px-3 text-[10px] sm:text-xs uppercase tracking-widest text-cyan-800 dark:text-cyan-300 line-clamp-1">
         <%= "#{dex_title(current_user.battle_win_rate)} ##{dex_overall.index(current_user) + 1}" %>
       </span>
-      <div class="mt-3 flex items-center gap-1 shadow-sm ring-1 ring-cyan-800 text-cyan-800 py-1 px-2 rounded-md">
+      <div class="mt-3 flex items-center gap-1 shadow-sm ring-1 ring-cyan-800 dark:ring-cyan-300 text-cyan-800 dark:text-cyan-300 py-1 px-2 rounded-md">
         <svg class="w-3 h-3 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
           <circle cx="12" cy="12" r="10" stroke-width="2" />
@@ -26,24 +26,26 @@
 
     <!-- Title & Message -->
     <div class="flex flex-col sm:items-center w-2/3 pl-6">
-      <div class="flex sm:items-center gap-2 text-lg font-extrabold uppercase text-gray-900">
+      <div class="flex sm:items-center gap-2 text-lg font-extrabold uppercase text-gray-900 dark:text-gray-100">
         <span class="hidden md:inline-block">
           <!-- Pokéball SVG -->
-          <svg class="h-8 w-8 text-cyan-700" fill="none" viewBox="0 0 48 48" stroke="currentColor">
+          <svg class="h-8 w-8 text-cyan-700 dark:text-cyan-300" fill="none" viewBox="0 0 48 48" stroke="currentColor">
             <circle cx="24" cy="24" r="22" stroke-width="3" />
             <circle cx="24" cy="24" r="8" stroke-width="3" />
             <circle cx="24" cy="24" r="4" fill="currentColor" class="text-white" />
             <line x1="2" y1="24" x2="46" y2="24" stroke-width="3" />
           </svg>
         </span>
-        <span class="text-xs sm:text-lg leading-tight">Перерва в <span class="text-cyan-700">Центрі Покемонів!</span></span>
+        <span class="text-xs sm:text-lg leading-tight">
+          Перерва в <span class="text-cyan-700 dark:text-cyan-300">Центрі Покемонів!</span>
+        </span>
       </div>
-      <div class="text-[10px] sm:text-xs text-stone-800 font-light uppercase sm:tracking-widest mt-3 sm:text-center">
+      <div class="text-[10px] sm:text-xs text-stone-800 dark:text-stone-200 font-light uppercase sm:tracking-widest mt-3 sm:text-center">
         Команда відпочиває! Незабаром покемони знову будуть готові до бою!
       </div>
     </div>
   </div>
 
   <!-- Decorative Bottom Glow -->
-  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-6 bg-gradient-to-r from-blue-200 via-fuchsia-200 to-indigo-200 opacity-50 blur-lg"></div>
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-6 bg-gradient-to-r from-blue-200 via-fuchsia-200 to-indigo-200 dark:from-blue-900 dark:via-fuchsia-900 dark:to-indigo-900 opacity-50 blur-lg"></div>
 </div>

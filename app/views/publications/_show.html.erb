@@ -59,7 +59,7 @@
                 <%= image_tag url_for(tale.cover), alt: tale.cover.blob.filename.to_s, class: "mr-4 max-w-full w-40 xl:w-48 2xl:w-56 h-20 xl:h-24 2xl:h-28 rounded-lg object-cover" %>
               <% end %>
               <div>
-                <%= link_to tale.title, tale_path(tale), class: 'text-base xl:text-lg font-bold dark:text-white text-gray-900  hover:underline line-clamp-2' %>
+                <%= link_to tale.title, tale_path(tale), class: 'text-base xl:text-lg xl:leading-tight font-bold dark:text-white text-gray-900  hover:underline line-clamp-2' %>
                 <%= tag.p punch(tale.description.to_plain_text), class: 'mt-2 text-sm 2xl:text-base font-light leading-tight text-gray-900 dark:text-gray-400  line-clamp-3' %>
               </div>
             </div>
