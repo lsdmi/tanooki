@@ -1,56 +1,60 @@
-<section class="h-full gradient-form pt-4 pb-8 z-10">
-  <div class="md:container md:shadow-2xl mx-auto grid max-w-7xl pl-4 grid-cols-12 relative">
-    <div class="w-full place-self-center col-span-12 md:col-span-6">
-      <div class="p-8 rounded-lg mx-auto">
-        <h1 class="mb-3 sm:mb-4 md:mb-3 xl:mb-4 leading-10 text-2xl sm:text-4xl md:text-2xl lg:text-3xl xl:text-4xl text-gray-900 dark:text-gray-100">Вітаємо з поверненням!</h1>
-        <p class="leading-8 text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl text-gray-500 dark:text-gray-400 font-light">
-          Досі не з нами? Приєднуйтеся до світу аніме вже зараз!
-          <%= link_to 'Зареєструватися', register_path, class: 'hover:underline text-emerald-700 dark:text-emerald-400' %>
-        </p>
+<section class="relative min-h-screen flex items-center justify-center py-10 px-4">
+  <div class="w-full max-w-7xl bg-white/90 dark:bg-gray-950/90 rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-gray-200 dark:border-gray-700">
+    <!-- Left: Welcome and Form -->
+    <div class="flex-1 flex flex-col justify-center p-10 md:p-14">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2 tracking-tight leading-tight">
+        Вітаємо з поверненням!
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light mb-6">
+        Досі не з нами?
+        <%= link_to 'Зареєструватися', register_path, class: 'font-semibold text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+      </p>
+      <div class="bg-emerald-50 dark:bg-gray-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-gray-200 dark:border-gray-700">
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
-          <div class="grid grid-cols-2 gap-6 mt-2 sm:mt-3 md:mt-2 xl:mt-3">
+          <div class="grid grid-cols-1 gap-5">
             <div>
               <%= f.input :email,
-                          id: 'email',
-                          required: true,
-                          autofocus: true,
-                          label: "Електронна Адреса",
-                          placeholder: "user@baka.in.ua",
-                          input_html: {
-                            autocomplete: "email",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 font-light dark:text-gray-100 dark:bg-gray-900 dark:border-gray-700"
-                          },
-                          label_html: {
-                            class: 'text-sm sm:text-2xl md:text-sm lg:text-xl xl:text-2xl my-4 block leading-5 font-light dark:text-gray-400'
-                          } %>
+                id: 'email',
+                required: true,
+                autofocus: true,
+                label: "Електронна Адреса",
+                placeholder: "user@baka.in.ua",
+                input_html: {
+                  autocomplete: "email",
+                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition"
+                },
+                label_html: {
+                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                } %>
             </div>
             <div>
               <%= f.input :password,
-                          id: 'password',
-                          required: true,
-                          autofocus: true,
-                          label: "Пароль",
-                          placeholder: "***********",
-                          input_html: {
-                            autocomplete: "current-password",
-                            class: "text-base w-full p-2.5 md:p-2 lg:p-2.5 block rounded-lg border-2 leading-5 font-light dark:text-gray-100 dark:bg-gray-900 dark:border-gray-700"
-                          },
-                          label_html: {
-                            class: 'text-sm sm:text-2xl md:text-sm lg:text-xl xl:text-2xl my-4 block leading-5 font-light dark:text-gray-400'
-                          } %>
+                id: 'password',
+                required: true,
+                label: "Пароль",
+                placeholder: "***********",
+                input_html: {
+                  autocomplete: "current-password",
+                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition"
+                },
+                label_html: {
+                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                } %>
             </div>
           </div>
+          <div class="flex items-center justify-between mt-4">
+            <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+          </div>
+          <%= button_tag "Увійти", form: 'new_user', class: "mt-6 w-full py-3 rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-lg tracking-wide shadow-lg transition uppercase" %>
         <% end %>
-        <%= render 'omniauth' %>
-        <div class="space-y-reverse mt-5 sm:mt-6 md:mt-5 xl:mt-6 justify-between flex">
-          <div></div>
-          <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 hover:underline text-emerald-700 dark:text-emerald-400 font-light' %>
+        <div class="mt-6">
+          <%= render 'omniauth' %>
         </div>
-        <%= button_tag "Увійти", form: 'new_user', class: "space-y-reverse uppercase w-full rounded-lg px-5 py-2 sm:py-3 md:py-2 xl:py-3 text-center text-lg sm:text-2xl md:text-lg lg:text-xl xl:text-2xl leading-5 bg-emerald-700 text-white mt-6 transition ease-in-out m-0 hover:bg-emerald-800 hover:cursor-pointer font-light" %>
       </div>
     </div>
-    <div class="mr-auto place-self-center col-span-6 shadow-lg invisible md:visible">
-      <%= image_tag 'login.jpeg', alt: 'login', class: 'align-middle mx-auto flex rounded-lg' %>
+    <!-- Right: Visual -->
+    <div class="hidden md:flex flex-1 items-center justify-center bg-gradient-to-tr from-emerald-100 via-white to-emerald-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      <%= image_tag 'login.jpeg', alt: 'login', class: 'w-80 h-80 object-cover rounded-xl shadow-lg border-4 border-emerald-100 dark:border-gray-800' %>
     </div>
   </div>
 </section>

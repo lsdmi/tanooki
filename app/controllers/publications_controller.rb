@@ -31,7 +31,7 @@ class PublicationsController < ApplicationController
     @pagy, @publications = pagy(
       publications,
       limit: 8,
-      request_path:,
+      request_path: blogs_path,
       page: params[:page] || 1
     )
 
@@ -51,14 +51,6 @@ class PublicationsController < ApplicationController
       Publication.all.order(created_at: :desc)
     else
       current_user.publications.order(created_at: :desc)
-    end
-  end
-
-  def request_path
-    if request.referer&.include?('admin/tales')
-      admin_tales_path
-    else
-      blogs_path
     end
   end
 

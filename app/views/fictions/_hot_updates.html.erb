@@ -1,7 +1,14 @@
 <div data-controller="fiction-picker" class="mb-8">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100">Нові Релізи</h2>
+  <div class="flex flex-row justify-between items-start lg:items-center mb-2">
+    <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Нові Релізи</h2>
+    <%= link_to calendar_fictions_path, class: "inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-700 hover:underline dark:hover:text-rose-700" do %>
+      Календар
+      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+      </svg>
+    <% end %>
   </div>
+
   <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
     <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-2 -mx-2 px-2">
       <% fictions.each_with_index do |fiction, index| %>

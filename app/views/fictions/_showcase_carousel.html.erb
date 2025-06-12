@@ -4,15 +4,30 @@
       <!-- Carousel Wrapper -->
       <div class="relative h-96 w-full overflow-hidden">
         <% showcase.each do |showcase| %>
-          <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <div class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat"
-                 style="background-image: url('<%= url_for(showcase.banner) %>');">
+          <div class="hidden duration-3000 ease-in-out" data-carousel-item>
+            <div
+              data-controller="lazy-bg"
+              data-lazy-bg-id="<%= showcase.id %>"
+              data-lazy-bg-url="<%= url_for(showcase.banner) %>"
+              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat"
+              id="lazy-bg-<%= showcase.id %>"
+              style="background-image: none;"
+            >
+              <!-- Spinner overlay -->
+              <div id="spinner-<%= showcase.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200/60 dark:bg-gray-700/60 rounded-xl z-20">
+                <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
               <!-- Stronger overlay for better contrast -->
               <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% sm:to-80% transition-opacity duration-700 ease-in-out"></div>
-              <div class="absolute top-1/2 z-10 w-full max-w-[256px] sm:max-w-[320px] lg:max-w-[512px] -translate-y-1/2 px-4 sm:right-1/2 translate-x-8 sm:translate-x-8 md:-translate-x-8 lg:translate-x-8 lg:px-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-y-0">
-                <span class="transition-transform duration-300 hover:scale-105 mb-5 inline-block rounded-lg bg-cyan-700 px-2.5 py-0.5 text-xs lg:text-sm font-bold text-white shadow-md ring-1 ring-cyan-800 dark:bg-rose-700 dark:text-gray-100 dark:ring-rose-800">
-                  Новинка
-                </span>
+              <div class="absolute top-1/2 z-10 w-full max-w-[95%] mx-auto sm:max-w-[320px] lg:max-w-[512px] -translate-y-1/2 px-4 sm:right-1/2 sm:translate-x-8 md:-translate-x-8 lg:translate-x-8 lg:px-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-y-0">
+                <% if popular_novelty.include?(showcase) %>
+                  <span class="transition-transform duration-300 hover:scale-105 mb-5 inline-block rounded-lg bg-cyan-700 px-2.5 py-0.5 text-xs lg:text-sm font-bold text-white shadow-md ring-1 ring-cyan-800 dark:bg-rose-700 dark:text-gray-100 dark:ring-rose-800">
+                    Новинка
+                  </span>
+                <% end %>
                 <%= tag.h2 class: "mb-3 text-3xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg lg:text-5xl line-clamp-2 dark:text-white" do %>
                   <%= link_to showcase.title, showcase, class: "" %>
                 <% end %>
@@ -31,7 +46,7 @@
         <% end %>
       </div>
       <!-- Slider Controls (unchanged) -->
-      <button type="button" class="group absolute start-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 sm:flex" data-carousel-prev>
+      <button type="button" class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 flex" data-carousel-prev>
         <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
@@ -39,7 +54,7 @@
           <span class="sr-only">Previous</span>
         </span>
       </button>
-      <button type="button" class="group absolute end-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 focus:outline-none sm:flex" data-carousel-next>
+      <button type="button" class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none flex" data-carousel-next>
         <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />

@@ -26,7 +26,6 @@ Rails.application.routes.draw do
     resources :genres, except: %i[new show]
     resources :pokemons, except: :show
     resources :tags, except: %i[new show]
-    resources :tales, only: :index
   end
 
   namespace :api do

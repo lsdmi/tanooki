@@ -44,6 +44,7 @@ class FictionIndexVariablesManager
         .with_attached_banner
         .where.not(short_description: [nil, ''])
         .where.not(banner_attachment: { id: nil })
+        .sample(5)
     end
   end
 end
