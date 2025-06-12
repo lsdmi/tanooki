@@ -8,8 +8,8 @@ class FictionsController < ApplicationController
   before_action :set_fiction, only: %i[show edit update destroy toggle_order]
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, :track_visit, only: :show
-  before_action :verify_permissions, except: %i[index new create show toggle_order details]
-  before_action :verify_create_permissions, only: %i[new create]
+  before_action :authorize_fiction, only: %i[edit update destroy]
+  before_action :authorize_fiction_creation, only: %i[new create]
 
   def index
     @index_presenter = FictionIndexPresenter.new(params)
@@ -32,20 +32,29 @@ class FictionsController < ApplicationController
   end
 
   def create
-    @fiction = Fiction.new(fiction_params)
-    if @fiction.save
-      handle_fiction_creation
+    @fiction = Fiction.new
+    form = FictionForm.new(fiction: @fiction, params: fiction_params)
+    if form.save
+      FictionCreator.new(
+        @fiction,
+        genre_ids: fiction_params[:genre_ids],
+        scanlator_ids: fiction_params[:scanlator_ids]
+      ).call
       redirect_to @fiction, notice: 'Твір створено.'
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit; end
-
   def update
-    if @fiction.update(fiction_params)
-      handle_fiction_update
+    @fiction = Fiction.find(params[:id])
+    form = FictionForm.new(fiction: @fiction, params: fiction_params)
+    if form.save
+      FictionUpdater.new(
+        @fiction,
+        genre_ids: fiction_params[:genre_ids],
+        scanlator_ids: fiction_params[:scanlator_ids]
+      ).call
       redirect_to @fiction, notice: 'Твір оновлено.'
     else
       render :edit, status: :unprocessable_entity
@@ -89,7 +98,7 @@ class FictionsController < ApplicationController
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title, :origin,
-      :status, :title, :total_chapters, genre_ids: [], scanlator_ids: []
+      :status, :title, :total_chapters, :short_description, :banner, genre_ids: [], scanlator_ids: []
     )
   end
 
@@ -97,27 +106,14 @@ class FictionsController < ApplicationController
     current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
-  def verify_permissions
-    redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
+  def authorize_fiction
+    policy = FictionPolicy.new(current_user, @fiction)
+    redirect_to root_path unless policy.edit?
   end
 
-  def verify_create_permissions
-    redirect_to new_scanlator_path unless current_user.admin? || current_user.scanlators.any?
-  end
-
-  def handle_fiction_creation
-    FictionGenresManager.new(fiction_params[:genre_ids], @fiction).operate
-    FictionScanlatorsManager.new(fiction_params[:scanlator_ids], @fiction).operate
-  end
-
-  def handle_fiction_update
-    handle_fiction_creation
-    update_fiction_status
-  end
-
-  def update_fiction_status
-    new_status = FictionStatusTracker.new(@fiction).call
-    @fiction.update_column(:status, new_status)
+  def authorize_fiction_creation
+    policy = FictionPolicy.new(current_user, nil)
+    redirect_to new_scanlator_path unless policy.create?
   end
 
   def paginate_fictions

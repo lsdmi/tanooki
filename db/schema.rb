@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_19_174059) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_11_010324) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -130,6 +130,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_19_174059) do
     t.string "alternative_title"
     t.string "english_title"
     t.text "description", null: false
+    t.text "short_description"
     t.integer "comments_count", default: 0
     t.integer "views", default: 0
     t.string "status", null: false
