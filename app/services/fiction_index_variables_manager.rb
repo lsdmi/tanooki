@@ -37,4 +37,13 @@ class FictionIndexVariablesManager
              .order('COUNT(readings.fiction_id) DESC')
     end
   end
+
+  def self.showcase
+    Rails.cache.fetch('fiction_showcase', expires_in: 24.hours) do
+      Fiction
+        .with_attached_banner
+        .where.not(short_description: [nil, ''])
+        .where.not(banner_attachment: { id: nil })
+    end
+  end
 end

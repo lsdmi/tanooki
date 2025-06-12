@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
 
   def popular_videos
     Rails.cache.fetch('popular_videos', expires_in: 1.hour) do
-      YoutubeVideo.last_week.order(views: :desc).limit(2)
+      YoutubeVideo.last_month.order(views: :desc).limit(2)
     end
   end
 end

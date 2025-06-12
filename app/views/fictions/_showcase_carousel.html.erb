@@ -1,30 +1,29 @@
-<section class="relative overflow-hidden mt-8 mb-4 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700">
+<section class="relative overflow-hidden mt-8 mb-4 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
     <div id="slide-carousel" class="relative w-full" data-carousel="slide">
       <!-- Carousel Wrapper -->
       <div class="relative h-96 w-full overflow-hidden">
-        <% @showcase.each do |showcase| %>
+        <% showcase.each do |showcase| %>
           <div class="hidden duration-1000 ease-in-out" data-carousel-item>
             <div class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat"
                  style="background-image: url('<%= url_for(showcase.banner) %>');">
               <!-- Stronger overlay for better contrast -->
-              <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent from-0% via-40% to-80%"></div>
-              <div class="absolute top-1/2 z-10 w-full max-w-[512px] -translate-y-1/2 px-4 sm:right-1/2 sm:translate-x-1/2 lg:translate-x-8 lg:px-0">
-                <span class="mb-5 inline-block rounded bg-yellow-300/90 px-2.5 py-0.5 text-sm font-bold text-yellow-900 shadow-sm dark:bg-yellow-700/80 dark:text-yellow-100">
+              <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% sm:to-80% transition-opacity duration-700 ease-in-out"></div>
+              <div class="absolute top-1/2 z-10 w-full max-w-[256px] sm:max-w-[320px] lg:max-w-[512px] -translate-y-1/2 px-4 sm:right-1/2 translate-x-8 sm:translate-x-8 md:-translate-x-8 lg:translate-x-8 lg:px-0 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-y-0">
+                <span class="transition-transform duration-300 hover:scale-105 mb-5 inline-block rounded-lg bg-cyan-700 px-2.5 py-0.5 text-xs lg:text-sm font-bold text-white shadow-md ring-1 ring-cyan-800 dark:bg-rose-700 dark:text-gray-100 dark:ring-rose-800">
                   Новинка
                 </span>
-                <%= tag.h2 showcase.title, class: "mb-3 text-3xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg lg:text-5xl line-clamp-2 dark:text-white" %>
-                <%= tag.p showcase.short_description, class: "mb-5 font-semibold text-gray-100 drop-shadow-md tracking-tight line-clamp-2 dark:text-gray-200" %>
-                <div class="flex items-center gap-3">
-                  <a href="#" class="inline-flex rounded-lg bg-cyan-700 px-5 py-3 text-base font-bold text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 shadow-md ring-1 ring-cyan-800 transition duration-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:ring-rose-800">
-                    Discover more
-                  </a>
-                  <a href="#" class="inline-flex items-center rounded-lg bg-white/90 px-5 py-3 text-base font-bold text-cyan-900 hover:bg-white focus:outline-none focus:ring-4 focus:ring-gray-300 shadow-md transition duration-300 dark:bg-white/20 dark:text-gray-100 dark:hover:bg-white/30">
-                    <svg class="me-1 h-6 w-6 text-cyan-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clip-rule="evenodd" />
+                <%= tag.h2 class: "mb-3 text-3xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg lg:text-5xl line-clamp-2 dark:text-white" do %>
+                  <%= link_to showcase.title, showcase, class: "" %>
+                <% end %>
+                <%= tag.p showcase.short_description, class: "text-sm lg:text-base mb-5 font-semibold text-gray-100 drop-shadow-md tracking-tight line-clamp-3 lg:line-clamp-2 dark:text-gray-200" %>
+                <div class="flex items-center">
+                  <%= link_to fiction_path(showcase), class: 'gap-1 inline-flex rounded-lg bg-cyan-700 px-3 py-2 text-sm font-bold text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 shadow-md ring-1 ring-cyan-800 transition duration-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:ring-rose-800 shadow-md hover:shadow-xl transition-shadow duration-300 sm:px-5 sm:py-3 sm:text-base md:px-4 md:py-2 md:text-sm' do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                     </svg>
-                    View catalog
-                  </a>
+                    Читати
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -32,16 +31,16 @@
         <% end %>
       </div>
       <!-- Slider Controls (unchanged) -->
-      <button type="button" class="group absolute start-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:flex" data-carousel-prev>
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+      <button type="button" class="group absolute start-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 sm:flex" data-carousel-prev>
+        <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
           </svg>
           <span class="sr-only">Previous</span>
         </span>
       </button>
-      <button type="button" class="group absolute end-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:flex" data-carousel-next>
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
+      <button type="button" class="group absolute end-0 top-0 z-30 hidden h-full cursor-pointer items-center justify-center px-4 focus:outline-none sm:flex" data-carousel-next>
+        <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
           </svg>

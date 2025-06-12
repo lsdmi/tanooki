@@ -3,8 +3,8 @@
   <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
 
   <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
-    <% if @showcase&.any? %>
-      <%= render 'showcase_carousel' %>
+    <% if @index_presenter.showcase.any? %>
+      <%= render 'showcase_carousel', showcase: @index_presenter.showcase %>
     <% else %>
       <%= render 'default_hero' %>
     <% end %>

@@ -33,6 +33,10 @@ class FictionIndexPresenter
     @other ||= filtered_fiction_with_max_created_at_query
   end
 
+  def showcase
+    @showcase ||= FictionIndexVariablesManager.showcase
+  end
+
   def filtered_fictions_locals
     {
       fictions: other,
