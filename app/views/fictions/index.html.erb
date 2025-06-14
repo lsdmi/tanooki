@@ -4,7 +4,7 @@
 
   <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
     <% if @index_presenter.showcase.any? %>
-      <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads %>
+      <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
     <% else %>
       <%= render 'default_hero' %>
     <% end %>

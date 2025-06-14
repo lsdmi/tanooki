@@ -42,9 +42,14 @@ class FictionIndexVariablesManager
     Rails.cache.fetch('fiction_showcase', expires_in: 12.hours) do
       Fiction
         .with_attached_banner
+        .where(id: showcase_ids)
         .where.not(short_description: [nil, ''])
         .where.not(banner_attachment: { id: nil })
         .sample(5)
     end
+  end
+
+  def self.showcase_ids
+    (latest_updates.map(&:id) + most_reads.pluck(:id) + popular_novelty.pluck(:id)).uniq
   end
 end

@@ -1,33 +1,31 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static values = { url: String, id: String }
-  static targets = ["spinner"]
 
   connect() {
     this.element.addEventListener('lazy-bg:load', () => {
       this.load();
     });
-  }      
+  }
 
   load() {
-    const bgUrl = this.urlValue
-    const spinner = this.spinnerTarget
-    const bgDiv = this.element
+    const bgUrl = this.urlValue;
+    const bgDiv = this.element;
 
-    if (!bgUrl || !spinner || !bgDiv) {
+    if (!bgUrl || !bgDiv) {
       return;
     }
 
-    const img = new window.Image()
-    img.src = bgUrl
+    const img = new window.Image();
+    img.src = bgUrl;
     img.onload = () => {
-      bgDiv.style.backgroundImage = `url('${bgUrl}')`
-      spinner.classList.add("hidden")
-      bgDiv.classList.add("transition-opacity", "duration-700", "opacity-100")
+      bgDiv.style.backgroundImage = `url('${bgUrl}')`;
+      bgDiv.classList.add("transition-opacity", "duration-700", "opacity-100");
+      bgDiv.dispatchEvent(new CustomEvent("lazy-bg:loaded", { bubbles: true }));
     }
     img.onerror = () => {
-      spinner.classList.add("hidden")
+      bgDiv.dispatchEvent(new CustomEvent("lazy-bg:error", { bubbles: true }));
     }
   }
 }
