@@ -1,39 +1,33 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static values = { url: String, id: String }
+  static targets = ["spinner"]
+
   connect() {
-    const bgId = this.element.dataset.lazyBgId
-    const bgUrl = this.element.dataset.lazyBgUrl
-    const spinner = document.getElementById(`spinner-${bgId}`)
+    this.element.addEventListener('lazy-bg:load', () => {
+      this.load();
+    });
+  }      
+
+  load() {
+    const bgUrl = this.urlValue
+    const spinner = this.spinnerTarget
     const bgDiv = this.element
 
-    if (!bgUrl || !spinner || !bgDiv) return
-
-    // Use IntersectionObserver for lazy loading
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          observer.disconnect()
-          this.loadImage(bgUrl, bgDiv, spinner)
-        }
-      })
-      observer.observe(bgDiv)
-    } else {
-      this.loadImage(bgUrl, bgDiv, spinner)
+    if (!bgUrl || !spinner || !bgDiv) {
+      return;
     }
-  }
 
-  loadImage(url, bgDiv, spinner) {
     const img = new window.Image()
-    img.src = url
+    img.src = bgUrl
     img.onload = () => {
-      bgDiv.style.backgroundImage = `url('${url}')`
+      bgDiv.style.backgroundImage = `url('${bgUrl}')`
       spinner.classList.add("hidden")
       bgDiv.classList.add("transition-opacity", "duration-700", "opacity-100")
     }
     img.onerror = () => {
       spinner.classList.add("hidden")
-      // Optionally: set a fallback background or error state
     }
   }
 }

@@ -1,20 +1,19 @@
-<section class="relative overflow-hidden mt-8 mb-4 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-shadow duration-500">
+<section class="relative overflow-hidden mt-8 mb-4 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
-    <div id="slide-carousel" class="relative w-full" data-carousel="slide">
-      <!-- Carousel Wrapper -->
-      <div class="relative h-96 w-full overflow-hidden">
+    <div data-controller="custom-carousel" class="relative w-full overflow-hidden h-96">
+      <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out h-96 w-full" style="transform: translateX(0);">
         <% showcase.each do |showcase| %>
-          <div class="hidden duration-3000 ease-in-out" data-carousel-item>
+          <div class="min-w-full flex-shrink-0 relative h-96">
             <div
               data-controller="lazy-bg"
-              data-lazy-bg-id="<%= showcase.id %>"
-              data-lazy-bg-url="<%= url_for(showcase.banner) %>"
-              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat"
+              data-lazy-bg-id-value="<%= showcase.id %>"
+              data-lazy-bg-url-value="<%= url_for(showcase.banner) %>"
+              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-xl"
               id="lazy-bg-<%= showcase.id %>"
               style="background-image: none;"
             >
               <!-- Spinner overlay -->
-              <div id="spinner-<%= showcase.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200/60 dark:bg-gray-700/60 rounded-xl z-20">
+              <div data-lazy-bg-target="spinner" id="spinner-<%= showcase.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200/60 dark:bg-gray-700/60 rounded-xl z-20">
                 <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -45,8 +44,8 @@
           </div>
         <% end %>
       </div>
-      <!-- Slider Controls (unchanged) -->
-      <button type="button" class="group absolute start-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 flex" data-carousel-prev>
+      <!-- Slider Controls -->
+      <button data-action="custom-carousel#prev" type="button" class="group absolute left-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 flex">
         <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
@@ -54,7 +53,7 @@
           <span class="sr-only">Previous</span>
         </span>
       </button>
-      <button type="button" class="group absolute end-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 focus:outline-none flex" data-carousel-next>
+      <button data-action="custom-carousel#next" type="button" class="group absolute right-0 top-0 z-30 h-full cursor-pointer items-center justify-center px-4 flex">
         <span class="inline-flex h-10 w-10 items-center justify-center transition-all duration-300 transform hover:scale-110 rounded-full bg-white/50 group-hover:bg-white/70 group-focus:outline-none group-focus:ring-4 group-focus:ring-white">
           <svg class="h-4 w-4 text-cyan-900 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />

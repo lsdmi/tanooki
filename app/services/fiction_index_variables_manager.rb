@@ -39,7 +39,7 @@ class FictionIndexVariablesManager
   end
 
   def self.showcase
-    Rails.cache.fetch('fiction_showcase', expires_in: 24.hours) do
+    Rails.cache.fetch('fiction_showcase', expires_in: 12.hours) do
       Fiction
         .with_attached_banner
         .where.not(short_description: [nil, ''])

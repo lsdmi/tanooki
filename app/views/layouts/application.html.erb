@@ -42,7 +42,6 @@
     <% if Rails.env.production? %>
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-BW05CDN8VS"></script>
       <%= javascript_include_tag 'ga' %>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5596031369567303" crossorigin="anonymous"></script>
     <% end %>
 
     <% if controller_name.to_sym == :fictions && action_name.to_sym == :show %>
