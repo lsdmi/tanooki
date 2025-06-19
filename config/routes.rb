@@ -78,6 +78,9 @@ Rails.application.routes.draw do
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon
+
+  get '/pokemon/opponent/regenerate', to: 'user_pokemons#regenerate_opponent', as: :regenerate_pokemon_opponent
+
   post :battle_start, to: 'pokemon_battles#start', as: :battle_start
 
   resources :downloads, only: [] do

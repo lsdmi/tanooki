@@ -3,16 +3,16 @@
   <head>
     <script>
       (function() {
-        try {
-          var isDark =
-            localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (isDark) {
-            document.documentElement.classList.add('dark');
-          }
-          // Set the cookie for Rails to read on next request
-          document.cookie = `color_theme=${isDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
-        } catch(e) {}
+        var isDark =
+          localStorage.getItem('color-theme') === 'dark' ||
+          (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+          document.write('<style>#theme-toggle-dark-icon{display:none;}#theme-toggle-light-icon{display:inline;}</style>');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.write('<style>#theme-toggle-dark-icon{display:inline;}#theme-toggle-light-icon{display:none;}</style>');
+        }
       })();
     </script>
 

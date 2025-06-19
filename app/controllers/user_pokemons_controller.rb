@@ -24,6 +24,16 @@ class UserPokemonsController < ApplicationController
     end
   end
 
+  def regenerate_opponent
+    Rails.cache.delete("opponent_for_user:#{current_user.id}")
+    @pokemon_show = PokemonShow.new(current_user)
+    render turbo_stream: turbo_stream.update(
+      'pokemon-leaderboard-screen',
+      partial: 'users/pokemons/dex_leaderboard',
+      locals: { dex_overall: @pokemon_show.dex_overall, opponent: @pokemon_show.opponent }
+    )
+  end
+
   private
 
   def pokemon_catch_permitted?

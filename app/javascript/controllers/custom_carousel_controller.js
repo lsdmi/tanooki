@@ -46,10 +46,10 @@ export default class extends Controller {
     if (this.hasIndicatorTarget) {
       this.indicatorTargets.forEach((btn, idx) => {
         if (idx === this.currentIndex) {
-          btn.classList.add("bg-cyan-700", "dark:!bg-white");
+          btn.classList.add("bg-cyan-700", "dark:bg-rose-700");
           btn.classList.remove("bg-gray-200", "dark:!bg-white/50");
         } else {
-          btn.classList.remove("bg-cyan-700", "dark:!bg-white");
+          btn.classList.remove("bg-cyan-700", "dark:bg-rose-700");
           btn.classList.add("bg-gray-200", "dark:!bg-white/50");
         }
       });
