@@ -1,3 +1,5 @@
+<% cooldown = cooldown?(User.find(current_user.id)) %>
+
 <div class="mt-4 sm:mt-0 flex flex-col w-full">
   <!-- Header Row with Refresh Button -->
   <div class="flex justify-between items-center w-full mb-4">
@@ -15,11 +17,11 @@
         <svg class="w-7 h-7 text-black dark:text-white group-hover:text-white transition" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
         </svg>
-      <% end %>
+      <% end if !cooldown %>
     </div>
   </div>
 
-  <% if cooldown?(User.find(current_user.id)) %>
+  <% if cooldown %>
     <%= render 'users/pokemons/cooldown', dex_overall: %>
   <% else %>
     <%= render 'users/pokemons/leaderboard_record', dex_overall:, opponent: %>

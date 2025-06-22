@@ -1,30 +1,77 @@
-<div class="px-4 z-10 relative  mt-6">
-  <div class="mb-4 xl:mb-0 mt-2 sm:mt-0">
-    <nav class="flex bg-white shadow-lg py-4 px-4 rounded-lg" aria-label="Breadcrumb">
-      <ol class="inline-flex items-center space-x-1 md:space-x-2">
-        <li class="inline-flex items-center">
-          <%= link_to fictions_path, class: 'inline-flex items-center text-gray-700 hover:text-gray-900' do %>
-            <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-            Усі Твори
-          <% end %>
-        </li>
-        <li>
-          <div class="flex items-center">
-            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-            <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2" aria-current="page">Читальня</span>
-          </div>
-        </li>
-      </ol>
-    </nav>
-  </div>
+<div class="mt-8 lg:mt-12 max-w-6xl mx-auto px-4 pb-8 z-10 relative tracking-tight">
   <% if @history.any? %>
-    <div id="section" class="p-4 my-4 bg-white rounded-lg shadow sm:p-4 xl:p-6 grid 2xl:grid-cols-2">
-      <%= render @history %>
+    <div class="flex flex-col lg:flex-row">
+      <!-- Rising Fictions -->
+      <div class="w-full lg:w-3/4 lg:pr-8 mb-8 lg:mb-0">
+        <div class="mb-8">
+          <%= turbo_frame_tag 'library-list' do %>
+            <%= render partial: "list", locals: { paginated_readings: @paginated_readings, pagy: @pagy } %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Cheering Fictions -->
+      <div class="w-full lg:w-1/4">
+        <% if @related_fictions.any? %>
+          <div class="mb-4">
+            <div class="flex flex-row justify-between items-start lg:items-center mb-2">
+              <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Схожі Ранобе</h2>
+            </div>
+            <div class="border border-cyan-700 dark:border-rose-700"></div>
+          </div>
+
+          <ul class="space-y-3">
+            <% @related_fictions.each do |fiction| %>
+              <li class="flex items-center gap-3 border-b border-cyan-700 dark:border-rose-700 last:border-b-0 pb-3 p-2 hover:scale-[1.015] transition-all duration-300">
+                <%= link_to fiction_path(fiction), data: { turbo: false }, class: '' do %>
+                  <%= image_tag url_for(fiction.cover),
+                    alt: fiction.cover.blob.filename.to_s,
+                    class: "w-16 h-22 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
+                    loading: "lazy",
+                    data: {
+                      controller: "lazy-image",
+                      lazy_image_target: "image",
+                      lazy_image_url_value: url_for(fiction.cover)
+                    } %>
+                <% end %>
+                <div class="flex-1 tracking-tight">
+                  <%= link_to fiction.title, fiction_path(fiction), data: { turbo: false }, class: 'md:leading-tight text-xs md:text-base font-semibold text-stone-900 dark:text-gray-100 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+                  <div class="text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1"><%= fiction.author %></div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+        <section class="mt-4">
+          <h2 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200 mb-4">Улюблені Перекладачі</h2>
+          <div class="border border-cyan-700 dark:border-rose-700"></div>
+          <div class="grid grid-cols-2 gap-2">
+            <% @favourite_translators.each do |translator| %>
+              <div class="hover:scale-[1.015] transition-all duration-300 py-4 flex flex-col items-center text-white dark:text-gray-300 rounded-md">
+                <%= link_to scanlator_path(translator), data: { turbo: false }, class: '' do %>
+                  <%= image_tag translator.avatar.present? ? url_for(translator.avatar) : asset_path('scanlator_avatar.webp'),
+                    alt: translator.avatar.blob.filename.to_s,
+                    class: "w-12 h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
+                    loading: "lazy",
+                    data: {
+                      controller: "lazy-image",
+                      lazy_image_target: "image",
+                      lazy_image_url_value: url_for(translator.avatar)
+                    } %>
+                <% end %>
+                <%= link_to translator.title, scanlator_path(translator), data: { turbo: false }, class: 'md:leading-tight text-xs md:text-base font-semibold text-stone-900 dark:text-gray-100 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+                <% if translator.telegram_id? %>
+                  <%= link_to "@#{translator.telegram_id}", "https://t.me/#{translator.telegram_id}", target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+                <% else %>
+                  <div class="text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center"><%= translator.description %></div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </section> 
+      </div>
     </div>
   <% else %>
-    <div id="section" class="p-4 my-4 bg-white rounded-lg shadow sm:p-4 xl:p-6">
-      <%= render 'no_history_screen', history_stats: @history_stats, popular_fictions: @popular_fictions %>
-    </div>
+    <%= render 'no_history_screen' %>
   <% end %>
-  </div>
 </div>

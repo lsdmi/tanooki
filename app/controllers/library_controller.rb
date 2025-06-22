@@ -4,34 +4,39 @@ class LibraryController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @history = current_user.readings.includes(
-      [{ fiction: { cover_attachment: :blob } }, { fiction: :genres }, :chapter]
-    ).order(updated_at: :desc)
+    @history = fetch_reading_history
+    @history_presenter = ReadingHistoryPresenter.new(@history)
+    @section = section_param
+    @readings_section = @history_presenter.section(@section)
 
-    return if @history.any?
+    @pagy, @paginated_readings = pagy_array(@readings_section, limit: 8)
+    @related_fictions = RelatedFictionsCollector.new(@history_presenter.section(:active), 5).collect
+    @favourite_translators = FavouriteTranslatorsFinder.new(@history_presenter.section(:active)).find
 
-    @history_stats = history_stats
-    @popular_fictions = popular_fictions
-  end
-
-  def destroy
-    item = current_user.readings.find(params[:id])
-    item.destroy
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          'library-list',
+          partial: 'library/list',
+          locals: {
+            paginated_readings: @paginated_readings,
+            pagy: @pagy
+          }
+        )
+      end
+    end
   end
 
   private
 
-  def history_stats
-    {
-      total_chapters: Chapter.all.size,
-      total_fictions: Fiction.all.size,
-      total_views: Chapter.pluck(:views).sum
-    }
+  def fetch_reading_history
+    current_user.readings.includes(
+      [{ fiction: :cover_attachment }, :chapter]
+    ).order(updated_at: :desc)
   end
 
-  def popular_fictions
-    Rails.cache.fetch('popular_fictions_library', expires_in: 12.hours) do
-      Fiction.includes([{ cover_attachment: :blob }]).order(views: :desc).limit(2)
-    end
+  def section_param
+    params[:section]&.to_sym || :active
   end
 end

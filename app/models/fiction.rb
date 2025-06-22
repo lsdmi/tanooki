@@ -82,6 +82,17 @@ class Fiction < ApplicationRecord
     FictionStatusUpdater.new(self).call
   end
 
+  def related_fictions
+    Rails.cache.fetch("related-to-#{slug}", expires_in: 24.hours) do
+      Fiction.joins(:scanlators)
+             .where(scanlators: { id: scanlators.pluck(:id) })
+             .includes(:cover_attachment)
+             .where.not(id: id)
+             .order(views: :desc)
+             .distinct
+    end
+  end
+
   private
 
   def cover_format

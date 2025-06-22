@@ -1,0 +1,48 @@
+<div class="flex flex-row justify-between items-start lg:items-center mb-4">
+  <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Читальня</h2>
+  <div class="flex gap-2">
+    <% statuses = { "Читаю": :active, "Прочитано": :completed, "Відкладено": :postponed, "Покинуто": :dropped } %>
+    <% statuses.each do |label, section| %>
+      <%= turbo_frame_tag 'status-filters' do %>
+        <%= link_to label,
+              library_path(section: section),
+              data: { turbo_stream: "" },
+              class: [
+                "px-2 lg:px-3 py-1 rounded-md text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap",
+                "hover:cursor-pointer",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500",
+                section == @section ?
+                  "bg-cyan-600 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105" :
+                  "bg-cyan-50 dark:bg-rose-900 text-cyan-800 dark:text-rose-100 ring-cyan-200 dark:ring-rose-900 hover:bg-cyan-100 dark:hover:bg-rose-800 hover:ring-cyan-300 dark:hover:ring-rose-700 hover:scale-105"
+              ].join(' '),
+              "aria-pressed": section == @section
+        %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="relative p-8 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
+  <!-- Ornament SVG -->
+  <svg class="absolute top-0 right-0 w-32 h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
+    <circle cx="80" cy="20" r="40" fill="#67e8f9" />
+    <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
+  </svg>
+  <% if paginated_readings.any? %>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <% paginated_readings.each do |reading| %>
+        <%= render 'reading_progresses/reading_progress', reading: reading %>
+      <% end %>
+    </ul>
+    <% if pagy.pages > 1 %>
+      <div class="pagy-nav watch flex justify-center mt-8 gap-2">
+        <%== pagy_nav(pagy) %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center text-gray-600 dark:text-gray-300">
+      <p>Тут так порожньо.</p>
+      <p>Спробуйте змінити фільтри.</p>
+    </div>
+  <% end %>
+</div>

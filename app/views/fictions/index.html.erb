@@ -3,11 +3,7 @@
   <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
 
   <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
-    <% if @index_presenter.showcase.any? %>
-      <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
-    <% else %>
-      <%= render 'default_hero' %>
-    <% end %>
+    <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
 
     <!-- First Section: Rising and Cheering Fictions -->
     <div class="flex flex-col lg:flex-row mb-8 mt-8 lg:mt-12">

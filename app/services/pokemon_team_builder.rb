@@ -16,36 +16,46 @@ class PokemonTeamBuilder
   private
 
   def build_member_data(pokemon)
-    power = calculate_power(pokemon)
-    experience = calculate_experience(pokemon)
-    luck = calculate_luck(pokemon)
-
     {
-      active: true,
-      all_types: pokemon.pokemon.types.pluck(:name),
-      character: pokemon.character,
-      experience: experience,
-      id: pokemon.id,
-      luck: luck,
-      power: power,
-      raw_total: (power + experience) * luck,
-      tiredness: 1,
-      type: 1
+      active: true, all_types: all_types(pokemon), character: character(pokemon),
+      experience: experience(pokemon), id: pokemon.id, luck: luck(pokemon),
+      power: power(pokemon), raw_total: raw_total(pokemon),
+      tiredness: tiredness, type: type
     }
   end
 
-  def calculate_power(user_pokemon)
-    multiplier = user_pokemon.character == 'independent' ? 120 : 100
-    Pokemon::POWER_LEVELS[user_pokemon.pokemon_power_level] * multiplier
+  def all_types(pokemon)
+    pokemon.pokemon.types.pluck(:name)
   end
 
-  def calculate_experience(user_pokemon)
-    bonus = user_pokemon.character == 'brave' ? 2 : 1
-    user_pokemon.battle_experience * bonus
+  def character(pokemon)
+    pokemon.character
   end
 
-  def calculate_luck(user_pokemon)
-    range = user_pokemon.character == 'lucky' ? (1.0..1.2) : (0.9..1.1)
+  def experience(pokemon)
+    bonus = character(pokemon) == 'brave' ? 2 : 1
+    pokemon.battle_experience * bonus
+  end
+
+  def luck(pokemon)
+    range = character(pokemon) == 'lucky' ? (1.0..1.2) : (0.9..1.1)
     rand(range)
+  end
+
+  def power(pokemon)
+    multiplier = character(pokemon) == 'independent' ? 120 : 100
+    Pokemon::POWER_LEVELS[pokemon.pokemon_power_level] * multiplier
+  end
+
+  def raw_total(pokemon)
+    (power(pokemon) + experience(pokemon)) * luck(pokemon)
+  end
+
+  def tiredness
+    1
+  end
+
+  def type
+    1
   end
 end

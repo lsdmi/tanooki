@@ -32,26 +32,4 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
       assert_not_nil reading.fiction.genres
     end
   end
-
-  test 'should fetch history stats' do
-    get library_url
-    assert_response :success
-
-    assert_not_nil assigns(:history_stats)
-    assert_kind_of Hash, assigns(:history_stats)
-
-    assert_equal Chapter.all.size, assigns(:history_stats)[:total_chapters]
-    assert_equal Fiction.all.size, assigns(:history_stats)[:total_fictions]
-    assert_equal Chapter.pluck(:views).sum, assigns(:history_stats)[:total_views]
-  end
-
-  test 'should fetch popular fictions' do
-    Rails.cache.write('popular_fictions_library', 'Cached data')
-
-    get library_url
-    assert_response :success
-
-    assert_not_nil assigns(:popular_fictions)
-    assert_kind_of ActiveRecord::Relation, assigns(:popular_fictions)
-  end
 end

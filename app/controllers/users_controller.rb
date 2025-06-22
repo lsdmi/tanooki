@@ -10,11 +10,7 @@ class UsersController < ApplicationController
       current_user.update(avatar_id: user_params[:avatar_id])
       redirect_to request.referer || root_path, notice: 'Профіль оновлено.'
     else
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: update_avatars_screen
-        end
-      end
+      redirect_to request.referer || root_path, alert: 'Прізвисько вже зайняте.'
     end
   end
 
