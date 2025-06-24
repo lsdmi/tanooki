@@ -21,7 +21,7 @@
       <% end %>
     <% elsif action_name.to_sym == :pokemons %>
       <%= render 'users/dashboard/pokemons', pokemon_show: @pokemon_show %>
-    <% else %>
+    <% elsif @comments.any? %>
       <div class="relative rounded-xl shadow-xl border border-stone-200 dark:border-gray-700 p-8 bg-cover bg-center overflow-hidden bg-white dark:bg-gray-900" style="background-image: url(<%= asset_path('writer.webp') %>);">
         <div class="absolute inset-0 bg-stone-50 dark:bg-gray-900 opacity-90 backdrop-blur-md"></div>
         <div class="relative z-10 flex items-center justify-between mb-6 px-4">
@@ -36,6 +36,14 @@
         <div class="pagy-nav relative z-10 mt-6">
           <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
         </div>
+      </div>
+    <% else %>
+      <div class="flex flex-col items-center justify-center h-96 bg-white dark:bg-gray-900 border border-stone-200 dark:border-gray-700 rounded-xl shadow-xl p-8">
+        <svg class="h-16 w-16 text-gray-300 dark:text-gray-700 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-2xl font-semibold text-gray-500 dark:text-gray-400 mb-2">Немає сповіщень</h3>
+        <p class="text-gray-400 dark:text-gray-500">Тут з’являться ваші сповіщення, коли вони будуть.</p>
       </div>
     <% end %>
   </div>

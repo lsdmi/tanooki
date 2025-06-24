@@ -4,11 +4,9 @@ class DashboardsController < ApplicationController
   before_action :authenticate_user!, :latest_comments
 
   def notifications
-    raise ActionController::RoutingError, 'Not Found' if latest_comments.empty?
-
     @pagy, @comments = pagy(my_comments, limit: 8)
 
-    current_user.update(latest_read_comment_id: latest_comments.first.id)
+    current_user.update(latest_read_comment_id: latest_comments.first&.id)
     render 'users/show'
   end
 

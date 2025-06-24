@@ -1,4 +1,4 @@
-<div class="relative shrink-0">
+<div id="user-dropdown" class="relative shrink-0">
   <button id="accountDropdownButton2" data-dropdown-toggle="accountDropdown2" type="button" class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
     <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-6 h-6 rounded-full me-1.5 rounded-full' %>
   </button>

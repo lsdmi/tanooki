@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def update
     if current_user.update(name: user_params[:name])
       current_user.update(avatar_id: user_params[:avatar_id])
-      render turbo_stream: [update_notice, update_sidebar]
+      render turbo_stream: [update_notice, update_sidebar, update_navbar]
     else
       render turbo_stream: [update_avatars_screen]
     end
@@ -48,6 +48,10 @@ class UsersController < ApplicationController
 
   private
 
+  def update_navbar
+    turbo_stream.update('user-dropdown', partial: 'shared/navbar')
+  end
+
   def update_avatars_screen
     turbo_stream.replace(
       'profile-form', partial: 'users/dashboard/avatars', locals: { avatars: fetch_avatars }
@@ -80,7 +84,7 @@ class UsersController < ApplicationController
 
   def fetch_avatars
     Rails.cache.fetch('avatars', expires_in: 1.day) do
-      Avatar.includes(image_attachment: :blob).order(created_at: :desc)
+      Avatar.includes(:image_attachment).order(created_at: :desc)
     end
   end
 
