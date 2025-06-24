@@ -8,9 +8,9 @@ class UsersController < ApplicationController
   def update
     if current_user.update(name: user_params[:name])
       current_user.update(avatar_id: user_params[:avatar_id])
-      redirect_to request.referer || root_path, notice: 'Профіль оновлено.'
+      render turbo_stream: [update_notice, update_sidebar]
     else
-      redirect_to request.referer || root_path, alert: 'Прізвисько вже зайняте.'
+      render turbo_stream: [update_avatars_screen]
     end
   end
 
@@ -50,8 +50,20 @@ class UsersController < ApplicationController
 
   def update_avatars_screen
     turbo_stream.replace(
-      'avatars-section', partial: 'users/dashboard/avatars', locals: { avatars: fetch_avatars }
+      'profile-form', partial: 'users/dashboard/avatars', locals: { avatars: fetch_avatars }
     )
+  end
+
+  def update_notice
+    turbo_stream.update(
+      'application-notice',
+      partial: 'shared/notice',
+      locals: { notice: 'Профіль оновлено.' }
+    )
+  end
+
+  def update_sidebar
+    turbo_stream.replace('sidebar', partial: 'users/dashboard/sidebar')
   end
 
   def update_pokemon_details

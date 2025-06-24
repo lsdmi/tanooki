@@ -23,7 +23,7 @@
       <% end %>
     </div>
     <%= turbo_frame_tag "fiction_details" do %>
-      <%= render partial: 'fiction_details', locals: { fiction: fictions.first } %>
+      <%= render "fiction_details", fiction: fictions.first %>
     <% end %>
   </div>
 </div>

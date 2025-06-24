@@ -285,8 +285,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_11_010324) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "pokemon_last_catch", default: "2025-04-21 18:21:48"
-    t.datetime "pokemon_last_training", default: "2025-04-21 18:21:48"
+    t.datetime "pokemon_last_catch", default: "2025-06-22 23:37:31"
+    t.datetime "pokemon_last_training", default: "2025-06-22 23:37:31"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

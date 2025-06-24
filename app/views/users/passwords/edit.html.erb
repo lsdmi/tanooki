@@ -12,7 +12,7 @@
         <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
           <%= f.input :reset_password_token, as: :hidden %>
           <%= f.full_error :reset_password_token %>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <%= f.input :password,

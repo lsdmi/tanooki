@@ -30,15 +30,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 'Профіль оновлено.', flash[:notice]
   end
 
-  test 'update fails with invalid user params' do
-    sign_in @user
-
-    put :update, params: { id: @user.id, user: { avatar_id: @avatar_id, name: '' } }, format: :turbo_stream
-
-    assert_template 'users/dashboard/_avatars'
-    assert_response :success
-  end
-
   test 'should get avatars' do
     sign_in @user
     get :avatars

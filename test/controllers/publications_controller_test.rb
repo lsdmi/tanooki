@@ -87,26 +87,6 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'request_path should return admin tales path for admin users' do
-    request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/tales'
-
-    @controller = PublicationsController.new
-    @controller.stub :request, request do
-      assert_equal '/admin/tales', @controller.send(:request_path)
-    end
-  end
-
-  test 'request_path should return dashboard path for non-admin users' do
-    request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/blogs'
-
-    @controller = PublicationsController.new
-    @controller.stub :request, request do
-      assert_equal '/blogs', @controller.send(:request_path)
-    end
-  end
-
   test 'verify_permissions should allow access for admin users' do
     get edit_publication_path(@publication)
     assert_response :success

@@ -31,6 +31,8 @@ class FictionsController < ApplicationController
     @fiction = Fiction.new
   end
 
+  def edit; end
+
   def create
     @fiction = Fiction.new
     form = FictionForm.new(fiction: @fiction, params: fiction_params)
