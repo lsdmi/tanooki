@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FictionShowPresenter
+  include LibraryHelper
+
   attr_reader :translator
 
   def initialize(fiction, current_user, params)
@@ -20,6 +22,17 @@ class FictionShowPresenter
 
   def reading_progress
     @reading_progress ||= ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @current_user&.id)
+  end
+
+  def reading_status
+    return :not_started unless reading_progress
+    return :not_started unless last_chapter
+
+    return :finished  if finished_reading?
+    return :dropped   if dropped_reading?
+    return :postponed if postponed_reading?
+
+    :active
   end
 
   def bookmark_stats
@@ -55,12 +68,29 @@ class FictionShowPresenter
       fiction: @fiction,
       translator:,
       reading_progress:,
+      reading_status:,
       before_next_chapter:,
       order:
     }
   end
 
   private
+
+  def last_chapter
+    @last_chapter ||= ordered_chapters_desc(@fiction).first
+  end
+
+  def finished_reading?
+    reading_progress.chapter_id == last_chapter.id
+  end
+
+  def dropped_reading?
+    reading_progress.updated_at < last_chapter.created_at - 2.months
+  end
+
+  def postponed_reading?
+    reading_progress.updated_at < last_chapter.created_at - 1.month
+  end
 
   def set_translator
     @translator = @params[:translator] || chapter_manager.translator

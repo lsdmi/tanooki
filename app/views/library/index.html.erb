@@ -54,13 +54,13 @@
               <div class="hover:scale-[1.015] transition-all duration-300 py-4 flex flex-col items-center text-white dark:text-gray-300 rounded-md">
                 <%= link_to scanlator_path(translator), data: { turbo: false }, class: '' do %>
                   <%= image_tag translator.avatar.present? ? url_for(translator.avatar) : asset_path('scanlator_avatar.webp'),
-                    alt: translator.avatar.blob.filename.to_s,
+                    alt: 'translator avatar',
                     class: "w-12 h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
                     loading: "lazy",
                     data: {
                       controller: "lazy-image",
                       lazy_image_target: "image",
-                      lazy_image_url_value: url_for(translator.avatar)
+                      lazy_image_url_value: translator.avatar.present? ? url_for(translator.avatar) : asset_path('scanlator_avatar.webp')
                     } %>
                 <% end %>
                 <%= link_to translator.title, scanlator_path(translator), data: { turbo: false }, class: 'md:leading-tight text-xs md:text-base font-semibold text-stone-900 dark:text-gray-100 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>

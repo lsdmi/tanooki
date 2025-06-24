@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 module LibraryHelper
+  STATUSES = {
+    'Читаю' => :active,
+    'Прочитано' => :completed,
+    'Відкладено' => :postponed,
+    'Покинуто' => :dropped
+  }.freeze
+
+  def status_filters
+    STATUSES
+  end
+
+  def status_label_for(status)
+    status_filters.key(status)
+  end
+
   def ordered_chapters(fiction)
     fiction.chapters.order(order_clause)
   end
