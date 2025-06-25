@@ -1,24 +1,58 @@
-# README
+# Tanooki
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Українська платформа для читання ранобе.
 
-Things you may want to cover:
+## Функції
 
-* Ruby version
+- Читання ранобе з розділами
+- Google OAuth аутентифікація
+- Адмін-панель
+- Прогрес читання
+- Коментарі
+- Пошук (Elasticsearch)
+- Система битв Покемонів
 
-* System dependencies
+## Технології
 
-* Configuration
+- Ruby on Rails 7
+- MySQL
+- Elasticsearch
+- Tailwind CSS
 
-* Database creation
+## Встановлення
 
-* Database initialization
+```bash
+git clone <repository>
+cd tanooki
+bundle install
+npm install
+rails db:create db:migrate db:seed
+rails server
+```
 
-* How to run the test suite
+## Деплой
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+cap production deploy
+```
 
-* Deployment instructions
+## Структура
 
-* ...
+```
+app/controllers/     # Контролери
+app/models/         # Моделі
+app/views/          # Представлення
+config/             # Конфігурація
+db/                 # Міграції
+```
+
+## 🔧 Конфігурація
+
+- `config/database.yml` - налаштування БД
+- `config/credentials.yml.enc` - секрети
+- `.env` - змінні середовища
+- `config/deploy.rb` - налаштування деплою
+
+## 📝 Ліцензія
+
+Приватний проект.

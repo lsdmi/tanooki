@@ -22,6 +22,7 @@
 # Learn more: http://github.com/javan/whenever
 
 set :output, './log/cron.log'
+set :path, '/home/deploy/tanooki/current'
 
 set :bundle_command, '/home/deploy/.rbenv/shims/bundler exec'
 job_type :runner, "cd :path && :bundle_command rails runner -e :environment ':task' :output"
