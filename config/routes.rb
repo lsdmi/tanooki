@@ -54,6 +54,11 @@ Rails.application.routes.draw do
   resources :publications, except: %i[index show]
   resources :scanlators
   resources :search, only: :index
+  resources :studio, only: :index do
+    member do
+      get :tab
+    end
+  end
   resources :tales, only: %i[index show]
   resources :users, only: :update
   resources :youtube_videos, path: 'watch', only: %i[index show] do

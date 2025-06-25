@@ -3,7 +3,7 @@
 module LibraryHelper
   STATUSES = {
     'Читаю' => :active,
-    'Прочитано' => :completed,
+    'Прочитано' => :finished,
     'Відкладено' => :postponed,
     'Покинуто' => :dropped
   }.freeze
