@@ -19,7 +19,7 @@ This is the approach that all modern, production ready, WYSIWYG editors now take
 
 <details><summary>Trix supports all evergreen, self-updating desktop and mobile browsers.</summary><img src="https://app.saucelabs.com/browser-matrix/basecamp_trix.svg"></details>
 
-Trix is built with established web standards, notably [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements), [Mutation Observer](https://dom.spec.whatwg.org/#mutation-observers), and [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+Trix is built with established web standards, notably [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements), [Element Internals](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals), [Mutation Observer](https://dom.spec.whatwg.org/#mutation-observers), and [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 # Getting Started
 
@@ -53,6 +53,85 @@ Place an empty `<trix-editor></trix-editor>` tag on the page. Trix will automati
 
 Like an HTML `<textarea>`, `<trix-editor>` accepts `autofocus` and `placeholder` attributes. Unlike a `<textarea>`, `<trix-editor>` automatically expands vertically to fit its contents.
 
+## Creating a Toolbar
+
+Trix automatically will create a toolbar for you and attach it right before the `<trix-editor>` element. If you'd like to place the toolbar in a different place you can use the `toolbar` attribute:
+
+```html
+<main>
+  <trix-toolbar id="my_toolbar"></trix-toolbar>
+  <div class="more-stuff-inbetween"></div>
+  <trix-editor toolbar="my_toolbar" input="my_input"></trix-editor>
+</main>
+```
+
+To change the toolbar without modifying Trix, you can overwrite the `Trix.config.toolbar.getDefaultHTML()` function. The default toolbar HTML is in `config/toolbar.js`. Trix uses data attributes to determine how to respond to a toolbar button click.
+
+**Toggle Attribute**
+
+With `data-trix-attribute="<attribute name>"`, you can add an attribute to the current selection.
+For example, to apply bold styling to the selected text the button is:
+
+``` html
+<button type="button" class="bold" data-trix-attribute="bold" data-trix-key="b"></button>
+```
+
+Trix will determine that a range of text is selected and will apply the formatting defined in `Trix.config.textAttributes` (found in `config/text_attributes.js`).
+
+`data-trix-key="b"` tells Trix that this attribute should be applied when you use <kbd>meta</kbd>+<kbd>b</kdb>.
+
+If the attribute is defined in `Trix.config.blockAttributes`, Trix will apply the attribute to the current block of text.
+
+``` html
+<button type="button" class="quote" data-trix-attribute="quote"></button>
+```
+
+Clicking the quote button toggles whether the block should be rendered with `<blockquote>`.
+
+## Integrating with Element Internals
+
+Trix will integrate `<trix-editor>` elements with forms depending on the browser's support for [Element Internals](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals). If there is a need to disable support for `ElementInternals`, set `Trix.elements.TrixEditorElement.formAssociated = false`:
+
+```js
+import Trix from "trix"
+
+Trix.elements.TrixEditorElement.formAssociated = false
+```
+
+## Invoking Internal Trix Actions
+
+Internal actions are defined in `controllers/editor_controller.js` and consist of:
+
+* undo
+* redo
+* link
+* increaseBlockLevel
+* decreaseBlockLevel
+
+``` html
+<button type="button" class="block-level decrease" data-trix-action="decreaseBlockLevel"></button>
+```
+
+## Invoking External Custom Actions
+
+If you want to add a button to the toolbar and have it invoke an external action, you can prefix your action name with `x-`. For example, if I want to print a log statement any time my new button is clicked, I would set by button's data attribute to be `data-trix-action="x-log"`
+
+``` html
+<button id="log-button" type="button" data-trix-action="x-log"></button>
+```
+
+To respond to the action, listen for `trix-action-invoke`. The event's `target` property returns a reference to the `<trix-editor>` element, its `invokingElement` property returns a reference to the `<button>` element, and its `actionName` property returns the value of the `[data-trix-action]` attribute. Use the value of the `actionName` property to detect which external action was invoked.
+
+```javascript
+document.addEventListener("trix-action-invoke", function(event) {
+  const { target, invokingElement, actionName } = event
+
+  if (actionName === "x-log") {
+    console.log(`Custom ${actionName} invoked from ${invokingElement.id} button on ${target.id} trix-editor`)
+  }
+})
+```
+
 ## Integrating With Forms
 
 To submit the contents of a `<trix-editor>` with a form, first define a hidden input field in the form and assign it an `id`. Then reference that `id` in the editor’s `input` attribute.
@@ -78,6 +157,126 @@ To populate a `<trix-editor>` with stored content, include that content in the a
 ```
 
 Always use an associated input element to safely populate an editor. Trix won’t load any HTML content inside a `<trix-editor>…</trix-editor>` tag.
+
+## Validating the Editor
+
+Out of the box, `<trix-editor>` elements support browsers' built-in [Constraint
+validation][]. When rendered with the [required][] attribute, editors will be
+invalid when they're completely empty. For example, consider the following HTML:
+
+```html
+<input id="x" value="" type="hidden" name="content">
+<trix-editor input="x" required></trix-editor>
+```
+
+Since the `<trix-editor>` element is `[required]`, it is invalid when its value
+is empty:
+
+```js
+const editor = document.querySelector("trix-editor")
+
+editor.validity.valid        // => false
+editor.validity.valueMissing // => true
+editor.matches(":valid")     // => false
+editor.matches(":invalid")   // => true
+
+editor.value = "A value that isn't empty"
+
+editor.validity.valid         // => true
+editor.validity.valueMissing  // => false
+editor.matches(":valid")      // => true
+editor.matches(":invalid")    // => false
+```
+
+In addition to the built-in `[required]` attribute, `<trix-editor>`
+elements support custom validation through their [setCustomValidity][] method.
+For example, consider the following HTML:
+
+```js
+<input id="x" value="" type="hidden" name="content">
+<trix-editor input="x"></trix-editor>
+```
+
+Custom validation can occur at any time. For example, validation can occur after
+a `trix-change` event fired after the editor's contents change:
+
+```js
+addEventListener("trix-change", (event) => {
+  const editorElement = event.target
+  const trixDocument = editorElement.editor.getDocument()
+  const isValid = (trixDocument) => {
+    // determine the validity based on your custom criteria
+    return true
+  }
+
+  if (isValid(trixDocument)) {
+    editorElement.setCustomValidity("")
+  } else {
+    editorElement.setCustomValidity("The document is not valid.")
+  }
+}
+```
+
+[Constraint validation]: https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation
+[required]: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required
+[setCustomValidity]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity
+
+## Disabling the Editor
+
+To disable the `<trix-editor>`, render it with the `[disabled]` attribute:
+
+```html
+<trix-editor disabled></trix-editor>
+```
+
+Disabled editors are not editable, cannot receive focus, and their values will
+be ignored when their related `<form>` element is submitted.
+
+To change whether or not an editor is disabled, either toggle the `[disabled]`
+attribute or assign a boolean to the `.disabled` property:
+
+```html
+<trix-editor id="editor" disabled></trix-editor>
+
+<script>
+  const editor = document.getElementById("editor")
+
+  editor.toggleAttribute("disabled", false)
+  editor.disabled = true
+</script>
+```
+
+When disabled, the editor will match the [:disabled CSS
+pseudo-class][:disabled].
+
+[:disabled]: https://developer.mozilla.org/en-US/docs/Web/CSS/:disabled
+
+## Providing an Accessible Name
+
+Like other form controls, `<trix-editor>` elements should have an accessible name. The `<trix-editor>` element integrates with `<label>` elements. It supports two styles of integrating with `<label>` elements:
+
+1. render the `<trix-editor>` element with an `[id]` attribute that the `<label>` element references through its `[for]` attribute:
+
+```html
+<label for="editor">Editor</label>
+<trix-editor id="editor"></trix-editor>
+```
+
+2. render the `<trix-editor>` element as a child of the `<label>` element:
+
+```html
+<trix-toolbar id="editor-toolbar"></trix-toolbar>
+<label>
+  Editor
+
+  <trix-editor toolbar="editor-toolbar"></trix-editor>
+</label>
+```
+
+> [!WARNING]
+> When rendering the `<trix-editor>` element as a child of the `<label>` element, [explicitly render](#creating-an-editor) the corresponding `<trix-toolbar>` element outside of the `<label>` element.
+
+In addition to integrating with `<label>` elements, `<trix-editor>` elements support `[aria-label]` and `[aria-labelledby]` attributes.
 
 ## Styling Formatted Content
 
@@ -349,6 +548,16 @@ localStorage["editorState"] = JSON.stringify(element.editor)
 element.editor.loadJSON(JSON.parse(localStorage["editorState"]))
 ```
 
+## HTML Sanitization
+
+Trix uses [DOMPurify](https://github.com/cure53/DOMPurify/) to sanitize the editor content. You can set the DOMPurify config via `Trix.config.dompurify`.
+
+For example if you want to keep a custom tag, you can access do that with:
+
+```js
+Trix.config.dompurify.ADD_TAGS = [ "my-custom-tag" ]
+```
+
 ## Observing Editor Changes
 
 The `<trix-editor>` element emits several events which you can use to observe and respond to changes in editor state.
@@ -370,6 +579,8 @@ The `<trix-editor>` element emits several events which you can use to observe an
 * `trix-attachment-add` fires after an attachment is added to the document. You can access the Trix attachment object through the `attachment` property on the event. If the `attachment` object has a `file` property, you should store this file remotely and set the attachment’s URL attribute. See the [attachment example](http://trix-editor.org/js/attachments.js) for detailed information.
 
 * `trix-attachment-remove` fires when an attachment is removed from the document. You can access the Trix attachment object through the `attachment` property on the event. You may wish to use this event to clean up remotely stored files.
+
+* `trix-action-invoke` fires when a Trix action is invoked. You can access the `<trix-editor>` element through the event's `target` property, the element responsible for invoking the action through the `invokingElement` property, and the action's name through the `actionName` property. The `trix-action-invoke` event will only fire for [custom](#invoking-external-custom-actions) actions and not for [built-in](#invoking-internal-trix-actions).
 
 # Contributing to Trix
 

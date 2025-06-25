@@ -28,7 +28,7 @@
   <% if paginated_readings.any? %>
     <ul class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <% paginated_readings.each do |reading| %>
-        <%= render 'reading_progresses/reading_progress', reading: reading %>
+        <%= render 'reading_progresses/reading_progress', reading: reading, section: @section %>
       <% end %>
     </ul>
     <% if pagy.pages > 1 %>
