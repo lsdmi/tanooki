@@ -1,0 +1,5 @@
+<div class="p-8 bg-gradient-to-br from-white to-stone-100 rounded-3xl shadow-xl relative overflow-hidden border border-stone-200">
+  <%= turbo_frame_tag "scanlators-screen" do %>
+    <%= render 'scanlators/dashboard', scanlators: @scanlators %>
+  <% end %>
+</div>

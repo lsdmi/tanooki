@@ -13,7 +13,7 @@ class PublicationsController < ApplicationController
       manage_tags if params[:publication][:tag_ids]
       redirect_to root_path, notice: 'Звістку створено.'
     else
-      render 'admin/tales/new', status: :unprocessable_entity
+      render 'publications/new', status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class PublicationsController < ApplicationController
       manage_tags if params[:publication][:tag_ids]
       redirect_to tale_path(@publication), notice: 'Звістку оновлено.'
     else
-      render 'admin/tales/edit', status: :unprocessable_entity
+      render 'sweetalert/edit', status: :unprocessable_entity
     end
   end
 
@@ -47,7 +47,7 @@ class PublicationsController < ApplicationController
   private
 
   def publications
-    if request.referer&.include?('admin/tales')
+    if current_user.admin?
       Publication.all.order(created_at: :desc)
     else
       current_user.publications.order(created_at: :desc)

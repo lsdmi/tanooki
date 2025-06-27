@@ -2,61 +2,32 @@
 
 class UsersController < ApplicationController
   include FictionQuery
+  include UserUpdateable
 
   before_action :authenticate_user!
 
   def update
-    if current_user.update(name: user_params[:name])
-      current_user.update(avatar_id: user_params[:avatar_id])
-      render turbo_stream: [update_notice, update_sidebar, update_navbar]
+    result = UserUpdateService.new(current_user, user_params).call
+
+    if result.success?
+      render turbo_stream: [
+        update_notice,
+        update_sidebar,
+        update_navbar
+      ]
     else
-      render turbo_stream: [update_avatars_screen]
+      render turbo_stream: [
+        update_avatars_screen(result.data[:avatars])
+      ]
     end
-  end
-
-  def avatars
-    @avatars = fetch_avatars
-
-    render 'show'
-  end
-
-  def blogs
-    @pagy, @publications = pagy(current_user.publications.order(created_at: :desc), limit: 8)
-
-    render 'show'
-  end
-
-  def pokemons
-    @pokemon_show = PokemonShow.new(current_user)
-    render 'show'
-  end
-
-  def readings
-    @pagy, @fictions = pagy(fiction_list, limit: 6)
-
-    render 'show'
   end
 
   def pokemon_details
-    @selected_pokemon = UserPokemon.includes(:pokemon).find(params[:pokemon_id])
-    if @selected_pokemon.pokemon.descendant != @selected_pokemon.pokemon
-      @descendant = @selected_pokemon.pokemon.descendant
-    end
-
-    render turbo_stream: update_pokemon_details
+    result = PokemonDetailsService.new(params[:pokemon_id]).call
+    render turbo_stream: update_pokemon_details(result.data)
   end
 
   private
-
-  def update_navbar
-    turbo_stream.update('user-dropdown', partial: 'shared/navbar')
-  end
-
-  def update_avatars_screen
-    turbo_stream.replace(
-      'profile-form', partial: 'users/dashboard/avatars', locals: { avatars: fetch_avatars }
-    )
-  end
 
   def update_notice
     turbo_stream.update(
@@ -70,25 +41,23 @@ class UsersController < ApplicationController
     turbo_stream.replace('sidebar', partial: 'users/dashboard/sidebar')
   end
 
-  def update_pokemon_details
-    turbo_stream.replace(
-      'pokemon-details',
-      partial: 'users/pokemons/details',
-      locals: { selected_pokemon: @selected_pokemon, descendant: @descendant }
+  def update_navbar
+    turbo_stream.update('user-dropdown', partial: 'shared/user_dropdown')
+  end
+
+  def update_avatars_screen(avatars)
+    turbo_stream.update(
+      'tab-content',
+      partial: 'studio/tabs/profile',
+      locals: { avatars: avatars }
     )
   end
 
-  def fiction_list
-    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
-  end
-
-  def fetch_avatars
-    Rails.cache.fetch('avatars', expires_in: 1.day) do
-      Avatar.includes(:image_attachment).order(created_at: :desc)
-    end
-  end
-
-  def user_params
-    params.require(:user).permit(:avatar_id, :name)
+  def update_pokemon_details(data)
+    turbo_stream.replace(
+      'pokemon-details',
+      partial: 'users/pokemons/details',
+      locals: { selected_pokemon: data[:selected_pokemon], descendant: data[:descendant] }
+    )
   end
 end

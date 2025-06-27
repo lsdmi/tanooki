@@ -35,7 +35,11 @@ module ApplicationHelper
   end
 
   def requires_sweetalert?
-    (request.path.in? [blogs_path, library_path, readings_path, scanlators_path]) ||
+    (request.path.in? [studio_index_path]) ||
       (controller_name == 'readings')
+  end
+
+  def pagy_nav_with_turbo_frame(pagy, frame_id = 'tab-content')
+    pagy_nav(pagy).gsub('<a ', "<a data-turbo-frame=\"#{frame_id}\" data-turbo-stream=\"true\" ")
   end
 end

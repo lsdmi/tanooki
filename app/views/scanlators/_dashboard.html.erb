@@ -1,7 +1,7 @@
 <div id="section" class="p-4 mb-4 bg-white rounded-lg shadow sm:p-4 xl:p-6 bg-gradient-to-b from-orange-200 to-red-200">
   <% if scanlators.any? %>
-    <%= render 'existing_scanlators', scanlators: scanlators %>
+    <%= render 'scanlators/existing_scanlators', scanlators: scanlators %>
   <% else %>
-    <%= render 'add_cta' %>
+    <%= render 'scanlators/add_cta' %>
   <% end %>
 </div>

@@ -8,9 +8,8 @@ class ScanlatorsController < ApplicationController
   before_action :verify_permissions, only: %i[edit update destroy]
 
   def index
-    @scanlators = current_user.admin? ? Scanlator.order(:title) : current_user.scanlators.order(:title)
-
-    render 'users/show'
+    session[:studio_tab] = 'teams'
+    redirect_to studio_index_path
   end
 
   def show
@@ -60,10 +59,11 @@ class ScanlatorsController < ApplicationController
   end
 
   def refresh_screen
+    scanlators_data = current_user.admin? ? Scanlator.all : current_user.scanlators
     turbo_stream.update(
       'scanlators-screen',
       partial: 'scanlators/dashboard',
-      locals: { scanlators: current_user.admin? ? Scanlator.all : current_user.scanlators }
+      locals: { scanlators: scanlators_data }
     )
   end
 

@@ -67,14 +67,25 @@ Rails.application.routes.draw do
     end
   end
 
-  get :avatars, to: 'users#avatars', as: :avatars
-  get :blogs, to: 'users#blogs', as: :blogs
-  get :pokemons, to: 'users#pokemons', as: :pokemons
+  # Redirect old routes to new studio controller with appropriate tabs
+  get :blogs, to: 'studio#set_tab_and_redirect', defaults: { tab: 'blogs' }
+  get :pokemons, to: 'studio#set_tab_and_redirect', defaults: { tab: 'pokemons' }
+  get :avatars, to: 'studio#set_tab_and_redirect', defaults: { tab: 'profile' }
+  get :readings, to: 'studio#set_tab_and_redirect', defaults: { tab: 'writings' }
+  get :scanlators, to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
+  get :notifications, to: 'studio#set_tab_and_redirect', defaults: { tab: 'notifications' }
 
-  get :readings, to: 'users#readings', as: :readings
+  post :blogs, to: 'studio#set_tab_and_redirect', defaults: { tab: 'blogs' }
+  post :pokemons, to: 'studio#set_tab_and_redirect', defaults: { tab: 'pokemons' }
+  post :avatars, to: 'studio#set_tab_and_redirect', defaults: { tab: 'profile' }
+  post :readings, to: 'studio#set_tab_and_redirect', defaults: { tab: 'writings' }
+  post :scanlators, to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
+  post :notifications, to: 'studio#set_tab_and_redirect', defaults: { tab: 'notifications' }
+
+  # Redirect scanlators index to studio teams tab
+  get 'scanlators/index', to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
+
   resources :readings, only: %i[show destroy]
-
-  get :notifications, to: 'dashboards#notifications', as: :notifications
 
   post :pokemon_details, to: 'users#pokemon_details', as: :pokemon_details
 

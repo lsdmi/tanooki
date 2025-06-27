@@ -22,7 +22,7 @@
     <% if pagy.pages > 1 %>
       <div class="flex justify-center mt-12">
         <div class="pagy-nav">
-          <%== pagy_nav(pagy) %>
+          <%== pagy_nav_with_turbo_frame(pagy) if pagy.pages > 1 %>
         </div>
       </div>
     <% end %>

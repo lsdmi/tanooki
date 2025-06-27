@@ -1,0 +1,25 @@
+<% if @comments.any? %>
+  <div class="relative rounded-xl shadow-xl border border-stone-200 dark:border-gray-700 p-8 bg-cover bg-center overflow-hidden bg-white dark:bg-gray-900" style="background-image: url(<%= asset_path('writer.webp') %>);">
+    <div class="absolute inset-0 bg-stone-50 dark:bg-gray-900 opacity-90 backdrop-blur-md"></div>
+    <div class="relative z-10 flex items-center justify-between mb-6 px-4">
+      <svg class="h-7 w-7 text-cyan-700 dark:text-rose-700 transition-transform transform hover:scale-110" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.464V3.099m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175C19 17.4 19 18 18.462 18H5.538C5 18 5 17.4 5 16.807c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.464ZM6 5 5 4M4 9H3m15-4 1-1m1 5h1M8.54 18a3.48 3.48 0 0 0 6.92 0H8.54Z"/>
+      </svg>
+      <%= tag.h3 "Мої Сповіщення (#{@pagy.count})", class: 'text-xl font-semibold text-cyan-700 dark:text-rose-700' %>
+    </div>
+    <div class="relative z-10">
+      <%= render partial: 'users/dashboard/notification', collection: @comments %>
+    </div>
+    <div class="pagy-nav relative z-10 mt-6">
+      <%== pagy_nav_with_turbo_frame(@pagy) if @pagy.pages > 1 %>
+    </div>
+  </div>
+<% else %>
+  <div class="flex flex-col items-center justify-center h-96 bg-white dark:bg-gray-900 border border-stone-200 dark:border-gray-700 rounded-xl shadow-xl p-8">
+    <svg class="h-16 w-16 text-gray-300 dark:text-gray-700 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <h3 class="text-2xl font-semibold text-gray-500 dark:text-gray-400 mb-2">Немає сповіщень</h3>
+    <p class="text-gray-400 dark:text-gray-500">Тут з'являться ваші сповіщення, коли вони будуть.</p>
+  </div>
+<% end %>

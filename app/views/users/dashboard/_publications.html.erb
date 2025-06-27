@@ -17,15 +17,6 @@
 
           <!-- Actions -->
           <div class="flex space-x-2 items-center">
-            <!-- View Button -->
-            <%= link_to tale_path(publication.slug), data: { turbo: false }, title: "Переглянути", class: "group" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-                   class="h-[20px] w-[20px] md:h-[24px] md:w-[24px] lg:h-[28px] lg:w-[28px] text-stone-600 group-hover:text-stone-800 transition-transform transform group-hover:scale-[110%] duration-[250ms] ease-in-out">
-                <!-- SVG Path for View Icon -->
-                <path fill-rule="evenodd" d="M4.998..." clip-rule="evenodd"/>
-              </svg>
-            <% end %>
-
             <!-- Edit Button -->
             <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "group flex items-center justify-center w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 transition-all" do %>
               <svg class="w-5 h-5 text-stone-700 group-hover:text-stone-900 transition-all" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,6 +38,6 @@
   </ul>
 
   <div class="pagy-nav relative z-10 mt-6">
-    <%== pagy_nav(pagy) if pagy.pages > 1 %>
+    <%== pagy_nav_with_turbo_frame(pagy) if pagy.pages > 1 %>
   </div>
 </div>
