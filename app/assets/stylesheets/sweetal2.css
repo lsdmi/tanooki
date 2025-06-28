@@ -6,12 +6,21 @@
 
 .swal2-popup {
   border-radius: 0.5rem !important;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-bottom: 1rem;
-  color: #e53e3e;
-  border: 1px solid #feb2b2;
-  border-radius: 0.375rem;
-  background-color: #fef2f2;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .swal2-popup {
+    color: #d1d5db;
+    border: 1px solid #374151;
+    background-color: #1f2937;
+  }
 }
 
 .swal2-confirm {
@@ -19,48 +28,90 @@
   background-color: #dc2626 !important;
   font-weight: 500 !important;
   border-radius: 0.5rem !important;
-  font-size: 1rem !important;
-  padding-left: 0.75rem !important;
-  padding-right: 0.75rem !important;
-  padding-top: 0.375rem !important;
-  padding-bottom: 0.375rem !important;
+  font-size: 0.875rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
   display: inline-flex !important;
   text-align: center !important;
   align-items: center !important;
   margin-right: 0.5rem !important;
+  transition: all 0.2s !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #b91c1c !important;
 }
 
 .swal2-confirm:focus, .swal2-cancel:focus {
-  box-shadow: 0 0 0 4px #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3) !important;
+  outline: none !important;
 }
 
 .swal2-cancel {
-  color: #dc2626 !important;
+  color: #6b7280 !important;
   background-color: transparent !important;
-  border: 1px solid #dc2626 !important;
+  border: 1px solid #d1d5db !important;
   font-weight: 500 !important;
   border-radius: 0.5rem !important;
-  font-size: 1rem !important;
-  padding-left: 0.75rem !important;
-  padding-right: 0.75rem !important;
-  padding-top: 0.375rem !important;
-  padding-bottom: 0.375rem !important;
+  font-size: 0.875rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
   text-align: center !important;
   display: inline-block !important;
   text-decoration: none !important;
   cursor: pointer !important;
   outline: none !important;
+  transition: all 0.2s !important;
 }
 
 .swal2-cancel:hover {
-  background-color: #b91c1c !important;
-  color: #fff !important;
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+  border-color: #9ca3af !important;
+}
+
+/* Dark mode for cancel button */
+@media (prefers-color-scheme: dark) {
+  .swal2-cancel {
+    color: #9ca3af !important;
+    border: 1px solid #4b5563 !important;
+  }
+  
+  .swal2-cancel:hover {
+    background-color: #374151 !important;
+    color: #d1d5db !important;
+    border-color: #6b7280 !important;
+  }
 }
 
 .title {
-  font-size: 1.5rem !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #111827 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Dark mode for title */
+@media (prefers-color-scheme: dark) {
+  .title {
+    color: #f9fafb !important;
+  }
 }
 
 .htmlContainer {
-  font-size: 1rem !important;
+  font-size: 0.875rem !important;
+  color: #6b7280 !important;
+  line-height: 1.5 !important;
 }
+
+/* Dark mode for content */
+@media (prefers-color-scheme: dark) {
+  .htmlContainer {
+    color: #9ca3af !important;
+  }
+}
+

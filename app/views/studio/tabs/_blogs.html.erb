@@ -1,20 +1,48 @@
-<div class="p-8 bg-gradient-to-br from-white to-stone-100 rounded-3xl shadow-xl relative overflow-hidden border border-stone-200">
-  <div class="absolute inset-0 opacity-40 bg-cover bg-center"></div>
+<div class="space-y-6">
+  <!-- CTA Card -->
+  <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+    <!-- SVG Ornament -->
+    <div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
+      <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
+        <circle cx="80" cy="20" r="40" fill="#67e8f9" />
+        <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
+      </svg>
+    </div>
+    
+    <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
+      <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+    </div>
+    <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">Додайте новий допис!</h3>
+    <p class="mb-4 text-gray-500 dark:text-gray-400 relative z-10">Поділіться думкою з читачами. Створюйте якісний контент та зрощуйте аудиторію.</p>
+    <%= link_to "Додати допис", new_publication_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" %>
+  </div>
+
+  <!-- Publications List -->
   <% if publications.any? %>
-    <%= turbo_frame_tag 'publications-list' do %>
-      <div class="relative z-10 space-y-12">
-        <div class="flex items-center justify-between">
-          <%= tag.h3 "Мій Блог", class: 'text-4xl font-extrabold text-stone-900 tracking-tight' %>
-          <div class="mt-6 text-center">
-            <%= link_to "Створити Звістку", new_publication_path, data: { turbo: false }, class: 'bg-gradient-to-r from-stone-900 to-stone-700 text-white font-semibold rounded-full px-8 py-3 text-sm shadow-lg hover:scale-105 transition-all' %>
-          </div>
-        </div>
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">      
+      <%= turbo_frame_tag 'publications-list' do %>
         <%= render 'users/dashboard/publications', publications: publications, pagy: pagy %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   <% else %>
-    <div class="relative z-10 flex flex-col items-center justify-center text-center bg-white p-8 rounded-lg shadow-md">
-      <%= render 'publications/cta_create_publication' %>
+    <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+      <!-- SVG Ornament -->
+      <div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
+        <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
+          <circle cx="80" cy="20" r="40" fill="#67e8f9" />
+          <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
+        </svg>
+      </div>
+      
+      <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
+        <svg class="h-8 w-8 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white relative z-10">Дописи відсутні</h3>
+      <p class="mb-2 text-gray-500 dark:text-gray-400 relative z-10">Створіть перший допис та почніть ширити контент із читачами</p>
     </div>
   <% end %>
 </div>

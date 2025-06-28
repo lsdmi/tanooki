@@ -1,43 +1,169 @@
-<div class="flow-root relative z-10">
-  <ul class="divide-y divide-stone-200">
-    <% publications.each do |publication| %>
-      <li class="py-4">
-        <div class="flex items-center space-x-4">
-          <!-- Publication Details -->
-          <div class="flex-grow min-w-0">
-            <%= tag.p publication.title, class: 'text-base font-semibold text-stone-900 truncate' %>
-            <div class="flex items-center space-x-3 mt-2 text-sm text-stone-600">
-              <!-- Date -->
-              <p><%= l(publication.created_at, format: :short).downcase %></span>
+<!-- Desktop Table View -->
+<div class="hidden md:block rounded-lg relative overflow-x-auto">
+  <table class="w-full divide-y divide-gray-200 text-left text-sm text-gray-900 dark:text-white">
+    <thead class="bg-cyan-50 text-xs uppercase text-gray-700 dark:bg-rose-900/20 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Публікація</th>
+        <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Статистика</th>
+        <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Дата створення</th>
+        <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Дії</th>
+      </tr>
+    </thead>
 
-              <!-- Comments -->
-              <p class="">Перегляди: <%= publication.views %> | Коментарі: <%= publication.comments_count %></p>
+    <tbody class="divide-y divide-gray-200">
+      <% publications.each do |publication| %>
+        <tr class="hover:bg-cyan-50 dark:hover:bg-rose-900/10 transition-colors duration-200">
+          <th scope="row" class="whitespace-nowrap p-4 text-sm font-medium text-gray-900 dark:text-white">
+            <div class="flex items-center space-x-3">
+              <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center">
+                <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <a href="<%= tale_path(publication) %>" class="hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium" data-turbo="false">
+                  <%= publication.title %>
+                </a>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <%= publication.description.to_plain_text.truncate(60) || "Без опису" %>
+                </p>
+              </div>
             </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="flex space-x-2 items-center">
-            <!-- Edit Button -->
-            <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "group flex items-center justify-center w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 transition-all" do %>
-              <svg class="w-5 h-5 text-stone-700 group-hover:text-stone-900 transition-all" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 4.5L19.5 7.5M4 20h4l10-10-4-4L4 16v4z" />
+          </th>
+          <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
+            <div class="space-y-1">
+              <div class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span class="font-medium"><%= publication.views %></span>
+                <span class="text-xs">переглядів</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <span class="font-medium"><%= publication.comments_count %></span>
+                <span class="text-xs">коментарів</span>
+              </div>
+            </div>
+          </td>
+          <td class="whitespace-nowrap p-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+            <div class="flex items-center space-x-2">
+              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-            <% end %>
+              <span><%= l(publication.created_at, format: :short).downcase.downcase %></span>
+            </div>
+          </td>
+          <td class="p-4 text-right">
+            <div class="flex items-center space-x-2">
+              <!-- Edit Button -->
+              <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white transition-colors duration-200" do %>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              <% end %>
 
-            <!-- Delete Button -->
-            <%= sweetalert(delete_icon, {
-              description: I18n.t('sweetalert.fictions.description'),
-              message: I18n.t('sweetalert.fictions.message'),
-              tag_id: nil,
-              url: publication_path(publication, page: params[:page])
-            }) %>
-          </div>
-        </div>
-      </li>
-    <% end %>
-  </ul>
-
-  <div class="pagy-nav relative z-10 mt-6">
-    <%== pagy_nav_with_turbo_frame(pagy) if pagy.pages > 1 %>
-  </div>
+              <!-- Delete Button -->
+              <%= sweetalert(
+                content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                {
+                  description: "Ви впевнені, що хочете видалити цю публікацію?",
+                  message: "Ця дія не може бути скасована.",
+                  tag_id: nil,
+                  url: publication_path(publication, page: params[:page]),
+                  button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 transition-colors duration-200"
+                }
+              ) %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
+
+<!-- Mobile Card View -->
+<div class="md:hidden space-y-4">
+  <% publications.each do |publication| %>
+    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <!-- Header with icon and title -->
+      <div class="flex items-start space-x-3 mb-3">
+        <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center flex-shrink-0">
+          <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <a href="<%= tale_path(publication) %>" class="block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white" data-turbo="false">
+            <%= publication.title %>
+          </a>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <%= publication.description.to_plain_text.truncate(80) || "Без опису" %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="flex items-center space-x-4 mb-3 text-sm">
+        <div class="flex items-center space-x-1">
+          <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          <span class="font-medium text-gray-900 dark:text-white"><%= publication.views %></span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">переглядів</span>
+        </div>
+        <div class="flex items-center space-x-1">
+          <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          <span class="font-medium text-gray-900 dark:text-white"><%= publication.comments_count %></span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">коментарів</span>
+        </div>
+      </div>
+
+      <!-- Footer with date and actions -->
+      <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span><%= l(publication.created_at, format: :short).downcase.downcase %></span>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <!-- Edit Button -->
+          <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white transition-colors duration-200" do %>
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          <% end %>
+
+          <!-- Delete Button -->
+          <%= sweetalert(
+            content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+            {
+              description: "Ви впевнені, що хочете видалити цю публікацію?",
+              message: "Ця дія не може бути скасована.",
+              tag_id: nil,
+              url: publication_path(publication, page: params[:page]),
+              button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 transition-colors duration-200"
+            }
+          ) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Pagination -->
+<% if pagy.pages > 1 %>
+  <div class="pagy-nav p-6 border-t border-gray-200">
+    <div class="flex justify-center">
+      <%== pagy_nav_with_turbo_frame(pagy) %>
+    </div>
+  </div>
+<% end %>
