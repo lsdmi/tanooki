@@ -7,7 +7,7 @@ class ReadingHistoryFetcher
 
   def call
     @user.readings.includes(
-      [{ fiction: :cover_attachment }, :chapter]
+      fiction: [:cover_attachment, { scanlators: :avatar_attachment }]
     ).order(updated_at: :desc)
   end
 end

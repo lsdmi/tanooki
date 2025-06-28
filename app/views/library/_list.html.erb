@@ -1,6 +1,6 @@
-<div class="flex flex-row justify-between items-start lg:items-center mb-4">
-  <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Читальня</h2>
-  <div class="flex gap-2">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0">
+  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 sm:mb-0">Читальня</h2>
+  <div class="flex gap-1 sm:gap-2 flex-wrap">
     <% status_filters.each do |label, status| %>
       <%= link_to label,
             library_path(section: status),
@@ -19,47 +19,47 @@
   </div>
 </div>
 
-<div class="relative p-8 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
+<div class="relative p-4 sm:p-6 lg:p-8 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
   <!-- Ornament SVG -->
-  <svg class="absolute top-0 right-0 w-32 h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
+  <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
     <circle cx="80" cy="20" r="40" fill="#67e8f9" />
     <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
   </svg>
   <% if paginated_readings.any? %>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <ul class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
       <% paginated_readings.each do |reading| %>
         <%= render 'reading_progresses/reading_progress', reading: reading, section: section %>
       <% end %>
     </ul>
     <% if pagy.pages > 1 %>
-      <div class="pagy-nav watch flex justify-center mt-8 gap-2">
+      <div class="pagy-nav watch flex justify-center mt-6 sm:mt-8 gap-1 sm:gap-2">
         <% if pagy.page > 1 %>
           <%= link_to "‹", library_path(section: section, page: pagy.page - 1), 
-              class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50",
+              class: "px-2 sm:px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200",
               data: { turbo_stream: "" } %>
         <% end %>
         
         <% (1..pagy.pages).each do |page_num| %>
           <% if page_num == pagy.page %>
-            <span class="px-3 py-2 text-sm font-medium text-white bg-cyan-600 border border-cyan-600">
+            <span class="px-2 sm:px-3 py-2 text-sm font-medium text-white bg-cyan-600 dark:bg-rose-700 border border-cyan-600 dark:border-rose-700">
               <%= page_num %>
             </span>
           <% else %>
             <%= link_to page_num, library_path(section: section, page: page_num), 
-                class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50",
+                class: "px-2 sm:px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200",
                 data: { turbo_stream: "" } %>
           <% end %>
         <% end %>
         
         <% if pagy.page < pagy.pages %>
           <%= link_to "›", library_path(section: section, page: pagy.page + 1), 
-              class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50",
+              class: "px-2 sm:px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200",
               data: { turbo_stream: "" } %>
         <% end %>
       </div>
     <% end %>
   <% else %>
-    <div class="text-center text-gray-600 dark:text-gray-300">
+    <div class="text-center text-gray-600 dark:text-gray-300 py-8">
       <p>Тут так порожньо.</p>
       <p>Спробуйте змінити фільтри.</p>
     </div>

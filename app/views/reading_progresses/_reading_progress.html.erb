@@ -1,8 +1,8 @@
-<li id="reading-progress-<%= reading.id %>" class="flex items-center pb-4 hover:scale-[1.015] transition-all duration-300">
-  <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: '' do %>
+<li id="reading-progress-<%= reading.id %>" class="flex items-start sm:items-center pb-4 hover:scale-[1.015] transition-all duration-300 gap-3 sm:gap-4">
+  <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'flex-shrink-0' do %>
     <%= image_tag url_for(reading.fiction.cover),
       alt: reading.fiction.cover.blob.filename.to_s,
-      class: "w-24 h-32 rounded mr-4 object-cover rounded-md shadow-sm border border-cyan-700 dark:border-rose-700",
+      class: "w-16 h-20 sm:w-20 sm:h-24 lg:w-24 lg:h-32 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
       loading: "lazy",
       data: {
         controller: "lazy-image",
@@ -12,27 +12,27 @@
   <% end %>
   
   <!-- Main Content -->
-  <div class="flex-1 tracking-tight">
-    <div class="flex justify-between gap-3">
-      <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: 'leading-tight text-xs md:text-base font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+  <div class="flex-1 tracking-tight min-w-0">
+    <div class="flex justify-between gap-2 sm:gap-3">
+      <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: 'leading-tight text-sm sm:text-base lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
     </div>
-    <div class="text-xs text-stone-800 dark:text-gray-200 flex gap-1 mt-2 font-light">
+    <div class="text-xs sm:text-sm text-stone-800 dark:text-gray-200 flex gap-1 mt-2 font-light">
       <span class="">Прочитано:</span>
       <%= tag.span chapter_index(unique_chapters(ordered_chapters(reading.fiction)), reading.chapter) + 1, class: 'font-bold' %> /
       <%= tag.span chapters_size(reading.fiction) %>
     </div>
     
-    <div class="flex gap-4 mt-4">
+    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-3 sm:mt-4">
       <% if ordered_chapters_desc(reading.chapter.fiction).first == reading.chapter %>
-        <span class="shadow-sm ring-1 ring-green-800 dark:ring-green-800 inline-flex items-center gap-1 text-xs bg-green-700 dark:bg-green-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <span class="shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl w-fit">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
           </svg>
           <span>Все прочитано</span>
         </span>
       <% else %>
-        <%= link_to following_chapter(reading.fiction, reading.chapter), data: { turbo: false }, class: 'shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300' do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <%= link_to following_chapter(reading.fiction, reading.chapter), data: { turbo: false }, class: 'shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300 w-fit' do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
           </svg>
           <span>Читати далі</span>
@@ -42,7 +42,7 @@
   </div>
   
   <!-- Reading State Toggle Controls - Vertical Column -->
-  <div class="flex flex-col gap-1 ml-3">
+  <div class="flex flex-col gap-1 sm:gap-2 ml-2 sm:ml-3 flex-shrink-0">
     <% reading_states = [
       { key: :active, label: 'Читаю', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
       { key: :finished, label: 'Прочитано', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -61,7 +61,7 @@
             method: :patch,
             params: { status: state[:key], current_section: defined?(section) ? section : :active },
             class: [
-              "inline-flex items-center justify-center w-6 h-6 rounded transition-all duration-200",
+              "inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded transition-all duration-200",
               "ring-1 ring-opacity-50",
               "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 ring-gray-300 dark:ring-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-110"
             ].join(' '),
@@ -70,14 +70,14 @@
               turbo_stream: true,
               confirm: "Змінити статус на '#{state[:label]}'?"
             } do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= state[:icon] %>" />
           </svg>
         <% end %>
       <% else %>
         <!-- Current section indicator - disabled and styled differently -->
-        <div class="inline-flex items-center justify-center w-6 h-6 rounded transition-all duration-200 bg-cyan-600 dark:bg-rose-700 text-white ring-1 ring-cyan-700 dark:ring-rose-800 scale-110 opacity-60" title="Поточний статус: <%= state[:label] %>">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded transition-all duration-200 bg-cyan-600 dark:bg-rose-700 text-white ring-1 ring-cyan-700 dark:ring-rose-800 scale-110 opacity-60" title="Поточний статус: <%= state[:label] %>">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= state[:icon] %>" />
           </svg>
         </div>
