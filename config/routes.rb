@@ -90,7 +90,7 @@ Rails.application.routes.draw do
   post :pokemon_details, to: 'users#pokemon_details', as: :pokemon_details
 
   get :library, to: 'library#index'
-  delete 'reading_progresses/:id', to: 'library#destroy', as: :destroy_reading_progress
+  patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon

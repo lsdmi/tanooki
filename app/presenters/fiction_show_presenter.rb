@@ -28,11 +28,7 @@ class FictionShowPresenter
     return :not_started unless reading_progress
     return :not_started unless last_chapter
 
-    return :finished  if finished_reading?
-    return :dropped   if dropped_reading?
-    return :postponed if postponed_reading?
-
-    :active
+    reading_progress.status.to_sym
   end
 
   def bookmark_stats
@@ -78,18 +74,6 @@ class FictionShowPresenter
 
   def last_chapter
     @last_chapter ||= ordered_chapters_desc(@fiction).first
-  end
-
-  def finished_reading?
-    reading_progress.chapter_id == last_chapter.id
-  end
-
-  def dropped_reading?
-    reading_progress.updated_at < last_chapter.created_at - 2.months
-  end
-
-  def postponed_reading?
-    reading_progress.updated_at < last_chapter.created_at - 1.month
   end
 
   def set_translator

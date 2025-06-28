@@ -1,19 +1,19 @@
 <div class="flex flex-row justify-between items-start lg:items-center mb-4">
   <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Читальня</h2>
   <div class="flex gap-2">
-    <% status_filters.each do |label, section| %>
+    <% status_filters.each do |label, status| %>
       <%= link_to label,
-            library_path(section: section),
+            library_path(section: status),
             data: { turbo_stream: "" },
             class: [
               "px-2 lg:px-3 py-1 rounded-md text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap",
               "hover:cursor-pointer",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500",
-              section == @section ?
+              status == section ?
                 "bg-cyan-600 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105" :
                 "bg-cyan-50 dark:bg-rose-900 text-cyan-800 dark:text-rose-100 ring-cyan-200 dark:ring-rose-900 hover:bg-cyan-100 dark:hover:bg-rose-800 hover:ring-cyan-300 dark:hover:ring-rose-700 hover:scale-105"
             ].join(' '),
-            "aria-pressed": section == @section
+            "aria-pressed": status == section
       %>
     <% end %>
   </div>
@@ -28,12 +28,34 @@
   <% if paginated_readings.any? %>
     <ul class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <% paginated_readings.each do |reading| %>
-        <%= render 'reading_progresses/reading_progress', reading: reading, section: @section %>
+        <%= render 'reading_progresses/reading_progress', reading: reading, section: section %>
       <% end %>
     </ul>
     <% if pagy.pages > 1 %>
       <div class="pagy-nav watch flex justify-center mt-8 gap-2">
-        <%== pagy_nav(pagy) %>
+        <% if pagy.page > 1 %>
+          <%= link_to "‹", library_path(section: section, page: pagy.page - 1), 
+              class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50",
+              data: { turbo_stream: "" } %>
+        <% end %>
+        
+        <% (1..pagy.pages).each do |page_num| %>
+          <% if page_num == pagy.page %>
+            <span class="px-3 py-2 text-sm font-medium text-white bg-cyan-600 border border-cyan-600">
+              <%= page_num %>
+            </span>
+          <% else %>
+            <%= link_to page_num, library_path(section: section, page: page_num), 
+                class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50",
+                data: { turbo_stream: "" } %>
+          <% end %>
+        <% end %>
+        
+        <% if pagy.page < pagy.pages %>
+          <%= link_to "›", library_path(section: section, page: pagy.page + 1), 
+              class: "px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50",
+              data: { turbo_stream: "" } %>
+        <% end %>
       </div>
     <% end %>
   <% else %>

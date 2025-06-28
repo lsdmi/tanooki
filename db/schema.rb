@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_11_010324) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_27_231449) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -221,10 +221,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_11_010324) do
     t.bigint "fiction_id", null: false
     t.bigint "user_id", null: false
     t.bigint "chapter_id", null: false
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
     t.index ["fiction_id"], name: "index_reading_progresses_on_fiction_id"
+    t.index ["status"], name: "index_reading_progresses_on_status"
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
   end
 

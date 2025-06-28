@@ -9,7 +9,7 @@
       <div class="w-full lg:w-3/4 lg:pr-8 mb-8 lg:mb-0">
         <div class="mb-8">
           <%= turbo_frame_tag 'library-list' do %>
-            <%= render "list", paginated_readings: @paginated_readings, pagy: @pagy %>
+            <%= render "list", paginated_readings: @paginated_readings, pagy: @pagy, section: @section %>
           <% end %>
         </div>
       </div>
