@@ -24,7 +24,7 @@ class LibraryController < ApplicationController
 
     @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
 
-    render_library_list(library_data, current_section)
+    render_library_list(current_section)
   end
 
   private
