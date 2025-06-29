@@ -1,17 +1,18 @@
 .swal-container {
   font-family: Oswald, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  border-radius: 0.5rem !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
 }
 
 .swal2-popup {
-  border-radius: 0.5rem !important;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  border-radius: 0.75rem !important;
+  padding: 1.25rem !important;
+  margin: 0.5rem !important;
   color: #374151;
   border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
   background-color: #ffffff;
+  max-width: 24rem !important;
+  width: 90% !important;
 }
 
 /* Dark mode support */
@@ -29,23 +30,24 @@
   font-weight: 500 !important;
   border-radius: 0.5rem !important;
   font-size: 0.875rem !important;
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
   display: inline-flex !important;
   text-align: center !important;
   align-items: center !important;
   margin-right: 0.5rem !important;
-  transition: all 0.2s !important;
+  transition: all 0.15s ease-in-out !important;
+  border: none !important;
+  cursor: pointer !important;
+  min-width: 4rem !important;
 }
 
 .swal2-confirm:hover {
   background-color: #b91c1c !important;
+  transform: translateY(-1px) !important;
 }
 
-.swal2-confirm:focus, .swal2-cancel:focus {
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3) !important;
+.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
   outline: none !important;
 }
 
@@ -56,22 +58,26 @@
   font-weight: 500 !important;
   border-radius: 0.5rem !important;
   font-size: 0.875rem !important;
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
   text-align: center !important;
   display: inline-block !important;
   text-decoration: none !important;
   cursor: pointer !important;
   outline: none !important;
-  transition: all 0.2s !important;
+  transition: all 0.15s ease-in-out !important;
+  min-width: 4rem !important;
 }
 
 .swal2-cancel:hover {
   background-color: #f3f4f6 !important;
   color: #374151 !important;
   border-color: #9ca3af !important;
+  transform: translateY(-1px) !important;
+}
+
+.swal2-cancel:focus {
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2) !important;
+  outline: none !important;
 }
 
 /* Dark mode for cancel button */
@@ -89,10 +95,11 @@
 }
 
 .title {
-  font-size: 1.25rem !important;
+  font-size: 1.125rem !important;
   font-weight: 600 !important;
   color: #111827 !important;
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.4 !important;
 }
 
 /* Dark mode for title */
@@ -106,12 +113,41 @@
   font-size: 0.875rem !important;
   color: #6b7280 !important;
   line-height: 1.5 !important;
+  margin-bottom: 1rem !important;
 }
 
 /* Dark mode for content */
 @media (prefers-color-scheme: dark) {
   .htmlContainer {
     color: #9ca3af !important;
+  }
+}
+
+/* Actions container */
+.actions {
+  display: flex !important;
+  gap: 0.5rem !important;
+  justify-content: flex-end !important;
+  margin-top: 1rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .swal2-popup {
+    padding: 1rem !important;
+    margin: 0.25rem !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+  
+  .actions {
+    flex-direction: column !important;
+    gap: 0.375rem !important;
+  }
+  
+  .swal2-confirm,
+  .swal2-cancel {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 

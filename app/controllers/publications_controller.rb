@@ -11,7 +11,7 @@ class PublicationsController < ApplicationController
 
     if @publication.save
       manage_tags if params[:publication][:tag_ids]
-      redirect_to root_path, notice: 'Звістку створено.'
+      redirect_to root_path, notice: 'Допис створено.'
     else
       render 'publications/new', status: :unprocessable_entity
     end
@@ -20,7 +20,7 @@ class PublicationsController < ApplicationController
   def update
     if @publication.update(publication_params)
       manage_tags if params[:publication][:tag_ids]
-      redirect_to tale_path(@publication), notice: 'Звістку оновлено.'
+      redirect_to tale_path(@publication), notice: 'Допис оновлено.'
     else
       render 'sweetalert/edit', status: :unprocessable_entity
     end

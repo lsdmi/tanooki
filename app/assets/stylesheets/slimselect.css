@@ -1,29 +1,32 @@
 :root {
-  --ss-primary-color: #5897fb;
-  --ss-bg-color: #ffffff;
-  --ss-font-color: #4d4d4d;
-  --ss-font-placeholder-color: #8d8d8d;
-  --ss-disabled-color: #dcdee2;
-  --ss-border-color: #dcdee2;
-  --ss-highlight-color: #fffb8c;
-  --ss-success-color: #00b755;
-  --ss-error-color: #dc3545;
+  --ss-primary-color: #0891b2; /* Cyan color to match form theme */
+  --ss-bg-color: #f9fafb; /* Light gray background */
+  --ss-font-color: #111827; /* Dark text */
+  --ss-font-placeholder-color: #6b7280; /* Medium gray placeholder */
+  --ss-disabled-color: #e5e7eb; /* Light gray disabled */
+  --ss-border-color: #d1d5db; /* Light gray border */
+  --ss-highlight-color: #fef3c7; /* Light yellow highlight */
+  --ss-success-color: #059669; /* Green success */
+  --ss-error-color: #dc2626; /* Red error */
   --ss-main-height: 30px;
   --ss-content-height: 300px;
   --ss-spacing-l: 7px;
   --ss-spacing-m: 5px;
   --ss-spacing-s: 3px;
   --ss-animation-timing: 0.2s;
-  --ss-border-radius: 4px
+  --ss-border-radius: 6px; /* Match form border radius */
 }
 
 .dark {
-  --ss-primary-color: #2563eb; /* Darker blue */
-  --ss-bg-color: #1f2937; /* Dark gray */
-  --ss-font-color: #d1d5db; /* Light gray */
-  --ss-font-placeholder-color: #9ca3af; /* Medium gray */
-  --ss-disabled-color: #4b5563;
-  --ss-border-color: #4b5563;
+  --ss-primary-color: #f43f5e; /* Rose color for dark mode */
+  --ss-bg-color: #374151; /* Dark gray background */
+  --ss-font-color: #f9fafb; /* Light text */
+  --ss-font-placeholder-color: #9ca3af; /* Medium gray placeholder */
+  --ss-disabled-color: #4b5563; /* Dark gray disabled */
+  --ss-border-color: #4b5563; /* Dark gray border */
+  --ss-highlight-color: #fef3c7; /* Light yellow highlight */
+  --ss-success-color: #10b981; /* Green success */
+  --ss-error-color: #ef4444; /* Red error */
 }
 
 @keyframes ss-valueIn {
@@ -285,6 +288,7 @@
   width: 100%;
   min-width: 0px;
   margin: 0;
+  padding: 8px;
   border: 1px solid var(--ss-border-color);
   border-radius: var(--ss-border-radius);
   background-color: var(--ss-bg-color);

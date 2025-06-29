@@ -27,7 +27,8 @@ class StudioController < ApplicationController
   def turbo_stream_updates
     [
       turbo_stream.update('tabs', partial: 'studio/tab_list', locals: { active_tab: @active_tab }),
-      turbo_stream.update('tab-content', partial: "studio/tabs/#{@active_tab}", locals: tab_content_locals)
+      turbo_stream.update('tab-content', partial: "studio/tabs/#{@active_tab}", locals: tab_content_locals),
+      turbo_stream.update('sweet-alert', partial: 'shared/sweet_alert')
     ]
   end
 

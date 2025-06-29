@@ -35,8 +35,7 @@ module ApplicationHelper
   end
 
   def requires_sweetalert?
-    (request.path.in? [studio_index_path]) ||
-      (controller_name == 'readings')
+    controller_name.in?(%w[studio readings])
   end
 
   def pagy_nav_with_turbo_frame(pagy, frame_id = 'tab-content')

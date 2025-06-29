@@ -1,8 +1,16 @@
-<section class="bg-white z-10 relative ">
-  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
-    <h2 class="mb-4 text-xl font-semibold leading-none text-gray-900">Створити Звістку</h2>
-    <%= simple_form_for publication, as: :publication, url: publications_path, method: :post, html: { class: "form" } do |f| %>
-      <%= render 'publications/form', publication: publication, f: f, tags: tags %>
-    <% end %>
+<section class="bg-gray-50 dark:bg-gray-900 z-10 relative min-h-screen">
+  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-12" data-controller="dropzone">
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-3">Створити Допис</h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Поділіться думками та досвідом з читачами! Створіть захоплюючий допис, який зацікавить аудиторію!</p>
+    </div>
+    
+    <!-- Form Container -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-8">
+      <%= simple_form_for publication, as: :publication, url: publications_path, method: :post, html: { class: "form" } do |f| %>
+        <%= render 'publications/form', publication: publication, f: f, tags: tags %>
+      <% end %>
+    </div>
   </div>
 </section>
