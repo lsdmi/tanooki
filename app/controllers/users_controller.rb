@@ -10,15 +10,9 @@ class UsersController < ApplicationController
     result = UserUpdateService.new(current_user, user_params).call
 
     if result.success?
-      render turbo_stream: [
-        update_notice,
-        update_sidebar,
-        update_navbar
-      ]
+      render turbo_stream: [update_notice, update_navbar]
     else
-      render turbo_stream: [
-        update_avatars_screen(result.data[:avatars])
-      ]
+      render turbo_stream: [update_avatars_screen(result.data[:avatars])]
     end
   end
 
@@ -35,10 +29,6 @@ class UsersController < ApplicationController
       partial: 'shared/notice',
       locals: { notice: 'Профіль оновлено.' }
     )
-  end
-
-  def update_sidebar
-    turbo_stream.replace('sidebar', partial: 'users/dashboard/sidebar')
   end
 
   def update_navbar

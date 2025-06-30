@@ -60,7 +60,7 @@
           <td class="p-4 text-right">
             <div class="flex items-center space-x-2">
               <!-- Edit Button -->
-              <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white transition-colors duration-200" do %>
+              <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
@@ -74,7 +74,7 @@
                   message: "Ця дія не може бути скасована.",
                   tag_id: nil,
                   url: publication_path(publication, page: params[:page]),
-                  button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 transition-colors duration-200"
+                  button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
                 }
               ) %>
             </div>
@@ -136,7 +136,7 @@
         
         <div class="flex items-center space-x-2">
           <!-- Edit Button -->
-          <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white transition-colors duration-200" do %>
+          <%= link_to edit_publication_path(publication.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
@@ -150,7 +150,7 @@
               message: "Ця дія не може бути скасована.",
               tag_id: nil,
               url: publication_path(publication, page: params[:page]),
-              button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 transition-colors duration-200"
+              button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
             }
           ) %>
         </div>

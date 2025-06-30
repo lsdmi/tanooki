@@ -2,7 +2,7 @@
   <%= link_to(
     tab_studio_path(item[:id]),
     data: { turbo_frame: "tab-content", turbo_stream: true },
-    class: "inline-flex w-full items-center justify-center rounded-lg py-3 transition-colors duration-200 #{is_active ? active_classes : inactive_classes}",
+    class: "border-stone-300 inline-flex w-full items-center justify-center rounded-lg py-3 transition-colors duration-200 #{is_active ? active_classes : inactive_classes}",
     id: "#{item[:id]}-tab",
     role: "tab",
     aria: { controls: item[:id], selected: is_active }

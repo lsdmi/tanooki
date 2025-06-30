@@ -43,11 +43,15 @@ class ScanlatorsController < ApplicationController
   end
 
   def destroy
-    if @scanlator.destroy
-      render turbo_stream: [refresh_screen, refresh_sweetalert]
-    else
-      render turbo_stream: update_notice(@scanlator.errors[:base].first)
-    end
+    @scanlator.destroy
+    @pagy, @scanlators = pagy(
+      scanlators_scope,
+      limit: 8,
+      request_path: scanlators_path,
+      page: params[:page] || 1
+    )
+
+    render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
   private
@@ -58,13 +62,20 @@ class ScanlatorsController < ApplicationController
     )
   end
 
-  def refresh_screen
-    scanlators_data = current_user.admin? ? Scanlator.all : current_user.scanlators
+  def refresh_list
     turbo_stream.update(
-      'scanlators-screen',
-      partial: 'scanlators/dashboard',
-      locals: { scanlators: scanlators_data }
+      'scanlators-list',
+      partial: 'scanlators/team_grid',
+      locals: { scanlators: @scanlators, pagy: @pagy }
     )
+  end
+
+  def scanlators_scope
+    if current_user.admin?
+      Scanlator.includes(:avatar_attachment).order(:title)
+    else
+      user.scanlators.includes(:avatar_attachment).order(:title)
+    end
   end
 
   def update_notice(message)

@@ -1,0 +1,45 @@
+<div class="flex items-center justify-between py-2 px-2 sm:px-4 
+            hover:bg-cyan-50 dark:hover:bg-rose-900/5 transition-colors duration-200 
+            border border-stone-200 rounded-lg m-2 bg-white dark:bg-gray-800 shadow-xl">
+  <div class="flex items-center gap-4">
+    <div class="h-12 w-12 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center shadow">
+      <%= image_tag scanlator.avatar.present? ? url_for(scanlator.avatar) : asset_path('scanlator_avatar.webp'), class: "h-12 w-12 rounded-full object-cover" %>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-900 dark:text-white">
+        <%= link_to scanlator.title, scanlator_path(scanlator), data: { turbo: false }, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200" %>
+      </div>
+      <div class="flex gap-2 mt-1">
+        <span class="inline-flex items-center px-2 py-1 rounded border border-cyan-700 dark:border-rose-900 bg-cyan-100 dark:bg-rose-900 text-cyan-700 dark:text-rose-200 text-xs font-medium">
+          <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4"/>
+          </svg>
+          <%= scanlator.fictions.count || 0 %> творів
+        </span>
+        <span class="inline-flex items-center px-2 py-1 rounded border border-cyan-700 dark:border-rose-900 bg-cyan-100 dark:bg-rose-900 text-cyan-700 dark:text-rose-200 text-xs font-medium">
+          <svg class="h-4 w-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+          </svg>
+          <%= scanlator.users.count || 0 %> учасників
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col items-end">
+    <%= link_to edit_scanlator_path(scanlator), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200", title: "Редагувати" do %>
+      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      </svg>
+    <% end %>
+    <%= sweetalert(
+        content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+        {
+            description: "Ви впевнені, що хочете видалити команду?",
+            message: "Ця дія не може бути скасована.",
+            tag_id: nil,
+            url: scanlator_path(scanlator, page: params[:page]),
+            button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
+        }
+        ) %>
+  </div>
+</div> 

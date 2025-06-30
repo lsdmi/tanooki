@@ -1,0 +1,13 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y-0">
+  <% scanlators.each do |scanlator| %>
+    <%= render 'scanlators/team_card', scanlator: scanlator %>
+  <% end %>
+</div>
+
+<% if pagy.pages > 1 %>
+  <div class="pagy-nav p-6">
+    <div class="flex justify-center">
+      <%== pagy_nav_with_turbo_frame(pagy) %>
+    </div>
+  </div>
+<% end %> 

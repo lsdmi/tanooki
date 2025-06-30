@@ -26,7 +26,19 @@ class StudioTabContentService
   end
 
   def teams_content_loader
-    @scanlators = user.admin? ? Scanlator.order(:title) : user.scanlators.order(:title)
+    @pagy, @scanlators = pagy(
+      scanlators_scope,
+      limit: 8,
+      page: params[:page]
+    )
+  end
+
+  def scanlators_scope
+    if user.admin?
+      Scanlator.includes(:avatar_attachment).order(:title)
+    else
+      user.scanlators.includes(:avatar_attachment).order(:title)
+    end
   end
 
   def writings_content_loader
