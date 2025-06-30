@@ -8,7 +8,7 @@
     
     <!-- Form Container -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-8">
-      <%= simple_form_for publication, as: :publication, url: publications_path, method: :post, html: { class: "form" } do |f| %>
+      <%= simple_form_for publication, as: :publication, url: publications_path, method: :post, html: { class: "form", multipart: true } do |f| %>
         <%= render 'publications/form', publication: publication, f: f, tags: tags %>
       <% end %>
     </div>
