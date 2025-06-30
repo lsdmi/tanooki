@@ -9,9 +9,13 @@ class ReadingProgressStatusService
 
   def call
     ActiveRecord::Base.transaction do
-      @reading_progress.update!(status: @new_status)
+      if @new_status == :destroy || @new_status == 'destroy'
+        @reading_progress.destroy!
+      else
+        @reading_progress.update!(status: @new_status)
+      end
       clear_caches
-      @reading_progress.reload
+      @reading_progress.reload unless @reading_progress.destroyed?
     end
   end
 

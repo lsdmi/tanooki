@@ -42,14 +42,15 @@
   </div>
   
   <!-- Reading State Toggle Controls - Vertical Column -->
-  <div class="flex flex-col gap-1 sm:gap-2 ml-2 sm:ml-3 flex-shrink-0">
+  <div class="flex flex-col gap-1 ml-2 sm:ml-3 flex-shrink-0">
     <% reading_states = [
       { key: :active, label: 'Читаю', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
       { key: :finished, label: 'Прочитано', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
       { key: :postponed, label: 'Відкладено', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-      { key: :dropped, label: 'Покинуто', icon: 'M6 18L18 6M6 6l12 12' }
+      { key: :dropped, label: 'Покинуто', icon: 'M6 18L18 6M6 6l12 12' },
+      { key: :destroy, label: 'Видалено', icon: 'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z' }
     ] %>
-    
+
     <% reading_states.each do |state| %>
       <% 
         # Use the current section to determine which state is active
@@ -61,7 +62,7 @@
             method: :patch,
             params: { status: state[:key], current_section: defined?(section) ? section : :active },
             class: [
-              "inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded transition-all duration-200",
+              "inline-flex items-center justify-center w-5 h-5 rounded transition-all duration-200",
               "ring-1 ring-opacity-50",
               "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 ring-gray-300 dark:ring-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-110"
             ].join(' '),
@@ -70,14 +71,14 @@
               turbo_stream: true,
               confirm: "Змінити статус на '#{state[:label]}'?"
             } do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= state[:icon] %>" />
           </svg>
         <% end %>
       <% else %>
         <!-- Current section indicator - disabled and styled differently -->
-        <div class="inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded transition-all duration-200 bg-cyan-600 dark:bg-rose-700 text-white ring-1 ring-cyan-700 dark:ring-rose-800 scale-110 opacity-60" title="Поточний статус: <%= state[:label] %>">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="inline-flex items-center justify-center w-5 h-5 rounded transition-all duration-200 bg-cyan-600 dark:bg-rose-700 text-white ring-1 ring-cyan-700 dark:ring-rose-800 scale-110 opacity-60" title="Поточний статус: <%= state[:label] %>">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= state[:icon] %>" />
           </svg>
         </div>

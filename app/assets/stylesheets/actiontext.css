@@ -35,6 +35,28 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+#user-content ul,
+#user-content ol {
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+#user-content ul {
+  list-style-type: disc;
+}
+
+#user-content ol {
+  list-style-type: decimal;
+}
+
+#user-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  /* Optional: add a little padding for better readability */
+  padding-left: 0.25rem;
+}
+
 @media (max-width: 768px) {
   #user-content {
     font-size: 1rem;

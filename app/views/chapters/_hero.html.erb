@@ -2,7 +2,10 @@
   <div class="container mx-auto px-4 relative z-10">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
       <div class="max-w-3xl w-full md:w-auto">
-        <%= tag.h1 chapter.title.presence || chapter.display_title, class: 'text-3xl sm:text-4xl md:text-5xl font-bold text-stone-800 dark:text-white mb-2 sm:mb-3 leading-tight' %>
+        <%= tag.h1 class: 'text-3xl sm:text-4xl md:text-5xl font-bold text-stone-800 dark:text-white mb-2 sm:mb-3 leading-tight' do %>
+          <span class="text-stone-400 mr-2">Розділ <%= check_decimal(chapter.number) %> - </span>
+          <%= chapter.title.presence || chapter.display_title %>
+        <% end %>
         <%= link_to fiction.title, fiction_path(fiction), class: "text-lg sm:text-xl text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300 border-b-2 border-transparent hover:border-stone-800 dark:hover:border-white" %>
       </div>
       <div class="mt-4 md:mt-0 flex items-center space-x-4">
