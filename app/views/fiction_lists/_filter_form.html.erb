@@ -1,0 +1,29 @@
+<%= simple_form_for :fiction_list, url: alphabetical_fictions_path, method: :get, id: 'fictionsFilter', html: { class: 'space-y-3', data: { turbo_stream: "" } } do |f| %>
+  <div>
+    <label class="text-base sm:text-lg line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none mb-2">Жанр</label>
+    <div class="relative">
+      <select
+        name="genre"
+        class="w-full appearance-none rounded-lg border border-gray-300 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 pr-10 focus:outline-none shadow-sm transition duration-200 text-sm sm:text-base"
+      >
+        <option value="">Всі жанри</option>
+        <% Genre.order(:name).each do |genre| %>
+          <option value="<%= genre.id %>"><%= genre.name %></option>
+        <% end %>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pt-2 flex justify-center">
+    <button type="submit" class="shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 font-black text-gray-100 tracking-tight leading-none py-2 px-4 sm:px-6 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300">
+      <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
+      </svg>
+      <span>Застосувати</span>
+    </button>
+  </div>
+<% end %> 

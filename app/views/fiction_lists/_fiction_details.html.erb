@@ -1,0 +1,39 @@
+<div id="fiction_details" data-fiction-picker-target="frame" class="flex flex-row lg:grid lg:grid-cols-3 gap-4 sm:gap-6 fade-in-active dark:bg-gray-800 rounded-lg px-2 sm:px-4">
+  <div data-controller="lazy-image" data-lazy-image-image-id="<%= fiction.id %>" class="relative sm:w-48 lg:w-full h-48 sm:h-72 flex-shrink-0 lg:col-span-1">
+    <div id="spinner-<%= fiction.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
+      <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
+    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+      <%= image_tag url_for(fiction.cover),
+        alt: fiction.cover.blob.filename.to_s,
+        id: "image-#{fiction.id}",
+        class: "w-full sm:w-48 lg:w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
+        loading: "lazy",
+        data: { url: url_for(fiction.cover) } %>
+    <% end %>
+  </div>
+  <div class="flex-1 my-1 lg:col-span-2">
+    <div>
+      <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
+        <h3 class="text-xl sm:text-2xl line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none">
+          <%= fiction.title %>
+        </h3>
+      <% end %>
+      <% if fiction.genres.any? %>
+        <div class="hidden text-xs sm:text-sm sm:flex flex-wrap gap-2 mt-2 sm:mt-4 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none">
+          <%= render partial: 'fiction_lists/genre_tags', locals: { genres: fiction.fiction_genres.map(&:genre) } %>
+        </div>
+      <% end %>
+    </div>
+    <p class="text-stone-900 dark:text-gray-100 text-sm sm:text-base line-clamp-5 sm:line-clamp-6 whitespace-break-spaces my-3 sm:my-4"><%= fiction.description %></p>
+    <%= link_to fiction_path(fiction), data: { turbo: false }, class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs md:text-sm bg-cyan-700 dark:bg-rose-700 font-black text-gray-100 tracking-tight leading-none py-1 sm:py-2 px-2 sm:px-6 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+      </svg>
+      <span class="">Читати</span>
+    <% end %>
+  </div>
+</div>

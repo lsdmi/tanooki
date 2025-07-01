@@ -80,7 +80,7 @@ class FictionsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           'fiction_details',
-          partial: 'fiction_details',
+          partial: details_partial,
           locals: { fiction: @fiction }
         )
       end
@@ -165,5 +165,9 @@ class FictionsController < ApplicationController
       partial: 'users/dashboard/fictions',
       locals: { fictions: @fictions, pagy: @pagy }
     )
+  end
+
+  def details_partial
+    request.referer == alphabetical_fictions_url ? 'fiction_lists/fiction_details' : 'fictions/fiction_details'
   end
 end

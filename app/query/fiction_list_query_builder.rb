@@ -10,15 +10,15 @@ class FictionListQueryBuilder
     results = @relation
     results = by_genre(results)
     results = with_recent_chapters_subquery(results)
-    results.includes(:cover_attachment, :genres, :scanlators)
+    results.includes(:cover_attachment, :genres)
   end
 
   private
 
   def by_genre(scope)
-    return scope unless @params['genre-radio'].present?
+    return scope unless @params['genre'].present?
 
-    scope.joins(:genres).where(genres: { id: @params['genre-radio'] })
+    scope.joins(:genres).where(genres: { id: @params['genre'] })
   end
 
   def with_recent_chapters_subquery(scope)

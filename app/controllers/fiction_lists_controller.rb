@@ -18,16 +18,16 @@ class FictionListsController < ApplicationController
     pagy(
       FictionListQueryBuilder.new(
         Fiction.all,
-        params.permit(:'genre-radio')
+        params.permit(:genre)
       ).call,
-      limit: 8
+      limit: 20
     )
   end
 
   def render_fictions_list
     render turbo_stream: turbo_stream.update(
       'fiction-list-page',
-      partial: 'dynamic_content',
+      partial: 'fiction_lists/dynamic_content',
       locals: { fictions: @fictions, pagy: @pagy }
     )
   end
