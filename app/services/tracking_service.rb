@@ -12,5 +12,6 @@ class TrackingService
     @object.increment!(:views)
     @session[:viewed] ||= []
     @session[:viewed] << @object.slug
+    @session[:viewed] = @session[:viewed].last(10)
   end
 end
