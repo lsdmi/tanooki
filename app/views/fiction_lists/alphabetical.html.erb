@@ -1,8 +1,11 @@
 <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
   <!-- Page Title -->
-  <div class="py-4 sm:py-8">
+  <div class="py-4 sm:pt-8 sm:pb-4">
     <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none mb-2 sm:mb-4">Сховище</h1>
     <p class="text-stone-800 dark:text-gray-200 text-sm sm:text-lg lg:text-2xl font-light">Усі ранобе, веб-новели та художня проза!</p>
+  </div>
+  <div class="mb-4 sm:mb-8">
+    <%= render 'shared/ads', advertisement: @advertisement %>
   </div>
 
   <!-- Filters: Top (mobile/tablet only) -->
@@ -12,9 +15,6 @@
       <%= turbo_frame_tag "filters" do %>
         <%= render partial: 'fiction_lists/filter_form' %>
       <% end %>
-    </div>
-    <div class="mt-4">
-      <%= render 'shared/ads', advertisement: @advertisement %>
     </div>
   </div>
 
@@ -27,9 +27,6 @@
         <%= turbo_frame_tag "filters" do %>
           <%= render partial: 'fiction_lists/filter_form' %>
         <% end %>
-      </div>
-      <div class="mt-4">
-        <%= render 'shared/ads', advertisement: @advertisement %>
       </div>
     </aside>
 

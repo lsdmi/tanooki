@@ -9,6 +9,7 @@ class FictionListQueryBuilder
   def call
     results = @relation
     results = by_genre(results)
+    results = only_new_fictions(results)
     results = with_recent_chapters_subquery(results)
     results.includes(:cover_attachment, :genres)
   end
@@ -19,6 +20,12 @@ class FictionListQueryBuilder
     return scope unless @params['genre'].present?
 
     scope.joins(:genres).where(genres: { id: @params['genre'] })
+  end
+
+  def only_new_fictions(scope)
+    return scope unless @params['only_new'].present?
+
+    scope.where('fictions.created_at >= ?', 30.days.ago)
   end
 
   def with_recent_chapters_subquery(scope)

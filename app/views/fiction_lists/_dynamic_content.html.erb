@@ -1,29 +1,39 @@
-<div class="block w-full max-w-full overflow-x-auto">
-  <div class="flex space-x-2 pt-4 pb-4 mb-2 px-2 min-w-max overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-700 dark:scrollbar-thumb-rose-700">
-    <% fictions.each_with_index do |fiction, index| %>
-      <%= image_tag url_for(fiction.cover),
-          alt: fiction.cover.blob.filename.to_s,
-          class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-cyan-800 dark:ring-rose-800' : ''}",
-          data: {
-            action: "click->fiction-picker#selectFiction",
-            fiction_picker_target: "image",
-            fiction_picker_id_param: fiction.id
-          } %>
-    <% end %>
+<% if fictions.any? %>
+  <div class="block w-full max-w-full overflow-x-auto">
+    <div class="flex space-x-2 pt-4 pb-4 mb-2 px-2 min-w-max overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-700 dark:scrollbar-thumb-rose-700">
+      <% fictions.each_with_index do |fiction, index| %>
+        <%= image_tag url_for(fiction.cover),
+            alt: fiction.cover.blob.filename.to_s,
+            class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-cyan-800 dark:ring-rose-800' : ''}",
+            data: {
+              action: "click->fiction-picker#selectFiction",
+              fiction_picker_target: "image",
+              fiction_picker_id_param: fiction.id
+            } %>
+      <% end %>
+    </div>
   </div>
-</div>
-<div class="mt-4 px-1 sm:px-0">
-  <%= turbo_frame_tag "fiction_details_frame" do %>
-    <%# Render the details for the first fiction by default %>
-    <% if fictions.any? %>
-      <%= render partial: 'fiction_lists/fiction_details', locals: { fiction: fictions.first } %>
-      <% if pagy.pages > 1 %>
-        <div class="pagy-nav pt-4 sm:pt-6">
-          <div class="flex justify-center">
-            <%== pagy_nav_with_turbo_frame(pagy) %>
+  <div class="mt-4 px-1 sm:px-0">
+    <%= turbo_frame_tag "fiction_details_frame" do %>
+      <%# Render the details for the first fiction by default %>
+      <% if fictions.any? %>
+        <%= render partial: 'fiction_lists/fiction_details', locals: { fiction: fictions.first } %>
+        <% if pagy.pages > 1 %>
+          <div class="pagy-nav pt-4 sm:pt-6">
+            <div class="flex justify-center">
+              <%== pagy_nav_with_turbo_frame(pagy) %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-</div> 
+  </div>
+<% else %>
+  <div class="flex flex-col items-center justify-center py-12">
+    <svg class="w-16 h-16 mb-4 text-cyan-600 dark:text-rose-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+    </svg>
+    <div class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Нічого не знайдено</div>
+    <div class="text-gray-500 dark:text-gray-400 mb-4">Спробуйте змінити фільтри або додати нову історію!</div>
+  </div>
+<% end %> 
