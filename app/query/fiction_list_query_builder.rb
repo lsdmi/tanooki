@@ -10,6 +10,8 @@ class FictionListQueryBuilder
     results = @relation
     results = by_genre(results)
     results = only_new_fictions(results)
+    results = longreads_only(results)
+    results = finished_only(results)
     results = with_recent_chapters_subquery(results)
     results.includes(:cover_attachment, :genres)
   end
@@ -26,6 +28,24 @@ class FictionListQueryBuilder
     return scope unless @params['only_new'].present?
 
     scope.where('fictions.created_at >= ?', 30.days.ago)
+  end
+
+  def longreads_only(scope)
+    return scope unless @params['longreads'].present?
+
+    # Use a subquery to find fictions with many chapters
+    long_fiction_ids = Fiction.joins(:chapters)
+                              .group('fictions.id')
+                              .having('COUNT(chapters.id) >= ?', 100)
+                              .pluck(:id)
+
+    scope.where(id: long_fiction_ids)
+  end
+
+  def finished_only(scope)
+    return scope unless @params['finished'].present?
+
+    scope.where(status: 'Завершено')
   end
 
   def with_recent_chapters_subquery(scope)
