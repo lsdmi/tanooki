@@ -28,12 +28,12 @@ module CharacterHandler
 
   def self.handle_hardy_character(team, stats)
     selected = team.find { |pokemon| pokemon[:id] == stats[:id] }
-    selected[:tiredness] -= 0.1
+    selected[:tiredness] -= 0.1 if selected
   end
 
   def self.handle_agile_character(team, stats)
     selected = team.find { |pokemon| pokemon[:id] == stats[:id] }
-    selected[:tiredness] += 0.1
+    selected[:tiredness] += 0.1 if selected
   end
 
   def self.handle_persistent_character(character, experience)

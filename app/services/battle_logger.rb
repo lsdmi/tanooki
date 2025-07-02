@@ -3,11 +3,12 @@
 class BattleLogger
   include Rails.application.routes.url_helpers
 
-  attr_reader :attacker_id, :defender_id
+  attr_reader :attacker_id, :defender_id, :service
 
-  def initialize(attacker_id, defender_id)
+  def initialize(attacker_id, defender_id, service = nil)
     @attacker_id = attacker_id
     @defender_id = defender_id
+    @service = service
     default_url_options[:host] = Rails.env.production? ? 'baka.in.ua' : 'localhost:3000'
   end
 
@@ -15,14 +16,16 @@ class BattleLogger
     render_partial('battles/logger_start', attacker_name: attacker_name, defender_name: defender_name)
   end
 
-  def outcome(attacker, defender, outcome, round_number)
-    render_partial(
+  def append_outcome(attacker, defender, outcome)
+    round_number = service&.outcome_blocks&.size.to_i + 1
+    outcome_html = render_partial(
       'battles/logger_outcome',
       attacker: attacker,
       defender: defender,
       outcome: outcome,
       round_number: round_number
     )
+    service&.append_log(outcome_html)
   end
 
   def conclusion(outcome)
