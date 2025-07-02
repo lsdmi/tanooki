@@ -16,7 +16,12 @@
     </div>
     <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">Додайте новий допис!</h3>
     <p class="mb-4 text-gray-500 dark:text-gray-400 relative z-10">Поділіться думкою з читачами. Створюйте якісний контент та зрощуйте аудиторію.</p>
-    <%= link_to "Додати допис", new_publication_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" %>
+    <%= link_to new_publication_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+      </svg>
+      Додати допис
+    <% end %>
   </div>
 
   <!-- Publications List -->

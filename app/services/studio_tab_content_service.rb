@@ -65,7 +65,8 @@ class StudioTabContentService
   end
 
   def my_comments
-    Comment.where(id: latest_comments.pluck(:id)).order(id: :desc)
+    Comment.where(id: latest_comments.pluck(:id)).includes({ user: { avatar: [:image_attachment] } },
+                                                           :commentable).order(id: :desc)
   end
 
   def latest_comments

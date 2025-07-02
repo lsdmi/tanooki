@@ -15,7 +15,12 @@
     </div>
     <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">Додайте команду!</h3>
     <p class="mb-4 text-gray-500 dark:text-gray-400 relative z-10">Створіть перекладацьку сторінку, щоб керувати командою та взаємодіяти з читачами!</p>
-    <%= link_to "Додати команду", new_scanlator_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" %>
+    <%= link_to new_scanlator_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" do %>
+      <svg class="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+      </svg>
+      Додати команду
+    <% end %>
   </div>
 
   <!-- Teams List -->

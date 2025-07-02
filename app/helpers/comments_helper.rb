@@ -29,17 +29,6 @@ module CommentsHelper
     end
   end
 
-  def commentable_type(commentable)
-    case commentable
-    when Chapter, Fiction
-      'роману'
-    when YoutubeVideo
-      'відео'
-    when Publication
-      'блогу'
-    end
-  end
-
   def commentable_title(commentable)
     commentable.is_a?(Chapter) ? commentable.fiction_title : commentable.title
   end
