@@ -93,6 +93,11 @@ class Fiction < ApplicationRecord
     end
   end
 
+  def finished_and_complete?
+    unique_chapters = chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
+    unique_chapters.size >= total_chapters && status.to_sym == :finished
+  end
+
   private
 
   def cover_format

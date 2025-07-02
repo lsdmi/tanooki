@@ -44,10 +44,6 @@ class PokemonBattlesController < ApplicationController
     User.find(params[:defender])
   end
 
-  def defender_last_battle
-    defender.battle_logs.maximum(:updated_at) || 1.year.ago
-  end
-
   def descendant
     selected_pokemon.pokemon.descendant
   end

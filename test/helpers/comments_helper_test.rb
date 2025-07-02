@@ -17,7 +17,7 @@ class CommentsHelperTest < ActionView::TestCase
 
   test 'no_comments_prompt should return correct prompt for other controllers' do
     params[:controller] = 'other_controller'
-    assert_equal 'Наразі відгуки до цієї звістки відсутні!', no_comments_prompt
+    assert_equal 'Наразі відгуки до цього допису відсутні!', no_comments_prompt
   end
 
   test 'comment_url returns correct URL for Chapter' do

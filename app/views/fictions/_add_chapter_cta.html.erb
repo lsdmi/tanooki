@@ -12,7 +12,7 @@
       <% end %>
     </div>
   </section>
-<% elsif unique_chapters(fiction.chapters).size >= fiction.total_chapters && fiction.status.to_sym == :finished %>
+<% elsif fiction.finished_and_complete? %>
   <section class="bg-gradient-to-br from-green-50 dark:from-green-900 to-green-100 dark:to-green-800 rounded-lg shadow-md p-8 relative overflow-hidden">
     <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 dark:bg-green-700 rounded-full transform translate-x-16 -translate-y-16"></div>
     <h3 class="text-xl font-bold text-green-800 dark:text-green-200 mb-4 relative z-10">Ранобе завершено!</h3>

@@ -18,7 +18,6 @@ class GenreTest < ActiveSupport::TestCase
 
   test 'name should be unique' do
     duplicate_genre = @genre.dup
-    @genre.save
     assert_not duplicate_genre.valid?
   end
 

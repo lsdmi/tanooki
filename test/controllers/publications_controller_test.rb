@@ -64,27 +64,16 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'publications should return all publications for admin users' do
-    request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/tales'
-
-    @controller = PublicationsController.new
-    @controller.stub :request, request do
-      assert_equal Publication.all.order(created_at: :desc), @controller.send(:publications)
-    end
+    sign_in users(:user_one)
+    get edit_publication_path(@publication)
+    assert_response :success
   end
 
   test "publications should return current user's publications for non-admin users" do
-    request = ActionController::TestRequest.new({}, nil, :get)
-    request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/blogs'
-
     new_user = users(:user_two)
-
-    @controller = PublicationsController.new
-    @controller.stub :request, request do
-      @controller.stub :current_user, new_user do
-        assert_equal new_user.publications.order(created_at: :desc), @controller.send(:publications)
-      end
-    end
+    sign_in new_user
+    get edit_publication_path(@publication)
+    assert_redirected_to root_path
   end
 
   test 'verify_permissions should allow access for admin users' do

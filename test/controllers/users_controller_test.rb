@@ -2,8 +2,8 @@
 
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
-  include Devise::Test::ControllerHelpers
+class UsersControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
 
   setup do
     @avatar_id = 1
@@ -13,53 +13,48 @@ class UsersControllerTest < ActionController::TestCase
   test 'should get show' do
     sign_in @user
 
-    get :blogs
-    assert_response :success
-    assert_template :show
+    get blogs_path
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test "should update user's avatar" do
     sign_in @user
 
-    put :update, params: { id: @user.id, user: { avatar_id: @avatar_id, name: 'John Doe' } }
+    put user_path(@user), params: { user: { avatar_id: @avatar_id, name: 'John Doe' } }
 
     @user.reload
     assert_equal @avatar_id, @user.avatar_id
 
-    assert_response :redirect
-    assert_equal 'Профіль оновлено.', flash[:notice]
+    assert_response :success
+    assert_equal 'text/vnd.turbo-stream.html', response.media_type
   end
 
   test 'should get avatars' do
     sign_in @user
-    get :avatars
-    assert_response :success
-    assert_template 'users/dashboard/_avatars'
-    assert_not_nil assigns(:avatars)
+    get avatars_path
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get blogs' do
     sign_in @user
-    get :blogs
-    assert_response :success
-    assert_template 'users/dashboard/_blogs'
-    assert_not_nil assigns(:pagy)
-    assert_not_nil assigns(:publications)
+    get blogs_path
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get readings' do
     sign_in @user
-    get :readings
-    assert_response :success
-    assert_template 'users/dashboard/_readings'
-    assert_not_nil assigns(:pagy)
-    assert_not_nil assigns(:fictions)
+    get readings_path
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get pokemons' do
     sign_in @user
-    get :pokemons
-    assert_response :success
-    assert_template 'users/dashboard/_pokemons'
+    get pokemons_path
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 end

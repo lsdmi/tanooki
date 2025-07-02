@@ -8,7 +8,7 @@
         <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
       </svg>
     </div>
-    
+
     <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
       <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -26,7 +26,7 @@
 
   <!-- Publications List -->
   <% if publications.any? %>
-    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">      
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
       <%= turbo_frame_tag 'publications-list' do %>
         <%= render 'users/dashboard/publications', publications: publications, pagy: pagy %>
       <% end %>
@@ -40,7 +40,7 @@
           <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
         </svg>
       </div>
-      
+
       <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
         <svg class="h-8 w-8 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

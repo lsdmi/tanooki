@@ -3,20 +3,19 @@
 require 'test_helper'
 
 class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
-  include Warden::Test::Helpers
+  include Devise::Test::IntegrationHelpers
 
   setup do
     @pokemon_params = { user_pokemon: { pokemon_id: 2, user_id: 1 }, user_pokemon_id: 1 }
     @user = users(:user_one)
-    login_as(@user, scope: :user)
+    @user.update(pokemon_last_catch: 5.hours.ago, pokemon_last_training: 5.hours.ago)
+    sign_in @user
   end
 
   test 'should create user pokemon and update turbo streams' do
+    UserPokemon.where(user_id: 1, pokemon_id: 2).destroy_all
+
     assert_difference('UserPokemon.count') do
-      travel_to Time.zone.local(2004, 11, 24)
-      get root_path
-      travel_back
-      get root_path
       post catch_pokemon_path(format: :turbo_stream), params: @pokemon_params
     end
 

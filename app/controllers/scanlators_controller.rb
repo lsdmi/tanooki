@@ -78,14 +78,6 @@ class ScanlatorsController < ApplicationController
     end
   end
 
-  def update_notice(message)
-    turbo_stream.update(
-      'application-alert',
-      partial: 'shared/alert',
-      locals: { alert: message }
-    )
-  end
-
   def set_scanlator
     @scanlator = Scanlator.find(params[:id])
   end

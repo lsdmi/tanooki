@@ -8,15 +8,15 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should get index as admin' do
     sign_in users(:user_one)
     get scanlators_path
-    assert_response :success
-    assert_template 'users/show'
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get index as non-admin user' do
     sign_in users(:user_two)
     get scanlators_path
-    assert_response :success
-    assert_template 'users/show'
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get new' do

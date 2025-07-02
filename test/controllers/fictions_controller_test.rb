@@ -27,7 +27,8 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get dashboard' do
     get blogs_path
-    assert_response :success
+    assert_response :redirect
+    assert_redirected_to studio_index_path
   end
 
   test 'should get index' do

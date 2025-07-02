@@ -9,11 +9,11 @@
 
     <!-- Tab Content -->
     <%= turbo_frame_tag 'tab-content' do %>
-      <%= render "studio/tabs/#{@active_tab}", 
-            fictions: @fictions, 
-            pagy: @pagy, 
-            publications: @publications, 
-            pokemon_show: @pokemon_show, 
+      <%= render "studio/tabs/#{@active_tab}",
+            fictions: @fictions,
+            pagy: @pagy,
+            publications: @publications,
+            pokemon_show: @pokemon_show,
             avatars: @avatars %>
     <% end %>
   </div>

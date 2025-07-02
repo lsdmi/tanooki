@@ -10,7 +10,7 @@
         lazy_image_url_value: url_for(reading.fiction.cover)
       } %>
   <% end %>
-  
+
   <!-- Main Content -->
   <div class="flex-1 tracking-tight min-w-0">
     <div class="flex justify-between gap-2 sm:gap-3">
@@ -21,7 +21,7 @@
       <%= tag.span chapter_index(unique_chapters(ordered_chapters(reading.fiction)), reading.chapter) + 1, class: 'font-bold' %> /
       <%= tag.span chapters_size(reading.fiction) %>
     </div>
-    
+
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-3 sm:mt-4">
       <% if ordered_chapters_desc(reading.chapter.fiction).first == reading.chapter %>
         <span class="shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl w-fit">
@@ -40,7 +40,7 @@
       <% end %>
     </div>
   </div>
-  
+
   <!-- Reading State Toggle Controls - Vertical Column -->
   <div class="flex flex-row lg:flex-col gap-1 ml-2 sm:ml-3 flex-shrink-0">
     <% reading_states = [
@@ -52,11 +52,11 @@
     ] %>
 
     <% reading_states.each do |state| %>
-      <% 
+      <%
         # Use the current section to determine which state is active
         is_current_state = defined?(section) && section == state[:key]
       %>
-      
+
       <% unless is_current_state %>
         <%= button_to update_reading_progress_path(reading),
             method: :patch,
@@ -67,7 +67,7 @@
               "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 ring-gray-300 dark:ring-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-110"
             ].join(' '),
             title: "Змінити статус на '#{state[:label]}'",
-            data: { 
+            data: {
               turbo_stream: true,
               confirm: "Змінити статус на '#{state[:label]}'?"
             } do %>
