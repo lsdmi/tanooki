@@ -81,6 +81,6 @@ class StudioTabContentService
   end
 
   def dashboard_fiction_list
-    user.fictions.includes(:cover_attachment, :genres).order(updated_at: :desc)
+    user.fictions.includes(:cover_attachment, :genres).distinct.order(updated_at: :desc)
   end
 end
