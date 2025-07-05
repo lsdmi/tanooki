@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_27_231449) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_04_231059) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -91,6 +91,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_27_231449) do
     t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
     t.index ["slug"], name: "index_chapters_on_slug", unique: true
     t.index ["user_id"], name: "index_chapters_on_user_id"
+  end
+
+  create_table "chat_messages", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "content", null: false
+    t.string "room", default: "general", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_chat_messages_on_created_at"
+    t.index ["room"], name: "index_chat_messages_on_room"
+    t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -326,6 +337,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_27_231449) do
   add_foreign_key "chapter_scanlators", "scanlators"
   add_foreign_key "chapters", "fictions", on_delete: :cascade
   add_foreign_key "chapters", "users", on_delete: :cascade
+  add_foreign_key "chat_messages", "users"
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "fiction_genres", "fictions"

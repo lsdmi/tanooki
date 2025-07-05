@@ -69,6 +69,7 @@ group :production do
 end
 
 gem 'bcrypt_pbkdf'
+gem 'cable_ready'
 gem 'devise'
 gem 'dotenv-rails'
 gem 'ed25519'

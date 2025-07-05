@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :publications
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
+  has_many :chat_messages, dependent: :destroy
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons

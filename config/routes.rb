@@ -67,6 +67,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Chat routes
+  get '/chat/recent_messages', to: 'chat#recent_messages'
+
   # Redirect old routes to new studio controller with appropriate tabs
   get :blogs, to: 'studio#set_tab_and_redirect', defaults: { tab: 'blogs' }
   get :pokemons, to: 'studio#set_tab_and_redirect', defaults: { tab: 'pokemons' }

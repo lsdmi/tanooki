@@ -1,0 +1,67 @@
+<!-- Chat Widget Container -->
+<div id="chat-widget" 
+     data-controller="chat-widget"
+     class="fixed bottom-4 right-4 z-50">
+  <!-- Chat Toggle Button -->
+  <button id="chat-toggle" 
+          data-chat-widget-target="toggle"
+          class="bg-cyan-600 hover:bg-cyan-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+    </svg>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chat-window" 
+       data-chat-widget-target="window"
+       class="hidden absolute bottom-16 right-0 w-80 h-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
+    <!-- Chat Header -->
+    <div class="bg-cyan-50 dark:bg-rose-900/20 text-gray-900 dark:text-white p-4 rounded-t-lg flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center space-x-2">
+        <div class="w-2 h-2 bg-cyan-600 dark:bg-rose-400 rounded-full animate-pulse"></div>
+        <span class="font-semibold text-sm">Бакачат Онлайн</span>
+      </div>
+      <button id="chat-close" 
+              data-chat-widget-target="close"
+              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-messages" 
+         data-chat-widget-target="messages"
+         class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 dark:bg-gray-700">
+      <!-- Messages will be loaded here -->
+    </div>
+
+    <!-- Chat Input -->
+    <div class="p-3 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-b-lg">
+      <% if user_signed_in? %>
+        <div class="flex space-x-2">
+          <input type="text" 
+                 id="chat-input"
+                 data-chat-widget-target="input"
+                 placeholder="Напишіть повідомлення..."
+                 class="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                 maxlength="1000">
+          <button id="chat-send"
+                  data-chat-widget-target="send"
+                  class="px-3 py-2 bg-cyan-600 hover:bg-cyan-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+          </button>
+        </div>
+      <% else %>
+        <div class="text-center py-3">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            🔒 <%= link_to "Увійдіть", new_user_session_path, class: "text-cyan-600 hover:text-cyan-700 dark:text-rose-400 dark:hover:text-rose-300 font-medium underline" %>, щоб відправити повідомлення
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
