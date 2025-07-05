@@ -1,13 +1,7 @@
 <div class="space-y-6">
   <!-- CTA Card -->
   <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
-    <!-- SVG Ornament -->
-    <div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
-      <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
-        <circle cx="80" cy="20" r="40" fill="#67e8f9" />
-        <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
-      </svg>
-    </div>
+    <%= render 'shared/decorative_ornament' %>
 
     <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
       <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,13 +27,7 @@
     </div>
   <% else %>
     <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
-      <!-- SVG Ornament -->
-      <div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
-        <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
-          <circle cx="80" cy="20" r="40" fill="#67e8f9" />
-          <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
-        </svg>
-      </div>
+      <%= render 'shared/jellyfish_ornament' %>
 
       <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
         <svg class="h-8 w-8 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,11 +1,11 @@
-<div class="col-span-12 lg:col-span-4 mt-4 sm:mt-0">
-  <div class="inline-flex items-center justify-between">
-    <svg class="h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-    </svg>
-    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-gray-100">Остання Сутичка</h5>
-  </div>
-  <div class="border border-gray-200 rounded-md shadow">
+<div class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
+  <div class="">
+    <div class="inline-flex items-center justify-between px-6 pt-6">
+      <svg class="h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+      <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-gray-100">Остання Сутичка</h5>
+    </div>
     <% if battle_history.present? %>
       <%= turbo_frame_tag "pokemon-history-list" do %>
         <%= render 'users/pokemons/history_record', battle_log: battle_history %>

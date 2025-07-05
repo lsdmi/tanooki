@@ -7,6 +7,6 @@
     ) %>
   </div>
   <span class="font-semibold text-xs sm:text-sm text-gray-900 dark:text-gray-100 mt-1 tracking-wide">
-    <%= player.pokemon.name %>
+    <%= player.pokemon.name.length > 7 ? "#{player.pokemon.name[0..6]}..." : player.pokemon.name %>
   </span>
 </div>

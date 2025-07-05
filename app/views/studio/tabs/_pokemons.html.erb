@@ -1,6 +1,5 @@
 <div id="section"
-  class="relative p-4 mb-4 bg-gradient-to-b from-indigo-200 to-pink-200 rounded-lg shadow sm:p-4 xl:p-6
-  dark:bg-gradient-to-b dark:from-indigo-900 dark:to-pink-900 dark:shadow-lg dark:text-gray-100"
+  class=""
   data-controller="flowbite">
 
   <!-- Rules of the Game Accordion (closed by default) -->
@@ -25,18 +24,20 @@
     </div>
   </div>
 
-  <div class="sm:grid sm:grid-cols-12 sm:gap-8">
-    <!-- Column 1: Pokémon Data Screen -->
-    <%= turbo_frame_tag "pokemon-data-screen", class: 'col-span-12 lg:col-span-5' do %>
-      <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, descendant: pokemon_show.descendant %>
-    <% end %>
-
-    <!-- Column 2: Leaderboard on top, Battle History below -->
-    <div class="col-span-12 lg:col-span-7 flex flex-col gap-4">
-      <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
-        <%= render 'users/pokemons/dex_leaderboard', dex_overall: pokemon_show.dex_overall, opponent: pokemon_show.opponent %>
+  <div class="space-y-6">
+    <div class="sm:grid sm:grid-cols-12 sm:gap-8">
+      <!-- Column 1: Pokémon Data Screen -->
+      <%= turbo_frame_tag "pokemon-data-screen", class: 'col-span-12 lg:col-span-5' do %>
+        <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, descendant: pokemon_show.descendant %>
       <% end %>
-      <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
+
+      <!-- Column 2: Leaderboard on top, Battle History below -->
+      <div class="col-span-12 lg:col-span-7 space-y-6">
+        <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
+          <%= render 'users/pokemons/dex_leaderboard', dex_overall: pokemon_show.dex_overall, opponent: pokemon_show.opponent %>
+        <% end %>
+        <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
+      </div>
     </div>
   </div>
 </div>

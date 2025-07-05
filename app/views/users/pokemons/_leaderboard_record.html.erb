@@ -1,6 +1,6 @@
-<div class="flex flex-row items-center justify-center w-full border border-gray-200 rounded-xl shadow-md p-6 md:space-x-10">
+<div class="flex flex-row items-center justify-center w-full border border-gray-200 rounded-xl shadow-md p-6">
   <!-- User Card -->
-  <div class="flex flex-col items-center w-36 sm:w-44">
+  <div class="flex flex-col items-center flex-1">
     <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
     <div class="text-center">
       <%= tag.div current_user.name, class: 'text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100' %>
@@ -9,14 +9,14 @@
   </div>
 
   <!-- VS Section -->
-  <div class="flex flex-col items-center sm:mx-4">
+  <div class="flex flex-col items-center justify-center px-4">
     <%= button_to battle_start_path(defender: opponent), data: { turbo_stream: "", "turbo-method": :post }, remote: true do %>
       <%= image_tag 'battle.webp', class: 'h-10 sm:h-12 md:h-14 lg:h-16 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %>
     <% end %>
   </div>
 
   <!-- Opponent Card -->
-  <div class="flex flex-col items-center w-36 sm:w-44">
+  <div class="flex flex-col items-center flex-1">
     <%= image_tag url_for(opponent.avatar.image), alt: opponent.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
     <div class="text-center">
       <%= tag.div opponent.name, class: 'text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100' %>
