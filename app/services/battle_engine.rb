@@ -33,11 +33,11 @@ class BattleEngine
   end
 
   def battle_continues?
-    @attacker_team_manager.has_active_pokemon? && @defender_team_manager.has_active_pokemon?
+    @attacker_team_manager.active_pokemon? && @defender_team_manager.active_pokemon?
   end
 
   def attacker_won?
-    @attacker_team_manager.has_active_pokemon?
+    @attacker_team_manager.active_pokemon?
   end
 
   private

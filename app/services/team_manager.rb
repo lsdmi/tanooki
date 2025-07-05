@@ -24,7 +24,7 @@ class TeamManager
     pokemon[:tiredness] -= amount if pokemon
   end
 
-  def has_active_pokemon?
+  def active_pokemon?
     @team.any? { |pokemon| pokemon[:active] }
   end
 

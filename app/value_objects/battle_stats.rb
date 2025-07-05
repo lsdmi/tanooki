@@ -3,15 +3,15 @@
 class BattleStats
   attr_reader :id, :power, :luck, :experience, :tiredness, :type, :raw_total, :active
 
-  def initialize(id:, power:, luck:, experience: 0, tiredness: 1.0, type: 1.0, raw_total: nil, active: true)
-    @id = id
-    @power = power
-    @luck = luck
-    @experience = experience
-    @tiredness = tiredness
-    @type = type
-    @raw_total = raw_total || calculate_raw_total
-    @active = active
+  def initialize(attributes = {})
+    @id = attributes[:id]
+    @power = attributes[:power]
+    @luck = attributes[:luck]
+    @experience = attributes[:experience] || 0
+    @tiredness = attributes[:tiredness] || 1.0
+    @type = attributes[:type] || 1.0
+    @raw_total = attributes[:raw_total] || calculate_raw_total
+    @active = attributes[:active] != false
   end
 
   def deactivate!
