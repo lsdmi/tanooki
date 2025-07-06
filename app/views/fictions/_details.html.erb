@@ -18,15 +18,12 @@
         <% end %>
       </div>
 
-      <% if status_label_for(show_presenter.reading_status).present? %>
-        <div class="px-4 space-y-6 lg:space-y-8">
-          <div class="border border-stone-200 dark:border-gray-700 w-full py-2 px-4 rounded-xl shadow-md transition duration-300 flex items-center justify-center space-x-2 text-white bg-stone-700 dark:bg-gray-600 opacity-50">
-            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
-            </svg>
-            <span><%= status_label_for(show_presenter.reading_status) %></span>
+      <% if user_signed_in? %>
+        <%= turbo_frame_tag 'fiction-reading-status' do %>
+          <div class="sm:hidden lg:block">
+            <%= render 'fictions/reading_status_controls', fiction: fiction, show_presenter: show_presenter %>
           </div>
-        </div>
+        <% end %>
       <% end %>
 
       <div class="p-4 space-y-6 lg:space-y-8">
@@ -36,25 +33,37 @@
         <% total_fictions = hot_updates.keys.count %>
 
         <% if total_fictions.nonzero? %>
-          <div class="border border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-300">
-            <h4 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200 mb-4">Славомір</h4>
-            <% current_rank = hot_updates.values.sort.reverse.index(current_reads)&.+(1) || total_fictions %>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
+            <!-- Славомір Section -->
+            <div class="border border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-300 <%= 'sm:col-span-2 lg:col-span-1' unless user_signed_in? %>">
+              <h4 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200 mb-4">Славомір</h4>
+              <% current_rank = hot_updates.values.sort.reverse.index(current_reads)&.+(1) || total_fictions %>
 
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs sm:text-sm font-medium text-stone-600 dark:text-gray-400">Щабель цього місяця:</span>
-              <span class="text-2xl sm:text-4xl font-extrabold text-stone-800 dark:text-gray-200 bg-stone-100 dark:bg-gray-700 px-3 py-1 rounded-lg">#<%= current_rank %></span>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs sm:text-sm font-medium text-stone-600 dark:text-gray-400">Щабель цього місяця:</span>
+                <span class="text-2xl sm:text-4xl font-extrabold text-stone-800 dark:text-gray-200 bg-stone-100 dark:bg-gray-700 px-3 py-1 rounded-lg">#<%= current_rank %></span>
+              </div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs sm:text-sm font-medium text-stone-600 dark:text-gray-400">Прочитань цього місяця:</span>
+                <span class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200"><%= current_reads %></span>
+              </div>
+              <div class="w-full bg-stone-200 dark:bg-gray-600 rounded-full h-3 sm:h-4 overflow-hidden">
+                <div class="bg-stone-600 dark:bg-gray-200 h-full rounded-full transition-all duration-500 ease-out"
+                     style="width: <%= [100 - (current_rank.to_f / total_fictions * 100), 100].min %>%"></div>
+              </div>
+              <p class="text-xs font-medium text-stone-500 dark:text-gray-400 mt-2 text-right">
+                Перші <%= ((current_rank.to_f / total_fictions) * 100).round(1) %>% цього місяця
+              </p>
             </div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs sm:text-sm font-medium text-stone-600 dark:text-gray-400">Прочитань цього місяця:</span>
-              <span class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200"><%= current_reads %></span>
-            </div>
-            <div class="w-full bg-stone-200 dark:bg-gray-600 rounded-full h-3 sm:h-4 overflow-hidden">
-              <div class="bg-stone-600 dark:bg-gray-200 h-full rounded-full transition-all duration-500 ease-out"
-                   style="width: <%= [100 - (current_rank.to_f / total_fictions * 100), 100].min %>%"></div>
-            </div>
-            <p class="text-xs font-medium text-stone-500 dark:text-gray-400 mt-2 text-right">
-              Перші <%= ((current_rank.to_f / total_fictions) * 100).round(1) %>% цього місяця
-            </p>
+
+            <!-- Reading Status Section (on sm-lg screens only) -->
+            <% if user_signed_in? %>
+              <div class="sm:block lg:hidden">
+                <%= turbo_frame_tag 'fiction-reading-status-sm' do %>
+                  <%= render 'fictions/reading_status_controls', fiction: fiction, show_presenter: show_presenter %>
+                <% end %>
+              </div>
+            <% end %>
           </div>
         <% end %>
 

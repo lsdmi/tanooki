@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   resources :fictions do
     member do
       get :details
+      patch :update_reading_status
     end
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'

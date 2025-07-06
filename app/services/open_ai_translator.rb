@@ -4,33 +4,38 @@
 class OpenAiTranslator
   include ContentTranslatorInterface
   def translate(article_text, title, tags)
-    client = OpenAI::Client.new(
-      access_token: ENV.fetch('OPENAI_API_KEY'),
-      log_errors: true
-    )
-
     prompt = translation_prompt(article_text, title, tags)
-    response = client.chat(
-      parameters: {
-        model: BlogScraperConfig.openai_model,
-        messages: [
-          { role: 'system', content: BlogScraperConfig.openai_system_prompt },
-          { role: 'user', content: prompt }
-        ],
-        temperature: BlogScraperConfig.openai_temperature
-      }
-    )
+    response = call_openai_api(prompt)
+    return nil if response.blank?
 
-    content = response.dig('choices', 0, 'message', 'content')
-    return nil if content.blank?
-
-    parse_translation_response(content)
+    parse_translation_response(response)
   rescue StandardError => e
     Rails.logger.error("Translation failed: #{e.message}")
     nil
   end
 
   private
+
+  def call_openai_api(prompt)
+    client = OpenAI::Client.new(
+      access_token: ENV.fetch('OPENAI_API_KEY'),
+      log_errors: true
+    )
+
+    response = client.chat(parameters: api_parameters(prompt))
+    response.dig('choices', 0, 'message', 'content')
+  end
+
+  def api_parameters(prompt)
+    {
+      model: BlogScraperConfig.openai_model,
+      messages: [
+        { role: 'system', content: BlogScraperConfig.openai_system_prompt },
+        { role: 'user', content: prompt }
+      ],
+      temperature: BlogScraperConfig.openai_temperature
+    }
+  end
 
   def translation_prompt(article_text, title, tags)
     <<~PROMPT

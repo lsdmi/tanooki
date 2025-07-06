@@ -5,7 +5,7 @@ class FictionsController < ApplicationController
   include LibraryHelper
 
   before_action :authenticate_user!, except: %i[index show toggle_order details]
-  before_action :set_fiction, only: %i[show edit update destroy toggle_order]
+  before_action :set_fiction, only: %i[show edit update destroy toggle_order update_reading_status]
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
@@ -72,6 +72,36 @@ class FictionsController < ApplicationController
   def toggle_order
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, toggle_order_params)
     render turbo_stream: [update_sorted_chapters]
+  end
+
+  def update_reading_status
+    reading_progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: current_user.id)
+
+    if reading_progress
+      new_status = params[:status]&.to_sym
+      ReadingProgressStatusService.new(reading_progress, new_status, current_user).call
+    else
+      first_chapter = ordered_chapters(@fiction).first
+      if first_chapter
+        ReadingProgress.create!(
+          fiction_id: @fiction.id,
+          user_id: current_user.id,
+          chapter_id: first_chapter.id,
+          status: params[:status]&.to_sym || :active
+        )
+      end
+    end
+
+    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
+
+    render turbo_stream: turbo_stream.update(
+      'fiction-reading-status',
+      partial: 'fictions/reading_status_controls',
+      locals: {
+        fiction: @fiction,
+        show_presenter: @show_presenter
+      }
+    )
   end
 
   def details
