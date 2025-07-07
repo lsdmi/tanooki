@@ -30,7 +30,7 @@ class ChaptersController < ApplicationController
     if @chapter.save
       ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
       update_fiction_status
-      redirect_to readings_path, notice: 'Розділ додано.'
+      redirect_to reading_path(@chapter.fiction), notice: 'Розділ додано.'
     else
       render 'chapters/new', status: :unprocessable_entity
     end
@@ -45,7 +45,7 @@ class ChaptersController < ApplicationController
 
     if @chapter.update(chapter_params)
       ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
-      redirect_to readings_path, notice: 'Розділ оновлено.'
+      redirect_to reading_path(@chapter.fiction), notice: 'Розділ оновлено.'
     else
       render 'chapters/edit', status: :unprocessable_entity
     end

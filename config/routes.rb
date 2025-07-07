@@ -62,6 +62,9 @@ Rails.application.routes.draw do
   end
   resources :tales, only: %i[index show]
   resources :users, only: :update
+
+  resources :profiles, only: :show, param: :id, path: 'profile'
+
   resources :youtube_videos, path: 'watch', only: %i[index show] do
     collection do
       post :index

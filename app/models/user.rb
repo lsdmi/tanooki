@@ -64,4 +64,9 @@ class User < ApplicationRecord
            .order(created_at: :desc)
     logs.first
   end
+
+  def self.find_by_sqid(sqid_string)
+    ids = Sqids.new.decode(sqid_string)
+    find_by(id: ids.first) if ids.any?
+  end
 end
