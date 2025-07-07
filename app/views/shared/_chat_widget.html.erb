@@ -1,9 +1,9 @@
 <!-- Chat Widget Container -->
-<div id="chat-widget" 
+<div id="chat-widget"
      data-controller="chat-widget"
      class="fixed bottom-4 right-4 z-50">
   <!-- Chat Toggle Button -->
-  <button id="chat-toggle" 
+  <button id="chat-toggle"
           data-chat-widget-target="toggle"
           class="bg-cyan-600 hover:bg-cyan-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,7 +12,7 @@
   </button>
 
   <!-- Chat Window -->
-  <div id="chat-window" 
+  <div id="chat-window"
        data-chat-widget-target="window"
        class="hidden absolute bottom-16 right-0 w-80 h-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
     <!-- Chat Header -->
@@ -21,7 +21,7 @@
         <div class="w-2 h-2 bg-cyan-600 dark:bg-rose-400 rounded-full animate-pulse"></div>
         <span class="font-semibold text-sm">Бакачат Онлайн</span>
       </div>
-      <button id="chat-close" 
+      <button id="chat-close"
               data-chat-widget-target="close"
               class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Chat Messages -->
-    <div id="chat-messages" 
+    <div id="chat-messages"
          data-chat-widget-target="messages"
          class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 dark:bg-gray-700">
       <!-- Messages will be loaded here -->
@@ -41,7 +41,7 @@
     <div class="p-3 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-b-lg">
       <% if user_signed_in? %>
         <div class="flex space-x-2">
-          <input type="text" 
+          <input type="text"
                  id="chat-input"
                  data-chat-widget-target="input"
                  placeholder="Напишіть повідомлення..."

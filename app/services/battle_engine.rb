@@ -10,26 +10,16 @@ class BattleEngine
   end
 
   def execute_round
-    attacker_stats = @attacker_team_manager.find_active_pokemon.dup
-    defender_stats = @defender_team_manager.find_active_pokemon.dup
-
-    attacker = UserPokemon.find(attacker_stats[:id])
-    defender = UserPokemon.find(defender_stats[:id])
-
-    apply_character_effects(attacker, defender, attacker_stats, defender_stats)
-    calculate_type_effectiveness(attacker_stats, attacker.pokemon, defender.pokemon)
-    calculate_type_effectiveness(defender_stats, defender.pokemon, attacker.pokemon)
-
-    attacker_experience = attacker.battle_experience
-    defender_experience = defender.battle_experience
-
-    if calculate_battle_result(attacker_stats) > calculate_battle_result(defender_stats)
-      handle_victory(attacker, defender, attacker_stats, defender_stats)
-    else
-      handle_defeat(attacker, defender, attacker_stats, defender_stats)
-    end
-
-    update_experience(attacker, defender, attacker_experience, defender_experience)
+    participants = prepare_battle_participants
+    apply_effects_and_types(
+      participants[:attacker],
+      participants[:defender],
+      participants[:attacker_stats],
+      participants[:defender_stats]
+    )
+    attacker_experience = participants[:attacker].battle_experience
+    defender_experience = participants[:defender].battle_experience
+    process_battle_outcome(participants, attacker_experience, defender_experience)
   end
 
   def battle_continues?
@@ -42,8 +32,22 @@ class BattleEngine
 
   private
 
+  def prepare_battle_participants
+    attacker_stats = @attacker_team_manager.find_active_pokemon.dup
+    defender_stats = @defender_team_manager.find_active_pokemon.dup
+    attacker = UserPokemon.find(attacker_stats[:id])
+    defender = UserPokemon.find(defender_stats[:id])
+    { attacker: attacker, defender: defender, attacker_stats: attacker_stats, defender_stats: defender_stats }
+  end
+
+  def apply_effects_and_types(attacker, defender, attacker_stats, defender_stats)
+    apply_character_effects(attacker, defender, attacker_stats, defender_stats)
+    calculate_type_effectiveness(attacker_stats, attacker.pokemon, defender.pokemon)
+    calculate_type_effectiveness(defender_stats, defender.pokemon, attacker.pokemon)
+  end
+
   def apply_character_effects(attacker, defender, attacker_stats, defender_stats)
-    CharacterEffectApplier.new(attacker, defender, attacker_stats, defender_stats).apply
+    BattleCharacterEffects.apply(attacker, defender, attacker_stats, defender_stats)
   end
 
   def handle_victory(attacker, defender, attacker_stats, defender_stats)
@@ -61,12 +65,7 @@ class BattleEngine
   end
 
   def apply_victory_character_effects(winner, loser)
-    if winner.character == 'hardy'
-      CharacterHandler.handle_hardy_character(@attacker_team_manager.team, { id: winner.id })
-    end
-    return unless loser.character == 'agile'
-
-    CharacterHandler.handle_agile_character(@attacker_team_manager.team, { id: winner.id })
+    BattleCharacterEffects.apply_victory(winner, loser, @attacker_team_manager)
   end
 
   def update_experience(attacker, defender, attacker_experience, defender_experience)
@@ -78,27 +77,43 @@ class BattleEngine
   end
 
   def calculate_type_effectiveness(stats, own_pokemon, opponent_pokemon)
-    effectiveness = 1.0
-
-    own_pokemon.types.each do |attacker_type|
-      opponent_pokemon.types.each do |defender_type|
-        effectiveness *= TypeAdvantage.effectiveness(attacker_type.name, defender_type.name)
-      end
-    end
-
-    stats[:type] = effectiveness
+    BattleTypeEffectiveness.calculate(stats, own_pokemon, opponent_pokemon)
   end
 
   def tiredness_stat(attacker, defender)
-    difference = calculate_battle_result(attacker) - calculate_battle_result(defender)
+    BattleTiredness.calculate(
+      calculate_battle_result(attacker),
+      calculate_battle_result(defender)
+    )
+  end
 
-    case difference
-    when TIREDNESS_THRESHOLDS[:overwhelming_victory]..Float::INFINITY
-      TIREDNESS_VALUES[:overwhelming_victory]
-    when TIREDNESS_THRESHOLDS[:significant_victory]..TIREDNESS_THRESHOLDS[:overwhelming_victory]
-      TIREDNESS_VALUES[:significant_victory]
+  def process_battle_outcome(participants, attacker_experience, defender_experience)
+    handle_battle_result(participants)
+    update_experience(
+      participants[:attacker], participants[:defender],
+      attacker_experience, defender_experience
+    )
+  end
+
+  def handle_battle_result(participants)
+    if calculate_battle_result(participants[:attacker_stats]) > calculate_battle_result(participants[:defender_stats])
+      handle_battle_victory(participants)
     else
-      TIREDNESS_VALUES[:close_victory]
+      handle_battle_defeat(participants)
     end
+  end
+
+  def handle_battle_victory(participants)
+    handle_victory(
+      participants[:attacker], participants[:defender],
+      participants[:attacker_stats], participants[:defender_stats]
+    )
+  end
+
+  def handle_battle_defeat(participants)
+    handle_defeat(
+      participants[:attacker], participants[:defender],
+      participants[:attacker_stats], participants[:defender_stats]
+    )
   end
 end

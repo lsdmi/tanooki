@@ -4,16 +4,13 @@ class ChatController < ApplicationController
   before_action :authenticate_user!, only: [:speak]
 
   def recent_messages
+    ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?
     messages = ChatMessage.includes(:user, user: :avatar)
                           .for_room('general')
                           .recent
                           .reverse
 
     render json: { messages: serialize_messages(messages) }
-  rescue StandardError => e
-    Rails.logger.error "Error in recent_messages: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    render json: { error: 'Failed to load messages' }, status: :internal_server_error
   end
 
   private

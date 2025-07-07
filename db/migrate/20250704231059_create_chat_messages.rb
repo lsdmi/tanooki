@@ -7,7 +7,7 @@ class CreateChatMessages < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
-    
+
     add_index :chat_messages, :room
     add_index :chat_messages, :created_at
   end

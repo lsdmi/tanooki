@@ -1,10 +1,10 @@
 <div class="mx-auto">
   <!-- Main Content Area -->
   <div class="grid lg:grid-cols-3 gap-8">
-    
+
     <!-- Left Column - Basic Info -->
     <div class="lg:col-span-1 space-y-6">
-      
+
       <!-- Title Section -->
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div class="flex items-center mb-4">
@@ -15,7 +15,7 @@
           </div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Основна інформація</h3>
         </div>
-        
+
         <div class="space-y-4">
           <div>
             <%= f.label :title, 'Назва', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
@@ -25,7 +25,7 @@
               <%= scanlator.errors[:title].first %>
             <% end if scanlator.errors[:title].any? %>
           </div>
-          
+
           <div>
             <%= f.label :description, 'Опис', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
             <%= f.text_area :description, class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:description].any?}", rows: 4, placeholder: "Ваша Історія (необов'язково)" %>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Contact Information Section -->
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div class="flex items-center mb-4">
@@ -47,7 +47,7 @@
           </div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Контактна інформація</h3>
         </div>
-        
+
         <div class="space-y-4">
           <div>
             <%= f.label :telegram_id, 'Телеграм ID', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
@@ -57,7 +57,7 @@
               <%= scanlator.errors[:telegram_id].first %>
             <% end if scanlator.errors[:telegram_id].any? %>
           </div>
-          
+
           <div>
             <%= f.label :bank_url, 'Посилання на Банку', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
             <%= f.input :bank_url, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:bank_url].any?}" }, label: false, placeholder: "Посилання на Банку (необов'язково)" %>
@@ -66,7 +66,7 @@
               <%= scanlator.errors[:bank_url].first %>
             <% end if scanlator.errors[:bank_url].any? %>
           </div>
-          
+
           <div>
             <%= f.label :extra_url, 'Додаткове Посилання', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
             <%= f.input :extra_url, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:extra_url].any?}" }, label: false, placeholder: "Додаткове Посилання (необов'язково)" %>
@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Settings Section -->
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div class="flex items-center mb-4">
@@ -89,14 +89,14 @@
           </div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Налаштування</h3>
         </div>
-        
+
         <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
           <%= f.input :convertable, as: :boolean, label: false, input_html: { class: 'w-4 h-4 text-cyan-600 dark:text-rose-400 bg-gray-100 dark:bg-gray-700 rounded border-gray-300 dark:border-gray-600 focus:ring-cyan-500 dark:focus:ring-rose-500' } %>
           <label for="convertable" class="ml-3 text-sm text-gray-700 dark:text-gray-300">Дозволити конвертацію та завантаження творів у EPUB</label>
         </div>
       </div>
     </div>
-    
+
     <!-- Right Column - Team & Media -->
     <div class="lg:col-span-2">
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
@@ -108,7 +108,7 @@
           </div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Команда та медіа</h3>
         </div>
-        
+
         <div class="space-y-6">
           <!-- Team Members -->
           <div>
@@ -124,7 +124,7 @@
             <% end if scanlator.errors[:member_ids].any? %>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Оберіть учасників команди</p>
           </div>
-          
+
           <!-- Banner Image -->
           <div>
             <%= f.label :banner, 'Банер', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
@@ -144,7 +144,7 @@
               <%= scanlator.errors[:banner].first %>
             <% end if scanlator.errors[:banner].any? %>
           </div>
-          
+
           <!-- Avatar Image -->
           <div>
             <%= f.label :avatar, 'Портретик', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
@@ -168,7 +168,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Submit Section -->
   <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
     <div class="flex items-center justify-between">
@@ -176,7 +176,7 @@
         <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
         </div>
       </div>
-      
+
       <div class="flex items-center space-x-3">
         <%= link_to "Скасувати", :back, class: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" %>
         <%= f.submit "Зберегти Профіль", class: "inline-flex items-center px-6 py-2.5 text-sm font-semibold text-center text-white bg-cyan-600 dark:bg-rose-600 rounded-lg focus:ring-4 focus:ring-cyan-200 dark:focus:ring-rose-200 hover:bg-cyan-700 dark:hover:bg-rose-700 transition-all duration-200 shadow-sm hover:shadow-md" %>

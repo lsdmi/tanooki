@@ -57,10 +57,20 @@ class Fiction < ApplicationRecord
   validate :cover_format
 
   scope :most_reads, lambda {
-    joins(:readings)
-      .where(readings: { created_at: 1.year.ago..Time.current })
-      .group(:id)
-      .order(Arel.sql('COUNT(readings.fiction_id) DESC'))
+    from = 1.year.ago.strftime('%Y-%m-%d %H:%M:%S')
+    to = Time.current.strftime('%Y-%m-%d %H:%M:%S')
+    select('fictions.*, COALESCE(recent_readings_count, 0) AS recent_readings_count')
+      .joins(
+        "LEFT JOIN (\n  " \
+        "SELECT\n    " \
+        "fiction_id,\n    " \
+        "COUNT(*) AS recent_readings_count\n  " \
+        "FROM reading_progresses\n  " \
+        "WHERE reading_progresses.created_at BETWEEN '#{from}' AND '#{to}'\n  " \
+        "GROUP BY fiction_id\n" \
+        ') AS readings_counts ON readings_counts.fiction_id = fictions.id'
+      )
+      .order('recent_readings_count DESC')
   }
   scope :recent, -> { where('created_at >= ?', 3.days.ago) }
 
