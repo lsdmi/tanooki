@@ -5,6 +5,7 @@
   <!-- Chat Toggle Button -->
   <button id="chat-toggle"
           data-chat-widget-target="toggle"
+          title="Відкрити чат"
           class="bg-cyan-600 hover:bg-cyan-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -34,7 +35,15 @@
     <div id="chat-messages"
          data-chat-widget-target="messages"
          class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 dark:bg-gray-700">
-      <!-- Messages will be loaded here -->
+      <!-- Initial state - will be replaced when chat loads -->
+      <div class="flex items-center justify-center h-full">
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
+          <p class="text-sm">Натисніть щоб відкрити чат</p>
+        </div>
+      </div>
     </div>
 
     <!-- Chat Input -->
@@ -63,5 +72,10 @@
         </div>
       <% end %>
     </div>
+    <!-- Resize Handle Top-Left -->
+    <div id="chat-resize-handle-tl"
+         data-chat-widget-target="resizeHandleTopLeft"
+         class="absolute top-0 left-0 w-4 h-4 bg-transparent cursor-nwse-resize z-10 flex items-start justify-start">
+    </div>
   </div>
-</div> 
+</div>

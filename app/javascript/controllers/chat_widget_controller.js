@@ -2,26 +2,35 @@ import { Controller } from "@hotwired/stimulus"
 import consumer from "channels/consumer"
 
 export default class extends Controller {
-  static targets = ["toggle", "window", "close", "messages", "input", "send"]
+  static targets = ["toggle", "window", "close", "messages", "input", "send", "resizeHandleTopLeft"]
 
   connect() {
     console.log("Chat widget controller connected")
     // Check if user is signed in
     this.isSignedIn = this.element.querySelector('[data-chat-widget-target="input"]') !== null
     console.log("User signed in:", this.isSignedIn)
-    
-    // Prevent multiple initializations
-    if (this.initialized) return
-    
-    // Add a small delay to ensure DOM is ready
-    setTimeout(() => {
-      this.initializeChat()
-    }, 100)
+
+    // Don't initialize immediately - wait for first click
+    this.initialized = false
+    this.isLoading = false
+
+    // Set up basic toggle functionality without full initialization
+    this.setupBasicEventListeners()
+
+    // Add resize listeners for top-left handle
+    if (this.hasResizeHandleTopLeftTarget && this.hasWindowTarget) {
+      this.resizeHandleTopLeftTarget.addEventListener('mousedown', this.startResizeTopLeft)
+    }
   }
 
   disconnect() {
     console.log("Chat widget controller disconnected")
     this.cleanup()
+    // Remove resize listeners for top-left handle
+    if (this.hasResizeHandleTopLeftTarget) {
+      this.resizeHandleTopLeftTarget.removeEventListener('mousedown', this.startResizeTopLeft)
+    }
+    this.removeResizeListeners()
   }
 
   cleanup() {
@@ -36,10 +45,43 @@ export default class extends Controller {
     }
   }
 
-  initializeChat() {
+  setupBasicEventListeners() {
     try {
-      if (this.initialized) return
+      // Toggle button - will initialize chat on first click
+      if (this.hasToggleTarget && this.toggleTarget) {
+        this.toggleTarget.addEventListener('click', () => this.handleToggleClick())
+      }
+
+      // Close chat window
+      if (this.hasCloseTarget && this.closeTarget) {
+        this.closeTarget.addEventListener('click', () => this.closeChat())
+      }
+    } catch (error) {
+      console.error("Error setting up basic event listeners:", error)
+    }
+  }
+
+  async handleToggleClick() {
+    try {
+      // If not initialized, initialize first
+      if (!this.initialized && !this.isLoading) {
+        await this.initializeChat()
+      }
       
+      // Then toggle the chat window
+      this.toggleChat()
+    } catch (error) {
+      console.error("Error handling toggle click:", error)
+    }
+  }
+
+  async initializeChat() {
+    try {
+      if (this.initialized || this.isLoading) return
+      
+      this.isLoading = true
+      this.showLoadingState()
+
       // Initialize Action Cable subscription (guests can still receive messages)
       this.subscription = consumer.subscriptions.create("ChatChannel", {
         connected: () => {
@@ -62,29 +104,44 @@ export default class extends Controller {
         }
       })
 
-      // Set up event listeners (toggle/close for everyone, send only for signed-in users)
-      this.setupEventListeners()
+      // Set up full event listeners for signed-in users
+      this.setupFullEventListeners()
       
       this.initialized = true
+      this.isLoading = false
+      this.hideLoadingState()
     } catch (error) {
       console.error("Error initializing chat:", error)
+      this.isLoading = false
+      this.hideLoadingState()
       // Fallback: still try to load recent messages
       this.loadRecentMessages()
     }
   }
 
-  setupEventListeners() {
+  showLoadingState() {
     try {
-      // Toggle and close buttons work for everyone (guests and signed-in users)
-      if (this.hasToggleTarget && this.toggleTarget) {
-        this.toggleTarget.addEventListener('click', () => this.toggleChat())
+      if (this.hasMessagesTarget && this.messagesTarget) {
+        this.messagesTarget.innerHTML = `
+          <div class="flex items-center justify-center h-full">
+            <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-600 dark:border-rose-400"></div>
+              <span class="text-sm">Завантаження чату...</span>
+            </div>
+          </div>
+        `
       }
+    } catch (error) {
+      console.error("Error showing loading state:", error)
+    }
+  }
 
-      // Close chat window
-      if (this.hasCloseTarget && this.closeTarget) {
-        this.closeTarget.addEventListener('click', () => this.closeChat())
-      }
+  hideLoadingState() {
+    // Loading state will be replaced by actual messages
+  }
 
+  setupFullEventListeners() {
+    try {
       // Send message and input events only for signed-in users
       if (this.isSignedIn) {
         // Send message
@@ -103,7 +160,7 @@ export default class extends Controller {
         }
       }
     } catch (error) {
-      console.error("Error setting up event listeners:", error)
+      console.error("Error setting up full event listeners:", error)
     }
   }
 
@@ -256,4 +313,41 @@ export default class extends Controller {
       `)
     }
   }
-} 
+
+  // --- Resize logic for top-left ---
+  startResizeTopLeft = (e) => {
+    e.preventDefault()
+    this._startX = e.clientX
+    this._startY = e.clientY
+    this._startWidth = this.windowTarget.offsetWidth
+    this._startHeight = this.windowTarget.offsetHeight
+    document.addEventListener('mousemove', this.doResizeTopLeft)
+    document.addEventListener('mouseup', this.stopResizeTopLeft)
+  }
+
+  doResizeTopLeft = (e) => {
+    const minWidth = 240
+    const minHeight = 240
+    const maxWidth = 600
+    const maxHeight = 800
+    let dx = e.clientX - this._startX
+    let dy = e.clientY - this._startY
+    let newWidth = this._startWidth - dx
+    let newHeight = this._startHeight - dy
+    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
+    newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight))
+    this.windowTarget.style.width = newWidth + 'px'
+    this.windowTarget.style.height = newHeight + 'px'
+    // Do NOT set left, top, or position
+  }
+
+  stopResizeTopLeft = () => {
+    document.removeEventListener('mousemove', this.doResizeTopLeft)
+    document.removeEventListener('mouseup', this.stopResizeTopLeft)
+  }
+
+  removeResizeListeners() {
+    document.removeEventListener('mousemove', this.doResizeTopLeft)
+    document.removeEventListener('mouseup', this.stopResizeTopLeft)
+  }
+}

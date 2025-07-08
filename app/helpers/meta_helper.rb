@@ -27,7 +27,8 @@ module MetaHelper
 
   def meta_type
     case request.path
-    when root_path, search_index_path, fictions_path, youtube_videos_path, alphabetical_fictions_path, calendar_fictions_path
+    when root_path, search_index_path, fictions_path, youtube_videos_path,
+         alphabetical_fictions_path, calendar_fictions_path
       'website'
     else
       'article'
