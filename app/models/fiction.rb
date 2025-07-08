@@ -21,27 +21,10 @@ class Fiction < ApplicationRecord
   has_many :scanlators, through: :fiction_scanlators
   has_many :users, through: :scanlators
 
-  enum :status, {
-    announced: 'Анонсовано',
-    dropped: 'Покинуто',
-    ongoing: 'Видається',
-    finished: 'Завершено'
-  }
-
-  enum :origin, {
-    unknown: 'невідоме',
-    english: 'англійське',
-    bosnian: 'боснійське',
-    italian: 'італійське',
-    chinese: 'китайське',
-    korean: 'корейське',
-    dutch: 'нідерландське',
-    polish: 'польське',
-    thai: 'тайське',
-    ukrainian: 'українське',
-    french: 'французьке',
-    japanese: 'японське'
-  }
+  enum :status, { announced: 'Анонсовано', dropped: 'Покинуто', ongoing: 'Видається', finished: 'Завершено' }
+  enum :origin, { nknown: 'невідоме', english: 'англійське', bosnian: 'боснійське', italian: 'італійське',
+                  chinese: 'китайське', korean: 'корейське', dutch: 'нідерландське', polish: 'польське',
+                  thai: 'тайське', ukrainian: 'українське', french: 'французьке', japanese: 'японське' }
 
   before_validation :cleanup_scanlator_ids
 

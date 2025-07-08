@@ -62,6 +62,10 @@ class FictionUpdatesPresenter
   def build_fiction_update(fiction_slug, fiction_chapters)
     fiction = fiction_chapters.first.fiction
     scanlator = fiction.scanlators.sample
+    build_fiction_update_hash(fiction, fiction_slug, fiction_chapters, scanlator)
+  end
+
+  def build_fiction_update_hash(fiction, fiction_slug, fiction_chapters, scanlator)
     {
       chapters_count: fiction_chapters.count,
       chapters_created_at: min_created_at_formatted(fiction_chapters),

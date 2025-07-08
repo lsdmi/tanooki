@@ -1,7 +1,7 @@
-<% if @comments.any? %>
+<% if comments.any? %>
   <!-- Notifications List -->
   <div class="space-y-4">
-    <% @comments.group_by { |n| n.created_at.to_date }.each do |date, notifications| %>
+    <% comments.group_by { |n| n.created_at.to_date }.each do |date, notifications| %>
       <div>
         <div class="text-xs uppercase text-gray-400 dark:text-gray-500 mb-2">
           <%= l(date, format: :long) == l(Date.today, format: :long) ? "Сьогодні" : l(date, format: :long) %>
@@ -32,10 +32,10 @@
     <% end %>
   </div>
   <!-- Pagination -->
-  <% if @pagy.pages > 1 %>
+  <% if pagy.pages > 1 %>
     <div class="pagy-nav p-4 sm:p-6">
       <div class="flex justify-center">
-        <%== pagy_nav_with_turbo_frame(@pagy) %>
+        <%== pagy_nav_with_turbo_frame(pagy) %>
       </div>
     </div>
   <% end %>
