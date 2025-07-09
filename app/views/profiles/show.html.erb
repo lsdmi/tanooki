@@ -1,7 +1,7 @@
 <div class="mt-4 lg:mt-8 max-w-6xl mx-auto px-2 sm:px-4 pb-4 lg:pb-8 z-10 relative tracking-tight">
 
   <!-- Profile Header -->
-  <div class="relative overflow-hidden mb-6 lg:mb-8 rounded-xl shadow-xl border border-cyan-700 dark:border-rose-700 bg-stone-100 dark:bg-gray-800">
+  <div class="relative overflow-hidden mb-6 lg:mb-8 rounded-xl shadow-xl border border-gray-700 bg-stone-100 dark:bg-gray-800">
     <%= render 'shared/jellyfish_ornament' %>
 
     <!-- Content -->
@@ -9,10 +9,10 @@
       <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <!-- Profile Banner Column (1/3) -->
         <div class="w-full lg:w-1/3">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4 mb-6">
             <!-- Left Column: Avatar -->
             <div class="flex-shrink-0">
-              <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-full object-cover shadow-lg border-2 border-cyan-200 dark:border-rose-800" %>
+              <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-full object-cover shadow-lg border-2 border-gray-700" %>
             </div>
             <!-- Right Column: Name -->
             <div class="flex-1">
@@ -24,10 +24,10 @@
           </div>
 
           <!-- Pokemon Stats Section -->
-          <div class="bg-white/30 dark:bg-gray-700/30 rounded-lg p-3 border border-cyan-200 dark:border-rose-800">
-            <h3 class="text-xs font-semibold text-stone-700 dark:text-gray-300 mb-3 flex items-center gap-1.5">
-              <div class="w-4 h-4 bg-cyan-700 dark:bg-rose-700 rounded-full flex items-center justify-center">
-                <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white/30 dark:bg-gray-700/30 rounded-lg p-4 border border-gray-700">
+            <h3 class="text-lg text-stone-800 dark:text-gray-100 flex items-center tracking-tight leading-none font-black mb-3 flex items-center gap-1.5">
+              <div class="w-5 h-5 bg-cyan-700 dark:bg-rose-700 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
               </div>
@@ -36,52 +36,40 @@
 
             <!-- Row 1: Battle Stats & Rating -->
             <div class="grid grid-cols-3 gap-2 mb-2">
-              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-cyan-200 dark:border-rose-800">
+              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-gray-700">
+                <div class="text-xs text-gray-600 dark:text-gray-300">Виклики</div>
                 <div class="flex items-center justify-center gap-1 mb-1">
-                  <svg class="w-3 h-3 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                  </svg>
                   <div class="text-sm font-bold text-cyan-700 dark:text-rose-400">
                     <%= @user.attacker_battle_logs.count + @user.defender_battle_logs.count %>
                   </div>
                 </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400">Боїв</div>
               </div>
 
-              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-cyan-200 dark:border-rose-800">
+              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-gray-700">
+                <div class="text-xs text-gray-600 dark:text-gray-300">Перемоги</div>
                 <div class="flex items-center justify-center gap-1 mb-1">
-                  <svg class="w-3 h-3 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                  </svg>
                   <div class="text-sm font-bold text-cyan-700 dark:text-rose-400">
                     <%= @user.attacker_battle_logs.where(winner: @user).count + @user.defender_battle_logs.where(winner: @user).count %>
                   </div>
                 </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400">Перемог</div>
               </div>
 
-              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-cyan-200 dark:border-rose-800">
+              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-gray-700">
+                <div class="text-xs text-gray-600 dark:text-gray-300">Рейтинг</div>
                 <div class="flex items-center justify-center gap-1 mb-1">
-                  <svg class="w-3 h-3 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                  </svg>
                   <div class="text-sm font-bold text-cyan-700 dark:text-rose-400">
                     #<%= User.dex_leaders.index(@user) + 1 %>
                   </div>
                 </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400">Рейтинг</div>
               </div>
             </div>
 
             <!-- Row 2: Win Rate & Pokemon Collection -->
             <div class="grid grid-cols-2 gap-2">
-              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-cyan-200 dark:border-rose-800">
+              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-gray-700">
                 <div class="flex items-center justify-between mb-1">
                   <div class="flex items-center gap-1">
-                    <svg class="w-3 h-3 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                    <span class="text-stone-700 dark:text-gray-300 font-medium text-xs">Перемоги</span>
+                    <span class="text-stone-700 dark:text-gray-300 font-medium text-xs">Перемоги, %</span>
                   </div>
                   <span class="text-xs font-bold text-cyan-700 dark:text-rose-400">
                     <% total_battles = @user.attacker_battle_logs.count + @user.defender_battle_logs.count %>
@@ -96,16 +84,13 @@
                 </div>
               </div>
 
-              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-cyan-200 dark:border-rose-800">
+              <div class="p-2 bg-cyan-50 dark:bg-rose-900/20 rounded-lg text-center border border-gray-700">
+                <div class="text-xs text-gray-600 dark:text-gray-300">Покемони</div>
                 <div class="flex items-center justify-center gap-1 mb-1">
-                  <svg class="w-3 h-3 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                  </svg>
                   <div class="text-sm font-bold text-cyan-700 dark:text-rose-400">
-                    <%= @user.pokemons.count %>
+                    <%= @user.pokemons.count %>/<%= Pokemon.where(descendant_level: 0).count %>
                   </div>
                 </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400">Покемонів</div>
               </div>
             </div>
           </div>
@@ -120,13 +105,13 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
               </div>
-              Коментарі
+              Останні Коментарі
             </h2>
           </div>
 
           <div class="space-y-3">
             <% @user.comments.order(created_at: :desc).includes(:commentable).limit(3).each do |comment| %>
-              <div class="p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg hover:bg-white/70 dark:hover:bg-gray-700/70 transition-all duration-200 border border-cyan-200 dark:border-rose-800">
+              <div class="p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg hover:bg-white/70 dark:hover:bg-gray-700/70 transition-all duration-200 border border-gray-700">
                 <div class="flex items-start gap-3">
                   <div class="w-6 h-6 lg:w-8 lg:h-8 bg-cyan-700 dark:bg-rose-700 rounded-full flex items-center justify-center flex-shrink-0">
                     <svg class="w-3 h-3 lg:w-4 lg:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -149,6 +134,55 @@
             <% end %>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Readings Section -->
+  <div class="relative overflow-hidden mb-6 lg:mb-8 rounded-xl shadow-xl border border-gray-700 bg-stone-100 dark:bg-gray-800">
+    <%= render 'shared/decorative_ornament' %>
+
+    <!-- Content -->
+    <div class="relative z-10 p-4 sm:p-6 lg:p-8">
+      <div class="flex items-center justify-between mb-4 lg:mb-6">
+        <h2 class="text-lg sm:text-xl lg:text-2xl text-stone-800 dark:text-gray-100 flex items-center gap-3 tracking-tight leading-none font-black">
+          <div class="w-8 h-8 lg:w-10 lg:h-10 bg-cyan-700 dark:bg-rose-700 rounded-full flex items-center justify-center">
+            <svg class="w-4 h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          Щойно Переглянуте
+        </h2>
+      </div>
+ 
+      <div class="flex gap-4 overflow-x-auto pb-2">
+        <% @user.readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(5).each do |reading| %>
+          <div class="py-4 px-2 bg-white/50 dark:bg-gray-700/50 rounded-lg hover:bg-white/70 dark:hover:bg-gray-700/70 transition-all duration-200 border border-gray-700 flex-shrink-0 w-40 lg:w-48">
+            <div class="flex flex-col items-center text-center">
+              <div class="mb-2">
+                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: '' do %>
+                  <%= image_tag url_for(reading.fiction.cover),
+                    alt: reading.fiction.cover.blob.filename.to_s,
+                    class: "w-20 h-24 sm:w-24 sm:h-28 lg:w-32 lg:h-40 rounded object-cover shadow-sm border border-gray-600",
+                    loading: "lazy",
+                    data: {
+                      controller: "lazy-image",
+                      lazy_image_target: "image",
+                      lazy_image_url_value: url_for(reading.fiction.cover)
+                    } %>
+                <% end %>
+              </div>
+              <div class="w-full">
+                <h3 class="font-semibold text-stone-900 dark:text-gray-100 text-sm lg:text-base line-clamp-1">
+                  <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: "hover:underline" %>
+                </h3>
+                <p class="text-xs lg:text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
+                  <%= reading.chapter.display_title_no_volume %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

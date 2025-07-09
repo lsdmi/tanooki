@@ -217,6 +217,10 @@ export default class extends Controller {
         .then(response => response.json())
         .then(data => {
           if (data.messages && Array.isArray(data.messages)) {
+            // Clear the messages container first to remove loading state
+            if (this.hasMessagesTarget && this.messagesTarget) {
+              this.messagesTarget.innerHTML = ''
+            }
             data.messages.forEach(message => {
               this.addMessage(message)
             })

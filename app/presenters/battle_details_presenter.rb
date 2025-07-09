@@ -8,13 +8,7 @@ class BattleDetailsPresenter
   end
 
   def render
-    grid_content = @outcome_blocks.dup
-    if grid_content.size.odd?
-      grid_content << @conclusion_message
-      conclusion_html = ''
-    else
-      conclusion_html = @conclusion_message
-    end
+    grid_content, conclusion_html = prepare_grid_content
 
     <<~HTML.html_safe
       #{@start_message}
@@ -23,5 +17,17 @@ class BattleDetailsPresenter
       </div>
       #{conclusion_html}
     HTML
+  end
+
+  private
+
+  def prepare_grid_content
+    grid_content = @outcome_blocks.dup
+    if grid_content.size.odd?
+      grid_content << @conclusion_message
+      [grid_content, '']
+    else
+      [grid_content, @conclusion_message]
+    end
   end
 end

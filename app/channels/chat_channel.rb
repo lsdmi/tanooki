@@ -38,6 +38,7 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def user_avatar_url(user)
+    ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?
     user.avatar&.image&.attached? ? user.avatar.image.url : nil
   end
 end

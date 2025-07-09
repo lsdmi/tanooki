@@ -57,6 +57,13 @@
   padding-left: 0.25rem;
 }
 
+#user-content hr {
+  margin-bottom: 2rem;
+  border: none;
+  border-top: 1px solid #d1d5db;
+  margin-top: 2rem;
+}
+
 @media (max-width: 768px) {
   #user-content {
     font-size: 1rem;
