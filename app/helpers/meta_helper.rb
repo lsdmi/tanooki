@@ -12,7 +12,11 @@ module MetaHelper
                    else meta_cover
                    end
 
-    result_cover.persisted? ? url_for(result_cover) : url_for(highlights_cover)
+    if result_cover.is_a?(String) || result_cover&.persisted?
+      url_for(result_cover)
+    else
+      url_for(highlights_cover)
+    end
   end
 
   def meta_title
