@@ -42,11 +42,11 @@
         <div class="relative mb-4">
           <%= f.label :banner, 'Банер', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
           <div class="relative group">
-            <%= f.label :banner, class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
+            <%= f.label :banner, for: 'fictions_banner', class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
               <svg class="w-12 h-12 text-stone-600 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
               <span class="text-stone-600 dark:text-gray-400 text-center mx-1">WebP, ширина не менше 1000px, співвідношення сторін ~3:1</span>
-              <%= f.file_field :banner, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-              <%= tag.div f.object.banner.blob&.filename || nil, id: 'image_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
+              <%= f.file_field :banner, id: 'fictions_banner', class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
             <% end %>
             <%= tag.p fiction.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:banner].any? %>
           </div>
@@ -85,11 +85,11 @@
       <div class="mb-4">
         <%= f.label :cover, 'Обкладинка', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
         <div class="relative group">
-          <%= f.label :cover, class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
+          <%= f.label :cover, for: 'fictions_cover', class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
             <svg class="w-12 h-12 text-stone-600 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             <span class="text-stone-600 dark:text-gray-400">SVG, PNG, JPEG чи WebP</span>
-            <%= f.file_field :cover, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
+            <%= f.file_field :cover, id: 'fictions_cover', class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
           <% end %>
           <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:cover].any? %>
         </div>

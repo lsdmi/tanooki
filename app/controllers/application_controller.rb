@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
 
   before_action :pokemon_appearance, only: %i[index show]
-  before_action :log_session_debug if Rails.env.production?
 
   def handle_error
     render :error, status: :internal_server_error
@@ -81,25 +80,5 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch('popular_videos', expires_in: 1.hour) do
       YoutubeVideo.last_month.order(views: :desc).limit(2)
     end
-  end
-
-  def log_session_debug
-    session_size = session.to_hash.to_json.bytesize
-    csrf_token = session[:_csrf_token]
-    user_id = session['warden.user.user.key']&.first&.first
-
-    # Check actual cookie size
-    session_cookie = request.cookies['_tanooki_session']
-    cookie_size = session_cookie&.bytesize || 0
-
-    Rails.logger.info "[SESSION_DEBUG] Request: #{request.path} | Session size: #{session_size} bytes | Cookie size: #{cookie_size} bytes | CSRF token present: #{csrf_token.present?} | User ID: #{user_id} | IP: #{request.remote_ip}"
-
-    if session_size > 4000
-      Rails.logger.warn "[SESSION_DEBUG] WARNING: Session cookie is large (#{session_size} bytes) - may cause issues"
-    end
-
-    return unless cookie_size > 4000
-
-    Rails.logger.warn "[SESSION_DEBUG] WARNING: Actual cookie size is large (#{cookie_size} bytes) - may cause issues"
   end
 end

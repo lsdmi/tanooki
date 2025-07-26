@@ -21,10 +21,6 @@ class ChaptersController < ApplicationController
   end
 
   def create
-    # Debug CSRF and session state
-    Rails.logger.info "[CSRF_DEBUG] Chapter create attempt | CSRF token from params: #{params[:authenticity_token].present?} | Session CSRF: #{session[:_csrf_token].present?} | User: #{current_user&.id} | IP: #{request.remote_ip}"
-    Rails.logger.info "[SESSION_DEBUG] Session content: #{session.to_hash.except('_csrf_token').inspect}"
-
     @chapter = Chapter.new(chapter_params)
 
     if @chapter.save
@@ -39,10 +35,6 @@ class ChaptersController < ApplicationController
   def edit; end
 
   def update
-    # Debug CSRF and session state
-    Rails.logger.info "[CSRF_DEBUG] Chapter update attempt | CSRF token from params: #{params[:authenticity_token].present?} | Session CSRF: #{session[:_csrf_token].present?} | User: #{current_user&.id} | IP: #{request.remote_ip}"
-    Rails.logger.info "[SESSION_DEBUG] Session content: #{session.to_hash.except('_csrf_token').inspect}"
-
     if @chapter.update(chapter_params)
       ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
       redirect_to reading_path(@chapter.fiction), notice: 'Розділ оновлено.'

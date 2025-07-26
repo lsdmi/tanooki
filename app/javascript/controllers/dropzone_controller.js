@@ -10,6 +10,7 @@ export default class DropzoneController extends Controller {
       "advertisement_cover",
       "advertisement_poster",
       "fictions_cover",
+      "fictions_banner",
       "publication_cover",
       "scanlator_avatar",
       "scanlator_banner"
@@ -48,6 +49,12 @@ export default class DropzoneController extends Controller {
         break;
       case 'advertisement_poster':
         targetElement = document.querySelector(`#poster_name`);
+        break;
+      case 'fictions_cover':
+        targetElement = document.querySelector(`#cover_name`);
+        break;
+      case 'fictions_banner':
+        targetElement = document.querySelector(`#banner_name`);
         break;
       case 'scanlator_avatar':
         targetElement = document.querySelector(`#avatar_name`);
