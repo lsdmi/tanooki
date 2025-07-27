@@ -23,4 +23,10 @@ module ChaptersHelper
 
     number.zero? ? 0 : ((number || 0) * 100).to_i
   end
+
+  def title_includes_rozdil?(title)
+    return true if title.blank?
+
+    title.match?(/Розділ/i)
+  end
 end

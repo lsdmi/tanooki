@@ -39,11 +39,13 @@ class ContentProcessor
   def insert_video_if_needed(translated_content, article_content)
     return unless article_content.video_url
 
-    video_inserter.insert_video(
+    modified_html = video_inserter.insert_video(
       translated_content.html,
       article_content.video_url,
       after_paragraph: BlogScraperConfig.video_insert_after_paragraph
     )
+
+    translated_content.instance_variable_set(:@html, modified_html)
   end
 
   def build_processed_content(translated_content, article_content)
