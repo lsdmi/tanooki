@@ -59,6 +59,18 @@ Rails.application.config.after_initialize do
         end
       else
         Rails.logger.info 'COOKIE_DEBUG: [3] ❌ No Warden authentication keys found'
+
+        # Distinguish between guest user and broken session
+        session_keys = session.keys
+        if session_keys.empty?
+          Rails.logger.warn 'COOKIE_DEBUG: [3] 🚨 BROKEN SESSION - Empty session keys (should have at least session_id)'
+        elsif session_keys.include?('pokemon_catch_last_seen') || session_keys.include?('pokemon_guest_caught') || session_keys.include?('viewed')
+          Rails.logger.info 'COOKIE_DEBUG: [3] 👤 GUEST USER - Has guest features (pokemon_catch_last_seen, viewed, etc.)'
+        elsif session_keys.include?('session_id') && session_keys.length == 1
+          Rails.logger.info 'COOKIE_DEBUG: [3] 🆕 NEW USER - Only has session_id, no guest features yet'
+        else
+          Rails.logger.warn "COOKIE_DEBUG: [3] ❓ UNKNOWN PATTERN - Session keys: #{session_keys.join(', ')}"
+        end
       end
 
       # NOTE: session[:warden] is typically nil - Warden uses string keys like "warden.user.user.key"
@@ -102,8 +114,16 @@ Rails.application.config.after_initialize do
       # 6. Post-middleware authentication state
       return unless respond_to?(:user_signed_in?) && !user_signed_in? && auth_cookie.present?
 
-      Rails.logger.warn 'COOKIE_DEBUG: [6] WARNING - Cookie present but user not authenticated!'
-      Rails.logger.warn 'COOKIE_DEBUG: [6] Possible causes: Invalid cookie, Expired session, Middleware issue'
+      # Only warn for actual problems, not normal guest users
+      session_keys = session.keys
+      if session_keys.empty?
+        Rails.logger.warn 'COOKIE_DEBUG: [6] 🚨 WARNING - BROKEN SESSION! Cookie present but session is empty!'
+      elsif session_keys.include?('pokemon_catch_last_seen') || session_keys.include?('pokemon_guest_caught')
+        Rails.logger.info 'COOKIE_DEBUG: [6] ℹ️ Normal guest user - no authentication needed'
+      else
+        Rails.logger.warn 'COOKIE_DEBUG: [6] WARNING - Cookie present but user not authenticated!'
+        Rails.logger.warn 'COOKIE_DEBUG: [6] Possible causes: Invalid cookie, Expired session, Middleware issue'
+      end
     end
   end
 
