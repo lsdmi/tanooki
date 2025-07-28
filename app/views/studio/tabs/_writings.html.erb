@@ -1,5 +1,4 @@
-<div id="section" class="p-8 bg-gradient-to-br from-white to-stone-100 rounded-3xl shadow-xl relative overflow-hidden border border-stone-200">
-  <div class="absolute inset-0 opacity-40 bg-cover bg-center"></div>
+<div class="space-y-6">
   <%= turbo_frame_tag 'fictions-list' do %>
     <%= render 'users/dashboard/fictions', fictions: fictions, pagy: pagy %>
   <% end %>
