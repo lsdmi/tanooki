@@ -36,15 +36,29 @@ Rails.application.config.after_initialize do
       # 2. Try to decrypt session cookie
       begin
         if auth_cookie.present?
+          # Log cookie details for investigation
+          Rails.logger.info "COOKIE_DEBUG: [2] Cookie analysis - Length: #{auth_cookie.length}, First 10 chars: #{auth_cookie[0..9]}, Last 10 chars: #{auth_cookie[-10..-1]}"
+
+          # Check if it's a suspicious short cookie
+          if auth_cookie.length <= 50
+            Rails.logger.warn "COOKIE_DEBUG: [2] ⚠️ SUSPICIOUS SHORT COOKIE - Length: #{auth_cookie.length} (normal cookies are 900+ chars)"
+            Rails.logger.warn "COOKIE_DEBUG: [2] Full cookie value: #{auth_cookie}"
+          end
+
           decoded = cookies.encrypted['_tanooki_session']
           if decoded.is_a?(Hash)
             Rails.logger.info "COOKIE_DEBUG: [2] Cookie decryption successful - keys: #{decoded&.keys&.join(', ')}"
+          elsif decoded.nil?
+            Rails.logger.warn 'COOKIE_DEBUG: [2] Cookie decryption returned nil - cookie might be corrupted'
+          else
+            Rails.logger.warn "COOKIE_DEBUG: [2] Cookie decryption returned unexpected type: #{decoded.class}"
           end
         else
           Rails.logger.info 'COOKIE_DEBUG: [2] No auth cookie to decrypt'
         end
       rescue StandardError => e
         Rails.logger.error "COOKIE_DEBUG: [2] Cookie decryption failed: #{e.class}: #{e.message}"
+        Rails.logger.error "COOKIE_DEBUG: [2] Failed cookie value: #{auth_cookie}"
       end
 
       # 3. Session data after decryption
@@ -118,6 +132,18 @@ Rails.application.config.after_initialize do
       session_keys = session.keys
       if session_keys.empty?
         Rails.logger.warn 'COOKIE_DEBUG: [6] 🚨 WARNING - BROKEN SESSION! Cookie present but session is empty!'
+
+        # Additional analysis for broken sessions
+        if auth_cookie.length <= 50
+          Rails.logger.warn 'COOKIE_DEBUG: [6] 🔍 BROKEN SESSION ANALYSIS:'
+          Rails.logger.warn "COOKIE_DEBUG: [6] - Cookie length: #{auth_cookie.length} (suspiciously short)"
+          Rails.logger.warn "COOKIE_DEBUG: [6] - Cookie value: #{auth_cookie}"
+          Rails.logger.warn 'COOKIE_DEBUG: [6] - Possible causes:'
+          Rails.logger.warn 'COOKIE_DEBUG: [6]   * Corrupted cookie during transmission'
+          Rails.logger.warn 'COOKIE_DEBUG: [6]   * Browser cleared partial cookie data'
+          Rails.logger.warn 'COOKIE_DEBUG: [6]   * Session store configuration issue'
+          Rails.logger.warn 'COOKIE_DEBUG: [6]   * Secret key base changed'
+        end
       elsif session_keys.include?('pokemon_catch_last_seen') || session_keys.include?('pokemon_guest_caught')
         Rails.logger.info 'COOKIE_DEBUG: [6] ℹ️ Normal guest user - no authentication needed'
       else
