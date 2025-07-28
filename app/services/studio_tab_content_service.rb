@@ -55,7 +55,7 @@ class StudioTabContentService
   end
 
   def fiction_list
-    user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
+    user.admin? ? fiction_all : dashboard_fiction_list
   end
 
   def fetch_avatars
@@ -75,12 +75,11 @@ class StudioTabContentService
     end
   end
 
-  # Include FictionQuery methods
-  def fiction_all_ordered_by_latest_chapter
-    Fiction.includes(:cover_attachment, :genres).order(updated_at: :desc)
+  def fiction_all
+    Fiction.order(:title)
   end
 
   def dashboard_fiction_list
-    user.fictions.includes(:cover_attachment, :genres).distinct.order(updated_at: :desc)
+    user.fictions.distinct.order(:title)
   end
 end

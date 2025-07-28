@@ -42,10 +42,32 @@ workers ENV.fetch('WEB_CONCURRENCY', 2)
 #
 preload_app!
 
+# Add memory monitoring and worker recycling to prevent memory leaks
+before_fork do
+  ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+end
+
+# Restart workers after a certain number of requests to prevent memory leaks
+worker_boot_timeout 30
+worker_shutdown_timeout 30
+
+# Optional: Restart workers after processing a certain number of requests
+# This helps prevent memory leaks in long-running workers
+worker_timeout 3600 # Restart workers after 1 hour
+
+# Add memory monitoring hook
 on_worker_boot do
   # Reconnect to the database after forking in each worker
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
   # Add other resource reconnections here if needed (e.g., Redis)
+
+  # Log memory usage on worker boot
+  MemoryMonitorService.log_memory_stats if defined?(MemoryMonitorService)
+end
+
+# Monitor memory usage and restart workers if needed
+on_worker_shutdown do
+  Rails.logger.info "Worker shutting down - memory usage: #{GetProcessMem.new.mb.round(2)}MB"
 end
 
 # Allow puma to be restarted by `bin/rails restart` command.

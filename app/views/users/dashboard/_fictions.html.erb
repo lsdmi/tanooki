@@ -1,28 +1,225 @@
-<div class="relative z-10 space-y-12">
+<div class="space-y-6">
   <% if current_user.scanlators.any? || current_user.admin? %>
-    <div class="flex items-center justify-between">
-      <%= tag.h2 "Мої Твори", class: 'text-4xl font-extrabold text-stone-900 tracking-tight' %>
-      <%= link_to "Додати Роботу", new_fiction_path, data: { turbo: false }, class: 'bg-gradient-to-r from-stone-900 to-stone-700 text-white font-semibold rounded-full px-8 py-3 text-sm shadow-lg hover:scale-105 transition-all' %>
-    </div>
+    <!-- CTA Card -->
+    <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+      <%= render 'shared/decorative_ornament' %>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <% fictions.each do |fiction| %>
-        <div class="flex flex-col bg-white/70 backdrop-blur-lg border border-stone-300 rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden p-6">
-          <%= link_to fiction_path(fiction), data: { turbo: false }, class: "text-xl font-semibold text-stone-900 hover:text-stone-700 transition-colors" do %>
-            <%= fiction.title %>
-          <% end %>
-          <p class="text-sm text-stone-600 mt-2">Перегляди: <%= fiction.views %> | Коментарі: <%= fiction.comments_count %></p>
-          <div class="mt-4">
-            <%= render 'users/dashboard/fiction_controls', fiction: fiction %>
-          </div>
-        </div>
+      <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
+        <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      </div>
+      <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">Додайте новий твір!</h3>
+      <p class="mb-4 text-gray-500 dark:text-gray-400 relative z-10">Поділіться творчістю з читачами! Створюйте якісний контент та зрощуйте аудиторію!</p>
+      <%= link_to new_fiction_path, data: { turbo: false }, class: "inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 relative z-10" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 -ml-1" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+        </svg>
+        Додати твір
       <% end %>
     </div>
 
+    <!-- Fictions List -->
+    <% if fictions.any? %>
+      <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
+                  <!-- Desktop Table View -->
+          <div class="hidden xl:block rounded-lg relative overflow-x-auto">
+            <%= render 'shared/jellyfish_ornament' %>
+            <table class="w-full divide-y divide-gray-200 text-left text-sm text-gray-900 dark:text-white">
+              <thead class="bg-cyan-50 text-xs uppercase text-gray-700 dark:bg-rose-900/20 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300"></th>
+                  <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300">Статистика</th>
+
+                  <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300">Дії</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-gray-200">
+                <% fictions.each do |fiction| %>
+                  <tr class="hover:bg-cyan-50 dark:hover:bg-rose-900/10 transition-colors duration-200">
+                    <th scope="row" class="whitespace-nowrap p-4 text-sm font-medium text-gray-900 dark:text-white">
+                      <div class="flex items-center space-x-3">
+                        <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center">
+                          <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                          </svg>
+                        </div>
+                        <div>
+                          <a href="<%= fiction_path(fiction) %>" class="hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium" data-turbo="false">
+                            <%= fiction.title %>
+                          </a>
+                          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Створено: <%= l(fiction.created_at, format: :short).downcase %>
+                          </p>
+                        </div>
+                      </div>
+                    </th>
+                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                          <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          <span class="font-medium"><%= fiction.views %></span>
+                          <span class="text-xs">переглядів</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                          <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                          </svg>
+                          <span class="font-medium"><%= fiction.comments_count %></span>
+                          <span class="text-xs">коментарів</span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td class="p-4 text-right">
+                      <div class="flex items-center space-x-2">
+                        <!-- Add Chapter Button -->
+                        <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                          </svg>
+                        <% end %>
+
+                        <!-- Edit Button -->
+                        <%= link_to edit_fiction_path(fiction.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        <% end %>
+
+                        <!-- Read Button -->
+                        <%= link_to reading_path(fiction.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
+                          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14M5 3v18l7-5 7 5V3" />
+                          </svg>
+                        <% end %>
+
+                        <!-- Delete Button -->
+                        <%= sweetalert(
+                          content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                          {
+                            description: "Впевнені, що хочете видалити твір?",
+                            message: "",
+                            tag_id: nil,
+                            url: fiction_path(fiction, page: params[:page]),
+                            button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
+                          }
+                        ) %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Card View (Mobile, Small, Medium, and Large Screens) -->
+          <div class="xl:hidden p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <% fictions.each do |fiction| %>
+              <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <!-- Header with icon and title -->
+                <div class="flex items-start space-x-3 mb-3">
+                  <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <a href="<%= fiction_path(fiction) %>" class="block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white" data-turbo="false">
+                      <%= fiction.title %>
+                    </a>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Створено: <%= l(fiction.created_at, format: :short).downcase %>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="flex items-center space-x-4 mb-3 text-sm">
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span class="font-medium text-gray-900 dark:text-white"><%= fiction.views %></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">переглядів</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span class="font-medium text-gray-900 dark:text-white"><%= fiction.comments_count %></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">коментарів</span>
+                  </div>
+                </div>
+
+                <!-- Footer with actions -->
+                <div class="flex items-center justify-end pt-3 border-t border-gray-100 dark:border-gray-700">
+
+                  <div class="flex items-center space-x-2">
+                    <!-- Add Chapter Button -->
+                    <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                    <% end %>
+
+                    <!-- Edit Button -->
+                    <%= link_to edit_fiction_path(fiction.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+
+                    <!-- Read Button -->
+                    <%= link_to reading_path(fiction.slug), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14M5 3v18l7-5 7 5V3" />
+                      </svg>
+                    <% end %>
+
+                    <!-- Delete Button -->
+                    <%= sweetalert(
+                      content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                      {
+                        description: "Впевнені, що хочете видалити твір?",
+                        message: "",
+                        tag_id: nil,
+                        url: fiction_path(fiction, page: params[:page]),
+                        button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
+                      }
+                    ) %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            </div>
+          </div>
+      </div>
+    <% else %>
+      <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+        <%= render 'shared/jellyfish_ornament' %>
+
+        <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
+          <svg class="h-8 w-8 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white relative z-10">Твори відсутні</h3>
+        <p class="mb-2 text-gray-500 dark:text-gray-400 relative z-10">Створіть перший твір та почніть ділитися своєю творчістю з читачами</p>
+      </div>
+    <% end %>
+
+    <!-- Pagination -->
     <% if pagy.pages > 1 %>
-      <div class="flex justify-center mt-12">
-        <div class="pagy-nav">
-          <%== pagy_nav_with_turbo_frame(pagy) if pagy.pages > 1 %>
+      <div class="pagy-nav p-4">
+        <div class="flex justify-center">
+          <%== pagy_nav_with_turbo_frame(pagy) %>
         </div>
       </div>
     <% end %>

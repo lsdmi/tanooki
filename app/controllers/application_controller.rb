@@ -8,12 +8,48 @@ class ApplicationController < ActionController::Base
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
 
   before_action :pokemon_appearance, only: %i[index show]
+  before_action :log_authentication_state
+  after_action :log_memory_usage
 
   def handle_error
     render :error, status: :internal_server_error
   end
 
   private
+
+  def log_authentication_state
+    session_id = session.id
+    user_id = current_user&.id
+    user_email = current_user&.email
+    authenticated = user_signed_in?
+
+    Rails.logger.info "SESSION_DEBUG: Authentication check - Controller: #{controller_name}, Action: #{action_name}, Session ID: #{session_id}, User ID: #{user_id}, User Email: #{user_email}, Authenticated: #{authenticated}, Time: #{Time.current}"
+
+    # Log session data for debugging (Warden uses string keys like "warden.user.user.key")
+    warden_keys = session.keys.select { |k| k.to_s.start_with?('warden.') }
+    if warden_keys.any?
+      Rails.logger.info "SESSION_DEBUG: ✅ Warden authentication keys present: #{warden_keys.join(', ')} - Session ID: #{session_id}, Time: #{Time.current}"
+    else
+      Rails.logger.warn "SESSION_DEBUG: ❌ No Warden authentication keys found - Session ID: #{session_id}, Time: #{Time.current}"
+    end
+
+    # Simple cookie logging
+    auth_cookie = cookies['_tanooki_session']
+    remember_cookie = cookies['remember_user_token']
+
+    Rails.logger.info "SIMPLE_COOKIE_DEBUG: Auth cookie present: #{auth_cookie.present?}, Remember cookie present: #{remember_cookie.present?}"
+
+    return unless auth_cookie.present?
+
+    Rails.logger.info "SIMPLE_COOKIE_DEBUG: Auth cookie length: #{auth_cookie.length}"
+  end
+
+  def log_memory_usage
+    memory_usage = GetProcessMem.new.mb
+    return unless memory_usage > 500
+
+    Rails.logger.warn "High memory usage detected: #{memory_usage.round(2)}MB in #{controller_name}##{action_name}"
+  end
 
   def pokemon_appearance
     return if params[:page].present?
