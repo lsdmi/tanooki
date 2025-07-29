@@ -42,90 +42,125 @@ namespace :session do
 
     puts "\n=== Current Session Info ==="
     puts "  Session ID: #{Rails.application.config.session_store}"
-    puts "  Cookie Domain: #{Rails.application.config.session_store == ActionDispatch::Session::CookieStore ? 'Default' : 'Custom'}"
-    puts "  Cookie Secure: #{Rails.application.config.force_ssl ? 'Yes' : 'No'}"
-    puts "  Cookie HttpOnly: #{Rails.application.config.session_store == ActionDispatch::Session::CookieStore ? 'Yes' : 'No'}"
-
-    puts "\n=== Cookie Testing ==="
-    test_cookie_encryption
   end
 
-  desc 'Test cookie encryption and decryption'
-  task test_cookies: :environment do
-    puts '=== Cookie Encryption Test ==='
-    test_cookie_encryption
-  end
+  desc 'Test session logging by making a test request'
+  task test_logging: :environment do
+    puts '=== Testing Session Logging ==='
 
-  private
-
-  def test_cookie_encryption
-    # Test cookie encryption/decryption
-    test_data = { 'user_id' => 123, 'email' => 'test@example.com', 'timestamp' => Time.current.to_i }
-
-    puts "Testing cookie encryption with data: #{test_data}"
-
+    # Create a test request to trigger logging
     begin
-      # Create a test request and cookie jar
+      # Create a test environment
       env = {
         'HTTP_HOST' => 'localhost:3000',
         'REQUEST_METHOD' => 'GET',
+        'PATH_INFO' => '/',
         'rack.input' => StringIO.new,
-        'action_dispatch.request_id' => 'test-request-id'
+        'action_dispatch.request_id' => 'test-session-logging',
+        'action_dispatch.secret_key_base' => Rails.application.secret_key_base,
+        'action_dispatch.signed_cookie_salt' => 'signed cookie',
+        'action_dispatch.encrypted_cookie_salt' => 'encrypted cookie',
+        'action_dispatch.encrypted_signed_cookie_salt' => 'signed encrypted cookie'
       }
 
-      request = ActionDispatch::TestRequest.create(env)
-      cookie_jar = request.cookie_jar
+      app = Rails.application
+      status, headers, body = app.call(env)
 
-      # Test basic cookie functionality
-      cookie_jar['test_cookie'] = 'test_value'
-      test_cookie = cookie_jar['test_cookie']
-      puts '✓ Basic cookie functionality works'
-      puts "  Test cookie value: #{test_cookie}"
+      puts "✅ Test request completed - Status: #{status}"
+      puts '✅ Check your logs for SESSION_ENTRY_CHECK and SESSION_EXIT_CHECK messages'
+      puts '✅ Look for MIDDLEWARE_ENTRY and MIDDLEWARE_EXIT messages'
+      puts '✅ Look for WARDEN_ENTRY and WARDEN_EXIT messages'
 
-      # Test signed cookies
-      cookie_jar.signed['signed_cookie'] = test_data
-      signed_cookie = cookie_jar['signed_cookie']
-      puts '✓ Signed cookie encryption successful'
-      puts "  Signed cookie length: #{signed_cookie.length}"
-
-      # Test encrypted cookies
-      cookie_jar.encrypted['encrypted_cookie'] = test_data
-      encrypted_cookie = cookie_jar['encrypted_cookie']
-      puts '✓ Encrypted cookie encryption successful'
-      puts "  Encrypted cookie length: #{encrypted_cookie.length}"
+      if headers['Set-Cookie']
+        puts '✅ Session cookie was set in response'
+      else
+        puts '⚠️  No session cookie set in response'
+      end
     rescue StandardError => e
-      puts "✗ Cookie test failed: #{e.message}"
-      puts "  Error class: #{e.class}"
-      puts "  Backtrace: #{e.backtrace.first(3).join("\n    ")}"
+      puts "❌ Test request failed: #{e.message}"
+      puts "Error class: #{e.class}"
     end
-
-    puts "\n=== Session Store Test ==="
-    test_session_store
   end
 
-  def test_session_store
-    # Test session store functionality
-    puts 'Testing session store functionality...'
+  desc 'Monitor session logs in real-time'
+  task monitor: :environment do
+    puts '=== Session Log Monitor ==='
+    puts 'This will show session-related log messages in real-time.'
+    puts 'Press Ctrl+C to stop monitoring.'
+    puts ''
 
-    begin
-      # Create a mock request
-      env = {
-        'HTTP_HOST' => 'localhost:3000',
-        'REQUEST_METHOD' => 'GET',
-        'rack.input' => StringIO.new,
-        'action_dispatch.request_id' => 'test-request-id'
-      }
+    # This is a simple log monitoring approach
+    # In production, you might want to use a more sophisticated log monitoring tool
 
-      # Create a session store instance
-      session_store = Rails.application.config.session_store.new(nil, {})
-      puts '✓ Session store created successfully'
+    log_file = Rails.env.production? ? 'log/production.log' : 'log/development.log'
 
-      # Test session ID generation
-      session_id = session_store.generate_sid
-      puts "✓ Session ID generated: #{session_id}"
-    rescue StandardError => e
-      puts "✗ Session store test failed: #{e.message}"
-      puts "  Error class: #{e.class}"
+    if File.exist?(log_file)
+      puts "Monitoring log file: #{log_file}"
+      puts 'Looking for session-related messages...'
+      puts ''
+
+      # Simple log tailing (this is basic - consider using a proper log monitoring tool)
+      begin
+        File.open(log_file, 'r') do |file|
+          file.seek(0, IO::SEEK_END)
+
+          loop do
+            if line = file.gets
+              if line.include?('SESSION_ENTRY_CHECK') ||
+                 line.include?('SESSION_EXIT_CHECK') ||
+                 line.include?('MIDDLEWARE_ENTRY') ||
+                 line.include?('MIDDLEWARE_EXIT') ||
+                 line.include?('WARDEN_ENTRY') ||
+                 line.include?('WARDEN_EXIT') ||
+                 line.include?('COOKIE_ENTRY') ||
+                 line.include?('COOKIE_EXIT')
+                puts line.strip
+              end
+            else
+              sleep 0.1
+            end
+          end
+        end
+      rescue Interrupt
+        puts "\nMonitoring stopped."
+      end
+    else
+      puts "❌ Log file not found: #{log_file}"
+      puts 'Make sure the application is running and generating logs.'
+    end
+  end
+
+  desc 'Show recent session-related log entries'
+  task recent: :environment do
+    puts '=== Recent Session Log Entries ==='
+
+    log_file = Rails.env.production? ? 'log/production.log' : 'log/development.log'
+
+    if File.exist?(log_file)
+      puts "Reading recent entries from: #{log_file}"
+      puts ''
+
+      # Read last 100 lines and filter for session-related messages
+      lines = File.readlines(log_file).last(100)
+      session_lines = lines.select do |line|
+        line.include?('SESSION_ENTRY_CHECK') ||
+          line.include?('SESSION_EXIT_CHECK') ||
+          line.include?('MIDDLEWARE_ENTRY') ||
+          line.include?('MIDDLEWARE_EXIT') ||
+          line.include?('WARDEN_ENTRY') ||
+          line.include?('WARDEN_EXIT') ||
+          line.include?('COOKIE_ENTRY') ||
+          line.include?('COOKIE_EXIT')
+      end
+
+      if session_lines.any?
+        session_lines.each { |line| puts line.strip }
+      else
+        puts 'No recent session-related log entries found.'
+        puts 'Try making some requests to the application first.'
+      end
+    else
+      puts "❌ Log file not found: #{log_file}"
     end
   end
 end
