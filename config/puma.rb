@@ -6,15 +6,13 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-max_threads_count = ENV.fetch('RAILS_MAX_THREADS', 5)
+max_threads_count = ENV.fetch('RAILS_MAX_THREADS', 3)
 min_threads_count = ENV.fetch('RAILS_MIN_THREADS') { max_threads_count }
 threads min_threads_count, max_threads_count
 
 # Specifies the `worker_timeout` threshold that Puma will use to wait before
 # terminating a worker in development environments.
 #
-worker_timeout 30 if ENV.fetch('RAILS_ENV', 'production') == 'production'
-worker_timeout 3600 if ENV.fetch('RAILS_ENV', 'development') == 'development'
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
@@ -33,7 +31,7 @@ pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers ENV.fetch('WEB_CONCURRENCY', 2)
+workers ENV.fetch('WEB_CONCURRENCY', 1)
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
@@ -47,27 +45,11 @@ before_fork do
   ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
 end
 
-# Restart workers after a certain number of requests to prevent memory leaks
-worker_boot_timeout 30
-worker_shutdown_timeout 30
-
-# Optional: Restart workers after processing a certain number of requests
-# This helps prevent memory leaks in long-running workers
-worker_timeout 3600 # Restart workers after 1 hour
-
 # Add memory monitoring hook
 on_worker_boot do
   # Reconnect to the database after forking in each worker
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
   # Add other resource reconnections here if needed (e.g., Redis)
-
-  # Log memory usage on worker boot
-  MemoryMonitorService.log_memory_stats if defined?(MemoryMonitorService)
-end
-
-# Monitor memory usage and restart workers if needed
-on_worker_shutdown do
-  Rails.logger.info "Worker shutting down - memory usage: #{GetProcessMem.new.mb.round(2)}MB"
 end
 
 # Allow puma to be restarted by `bin/rails restart` command.
