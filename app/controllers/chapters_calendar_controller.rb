@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChaptersCalendarController < ApplicationController
+  before_action :pokemon_appearance, only: [:index]
+
   def index
     @fictions = cached_fictions
   end

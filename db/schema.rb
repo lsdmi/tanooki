@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_04_231059) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -298,8 +298,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_04_231059) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "pokemon_last_catch", default: "2025-06-22 23:37:31"
-    t.datetime "pokemon_last_training", default: "2025-06-22 23:37:31"
+    t.datetime "pokemon_last_catch", default: "2025-08-08 20:16:55"
+    t.datetime "pokemon_last_training", default: "2025-08-08 20:16:55"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

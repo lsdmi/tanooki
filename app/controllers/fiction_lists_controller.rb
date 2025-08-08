@@ -2,6 +2,7 @@
 
 class FictionListsController < ApplicationController
   before_action :load_advertisement
+  before_action :pokemon_appearance, only: [:alphabetical]
 
   def alphabetical
     @pagy, @fictions = paginated_fictions

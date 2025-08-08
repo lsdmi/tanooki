@@ -6,6 +6,7 @@ class ScanlatorsController < ApplicationController
   before_action :authenticate_user!, except: :show
   before_action :set_scanlator, only: %i[show edit update destroy]
   before_action :verify_permissions, only: %i[edit update destroy]
+  before_action :pokemon_appearance, only: [:show]
 
   def index
     session[:studio_tab] = 'teams'
@@ -23,7 +24,7 @@ class ScanlatorsController < ApplicationController
       ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
       redirect_to scanlator_path(@scanlator), notice: 'Команду додано, час додати ваші твори.'
     else
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
     end
   end
 
@@ -38,7 +39,7 @@ class ScanlatorsController < ApplicationController
       ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
       redirect_to scanlator_path(@scanlator), notice: 'Команду оновлено.'
     else
-      render 'edit', status: :unprocessable_entity
+      render 'edit', status: :unprocessable_content
     end
   end
 

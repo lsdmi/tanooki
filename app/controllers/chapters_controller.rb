@@ -5,9 +5,10 @@ class ChaptersController < ApplicationController
   include LibraryHelper
 
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_chapter, only: %i[show edit update destroy]
+  before_action :set_chapter, only: %i[show edit update]
   before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
+  before_action :pokemon_appearance, only: [:show]
 
   def show
     @comments = @chapter.comments.parents.order(created_at: :desc)
@@ -28,7 +29,7 @@ class ChaptersController < ApplicationController
       update_fiction_status
       redirect_to reading_path(@chapter.fiction), notice: 'Розділ додано.'
     else
-      render 'chapters/new', status: :unprocessable_entity
+      render 'chapters/new', status: :unprocessable_content
     end
   end
 
@@ -39,7 +40,7 @@ class ChaptersController < ApplicationController
       ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
       redirect_to reading_path(@chapter.fiction), notice: 'Розділ оновлено.'
     else
-      render 'chapters/edit', status: :unprocessable_entity
+      render 'chapters/edit', status: :unprocessable_content
     end
   end
 

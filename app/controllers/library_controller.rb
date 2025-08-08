@@ -2,6 +2,7 @@
 
 class LibraryController < ApplicationController
   before_action :authenticate_user!
+  before_action :pokemon_appearance, only: [:index]
 
   def index
     data = LibraryDataService.new(current_user, section_param, page_param).call

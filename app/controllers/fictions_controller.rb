@@ -10,6 +10,7 @@ class FictionsController < ApplicationController
   before_action :load_advertisement, :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
   before_action :authorize_fiction_creation, only: %i[new create]
+  before_action :pokemon_appearance, only: %i[index show]
 
   def index
     @index_presenter = FictionIndexPresenter.new(params)
@@ -44,7 +45,7 @@ class FictionsController < ApplicationController
       ).call
       redirect_to @fiction, notice: 'Твір створено.'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -59,7 +60,7 @@ class FictionsController < ApplicationController
       ).call
       redirect_to @fiction, notice: 'Твір оновлено.'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

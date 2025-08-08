@@ -13,7 +13,7 @@ class PublicationsController < ApplicationController
       manage_tags if params[:publication][:tag_ids]
       redirect_to root_path, notice: 'Допис створено.'
     else
-      render 'publications/new', status: :unprocessable_entity
+      render 'publications/new', status: :unprocessable_content
     end
   end
 
@@ -22,7 +22,7 @@ class PublicationsController < ApplicationController
       manage_tags if params[:publication][:tag_ids]
       redirect_to tale_path(@publication), notice: 'Допис оновлено.'
     else
-      render 'sweetalert/edit', status: :unprocessable_entity
+      render 'sweetalert/edit', status: :unprocessable_content
     end
   end
 

@@ -22,7 +22,7 @@ module Admin
       if @advertisement.save
         redirect_to root_path, notice: 'Оголошення створено.'
       else
-        render 'admin/advertisements/new', status: :unprocessable_entity
+        render 'admin/advertisements/new', status: :unprocessable_content
       end
     end
 
@@ -30,7 +30,7 @@ module Admin
       if @advertisement.update(advertisement_params)
         redirect_to root_path, notice: 'Оголошення оновлено.'
       else
-        render 'admin/advertisements/edit', status: :unprocessable_entity
+        render 'admin/advertisements/edit', status: :unprocessable_content
       end
     end
 

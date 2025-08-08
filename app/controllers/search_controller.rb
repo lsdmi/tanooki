@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SearchController < ApplicationController
+  before_action :pokemon_appearance, only: [:index]
+
   def index
     return redirect_to root_path if transformed_param.nil?
 

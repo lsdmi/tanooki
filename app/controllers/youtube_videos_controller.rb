@@ -3,6 +3,7 @@
 class YoutubeVideosController < ApplicationController
   before_action :load_advertisement
   before_action :set_video, :track_visit, only: :show
+  before_action :pokemon_appearance, only: %i[index show]
 
   def index
     @highlight = highlight

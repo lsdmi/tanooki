@@ -53,7 +53,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
       post chapters_url, params: { chapter: { content: '', fiction_id: '', number: '', title: '' } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test 'should get edit' do
@@ -76,6 +76,6 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not update chapter with invalid data' do
     patch chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 end

@@ -74,7 +74,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
       post fictions_url, params: { fiction: { title: '', author: '', user_id: @fiction.user_id } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test 'should get edit' do
@@ -100,7 +100,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not update fiction with invalid params' do
     patch fiction_url(@fiction), params: { fiction: { title: '' } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     @fiction.reload
     assert_not_equal '', @fiction.title
   end

@@ -3,6 +3,7 @@
 class TalesController < ApplicationController
   before_action :load_advertisement, only: %i[index show]
   before_action :set_tale, :track_visit, only: :show
+  before_action :pokemon_appearance, only: %i[index show]
 
   def index
     @highlights = highlights
@@ -50,14 +51,22 @@ class TalesController < ApplicationController
   end
 
   def highlights
-    Rails.cache.fetch('highlights', expires_in: 4.hours) do
-      all_publications.first(11)
-    end
+    cached_ids = highlight_ids
+    Publication.includes([{ cover_attachment: :blob }, :rich_text_description,
+                          :tags]).where(id: cached_ids).order(created_at: :desc)
   end
 
   def publications
-    Rails.cache.fetch('publications', expires_in: 4.hours) do
-      all_publications.excluding(@highlights)
+    cached_ids = Rails.cache.fetch('publications', expires_in: 4.hours) do
+      all_publications.where.not(id: highlight_ids).map(&:id)
+    end
+    Publication.includes([{ cover_attachment: :blob }, :rich_text_description,
+                          :tags]).where(id: cached_ids).order(created_at: :desc)
+  end
+
+  def highlight_ids
+    Rails.cache.fetch('highlights', expires_in: 4.hours) do
+      all_publications.first(11).map(&:id)
     end
   end
 end

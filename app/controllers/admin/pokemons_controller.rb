@@ -17,7 +17,7 @@ module Admin
         manage_types if params[:pokemon][:type_ids]
         redirect_to admin_pokemons_path, notice: 'Дані про покемона додано.'
       else
-        render 'admin/pokemons/new', status: :unprocessable_entity
+        render 'admin/pokemons/new', status: :unprocessable_content
       end
     end
 
@@ -26,7 +26,7 @@ module Admin
         manage_types if params[:pokemon][:type_ids]
         redirect_to admin_pokemons_path, notice: 'Дані про покемона оновлено.'
       else
-        render 'admin/pokemons/edit', status: :unprocessable_entity
+        render 'admin/pokemons/edit', status: :unprocessable_content
       end
     end
 

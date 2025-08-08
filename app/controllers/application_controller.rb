@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
 
-  before_action :pokemon_appearance, only: %i[index show]
-
   def handle_error
     render :error, status: :internal_server_error
   end

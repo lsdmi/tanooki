@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ChatController < ApplicationController
-  before_action :authenticate_user!, only: [:speak]
-
   def recent_messages
     ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?
     messages = ChatMessage.includes(:user, user: :avatar)

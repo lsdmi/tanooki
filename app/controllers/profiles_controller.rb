@@ -2,6 +2,7 @@
 
 class ProfilesController < ApplicationController
   before_action :set_user, only: :show
+  before_action :pokemon_appearance, only: [:show]
 
   def show
     # The user is already set by the before_action

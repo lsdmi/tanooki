@@ -55,7 +55,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_template 'new'
   end
 
