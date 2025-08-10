@@ -77,11 +77,11 @@
       <main>
         <%= yield %>
         <%= turbo_frame_tag 'catch-pokemon' do %>
-          <%= render 'shared/pokemon', pokemon: @wild_pokemon %>
+          <%#= render 'shared/pokemon', pokemon: @wild_pokemon %>
         <% end if @wild_pokemon %>
       </main>
     </div>
     <%= render "shared/footer" %>
-    <%= render "shared/chat_widget" %>
+    <%#= render "shared/chat_widget" %>
   </body>
 </html>

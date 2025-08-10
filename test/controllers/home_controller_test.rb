@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   def setup
     @controller = HomeController.new
   end

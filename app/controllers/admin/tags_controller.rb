@@ -2,7 +2,7 @@
 
 module Admin
   class TagsController < ApplicationController
-    before_action :authenticate_user!, :verify_user_permissions
+    before_action :require_authentication, :verify_user_permissions
 
     def index
       @tag = Tag.new

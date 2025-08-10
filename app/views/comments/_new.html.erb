@@ -18,7 +18,7 @@
 
   <%= f.hidden_field :commentable_id, value: commentable.id %>
   <%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
-  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.hidden_field :user_id, value: Current.user.id %>
   <%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
 
   <%= f.text_area :content,

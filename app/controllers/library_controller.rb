@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class LibraryController < ApplicationController
-  before_action :authenticate_user!
+  before_action :require_authentication
   before_action :pokemon_appearance, only: [:index]
 
   def index
-    data = LibraryDataService.new(current_user, section_param, page_param).call
+    data = LibraryDataService.new(Current.user, section_param, page_param).call
 
     @section = data[:section]
     @history = data[:history]
@@ -20,8 +20,8 @@ class LibraryController < ApplicationController
     new_status = params[:status]&.to_sym
     current_section = params[:current_section]&.to_sym || :active
 
-    ReadingProgressStatusService.new(reading_progress, new_status, current_user).call
-    library_data = LibraryDataService.new(current_user, current_section, page_param).call
+    ReadingProgressStatusService.new(reading_progress, new_status, Current.user).call
+    library_data = LibraryDataService.new(Current.user, current_section, page_param).call
 
     @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
 
@@ -31,7 +31,7 @@ class LibraryController < ApplicationController
   private
 
   def related_fictions
-    Rails.cache.fetch("user:#{current_user.id}:related_fictions:#{@section}", expires_in: 5.minutes) do
+    Rails.cache.fetch("user:#{Current.user.id}:related_fictions:#{@section}", expires_in: 5.minutes) do
       RelatedFictionsCollector.new(
         @history_presenter.section(:active),
         5,
@@ -41,7 +41,7 @@ class LibraryController < ApplicationController
   end
 
   def favourite_translators
-    Rails.cache.fetch("user:#{current_user.id}:favourite_translators:#{@section}", expires_in: 5.minutes) do
+    Rails.cache.fetch("user:#{Current.user.id}:favourite_translators:#{@section}", expires_in: 5.minutes) do
       FavouriteTranslatorsFinder.new(@history_presenter.section(:active)).find
     end
   end

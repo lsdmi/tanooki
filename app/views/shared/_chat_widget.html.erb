@@ -48,7 +48,7 @@
 
     <!-- Chat Input -->
     <div class="p-3 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-b-lg">
-      <% if user_signed_in? %>
+      <% if authenticated? %>
         <div class="flex space-x-2">
           <input type="text"
                  id="chat-input"
@@ -67,7 +67,7 @@
       <% else %>
         <div class="text-center py-3">
           <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            🔒 <%= link_to "Увійдіть", new_user_session_path, class: "text-cyan-600 hover:text-cyan-700 dark:text-rose-400 dark:hover:text-rose-300 font-medium underline" %>, щоб відправити повідомлення
+            🔒 <%= link_to "Увійдіть", new_session_path, class: "text-cyan-600 hover:text-cyan-700 dark:text-rose-400 dark:hover:text-rose-300 font-medium underline" %>, щоб відправити повідомлення
           </p>
         </div>
       <% end %>

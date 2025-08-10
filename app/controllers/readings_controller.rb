@@ -3,19 +3,19 @@
 class ReadingsController < ApplicationController
   include LibraryHelper
 
-  before_action :authenticate_user!
+  before_action :require_authentication
   before_action :set_fiction, only: :show
   before_action :set_chapter, only: :destroy
   before_action :authorize_chapter_deletion, only: :destroy
 
   def show
-    redirect_to root_path unless current_user.admin? || current_user.fictions.include?(@fiction)
+    redirect_to root_path unless Current.user.admin? || Current.user.fictions.include?(@fiction)
 
-    @pagy, @chapters = pagy(ordered_user_chapters_desc(@fiction, current_user), limit: 36)
+    @pagy, @chapters = pagy(ordered_user_chapters_desc(@fiction, Current.user), limit: 36)
   end
 
   def destroy
-    stack_size = @chapter.fiction.chapters.by_user_scanlators(current_user).size
+    stack_size = @chapter.fiction.chapters.by_user_scanlators(Current.user).size
     @chapter.destroy
 
     handle_scanlators_destruction(stack_size)
@@ -35,7 +35,7 @@ class ReadingsController < ApplicationController
   end
 
   def authorize_chapter_deletion
-    return if current_user.admin? || current_user.chapters.include?(@chapter)
+    return if Current.user.admin? || Current.user.chapters.include?(@chapter)
 
     redirect_to root_path
   end
@@ -43,13 +43,13 @@ class ReadingsController < ApplicationController
   def handle_scanlators_destruction(stack_size)
     return unless @chapter.fiction.scanlators.size > 1 && stack_size == 1
 
-    current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
+    Current.user.scanlators.each { |scanlator| destroy_association(scanlator) }
   end
 
   def reload_fiction_chapters
     @fiction = @chapter.fiction
     @pagy, @chapters = pagy(
-      ordered_user_chapters_desc(@fiction, current_user),
+      ordered_user_chapters_desc(@fiction, Current.user),
       limit: 10,
       request_path: reading_path(@fiction),
       page: params[:page] || 1

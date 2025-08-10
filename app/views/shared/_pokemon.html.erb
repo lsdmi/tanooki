@@ -1,6 +1,6 @@
 <div class="absolute z-50" style="left: <%= rand(0..100) %>vw; top: <%= rand(0..100) %>vh;">
-  <% if current_user.present? %>
-    <%= button_to catch_pokemon_path(user_pokemon: { pokemon_id: pokemon.id, user_id: current_user&.id }), data: { turbo_stream: "", "turbo-method": :post } do %>
+  <% if authenticated? %>
+    <%= button_to catch_pokemon_path(user_pokemon: { pokemon_id: pokemon.id, user_id: Current.user&.id }), data: { turbo_stream: "", "turbo-method": :post } do %>
       <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'cursor-pointer' %>
     <% end %>
   <% else %>

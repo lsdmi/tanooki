@@ -7,7 +7,7 @@ class PokemonBattlesController < ApplicationController
     else
       battle_service.start_battle
       create_battle_log
-      Rails.cache.delete("user:#{current_user.id}:battle_history")
+      Rails.cache.delete("user:#{Current.user.id}:battle_history")
       render turbo_stream: [refresh_leaders, refresh_history, remove_call]
     end
   end
@@ -15,21 +15,21 @@ class PokemonBattlesController < ApplicationController
   private
 
   def battle_history
-    current_user.latest_battle_log
+    Current.user.latest_battle_log
   end
 
   def battle_service
     @battle_service ||= PokemonBattleService.new(
-      attacker_pokemons: current_user.user_pokemons,
+      attacker_pokemons: Current.user.user_pokemons,
       defender_pokemons: defender.user_pokemons,
-      attacker_id: current_user.id,
+      attacker_id: Current.user.id,
       defender_id: params[:defender]
     )
   end
 
   def create_battle_log
     PokemonBattleLog.create(
-      attacker_id: current_user.id,
+      attacker_id: Current.user.id,
       defender_id: params[:defender],
       winner_id: battle_service.winner_id,
       details: battle_service.fight_details
@@ -52,13 +52,13 @@ class PokemonBattlesController < ApplicationController
     dex_overall = User.dex_leaders
 
     DexLeaderboard.new(
-      dex_overall.index(current_user),
+      dex_overall.index(Current.user),
       dex_overall.size
     ).call.then { |idx| dex_overall[idx] }
   end
 
   def pokemons
-    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
+    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: Current.user).order('pokemons.dex_id')
   end
 
   def possible_fraud?
@@ -98,10 +98,10 @@ class PokemonBattlesController < ApplicationController
   end
 
   def self_fight
-    current_user.id == defender.id
+    Current.user.id == defender.id
   end
 
   def user_last_battle
-    current_user.battle_logs.maximum(:updated_at) || 1.year.ago
+    Current.user.battle_logs.maximum(:updated_at) || 1.year.ago
   end
 end

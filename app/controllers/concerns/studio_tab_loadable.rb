@@ -15,7 +15,7 @@ module StudioTabLoadable
   end
 
   def load_tab_content
-    service = StudioTabContentService.new(current_user, @active_tab, params)
+    service = StudioTabContentService.new(Current.user, @active_tab, params)
     service.call
     assign_instance_variables_from_service(service)
   end

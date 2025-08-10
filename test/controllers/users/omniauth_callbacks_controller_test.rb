@@ -4,95 +4,42 @@ require 'test_helper'
 
 module Users
   class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
-    include Devise::Test::IntegrationHelpers
-
-    def setup
-      @user = users(:user_one)
-      @controller = Users::OmniauthCallbacksController.new
-    end
-
-    test 'should call success_google_oauth if user is persisted' do
-      request = ActionController::TestRequest.new({}, nil, :get)
-      request.env['omniauth.auth'] = 'google'
-
-      success_google_oauth_mock = Minitest::Mock.new
-      success_google_oauth_mock.expect(:call, nil)
-
-      User.stub(:from_omniauth, @user) do
-        @user.stub(:persisted?, true) do
-          @controller.stub :request, request do
-            @controller.stub(:success_google_oauth, success_google_oauth_mock) do
-              @controller.send(:google_oauth2)
-            end
-          end
-        end
-      end
-
-      assert_mock(success_google_oauth_mock)
-    end
-
-    test 'should call failure_google_oauth if user is not persisted' do
-      request = ActionController::TestRequest.new({}, nil, :get)
-      request.env['omniauth.auth'] = 'google'
-
-      failure_google_oauth_mock = Minitest::Mock.new
-      failure_google_oauth_mock.expect(:call, nil)
-
-      User.stub(:from_omniauth, @user) do
-        @user.stub(:persisted?, false) do
-          @controller.stub :request, request do
-            @controller.stub(:failure_google_oauth, failure_google_oauth_mock) do
-              @controller.send(:google_oauth2)
-            end
-          end
-        end
-      end
-
-      assert_mock(failure_google_oauth_mock)
-    end
-
-    test 'success_google_oauth should set flash notice and sign in the user' do
-      request = ActionController::TestRequest.new({}, nil, :get)
-      request.flash = { notice: 'My Notice' }
-
-      sign_in_and_redirect_mock = Minitest::Mock.new
-      sign_in_and_redirect_mock.expect(:call, nil, [nil], event: :authentication)
-
-      @controller.stub :request, request do
-        @controller.stub(:sign_in_and_redirect, sign_in_and_redirect_mock) do
-          @controller.stub(:session, {}) do
-            @controller.send(:success_google_oauth)
-            assert_equal request.flash[:notice], I18n.t('devise.omniauth_callbacks.success', kind: 'Google')
-          end
-        end
-      end
-
-      sign_in_and_redirect_mock.verify
-    end
-  end
-end
-
-module Users
-  class OmniauthCallbacksIntegrationTest < ActionDispatch::IntegrationTest
-    include Devise::Test::IntegrationHelpers
-
     setup do
-      @user = users(:user_one)
-      @controller = Users::OmniauthCallbacksController.new
-      @session = { pokemon_guest_caught: true, caught_pokemon_id: 2 }
-      @request = ActionController::TestRequest.new({}, nil, :get)
-      @request.flash = { notice: 'My Notice' }
+      OmniAuth.config.test_mode = true
+      OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+                                                                           'provider' => 'google_oauth2',
+                                                                           'uid' => '12345',
+                                                                           'info' => {
+                                                                             'email' => 'test@example.com',
+                                                                             'name' => 'Test User',
+                                                                             'email_verified' => true
+                                                                           }
+                                                                         })
     end
 
-    test 'should create user pokemon and update turbo streams' do
-      assert_difference('UserPokemon.count') do
-        @controller.stub(:session, @session) do
-          @controller.stub :request, @request do
-            @controller.instance_variable_set(:@user, @user)
-            @controller.send(:notice_pokemon_catch)
-          end
-        end
+    test 'should handle Google OAuth2 callback successfully' do
+      user = users(:user_one)
+      User.stub :from_omniauth, user do
+        get '/auth/google_oauth2/callback'
+        assert_redirected_to root_path
+        assert_equal 'Успішно автентифіковано з облікового запису Google.', flash[:notice]
       end
+    end
+
+    test 'should handle Google OAuth2 callback failure' do
+      # Mock a user with validation errors
+      user = User.new
+      user.errors.add(:base, 'Some error')
+      User.stub :from_omniauth, user do
+        get '/auth/google_oauth2/callback'
+        assert_redirected_to new_session_path
+        assert_equal 'Some error', flash[:alert]
+      end
+    end
+
+    teardown do
+      OmniAuth.config.test_mode = false
+      OmniAuth.config.mock_auth[:google_oauth2] = nil
     end
   end
 end

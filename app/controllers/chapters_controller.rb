@@ -4,7 +4,7 @@ class ChaptersController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
-  before_action :authenticate_user!, except: %i[show]
+  before_action :require_authentication, except: %i[show]
   before_action :set_chapter, only: %i[show edit update]
   before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
@@ -57,11 +57,11 @@ class ChaptersController < ApplicationController
   end
 
   def track_reading_progress
-    ReadingProgressTracker.new(chapter: @chapter, user: current_user).call
+    ReadingProgressTracker.new(chapter: @chapter, user: Current.user).call
   end
 
   def verify_permissions
-    redirect_to root_path unless current_user.admin? || current_user.chapters.include?(@chapter)
+    redirect_to root_path unless Current.user.admin? || Current.user.chapters.include?(@chapter)
   end
 
   def update_fiction_status

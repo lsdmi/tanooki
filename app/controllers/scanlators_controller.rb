@@ -3,7 +3,7 @@
 class ScanlatorsController < ApplicationController
   include FictionQuery
 
-  before_action :authenticate_user!, except: :show
+  before_action :require_authentication, except: :show
   before_action :set_scanlator, only: %i[show edit update destroy]
   before_action :verify_permissions, only: %i[edit update destroy]
   before_action :pokemon_appearance, only: [:show]
@@ -72,7 +72,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def scanlators_scope
-    if current_user.admin?
+    if Current.user.admin?
       Scanlator.includes(:avatar_attachment).order(:title)
     else
       user.scanlators.includes(:avatar_attachment).order(:title)
@@ -84,6 +84,6 @@ class ScanlatorsController < ApplicationController
   end
 
   def verify_permissions
-    redirect_to root_path unless current_user.admin? || current_user.scanlators.include?(@scanlator)
+    redirect_to root_path unless Current.user.admin? || Current.user.scanlators.include?(@scanlator)
   end
 end

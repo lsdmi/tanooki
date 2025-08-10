@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class LibraryControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @user = users(:user_two)
     sign_in @user

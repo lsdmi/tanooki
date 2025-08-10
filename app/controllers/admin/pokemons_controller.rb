@@ -2,7 +2,7 @@
 
 module Admin
   class PokemonsController < ApplicationController
-    before_action :authenticate_user!, :verify_user_permissions
+    before_action :require_authentication, :verify_user_permissions
     before_action :set_pokemon, only: %i[edit update destroy]
     before_action :set_types, only: %i[new create edit update]
 

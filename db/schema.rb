@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_09_234825) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -262,6 +262,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -283,28 +292,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
+    t.string "password_digest", default: "", null: false
     t.string "name", null: false
     t.boolean "admin", default: false
     t.bigint "avatar_id"
     t.integer "battle_win_rate", default: 50
     t.bigint "latest_read_comment_id"
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "pokemon_last_catch", default: "2025-08-08 20:16:55"
     t.datetime "pokemon_last_training", default: "2025-08-08 20:16:55"
+    t.string "remember_token"
+    t.string "email_verification_token"
+    t.datetime "email_verified_at"
+    t.datetime "email_verification_sent_at"
+    t.string "password_reset_token"
+    t.datetime "password_reset_sent_at"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email_verification_token"], name: "index_users_on_email_verification_token", unique: true
     t.index ["latest_read_comment_id"], name: "index_users_on_latest_read_comment_id"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
+    t.index ["remember_token"], name: "index_users_on_remember_token", unique: true
   end
 
   create_table "youtube_channels", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -359,6 +368,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
   add_foreign_key "reading_progresses", "users", on_delete: :cascade
   add_foreign_key "scanlator_users", "scanlators"
   add_foreign_key "scanlator_users", "users"
+  add_foreign_key "sessions", "users"
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"

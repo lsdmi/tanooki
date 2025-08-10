@@ -27,7 +27,7 @@
             <%= tag.span resource.errors[:email].uniq.join(""), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
           </div>
           <div class="flex justify-end mt-4">
-            <%= link_to 'Перейти до Авторизації', new_user_session_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+            <%= link_to 'Перейти до Авторизації', new_session_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
           </div>
           <%= f.button :submit, "Відновити Пароль", class: "mt-8 w-full py-3 rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-lg tracking-wide shadow-lg transition uppercase" %>
         <% end %>

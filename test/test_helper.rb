@@ -33,3 +33,27 @@ module ActiveSupport
     fixtures :all
   end
 end
+
+# Helper method for authenticating users in tests
+module AuthenticationTestHelper
+  def sign_in(user)
+    session_record = user.sessions.create!(
+      user_agent: 'Test User Agent',
+      ip_address: '127.0.0.1'
+    )
+
+    # In tests, we need to set the cookie directly since signed cookies aren't available
+    cookies[:session_id] = session_record.id
+    Current.session = session_record
+  end
+
+  def sign_out
+    cookies.delete(:session_id)
+    Current.session = nil
+  end
+end
+
+# Include the helper in ActionDispatch::IntegrationTest
+class ActionDispatch::IntegrationTest
+  include AuthenticationTestHelper
+end

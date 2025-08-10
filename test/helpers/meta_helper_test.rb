@@ -6,7 +6,6 @@ class MetaHelperTest < ActionView::TestCase
   include ApplicationHelper
   include MetaCoverHelper
   include MetaDescriptionHelper
-  include Devise::Test::IntegrationHelpers
 
   test 'should get meta_title for root path' do
     request.path = root_path

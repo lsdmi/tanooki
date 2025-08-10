@@ -3,7 +3,7 @@
 class UserPokemonsController < ApplicationController
   def create
     if pokemon_catch_permitted?
-      current_user.update(pokemon_last_catch: Time.now)
+      Current.user.update(pokemon_last_catch: Time.now)
       PokemonCatchService.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
         user_id: user_pokemon_params[:user_id]
@@ -15,18 +15,18 @@ class UserPokemonsController < ApplicationController
   end
 
   def training
-    if current_user.pokemon_last_training > 4.hours.ago
+    if Current.user.pokemon_last_training > 4.hours.ago
       render turbo_stream: refresh_error_screen
     else
       train_pokemon
-      current_user.update(pokemon_last_training: Time.now)
+      Current.user.update(pokemon_last_training: Time.now)
       render turbo_stream: [refresh_screen, update_notice(@alert)]
     end
   end
 
   def regenerate_opponent
-    Rails.cache.delete("opponent_for_user:#{current_user.id}")
-    @pokemon_show = PokemonShow.new(current_user)
+    Rails.cache.delete("opponent_for_user:#{Current.user.id}")
+    @pokemon_show = PokemonShow.new(Current.user)
     render turbo_stream: turbo_stream.update(
       'pokemon-leaderboard-screen',
       partial: 'users/pokemons/dex_leaderboard',
@@ -37,11 +37,11 @@ class UserPokemonsController < ApplicationController
   private
 
   def pokemon_catch_permitted?
-    current_user.pokemon_last_catch < 4.hours.ago
+    Current.user.pokemon_last_catch < 4.hours.ago
   end
 
   def pokemons
-    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
+    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: Current.user).order('pokemons.dex_id')
   end
 
   def refresh_error_screen
@@ -78,7 +78,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def train_level(pokemon)
-    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: current_user.id).evolve
+    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: Current.user.id).evolve
     @alert = "#{pokemon.name} набув нового якісного рівня!"
   end
 

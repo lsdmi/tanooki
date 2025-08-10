@@ -9,7 +9,7 @@
   </div>
 
   <div class="relative z-10">
-    <% if current_user&.scanlators&.any? && (current_user.scanlators.ids & fiction.scanlators.ids).any? %>
+    <% if Current.user&.scanlators&.any? && (Current.user.scanlators.ids & fiction.scanlators.ids).any? %>
       <%= tag.p class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' do %>
         Ваша команда <%= fiction.scanlators.all?(&:convertable?) ? 'підтримує' : 'не підтримує' %> завантаження в форматі EPUB. Ви можете змінити налаштування
         <%= link_to "в майстерні", fiction.scanlators.size == 1 ? edit_scanlator_path(fiction.scanlators.first) : scanlators_path, class: "text-stone-800 dark:text-gray-100 font-semibold hover:text-stone-600 dark:hover:text-gray-300 transition duration-300" %>.

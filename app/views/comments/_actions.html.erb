@@ -1,5 +1,5 @@
 <%= button_to new_comment_path,
-    params: { comment: { parent_id: comment.id, commentable_id: commentable.id, commentable_type: application_record_child(commentable), user_id: current_user.id } },
+    params: { comment: { parent_id: comment.id, commentable_id: commentable.id, commentable_type: application_record_child(commentable), user_id: Current.user.id } },
     method: :get,
     class: "text-stone-500 dark:text-gray-400 text-sm hover:text-stone-700 dark:hover:text-gray-300 transition duration-300 flex items-center space-x-1 bg-stone-100 dark:bg-gray-800 px-3 py-1 rounded-full hover:bg-stone-200 dark:hover:bg-gray-700",
     data: { turbo_stream: "" } do %>

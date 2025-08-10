@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @attacker = users(:user_one)
     @defender = users(:user_two)

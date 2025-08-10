@@ -34,6 +34,6 @@ module CommentsHelper
   end
 
   def show_comment_status?
-    current_user.latest_read_comment_id != latest_comments.first&.id
+    Current.user.latest_read_comment_id != latest_comments.first&.id
   end
 end

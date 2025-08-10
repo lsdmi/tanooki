@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class PokemonsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @pokemon = pokemons(:one)
 

@@ -7,7 +7,7 @@
       </h1>
       <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light mb-6">
         Вже маєте обліковий запис?
-        <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-semibold text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+        <%= link_to 'Поринути до Світу Аніме', new_session_path, class: 'font-semibold text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
       </p>
       <div class="bg-emerald-50 dark:bg-gray-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-gray-200 dark:border-gray-700">
         <%= simple_form_for(resource, as: resource_name, url: register_path, data: { turbo: false }) do |f| %>
@@ -83,7 +83,7 @@
           <%= render 'users/sessions/omniauth' %>
         </div>
         <div class="flex justify-end mt-4">
-          <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+          <%#= link_to 'Забули пароль?', new_user_password_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
         </div>
       </div>
     </div>

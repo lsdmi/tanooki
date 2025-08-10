@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :confirmable
+  has_secure_password
+  has_many :sessions, dependent: :destroy
 
-  devise :omniauthable, omniauth_providers: [:google_oauth2]
+  normalizes :email, with: ->(e) { e.strip.downcase }
 
   validates :name, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -36,21 +35,14 @@ class User < ApplicationRecord
       .order(battle_win_rate: :desc)
   }
 
-  def send_devise_notification(notification, *)
-    devise_mailer.send(notification, self, *).deliver_later
-  end
-
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(email: data[:email]).first
-
-    user || User.create(
-      avatar_id: Avatar.all.sample.id,
-      confirmed_at: Time.now,
-      email: data[:email],
-      name: data[:name][0, 20],
-      password: Devise.friendly_token[0, 20]
-    )
+  def self.from_omniauth(auth)
+    where(email: auth.info.email).first_or_initialize do |user|
+      user.email = auth.info.email
+      user.name = auth.info.name[0, 20] || auth.info.email.split('@').first[0, 20]
+      user.password = SecureRandom.hex(16)
+      user.email_verified_at = Time.current if auth.info.email_verified
+      user.avatar_id ||= Avatar.all.sample.id
+    end.tap(&:save!)
   end
 
   def battle_logs

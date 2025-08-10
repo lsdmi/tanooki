@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class PublicationsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @publication = publications(:tale_approved_one)
 

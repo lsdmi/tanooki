@@ -3,13 +3,11 @@
 require 'test_helper'
 
 class CommentsControllerTest < ActionDispatch::IntegrationTest
-  include Warden::Test::Helpers
-
   setup do
     @publication = publications(:tale_approved_one)
     @comment = comments(:comment_one)
     @user = users(:user_one)
-    login_as(@user, scope: :user)
+    sign_in @user
   end
 
   test 'should create comment' do

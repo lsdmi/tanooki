@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
-  include Devise::Test::IntegrationHelpers
-
   test 'punch should return string if first sentence if less than 20 characters' do
     string = 'This is a test. This is only a test.'
     assert_equal string, punch(string)

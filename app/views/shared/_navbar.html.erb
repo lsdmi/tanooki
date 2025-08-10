@@ -42,10 +42,10 @@
         </a>
         <%= render "shared/theme_toggle_button" %>
 
-        <% if current_user.present? %>
+        <% if authenticated? %>
           <%= render 'shared/user_dropdown' %>
         <% else %>
-          <%= link_to 'Увійти', new_user_session_path, class: 'inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white', area: { current: 'page' } %>
+          <%= link_to 'Увійти', new_session_path, class: 'inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white', area: { current: 'page' } %>
         <% end %>
       </div>
 
@@ -59,7 +59,7 @@
             Блоги
             <svg class="w-4 h-4 ms-2 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
-            </svg>              
+            </svg>
           </button>
 
           <!-- Mega Menu -->

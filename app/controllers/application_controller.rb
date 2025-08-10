@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Authentication
   include Pagy::Backend
 
   rescue_from StandardError, with: :handle_error if Rails.env.production?
@@ -8,15 +9,32 @@ class ApplicationController < ActionController::Base
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
 
   def handle_error
+    # Log the error details for debugging
+    Rails.logger.error "Error in handle_error: #{error_message}"
+    Rails.logger.error "Backtrace: #{error_backtrace&.first(5)&.join("\n")}"
+
     render :error, status: :internal_server_error
   end
 
   private
 
+  def error_message
+    # Get the actual error that was caught
+    $!.message if $!
+  rescue StandardError
+    'Unknown error'
+  end
+
+  def error_backtrace
+    $!.backtrace if $!
+  rescue StandardError
+    []
+  end
+
   def pokemon_appearance
     return if params[:page].present?
 
-    @wild_pokemon = PokemonService.new(user: current_user, session:).call
+    @wild_pokemon = PokemonService.new(user: Current.user, session:).call
   end
 
   def refresh_sweetalert
@@ -24,8 +42,8 @@ class ApplicationController < ActionController::Base
   end
 
   def latest_comments
-    Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 10.minutes) do
-      CommentsFetcher.new(current_user).collect
+    Rails.cache.fetch("latest_comments_for_#{Current.user.id}", expires_in: 10.minutes) do
+      CommentsFetcher.new(Current.user).collect
     end
   end
 
@@ -41,7 +59,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_user_permissions
-    redirect_to root_path unless current_user.admin?
+    redirect_to root_path unless Current.user.admin?
   end
 
   def videos

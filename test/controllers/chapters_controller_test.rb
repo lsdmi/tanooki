@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class ChaptersControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     sign_in users(:user_one)
     @chapter = chapters(:one)

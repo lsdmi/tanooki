@@ -2,7 +2,7 @@
 
 module Admin
   class GenresController < ApplicationController
-    before_action :authenticate_user!, :verify_user_permissions
+    before_action :require_authentication, :verify_user_permissions
 
     def index
       @genre = Genre.new

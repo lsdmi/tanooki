@@ -3,7 +3,7 @@
 module FictionQuery
   def dashboard_fiction_list
     fiction_all_query
-      .where('chapters.user_id = ? OR users.id = ?', current_user.id, current_user.id)
+      .where('chapters.user_id = ? OR users.id = ?', Current.user.id, current_usCurrent.userer.id)
       .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
       .group('fictions.id, fictions.created_at')
       .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))

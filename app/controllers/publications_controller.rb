@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PublicationsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :require_authentication
   before_action :set_publication, only: %i[edit update destroy]
   before_action :set_tags, only: %i[new create edit update]
   before_action :verify_permissions, except: %i[new create]
@@ -47,10 +47,10 @@ class PublicationsController < ApplicationController
   private
 
   def publications
-    if current_user.admin?
+    if Current.user.admin?
       Publication.all.order(created_at: :desc)
     else
-      current_user.publications.order(created_at: :desc)
+      Current.user.publications.order(created_at: :desc)
     end
   end
 
@@ -83,7 +83,7 @@ class PublicationsController < ApplicationController
   end
 
   def verify_permissions
-    redirect_to root_path unless current_user.admin? || current_user.publications.include?(@publication)
+    redirect_to root_path unless Current.user.admin? || Current.user.publications.include?(@publication)
   end
 
   def refresh_list

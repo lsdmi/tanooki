@@ -2,7 +2,7 @@
 
 module Admin
   class AdvertisementsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :require_authentication
     before_action :set_advertisement, only: %i[edit update]
     before_action :verify_user_permissions
 

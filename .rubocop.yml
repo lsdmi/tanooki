@@ -8,10 +8,6 @@ AllCops:
 Layout/EndOfLine:
   Enabled: False
 
-Layout/LineLength:
-  Exclude:
-    - 'config/initializers/devise.rb'
-
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/*'

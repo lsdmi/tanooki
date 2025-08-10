@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   test 'should get index as admin' do
     sign_in users(:user_one)
     get scanlators_path

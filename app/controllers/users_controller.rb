@@ -4,10 +4,10 @@ class UsersController < ApplicationController
   include FictionQuery
   include UserUpdateable
 
-  before_action :authenticate_user!
+  before_action :require_authentication
 
   def update
-    result = UserUpdateService.new(current_user, user_params).call
+    result = UserUpdateService.new(Current.user, user_params).call
 
     if result.success?
       render turbo_stream: [update_notice, update_navbar]

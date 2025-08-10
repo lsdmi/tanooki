@@ -16,7 +16,7 @@
           <p class="text-sm text-gray-500 dark:text-gray-400">Персоналізуйте свій акаунт та зробіть його унікальним</p>
         </div>
 
-        <%= simple_form_for current_user, url: user_path(current_user), method: :put, data: { turbo_stream: "" } do |f| %>
+        <%= simple_form_for Current.user, url: user_path(Current.user), method: :put, data: { turbo_stream: "" } do |f| %>
           <div class="max-w-2xl mx-auto space-y-8">
             <!-- Avatar Selection Section -->
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
@@ -36,7 +36,7 @@
                           action: 'click->image-click#addSelected',
                           "avatar-id": avatar.id
                         },
-                        class: "w-16 h-16 lg:w-18 cursor-pointer rounded-full shadow-md hover:shadow-lg transition-all duration-200 #{'ring-2 ring-cyan-500 ring-offset-2 scale-105' if current_user.avatar == avatar}" %>
+                        class: "w-16 h-16 lg:w-18 cursor-pointer rounded-full shadow-md hover:shadow-lg transition-all duration-200 #{'ring-2 ring-cyan-500 ring-offset-2 scale-105' if Current.user.avatar == avatar}" %>
                   </div>
                 <% end %>
               </div>
@@ -65,15 +65,15 @@
                       label: false,
                       placeholder: 'Введіть своє прізвисько' %>
                 </div>
-                <% if current_user.errors[:name].any? %>
+                <% if Current.user.errors[:name].any? %>
                   <p class="mt-2 text-sm text-red-600 dark:text-red-400 text-center">
-                    <%= current_user.errors[:name].to_sentence(two_words_connector: "", last_word_connector: "") %>
+                    <%= Current.user.errors[:name].to_sentence(two_words_connector: "", last_word_connector: "") %>
                   </p>
                 <% end %>
               </div>
             </div>
 
-            <%= f.input :avatar_id, as: :hidden, input_html: { value: current_user.avatar_id } %>
+            <%= f.input :avatar_id, as: :hidden, input_html: { value: Current.user.avatar_id } %>
 
             <!-- Submit Button Section -->
             <div class="text-center pt-4">

@@ -2,7 +2,7 @@
 
 module Admin
   class AvatarsController < ApplicationController
-    before_action :authenticate_user!, :verify_user_permissions
+    before_action :require_authentication, :verify_user_permissions
 
     def index
       @avatars = Avatar.order(created_at: :desc)

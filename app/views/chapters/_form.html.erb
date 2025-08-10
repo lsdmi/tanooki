@@ -1,5 +1,5 @@
 <%= f.input :fiction_id, as: :hidden, input_html: { value: chapter.fiction&.id || Fiction.find_by(slug: params[:fiction])&.id } %>
-<%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
+<%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || Current.user.id } %>
 
 <div class="py-4 border-gray-200 sm:py-5">
   <div class="space-y-4 sm:space-y-6">
@@ -20,17 +20,17 @@
         <%= tag.p chapter.errors[:volume_number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:volume_number].any? %>
       </div>
       <div class="w-full">
-        <% if current_user.scanlators.any? %>
+        <% if Current.user.scanlators.any? %>
           <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block mb-2 text-sm font-medium text-gray-900' %>
         <% else %>
           <%= f.label :scanlator_ids, 'Перекладацька команда (наразі ви не перебуваєте у жодній команді)', class: 'mb-2 text-sm font-medium text-gray-900 line-clamp-1' %>
         <% end %>
         <% if f.object.new_record? && params[:chapter].nil? %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: current_user.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
+          <%= f.select :scanlator_ids, options_for_select(scanlators_list(Current.user), selected: Current.user.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
         <% elsif params[:chapter].present? %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: params[:chapter][:scanlator_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
+          <%= f.select :scanlator_ids, options_for_select(scanlators_list(Current.user), selected: params[:chapter][:scanlator_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
         <% else %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
+          <%= f.select :scanlator_ids, options_for_select(scanlators_list(Current.user), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
         <% end %>
         <%= tag.p chapter.errors[:scanlator_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:scanlator_ids].any? %>
       </div>

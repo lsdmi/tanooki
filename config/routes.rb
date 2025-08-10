@@ -1,24 +1,14 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resource :session, only: %i[new create destroy]
+  resources :passwords, param: :token, only: %i[new create edit update]
+
+  get 'auth/google_oauth2/callback', to: 'omniauth_callbacks#google_oauth2'
+  get 'auth/failure', to: 'sessions#omniauth_failure'
+
   root 'home#index'
   post '/' => 'home#index'
-
-  devise_for :users,
-             skip: %i[registrations],
-             path: '',
-             path_names: { sign_in: 'login' },
-             controllers: {
-               confirmations: 'users/confirmations',
-               omniauth_callbacks: 'users/omniauth_callbacks',
-               passwords: 'users/passwords',
-               sessions: 'users/sessions'
-             }
-
-  devise_scope :user do
-    get '/register', to: 'users/registrations#new'
-    post '/register', to: 'users/registrations#create'
-  end
 
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]

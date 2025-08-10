@@ -8,7 +8,7 @@ class ChatChannel < ApplicationCable::Channel
   def unsubscribed; end
 
   def speak(data)
-    return unless current_user
+    return unless authenticated?
 
     message = ChatMessage.create!(
       user: current_user,
@@ -20,6 +20,14 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   private
+
+  def authenticated?
+    current_user.present?
+  end
+
+  def current_user
+    connection.current_user
+  end
 
   def broadcast_message(message)
     ActionCable.server.broadcast 'chat_room', message_data(message)

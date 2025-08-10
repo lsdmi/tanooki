@@ -1,5 +1,5 @@
 <%= f.input :type, as: :hidden, input_html: { value: 'Tale' } %>
-<%= f.input :user_id, as: :hidden, input_html: { value: publication.user&.id || current_user.id } %>
+<%= f.input :user_id, as: :hidden, input_html: { value: publication.user&.id || Current.user.id } %>
 
 <div class="mx-auto">
   <!-- Main Content Area -->
@@ -66,7 +66,7 @@
       </div>
       
       <!-- Admin Options -->
-      <% if current_user.admin? %>
+      <% if Current.user.admin? %>
         <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-rose-900/20 dark:to-purple-900/20 rounded-xl border border-cyan-200 dark:border-rose-800 p-6 shadow-sm">
           <div class="flex items-center mb-4">
             <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">

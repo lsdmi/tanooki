@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @pokemon_params = { user_pokemon: { pokemon_id: 2, user_id: 1 }, user_pokemon_id: 1 }
     @user = users(:user_one)

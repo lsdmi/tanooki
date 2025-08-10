@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @youtube_video = youtube_videos(:one)
   end

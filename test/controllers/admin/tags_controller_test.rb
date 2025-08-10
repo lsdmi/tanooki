@@ -4,8 +4,6 @@ require 'test_helper'
 
 module Admin
   class TagsControllerTest < ActionDispatch::IntegrationTest
-    include Devise::Test::IntegrationHelpers
-
     def setup
       @user = users(:user_one)
       sign_in @user

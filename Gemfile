@@ -70,9 +70,9 @@ group :production do
   gem 'aws-sdk-s3'
 end
 
+gem 'bcrypt'
 gem 'bcrypt_pbkdf'
 gem 'cable_ready'
-gem 'devise'
 gem 'dotenv-rails'
 gem 'ed25519'
 gem 'elasticsearch', '~> 7.17.0'

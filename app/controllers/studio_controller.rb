@@ -4,7 +4,7 @@ class StudioController < ApplicationController
   include FictionQuery
   include StudioTabLoadable
 
-  before_action :authenticate_user!
+  before_action :require_authentication
   before_action :set_active_tab
 
   def index

@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class AvatarsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
   setup do
     @user = users(:user_one)
     sign_in @user
