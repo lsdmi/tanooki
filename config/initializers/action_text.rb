@@ -5,6 +5,7 @@ Rails.application.config.after_initialize do
   ActionText::ContentHelper.allowed_tags = %w[
     p iframe div span br hr blockquote pre code
     sub sup mark del ins h1 h2 h3 h4 h5 h6 ul ol li
+    b strong i em u small big strike s
   ]
 
   # Set allowed attributes for ActionText (Rails 8 approach)

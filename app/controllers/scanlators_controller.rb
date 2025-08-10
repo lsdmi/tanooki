@@ -9,7 +9,7 @@ class ScanlatorsController < ApplicationController
   before_action :pokemon_appearance, only: [:show]
 
   def index
-    session[:studio_tab] = 'teams'
+    cookies.signed[:studio_tab] = 'teams'
     redirect_to studio_index_path
   end
 

@@ -1,68 +1,57 @@
 # frozen_string_literal: true
 
 class PokemonService
-  attr_reader :session, :user
-
-  def initialize(session:, user:)
+  def initialize(user:, session:)
     @user = user
     @session = session
   end
 
   def call
-    precatch_session
+    return nil if @user&.pokemon_last_catch&.> 4.hours.ago
 
-    return nil if rand > catch_rate
+    pokemon = select_random_pokemon
+    return nil unless pokemon
 
-    postcatch_session
-    caught_pokemon
+    @session[:pokemon] = pokemon
+    pokemon
   end
 
   private
 
-  def catch_rate
-    last_seen = user&.pokemon_last_catch || session[:pokemon_catch_last_seen]
+  def select_random_pokemon
+    return nil if @user.nil?
 
-    if last_seen < 365.days.ago then 1
-    elsif last_seen < 8.hours.ago then 0.02
-    else
-      0
-    end
+    last_seen = @user&.pokemon_last_catch || @session[:pokemon_catch_last_seen]
+    return nil if last_seen && last_seen > 4.hours.ago
+
+    available_pokemon = Pokemon.where.not(id: @user.pokemons.pluck(:id))
+    return nil if available_pokemon.empty?
+
+    pokemon = available_pokemon.sample
+    caught_pokemon_id = pokemon.id
+
+    @session[:caught_pokemon_id] = caught_pokemon_id
+    Pokemon.find_by(id: @session[:caught_pokemon_id])
   end
 
-  def caught_pokemon
-    if user.nil?
-      session[:caught_pokemon_id] = caught_pokemon_id
-      Pokemon.find_by(id: session[:caught_pokemon_id])
-    else
-      Pokemon.find_by(id: caught_pokemon_id)
-    end
+  def pokemon_catch_permitted?
+    return true if @user.nil?
+
+    last_catch = @user.pokemon_last_catch
+    return true if last_catch.nil?
+
+    last_catch < 4.hours.ago
   end
 
-  def caught_pokemon_id
-    pokemon_array = []
+  def pokemon_catch_last_seen
+    return Time.now if @user.nil?
 
-    Pokemon.includes(sprite_attachment: :blob).each do |pokemon|
-      populate_pokemon_array(pokemon.rarity, pokemon_array, pokemon)
-    end
-
-    pokemon_array.sample
+    @session[:pokemon_catch_last_seen] ||= Time.now
+    @session[:pokemon_guest_caught] = nil
+    @session[:pokemon_catch_last_seen]
   end
 
-  def populate_pokemon_array(rarity, pokemon_array, pokemon)
-    case Pokemon::RARITY_LEVELS[rarity]
-    when 1 then 27.times { pokemon_array << pokemon.id }
-    when 2 then 9.times { pokemon_array << pokemon.id }
-    when 3 then 3.times { pokemon_array << pokemon.id }
-    when 4 then pokemon_array << pokemon.id
-    end
-  end
-
-  def precatch_session
-    session[:pokemon_catch_last_seen] ||= Time.now
-    session[:pokemon_guest_caught] = nil
-  end
-
-  def postcatch_session
-    session[:pokemon_catch_last_seen] = Time.now
+  def pokemon_catch_last_seen=(time)
+    @session[:pokemon_catch_last_seen] = time
   end
 end

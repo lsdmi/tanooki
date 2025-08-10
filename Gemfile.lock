@@ -332,9 +332,6 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
-    omniauth-rails_csrf_protection (1.0.2)
-      actionpack (>= 4.2)
-      omniauth (~> 2.0)
     os (1.1.4)
     ostruct (0.6.1)
     pagy (9.3.1)
@@ -582,7 +579,6 @@ DEPENDENCIES
   letter_opener
   mysql2
   omniauth-google-oauth2
-  omniauth-rails_csrf_protection
   pagy
   paranoia
   puma (~> 6.1)

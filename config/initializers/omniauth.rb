@@ -12,3 +12,7 @@ end
 
 # Set the default OmniAuth path prefix
 OmniAuth.config.path_prefix = '/auth'
+
+# Disable CSRF protection for OmniAuth
+OmniAuth.config.allowed_request_methods = %i[post get]
+OmniAuth.config.silence_get_warning = true

@@ -12,7 +12,7 @@ class StudioController < ApplicationController
   end
 
   def set_tab_and_redirect
-    session[:studio_tab] = params[:tab]
+    cookies.signed[:studio_tab] = params[:tab]
     redirect_to studio_index_path
   end
 

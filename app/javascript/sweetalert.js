@@ -22,7 +22,6 @@ async function makeCall(url, token, json) {
     method: 'DELETE',
     headers: {
       'Content-Type': (json ? 'application/json' : 'application/turbo_stream'),
-      'X-CSRF-Token': token,
     },
     credentials: 'include'
   });

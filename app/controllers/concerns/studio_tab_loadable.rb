@@ -6,8 +6,8 @@ module StudioTabLoadable
   private
 
   def set_active_tab
-    @active_tab = params[:tab] || session[:studio_tab] || default_tab
-    session[:studio_tab] = @active_tab
+    @active_tab = params[:tab] || cookies.signed[:studio_tab] || default_tab
+    cookies.signed[:studio_tab] = @active_tab
   end
 
   def default_tab

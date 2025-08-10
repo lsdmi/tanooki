@@ -27,7 +27,7 @@ class OmniauthCallbacksController < ApplicationController
   end
 
   def pokemon_notice
-    PokemonCatchService.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id).trap
+    PokemonCatchService.new(pokemon_id: cookies.signed[:caught_pokemon_id], user_id: @user.id).trap
     flash[:notice] = I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
   end
 
@@ -44,6 +44,6 @@ class OmniauthCallbacksController < ApplicationController
   private
 
   def no_caught_pokemon?
-    session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
+    cookies.signed[:pokemon_guest_caught].nil? || cookies.signed[:caught_pokemon_id].nil?
   end
 end

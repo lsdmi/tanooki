@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   def pokemon_appearance
     return if params[:page].present?
 
-    @wild_pokemon = PokemonService.new(user: Current.user, session:).call
+    @wild_pokemon = PokemonService.new(user: Current.user, session: cookies).call
   end
 
   def refresh_sweetalert
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   def track_visit
     TrackingService.new(
       @publication || @chapter || @fiction || @youtube_video,
-      session
+      cookies
     ).call
   end
 
