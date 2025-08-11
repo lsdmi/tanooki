@@ -4,13 +4,7 @@ module MetaHelper
   include MetaDescriptionHelper
 
   def meta_image
-    result_cover = case request.path
-                   when root_path then highlights_cover
-                   when fictions_path then fictions_cover
-                   when search_index_path then results_cover
-                   when youtube_videos_path then youtube_video_cover
-                   else meta_cover
-                   end
+    result_cover = path_to_cover
 
     if result_cover.is_a?(String) || result_cover&.persisted?
       url_for(result_cover)
@@ -91,5 +85,15 @@ module MetaHelper
 
   def results_cover
     @results&.first&.cover
+  end
+
+  def path_to_cover
+    case request.path
+    when root_path then highlights_cover
+    when fictions_path then fictions_cover
+    when search_index_path then results_cover
+    when youtube_videos_path then youtube_video_cover
+    else meta_cover
+    end
   end
 end

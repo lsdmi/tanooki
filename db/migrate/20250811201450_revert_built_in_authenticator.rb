@@ -26,7 +26,7 @@ class RevertBuiltInAuthenticator < ActiveRecord::Migration[8.0]
     rescue ActiveRecord::StatementInvalid
       # Index doesn't exist, ignore the error
     end
-    
+
     begin
       remove_index :users, name: "index_users_on_reset_password_token"
     rescue ActiveRecord::StatementInvalid

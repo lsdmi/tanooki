@@ -5,11 +5,9 @@ user_one:
   name: John Doe
   admin: true
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '1'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
   pokemon_last_catch: <%= 2.years.ago %>
@@ -21,11 +19,9 @@ user_two:
   name: John Two
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '2'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -36,11 +32,9 @@ user_101:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '101'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -51,11 +45,9 @@ user_102:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '102'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -66,11 +58,9 @@ user_103:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '103'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -81,11 +71,9 @@ user_104:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '104'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -96,11 +84,9 @@ user_105:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '105'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -111,11 +97,9 @@ user_106:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '106'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -126,11 +110,9 @@ user_107:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '107'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -141,11 +123,9 @@ user_108:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '108'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -156,11 +136,9 @@ user_109:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '109'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
@@ -171,10 +149,8 @@ user_one_one_zero:
   name: John Oneohone
   admin: false
   avatar_id: 1
-  remember_created_at: ''
   confirmation_token: '110'
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-  unconfirmed_email: ''
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>

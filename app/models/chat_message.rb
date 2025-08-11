@@ -12,8 +12,4 @@ class ChatMessage < ApplicationRecord
   def formatted_time
     created_at.in_time_zone(Rails.application.config.time_zone).strftime('%H:%M')
   end
-
-  def formatted_date
-    created_at.in_time_zone(Rails.application.config.time_zone).strftime('%b %d')
-  end
 end
