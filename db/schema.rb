@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_11_201450) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -289,17 +289,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_210452) do
     t.bigint "avatar_id"
     t.integer "battle_win_rate", default: 50
     t.bigint "latest_read_comment_id"
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "pokemon_last_catch", default: "2025-08-08 20:16:55"
     t.datetime "pokemon_last_training", default: "2025-08-08 20:16:55"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
