@@ -23,7 +23,7 @@
     <% if fictions.any? %>
       <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
                   <!-- Desktop Table View -->
-          <div class="hidden xl:block rounded-lg relative overflow-x-auto">
+          <div class="hidden sm:block rounded-lg relative overflow-x-auto">
             <%= render 'shared/jellyfish_ornament' %>
             <table class="w-full divide-y divide-gray-200 text-left text-sm text-gray-900 dark:text-white">
               <thead class="bg-cyan-50 text-xs uppercase text-gray-700 dark:bg-rose-900/20 dark:text-gray-400">
@@ -117,8 +117,8 @@
             </table>
           </div>
 
-          <!-- Card View (Mobile, Small, Medium, and Large Screens) -->
-          <div class="xl:hidden p-6">
+          <!-- Card View (Mobile Only) -->
+          <div class="sm:hidden p-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <% fictions.each do |fiction| %>
               <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
