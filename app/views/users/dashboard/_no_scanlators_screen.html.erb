@@ -1,80 +1,82 @@
-<section class="bg-white antialiased">
-  <div class="max-w-screen-xl px-4 py-4 mx-auto sm:py-8 lg:py-12">
-    <div class="lg:col-span-2">
-      <div id="deviceTabContent" class="mt-8">
-        <div id="ios" role="tabpanel" aria-labelledby="ios-tab">
-          <div class="space-y-4 sm:space-y-6 lg:space-y-8">
-            <div>
-              <h2 class="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl">
-                Твори із Бакою: український аніме-хаб
-              </h2>
-              <p class="mt-6 text-lg font-normal text-gray-500 sm:text-2xl">
-                Перш ніж завантажити роботу чи переклад, будь ласка, додайте сторінку своєї спільноти, аби встановити зв'язок із сотнями користувачів нашого сервісу.
-                <span class="font-semibold text-gray-900">Бака - </span> це все необхідне, аби розпочати свій шлях автора чи перекладача ранобе.
-              </p>
+<section class="z-10 relative py-8 antialiased md:py-8">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <div class="space-y-6">
+      <!-- Main CTA Card -->
+      <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800 relative overflow-hidden">
+        <!-- SVG Ornament -->
+        <%= render 'shared/decorative_ornament' %>
+        
+        <div class="p-6 sm:p-8">
+          <!-- Header Section -->
+          <div class="text-center mb-8">
+            <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-6 relative z-10">
+              <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+              </svg>
             </div>
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 sm:text-3xl lg:text-4xl">
+              Твори із Бакою: український аніме-хаб
+            </h2>
+            <p class="text-base text-gray-500 dark:text-gray-400 sm:text-lg lg:text-xl max-w-3xl mx-auto">
+              Перш ніж завантажити роботу чи переклад, будь ласка, додайте сторінку своєї спільноти, аби встановити зв'язок із сотнями користувачів нашого сервісу.
+              <span class="font-semibold text-gray-900 dark:text-white">Бака</span> - це все необхідне, аби розпочати свій шлях автора чи перекладача ранобе.
+            </p>
+          </div>
 
-            <div class="pt-4 border-t border-gray-200 sm:pt-6 lg:pt-8">
-              <ul class="space-y-4">
-                <li class="flex items-center gap-2.5">
-                  <div
-                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
-                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path fill-rule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <span class="text-lg font-medium text-gray-900">
-                    Створи сторінку своєї команди у кілька кліків
-                  </span>
-                </li>
-
-                <li class="flex items-center gap-2.5">
-                  <div
-                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
-                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path fill-rule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <span class="text-lg font-medium text-gray-900">
-                    Завантаж роботу чи переклад
-                  </span>
-                </li>
-
-                <li class="flex items-center gap-2.5">
-                  <div
-                    class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 shrink-0">
-                    <svg aria-hidden="true" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path fill-rule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <span class="text-lg font-medium text-gray-900">
-                    Отримай відгук та підтримку читачів
-                  </span>
-                </li>
-              </ul>
-
-              <h3 class="mt-6 text-2xl font-normal text-gray-500">
-                Приєднуйся уже зараз, аби стати частиною нашої аніме-спільноти!
-              </h3>
+          <!-- Features Section -->
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Що ви отримаєте</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Простий шлях до створення вашої перекладацької спільноти</p>
             </div>
+            
+            <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
+              <div class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 shrink-0 dark:bg-emerald-900/20 dark:text-emerald-400">
+                  <svg aria-hidden="true" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                  Створи сторінку своєї команди у кілька кліків
+                </span>
+              </div>
 
-            <div>
-              <%= link_to new_scanlator_path, data: { turbo: false }, class: 'inline-flex items-center text-lg font-medium text-emerald-600 hover:underline' do %>
-                Додати перекладацьку сторінку
-                <svg aria-hidden="true" class="w-5 h-5 ml-1.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                </svg>
-              <% end %>
+              <div class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 shrink-0 dark:bg-emerald-900/20 dark:text-emerald-400">
+                  <svg aria-hidden="true" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                  Завантаж роботу чи переклад
+                </span>
+              </div>
+
+              <div class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600">
+                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 shrink-0 dark:bg-emerald-900/20 dark:text-emerald-400">
+                  <svg aria-hidden="true" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-gray-900 dark:text-white">
+                  Отримай відгук та підтримку читачів
+                </span>
+              </div>
             </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div class="text-center">
+            <p class="text-base text-gray-500 dark:text-gray-400 mb-6">
+              Приєднуйся уже зараз, аби стати частиною нашої аніме-спільноти!
+            </p>
+            <%= link_to new_scanlator_path, data: { turbo: false }, class: 'inline-flex items-center justify-center rounded-lg bg-cyan-700 px-6 py-3 text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:focus:ring-rose-800 transition-colors duration-200 shadow-lg hover:shadow-xl' do %>
+              <svg aria-hidden="true" class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+              Додати перекладацьку сторінку
+            <% end %>
           </div>
         </div>
       </div>
