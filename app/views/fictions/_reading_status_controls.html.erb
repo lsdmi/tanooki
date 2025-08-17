@@ -53,7 +53,7 @@
             </svg>
           </div>
         <% else %>
-          <%= button_to update_reading_status_fiction_path(fiction),
+          <%= button_to update_status_fiction_reading_progress_path(fiction),
               method: :patch,
               params: { status: state[:key] },
               class: [
@@ -75,7 +75,7 @@
       <% end %>
 
       <!-- Remove from library button -->
-      <%= button_to update_reading_status_fiction_path(fiction),
+      <%= button_to update_status_fiction_reading_progress_path(fiction),
           method: :patch,
           params: { status: :destroy },
           class: [
@@ -111,7 +111,7 @@
         ] %>
 
         <% add_states.each do |state| %>
-          <%= button_to update_reading_status_fiction_path(fiction),
+          <%= button_to update_status_fiction_reading_progress_path(fiction),
               method: :patch,
               params: { status: state[:key] },
               class: [

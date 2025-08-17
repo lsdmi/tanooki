@@ -44,12 +44,17 @@ Rails.application.routes.draw do
   resources :fictions do
     member do
       get :details
-      patch :update_reading_status
     end
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'
       get :calendar, to: 'chapters_calendar#index'
       post :toggle_order
+    end
+  end
+
+  resources :fictions, only: [] do
+    resource :reading_progress, only: [], controller: 'reading_progresses' do
+      patch :update_status
     end
   end
   resources :publications, except: %i[index show]
