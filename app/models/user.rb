@@ -68,4 +68,8 @@ class User < ApplicationRecord
     ids = Sqids.new.decode(sqid_string)
     find_by(id: ids.first) if ids.any?
   end
+
+  def sqid
+    Sqids.new.encode([id])
+  end
 end

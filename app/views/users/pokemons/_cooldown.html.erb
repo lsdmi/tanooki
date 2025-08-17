@@ -8,7 +8,7 @@
         <%= image_tag url_for(current_user.avatar.image), alt: current_user.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 object-cover' %>
       </div>
       <span class="flex items-center text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100">
-        <%= current_user.name %>
+        <%= link_to current_user.name, profile_path(current_user.sqid), class: 'hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-all duration-200', data: { turbo: false } %>
       </span>
       <span class="px-3 text-[10px] sm:text-xs uppercase tracking-widest text-cyan-800 dark:text-cyan-300 line-clamp-1">
         <%= "#{dex_title(current_user.battle_win_rate)} ##{dex_overall.index(current_user) + 1}" %>
