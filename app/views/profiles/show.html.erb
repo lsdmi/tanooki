@@ -5,7 +5,7 @@
     <div class="lg:col-span-1 space-y-6">
 
       <!-- User Avatar and Name -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
         <div class="text-center">
           <div class="relative inline-block">
             <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg" %>
@@ -16,77 +16,81 @@
       </div>
 
       <!-- My Blogs -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-          </svg>
-          Нові блоги
-        </h2>
-        <div class="space-y-3">
-          <% @user.publications.recent.limit(3).each do |publication| %>
-            <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <%= image_tag url_for(publication.cover),
-                      alt: publication.cover.blob.filename.to_s,
-                      class: "w-10 h-10 rounded-lg flex items-center justify-center object-cover",
-                      loading: "lazy",
-                      data: {
-                        controller: "lazy-image",
-                        lazy_image_target: "image",
-                        lazy_image_url_value: url_for(publication.cover)
-                      } %>
-              <div class="ml-3 flex-1">
-                <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                  <%= link_to publication.title, tale_path(publication), class: "hover:underline", data: { turbo: false } %>
-                </h4>
-                <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
-                  <%= publication.description.to_plain_text %>
-                </p>
+      <% if @user.publications.any? %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+            </svg>
+            Нові блоги
+          </h2>
+          <div class="space-y-3">
+            <% @user.publications.recent.limit(3).each do |publication| %>
+              <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <%= image_tag url_for(publication.cover),
+                        alt: publication.cover.blob.filename.to_s,
+                        class: "w-10 h-10 rounded-lg flex items-center justify-center object-cover",
+                        loading: "lazy",
+                        data: {
+                          controller: "lazy-image",
+                          lazy_image_target: "image",
+                          lazy_image_url_value: url_for(publication.cover)
+                        } %>
+                <div class="ml-3 flex-1">
+                  <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                    <%= link_to publication.title, tale_path(publication), class: "hover:underline", data: { turbo: false } %>
+                  </h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                    <%= publication.description.to_plain_text %>
+                  </p>
+                </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
 
       <!-- My Teams -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-          </svg>
-          Мої команди
-        </h2>
-        <div class="space-y-3">
-          <% @user.scanlators.each do |scanlator| %>
-            <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <% if scanlator.avatar.attached? %>
-                <%= image_tag url_for(scanlator.avatar), 
-                    alt: scanlator.title, 
-                    class: "w-10 h-10 rounded-lg flex items-center justify-center" %>
-              <% else %>
-                <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-                  <svg class="w-6 h-6 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
+      <% if @user.scanlators.any? %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            Мої команди
+          </h2>
+          <div class="space-y-3">
+            <% @user.scanlators.each do |scanlator| %>
+              <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <% if scanlator.avatar.attached? %>
+                  <%= image_tag url_for(scanlator.avatar), 
+                      alt: scanlator.title, 
+                      class: "w-10 h-10 rounded-lg flex items-center justify-center" %>
+                <% else %>
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                  </div>
+                <% end %>
+                <div class="ml-3 flex-1">
+                  <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                    <%= link_to scanlator.title, scanlator_path(scanlator), class: "hover:underline", data: { turbo: false } %>
+                  </h3>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"><%= scanlator.description %></p>
                 </div>
-              <% end %>
-              <div class="ml-3 flex-1">
-                <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                  <%= link_to scanlator.title, scanlator_path(scanlator), class: "hover:underline", data: { turbo: false } %>
-                </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"><%= scanlator.description %></p>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <!-- Right Column (2/3) -->
     <div class="lg:col-span-2 space-y-6">
 
       <!-- Pokemon Stats -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
           <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -94,85 +98,94 @@
           Статистика Покемонів
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="text-center p-4 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-lg border border-cyan-200 dark:border-cyan-700">
-            <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">127</div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Зловлені</div>
+          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @user.pokemons.count %> / <%= Pokemon.where(descendant_level: 0).count %></div>
+            <div class="text-sm text-gray-600 dark:text-gray-300">Покедекс</div>
           </div>
-          <div class="text-center p-4 bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-lg border border-rose-200 dark:border-rose-700">
-            <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">89</div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Еволюціоновані</div>
+          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
+            <% victories = @user.attacker_battle_logs.where(winner: @user).count + @user.defender_battle_logs.where(winner: @user).count %>
+            <% total_battles = @user.attacker_battle_logs.count + @user.defender_battle_logs.count %>
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= victories %> / <%= total_battles %></div>
+            <div class="text-sm text-gray-600 dark:text-gray-300">Вдалі Виклики</div>
           </div>
-          <div class="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-700">
-            <div class="text-2xl font-bold text-green-600 dark:text-green-400">23</div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Легендарні</div>
+          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400">#<%= User.dex_leaders.index(@user) + 1 %></div>
+            <div class="text-sm text-gray-600 dark:text-gray-300">Рейтинг</div>
           </div>
         </div>
       </div>
 
       <!-- My Comments -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-          </svg>
-          Останні Коментарі
-        </h2>
-        <div class="space-y-4">
-          <% @user.comments.order(created_at: :desc).includes(:commentable).limit(3).each do |comment| %>
-            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div class="flex items-start space-x-3">
-                <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-600 dark:text-cyan-400" %>
-                <div class="flex-1">
-                  <div class="flex items-center space-x-2 mb-1">
-                    <span class="text-sm font-medium text-gray-900 dark:text-white"><%= comment.user.name %></span>
-                    <span class="text-xs text-gray-500 dark:text-gray-400"><%= time_ago_in_words(comment.created_at) %> тому</span>
-                  </div>
-                  <p class="text-sm text-gray-700 dark:text-gray-300"><%= comment.content %></p>
-                  <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    Коментар до: <span class="text-cyan-600 dark:text-rose-400 hover:underline cursor-pointer">"Битва за трон" - Розділ 15</span>
+      <% if @user.comments.any? %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Останні Коментарі
+          </h2>
+          <div class="space-y-4">
+            <% @user.comments.order(created_at: :desc).includes(:commentable).limit(3).each do |comment| %>
+              <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="flex items-start space-x-3">
+                  <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-600 dark:text-cyan-400" %>
+                  <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-1">
+                      <span class="text-sm font-medium text-gray-900 dark:text-white"><%= comment.user.name %></span>
+                      <span class="text-xs text-gray-500 dark:text-gray-400"><%= time_ago_in_words(comment.created_at) %> тому</span>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300"><%= comment.content.truncate(120) %></p>
+                    <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                      Коментар до: 
+                      <span class="text-cyan-600 dark:text-rose-400 hover:underline cursor-pointer">
+                        <%= link_to commentable_title(comment.commentable), comment_url(comment), class: 'hover:underline', data: { turbo: false } %>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
 
       <!-- Recent Book Choices -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
-          Щойно Переглянуте
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <% @user.readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(4).each do |reading| %>
-            <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold' do %>
-                  <%= image_tag url_for(reading.fiction.cover),
-                    alt: reading.fiction.cover.blob.filename.to_s,
-                    class: "w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold",
-                    loading: "lazy",
-                    data: {
-                      controller: "lazy-image",
-                      lazy_image_target: "image",
-                      lazy_image_url_value: url_for(reading.fiction.cover)
-                    } %>
-                <% end %>
+      <% if @user.readings.any? %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            Щойно Переглянуте
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <% @user.readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(4).each do |reading| %>
+              <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold' do %>
+                    <%= image_tag url_for(reading.fiction.cover),
+                      alt: reading.fiction.cover.blob.filename.to_s,
+                      class: "w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold",
+                      loading: "lazy",
+                      data: {
+                        controller: "lazy-image",
+                        lazy_image_target: "image",
+                        lazy_image_url_value: url_for(reading.fiction.cover)
+                      } %>
+                  <% end %>
 
-              <div class="flex-1">
-                <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                  <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: "hover:underline" %>
-                </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
-                  <%= reading.chapter.display_title_no_volume %>
-                </p>
+                <div class="flex-1">
+                  <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                    <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: "hover:underline" %>
+                  </h3>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                    <%= reading.chapter.display_title_no_volume %>
+                  </p>
+                </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
