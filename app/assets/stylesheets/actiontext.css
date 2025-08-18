@@ -1,12 +1,12 @@
 #user-content a {
-  color: #3598DB;
+  color: #3598DB !important;
   text-decoration: underline;
   font-style: italic;
   transition: color 0.3s ease;
 }
 
 #user-content a:hover {
-  color: #2980B9;
+  color: #2980B9 !important;
 }
 
 #user-content blockquote {
@@ -23,11 +23,13 @@
 
 #user-content p {
   margin-bottom: 1.5rem;
+  color: inherit !important;
 }
 
 #user-content h1, #user-content h2, #user-content h3, #user-content h4, #user-content h5, #user-content h6 {
   margin-top: 2rem;
   margin-bottom: 1rem;
+  color: inherit !important;
 }
 
 #user-content img {
@@ -55,6 +57,7 @@
   line-height: 1.7;
   /* Optional: add a little padding for better readability */
   padding-left: 0.25rem;
+  color: inherit !important;
 }
 
 #user-content hr {
@@ -62,6 +65,36 @@
   border: none;
   border-top: 1px solid #d1d5db;
   margin-top: 2rem;
+}
+
+/* Override any inline color styles */
+#user-content * {
+  color: inherit !important;
+}
+
+/* Specific overrides for common elements that might have inline styles */
+#user-content span {
+  color: inherit !important;
+}
+
+#user-content div {
+  color: inherit !important;
+}
+
+#user-content strong {
+  color: inherit !important;
+}
+
+#user-content em {
+  color: inherit !important;
+}
+
+#user-content code {
+  color: inherit !important;
+}
+
+#user-content pre {
+  color: inherit !important;
 }
 
 @media (max-width: 768px) {
