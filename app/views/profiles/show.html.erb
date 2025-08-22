@@ -17,7 +17,7 @@
       </div>
 
       <!-- My Blogs -->
-      <% if @user.publications.any? %>
+      <% if @recent_publications.any? %>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
@@ -27,7 +27,7 @@
             Нові блоги
           </h2>
           <div class="space-y-3">
-            <% @user.publications.recent.limit(3).each do |publication| %>
+            <% @recent_publications.each do |publication| %>
               <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <%= image_tag url_for(publication.cover),
                         alt: publication.cover.blob.filename.to_s,
@@ -53,7 +53,7 @@
       <% end %>
 
       <!-- My Teams -->
-      <% if @user.scanlators.any? %>
+      <% if @user_scanlators.any? %>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
           <%= render 'shared/decorative_ornament' %>
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
@@ -63,7 +63,7 @@
             Мої команди
           </h2>
           <div class="space-y-3">
-            <% @user.scanlators.each do |scanlator| %>
+            <% @user_scanlators.each do |scanlator| %>
               <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <% if scanlator.avatar.attached? %>
                   <%= image_tag url_for(scanlator.avatar), 
@@ -103,24 +103,22 @@
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
           <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @user.pokemons.count %> / <%= Pokemon.where(descendant_level: 0).count %></div>
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @pokemon_count %> / <%= @total_pokemon %></div>
             <div class="text-sm text-gray-600 dark:text-gray-300">Покедекс</div>
           </div>
           <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <% victories = @user.attacker_battle_logs.where(winner: @user).count + @user.defender_battle_logs.where(winner: @user).count %>
-            <% total_battles = @user.attacker_battle_logs.count + @user.defender_battle_logs.count %>
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= victories %> / <%= total_battles %></div>
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @victories %> / <%= @total_battles %></div>
             <div class="text-sm text-gray-600 dark:text-gray-300">Вдалі Виклики</div>
           </div>
           <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400">#<%= User.dex_leaders.index(@user) + 1 %></div>
+            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400">#<%= @user_rating %></div>
             <div class="text-sm text-gray-600 dark:text-gray-300">Рейтинг</div>
           </div>
         </div>
       </div>
 
       <!-- My Comments -->
-      <% if @user.comments.any? %>
+      <% if @recent_comments.any? %>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -130,7 +128,7 @@
             Останні Коментарі
           </h2>
           <div class="space-y-4">
-            <% @user.comments.order(created_at: :desc).includes(:commentable).limit(3).each do |comment| %>
+            <% @recent_comments.each do |comment| %>
               <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div class="flex items-start space-x-3">
                   <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-600 dark:text-cyan-400" %>
@@ -155,7 +153,7 @@
       <% end %>
 
       <!-- Recent Book Choices -->
-      <% if @user.readings.any? %>
+      <% if @recent_readings.any? %>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
           <%= render 'shared/decorative_ornament' %>
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -165,7 +163,7 @@
             Щойно Переглянуте
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <% @user.readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(4).each do |reading| %>
+            <% @recent_readings.each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold' do %>
                     <%= image_tag url_for(reading.fiction.cover),
