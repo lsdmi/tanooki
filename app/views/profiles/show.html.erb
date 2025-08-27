@@ -139,8 +139,8 @@
                     </div>
                     <p class="text-sm text-gray-700 dark:text-gray-300"><%= comment.content.truncate(120) %></p>
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      Коментар до: 
-                      <span class="text-cyan-600 dark:text-rose-400 hover:underline cursor-pointer">
+                      Коментар до:
+                      <span class="text-cyan-700 dark:text-rose-400 hover:underline cursor-pointer">
                         <%= link_to commentable_title(comment.commentable), comment_url(comment), class: 'hover:underline', data: { turbo: false } %>
                       </span>
                     </div>
@@ -165,10 +165,10 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <% @recent_readings.each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold' do %>
+                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden' do %>
                     <%= image_tag url_for(reading.fiction.cover),
                       alt: reading.fiction.cover.blob.filename.to_s,
-                      class: "w-12 h-16 rounded-md flex items-center justify-center text-white text-xs font-bold",
+                      class: "w-full h-full object-cover",
                       loading: "lazy",
                       data: {
                         controller: "lazy-image",
