@@ -6,7 +6,7 @@
       <span class="flex items-center text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100">
         <!-- Sword SVG -->
         <svg class="w-4 h-4 mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 0H13L3.70711 9.29289L2.20711 7.79289L0.792893 9.20711L3.08579 11.5L1.5835 13.0023C1.55586 13.0008 1.52802 13 1.5 13C0.671573 13 0 13.6716 0 14.5C0 15.3284 0.671573 16 1.5 16C2.32843 16 3 15.3284 3 14.5C3 14.472 2.99923 14.4441 2.99771 14.4165L4.5 12.9142L6.79289 15.2071L8.20711 13.7929L6.70711 12.2929L16 3V0Z" fill="currentColor"></path> </g></svg>
-        <%= link_to battle_log.attacker.name, profile_path(battle_log.attacker.sqid), class: 'hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-all duration-200', data: { turbo: false } %>
+        <%= link_to battle_log.attacker.name, profile_path(battle_log.attacker.sqid), class: 'hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200', data: { turbo: false } %>
       </span>
       <span class="mt-1 px-3 py-1 text-xs uppercase tracking-widest flex items-center <%= battle_log.attacker == battle_log.winner ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' %>">
         <% if battle_log.attacker == battle_log.winner %>
@@ -36,7 +36,7 @@
       <span class="flex items-center text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100">
         <!-- Shield SVG -->
         <svg class="w-4 h-4 mr-1" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.35009 13.3929L8 16L11.6499 13.3929C13.7523 11.8912 15 9.46667 15 6.88306V3L8 0L1 3V6.88306C1 9.46667 2.24773 11.8912 4.35009 13.3929Z" fill="currentColor"></path> </g></svg>
-        <%= link_to battle_log.defender.name, profile_path(battle_log.defender.sqid), class: 'hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-all duration-200', data: { turbo: false } %>
+        <%= link_to battle_log.defender.name, profile_path(battle_log.defender.sqid), class: 'hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200', data: { turbo: false } %>
       </span>
       <span class="mt-1 px-3 py-1 text-xs uppercase tracking-widest flex items-center <%= battle_log.defender == battle_log.winner ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' %>">
         <% if battle_log.defender == battle_log.winner %>
