@@ -27,6 +27,10 @@
     <% end if profile_page_meta? %>
 
     <%= tag.script type: 'application/ld+json' do %>
+      <%= raw user_profile_meta(@user) %>
+    <% end if user_profile_meta? %>
+
+    <%= tag.script type: 'application/ld+json' do %>
       <%= raw video_meta(@youtube_video) %>
     <% end if video_meta? %>
 

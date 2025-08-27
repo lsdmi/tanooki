@@ -19,6 +19,7 @@ module MetaHelper
     return chapter_title if chapter_present?
     return youtube_video_title if youtube_video_present?
     return scanlator_meta_title if scanlator_present?
+    return user_profile_meta_title if user_profile_present?
 
     default_meta_title
   end
@@ -26,7 +27,7 @@ module MetaHelper
   def meta_type
     case request.path
     when root_path, search_index_path, fictions_path, youtube_videos_path,
-         alphabetical_fictions_path, calendar_fictions_path
+         alphabetical_fictions_path, calendar_fictions_path, tales_path
       'website'
     else
       'article'
@@ -63,6 +64,14 @@ module MetaHelper
     "#{@scanlator.title} | Переклади Ранобе | Бака"
   end
 
+  def user_profile_present?
+    @user.present? && @user.persisted?
+  end
+
+  def user_profile_meta_title
+    "#{@user.name} | Профіль Користувача | Бака"
+  end
+
   def default_meta_title
     [@publication, @fiction].compact.map(&:title).first || 'Бака: про аніме українською'
   end
@@ -93,7 +102,17 @@ module MetaHelper
     when fictions_path then fictions_cover
     when search_index_path then results_cover
     when youtube_videos_path then youtube_video_cover
+    when tales_path then tales_cover
+    when %r{^/profile/.*} then user_profile_cover
     else meta_cover
     end
+  end
+
+  def user_profile_cover
+    @user.avatar.image
+  end
+
+  def tales_cover
+    @highlights.first.cover
   end
 end

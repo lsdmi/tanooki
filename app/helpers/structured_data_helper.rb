@@ -31,6 +31,20 @@ module StructuredDataHelper
     }.to_json
   end
 
+  def user_profile_meta?
+    controller_name.to_sym == :profiles && action_name.to_sym == :show
+  end
+
+  def user_profile_meta(user)
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      mainEntity: person_data(user),
+      dateCreated: user.created_at.iso8601,
+      dateModified: user.updated_at.iso8601
+    }.to_json
+  end
+
   def video_meta?
     controller_name.to_sym == :youtube_videos && action_name.to_sym == :show
   end
@@ -65,5 +79,14 @@ module StructuredDataHelper
       name: scanlator.title,
       sameAs: ["https://t.me/#{scanlator.telegram_id}"]
     }
+  end
+
+  def person_data(user)
+    {
+      '@type': 'Person',
+      name: user.name,
+      identifier: user.sqid,
+      image: user.avatar.image.present? ? url_for(user.avatar.image) : 'user_avatar.webp'
+    }.compact
   end
 end

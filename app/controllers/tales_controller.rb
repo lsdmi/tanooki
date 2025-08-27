@@ -52,16 +52,16 @@ class TalesController < ApplicationController
 
   def highlights
     cached_ids = highlight_ids
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description,
-                          :tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.includes(%i[cover_attachment rich_text_description
+                            tags]).where(id: cached_ids).order(created_at: :desc)
   end
 
   def publications
     cached_ids = Rails.cache.fetch('publications', expires_in: 4.hours) do
       all_publications.where.not(id: highlight_ids).map(&:id)
     end
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description,
-                          :tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.includes(%i[cover_attachment rich_text_description
+                            tags]).where(id: cached_ids).order(created_at: :desc)
   end
 
   def highlight_ids
