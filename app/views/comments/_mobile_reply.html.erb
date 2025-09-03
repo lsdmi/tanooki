@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "mobile-reply-#{reply.id}" do %>
+  <div data-controller="flowbite">
+    <%= render 'comments/mobile_comment_body', comment: reply %>
+  </div>
+<% end %>

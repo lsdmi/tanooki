@@ -4,8 +4,16 @@
       <%= render "comments/new", comment: @comment, commentable: @comment.commentable, f: f %>
     <% end %>
   <% end %>
+  <%= turbo_stream.update "mobile-comment-content-#{@comment.id}" do %>
+    <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form mb-6" } do |f| %>
+      <%= render "comments/new", comment: @comment, commentable: @comment.commentable, f: f %>
+    <% end %>
+  <% end %>
 <% else %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
+    <%= tag.p @comment.content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
+  <% end %>
+  <%= turbo_stream.update "mobile-comment-content-#{@comment.id}" do %>
     <%= tag.p @comment.content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
   <% end %>
 <% end %>

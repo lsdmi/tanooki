@@ -27,12 +27,12 @@
       </div>
 
       <!-- Comment content -->
-      <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
+      <%= turbo_frame_tag "mobile-comment-content-#{comment.id}" do %>
         <%= tag.p comment.content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
       <% end %>
 
-      <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-        <%= render 'comments/actions', comment:, commentable: @commentable %>
+      <%= turbo_frame_tag "mobile-comment-reply-#{comment.id}" do %>
+        <%= render 'comments/actions', comment: comment, commentable: @commentable %>
       <% end if current_user && !comment.parent_id.present? %>
     </div>
   </div>

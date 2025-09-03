@@ -1,5 +1,8 @@
 <% if @comment.parent_id.present? %>
   <%= turbo_stream.remove "reply-#{@comment.id}" %>
+  <%= turbo_stream.remove "mobile-reply-#{@comment.id}" %>
 <% else %>
   <%= turbo_stream.remove @comment %>
+  <%= turbo_stream.remove "comment_#{@comment.id}" %>
+  <%= turbo_stream.remove "mobile_comment_#{@comment.id}" %>
 <% end %>

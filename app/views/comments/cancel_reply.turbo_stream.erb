@@ -1,3 +1,6 @@
 <%= turbo_stream.update "comment-reply-#{@comment.id}" do %>
   <%= render 'comments/actions', comment: @comment, commentable: @commentable %>
 <% end %>
+<%= turbo_stream.update "mobile-comment-reply-#{@comment.id}" do %>
+  <%= render 'comments/actions', comment: @comment, commentable: @commentable %>
+<% end %>
