@@ -7,7 +7,7 @@
     </div>
 
     <!-- Form Container -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-8">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl sm:border sm:border-gray-200 dark:border-gray-700 shadow-lg p-2 sm:p-8">
       <%= simple_form_for @chapter, as: :chapter, url: chapter_path(@chapter), method: :put, html: { class: "form", multipart: true } do |f| %>
         <%= render 'form', chapter: @chapter, f: f %>
       <% end %>
