@@ -1,47 +1,115 @@
 <%= f.input :fiction_id, as: :hidden, input_html: { value: chapter.fiction&.id || Fiction.find_by(slug: params[:fiction])&.id } %>
 <%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
 
-<div class="py-4 border-gray-200 sm:py-5">
-  <div class="space-y-4 sm:space-y-6">
-    <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-      <div class="w-full">
-        <%= f.label :title, 'Заголовок', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <%= f.input :title, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:title].any?}" }, label: false, placeholder: "Додайте заголовок (необов'язково)" %>
-        <%= tag.p chapter.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:title].any? %>
+<div class="mx-auto">
+  <!-- Main Content Area -->
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Left Column - Basic Info -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Chapter Details Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Деталі розділу</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <%= f.label :title, 'Заголовок', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+            <%= f.input :title, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:title].any?}" }, label: false, placeholder: "Додайте заголовок (необов'язково)" %>
+            <%= tag.p chapter.errors[:title].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+              <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+              <%= chapter.errors[:title].first %>
+            <% end if chapter.errors[:title].any? %>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <%= f.label :number, 'Номер розділу', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+              <%= f.input :number, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:number].any?}", type: 'number', min: 0, step: 0.01 }, label: false, placeholder: '0' %>
+              <%= tag.p chapter.errors[:number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <%= chapter.errors[:number].first %>
+              <% end if chapter.errors[:number].any? %>
+            </div>
+            <div>
+              <%= f.label :volume_number, 'Номер тому', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+              <%= f.input :volume_number, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:volume_number].any?}", type: 'number', min: 0 }, label: false, placeholder: "0 (необов'язково)" %>
+              <%= tag.p chapter.errors[:volume_number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+                <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <%= chapter.errors[:volume_number].first %>
+              <% end if chapter.errors[:volume_number].any? %>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="w-full">
-        <%= f.label :number, 'Номер розділу', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <%= f.input :number, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:number].any?}", type: 'number', min: 0, step: 0.01 }, label: false, placeholder: '0' %>
-        <%= tag.p chapter.errors[:number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:number].any? %>
-      </div>
-      <div class="w-full">
-        <%= f.label :volume_number, 'Номер тому', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <%= f.input :volume_number, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if chapter.errors[:volume_number].any?}", type: 'number', min: 0 }, label: false, placeholder: "0 (необов'язково)" %>
-        <%= tag.p chapter.errors[:volume_number].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:volume_number].any? %>
-      </div>
-      <div class="w-full">
-        <% if current_user.scanlators.any? %>
-          <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-        <% else %>
-          <%= f.label :scanlator_ids, 'Перекладацька команда (наразі ви не перебуваєте у жодній команді)', class: 'mb-2 text-sm font-medium text-gray-900 line-clamp-1' %>
-        <% end %>
-        <% if f.object.new_record? && params[:chapter].nil? %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: current_user.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
-        <% elsif params[:chapter].present? %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: params[:chapter][:scanlator_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
-        <% else %>
-          <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: " bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 #{'border-red-300' if chapter.errors[:scanlator_ids].any? }" } %>
-        <% end %>
-        <%= tag.p chapter.errors[:scanlator_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if chapter.errors[:scanlator_ids].any? %>
+      <!-- Scanlator Team Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Перекладацька команда</h3>
+        </div>
+        <div class="space-y-4">
+          <% if current_user.scanlators.any? %>
+            <%= f.label :scanlator_ids, 'Оберіть команду', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+          <% else %>
+            <%= f.label :scanlator_ids, 'Наразі ви не перебуваєте у жодній команді', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+          <% end %>
+          <% if f.object.new_record? && params[:chapter].nil? %>
+            <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: current_user.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:scanlator_ids].any?}" } %>
+          <% elsif params[:chapter].present? %>
+            <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: params[:chapter][:scanlator_ids]&.reject(&:blank?)), {}, { data: { controller: 'slim' }, multiple: true, class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:scanlator_ids].any?}" } %>
+          <% else %>
+            <%= f.select :scanlator_ids, options_for_select(scanlators_list(current_user), selected: f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:scanlator_ids].any?}" } %>
+          <% end %>
+          <%= tag.p chapter.errors[:scanlator_ids].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+            <%= chapter.errors[:scanlator_ids].first %>
+          <% end if chapter.errors[:scanlator_ids].any? %>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Оберіть команду, яка працювала над цим розділом</p>
+        </div>
       </div>
     </div>
-    <div>
-      <label for="content" class="block text-sm font-medium text-gray-900">Зміст</label>
-      <div class="py-2 rounded-b-lg">
-        <%= f.text_area :content, placeholder: "Додайте зміст", label: false, class: "tinymce block px-0 w-full focus:ring-0" %>
-        <%= tag.p chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-base text-red-600' if chapter.errors[:content].any? %>
+    <!-- Right Column - Content -->
+    <div class="lg:col-span-2">
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="flex items-center mb-6">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Зміст розділу</h3>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <%= f.text_area :content, label: false, class: "tinymce block w-full min-h-[400px] focus:ring-0 bg-transparent text-gray-900 dark:text-white border-0 p-0" %>
+          </div>
+          <%= tag.div chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-2 flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800' do %>
+            <svg class="h-4 w-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+            <%= chapter.errors[:content].first %>
+          <% end if chapter.errors[:content].any? %>
+        </div>
       </div>
     </div>
-    <%= f.submit "Надіслати", class: "inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-800" %>
+  </div>
+  <!-- Submit Section -->
+  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <%= link_to "Скасувати", :back, class: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" %>
+        <%= f.submit "Надіслати", class: "inline-flex items-center px-6 py-2.5 text-sm font-semibold text-center text-white bg-cyan-600 dark:bg-rose-600 rounded-lg focus:ring-4 focus:ring-cyan-200 dark:focus:ring-rose-200 hover:bg-cyan-700 dark:hover:bg-rose-700 transition-all duration-200 shadow-sm hover:shadow-md" %>
+      </div>
+    </div>
   </div>
 </div>

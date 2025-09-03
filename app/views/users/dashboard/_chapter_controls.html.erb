@@ -1,8 +1,0 @@
-<div class="inline-flex items-center">
-  <%= link_to edit_chapter_path(chapter.slug), data: { turbo: false }, class: 'group flex items-center justify-center w-9 h-9 rounded-xl bg-stone-100 hover:bg-stone-200 transition-all' do %>
-    <svg class="w-5 h-5 group-hover:text-stone-900 transition-all" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 4.5L19.5 7.5M4 20h4l10-10-4-4L4 16v4z" />
-    </svg>
-  <% end %>
-  <%= sweetalert(delete_icon, { description: I18n.t('sweetalert.chapters.description'), message: I18n.t('sweetalert.chapters.message'), tag_id: nil, url: reading_path(chapter, page:page) } ) %>
-</div>
