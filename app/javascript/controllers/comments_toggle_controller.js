@@ -4,38 +4,33 @@ export default class extends Controller {
   static targets = ["icon", "contentSection", "commentsSection", "commentsModal"]
 
     connect() {
-    // Initialize state - comments are visible by default
-    this.commentsVisible = true
-    this.updateUI()
+      // Initialize state - comments are visible by default
+      this.commentsVisible = true
+      this.updateUI()
 
-    // Listen for window resize to handle screen size changes
-    this.handleResize = this.handleResize.bind(this)
-    window.addEventListener('resize', this.handleResize)
+      // Listen for window resize to handle screen size changes
+      this.handleResize = this.handleResize.bind(this)
+      window.addEventListener('resize', this.handleResize)
 
-    // Listen for Turbo events to handle comment updates
-    this.handleTurboEvent = this.handleTurboEvent.bind(this)
-    document.addEventListener('turbo:frame-load', this.handleTurboEvent)
-  }
+      // Listen for Turbo events to handle comment updates
+      this.handleTurboEvent = this.handleTurboEvent.bind(this)
+      document.addEventListener('turbo:frame-load', this.handleTurboEvent)
+    }
 
-  disconnect() {
-    window.removeEventListener('resize', this.handleResize)
-    document.removeEventListener('turbo:frame-load', this.handleTurboEvent)
-  }
+    disconnect() {
+      window.removeEventListener('resize', this.handleResize)
+      document.removeEventListener('turbo:frame-load', this.handleTurboEvent)
+    }
 
-  handleTurboEvent(event) {
-    // Handle Turbo frame updates
-    console.log('Turbo frame loaded:', event.detail)
-  }
+    handleTurboEvent(event) {
+      // Handle Turbo frame updates
+      console.log('Turbo frame loaded:', event.detail)
+    }
 
-  handleResize() {
-    // Update UI when screen size changes
-    this.updateUI()
-  }
-
-      recreateDesktopSidebar() {
-    // This method is no longer needed since we keep the desktop sidebar in the DOM
-    // and just hide/show it with CSS classes
-  }
+    handleResize() {
+      // Update UI when screen size changes
+      this.updateUI()
+    }
 
     updateUI() {
     const contentSection = this.contentSectionTarget
@@ -46,10 +41,10 @@ export default class extends Controller {
     if (window.innerWidth >= 1024) {
       // Get the desktop sidebar element
       const commentsSection = this.element.querySelector('[data-comments-toggle-target="commentsSection"]')
-      
+
       // Ensure mobile modal is hidden on large screens
       commentsModal.classList.add('hidden')
-      
+
       if (commentsSection) {
         if (this.commentsVisible) {
           // Show comments - 2/3 content, 1/3 comments on desktop
