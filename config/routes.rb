@@ -20,6 +20,10 @@ Rails.application.routes.draw do
     post '/register', to: 'users/registrations#create'
   end
 
+  # Legacy routes
+  get '/session/new', to: redirect('/login')
+  get '/register/new', to: redirect('/register')
+
   namespace :admin do
     resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
