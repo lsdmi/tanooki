@@ -35,6 +35,7 @@ class ContentFormatter
              .gsub(/<br\s*>/i, '<br></br>')
              .gsub(/<hr\s*>/i, '<hr></hr>')
              .gsub(/<img(.*?)>/, '<img\1></img>')
+             .gsub(/&nbsp;/i, '&#160;')
     end
   end
 end
