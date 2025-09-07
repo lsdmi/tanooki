@@ -74,18 +74,23 @@
         <!-- Fictions Grid -->
         <% if @fictions.ids.size > 0 %>
           <div data-controller="fiction-picker" class="lg:col-span-2">
-            <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0 tracking-widest">
+            <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0">
               <% if @fictions.ids.size > 1 %>
                 <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">
                   <% @fictions.each_with_index do |fiction, index| %>
-                    <%= image_tag url_for(fiction.cover),
-                        alt: fiction.cover.blob.filename.to_s,
-                        class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 cursor-pointer #{index == 0 ? 'ring-2 ring-stone-500' : ''}",
-                        data: {
-                          action: "click->fiction-picker#selectFiction",
-                          fiction_picker_target: "image",
-                          fiction_picker_id_param: fiction.id
-                        } %>
+                    <div class="relative transition duration-300 transform hover:scale-105 cursor-pointer flex-shrink-0 w-14 h-20 sm:w-16 sm:h-24">
+                      <% if fiction.verified? %>
+                        <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'sm' %>
+                      <% end %>
+                      <%= image_tag url_for(fiction.cover),
+                          alt: fiction.cover.blob.filename.to_s,
+                          class: "w-full h-full object-cover rounded-md shadow-sm #{index == 0 ? 'ring-2 ring-stone-500' : ''}",
+                          data: {
+                            action: "click->fiction-picker#selectFiction",
+                            fiction_picker_target: "image",
+                            fiction_picker_id_param: fiction.id
+                          } %>
+                    </div>
                   <% end %>
                 </div>
               <% end %>

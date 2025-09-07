@@ -165,17 +165,20 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <% @recent_readings.each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden' do %>
-                    <%= image_tag url_for(reading.fiction.cover),
-                      alt: reading.fiction.cover.blob.filename.to_s,
-                      class: "w-full h-full object-cover",
-                      loading: "lazy",
-                      data: {
-                        controller: "lazy-image",
-                        lazy_image_target: "image",
-                        lazy_image_url_value: url_for(reading.fiction.cover)
-                      } %>
+                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
+                  <% if reading.fiction.verified? %>
+                    <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{reading.fiction.id}", filter_id: "verifiedShadow-#{reading.fiction.id}", size: 'sm' %>
                   <% end %>
+                  <%= image_tag url_for(reading.fiction.cover),
+                    alt: reading.fiction.cover.blob.filename.to_s,
+                    class: "w-full h-full object-cover",
+                    loading: "lazy",
+                    data: {
+                      controller: "lazy-image",
+                      lazy_image_target: "image",
+                      lazy_image_url_value: url_for(reading.fiction.cover)
+                    } %>
+                <% end %>
 
                 <div class="flex-1">
                   <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">

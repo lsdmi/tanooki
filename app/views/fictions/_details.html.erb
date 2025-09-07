@@ -6,7 +6,10 @@
       <!-- Book Header Section -->
       <div class="flex flex-col sm:flex-row gap-4 items-start justify-center lg:justify-start">
         <!-- Book Cover Image -->
-        <div class="flex-shrink-0 border border-stone-200 dark:border-gray-700 mx-auto lg:mx-0">
+        <div class="flex-shrink-0 border border-stone-200 dark:border-gray-700 mx-auto lg:mx-0 relative">
+          <% if fiction.verified? %>
+            <%= render 'shared/verified_ribbon' %>
+          <% end %>
           <%= image_tag url_for(fiction.cover),
                       class: 'w-32 h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 shadow-md flex items-center justify-center',
                       alt: fiction.cover.blob.filename %>

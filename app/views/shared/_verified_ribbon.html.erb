@@ -1,0 +1,43 @@
+<% tooltip_id = local_assigns[:tooltip_id] || 'verified-tooltip' %>
+<% filter_id = local_assigns[:filter_id] || 'verifiedShadow' %>
+
+<% size = (local_assigns[:size] || 'md').to_s %>
+
+<% case size %>
+<% when 'lg' %>
+<%   top_left = 'top-3 left-3' %>
+<%   icon_size = 'w-12 h-12' %>
+<% when 'md' %>
+<%   top_left = 'top-2 left-2' %>
+<%   icon_size = 'w-8 h-8' %>
+<% else %>
+<%   top_left = '' %>
+<%   icon_size = 'w-4 h-4' %>
+<% end %>
+
+<% show_tooltip = %w[lg md].include?(size) %>
+
+<div class="absolute <%= top_left %> z-10">
+  <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-blue-400 rounded-full" <% if show_tooltip %>data-tooltip-target="<%= tooltip_id %>"<% end %> aria-label="Підтверджений переклад високої якості. Виконано з оригіналу або англійської, із професійною редактурою та ретельною вичиткою.">
+    <svg class="<%= icon_size %>" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" filter="url(#<%= filter_id %>)">
+      <defs>
+        <filter id="<%= filter_id %>" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="rgba(0,0,0,0.35)"/>
+        </filter>
+      </defs>
+      <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
+      <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
+    </svg>
+  </span>
+  <% if show_tooltip %>
+    <div id="<%= tooltip_id %>" role="tooltip" class="inline-block absolute z-10 invisible px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-gray-800 dark:text-white flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11c.889-.086 1.416-.543 2.156-1.057a22.323 22.323 0 0 0 3.958-5.084 1.6 1.6 0 0 1 .582-.628 1.549 1.549 0 0 1 1.466-.087c.205.095.388.233.537.406a1.64 1.64 0 0 1 .384 1.279l-1.388 4.114M7 11H4v6.5A1.5 1.5 0 0 0 5.5 19v0A1.5 1.5 0 0 0 7 17.5V11Zm6.5-1h4.915c.286 0 .372.014.626.15.254.135.472.332.637.572a1.874 1.874 0 0 1 .215 1.673l-2.098 6.4C17.538 19.52 17.368 20 16.12 20c-2.303 0-4.79-.943-6.67-1.475"/>
+        </svg>
+        <span class="leading-5 whitespace-nowrap">Переклад Верифіковано</span>
+      </div>
+      <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
+  <% end %>
+</div>

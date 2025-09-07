@@ -39,10 +39,13 @@
   <div class="grid grid-cols-4 lg:grid-cols-4 gap-3 lg:gap-4">
     <% fictions.each do |fiction| %>
       <div class="">
-        <%= link_to fiction_path(fiction), class: '' do %>
+        <%= link_to fiction_path(fiction), class: 'relative block transition duration-300 transform hover:scale-105' do %>
+          <% if fiction.verified? %>
+            <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'md' %>
+          <% end %>
           <%= image_tag url_for(fiction.cover),
             alt: fiction.cover.blob.filename.to_s,
-            class: "w-full aspect-[2/3] object-cover rounded-md shadow-sm mb-2 transition duration-300 transform hover:scale-105",
+            class: "w-full aspect-[2/3] object-cover rounded-md shadow-sm mb-2",
             loading: "lazy",
             data: {
               controller: "lazy-image",

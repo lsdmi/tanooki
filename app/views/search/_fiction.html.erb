@@ -2,7 +2,12 @@
   <div class="gap-4 items-center pb-2 md:py-4 mx-4 2xl:mx-auto 2xl:pl-2 max-w-screen-2xl grid-cols-5 lg:grid lg:grid-cols-8 xl:gap-16">
     <div class="col-span-8 grid grid-cols-6 gap-4 xl:gap-8 self-start">
       <div class="md:col-span-2 hidden md:block">
-        <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
+        <div class="relative">
+          <% if fiction.verified? %>
+            <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'md' %>
+          <% end %>
+          <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
+        </div>
       </div>
       <div class="text-gray-500 dark:text-gray-400 sm:text-xl col-span-6 md:col-span-4">
         <%= link_to fiction_path(fiction) do %>

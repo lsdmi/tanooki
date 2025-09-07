@@ -1,16 +1,19 @@
 <div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active dark:bg-gray-800 rounded-lg">
-  <div data-controller="lazy-image" data-lazy-image-image-id="<%= fiction.id %>" class="relative sm:h-64">
+  <div data-controller="lazy-image" data-lazy-image-image-id="<%= fiction.id %>" class="relative sm:h-64 transition duration-300 transform hover:scale-105">
     <div id="spinner-<%= fiction.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
       <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
+    <% if fiction.verified? %>
+      <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'sm' %>
+    <% end %>
     <%= link_to fiction_path(fiction), data: { turbo: false } do %>
       <%= image_tag url_for(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,
         id: "image-#{fiction.id}",
-        class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
+        class: "w-full h-full object-cover rounded-md shadow-sm opacity-0",
         loading: "lazy",
         data: { url: url_for(fiction.cover) } %>
     <% end %>

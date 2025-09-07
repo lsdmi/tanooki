@@ -59,7 +59,10 @@
           <ul class="space-y-2 lg:space-y-3">
             <% @related_fictions.each do |fiction| %>
               <li class="flex items-center gap-2 lg:gap-3 border-b border-cyan-700 dark:border-rose-700 last:border-b-0 pb-2 lg:pb-3 p-1 lg:p-2 hover:scale-[1.015] transition-all duration-300">
-                <%= link_to fiction_path(fiction), data: { turbo: false }, class: '' do %>
+                <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'relative block' do %>
+                  <% if fiction.verified? %>
+                    <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'sm' %>
+                  <% end %>
                   <%= image_tag url_for(fiction.cover),
                     alt: fiction.cover.blob.filename.to_s,
                     class: "w-12 h-16 lg:w-16 lg:h-22 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
