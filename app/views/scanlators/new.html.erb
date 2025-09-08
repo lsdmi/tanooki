@@ -6,6 +6,8 @@
       <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Додайте профіль вашої команди перекладачів!</p>
     </div>
 
+    <%= render 'verification_badge_rules' %>
+
     <!-- Form Container -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-8">
       <%= simple_form_for @scanlator, as: :scanlator, url: scanlators_path, method: :post, html: { class: "form", multipart: true } do |f| %>
