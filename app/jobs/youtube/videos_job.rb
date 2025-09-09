@@ -32,7 +32,7 @@ module Youtube
 
     def create_videos_if_not_exists(youtube, channel_id, video_ids)
       video_ids.each do |video_id|
-        next if short_video?(video_id)
+        next if short_video?(youtube, video_id)
         next if YoutubeVideo.with_deleted.exists?(video_id:)
 
         create_video(youtube, channel_id, video_id)
@@ -44,15 +44,13 @@ module Youtube
       response.items.map { |item| item.id.video_id }.compact
     end
 
-    def short_video?(video_id)
-      url = "https://www.youtube.com/shorts/#{video_id}"
-      uri = URI(url)
+    def short_video?(youtube, video_id)
+      response = youtube.list_videos('contentDetails', id: video_id)
+      item = response.items.first
+      return false unless item&.content_details&.duration
 
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.request_head(uri)
-      end
-
-      response.code.to_i == 200
+      duration_seconds = parse_youtube_duration(item.content_details.duration.to_s)
+      duration_seconds <= 60
     end
 
     def initialize_youtube_service
@@ -80,6 +78,16 @@ module Youtube
 
     def video_data(response)
       response.items.first.snippet
+    end
+
+    def parse_youtube_duration(iso8601_duration)
+      match = iso8601_duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+      return 0 unless match
+
+      hours = match[1].to_i
+      minutes = match[2].to_i
+      seconds = match[3].to_i
+      (hours * 3600) + (minutes * 60) + seconds
     end
   end
 end
