@@ -2,11 +2,10 @@
 <%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
 
 <div class="mx-auto">
-  <!-- Main Content Area -->
-  <div class="grid lg:grid-cols-3 gap-4 sm:gap-8">
-    <!-- Left Column - Basic Info -->
-    <div class="lg:col-span-1 space-y-4 sm:space-y-6">
-      <!-- Chapter Details Section -->
+  <!-- Main Content Area - Columns Layout -->
+  <div class="grid lg:grid-cols-2 gap-4 sm:gap-8 mb-8">
+    <!-- Left Column - Chapter Details -->
+    <div class="space-y-4 sm:space-y-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
         <div class="flex items-center mb-4">
           <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
@@ -45,7 +44,9 @@
           </div>
         </div>
       </div>
-      <!-- Scanlator Team Section -->
+    </div>
+    <!-- Right Column - Scanlator Team -->
+    <div class="space-y-4 sm:space-y-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
         <div class="flex items-center mb-4">
           <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
@@ -76,27 +77,26 @@
         </div>
       </div>
     </div>
-    <!-- Right Column - Content -->
-    <div class="lg:col-span-2">
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
-        <div class="flex items-center mb-6">
-          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
-            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Зміст розділу</h3>
-        </div>
-        <div class="space-y-4">
-          <div>
-            <%= f.text_area :content, label: false, class: "tinymce block w-full min-h-[400px] focus:ring-0 bg-transparent text-gray-900 dark:text-white border-0 p-0" %>
-          </div>
-          <%= tag.div chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-2 flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800' do %>
-            <svg class="h-4 w-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-            <%= chapter.errors[:content].first %>
-          <% end if chapter.errors[:content].any? %>
-        </div>
+  </div>
+
+  <!-- Content Section - Full Width at Bottom -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
+    <div class="flex items-center mb-6">
+      <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+        <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
       </div>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Зміст розділу</h3>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <%= f.text_area :content, label: false, class: "tinymce block w-full min-h-[400px] focus:ring-0 bg-transparent text-gray-900 dark:text-white border-0 p-0" %>
+      </div>
+      <%= tag.div chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-2 flex items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800' do %>
+        <svg class="h-4 w-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+        <%= chapter.errors[:content].first %>
+      <% end if chapter.errors[:content].any? %>
     </div>
   </div>
   <!-- Submit Section -->

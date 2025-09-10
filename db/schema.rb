@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_05_222154) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_10_134400) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -65,6 +65,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_222154) do
   create_table "avatars", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bookshelf_fictions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "bookshelf_id", null: false
+    t.bigint "fiction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bookshelf_id", "fiction_id"], name: "index_bookshelf_fictions_on_bookshelf_id_and_fiction_id", unique: true
+    t.index ["bookshelf_id"], name: "index_bookshelf_fictions_on_bookshelf_id"
+    t.index ["fiction_id"], name: "index_bookshelf_fictions_on_fiction_id"
+  end
+
+  create_table "bookshelves", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.bigint "user_id", null: false
+    t.integer "views", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bookshelves_on_user_id"
   end
 
   create_table "chapter_scanlators", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -332,6 +352,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_222154) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookshelf_fictions", "bookshelves"
+  add_foreign_key "bookshelf_fictions", "fictions"
+  add_foreign_key "bookshelves", "users"
   add_foreign_key "chapter_scanlators", "chapters"
   add_foreign_key "chapter_scanlators", "scanlators"
   add_foreign_key "chapters", "fictions", on_delete: :cascade

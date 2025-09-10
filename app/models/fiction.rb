@@ -20,6 +20,8 @@ class Fiction < ApplicationRecord
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :scanlators, through: :fiction_scanlators
   has_many :users, through: :scanlators
+  has_many :bookshelf_fictions, dependent: :destroy
+  has_many :bookshelves, through: :bookshelf_fictions
 
   enum :status, { announced: 'Анонсовано', dropped: 'Покинуто', ongoing: 'Видається', finished: 'Завершено' }
   enum :origin, { nknown: 'невідоме', english: 'англійське', bosnian: 'боснійське', italian: 'італійське',
