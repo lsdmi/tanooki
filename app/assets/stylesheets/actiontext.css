@@ -21,12 +21,17 @@
   margin-bottom: 0;
 }
 
-#user-content p {
+#user-content p:not([style*="color"]) {
   margin-bottom: 1.5rem;
   color: inherit !important;
 }
 
-#user-content h1, #user-content h2, #user-content h3, #user-content h4, #user-content h5, #user-content h6 {
+#user-content h1:not([style*="color"]), 
+#user-content h2:not([style*="color"]), 
+#user-content h3:not([style*="color"]), 
+#user-content h4:not([style*="color"]), 
+#user-content h5:not([style*="color"]), 
+#user-content h6:not([style*="color"]) {
   margin-top: 2rem;
   margin-bottom: 1rem;
   color: inherit !important;
@@ -52,7 +57,7 @@
   list-style-type: decimal;
 }
 
-#user-content li {
+#user-content li:not([style*="color"]) {
   margin-bottom: 0.5rem;
   line-height: 1.7;
   /* Optional: add a little padding for better readability */
@@ -67,33 +72,39 @@
   margin-top: 2rem;
 }
 
-/* Override any inline color styles */
-#user-content * {
+/* Strikethrough text styling */
+#user-content strike,
+#user-content s,
+#user-content del {
+  text-decoration: line-through;
+  opacity: 0.7;
   color: inherit !important;
 }
 
-/* Specific overrides for common elements that might have inline styles */
-#user-content span {
+/* Override any inline color styles, but allow styled spans */
+#user-content *:not([style*="color"]) {
   color: inherit !important;
 }
 
-#user-content div {
+/* Allow styled spans to keep their colors - inline styles will take precedence */
+
+#user-content div:not([style*="color"]) {
   color: inherit !important;
 }
 
-#user-content strong {
+#user-content strong:not([style*="color"]) {
   color: inherit !important;
 }
 
-#user-content em {
+#user-content em:not([style*="color"]) {
   color: inherit !important;
 }
 
-#user-content code {
+#user-content code:not([style*="color"]) {
   color: inherit !important;
 }
 
-#user-content pre {
+#user-content pre:not([style*="color"]) {
   color: inherit !important;
 }
 

@@ -57,7 +57,11 @@ const initializeTinymce = () => {
     'Undo': 'Відмінити',
     'Width': 'Ширина',
     'Word count': 'Кількість слів',
-    'Words': 'Слів'
+    'Words': 'Слів',
+    'Strikethrough': 'Закреслення',
+    'Text color': 'Колір тексту',
+    'Fore color': 'Колір тексту',
+    'Background color': 'Колір тла'
   });
   tinymce.init({
     language: 'uk',
@@ -71,12 +75,13 @@ const initializeTinymce = () => {
       'lists',
       'media',
       'quickbars',
-      'wordcount'
+      'wordcount',
+      'textcolor'
     ],
     menubar: false,
-    toolbar: 'undo redo | bold italic underline | link | fontfamily fontsize align lineheight | backcolor | removeformat | outdent indent | image media | hr | code | wordcount',
+    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | link | fontfamily fontsize align lineheight | removeformat | outdent indent | image media | hr | code | wordcount',
     quickbars_insert_toolbar: 'image media',
-    quickbars_selection_toolbar: 'bold italic underline | blockquote quicklink',
+    quickbars_selection_toolbar: 'bold italic underline strikethrough | forecolor | blockquote quicklink',
     contextmenu: false,
     statusbar: false,
     newline_behavior: 'linebreak',
@@ -218,6 +223,11 @@ const initializeTinymce = () => {
             
             em, i {
               font-style: italic;
+            }
+            
+            strike, s, del {
+              text-decoration: line-through;
+              opacity: 0.7;
             }
             
             /* Selection styles */
