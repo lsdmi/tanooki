@@ -54,6 +54,10 @@ class StudioTabContentService
     @avatars = fetch_avatars
   end
 
+  def bookshelves_content_loader
+    @bookshelves = user.bookshelves.ordered
+  end
+
   def fiction_list
     user.admin? ? fiction_all : dashboard_fiction_list
   end

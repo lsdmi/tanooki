@@ -25,6 +25,7 @@ class ProfilesController < ApplicationController
     @recent_comments = @user.comments.order(created_at: :desc).includes(:commentable).limit(3)
     @recent_readings = @user.readings.includes(fiction: :cover_attachment,
                                                chapter: {}).order(updated_at: :desc).limit(4)
+    @user_bookshelves = @user.bookshelves.includes(:fictions).most_viewed.limit(1)
   end
 
   def load_pokemon_stats

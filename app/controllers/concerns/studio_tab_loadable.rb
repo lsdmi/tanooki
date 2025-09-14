@@ -28,6 +28,7 @@ module StudioTabLoadable
     @fictions = service.instance_variable_get(:@fictions)
     @comments = service.instance_variable_get(:@comments)
     @avatars = service.instance_variable_get(:@avatars)
+    @bookshelves = service.instance_variable_get(:@bookshelves)
 
     assign_instance_variables
   end
@@ -38,5 +39,6 @@ module StudioTabLoadable
     @publications ||= []
     @avatars ||= []
     @scanlators ||= []
+    @bookshelves ||= []
   end
 end

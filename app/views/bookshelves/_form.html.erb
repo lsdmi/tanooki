@@ -1,0 +1,99 @@
+<%= form_with model: @bookshelf, local: true, class: "space-y-6" do |form| %>
+  <% if @bookshelf.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4 dark:bg-red-900/20">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+            Виправте наступні помилки:
+          </h3>
+          <div class="mt-2 text-sm text-red-700 dark:text-red-300">
+            <ul class="list-disc list-inside space-y-1">
+              <% @bookshelf.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="mx-auto">
+    <!-- Main Content Area - Columns Layout -->
+    <div class="grid lg:grid-cols-2 gap-4 sm:gap-8 mb-8">
+      <!-- Left Column - Basic Info -->
+      <div class="space-y-4 sm:space-y-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+              <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Основна інформація</h3>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <%= form.label :title, "Назва полиці", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= form.text_field :title,
+                  class: "block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-rose-500 dark:focus:ring-rose-500",
+                  placeholder: "Мої улюблені романи" %>
+            </div>
+            <div>
+              <%= form.label :description, "Опис полиці", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= form.text_area :description,
+                  rows: 4,
+                  class: "block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-rose-500 dark:focus:ring-rose-500",
+                  placeholder: "Опишіть тематику та призначення цієї полиці..." %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Fiction Selection -->
+      <div class="space-y-4 sm:space-y-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+              <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Оберіть твори</h3>
+          </div>
+          <div class="space-y-4">
+            <%= form.select :fiction_ids,
+                  options_from_collection_for_select(@fictions, :id, :title, @bookshelf.fiction_ids),
+                  {},
+                  { multiple: true,
+                    class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200",
+                    data: { controller: 'slim' } } %>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Можете вибрати кілька творів одночасно</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Section -->
+  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <%= link_to "Скасувати", studio_index_path(tab: 'bookshelves'),
+            class: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" %>
+        <%= form.submit "Надіслати",
+            class: "inline-flex items-center px-6 py-2.5 text-sm font-semibold text-center text-white bg-cyan-600 dark:bg-rose-600 rounded-lg focus:ring-4 focus:ring-cyan-200 dark:focus:ring-rose-200 hover:bg-cyan-700 dark:hover:bg-rose-700 transition-all duration-200 shadow-sm hover:shadow-md" %>
+      </div>
+    </div>
+  </div>
+<% end %>

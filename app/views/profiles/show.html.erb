@@ -24,7 +24,7 @@
             <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
             </svg>
-            Нові блоги
+            Нові Блоги
           </h2>
           <div class="space-y-3">
             <% @recent_publications.each do |publication| %>
@@ -82,6 +82,73 @@
                   </h3>
                   <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"><%= scanlator.description %></p>
                 </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- My Bookshelves -->
+      <% if @user_bookshelves.any? %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+          <%= render 'shared/decorative_ornament' %>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
+            <svg class="w-5 h-5 mr-2 text-cyan-600 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4"/>
+            </svg>
+            Книжкова Полиця
+          </h2>
+          <div class="space-y-3">
+            <% @user_bookshelves.each do |bookshelf| %>
+              <div class="group p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200">
+                <div class="space-y-3">
+                  <!-- Title and Fiction Count Row -->
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-400 transition-colors">
+                      <%= bookshelf.title %>
+                    </h3>
+                    <div class="flex items-center px-3 py-1 bg-cyan-100 dark:bg-rose-900/30 rounded-full">
+                      <svg class="w-4 h-4 mr-1.5 text-cyan-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+                      </svg>
+                      <span class="text-sm font-semibold text-cyan-700 dark:text-rose-400">
+                        <%= bookshelf.fictions.count %>
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <!-- Description -->
+                  <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">
+                    <%= bookshelf.description %>
+                  </p>
+                </div>
+                  <!-- Fiction Covers Preview -->
+                  <% if bookshelf.fictions.any? %>
+                    <div class="mt-3 flex -space-x-2 overflow-x-auto scrollbar-hide pb-2">
+                      <% bookshelf.fictions.each do |fiction| %>
+                        <div class="relative flex-shrink-0">
+                        <%= link_to fiction_path(fiction), data: { turbo: false }, class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
+                          <% if fiction.verified? %>
+                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full flex items-center justify-center z-10">
+                              <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                              </svg>
+                            </div>
+                          <% end %>
+                          <%= image_tag url_for(fiction.cover),
+                              alt: fiction.title,
+                              class: "w-full h-full object-cover",
+                              loading: "lazy",
+                              data: {
+                                controller: "lazy-image",
+                                lazy_image_target: "image",
+                                lazy_image_url_value: url_for(fiction.cover)
+                              } %>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>

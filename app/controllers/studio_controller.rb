@@ -40,7 +40,8 @@ class StudioController < ApplicationController
       pokemon_show: @pokemon_show,
       avatars: @avatars,
       comments: @comments,
-      scanlators: @scanlators
+      scanlators: @scanlators,
+      bookshelves: @bookshelves
     }
   end
 end
