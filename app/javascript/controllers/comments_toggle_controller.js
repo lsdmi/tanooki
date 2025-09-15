@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["icon", "contentSection", "commentsSection", "commentsModal"]
+  static targets = ["icon", "contentSection", "commentsSection"]
 
     connect() {
       // Initialize state - comments are visible by default
@@ -34,16 +34,12 @@ export default class extends Controller {
 
     updateUI() {
     const contentSection = this.contentSectionTarget
-    const commentsModal = this.commentsModalTarget
     const icon = this.iconTarget
 
     // Only manage desktop sidebar visibility on large screens
     if (window.innerWidth >= 1024) {
       // Get the desktop sidebar element
       const commentsSection = this.element.querySelector('[data-comments-toggle-target="commentsSection"]')
-
-      // Ensure mobile modal is hidden on large screens
-      commentsModal.classList.add('hidden')
 
       if (commentsSection) {
         if (this.commentsVisible) {
@@ -76,7 +72,7 @@ export default class extends Controller {
   toggle() {
     // Check if we're on mobile (screen width < 1024px)
     if (window.innerWidth < 1024) {
-      this.toggleModal()
+      this.redirectToCommentsPage()
     } else {
       // Desktop behavior - toggle sidebar
       this.commentsVisible = !this.commentsVisible
@@ -84,49 +80,13 @@ export default class extends Controller {
     }
   }
 
-  toggleModal() {
-    const commentsModal = this.commentsModalTarget
-    const isHidden = commentsModal.classList.contains('hidden')
+  redirectToCommentsPage() {
+    // Get the current chapter ID from the URL
+    const currentPath = window.location.pathname
+    const chapterId = currentPath.split('/').pop()
 
-    if (isHidden) {
-      this.showModal()
-    } else {
-      this.hideModal()
-    }
+    // Redirect to the comments page for this chapter
+    window.location.href = `/chapters/${chapterId}/comments`
   }
 
-  showModal() {
-    const commentsModal = this.commentsModalTarget
-    commentsModal.classList.remove('hidden')
-
-    // Prevent body scroll when sidebar is open
-    document.body.style.overflow = 'hidden'
-
-    // Force reflow to ensure the sidebar is visible before animation
-    commentsModal.offsetHeight
-
-    // Add animation class for slide in from right effect
-    const sidebarContent = commentsModal.querySelector('.fixed.right-0')
-    sidebarContent.classList.remove('translate-x-full')
-    sidebarContent.classList.add('translate-x-0')
-  }
-
-  hideModal() {
-    const commentsModal = this.commentsModalTarget
-    const sidebarContent = commentsModal.querySelector('.fixed.right-0')
-
-    // Add slide out to right animation
-    sidebarContent.classList.remove('translate-x-0')
-    sidebarContent.classList.add('translate-x-full')
-
-    // Hide sidebar after animation
-    setTimeout(() => {
-      commentsModal.classList.add('hidden')
-      document.body.style.overflow = ''
-    }, 300)
-  }
-
-  closeModal() {
-    this.hideModal()
-  }
 }

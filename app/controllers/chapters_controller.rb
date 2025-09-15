@@ -4,17 +4,25 @@ class ChaptersController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
-  before_action :authenticate_user!, except: %i[show]
-  before_action :set_chapter, only: %i[show edit update]
+  before_action :authenticate_user!, except: %i[show comments]
+  before_action :set_chapter, only: %i[show edit update comments]
   before_action :track_visit, :track_reading_progress, only: :show
-  before_action :verify_permissions, except: %i[new create show]
+  before_action :verify_permissions, except: %i[new create show comments]
   before_action :pokemon_appearance, only: [:show]
 
   def show
-    @comments = @chapter.comments.parents.order(created_at: :desc)
+    @comments = @chapter.comments.parents.includes(user: { avatar: :image_attachment },
+                                                   replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
     @comment = Comment.new
     @previous_chapter = previous_chapter(@chapter.fiction, @chapter)
     @next_chapter = following_chapter(@chapter.fiction, @chapter)
+  end
+
+  def comments
+    @comments = @chapter.comments.parents.includes(user: { avatar: :image_attachment },
+                                                   replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
+    @comment = Comment.new
+    @commentable = @chapter
   end
 
   def new

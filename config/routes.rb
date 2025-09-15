@@ -44,7 +44,11 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
-  resources :chapters, except: %i[index destroy]
+  resources :chapters, except: %i[index destroy] do
+    member do
+      get :comments
+    end
+  end
   resources :fictions do
     member do
       get :details

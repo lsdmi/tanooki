@@ -14,7 +14,8 @@ class TalesController < ApplicationController
 
   def show
     @more_tales = more_tails
-    @comments = @publication.comments.parents.order(created_at: :desc)
+    @comments = @publication.comments.parents.includes(user: { avatar: :image_attachment },
+                                                       replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
     @comment = Comment.new
   end
 

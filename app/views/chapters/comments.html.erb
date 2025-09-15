@@ -1,0 +1,46 @@
+<div class="bg-stone-50 dark:bg-stone-900 min-h-screen">
+  <div class="container mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-12">
+    <!-- Header -->
+    <div class="mb-4 sm:mb-6 lg:mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-3">
+        <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-stone-800 dark:text-gray-200 leading-tight">
+          Коментарі до розділу
+        </h1>
+        <%= link_to chapter_path(@chapter), class: "inline-flex items-center px-3 py-2 text-xs sm:text-sm font-medium text-stone-600 dark:text-gray-400 hover:text-stone-800 dark:hover:text-gray-200 transition-colors bg-white dark:bg-gray-800 rounded-lg border border-stone-200 dark:border-gray-700 shadow-sm hover:shadow-md self-start sm:self-auto" do %>
+          <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span class="hidden sm:inline">Повернутися до розділу</span>
+          <span class="sm:hidden">Назад</span>
+        <% end %>
+      </div>
+
+      <!-- Chapter Info -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm border border-stone-200 dark:border-gray-700">
+        <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-stone-800 dark:text-gray-200 mb-1 sm:mb-2 leading-tight">
+          <%= @chapter.fiction.title %>
+        </h2>
+        <h3 class="text-sm sm:text-base lg:text-lg text-stone-600 dark:text-gray-400 leading-tight">
+          Розділ <%= @chapter.number %>: <%= @chapter.title %>
+        </h3>
+        <% if @chapter.volume_number.present? %>
+          <p class="text-xs sm:text-sm text-stone-500 dark:text-gray-500 mt-1">
+            Том <%= @chapter.volume_number %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Support Creator Section -->
+    <% if @chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
+      <div class="max-w-4xl mx-auto mb-6 sm:mb-8">
+        <%= render 'fictions/support', fiction: @chapter.fiction %>
+      </div>
+    <% end %>
+
+    <!-- Comments Section -->
+    <div class="max-w-4xl mx-auto">
+      <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
+    </div>
+  </div>
+</div>

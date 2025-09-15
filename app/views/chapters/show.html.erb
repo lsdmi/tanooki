@@ -25,40 +25,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Comments Sidebar - Mobile -->
-    <div data-comments-toggle-target="commentsModal" class="fixed inset-0 z-50 hidden lg:hidden">
-      <!-- Backdrop -->
-      <div class="fixed inset-0 backdrop-blur-xs bg-white/5 dark:bg-black/5 transition-all" data-action="click->comments-toggle#closeModal"></div>
-
-      <!-- Sidebar -->
-      <div class="fixed top-0 right-0 h-full w-full max-w-sm bg-white dark:bg-gray-800 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out overflow-hidden">
-
-        <!-- Content -->
-        <div class="h-full overflow-y-auto pb-4 mt-36 sm:mt-4">
-          <div class="flex items-center justify-between p-4 border-b border-stone-200 dark:border-gray-700 bg-stone-50 dark:bg-gray-900">
-            <button data-action="click->comments-toggle#closeModal" class="p-2 text-stone-500 dark:text-gray-400 hover:text-stone-700 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-stone-200 dark:hover:bg-gray-700" aria-label="Закрити коментарі">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Support Creator Section -->
-          <% if @chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
-            <div class="px-4 pt-4">
-              <%= render 'fictions/support', fiction: @chapter.fiction %>
-            </div>
-          <% end %>
-
-          <div class="block px-4 pt-4 mb-36">
-            <%= turbo_frame_tag "mobile_sidebar_comments" do %>
-              <%= render 'comments/mobile_index', comments: @comments, comment: @comment, commentable: @commentable %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
   <!-- Jump to Top Button - Mobile Only -->

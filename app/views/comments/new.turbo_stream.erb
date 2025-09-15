@@ -3,11 +3,6 @@
     <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
   <% end %>
 <% end %>
-<%= turbo_stream.update "mobile-comment-reply-#{@comment.parent_id}" do %>
-  <%= simple_form_for @comment, url: comments_path, method: :post, html: { class: "comment form mt-2.5" } do |f| %>
-    <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
-  <% end %>
-<% end %>
 <%= turbo_stream.update "comment-content-#{@comment.parent_id}" do %>
   <%= tag.p @comment.parent_content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
 <% end %>

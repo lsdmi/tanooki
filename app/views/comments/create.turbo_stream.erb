@@ -5,48 +5,20 @@
       <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
     <% end %>
   <% end %>
-  <%= turbo_stream.update "mobile-comment-reply-#{@reply_parent.id || @created_comment.parent_id}" do %>
-    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mt-2.5" } do |f| %>
-      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
-    <% end %>
-  <% end %>
 <% elsif @created_comment.invalid? %>
   <%= turbo_stream.update "new_comment" do %>
     <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
       <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
     <% end %>
   <% end %>
-  <%= turbo_stream.update "mobile_new_comment" do %>
-    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
-    <% end %>
-  <% end %>
 <% elsif @created_comment.parent_id.present? %>
   <%= turbo_stream.append "replies-#{@created_comment.parent_id}", partial: "comments/reply", locals: { reply: @created_comment, commentable: @commentable } %>
-  <%= turbo_stream.append "mobile-replies-#{@created_comment.parent_id}", partial: "comments/mobile_reply", locals: { reply: @created_comment, commentable: @commentable } %>
   <%= turbo_stream.update "comment-reply-#{@reply_parent.id}" do %>
-    <%= render 'comments/actions', comment: @reply_parent || @created_comment.parent, commentable: @commentable %>
-  <% end %>
-  <%= turbo_stream.update "mobile-comment-reply-#{@reply_parent.id}" do %>
     <%= render 'comments/actions', comment: @reply_parent || @created_comment.parent, commentable: @commentable %>
   <% end %>
 <% else %>
   <%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @created_comment, commentable: @commentable } %>
-  <%= turbo_stream.prepend "mobile_comments" do %>
-    <%= turbo_frame_tag "mobile_comment_#{@created_comment.id}" do %>
-      <div data-controller="flowbite" class="space-y-6">
-        <%= render 'comments/mobile_comment_body', comment: @created_comment %>
-        <%= turbo_frame_tag "mobile-replies-#{@created_comment.id}" do %>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
   <%= turbo_stream.update "new_comment" do %>
-    <%= simple_form_for @new_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @new_comment, commentable: @commentable, f: f %>
-    <% end %>
-  <% end %>
-  <%= turbo_stream.update "mobile_new_comment" do %>
     <%= simple_form_for @new_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
       <%= render "comments/new", comment: @new_comment, commentable: @commentable, f: f %>
     <% end %>

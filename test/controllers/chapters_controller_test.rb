@@ -21,6 +21,14 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @chapter.comments, assigns(:comments)
   end
 
+  test 'should get comments page' do
+    @chapter.comments << comments(:comment_one)
+    get comments_chapter_url(@chapter)
+    assert_response :success
+    assert_equal @chapter.comments.parents.order(created_at: :desc), assigns(:comments)
+    assert_equal @chapter, assigns(:commentable)
+  end
+
   test 'should get next chapter' do
     get chapter_path(@chapter)
     assert_equal chapters(:two), assigns(:next_chapter)
