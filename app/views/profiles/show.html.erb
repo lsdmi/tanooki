@@ -104,9 +104,11 @@
                 <div class="space-y-3">
                   <!-- Title and Fiction Count Row -->
                   <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-400 transition-colors">
-                      <%= bookshelf.title %>
-                    </h3>
+                    <%= link_to bookshelf_path(bookshelf.sqid), class: "block" do %>
+                      <h3 class="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-400 transition-colors">
+                        <%= bookshelf.title %>
+                      </h3>
+                    <% end %>
                     <div class="flex items-center px-3 py-1 bg-cyan-100 dark:bg-rose-900/30 rounded-full">
                       <svg class="w-4 h-4 mr-1.5 text-cyan-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
@@ -116,7 +118,6 @@
                       </span>
                     </div>
                   </div>
-                  
                   <!-- Description -->
                   <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">
                     <%= bookshelf.description %>

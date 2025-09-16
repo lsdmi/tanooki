@@ -3,10 +3,14 @@
 class BookshelvesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
+  before_action :track_visit, only: :show
 
   def index; end
 
-  def show; end
+  def show
+    @pagy, @fictions = pagy(@bookshelf.fictions.includes(:cover_attachment, :genres), limit: 20)
+    @advertisement = Advertisement.enabled.includes(:cover_attachment, :poster_attachment).sample
+  end
 
   def new
     @bookshelf = current_user.bookshelves.build
@@ -48,7 +52,11 @@ class BookshelvesController < ApplicationController
   private
 
   def set_bookshelf
-    @bookshelf = current_user.bookshelves.find(params[:id])
+    @bookshelf = if action_name == 'show'
+                   Bookshelf.find_by_sqid(params[:sqid])
+                 else
+                   current_user.bookshelves.find(params[:sqid])
+                 end
   end
 
   def bookshelf_params

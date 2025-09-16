@@ -169,6 +169,10 @@ class FictionsController < ApplicationController
   end
 
   def details_partial
-    request.referer == alphabetical_fictions_url ? 'fiction_lists/fiction_details' : 'fictions/fiction_details'
+    if request.referer == alphabetical_fictions_url || request.referer&.include?('/bookshelves/')
+      'fiction_lists/fiction_details'
+    else
+      'fictions/fiction_details'
+    end
   end
 end

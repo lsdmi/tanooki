@@ -23,7 +23,7 @@
     <% if @bookshelves.any? %>
       <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
         <!-- Desktop Table View -->
-        <div class="hidden md:block rounded-lg relative overflow-x-auto">
+        <div class="hidden sm:block rounded-lg relative overflow-x-auto">
           <%= render 'shared/jellyfish_ornament' %>
           <table class="w-full divide-y divide-gray-200 text-left text-sm text-gray-900 dark:text-white">
             <thead class="bg-cyan-50 text-xs uppercase text-gray-700 dark:bg-rose-900/20 dark:text-gray-400">
@@ -84,6 +84,14 @@
                   </td>
                   <td class="p-4 text-right">
                     <div class="flex items-center space-x-2">
+                      <!-- View Button -->
+                      <%= link_to bookshelf_path(bookshelf.sqid), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      <% end %>
+
                       <!-- Edit Button -->
                       <%= link_to edit_bookshelf_path(bookshelf), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,6 +116,89 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+
+        <!-- Card View (Mobile Only) -->
+        <div class="sm:hidden p-6">
+          <div class="grid grid-cols-1 gap-6">
+            <% @bookshelves.each do |bookshelf| %>
+              <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <!-- Header with icon and title -->
+                <div class="flex items-start space-x-3 mb-3">
+                  <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="font-medium text-gray-900 dark:text-white">
+                      <%= bookshelf.title %>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <%= bookshelf.description.truncate(60) || "Без опису" %>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="flex items-center space-x-4 mb-3 text-sm">
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    <span class="font-medium text-gray-900 dark:text-white"><%= bookshelf.fictions.count %></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">творів</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span class="font-medium text-gray-900 dark:text-white"><%= bookshelf.views || 0 %></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">переглядів</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-xs text-gray-500 dark:text-gray-400"><%= l(bookshelf.created_at, format: :short).downcase %></span>
+                  </div>
+                </div>
+
+                <!-- Footer with actions -->
+                <div class="flex items-center justify-end pt-3 border-t border-gray-100 dark:border-gray-700">
+                  <div class="flex items-center space-x-2">
+                    <!-- View Button -->
+                    <%= link_to bookshelf_path(bookshelf.sqid), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    <% end %>
+
+                    <!-- Edit Button -->
+                    <%= link_to edit_bookshelf_path(bookshelf), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200" do %>
+                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+
+                    <!-- Delete Button -->
+                    <%= sweetalert(
+                      content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                      {
+                        description: "Впевнені, що хочете видалити полицю?",
+                        message: "",
+                        tag_id: nil,
+                        url: bookshelf_path(bookshelf),
+                        button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"
+                      }
+                    ) %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
 

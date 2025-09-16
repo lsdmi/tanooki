@@ -7,11 +7,14 @@ class TrackingService
   end
 
   def call
-    return if @session[:viewed]&.include?(@object.slug)
+    return unless @object
+
+    identifier = @object.respond_to?(:slug) ? @object.slug : @object.sqid
+    return if @session[:viewed]&.include?(identifier)
 
     @object.increment!(:views)
     @session[:viewed] ||= []
-    @session[:viewed] << @object.slug
+    @session[:viewed] << identifier
     @session[:viewed] = @session[:viewed].last(10)
   end
 end
