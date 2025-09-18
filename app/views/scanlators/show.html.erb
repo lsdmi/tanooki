@@ -4,7 +4,7 @@
     <div class="bg-stone-800 bg-blend-overlay bg-no-repeat bg-cover bg-center relative overflow-hidden" style="background-image: url('<%= @scanlator.banner.present? ? url_for(@scanlator.banner) : asset_path('scanlator_banner.webp') %>');">
       <div class="absolute inset-0 bg-gradient-to-r from-stone-900 via-transparent to-stone-900 opacity-70"></div>
       <div class="container mx-auto px-4 py-8 relative z-10">
-        <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="flex flex-col lg:flex-row items-center justify-between">
           <div class="flex items-center mb-4 md:mb-0">
             <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-no-repeat bg-cover bg-center border-4 border-stone-300 shadow-lg transform hover:scale-110 transition-transform duration-300" style="background-image: url('<%= @scanlator.avatar.present? ? url_for(@scanlator.avatar) : asset_path('scanlator_avatar.webp') %>');"></div>
             <div class="ml-4">
