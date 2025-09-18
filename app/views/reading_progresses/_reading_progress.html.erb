@@ -1,8 +1,5 @@
 <li id="reading-progress-<%= reading.id %>" class="flex items-start sm:items-center pb-4 hover:scale-[1.015] transition-all duration-300 gap-3 sm:gap-4">
   <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'flex-shrink-0 relative block' do %>
-    <% if reading.fiction.verified? %>
-      <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{reading.fiction.id}", filter_id: "verifiedShadow-#{reading.fiction.id}", size: 'sm' %>
-    <% end %>
     <%= image_tag url_for(reading.fiction.cover),
       alt: reading.fiction.cover.blob.filename.to_s,
       class: "w-16 h-20 sm:w-20 sm:h-24 lg:w-24 lg:h-32 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",

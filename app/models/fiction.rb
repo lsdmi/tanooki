@@ -94,10 +94,6 @@ class Fiction < ApplicationRecord
     unique_chapters.size >= total_chapters && status.to_sym == :finished
   end
 
-  def verified?
-    scanlators.where.not(verified: true).none?
-  end
-
   private
 
   def cover_format

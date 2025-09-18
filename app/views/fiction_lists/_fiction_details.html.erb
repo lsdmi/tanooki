@@ -6,9 +6,6 @@
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
-    <% if fiction.verified? %>
-      <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'md' %>
-    <% end %>
     <%= link_to fiction_path(fiction), data: { turbo: false } do %>
       <%= image_tag url_for(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,

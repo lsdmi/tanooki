@@ -27,9 +27,9 @@
             </div>
             <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
               <% if @scanlator.active_this_month? %>
-                <%= tag.p "Активний", class: "text-lg md:text-xl font-bold anime-text text-green-400" %>
+                <%= tag.p "Актив.", class: "text-lg md:text-xl font-bold anime-text text-green-400" %>
               <% else %>
-                <%= tag.p "Неактивний", class: "text-lg md:text-xl font-bold anime-text text-red-400" %>
+                <%= tag.p "Неакт.", class: "text-lg md:text-xl font-bold anime-text text-red-400" %>
               <% end %>
               <p class="text-sm md:text-base text-stone-300">Статус</p>
             </div>
@@ -87,9 +87,6 @@
                 <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">
                   <% @fictions.each_with_index do |fiction, index| %>
                     <div class="relative transition duration-300 transform hover:scale-105 cursor-pointer flex-shrink-0 w-14 h-20 sm:w-16 sm:h-24">
-                      <% if fiction.verified? %>
-                        <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'sm' %>
-                      <% end %>
                       <%= image_tag url_for(fiction.cover),
                           alt: fiction.cover.blob.filename.to_s,
                           class: "w-full h-full object-cover rounded-md shadow-sm #{index == 0 ? 'ring-2 ring-stone-500' : ''}",

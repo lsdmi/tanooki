@@ -4,9 +4,6 @@
       <div class="inline-block mr-3">
         <%= link_to fiction_path(fiction) do %>
           <div class="relative w-56 md:w-64 rounded-md">
-            <% if fiction.verified? %>
-              <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'lg' %>
-            <% end %>
             <%= image_tag url_for(fiction.cover), alt: fiction.cover.blob.filename.to_s, class: "h-80 md:h-96 w-56 md:w-64 rounded-lg object-cover" %>
             <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-80 md:h-96 overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(251,251,251,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
           </div>

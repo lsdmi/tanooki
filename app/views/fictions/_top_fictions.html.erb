@@ -13,9 +13,6 @@
           <span class="hidden lg:flex lg:items-center lg:col-span-1 text-sm font-bold text-stone-600 dark:text-gray-400"><%= index+1 %></span>
 
           <%= link_to fiction_path(fiction), class: 'relative block lg:col-span-3 transition duration-300 transform hover:scale-105' do %>
-            <% if fiction.verified? %>
-              <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'md' %>
-            <% end %>
             <%= image_tag url_for(fiction.cover),
               alt: fiction.cover.blob.filename.to_s,
               class: "w-full h-48 lg:h-24 object-cover rounded-md shadow-sm",

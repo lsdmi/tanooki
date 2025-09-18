@@ -3,9 +3,6 @@
     <div class="col-span-8 grid grid-cols-6 gap-4 xl:gap-8 self-start">
       <div class="md:col-span-2 hidden md:block">
         <div class="relative">
-          <% if fiction.verified? %>
-            <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{fiction.id}", filter_id: "verifiedShadow-#{fiction.id}", size: 'md' %>
-          <% end %>
           <%= image_tag url_for(fiction.cover), class: 'hidden h-[24rem] mx-auto md:flex rounded-lg object-cover shadow-xl', alt: fiction.cover.blob.filename  %>
         </div>
       </div>

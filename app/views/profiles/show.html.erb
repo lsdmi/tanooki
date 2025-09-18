@@ -129,13 +129,6 @@
                       <% bookshelf.fictions.each do |fiction| %>
                         <div class="relative flex-shrink-0">
                         <%= link_to fiction_path(fiction), data: { turbo: false }, class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
-                          <% if fiction.verified? %>
-                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full flex items-center justify-center z-10">
-                              <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                              </svg>
-                            </div>
-                          <% end %>
                           <%= image_tag url_for(fiction.cover),
                               alt: fiction.title,
                               class: "w-full h-full object-cover",
@@ -234,9 +227,6 @@
             <% @recent_readings.each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
-                  <% if reading.fiction.verified? %>
-                    <%= render 'shared/verified_ribbon', tooltip_id: "verified-tooltip-#{reading.fiction.id}", filter_id: "verifiedShadow-#{reading.fiction.id}", size: 'sm' %>
-                  <% end %>
                   <%= image_tag url_for(reading.fiction.cover),
                     alt: reading.fiction.cover.blob.filename.to_s,
                     class: "w-full h-full object-cover",
