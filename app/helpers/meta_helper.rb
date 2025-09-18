@@ -20,6 +20,7 @@ module MetaHelper
     return youtube_video_title if youtube_video_present?
     return scanlator_meta_title if scanlator_present?
     return user_profile_meta_title if user_profile_present?
+    return bookshelf_meta_title if bookshelf_present?
 
     default_meta_title
   end
@@ -70,6 +71,14 @@ module MetaHelper
 
   def user_profile_meta_title
     "#{@user.name} | Профіль Користувача | Бака"
+  end
+
+  def bookshelf_present?
+    @bookshelf.present? && @bookshelf.persisted?
+  end
+
+  def bookshelf_meta_title
+    "#{@bookshelf.title} | Бака"
   end
 
   def default_meta_title

@@ -25,6 +25,14 @@
               <%= tag.p @scanlator.chapters.sum(:views), class: "text-2xl md:text-3xl font-bold anime-text text-stone-100" %>
               <p class="text-sm md:text-base text-stone-300">Прочитань</p>
             </div>
+            <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
+              <% if @scanlator.active_this_month? %>
+                <%= tag.p "Активний", class: "text-lg md:text-xl font-bold anime-text text-green-400" %>
+              <% else %>
+                <%= tag.p "Неактивний", class: "text-lg md:text-xl font-bold anime-text text-red-400" %>
+              <% end %>
+              <p class="text-sm md:text-base text-stone-300">Статус</p>
+            </div>
 
             <!-- External Links -->
             <% if @scanlator.bank_url? || @scanlator.extra_url? %>

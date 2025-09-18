@@ -36,7 +36,8 @@ module MetaDescriptionHelper
   end
 
   def description_object
-    @description_object ||= [@publication, @fiction, @chapter&.fiction, @youtube_video].compact.find(&:persisted?)
+    @description_object ||= [@publication, @fiction, @chapter&.fiction, @youtube_video,
+                             @bookshelf].compact.find(&:persisted?)
   end
 
   def fiction_description
@@ -51,6 +52,7 @@ module MetaDescriptionHelper
     return publication_description if publication_persisted?
     return fiction_description if fiction_persisted?
     return chapter_description if chapter_persisted?
+    return bookshelf_description if bookshelf_persisted?
 
     @youtube_video&.description
   end
@@ -65,6 +67,16 @@ module MetaDescriptionHelper
 
   def chapter_persisted?
     @chapter&.persisted?
+  end
+
+  def bookshelf_persisted?
+    @bookshelf&.persisted?
+  end
+
+  def bookshelf_description
+    fiction_titles = @bookshelf.fictions.limit(3).pluck(:title).to_sentence
+    "#{@bookshelf.title} від #{@bookshelf.user.name}. #{@bookshelf.description}." \
+      "Зокрема #{fiction_titles}#{@bookshelf.fictions.count > 3 ? ' та інш твори' : ''}."
   end
 
   def publication_description

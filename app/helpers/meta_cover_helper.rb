@@ -8,6 +8,8 @@ module MetaCoverHelper
       @youtube_video.thumbnail
     elsif @scanlator&.persisted?
       scanlator_avatar
+    elsif @bookshelf&.persisted?
+      bookshelf_cover
     end
   end
 
@@ -23,5 +25,10 @@ module MetaCoverHelper
 
   def scanlator_avatar
     @scanlator&.avatar.presence || url_for(asset_path('scanlator_avatar.webp'))
+  end
+
+  def bookshelf_cover
+    @bookshelf.fictions.joins(:cover_attachment).first&.cover ||
+      url_for(asset_path('novel.webp'))
   end
 end

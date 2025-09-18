@@ -50,6 +50,10 @@ class Scanlator < ApplicationRecord
     ]
   end
 
+  def active_this_month?
+    chapters.where(created_at: 60.days.ago..Time.current).exists?
+  end
+
   private
 
   def check_associations
