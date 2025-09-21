@@ -21,7 +21,7 @@ class FictionShowPresenter
   end
 
   def reading_progress
-    @reading_progress ||= ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @current_user&.id)
+    @reading_progress ||= find_or_fix_reading_progress
   end
 
   def reading_status
@@ -71,6 +71,35 @@ class FictionShowPresenter
   end
 
   private
+
+  def find_or_fix_reading_progress
+    progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @current_user&.id)
+    return nil unless progress
+
+    # Check if the chapter still exists
+    return progress if progress.chapter
+
+    # Handle missing chapter
+    handle_missing_chapter(progress)
+  end
+
+  def handle_missing_chapter(progress)
+    # If no chapters exist at all, remove the reading progress
+    if @fiction.chapters.empty?
+      progress.destroy
+      nil
+    else
+      # If chapters exist but the current one is missing, update to last chapter
+      last_chapter = ordered_chapters_desc(@fiction).first
+      if last_chapter
+        progress.update(chapter: last_chapter)
+        progress.reload
+      else
+        progress.destroy
+        nil
+      end
+    end
+  end
 
   def last_chapter
     @last_chapter ||= ordered_chapters_desc(@fiction).first

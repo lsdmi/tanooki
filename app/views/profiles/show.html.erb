@@ -224,7 +224,7 @@
             Щойно Переглянуте
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <% @recent_readings.each do |reading| %>
+            <% @recent_readings.joins(:chapter).each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
                   <%= image_tag url_for(reading.fiction.cover),
