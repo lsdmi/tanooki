@@ -1,7 +1,4 @@
 <div class="min-h-screen">
-  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
-  <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
-
   <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
     <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
 
