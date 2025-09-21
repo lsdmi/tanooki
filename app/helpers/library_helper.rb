@@ -36,7 +36,10 @@ module LibraryHelper
   end
 
   def duplicate_chapters(fiction)
-    fiction.chapters.select(:number).group(:number).having('COUNT(DISTINCT user_id) > 1')
+    fiction.chapters.joins(:scanlators)
+           .select(:number)
+           .group(:number)
+           .having('COUNT(DISTINCT scanlators.id) > 1')
   end
 
   def grouped_chapters_desc(fiction)

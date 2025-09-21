@@ -50,7 +50,7 @@ class ReadingsController < ApplicationController
     @fiction = @chapter.fiction
     @pagy, @chapters = pagy(
       ordered_user_chapters_desc(@fiction, current_user),
-      limit: 10,
+      limit: 36,
       request_path: reading_path(@fiction),
       page: params[:page] || 1
     )

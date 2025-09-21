@@ -52,7 +52,7 @@
         <% if current_user.present? %>
           <%= render 'shared/user_dropdown' %>
         <% else %>
-          <%= link_to 'Увійти', new_user_session_path, class: 'inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white', area: { current: 'page' } %>
+          <%= link_to 'Увійти', new_user_session_path, class: 'inline-flex items-center rounded-lg justify-center pl-1 hover:underline text-xs font-medium leading-none text-gray-900 dark:text-white', area: { current: 'page' } %>
         <% end %>
       </div>
 
