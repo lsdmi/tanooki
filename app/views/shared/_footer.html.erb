@@ -21,6 +21,13 @@
       <% end %>
     </div>
     <hr class="my-6 sm:mx-auto border-gray-700 lg:my-8">
-    <span class="block text-sm text-center text-gray-400">© 2023-<%= Time.zone.now.year %> <a href="/" class="hover:underline">baka.in.ua™</a>. Всі права захищені.</span>
+    <div class="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400">
+      <span class="mb-2 sm:mb-0">© 2023-<%= Time.zone.now.year %> <a href="/" class="hover:underline">baka.in.ua™</a>. Всі права захищені.</span>
+      <div class="flex space-x-4">
+        <%= link_to rules_path, class: "hover:underline" do %>
+          Правила спільноти
+        <% end %>
+      </div>
+    </div>
   </div>
 </footer>

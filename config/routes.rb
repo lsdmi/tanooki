@@ -113,6 +113,8 @@ Rails.application.routes.draw do
   get :library, to: 'library#index'
   patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
+  get :rules, to: 'pages#rules'
+
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon
 
