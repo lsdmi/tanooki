@@ -32,7 +32,8 @@ module MetaDescriptionHelper
       request.path == youtube_videos_path ||
       request.path == alphabetical_fictions_path ||
       request.path == calendar_fictions_path ||
-      request.path == tales_path
+      request.path == tales_path ||
+      request.path == rules_path
   end
 
   def description_object
