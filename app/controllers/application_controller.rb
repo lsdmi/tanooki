@@ -24,7 +24,9 @@ class ApplicationController < ActionController::Base
   end
 
   def latest_comments
-    CommentsFetcher.new(current_user).collect
+    Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 10.minutes) do
+      CommentsFetcher.new(current_user).collect
+    end
   end
 
   def trending_tags

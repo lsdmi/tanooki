@@ -74,7 +74,9 @@ class StudioTabContentService
   end
 
   def latest_comments
-    CommentsFetcher.new(user).collect
+    Rails.cache.fetch("latest_comments_for_#{user.id}", expires_in: 10.minutes) do
+      CommentsFetcher.new(user).collect
+    end
   end
 
   def fiction_all

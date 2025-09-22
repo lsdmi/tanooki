@@ -18,6 +18,7 @@ class Fiction < ApplicationRecord
   has_many :fiction_scanlators, dependent: :destroy
   has_many :genres, through: :fiction_genres
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
+  has_many :fiction_ratings, dependent: :destroy
   has_many :scanlators, through: :fiction_scanlators
   has_many :users, through: :scanlators
   has_many :bookshelf_fictions, dependent: :destroy
@@ -106,5 +107,25 @@ class Fiction < ApplicationRecord
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)
+  end
+
+  def average_rating
+    fiction_ratings.average(:rating)&.round(2)
+  end
+
+  def total_ratings_count
+    fiction_ratings.count
+  end
+
+  def rating_distribution
+    fiction_ratings.group(:rating).count.transform_keys(&:to_i)
+  end
+
+  def user_rating(user)
+    fiction_ratings.find_by(user: user)&.rating
+  end
+
+  def rated_by?(user)
+    fiction_ratings.exists?(user: user)
   end
 end
