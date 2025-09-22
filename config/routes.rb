@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       get :calendar, to: 'chapters_calendar#index'
       post :toggle_order
     end
+    resources :fiction_ratings, only: %i[create update]
   end
 
   resources :fictions, only: [] do

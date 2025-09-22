@@ -3,7 +3,6 @@
     <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
   <% end %>
 <% end %>
-<% end %>
 <%= turbo_stream.update "comment-reply-#{@comment.id}" do %>
   <%= render 'comments/actions', comment: @comment, commentable: @commentable %>
 <% end %>

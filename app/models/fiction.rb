@@ -95,6 +95,22 @@ class Fiction < ApplicationRecord
     unique_chapters.size >= total_chapters && status.to_sym == :finished
   end
 
+  def average_rating
+    return 0.0 if fiction_ratings.empty?
+
+    fiction_ratings.average(:rating).round(1)
+  end
+
+  def rating_count
+    fiction_ratings.count
+  end
+
+  def user_rating(user)
+    return nil unless user
+
+    fiction_ratings.find_by(user: user)&.rating
+  end
+
   private
 
   def cover_format
@@ -107,25 +123,5 @@ class Fiction < ApplicationRecord
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)
-  end
-
-  def average_rating
-    fiction_ratings.average(:rating)&.round(2)
-  end
-
-  def total_ratings_count
-    fiction_ratings.count
-  end
-
-  def rating_distribution
-    fiction_ratings.group(:rating).count.transform_keys(&:to_i)
-  end
-
-  def user_rating(user)
-    fiction_ratings.find_by(user: user)&.rating
-  end
-
-  def rated_by?(user)
-    fiction_ratings.exists?(user: user)
   end
 end
