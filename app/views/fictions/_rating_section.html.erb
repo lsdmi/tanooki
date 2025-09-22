@@ -13,7 +13,7 @@
         <% if user_signed_in? %>
           <% (1..5).each do |fish| %>
             <button type="button"
-                    class="fish-rating-btn w-8 h-8 transition-all duration-300 transform hover:scale-110 <%= fish <= fiction.user_rating(current_user) ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %> hover:text-cyan-600 dark:hover:text-rose-700"
+                    class="fish-rating-btn w-8 h-8 transition-all duration-300 transform hover:scale-110 <%= fish <= (fiction.user_rating(current_user) || 0) ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %> hover:text-cyan-600 dark:hover:text-rose-700"
                     data-rating-target="star"
                     data-star-value="<%= fish %>"
                     data-fiction-id="<%= fiction.id %>"
@@ -36,7 +36,7 @@
       <!-- Fish Label -->
       <div class="text-xs text-gray-500 dark:text-gray-400">
         <% if user_signed_in? %>
-          Ваша оцінка (<%= fiction.user_rating(current_user) %>)
+          Ваша оцінка (<%= fiction.user_rating(current_user) || '—' %>)
         <% else %>
           Середня оцінка (<%= fiction.average_rating %> / 5.0)
         <% end %>
