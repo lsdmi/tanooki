@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_181248) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_184821) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -303,6 +303,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_181248) do
 
   create_table "translation_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "scanlator_id"
     t.string "title", null: false
     t.string "author"
     t.string "source_url"
@@ -311,6 +312,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_181248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_translation_requests_on_created_at"
+    t.index ["scanlator_id"], name: "index_translation_requests_on_scanlator_id"
     t.index ["user_id"], name: "index_translation_requests_on_user_id"
     t.index ["votes_count"], name: "index_translation_requests_on_votes_count"
   end
@@ -408,6 +410,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_181248) do
   add_foreign_key "reading_progresses", "users", on_delete: :cascade
   add_foreign_key "scanlator_users", "scanlators"
   add_foreign_key "scanlator_users", "users"
+  add_foreign_key "translation_requests", "scanlators"
   add_foreign_key "translation_requests", "users", on_delete: :cascade
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "users"

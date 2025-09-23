@@ -2,6 +2,7 @@
 
 class TranslationRequest < ApplicationRecord
   belongs_to :user
+  belongs_to :scanlator, optional: true
 
   validates :title, presence: true, length: { in: 3..100 }
   validates :author, length: { maximum: 100 }, allow_blank: true
