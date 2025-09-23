@@ -36,10 +36,21 @@ module LibraryHelper
   end
 
   def duplicate_chapters(fiction)
-    fiction.chapters.joins(:scanlators)
-           .select(:number)
-           .group(:number)
-           .having('COUNT(DISTINCT scanlators.id) > 1')
+    Rails.cache.fetch("duplicate_chapters/#{fiction.id}/#{fiction.chapters.maximum(:updated_at)}",
+                      expires_in: 1.hour) do
+      # Group chapters by number and check if there are multiple scanlator combinations
+      chapter_groups = fiction.chapters.includes(:scanlators).group_by(&:number)
+
+      duplicated_numbers = chapter_groups.select do |_number, chapters|
+        # Get unique scanlator combinations for this chapter number
+        scanlator_combinations = chapters.map { |chapter| chapter.scanlators.pluck(:id).sort }.uniq
+        scanlator_combinations.size > 1
+      end
+
+      # Return chapters that belong to duplicated numbers
+      duplicated_chapter_numbers = duplicated_numbers.keys
+      fiction.chapters.where(number: duplicated_chapter_numbers)
+    end
   end
 
   def grouped_chapters_desc(fiction)
