@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
 class TranslationRequest < ApplicationRecord
+  # Associations
   belongs_to :user
   belongs_to :scanlator, optional: true
 
-  validates :title, presence: true, length: { in: 3..100 }
-  validates :author, length: { maximum: 100 }, allow_blank: true
-  validates :source_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
-  validates :notes, length: { maximum: 2000 }, allow_blank: true
-  validates :votes_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  # Validations
+  validates :title, presence: true, length: { maximum: 150 }
+  validates :notes, presence: true, length: { maximum: 500 }
+  validates :user_id, presence: true
+  validates :source_url,
+            format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: 'повинно бути дійсним URL' }, allow_blank: true
+
+  # Scopes
+  scope :by_creation_date, -> { order(created_at: :desc) }
+  scope :by_votes, -> { order(votes_count: :desc, created_at: :desc) }
 end

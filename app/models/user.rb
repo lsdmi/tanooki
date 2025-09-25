@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_many :chapters, through: :scanlators
   has_many :fictions, through: :scanlators
   has_many :bookshelves, dependent: :destroy
+  has_many :translation_requests, dependent: :destroy
 
   scope :avatarless, -> { where(avatar_id: nil) }
 
