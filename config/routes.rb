@@ -76,7 +76,9 @@ Rails.application.routes.draw do
     end
   end
   resources :tales, only: %i[index show]
-  resources :translation_requests, only: %i[index create], path: 'translate'
+  resources :translation_requests, only: %i[index create], path: 'translate' do
+    resources :translation_request_votes, only: [:create], path: 'votes'
+  end
   resources :users, only: :update
 
   resources :profiles, only: :show, param: :id, path: 'profile'

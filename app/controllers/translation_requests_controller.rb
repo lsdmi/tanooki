@@ -5,7 +5,7 @@ class TranslationRequestsController < ApplicationController
   before_action :load_advertisement
 
   def index
-    @translation_requests = TranslationRequest.includes(:user).by_creation_date
+    @translation_requests = TranslationRequest.includes(:user, :translation_request_votes).by_votes
     @translation_request = TranslationRequest.new
   end
 

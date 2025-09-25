@@ -4,6 +4,7 @@ class TranslationRequest < ApplicationRecord
   # Associations
   belongs_to :user
   belongs_to :scanlator, optional: true
+  has_many :translation_request_votes, dependent: :destroy
 
   # Validations
   validates :title, presence: true, length: { maximum: 150 }
@@ -15,4 +16,15 @@ class TranslationRequest < ApplicationRecord
   # Scopes
   scope :by_creation_date, -> { order(created_at: :desc) }
   scope :by_votes, -> { order(votes_count: :desc, created_at: :desc) }
+
+  # Helper methods for voting
+  def upvote_count
+    translation_request_votes.count
+  end
+
+  def user_voted?(user)
+    return false unless user
+
+    translation_request_votes.exists?(user: user)
+  end
 end
