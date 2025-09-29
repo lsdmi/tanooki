@@ -77,6 +77,10 @@ Rails.application.routes.draw do
   end
   resources :tales, only: %i[index show]
   resources :translation_requests, only: %i[index create], path: 'translate' do
+    member do
+      patch :assign
+      delete :unassign
+    end
     resources :translation_request_votes, only: [:create], path: 'votes'
   end
   resources :users, only: :update

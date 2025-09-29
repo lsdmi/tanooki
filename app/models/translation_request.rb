@@ -27,4 +27,8 @@ class TranslationRequest < ApplicationRecord
 
     translation_request_votes.exists?(user: user)
   end
+
+  def assigned?
+    scanlator_id.present?
+  end
 end

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class TranslationRequestsController < ApplicationController
-  before_action :authenticate_user!, only: :create
+  before_action :authenticate_user!, only: %i[create assign unassign]
   before_action :load_advertisement
+  before_action :set_translation_request, only: %i[assign unassign]
 
   def index
-    @translation_requests = TranslationRequest.includes(:user, :translation_request_votes).by_votes
+    @translation_requests = TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes
     @translation_request = TranslationRequest.new
   end
 
@@ -20,9 +21,43 @@ class TranslationRequestsController < ApplicationController
     end
   end
 
+  def assign
+    scanlator = current_user.scanlators.find(params[:scanlator_id])
+
+    if @translation_request.scanlator_id.present?
+      render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_entity
+      return
+    end
+
+    if @translation_request.update(scanlator: scanlator)
+      render json: {
+        success: true,
+        message: 'Запит успішно призначено команді',
+        scanlator_title: scanlator.title
+      }
+    else
+      render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_entity
+    end
+  end
+
+  def unassign
+    if @translation_request.update(scanlator: nil)
+      render json: {
+        success: true,
+        message: 'Запит успішно відкликано від команди'
+      }
+    else
+      render json: { error: 'Не вдалося відкликати запит' }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def translation_request_params
     params.require(:translation_request).permit(:title, :author, :source_url, :notes)
+  end
+
+  def set_translation_request
+    @translation_request = TranslationRequest.find(params[:id])
   end
 end

@@ -1,4 +1,4 @@
-<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
+<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden md:overflow-visible">
   <%= render 'shared/decorative_ornament' %>
   <h3 class="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
     <svg class="w-5 h-5 text-cyan-600 dark:text-rose-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -6,14 +6,14 @@
     </svg>
     Якість перекладу
   </h3>
-  <div class="flex items-center justify-between mb-4">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 mb-4 min-w-0">
     <!-- Fish Rating Section -->
-    <div class="flex flex-col items-start">
+    <div class="flex flex-col items-start md:flex-1 min-w-0">
       <div class="flex items-center space-x-1 mb-1" data-controller="rating">
         <% if user_signed_in? %>
           <% (1..5).each do |fish| %>
             <button type="button"
-                    class="fish-rating-btn w-8 h-8 transition-all duration-300 transform hover:scale-110 <%= fish <= (fiction.user_rating(current_user) || 0) ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %> hover:text-cyan-600 dark:hover:text-rose-700"
+                    class="fish-rating-btn w-8 h-8 lg:w-4 lg:h-4 xl:w-8 xl:h-8 transition-all duration-300 transform hover:scale-110 <%= fish <= (fiction.user_rating(current_user) || 0) ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %> hover:text-cyan-600 dark:hover:text-rose-700"
                     data-rating-target="star"
                     data-star-value="<%= fish %>"
                     data-fiction-id="<%= fiction.id %>"
@@ -25,7 +25,7 @@
           <% end %>
         <% else %>
           <% (1..5).each do |fish| %>
-            <span class="w-8 h-8 <%= fish <= fiction.average_rating.ceil ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %>">
+            <span class="w-8 h-8 lg:w-4 lg:h-4 xl:w-8 xl:h-8 <%= fish <= fiction.average_rating.ceil ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %>">
               <svg class="w-full h-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696"/>
               </svg>
@@ -34,7 +34,7 @@
         <% end %>
       </div>
       <!-- Fish Label -->
-      <div class="text-xs text-gray-500 dark:text-gray-400">
+      <div class="text-xs text-gray-500 dark:text-gray-400 break-words">
         <% if user_signed_in? %>
           Ваша оцінка (<%= fiction.user_rating(current_user) || '—' %>)
         <% else %>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Statistics Section -->
-    <div class="text-right" data-rating-stats>
+    <div class="text-left md:text-right md:flex-shrink-0" data-rating-stats>
       <div class="text-2xl font-bold text-gray-900 dark:text-white average-rating">
         <%= fiction.average_rating > 0 ? fiction.average_rating : '—' %>
       </div>

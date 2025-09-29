@@ -55,66 +55,132 @@
           <div class="space-y-3">
             <% if @translation_requests.any? %>
               <% @translation_requests.each do |request| %>
-                <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-3 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300">
-                  <div class="mb-3">
-                    <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2"><%= request.title %></h4>
+                <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300">
+                  <div class="mb-2">
+                    <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1.5 leading-tight"><%= request.title %></h4>
                     
-                    <div class="space-y-1 mb-2">
+                    <div class="space-y-0.5 mb-1.5">
                       <% if request.author.present? %>
-                        <div class="text-xs">
+                        <div class="text-2xs">
                           <span class="text-gray-500 dark:text-gray-500">Автор:</span>
                           <span class="font-medium text-gray-700 dark:text-gray-300"><%= request.author %></span>
                         </div>
                       <% end %>
                       <% if request.source_url.present? %>
-                        <div class="text-xs">
+                        <div class="text-2xs">
                           <span class="text-gray-500 dark:text-gray-500">Джерело:</span>
-                          <%= link_to "Переглянути оригінал", request.source_url, 
+                          <%= link_to "Переглянути", request.source_url, 
                               class: "text-cyan-600 dark:text-rose-400 hover:underline font-medium", 
                               target: "_blank", rel: "noopener" %>
                         </div>
                       <% end %>
                     </div>
                   </div>
-                  <p class="text-xs text-gray-600 dark:text-gray-400 mb-3 whitespace-pre-line"><%= request.notes %></p>
+                  <p class="text-2xs text-gray-600 dark:text-gray-400 mb-2 whitespace-pre-line"><%= request.notes %></p>
                   
                   <!-- Voting Section -->
-                  <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center space-x-3">
+                  <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center gap-2">
                       <% if user_signed_in? %>
                         <button 
                           onclick="voteOnRequest(<%= request.id %>)"
-                          class="vote-btn upvote-btn-<%= request.id %> flex items-center space-x-1 px-2 py-1 rounded text-xs transition-colors duration-200 
+                          class="vote-btn upvote-btn-<%= request.id %> flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 
                             <%= request.user_voted?(current_user) ? 'bg-cyan-100 text-cyan-700 dark:bg-rose-900/30 dark:text-rose-400' : 'text-gray-500 hover:bg-cyan-50 hover:text-cyan-600 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400' %>">
-                          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                           </svg>
                           <span class="upvote-count-<%= request.id %>"><%= request.upvote_count %></span>
                         </button>
-                        <div class="text-xs font-medium text-gray-600 dark:text-gray-400 votes-text-<%= request.id %>">
+                        <div class="text-2xs font-medium text-gray-600 dark:text-gray-400 votes-text-<%= request.id %>">
                           <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів
                         </div>
                       <% else %>
-                        <div class="flex items-center space-x-2">
-                          <div class="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="flex items-center gap-2">
+                          <div class="flex items-center gap-1 text-2xs text-gray-500 dark:text-gray-400">
+                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
                               <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                             </svg>
                             <span><%= request.upvote_count %></span>
                           </div>
-                          <div class="text-xs font-medium text-gray-600 dark:text-gray-400">
+                          <div class="text-2xs font-medium text-gray-600 dark:text-gray-400">
                             <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів
                           </div>
                         </div>
                       <% end %>
                     </div>
                   </div>
-                  <div class="flex justify-between items-center text-xs pt-2 border-t border-gray-200 dark:border-gray-600 mt-2">
-                    <span class="text-gray-500 dark:text-gray-500">
-                      Запитувач: <%= link_to request.user.name, profile_path(request.user.sqid), 
-                                      class: "font-medium text-cyan-600 dark:text-rose-400 hover:underline" %>
+
+                  <!-- Assignment Status and Actions -->
+                  <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                    <div id="assignment-status-<%= request.id %>">
+                      <% if request.assigned? %>
+                        <!-- Already assigned -->
+                        <div class="flex items-center justify-between gap-1">
+                          <div class="flex items-center gap-1 min-w-0 flex-1">
+                            <div class="h-3 w-3 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                              <svg class="h-1.5 w-1.5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                              </svg>
+                            </div>
+                            <span class="text-2xs font-medium text-green-700 dark:text-green-400 truncate"><%= request.scanlator.title %></span>
+                          </div>
+                          <% if user_signed_in? && current_user.scanlators.include?(request.scanlator) %>
+                            <button onclick="unassignRequest(<%= request.id %>)" 
+                                    class="text-2xs bg-red-500 hover:bg-red-600 text-white font-medium px-2 py-0.5 rounded text-center flex-shrink-0 transition-colors duration-200">
+                              ×
+                            </button>
+                          <% end %>
+                        </div>
+                      <% elsif user_signed_in? && current_user.scanlators.any? %>
+                        <!-- Available for assignment and user is a scanlator member -->
+                        <div class="flex items-center justify-between gap-1">
+                          <div class="flex items-center gap-1 min-w-0 flex-1">
+                            <div class="h-3 w-3 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+                              <svg class="h-1.5 w-1.5 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
+                              </svg>
+                            </div>
+                            <span class="text-2xs text-orange-700 dark:text-orange-400">Вільний</span>
+                          </div>
+                          <div class="relative flex-shrink-0">
+                            <button onclick="toggleAssignmentDropdown(<%= request.id %>)" 
+                                    class="assign-btn text-2xs bg-cyan-500 hover:bg-cyan-600 dark:bg-rose-500 dark:hover:bg-rose-600 text-white font-medium px-2 py-0.5 rounded transition-colors duration-200 flex items-center gap-1">
+                              +
+                              <svg class="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                              </svg>
+                            </button>
+                            <div id="assignment-dropdown-<%= request.id %>" class="hidden absolute right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded shadow-lg z-10 border border-gray-200 dark:border-gray-600">
+                              <div class="py-1">
+                                <% current_user.scanlators.each do |scanlator| %>
+                                  <button onclick="assignRequest(<%= request.id %>, <%= scanlator.id %>)" 
+                                          class="block w-full text-left px-3 py-1.5 text-2xs text-gray-700 dark:text-gray-300 hover:bg-cyan-50 dark:hover:bg-rose-900/20 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200 truncate">
+                                    <%= scanlator.title %>
+                                  </button>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% else %>
+                        <!-- Available but user is not a scanlator member -->
+                        <div class="flex items-center gap-1">
+                          <div class="h-3 w-3 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="h-1.5 w-1.5 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
+                            </svg>
+                          </div>
+                          <span class="text-2xs text-orange-700 dark:text-orange-400">Вільний</span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center text-2xs pt-1.5 border-t border-gray-200 dark:border-gray-600 mt-1.5">
+                    <span class="text-gray-500 dark:text-gray-500 truncate mr-2">
+                      <%= link_to request.user.name, profile_path(request.user.sqid), 
+                          class: "font-medium text-cyan-600 dark:text-rose-400 hover:underline" %>
                     </span>
-                    <span class="text-gray-500 dark:text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-500 flex-shrink-0">
                       <%= time_ago_in_words(request.created_at) %> тому
                     </span>
                   </div>
@@ -254,7 +320,7 @@ function voteOnRequest(requestId) {
   .then(response => response.json())
   .then(data => {
     if (data.error) {
-      alert(data.error);
+      showErrorMessage(data.error);
       return;
     }
     
@@ -272,7 +338,7 @@ function voteOnRequest(requestId) {
   })
   .catch(error => {
     console.error('Error:', error);
-    alert('Сталася помилка при голосуванні. Спробуйте ще раз.');
+    showErrorMessage('Сталася помилка при голосуванні. Спробуйте ще раз.');
   })
   .finally(() => {
     // Re-enable button
@@ -289,4 +355,225 @@ function updateVoteButtonStyles(requestId, userVoted) {
     upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center space-x-1 px-2 py-1 rounded text-xs transition-colors duration-200 text-gray-500 hover:bg-cyan-50 hover:text-cyan-600 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400`;
   }
 }
+
+function toggleAssignmentDropdown(requestId) {
+  const dropdown = document.getElementById(`assignment-dropdown-${requestId}`);
+  dropdown.classList.toggle('hidden');
+  
+  // Close other open dropdowns
+  document.querySelectorAll('[id^="assignment-dropdown-"]').forEach(element => {
+    if (element.id !== `assignment-dropdown-${requestId}`) {
+      element.classList.add('hidden');
+    }
+  });
+}
+
+function assignRequest(requestId, scanlatorId) {
+  // Close dropdown
+  document.getElementById(`assignment-dropdown-${requestId}`).classList.add('hidden');
+  
+  fetch(`/translate/${requestId}/assign`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      scanlator_id: scanlatorId
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      showErrorMessage(data.error);
+      return;
+    }
+    
+    if (data.success) {
+      // Update the assignment status UI
+      updateAssignmentStatus(requestId, data.scanlator_title, true);
+      
+      // Show success message
+      showSuccessMessage(data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showErrorMessage('Сталася помилка при призначенні запиту. Спробуйте ще раз.');
+  });
+}
+
+function unassignRequest(requestId) {
+  fetch(`/translate/${requestId}/unassign`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      showErrorMessage(data.error);
+      return;
+    }
+    
+    if (data.success) {
+      // Update the assignment status UI to show as available
+      updateAssignmentStatus(requestId, null, false);
+      
+      // Show success message
+      showSuccessMessage(data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showErrorMessage('Сталася помилка при відкликанні запиту. Спробуйте ще раз.');
+  });
+}
+
+function updateAssignmentStatus(requestId, scanlatorTitle, isAssigned) {
+  const statusContainer = document.getElementById(`assignment-status-${requestId}`);
+  
+  if (isAssigned && scanlatorTitle) {
+    // Show as assigned with unassign button
+    statusContainer.innerHTML = `
+      <div class="flex items-center justify-between gap-1">
+        <div class="flex items-center gap-1 min-w-0 flex-1">
+          <div class="h-3 w-3 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="h-1.5 w-1.5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <span class="text-2xs font-medium text-green-700 dark:text-green-400 truncate">${scanlatorTitle}</span>
+        </div>
+        <button onclick="unassignRequest(${requestId})" 
+                class="text-2xs bg-red-500 hover:bg-red-600 text-white font-medium px-2 py-0.5 rounded text-center flex-shrink-0 transition-colors duration-200">
+          ×
+        </button>
+      </div>
+    `;
+  } else {
+    // Show as available for assignment
+    statusContainer.innerHTML = `
+      <div class="flex items-center gap-1">
+        <div class="h-3 w-3 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+          <svg class="h-1.5 w-1.5 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <span class="text-2xs text-orange-700 dark:text-orange-400">Вільний</span>
+      </div>
+    `;
+  }
+}
+
+function showSuccessMessage(message) {
+  showNotification(message, 'success');
+}
+
+function showErrorMessage(message) {
+  showNotification(message, 'error');
+}
+
+function showNotification(message, type = 'success') {
+  if (!message) return;
+  
+  // Calculate position based on existing notifications
+  const existingNotifications = document.querySelectorAll('.notification-toast');
+  const topOffset = 16 + (existingNotifications.length * 80); // 16px base + 80px per notification
+  
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.classList.add('notification-toast');
+  
+  // Base classes for all notifications
+  const baseClasses = 'fixed right-4 px-4 py-3 rounded-lg shadow-lg z-50 flex items-center gap-3 max-w-sm transform transition-all duration-300 ease-in-out';
+  
+  // Type-specific classes
+  const typeClasses = {
+    success: 'bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200',
+    error: 'bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
+  };
+  
+  notification.className = `${baseClasses} ${typeClasses[type] || typeClasses.success}`;
+  notification.style.top = `${topOffset}px`;
+  
+  // Create icon
+  const icon = document.createElement('div');
+  icon.className = 'flex-shrink-0';
+  
+  if (type === 'success') {
+    icon.innerHTML = `
+      <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+    `;
+  } else {
+    icon.innerHTML = `
+      <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+      </svg>
+    `;
+  }
+  
+  // Create message text
+  const messageText = document.createElement('div');
+  messageText.className = 'text-sm font-medium flex-1';
+  messageText.textContent = message;
+  
+  // Create close button
+  const closeButton = document.createElement('button');
+  closeButton.className = 'flex-shrink-0 ml-2 text-current opacity-70 hover:opacity-100 transition-opacity duration-200';
+  closeButton.innerHTML = `
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>
+  `;
+  
+  // Assemble notification
+  notification.appendChild(icon);
+  notification.appendChild(messageText);
+  notification.appendChild(closeButton);
+  
+  // Add to page with animation
+  notification.style.transform = 'translateX(100%)';
+  notification.style.opacity = '0';
+  document.body.appendChild(notification);
+  
+  // Animate in
+  requestAnimationFrame(() => {
+    notification.style.transform = 'translateX(0)';
+    notification.style.opacity = '1';
+  });
+  
+  // Remove notification function
+  const removeNotification = () => {
+    notification.style.transform = 'translateX(100%)';
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 300);
+  };
+  
+  // Close button click handler
+  closeButton.addEventListener('click', removeNotification);
+  
+  // Auto-remove after delay
+  const autoRemoveDelay = type === 'error' ? 5000 : 3000; // Errors stay longer
+  setTimeout(removeNotification, autoRemoveDelay);
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.relative')) {
+    document.querySelectorAll('[id^="assignment-dropdown-"]').forEach(element => {
+      element.classList.add('hidden');
+    });
+  }
+});
 </script>
