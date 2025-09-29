@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class TranslationRequestsController < ApplicationController
-  before_action :authenticate_user!, only: %i[create assign unassign]
+  before_action :authenticate_user!, only: %i[create update assign unassign]
   before_action :load_advertisement
-  before_action :set_translation_request, only: %i[assign unassign]
+  before_action :set_translation_request, only: %i[update assign unassign]
 
   def index
     @translation_requests = TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes
@@ -18,6 +18,20 @@ class TranslationRequestsController < ApplicationController
     else
       @translation_requests = TranslationRequest.includes(:user).by_creation_date
       render :index, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @translation_request.update(translation_request_params)
+      respond_to do |format|
+        format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно оновлено!' }
+        format.json { render json: { success: true, message: 'Запит успішно оновлено!' } }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to translation_requests_path, alert: 'Помилка при оновленні запиту.' }
+        format.json { render json: { success: false, errors: @translation_request.errors.full_messages } }
+      end
     end
   end
 

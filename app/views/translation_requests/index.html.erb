@@ -55,9 +55,22 @@
           <div class="space-y-3">
             <% if @translation_requests.any? %>
               <% @translation_requests.each do |request| %>
-                <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300">
-                  <div class="mb-2">
-                    <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1.5 leading-tight"><%= request.title %></h4>
+                <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300" id="request-card-<%= request.id %>">
+                  <!-- View Mode -->
+                  <div id="view-mode-<%= request.id %>">
+                    <div class="mb-2">
+                      <div class="flex items-start justify-between">
+                        <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1.5 leading-tight flex-1"><%= request.title %></h4>
+                        <% if user_signed_in? && current_user == request.user %>
+                          <button onclick="toggleEditMode(<%= request.id %>)" 
+                                  class="ml-2 text-2xs text-gray-500 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200 flex-shrink-0"
+                                  title="Редагувати">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                          </button>
+                        <% end %>
+                      </div>
                     
                     <div class="space-y-0.5 mb-1.5">
                       <% if request.author.present? %>
@@ -175,15 +188,67 @@
                       <% end %>
                     </div>
                   </div>
-                  <div class="flex justify-between items-center text-2xs pt-1.5 border-t border-gray-200 dark:border-gray-600 mt-1.5">
-                    <span class="text-gray-500 dark:text-gray-500 truncate mr-2">
-                      <%= link_to request.user.name, profile_path(request.user.sqid), 
-                          class: "font-medium text-cyan-600 dark:text-rose-400 hover:underline" %>
-                    </span>
-                    <span class="text-gray-500 dark:text-gray-500 flex-shrink-0">
-                      <%= time_ago_in_words(request.created_at) %> тому
-                    </span>
+                    <div class="flex justify-between items-center text-2xs pt-1.5 border-t border-gray-200 dark:border-gray-600 mt-1.5">
+                      <span class="text-gray-500 dark:text-gray-500 truncate mr-2">
+                        <%= link_to request.user.name, profile_path(request.user.sqid), 
+                            class: "font-medium text-cyan-600 dark:text-rose-400 hover:underline" %>
+                      </span>
+                      <span class="text-gray-500 dark:text-gray-500 flex-shrink-0">
+                        <%= time_ago_in_words(request.created_at) %> тому
+                      </span>
+                    </div>
                   </div>
+
+                  <!-- Edit Mode -->
+                  <% if user_signed_in? && current_user == request.user %>
+                    <div id="edit-mode-<%= request.id %>" class="hidden">
+                      <form id="edit-form-<%= request.id %>" class="space-y-3">
+                        <div>
+                          <label class="block text-2xs font-medium text-gray-700 dark:text-gray-300 mb-1">Назва проекту</label>
+                          <input type="text" 
+                                 id="edit-title-<%= request.id %>" 
+                                 value="<%= request.title %>" 
+                                 class="w-full text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+                        </div>
+                        
+                        <div>
+                          <label class="block text-2xs font-medium text-gray-700 dark:text-gray-300 mb-1">Автор оригіналу</label>
+                          <input type="text" 
+                                 id="edit-author-<%= request.id %>" 
+                                 value="<%= request.author %>" 
+                                 class="w-full text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+                        </div>
+                        
+                        <div>
+                          <label class="block text-2xs font-medium text-gray-700 dark:text-gray-300 mb-1">Посилання на оригінал</label>
+                          <input type="url" 
+                                 id="edit-source-url-<%= request.id %>" 
+                                 value="<%= request.source_url %>" 
+                                 class="w-full text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+                        </div>
+                        
+                        <div>
+                          <label class="block text-2xs font-medium text-gray-700 dark:text-gray-300 mb-1">Опис проекту та деталі</label>
+                          <textarea id="edit-notes-<%= request.id %>" 
+                                    rows="3" 
+                                    class="w-full text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 whitespace-pre-line"><%= request.notes %></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end gap-2 pt-2">
+                          <button type="button" 
+                                  onclick="cancelEdit(<%= request.id %>)" 
+                                  class="text-2xs bg-gray-500 hover:bg-gray-600 text-white font-medium px-3 py-1 rounded transition-colors duration-200">
+                            Скасувати
+                          </button>
+                          <button type="button" 
+                                  onclick="saveEdit(<%= request.id %>)" 
+                                  class="text-2xs bg-cyan-500 hover:bg-cyan-600 dark:bg-rose-500 dark:hover:bg-rose-600 text-white font-medium px-3 py-1 rounded transition-colors duration-200">
+                            Зберегти
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  <% end %>
                 </div>
               <% end %>
             <% else %>
@@ -566,6 +631,125 @@ function showNotification(message, type = 'success') {
   // Auto-remove after delay
   const autoRemoveDelay = type === 'error' ? 5000 : 3000; // Errors stay longer
   setTimeout(removeNotification, autoRemoveDelay);
+}
+
+// Inline editing functions
+function toggleEditMode(requestId) {
+  const viewMode = document.getElementById(`view-mode-${requestId}`);
+  const editMode = document.getElementById(`edit-mode-${requestId}`);
+  
+  viewMode.classList.add('hidden');
+  editMode.classList.remove('hidden');
+}
+
+function cancelEdit(requestId) {
+  const viewMode = document.getElementById(`view-mode-${requestId}`);
+  const editMode = document.getElementById(`edit-mode-${requestId}`);
+  
+  editMode.classList.add('hidden');
+  viewMode.classList.remove('hidden');
+}
+
+function saveEdit(requestId) {
+  const title = document.getElementById(`edit-title-${requestId}`).value;
+  const author = document.getElementById(`edit-author-${requestId}`).value;
+  const sourceUrl = document.getElementById(`edit-source-url-${requestId}`).value;
+  const notes = document.getElementById(`edit-notes-${requestId}`).value;
+  
+  // Disable save button to prevent double-clicking
+  const saveBtn = event.target;
+  const originalText = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Збереження...';
+  
+  fetch(`/translate/${requestId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      translation_request: {
+        title: title,
+        author: author,
+        source_url: sourceUrl,
+        notes: notes
+      }
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Update the view mode with new data
+      updateRequestView(requestId, title, author, sourceUrl, notes);
+      
+      // Switch back to view mode
+      cancelEdit(requestId);
+      
+      // Show success message
+      showSuccessMessage(data.message);
+    } else {
+      // Show error messages
+      if (data.errors && data.errors.length > 0) {
+        showErrorMessage(data.errors.join(', '));
+      } else {
+        showErrorMessage('Сталася помилка при оновленні запиту.');
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showErrorMessage('Сталася помилка при оновленні запиту. Спробуйте ще раз.');
+  })
+  .finally(() => {
+    // Re-enable save button
+    saveBtn.disabled = false;
+    saveBtn.textContent = originalText;
+  });
+}
+
+function updateRequestView(requestId, title, author, sourceUrl, notes) {
+  // Update title
+  const titleElement = document.querySelector(`#view-mode-${requestId} h4`);
+  if (titleElement) {
+    titleElement.textContent = title;
+  }
+  
+  // Update author
+  const authorElements = document.querySelectorAll(`#view-mode-${requestId} .text-2xs`);
+  authorElements.forEach(element => {
+    if (element.textContent.includes('Автор:')) {
+      const authorSpan = element.querySelector('span.font-medium');
+      if (authorSpan) {
+        authorSpan.textContent = author || '';
+      }
+      // Hide the whole div if author is empty
+      if (!author || author.trim() === '') {
+        element.style.display = 'none';
+      } else {
+        element.style.display = 'block';
+      }
+    }
+    if (element.textContent.includes('Джерело:')) {
+      const sourceLink = element.querySelector('a');
+      if (sourceLink) {
+        sourceLink.href = sourceUrl || '#';
+      }
+      // Hide the whole div if source URL is empty
+      if (!sourceUrl || sourceUrl.trim() === '') {
+        element.style.display = 'none';
+      } else {
+        element.style.display = 'block';
+      }
+    }
+  });
+  
+  // Update notes
+  const notesElement = document.querySelector(`#view-mode-${requestId} .whitespace-pre-line`);
+  if (notesElement) {
+    notesElement.textContent = notes;
+  }
 }
 
 // Close dropdowns when clicking outside

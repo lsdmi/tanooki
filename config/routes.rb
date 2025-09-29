@@ -76,7 +76,7 @@ Rails.application.routes.draw do
     end
   end
   resources :tales, only: %i[index show]
-  resources :translation_requests, only: %i[index create], path: 'translate' do
+  resources :translation_requests, only: %i[index create update], path: 'translate' do
     member do
       patch :assign
       delete :unassign
