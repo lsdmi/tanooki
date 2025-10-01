@@ -6,8 +6,17 @@ class TranslationRequestsController < ApplicationController
   before_action :set_translation_request, only: %i[update assign unassign destroy]
 
   def index
-    @translation_requests = TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes
+    @pagy, @translation_requests = pagy(
+      TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes,
+      limit: 3
+    )
+    @total_requests_count = TranslationRequest.count
     @translation_request = TranslationRequest.new
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render_requests_list }
+    end
   end
 
   def create
@@ -16,7 +25,11 @@ class TranslationRequestsController < ApplicationController
     if @translation_request.save
       redirect_to translation_requests_path, notice: 'Запит на переклад успішно надіслано!'
     else
-      @translation_requests = TranslationRequest.includes(:user).by_creation_date
+      @pagy, @translation_requests = pagy(
+        TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes,
+        limit: 3
+      )
+      @total_requests_count = TranslationRequest.count
       render :index, status: :unprocessable_entity
     end
   end
@@ -89,5 +102,17 @@ class TranslationRequestsController < ApplicationController
 
   def set_translation_request
     @translation_request = TranslationRequest.find(params[:id])
+  end
+
+  def render_requests_list
+    render turbo_stream: turbo_stream.update(
+      'requests-container',
+      partial: 'translation_requests/requests_list',
+      locals: {
+        translation_requests: @translation_requests,
+        pagy: @pagy,
+        total_requests_count: @total_requests_count
+      }
+    )
   end
 end
