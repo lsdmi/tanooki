@@ -18,3 +18,6 @@ pin_all_from 'app/javascript/channels', under: 'channels', preload: true
 pin 'channels/consumer', preload: true
 pin 'channels/chat_channel', preload: true
 pin 'channels/index', preload: true
+
+# Translation requests functionality
+pin 'translation_requests', preload: true
