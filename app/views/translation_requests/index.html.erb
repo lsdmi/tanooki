@@ -62,13 +62,22 @@
                       <div class="flex items-start justify-between">
                         <h4 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1.5 leading-tight flex-1"><%= request.title %></h4>
                         <% if user_signed_in? && current_user == request.user %>
-                          <button onclick="toggleEditMode(<%= request.id %>)" 
-                                  class="ml-2 text-2xs text-gray-500 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200 flex-shrink-0"
-                                  title="Редагувати">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                          </button>
+                          <div class="flex items-center gap-1 ml-2 flex-shrink-0">
+                            <button onclick="toggleEditMode(<%= request.id %>)" 
+                                    class="text-2xs text-gray-500 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200"
+                                    title="Редагувати">
+                              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                              </svg>
+                            </button>
+                            <button onclick="deleteRequest(<%= request.id %>)" 
+                                    class="text-2xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
+                                    title="Видалити">
+                              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                              </svg>
+                            </button>
+                          </div>
                         <% end %>
                       </div>
                     
@@ -750,6 +759,84 @@ function updateRequestView(requestId, title, author, sourceUrl, notes) {
   if (notesElement) {
     notesElement.textContent = notes;
   }
+}
+
+function deleteRequest(requestId) {
+  // Disable any buttons to prevent double-clicking
+  const requestCard = document.getElementById(`request-card-${requestId}`);
+  if (requestCard) {
+    requestCard.style.opacity = '0.5';
+    requestCard.style.pointerEvents = 'none';
+  }
+  
+  fetch(`/translate/${requestId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Remove the request card from the DOM with animation
+      if (requestCard) {
+        requestCard.style.transform = 'translateX(-100%)';
+        requestCard.style.transition = 'all 0.3s ease-in-out';
+        setTimeout(() => {
+          requestCard.remove();
+          
+          // Update the count in the header
+          const countElement = document.querySelector('.space-y-3').previousElementSibling.querySelector('span');
+          if (countElement) {
+            const currentCount = parseInt(countElement.textContent);
+            countElement.textContent = Math.max(0, currentCount - 1);
+          }
+          
+          // Show empty state if no requests left
+          const requestsContainer = document.querySelector('.space-y-3');
+          if (requestsContainer && requestsContainer.children.length === 0) {
+            requestsContainer.innerHTML = `
+              <div class="text-center py-8">
+                <div class="h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-4">
+                  <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                  </svg>
+                </div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                  Поки що немає активних запитів на переклад.<br>
+                  Станьте першим, хто додасть запит!
+                </p>
+              </div>
+            `;
+          }
+        }, 300);
+      }
+      
+      // Show success message
+      showSuccessMessage(data.message);
+    } else {
+      // Re-enable the card on error
+      if (requestCard) {
+        requestCard.style.opacity = '1';
+        requestCard.style.pointerEvents = 'auto';
+      }
+      
+      showErrorMessage(data.error || 'Сталася помилка при видаленні запиту.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    
+    // Re-enable the card on error
+    if (requestCard) {
+      requestCard.style.opacity = '1';
+      requestCard.style.pointerEvents = 'auto';
+    }
+    
+    showErrorMessage('Сталася помилка при видаленні запиту. Спробуйте ще раз.');
+  });
 }
 
 // Close dropdowns when clicking outside
