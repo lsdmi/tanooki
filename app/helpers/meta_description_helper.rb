@@ -33,7 +33,8 @@ module MetaDescriptionHelper
       request.path == alphabetical_fictions_path ||
       request.path == calendar_fictions_path ||
       request.path == tales_path ||
-      request.path == rules_path
+      request.path == rules_path ||
+      request.path == translation_requests_path
   end
 
   def description_object
