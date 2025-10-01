@@ -15,9 +15,50 @@
       </div>
     </div>
 
-    <!-- Mid-page Banner -->
-    <div class="w-full mx-auto mb-8 lg:mb-12">
-      <%= render 'shared/ads', advertisement: @index_presenter.hero_ad %>
+    <!-- Mid-page Banner and Translation Request Section -->
+    <div class="flex flex-col lg:flex-row gap-4 mb-8 lg:mb-12">
+      <!-- Ad Banner (2/3 width) -->
+      <div class="w-full lg:w-2/3">
+        <%= render 'shared/ads', advertisement: @index_presenter.hero_ad %>
+      </div>
+
+      <!-- Translation Request Section (1/3 width) -->
+      <div class="w-full lg:w-1/3">
+         <div class="relative overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 border border-cyan-700 dark:border-rose-700 h-full">
+          <!-- Central ornamental divider -->
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-px bg-gradient-to-r from-transparent via-cyan-600 dark:via-rose-400 to-transparent opacity-20"></div>
+          
+          <div class="relative px-4 py-6 lg:px-6 lg:py-8 h-full flex flex-col justify-center">
+            <div class="text-center">
+              <div class="flex items-center justify-center mb-3">
+                <div class="relative">
+                  <!-- Ornamental ring around icon -->
+                  <div class="absolute -inset-2 rounded-full border border-dashed border-cyan-600 dark:border-rose-400 opacity-20 animate-spin" style="animation-duration: 20s;"></div>
+                  <div class="p-2 bg-cyan-600 dark:bg-rose-600 rounded-full">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h2 class="text-lg lg:text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                Не Знайшли Улюбленої Історії?
+              </h2>
+              <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                Зробіть запит на переклад! Наша команда готова допомогти!
+              </p>
+              <div class="flex flex-col gap-2">
+                <%= link_to translation_requests_path, class: "inline-flex items-center justify-center px-4 py-2 bg-cyan-600 dark:bg-rose-600 text-white text-sm font-semibold rounded-lg hover:bg-cyan-700 dark:hover:bg-rose-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl" do %>
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                  </svg>
+                  Додати Запит
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Second Section: Rankings and Filtered Fictions -->

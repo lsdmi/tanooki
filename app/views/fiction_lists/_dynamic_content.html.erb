@@ -37,5 +37,11 @@
     </svg>
     <div class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Нічого не знайдено</div>
     <div class="text-gray-500 dark:text-gray-400 mb-4">Спробуйте змінити фільтри або додати нову історію!</div>
+    <%= link_to "/translate", class: "inline-flex items-center px-4 py-2 bg-cyan-600 dark:bg-rose-600 text-white text-sm font-medium rounded-md hover:bg-cyan-700 dark:hover:bg-rose-700 transition-colors duration-200" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+      </svg>
+      Запит на Переклад
+    <% end %>
   </div>
 <% end %>
