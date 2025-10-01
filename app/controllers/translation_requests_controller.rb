@@ -7,7 +7,7 @@ class TranslationRequestsController < ApplicationController
 
   def index
     @pagy, @translation_requests = pagy(
-      TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes,
+      TranslationRequest.includes(:user, :scanlator).by_votes,
       limit: 3
     )
     @total_requests_count = TranslationRequest.count
@@ -26,7 +26,7 @@ class TranslationRequestsController < ApplicationController
       redirect_to translation_requests_path, notice: 'Запит на переклад успішно надіслано!'
     else
       @pagy, @translation_requests = pagy(
-        TranslationRequest.includes(:user, :translation_request_votes, :scanlator).by_votes,
+        TranslationRequest.includes(:user, :scanlator).by_votes,
         limit: 3
       )
       @total_requests_count = TranslationRequest.count

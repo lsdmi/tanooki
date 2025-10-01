@@ -69,7 +69,7 @@
                 <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                 </svg>
-                <span class="upvote-count-<%= request.id %>"><%= request.upvote_count %></span>
+                <span class="upvote-count-<%= request.id %>"><%= request.votes_count %></span>
               </button>
               <div class="text-2xs font-medium text-gray-600 dark:text-gray-400 votes-text-<%= request.id %>">
                 <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів
@@ -80,7 +80,7 @@
                   <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                   </svg>
-                  <span><%= request.upvote_count %></span>
+                  <span><%= request.votes_count %></span>
                 </div>
                 <div class="text-2xs font-medium text-gray-600 dark:text-gray-400">
                   <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів

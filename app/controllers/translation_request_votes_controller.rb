@@ -24,7 +24,6 @@ class TranslationRequestVotesController < ApplicationController
     # Return updated vote counts
     render json: {
       votes_count: @translation_request.reload.votes_count,
-      upvote_count: @translation_request.upvote_count,
       user_voted: user_voted
     }
   end
