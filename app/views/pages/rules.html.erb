@@ -191,13 +191,13 @@
             Дотримання цих правил допомагає нам підтримувати дружню та продуктивну атмосферу для всіх учасників
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <%= link_to "Повернутися на головну", root_path, 
+            <%= link_to "Повернутися на головну", root_path,
                 class: "inline-flex items-center px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm" %>
             <% unless current_user.present? %>
-              <%= link_to "Приєднатися до спільноти", register_path, 
+              <%= link_to "Приєднатися до спільноти", register_path,
                   class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm" %>
             <% else %>
-              <a href="https://t.me/bakaInUa" target="_blank" rel="noopener" 
+              <a href="https://t.me/bakaInUa" target="_blank" rel="noopener"
                  class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm">
                 Наш Telegram
               </a>

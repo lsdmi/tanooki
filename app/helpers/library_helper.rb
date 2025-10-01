@@ -36,20 +36,9 @@ module LibraryHelper
   end
 
   def duplicate_chapters(fiction)
-    Rails.cache.fetch("duplicate_chapters/#{fiction.id}/#{fiction.chapters.maximum(:updated_at)}",
-                      expires_in: 1.hour) do
-      # Group chapters by number and check if there are multiple scanlator combinations
-      chapter_groups = fiction.chapters.includes(:scanlators).group_by(&:number)
-
-      duplicated_numbers = chapter_groups.select do |_number, chapters|
-        # Get unique scanlator combinations for this chapter number
-        scanlator_combinations = chapters.map { |chapter| chapter.scanlators.pluck(:id).sort }.uniq
-        scanlator_combinations.size > 1
-      end
-
-      # Return chapters that belong to duplicated numbers
-      duplicated_chapter_numbers = duplicated_numbers.keys
-      fiction.chapters.where(number: duplicated_chapter_numbers)
+    cache_key = build_duplicate_chapters_cache_key(fiction)
+    Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      find_duplicated_chapters(fiction)
     end
   end
 
@@ -81,8 +70,32 @@ module LibraryHelper
 
   private
 
+  def build_duplicate_chapters_cache_key(fiction)
+    "duplicate_chapters/#{fiction.id}/#{fiction.chapters.maximum(:updated_at)}"
+  end
+
+  def find_duplicated_chapters(fiction)
+    chapter_groups = fiction.chapters.includes(:scanlators).group_by(&:number)
+    duplicated_numbers = find_duplicated_chapter_numbers(chapter_groups)
+    fiction.chapters.where(number: duplicated_numbers)
+  end
+
+  def find_duplicated_chapter_numbers(chapter_groups)
+    chapter_groups.filter_map do |number, chapters|
+      scanlator_combinations = extract_scanlator_combinations(chapters)
+      number if scanlator_combinations.size > 1
+    end
+  end
+
+  def extract_scanlator_combinations(chapters)
+    chapters.map { |chapter| chapter.scanlators.pluck(:id).sort }.uniq
+  end
+
   def order_clause
-    Arel.sql('CASE WHEN volume_number IS NULL OR volume_number = 0 THEN number ELSE volume_number END, number, chapters.created_at')
+    Arel.sql(
+      'CASE WHEN volume_number IS NULL OR volume_number = 0 ' \
+      'THEN number ELSE volume_number END, number, chapters.created_at'
+    )
   end
 
   def order_clause_desc

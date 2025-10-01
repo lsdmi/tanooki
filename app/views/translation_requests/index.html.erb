@@ -41,9 +41,9 @@
 
         <div class="relative z-10">
           <div id="requests-container">
-            <%= render 'translation_requests/requests_list', 
-                translation_requests: @translation_requests, 
-                pagy: @pagy, 
+            <%= render 'translation_requests/requests_list',
+                translation_requests: @translation_requests,
+                pagy: @pagy,
                 total_requests_count: @total_requests_count %>
           </div>
         </div>
@@ -115,27 +115,27 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <%= f.label :title, 'Назва проекту', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
-                    <%= f.text_field :title, placeholder: 'Наприклад: Solo Leveling - розділи 100-150', 
+                    <%= f.text_field :title, placeholder: 'Наприклад: Solo Leveling - розділи 100-150',
                         class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                   </div>
                   <div>
                     <%= f.label :author, 'Автор оригіналу', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
-                    <%= f.text_field :author, placeholder: 'Наприклад: Tatsuki Fujimoto', 
+                    <%= f.text_field :author, placeholder: 'Наприклад: Tatsuki Fujimoto',
                         class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                   </div>
                 </div>
                 <div>
                   <%= f.label :source_url, 'Посилання на оригінал', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
-                  <%= f.url_field :source_url, placeholder: 'https://example.com/manga-original', 
+                  <%= f.url_field :source_url, placeholder: 'https://example.com/manga-original',
                       class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                 </div>
                 <div>
                   <%= f.label :notes, 'Опис проекту та деталі', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
-                  <%= f.text_area :notes, rows: 5, placeholder: 'Детально опишіть ваш проект, вимоги до перекладача, особливості роботи, бюджет, терміни, мову оригіналу тощо...', 
+                  <%= f.text_area :notes, rows: 5, placeholder: 'Детально опишіть ваш проект, вимоги до перекладача, особливості роботи, бюджет, терміни, мову оригіналу тощо...',
                       class: "whitespace-pre-line w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                 </div>
                 <div class="flex justify-end">
-                  <%= f.submit 'Опублікувати Запит', 
+                  <%= f.submit 'Опублікувати Запит',
                       class: 'bg-cyan-700 hover:bg-cyan-600 dark:bg-rose-600 dark:hover:bg-rose-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer' %>
                 </div>
               <% end %>
@@ -225,11 +225,11 @@
 
               <!-- Action Buttons -->
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <%= link_to new_user_session_path, 
+                <%= link_to new_user_session_path,
                     class: 'bg-cyan-600 hover:bg-cyan-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg' do %>
                   Увійти
                 <% end %>
-                <%= link_to register_new_path, 
+                <%= link_to register_new_path,
                     class: 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold py-3 px-8 rounded-lg transition duration-300 border border-gray-300 dark:border-gray-600' do %>
                   Створити Акаунт
                 <% end %>

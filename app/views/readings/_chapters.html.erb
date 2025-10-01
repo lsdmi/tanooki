@@ -47,7 +47,7 @@
           <!-- Fiction Cover -->
           <div class="flex-shrink-0">
             <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-              <%= image_tag url_for(fiction.cover), 
+              <%= image_tag url_for(fiction.cover),
                   alt: fiction.title,
                   class: "w-20 h-24 rounded-lg object-cover shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow duration-200" %>
             <% end %>

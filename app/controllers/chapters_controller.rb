@@ -11,16 +11,14 @@ class ChaptersController < ApplicationController
   before_action :pokemon_appearance, only: [:show]
 
   def show
-    @comments = @chapter.comments.parents.includes(user: { avatar: :image_attachment },
-                                                   replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
+    @comments = load_chapter_comments
     @comment = Comment.new
     @previous_chapter = previous_chapter(@chapter.fiction, @chapter)
     @next_chapter = following_chapter(@chapter.fiction, @chapter)
   end
 
   def comments
-    @comments = @chapter.comments.parents.includes(user: { avatar: :image_attachment },
-                                                   replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
+    @comments = load_chapter_comments
     @comment = Comment.new
     @commentable = @chapter
   end
@@ -53,6 +51,13 @@ class ChaptersController < ApplicationController
   end
 
   private
+
+  def load_chapter_comments
+    @chapter.comments.parents.includes(
+      user: { avatar: :image_attachment },
+      replies: { user: { avatar: :image_attachment } }
+    ).order(created_at: :desc)
+  end
 
   def set_chapter
     @chapter = @commentable = Chapter.find(params[:id])

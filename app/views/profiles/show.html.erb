@@ -66,8 +66,8 @@
             <% @user_scanlators.each do |scanlator| %>
               <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <% if scanlator.avatar.attached? %>
-                  <%= image_tag url_for(scanlator.avatar), 
-                      alt: scanlator.title, 
+                  <%= image_tag url_for(scanlator.avatar),
+                      alt: scanlator.title,
                       class: "w-10 h-10 rounded-lg flex items-center justify-center" %>
                 <% else %>
                   <div class="w-10 h-10 rounded-lg flex items-center justify-center">

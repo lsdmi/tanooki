@@ -11,7 +11,11 @@ class TranslationRequest < ApplicationRecord
   validates :notes, presence: true, length: { maximum: 500 }
   validates :user_id, presence: true
   validates :source_url,
-            format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: 'повинно бути дійсним URL' }, allow_blank: true
+            format: {
+              with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+              message: 'повинно бути дійсним URL'
+            },
+            allow_blank: true
 
   # Scopes
   scope :by_creation_date, -> { order(created_at: :desc) }

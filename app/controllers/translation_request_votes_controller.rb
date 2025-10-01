@@ -5,30 +5,38 @@ class TranslationRequestVotesController < ApplicationController
   before_action :set_translation_request
 
   def create
-    # Find existing vote
-    translation_request_vote = @translation_request.translation_request_votes
-                                                   .find_by(user: current_user)
+    user_voted = toggle_user_vote
+    render_vote_response(user_voted)
+  end
 
-    # If user already voted, remove the vote (toggle)
-    if translation_request_vote
-      translation_request_vote.destroy
-      user_voted = false
+  private
+
+  def toggle_user_vote
+    existing_vote = find_existing_vote
+
+    if existing_vote
+      existing_vote.destroy
+      false
     else
-      # Create new upvote
-      translation_request_vote = @translation_request.translation_request_votes
-                                                     .build(user: current_user)
-      translation_request_vote.save
-      user_voted = true
+      create_new_vote
+      true
     end
+  end
 
-    # Return updated vote counts
+  def find_existing_vote
+    @translation_request.translation_request_votes.find_by(user: current_user)
+  end
+
+  def create_new_vote
+    @translation_request.translation_request_votes.create(user: current_user)
+  end
+
+  def render_vote_response(user_voted)
     render json: {
       votes_count: @translation_request.reload.votes_count,
       user_voted: user_voted
     }
   end
-
-  private
 
   def set_translation_request
     @translation_request = TranslationRequest.find(params[:translation_request_id])

@@ -6,11 +6,7 @@ class TranslationRequestsController < ApplicationController
   before_action :set_translation_request, only: %i[update assign unassign destroy]
 
   def index
-    @pagy, @translation_requests = pagy(
-      TranslationRequest.includes(:user, :scanlator).by_votes,
-      limit: 3
-    )
-    @total_requests_count = TranslationRequest.count
+    load_index_data
     @translation_request = TranslationRequest.new
 
     respond_to do |format|
@@ -25,45 +21,27 @@ class TranslationRequestsController < ApplicationController
     if @translation_request.save
       redirect_to translation_requests_path, notice: 'Запит на переклад успішно надіслано!'
     else
-      @pagy, @translation_requests = pagy(
-        TranslationRequest.includes(:user, :scanlator).by_votes,
-        limit: 3
-      )
-      @total_requests_count = TranslationRequest.count
-      render :index, status: :unprocessable_entity
+      handle_create_failure
     end
   end
 
   def update
     if @translation_request.update(translation_request_params)
-      respond_to do |format|
-        format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно оновлено!' }
-        format.json { render json: { success: true, message: 'Запит успішно оновлено!' } }
-      end
+      handle_update_success
     else
-      respond_to do |format|
-        format.html { redirect_to translation_requests_path, alert: 'Помилка при оновленні запиту.' }
-        format.json { render json: { success: false, errors: @translation_request.errors.full_messages } }
-      end
+      handle_update_failure
     end
   end
 
   def assign
     scanlator = current_user.scanlators.find(params[:scanlator_id])
 
-    if @translation_request.scanlator_id.present?
-      render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_entity
-      return
-    end
+    return render_already_assigned_error if @translation_request.scanlator_id.present?
 
     if @translation_request.update(scanlator: scanlator)
-      render json: {
-        success: true,
-        message: 'Запит успішно призначено команді',
-        scanlator_title: scanlator.title
-      }
+      render_assign_success(scanlator)
     else
-      render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_entity
+      render_assign_error
     end
   end
 
@@ -80,21 +58,72 @@ class TranslationRequestsController < ApplicationController
 
   def destroy
     if @translation_request.destroy
-      respond_to do |format|
-        format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно видалено!' }
-        format.json { render json: { success: true, message: 'Запит успішно видалено!' } }
-      end
+      handle_destroy_success
     else
-      respond_to do |format|
-        format.html { redirect_to translation_requests_path, alert: 'Помилка при видаленні запиту.' }
-        format.json do
-          render json: { success: false, error: 'Не вдалося видалити запит' }, status: :unprocessable_entity
-        end
-      end
+      handle_destroy_failure
     end
   end
 
   private
+
+  def handle_create_failure
+    load_index_data
+    render :index, status: :unprocessable_entity
+  end
+
+  def handle_update_success
+    respond_to do |format|
+      format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно оновлено!' }
+      format.json { render json: { success: true, message: 'Запит успішно оновлено!' } }
+    end
+  end
+
+  def handle_update_failure
+    respond_to do |format|
+      format.html { redirect_to translation_requests_path, alert: 'Помилка при оновленні запиту.' }
+      format.json { render json: { success: false, errors: @translation_request.errors.full_messages } }
+    end
+  end
+
+  def render_already_assigned_error
+    render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_entity
+  end
+
+  def render_assign_success(scanlator)
+    render json: {
+      success: true,
+      message: 'Запит успішно призначено команді',
+      scanlator_title: scanlator.title
+    }
+  end
+
+  def render_assign_error
+    render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_entity
+  end
+
+  def handle_destroy_success
+    respond_to do |format|
+      format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно видалено!' }
+      format.json { render json: { success: true, message: 'Запит успішно видалено!' } }
+    end
+  end
+
+  def handle_destroy_failure
+    respond_to do |format|
+      format.html { redirect_to translation_requests_path, alert: 'Помилка при видаленні запиту.' }
+      format.json do
+        render json: { success: false, error: 'Не вдалося видалити запит' }, status: :unprocessable_entity
+      end
+    end
+  end
+
+  def load_index_data
+    @pagy, @translation_requests = pagy(
+      TranslationRequest.includes(:user, :scanlator).by_votes,
+      limit: 3
+    )
+    @total_requests_count = TranslationRequest.count
+  end
 
   def translation_request_params
     params.require(:translation_request).permit(:title, :author, :source_url, :notes)

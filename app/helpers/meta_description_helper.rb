@@ -77,7 +77,7 @@ module MetaDescriptionHelper
 
   def bookshelf_description
     fiction_titles = @bookshelf.fictions.limit(3).pluck(:title).to_sentence
-    "#{@bookshelf.title} від #{@bookshelf.user.name}. #{@bookshelf.description}." \
+    "#{@bookshelf.title} від #{@bookshelf.user_name}. #{@bookshelf.description}." \
       "Зокрема #{fiction_titles}#{@bookshelf.fictions.count > 3 ? ' та інш твори' : ''}."
   end
 
