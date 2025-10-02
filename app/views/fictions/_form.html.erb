@@ -72,6 +72,14 @@
       </div>
 
       <div class="relative mb-4">
+        <div class="flex items-center">
+          <%= f.check_box :adult_content, class: "w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 rounded focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2" %>
+          <%= f.label :adult_content, 'Містить контент для дорослих (18+)', class: 'ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold' %>
+        </div>
+        <p class="text-stone-600 dark:text-gray-400 text-sm mt-1">Позначте, якщо твір містить контент, призначений лише для дорослої аудиторії</p>
+      </div>
+
+      <div class="relative mb-4">
         <%= f.label :genre_ids, 'Жанри', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
         <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600' } %>
       </div>

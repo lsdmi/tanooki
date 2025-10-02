@@ -101,7 +101,7 @@ class FictionsController < ApplicationController
   def fiction_params
     params.require(:fiction).permit(
       :alternative_title, :author, :cover, :description, :english_title, :origin,
-      :status, :title, :total_chapters, :short_description, :banner, genre_ids: [], scanlator_ids: []
+      :status, :title, :total_chapters, :short_description, :banner, :adult_content, genre_ids: [], scanlator_ids: []
     )
   end
 
