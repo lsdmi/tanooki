@@ -1,13 +1,15 @@
 one:
   id: 1
   user_id: 1
-  scanlator_id: 1
+  fiction_id: 1
+  rating: 4
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
 
 two:
   id: 2
   user_id: 2
-  scanlator_id: 2
+  fiction_id: 1
+  rating: 5
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>

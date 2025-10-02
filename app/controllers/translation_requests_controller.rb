@@ -52,7 +52,7 @@ class TranslationRequestsController < ApplicationController
         message: 'Запит успішно відкликано від команди'
       }
     else
-      render json: { error: 'Не вдалося відкликати запит' }, status: :unprocessable_entity
+      render json: { error: 'Не вдалося відкликати запит' }, status: :unprocessable_content
     end
   end
 
@@ -68,7 +68,7 @@ class TranslationRequestsController < ApplicationController
 
   def handle_create_failure
     load_index_data
-    render :index, status: :unprocessable_entity
+    render :index, status: :unprocessable_content
   end
 
   def handle_update_success
@@ -86,7 +86,7 @@ class TranslationRequestsController < ApplicationController
   end
 
   def render_already_assigned_error
-    render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_entity
+    render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_content
   end
 
   def render_assign_success(scanlator)
@@ -98,7 +98,7 @@ class TranslationRequestsController < ApplicationController
   end
 
   def render_assign_error
-    render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_entity
+    render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_content
   end
 
   def handle_destroy_success
@@ -112,7 +112,7 @@ class TranslationRequestsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to translation_requests_path, alert: 'Помилка при видаленні запиту.' }
       format.json do
-        render json: { success: false, error: 'Не вдалося видалити запит' }, status: :unprocessable_entity
+        render json: { success: false, error: 'Не вдалося видалити запит' }, status: :unprocessable_content
       end
     end
   end

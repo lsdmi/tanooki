@@ -24,7 +24,7 @@ class BookshelvesController < ApplicationController
     if @bookshelf.save
       redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю дадано'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -39,7 +39,7 @@ class BookshelvesController < ApplicationController
     if @bookshelf.update(bookshelf_params)
       redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю оновлено!'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

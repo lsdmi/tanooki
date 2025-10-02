@@ -40,6 +40,11 @@ module LibraryHelper
     Rails.cache.fetch(cache_key, expires_in: 1.hour) do
       find_duplicated_chapters(fiction)
     end
+  rescue StandardError => e
+    Rails.logger.error "Error in duplicate_chapters for fiction #{fiction.id}: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    # Return empty relation as fallback
+    fiction.chapters.none
   end
 
   def grouped_chapters_desc(fiction)
@@ -71,7 +76,8 @@ module LibraryHelper
   private
 
   def build_duplicate_chapters_cache_key(fiction)
-    "duplicate_chapters/#{fiction.id}/#{fiction.chapters.maximum(:updated_at)}"
+    max_updated_at = fiction.chapters.maximum(:updated_at) || fiction.updated_at
+    "duplicate_chapters/#{fiction.id}/#{max_updated_at}"
   end
 
   def find_duplicated_chapters(fiction)

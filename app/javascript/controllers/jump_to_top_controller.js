@@ -26,10 +26,12 @@ export default class extends Controller {
 
   handleScroll() {
     // Show button when scrolled down more than 300px
-    if (window.scrollY > 300) {
-      this.button.style.display = 'block'
-    } else {
-      this.button.style.display = 'none'
+    if (this.button) {
+      if (window.scrollY > 300) {
+        this.button.style.display = 'block'
+      } else {
+        this.button.style.display = 'none'
+      }
     }
   }
 

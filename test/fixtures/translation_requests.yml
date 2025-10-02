@@ -1,0 +1,22 @@
+one:
+  id: 1
+  title: "Test Translation Request One"
+  author: "Test Author One"
+  source_url: "https://example.com/source1"
+  notes: "This is a test translation request for testing purposes"
+  user_id: 1
+  votes_count: 2
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+two:
+  id: 2
+  title: "Test Translation Request Two"
+  author: "Test Author Two"
+  source_url: "https://example.com/source2"
+  notes: "This is another test translation request for testing purposes"
+  user_id: 2
+  scanlator_id: 1
+  votes_count: 1
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

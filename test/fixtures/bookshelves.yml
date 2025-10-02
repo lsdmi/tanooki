@@ -1,0 +1,17 @@
+one:
+  id: 1
+  title: "Test Bookshelf One"
+  description: "This is a test bookshelf for testing purposes"
+  user_id: 1
+  views: 0
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+two:
+  id: 2
+  title: "Test Bookshelf Two"
+  description: "This is another test bookshelf for testing purposes"
+  user_id: 2
+  views: 5
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

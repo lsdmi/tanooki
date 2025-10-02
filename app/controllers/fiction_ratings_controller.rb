@@ -8,7 +8,7 @@ class FictionRatingsController < ApplicationController
     rating = params[:rating].to_i
 
     if rating < 1 || rating > 5
-      render json: { error: 'Invalid rating' }, status: :unprocessable_entity
+      render json: { error: 'Invalid rating' }, status: :unprocessable_content
       return
     end
 
@@ -22,7 +22,7 @@ class FictionRatingsController < ApplicationController
         user_rating: rating
       }
     else
-      render json: { error: fiction_rating.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      render json: { error: fiction_rating.errors.full_messages.join(', ') }, status: :unprocessable_content
     end
   end
 
