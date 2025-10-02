@@ -59,12 +59,18 @@
         </div>
       </div>
 
-      <!-- Genres -->
-      <% if fiction.genres.any? %>
+      <!-- Tags -->
+      <% if fiction.genres.any? || fiction.adult_content? %>
         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
-          <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Жанри</h4>
+          <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Теґи</h4>
           <div class="flex flex-wrap gap-2">
+            <!-- Adult Content Tag -->
+            <% if fiction.adult_content? %>
+              <%= tag.span '18+ Контент для дорослих', class: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm border border-red-200 dark:border-red-700 font-medium' %>
+            <% end %>
+
+            <!-- Genre Tags -->
             <% fiction.genres.each do |genre| %>
               <%= tag.span genre.name, class: 'bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300' %>
             <% end %>
