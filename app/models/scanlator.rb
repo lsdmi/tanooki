@@ -54,6 +54,23 @@ class Scanlator < ApplicationRecord
     chapters.where(created_at: 60.days.ago..Time.current).exists?
   end
 
+  def average_rating
+    return 0.0 if fictions.empty?
+
+    # Calculate average rating across all fictions
+    total_ratings = FictionRating.where(fiction_id: fiction_ids)
+    return 0.0 if total_ratings.empty?
+
+    total_ratings.average(:rating).round(1)
+  end
+
+  def total_rating_count
+    return 0 if fictions.empty?
+
+    fiction_ids = fictions.pluck(:id)
+    FictionRating.where(fiction_id: fiction_ids).count
+  end
+
   private
 
   def check_associations
