@@ -1,0 +1,46 @@
+<div class="space-y-6">
+  <% videos.each do |video| %>
+    <article class="group">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="lg:w-80 flex-shrink-0">
+          <%= link_to youtube_video_path(video), data: { turbo: false } do %>
+            <div class="relative overflow-hidden rounded-lg">
+              <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}", width: '320', height: '180', class: 'w-full h-48 lg:w-80 lg:h-45 rounded-lg object-cover', allowfullscreen: true, title: video.title %>
+            </div>
+          <% end %>
+        </div>
+        <div class="flex-1">
+          <%= link_to youtube_video_path(video), data: { turbo: false } do %>
+            <h3 class="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition duration-300">
+              <%= video.title %>
+            </h3>
+          <% end %>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            <%= video.youtube_channel.title %>
+          </p>
+          <% if video.tags? %>
+            <div class="flex flex-wrap gap-1 mb-3">
+              <% video.tags.split(', ').first(4).each do |video_tag| %>
+                  <%= link_to video_tag, search_index_path(search: [video_tag]), class: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-semibold px-2 py-1 rounded hover:bg-red-800 hover:text-red-100 dark:hover:bg-red-700 transition duration-300', data: { turbo: false } %>
+              <% end %>
+            </div>
+          <% end %>
+          <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3">
+            <%= video.description || "Цікаве відео про аніме та мангу." %>
+          </p>
+        </div>
+      </div>
+    </article>
+  <% end %>
+</div>
+
+<!-- Video Pagination -->
+<% if defined?(pagy_videos) && pagy_videos && pagy_videos.pages > 1 %>
+  <div class="mt-8 flex justify-center">
+    <div class="pagy-nav">
+      <%== pagy_nav(pagy_videos,
+            link_extra: 'data-turbo-stream=""',
+            params: { search: params[:search], filter: params[:filter], section: 'videos' }.compact) %>
+    </div>
+  </div>
+<% end %>

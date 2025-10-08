@@ -1,13 +1,293 @@
-<div class="w-full float-left pb-14 mt-6">
-  <div class="w-full relative float-left">
-    <div class="h-full lg:w-[1250px] my-0 mx-auto">
-      <header class="mt-4 w-full float-left relative block">
-        <% if @tag.present? %>
-          <%= render 'tag_page', results: @results, fictions: @fictions, videos: @videos %>
-        <% else %>
-          <%= render 'search_page', results: @results, fictions: @fictions, videos: @videos %>
+<section class="tracking-widest bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 min-h-screen flex flex-col p-8 font-sans relative overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('request-page.webp') %>);"></div>
+  <div class="absolute inset-0 bg-gray-50/95 dark:bg-gray-900/95"></div>
+
+  <div class="max-w-7xl mx-auto px-4 z-10 relative w-full">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-gray-800 dark:text-gray-100 tracking-tight leading-none mb-4">
+        Результати<br><span class="text-gray-600 dark:text-gray-400">Пошуку</span>
+      </h1>
+      <% if params[:search].present? %>
+        <p class="text-gray-700 dark:text-gray-300 text-lg sm:text-xl lg:text-2xl font-light">
+          Знайдено за запитом: "<span class="font-semibold text-cyan-700 dark:text-rose-700"><%= Array(params[:search]).join(', ') %></span>"
+        </p>
+      <% end %>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-8 relative overflow-hidden">
+      <div class="absolute inset-0 z-0 opacity-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <pattern id="filter-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M0 0h40v40H0z" fill="none"/>
+            <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+            <circle cx="20" cy="20" r="1" fill="currentColor"/>
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#filter-pattern)"/>
+        </svg>
+      </div>
+
+      <div class="relative z-10">
+        <div class="flex items-center mb-4">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
+            </svg>
+          </div>
+          <h2 class="text-xl font-extrabold text-gray-700 dark:text-gray-200">Фільтри</h2>
+        </div>
+        
+        <div id="filter-buttons">
+          <%= render 'search/filter_buttons' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Main Results Column -->
+      <div class="lg:col-span-3 space-y-8">
+        <!-- Fiction Results Section -->
+        <% if @fictions.any? && (params[:filter] != 'video' && params[:filter] != 'blog' || params[:filter] == 'fiction') %>
+          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <pattern id="fiction-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M0 0h40v40H0z" fill="none"/>
+                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#fiction-pattern)"/>
+              </svg>
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex items-center mb-6">
+                <div class="h-8 w-8 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center mr-3">
+                  <svg class="h-4 w-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Ранобе</h2>
+                <span class="ml-3 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-semibold rounded">
+                  <%= @pagy_fictions&.count || @fictions.count %>
+                </span>
+              </div>
+
+              <%= turbo_frame_tag "fictions-section", id: "fictions-section" do %>
+                <%= render 'search/fictions_section', fictions: @fictions, pagy_fictions: @pagy_fictions %>
+              <% end %>
+            </div>
+          </div>
         <% end %>
-      </header>
+
+        <!-- Blog Results Section -->
+        <% if @results.any? && (params[:filter] != 'video' && params[:filter] != 'fiction' || params[:filter] == 'blog') %>
+          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <pattern id="blog-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M0 0h40v40H0z" fill="none"/>
+                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#blog-pattern)"/>
+              </svg>
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex items-center mb-6">
+                <div class="h-8 w-8 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center mr-3">
+                  <svg class="h-4 w-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Новини</h2>
+                <span class="ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-sm font-semibold rounded">
+                  <%= @pagy_results&.count || @results.count %>
+                </span>
+              </div>
+
+              <%= turbo_frame_tag "results-section", id: "results-section" do %>
+                <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Video Results Section -->
+        <% if @videos.any? && (params[:filter] != 'fiction' && params[:filter] != 'blog' || params[:filter] == 'video') %>
+          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <pattern id="video-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M0 0h40v40H0z" fill="none"/>
+                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#video-pattern)"/>
+              </svg>
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex items-center mb-6">
+                <div class="h-8 w-8 rounded-lg bg-red-100 dark:bg-red-900/20 flex items-center justify-center mr-3">
+                  <svg class="h-4 w-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Відео</h2>
+                <span class="ml-3 px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-sm font-semibold rounded">
+                  <%= @pagy_videos&.count || @videos.count %>
+                </span>
+              </div>
+
+              <%= turbo_frame_tag "videos-section", id: "videos-section" do %>
+                <%= render 'search/videos_section', videos: @videos, pagy_videos: @pagy_videos %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- No Results Message -->
+        <% if !@fictions.any? && !@results.any? && !@videos.any? && params[:search].present? %>
+          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 text-center relative overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <pattern id="no-results-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M0 0h40v40H0z" fill="none"/>
+                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#no-results-pattern)"/>
+              </svg>
+            </div>
+
+            <div class="relative z-10">
+              <div class="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+                <svg class="h-8 w-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-4">
+                Нічого не знайдено
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-6">
+                Спробуйте змінити пошуковий запит або скористайтеся фільтрами
+              </p>
+              <%= link_to root_path, class: "inline-flex items-center px-6 py-3 bg-cyan-600 dark:bg-rose-600 text-white font-semibold rounded-lg hover:bg-cyan-700 dark:hover:bg-rose-700 transition duration-300" do %>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                На головну
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-1 space-y-8">
+        <!-- Popular Tags Section -->
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+          <div class="absolute inset-0 z-0 opacity-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <pattern id="tags-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M0 0h40v40H0z" fill="none"/>
+                <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                <circle cx="20" cy="20" r="1" fill="currentColor"/>
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#tags-pattern)"/>
+            </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center mb-4">
+              <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">Популярні Теґи</h3>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+              <% trending_tags.each do |trending_tag| %>
+                <% if trending_tag.present? %>
+                  <%= link_to trending_tag[:name], trending_tag[:link], class: 'px-4 py-2 rounded-lg text-sm font-semibold transition duration-300 bg-cyan-700 dark:bg-rose-700 text-white hover:bg-cyan-800 dark:hover:bg-rose-800', data: { turbo: false } %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ad Section -->
+        <div class="w-[95%] mx-auto border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
+          <%= render 'shared/ads', advertisement: @advertisement %>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+          <div class="absolute inset-0 z-0 opacity-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <pattern id="links-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M0 0h40v40H0z" fill="none"/>
+                <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                <circle cx="20" cy="20" r="1" fill="currentColor"/>
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#links-pattern)"/>
+            </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center mb-4">
+              <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">Швидкі Посилання</h3>
+            </div>
+            
+            <div class="space-y-3">
+              <%= link_to fictions_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 text-purple-500 mr-3 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Ранобе</span>
+              <% end %>
+              
+              <%= link_to tales_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 text-blue-500 mr-3 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                </svg>
+                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Новини</span>
+              <% end %>
+              
+              <%= link_to youtube_videos_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 text-red-500 mr-3 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Відео</span>
+              <% end %>
+
+              <% if user_signed_in? %>
+                <%= link_to library_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                  <svg class="w-4 h-4 text-indigo-500 mr-3 group-hover:text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                  </svg>
+                  <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Бібліотека</span>
+                <% end %>
+              <% end %>
+              
+              <%= link_to translation_requests_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 text-green-500 mr-3 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                </svg>
+                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Запити на Переклад</span>
+              <% end %>
+
+              <%= link_to root_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 text-orange-500 mr-3 group-hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Головна</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>

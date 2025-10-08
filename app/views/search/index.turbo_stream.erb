@@ -1,0 +1,17 @@
+<% if @fictions.any? && (params[:filter] != 'video' && params[:filter] != 'blog' || params[:filter] == 'fiction') %>
+  <%= turbo_stream.replace "fictions-section" do %>
+    <%= render 'search/fictions_section', fictions: @fictions, pagy_fictions: @pagy_fictions %>
+  <% end %>
+<% end %>
+
+<% if @results.any? && (params[:filter] != 'video' && params[:filter] != 'fiction' || params[:filter] == 'blog') %>
+  <%= turbo_stream.replace "results-section" do %>
+    <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
+  <% end %>
+<% end %>
+
+<% if @videos.any? && (params[:filter] != 'fiction' && params[:filter] != 'blog' || params[:filter] == 'video') %>
+  <%= turbo_stream.replace "videos-section" do %>
+    <%= render 'search/videos_section', videos: @videos, pagy_videos: @pagy_videos %>
+  <% end %>
+<% end %>

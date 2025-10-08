@@ -1,0 +1,36 @@
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+  <% fictions.each do |fiction| %>
+    <div class="group">
+      <%= link_to fiction_path(fiction), class: 'block', data: { turbo: false } do %>
+        <div class="relative overflow-hidden rounded-lg mb-2">
+          <%= image_tag url_for(fiction.cover), alt: fiction.title, class: "w-full h-36 object-cover transition duration-300 group-hover:scale-105" %>
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300"></div>
+        </div>
+        <h3 class="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition duration-300">
+          <%= fiction.title %>
+        </h3>
+      <% end %>
+      <% if fiction.genres.any? %>
+        <div class="flex flex-wrap gap-0.5 mb-1">
+          <% fiction.genres.limit(2).each do |genre| %>
+              <%= link_to genre.name, search_index_path(search: [genre.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium px-1.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 transition duration-300', data: { turbo: false } %>
+          <% end %>
+        </div>
+      <% end %>
+      <p class="text-gray-600 dark:text-gray-400 text-xs line-clamp-2">
+        <%= fiction.alternative_title %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Fiction Pagination -->
+<% if defined?(pagy_fictions) && pagy_fictions && pagy_fictions.pages > 1 %>
+  <div class="mt-8 flex justify-center">
+    <div class="pagy-nav">
+      <%== pagy_nav(pagy_fictions, 
+            link_extra: 'data-turbo-stream=""',
+            params: { search: params[:search], filter: params[:filter], section: 'fictions' }.compact) %>
+    </div>
+  </div>
+<% end %>

@@ -1,9 +1,0 @@
-<%= tag.div class: 'float-left mb-2' do %>
-  <%= render 'shared/divider_shiny_pink', caption: 'Читальня' if results.any? && params[:only_fictions].nil? %>
-  <ul class="list-none w-full float-left relative">
-    <% fictions.each do |fiction| %>
-      <%= render 'fiction', fiction: fiction %>
-    <% end %>
-  </ul>
-<% end if fictions.any? %>
-
