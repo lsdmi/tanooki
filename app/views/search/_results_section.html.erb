@@ -1,58 +1,85 @@
-<div class="grid gap-8 lg:grid-cols-2">
-  <% if results.any? %>
-    <!-- Featured Articles (First Column) -->
-    <div class="space-y-8">
-      <% results.first(2).each do |featured_result| %>
-        <article class="mb-8">
-          <%= link_to tale_path(featured_result), data: { turbo: false } do %>
-            <div class="relative mb-5 rounded-md shadow-md border border-gray-200 dark:border-gray-700">
-              <%= image_tag url_for(featured_result.cover), alt: featured_result.title, class: "rounded-lg object-cover w-full" %>
-              <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
-            </div>
-          <% end %>
-          <%= tag.h2 class: 'line-clamp-2 my-2 text-2xl font-bold tracking-tight leading-tight text-gray-900 dark:text-gray-100 hover:underline hover:text-cyan-700 dark:hover:text-rose-700' do %>
-            <%= link_to featured_result.title, tale_path(featured_result), data: { turbo: false } %>
-          <% end %>
-          <% if featured_result.tags.any? %>
-            <div class="flex flex-wrap gap-1 mb-3">
-              <% featured_result.tags.limit(4).each do |tag| %>
-                <%= link_to tag.name, search_index_path(search: [tag.name]), class: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold px-2 py-1 rounded hover:bg-green-800 hover:text-green-100 dark:hover:bg-green-700 transition duration-300', data: { turbo: false } %>
-              <% end %>
-            </div>
-          <% end %>
-          <%= tag.p featured_result.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-gray-600 dark:text-gray-400 tracking-tight' %>
-        </article>
-      <% end %>
-    </div>
-
-    <!-- Smaller Articles (Second Column) -->
-    <div class="space-y-8 lg:pl-8">
-      <% results.drop(2).each do |publication| %>
-        <article>
-          <%= tag.h2 class: 'line-clamp-3 leading-tight mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline hover:text-cyan-700 dark:hover:text-rose-700' do %>
-            <%= link_to publication.title, tale_path(publication), data: { turbo: false } %>
-          <% end %>
-          <% if publication.tags.any? %>
-            <div class="flex flex-wrap gap-1 mb-2">
-              <% publication.tags.limit(3).each do |tag| %>
-                <%= link_to tag.name, search_index_path(search: [tag.name]), class: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold px-2 py-1 rounded hover:bg-green-800 hover:text-green-100 dark:hover:bg-green-700 transition duration-300', data: { turbo: false } %>
-              <% end %>
-            </div>
-          <% end %>
-          <%= tag.p publication.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-gray-600 dark:text-gray-400 text-base' %>
-        </article>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<!-- Blog Pagination -->
-<% if defined?(pagy_results) && pagy_results && pagy_results.pages > 1 %>
-  <div class="mt-8 flex justify-center">
-    <div class="pagy-nav">
-      <%== pagy_nav(pagy_results,
-            link_extra: 'data-turbo-stream=""',
-            params: { search: params[:search], filter: params[:filter], section: 'results' }.compact) %>
-    </div>
+<div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden mb-8">
+  <div class="absolute inset-0 z-0 opacity-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <pattern id="blog-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M0 0h40v40H0z" fill="none"/>
+        <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="20" cy="20" r="1" fill="currentColor"/>
+      </pattern>
+      <rect width="100%" height="100%" fill="url(#blog-pattern)"/>
+    </svg>
   </div>
-<% end %>
+
+  <div class="relative z-10">
+    <div class="flex items-center mb-6">
+      <div class="h-8 w-8 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center mr-3">
+        <svg class="h-4 w-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Новини</h2>
+      <span class="ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-sm font-semibold rounded">
+        <%= defined?(pagy_results) && pagy_results ? pagy_results.count : results.count %>
+      </span>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      <% if results.any? %>
+        <!-- Featured Articles (First Column) -->
+        <div class="space-y-8">
+          <% results.first(2).each do |featured_result| %>
+            <article class="mb-8">
+              <%= link_to tale_path(featured_result), data: { turbo: false } do %>
+                <div class="relative mb-5 rounded-md shadow-md border border-gray-200 dark:border-gray-700">
+                  <%= image_tag url_for(featured_result.cover), alt: featured_result.title, class: "rounded-lg object-cover w-full" %>
+                  <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
+                </div>
+              <% end %>
+              <%= tag.h2 class: 'line-clamp-2 my-2 text-2xl font-bold tracking-tight leading-tight text-gray-900 dark:text-gray-100 hover:underline hover:text-cyan-700 dark:hover:text-rose-700' do %>
+                <%= link_to featured_result.title, tale_path(featured_result), data: { turbo: false } %>
+              <% end %>
+              <% if featured_result.tags.any? %>
+                <div class="flex flex-wrap gap-1 mb-3">
+                  <% featured_result.tags.limit(4).each do |tag| %>
+                    <%= link_to tag.name, search_index_path(search: [tag.name]), class: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold px-2 py-1 rounded hover:bg-green-800 hover:text-green-100 dark:hover:bg-green-700 transition duration-300', data: { turbo: false } %>
+                  <% end %>
+                </div>
+              <% end %>
+              <%= tag.p featured_result.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-gray-600 dark:text-gray-400 tracking-tight' %>
+            </article>
+          <% end %>
+        </div>
+
+        <!-- Smaller Articles (Second Column) -->
+        <div class="space-y-8 lg:pl-8">
+          <% results.drop(2).each do |publication| %>
+            <article>
+              <%= tag.h2 class: 'line-clamp-3 leading-tight mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline hover:text-cyan-700 dark:hover:text-rose-700' do %>
+                <%= link_to publication.title, tale_path(publication), data: { turbo: false } %>
+              <% end %>
+              <% if publication.tags.any? %>
+                <div class="flex flex-wrap gap-1 mb-2">
+                  <% publication.tags.limit(3).each do |tag| %>
+                    <%= link_to tag.name, search_index_path(search: [tag.name]), class: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-semibold px-2 py-1 rounded hover:bg-green-800 hover:text-green-100 dark:hover:bg-green-700 transition duration-300', data: { turbo: false } %>
+                  <% end %>
+                </div>
+              <% end %>
+              <%= tag.p publication.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-gray-600 dark:text-gray-400 text-base' %>
+            </article>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Blog Pagination -->
+    <% if defined?(pagy_results) && pagy_results && pagy_results.pages > 1 %>
+      <div class="mt-8 flex justify-center" data-controller="search-pagination">
+        <div class="pagy-nav">
+          <%== pagy_nav(pagy_results,
+                link_extra: 'data-action="click->search-pagination#paginate" data-turbo="false"',
+                params: { search: params[:search], filter: params[:filter], section: 'results' }.compact) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

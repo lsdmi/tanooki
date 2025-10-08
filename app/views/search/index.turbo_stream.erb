@@ -1,17 +1,43 @@
-<% if @fictions.any? && (params[:filter] != 'video' && params[:filter] != 'blog' || params[:filter] == 'fiction') %>
-  <%= turbo_stream.replace "fictions-section" do %>
+<%= turbo_stream.update "filter-buttons" do %>
+  <%= render 'search/filter_buttons' %>
+<% end %>
+
+<% if @fictions.any? %>
+  <%= turbo_stream.update "fictions-section" do %>
     <%= render 'search/fictions_section', fictions: @fictions, pagy_fictions: @pagy_fictions %>
   <% end %>
-<% end %>
-
-<% if @results.any? && (params[:filter] != 'video' && params[:filter] != 'fiction' || params[:filter] == 'blog') %>
-  <%= turbo_stream.replace "results-section" do %>
-    <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
+<% else %>
+  <%= turbo_stream.update "fictions-section" do %>
+    <div></div>
   <% end %>
 <% end %>
 
-<% if @videos.any? && (params[:filter] != 'fiction' && params[:filter] != 'blog' || params[:filter] == 'video') %>
-  <%= turbo_stream.replace "videos-section" do %>
+<% if @results.any? %>
+  <%= turbo_stream.update "results-section" do %>
+    <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "results-section" do %>
+    <div></div>
+  <% end %>
+<% end %>
+
+<% if @videos.any? %>
+  <%= turbo_stream.update "videos-section" do %>
     <%= render 'search/videos_section', videos: @videos, pagy_videos: @pagy_videos %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "videos-section" do %>
+    <div></div>
+  <% end %>
+<% end %>
+
+<% if !@fictions.any? && !@results.any? && !@videos.any? && params[:search].present? %>
+  <%= turbo_stream.update "no-results-section" do %>
+    <%= render 'search/no_results_section' %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "no-results-section" do %>
+    <div></div>
   <% end %>
 <% end %>

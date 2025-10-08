@@ -38,152 +38,42 @@
           <h2 class="text-xl font-extrabold text-gray-700 dark:text-gray-200">Фільтри</h2>
         </div>
         
-        <div id="filter-buttons">
+        <%= turbo_frame_tag "filter-buttons", id: "filter-buttons" do %>
           <%= render 'search/filter_buttons' %>
-        </div>
+        <% end %>
       </div>
     </div>
 
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
       <!-- Main Results Column -->
-      <div class="lg:col-span-3 space-y-8">
+      <div class="lg:col-span-3">
         <!-- Fiction Results Section -->
         <% if @fictions.any? && (params[:filter] != 'video' && params[:filter] != 'blog' || params[:filter] == 'fiction') %>
-          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
-            <div class="absolute inset-0 z-0 opacity-5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-                <pattern id="fiction-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M0 0h40v40H0z" fill="none"/>
-                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
-                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#fiction-pattern)"/>
-              </svg>
-            </div>
-
-            <div class="relative z-10">
-              <div class="flex items-center mb-6">
-                <div class="h-8 w-8 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center mr-3">
-                  <svg class="h-4 w-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                  </svg>
-                </div>
-                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Ранобе</h2>
-                <span class="ml-3 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-semibold rounded">
-                  <%= @pagy_fictions&.count || @fictions.count %>
-                </span>
-              </div>
-
-              <%= turbo_frame_tag "fictions-section", id: "fictions-section" do %>
-                <%= render 'search/fictions_section', fictions: @fictions, pagy_fictions: @pagy_fictions %>
-              <% end %>
-            </div>
-          </div>
+          <%= turbo_frame_tag "fictions-section", id: "fictions-section" do %>
+            <%= render 'search/fictions_section', fictions: @fictions, pagy_fictions: @pagy_fictions %>
+          <% end %>
         <% end %>
 
         <!-- Blog Results Section -->
         <% if @results.any? && (params[:filter] != 'video' && params[:filter] != 'fiction' || params[:filter] == 'blog') %>
-          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
-            <div class="absolute inset-0 z-0 opacity-5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-                <pattern id="blog-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M0 0h40v40H0z" fill="none"/>
-                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
-                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#blog-pattern)"/>
-              </svg>
-            </div>
-
-            <div class="relative z-10">
-              <div class="flex items-center mb-6">
-                <div class="h-8 w-8 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center mr-3">
-                  <svg class="h-4 w-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                  </svg>
-                </div>
-                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Новини</h2>
-                <span class="ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-sm font-semibold rounded">
-                  <%= @pagy_results&.count || @results.count %>
-                </span>
-              </div>
-
-              <%= turbo_frame_tag "results-section", id: "results-section" do %>
-                <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
-              <% end %>
-            </div>
-          </div>
+          <%= turbo_frame_tag "results-section", id: "results-section" do %>
+            <%= render 'search/results_section', results: @results, pagy_results: @pagy_results %>
+          <% end %>
         <% end %>
 
         <!-- Video Results Section -->
         <% if @videos.any? && (params[:filter] != 'fiction' && params[:filter] != 'blog' || params[:filter] == 'video') %>
-          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
-            <div class="absolute inset-0 z-0 opacity-5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-                <pattern id="video-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M0 0h40v40H0z" fill="none"/>
-                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
-                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#video-pattern)"/>
-              </svg>
-            </div>
-
-            <div class="relative z-10">
-              <div class="flex items-center mb-6">
-                <div class="h-8 w-8 rounded-lg bg-red-100 dark:bg-red-900/20 flex items-center justify-center mr-3">
-                  <svg class="h-4 w-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                  </svg>
-                </div>
-                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Відео</h2>
-                <span class="ml-3 px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-sm font-semibold rounded">
-                  <%= @pagy_videos&.count || @videos.count %>
-                </span>
-              </div>
-
-              <%= turbo_frame_tag "videos-section", id: "videos-section" do %>
-                <%= render 'search/videos_section', videos: @videos, pagy_videos: @pagy_videos %>
-              <% end %>
-            </div>
-          </div>
+          <%= turbo_frame_tag "videos-section", id: "videos-section" do %>
+            <%= render 'search/videos_section', videos: @videos, pagy_videos: @pagy_videos %>
+          <% end %>
         <% end %>
 
         <!-- No Results Message -->
-        <% if !@fictions.any? && !@results.any? && !@videos.any? && params[:search].present? %>
-          <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 text-center relative overflow-hidden">
-            <div class="absolute inset-0 z-0 opacity-5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-                <pattern id="no-results-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M0 0h40v40H0z" fill="none"/>
-                  <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
-                  <circle cx="20" cy="20" r="1" fill="currentColor"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#no-results-pattern)"/>
-              </svg>
-            </div>
-
-            <div class="relative z-10">
-              <div class="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-                <svg class="h-8 w-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-4">
-                Нічого не знайдено
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 mb-6">
-                Спробуйте змінити пошуковий запит або скористайтеся фільтрами
-              </p>
-              <%= link_to root_path, class: "inline-flex items-center px-6 py-3 bg-cyan-600 dark:bg-rose-600 text-white font-semibold rounded-lg hover:bg-cyan-700 dark:hover:bg-rose-700 transition duration-300" do %>
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
-                На головну
-              <% end %>
-            </div>
-          </div>
+        <%= turbo_frame_tag "no-results-section", id: "no-results-section" do %>
+          <% if !@fictions.any? && !@results.any? && !@videos.any? && params[:search].present? %>
+            <%= render 'search/no_results_section' %>
+          <% end %>
         <% end %>
       </div>
 

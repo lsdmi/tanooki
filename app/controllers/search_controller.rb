@@ -40,17 +40,6 @@ class SearchController < ApplicationController
         when 'videos'
           render turbo_stream: turbo_stream.replace('videos-section', partial: 'search/videos_section',
                                                                       locals: { videos: @videos, pagy_videos: @pagy_videos })
-        else
-          # Fallback to updating all sections (for filter changes)
-          render turbo_stream: [
-            turbo_stream.replace('filter-buttons', partial: 'search/filter_buttons'),
-            turbo_stream.replace('fictions-section', partial: 'search/fictions_section',
-                                                     locals: { fictions: @fictions, pagy_fictions: @pagy_fictions }),
-            turbo_stream.replace('results-section', partial: 'search/results_section',
-                                                    locals: { results: @results, pagy_results: @pagy_results }),
-            turbo_stream.replace('videos-section', partial: 'search/videos_section',
-                                                   locals: { videos: @videos, pagy_videos: @pagy_videos })
-          ]
         end
       end
     end
