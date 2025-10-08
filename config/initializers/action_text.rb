@@ -16,7 +16,7 @@ Rails.application.config.after_initialize do
     'abbr', 'alt', 'cite', 'class', 'datetime', 'height', 'href', 'lang',
     'name', 'src', 'style', 'title', 'width', 'xml:lang', 'frameborder', 'allowfullscreen',
     'loading', 'decoding', 'sizes', 'srcset', 'target', 'rel', 'download', 'hreflang',
-    'type', 'media', 'data-*', 'aria-*', 'role', 'tabindex', 'accesskey', 'contenteditable',
+    'type', 'media', 'data-*', 'data-tooltip', 'data-note', 'data-note-id', 'aria-*', 'role', 'tabindex', 'accesskey', 'contenteditable',
     'dir', 'hidden', 'id', 'spellcheck', 'translate', 'itemscope', 'itemtype', 'itemprop'
   ]
 end

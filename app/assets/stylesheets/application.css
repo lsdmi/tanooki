@@ -30,3 +30,72 @@
       border-color: var(--color-gray-200, currentColor);
     }
 }
+
+/* Expandable Note styles for TinyMCE content */
+.note-reference {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(8, 145, 178, 0.6);
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.dark .note-reference {
+  border-bottom-color: rgba(244, 63, 94, 0.6);
+}
+
+.note-reference:hover {
+  background-color: rgba(8, 145, 178, 0.1);
+  border-bottom-color: rgba(8, 145, 178, 1);
+}
+
+.dark .note-reference:hover {
+  background-color: rgba(244, 63, 94, 0.1);
+  border-bottom-color: rgba(244, 63, 94, 1);
+}
+
+.note-reference::after {
+  content: '📝';
+  font-size: 0.7em;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+.note-content {
+  display: none;
+  margin: 8px 0 16px 0;
+  padding: 12px;
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  border-left: 3px solid rgba(8, 145, 178, 0.6);
+  border-radius: 4px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: rgba(55, 65, 81, 0.9);
+  font-style: italic;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark .note-content {
+  background: rgba(31, 41, 55, 0.95);
+  border-color: rgba(244, 63, 94, 0.3);
+  border-left-color: rgba(244, 63, 94, 0.6);
+  color: rgba(209, 213, 219, 0.9);
+}
+
+.note-content.show {
+  display: block;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

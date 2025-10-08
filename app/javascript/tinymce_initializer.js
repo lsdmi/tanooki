@@ -61,7 +61,11 @@ const initializeTinymce = () => {
     'Strikethrough': 'Закреслення',
     'Text color': 'Колір тексту',
     'Fore color': 'Колір тексту',
-    'Background color': 'Колір тла'
+    'Background color': 'Колір тла',
+    'Insert/edit tooltip': 'Вставити/редагувати примітку',
+    'Tooltip text': 'Текст примітки',
+    'Remove tooltip': 'Видалити примітку',
+    'Please select some text first': 'Спершу виділіть текст для примітки'
   });
   tinymce.init({
     language: 'uk',
@@ -79,14 +83,76 @@ const initializeTinymce = () => {
       'textcolor'
     ],
     menubar: false,
-    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | link | fontfamily fontsize align lineheight | removeformat | outdent indent | image media | hr | code | wordcount',
+    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | link tooltip | fontfamily fontsize align lineheight | removeformat | outdent indent | image media | hr | code | wordcount',
     quickbars_insert_toolbar: 'image media',
-    quickbars_selection_toolbar: 'bold italic underline strikethrough | forecolor | blockquote quicklink',
+    quickbars_selection_toolbar: 'bold italic underline strikethrough | forecolor | blockquote quicklink tooltip',
     contextmenu: false,
     statusbar: false,
     newline_behavior: 'linebreak',
     link_title: false,
+    extended_valid_elements: 'span[class|data-note|data-note-id]',
+    valid_children: '+body[style],+span[data-note]',
     setup: function(editor) {
+      // Add custom note button
+      editor.ui.registry.addIcon('note-icon', '<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/></svg>');
+
+      editor.ui.registry.addButton('tooltip', {
+        icon: 'note-icon',
+        tooltip: editor.translate('Insert/edit tooltip'),
+        onAction: function() {
+          const selectedText = editor.selection.getContent({ format: 'text' });
+          const selectedNode = editor.selection.getNode();
+          const existingNote = selectedNode.getAttribute && selectedNode.getAttribute('data-note');
+
+          if (!selectedText && !existingNote) {
+            editor.windowManager.alert(editor.translate('Please select some text first'));
+            return;
+          }
+
+          editor.windowManager.open({
+            title: editor.translate('Insert/edit tooltip'),
+            body: {
+              type: 'panel',
+              items: [
+                {
+                  type: 'input',
+                  name: 'noteText',
+                  label: editor.translate('Tooltip text'),
+                  placeholder: editor.translate('Tooltip text')
+                }
+              ]
+            },
+            initialData: {
+              noteText: existingNote || ''
+            },
+            buttons: [
+              {
+                type: 'cancel',
+                text: editor.translate('Cancel')
+              },
+              {
+                type: 'submit',
+                text: editor.translate('Save'),
+                primary: true
+              }
+            ],
+            onSubmit: function(api) {
+              const data = api.getData();
+              const noteText = data.noteText.trim();
+
+              if (noteText) {
+                const content = selectedText || selectedNode.textContent;
+                const noteId = 'note-' + Date.now();
+                const html = `<span class="note-reference" data-note="${noteText.replace(/"/g, '&quot;')}" data-note-id="${noteId}">${content}</span>`;
+                editor.selection.setContent(html);
+              }
+
+              api.close();
+            }
+          });
+        }
+      });
+
       editor.on('init', function() {
         // Apply custom styles to the content area
         const iframe = editor.getContainer().querySelector('iframe');
@@ -94,7 +160,7 @@ const initializeTinymce = () => {
           // Detect dark mode from parent window
           const isDark = localStorage.getItem('color-theme') === 'dark' ||
             (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          
+
           const style = iframe.contentDocument.createElement('style');
           style.textContent = `
             body {
@@ -106,7 +172,7 @@ const initializeTinymce = () => {
               margin: 0;
               padding: 20px;
             }
-            
+
             /* Typography */
             h1, h2, h3, h4, h5, h6 {
               font-weight: 600;
@@ -115,14 +181,14 @@ const initializeTinymce = () => {
               margin-bottom: 0.5em;
               color: ${isDark ? '#f43f5e' : '#0891b2'};
             }
-            
+
             h1 { font-size: 2em; }
             h2 { font-size: 1.75em; }
             h3 { font-size: 1.5em; }
             h4 { font-size: 1.25em; }
             h5 { font-size: 1.1em; }
             h6 { font-size: 1em; }
-            
+
             p {
               margin-bottom: 1em;
               text-align: justify;
@@ -240,6 +306,59 @@ const initializeTinymce = () => {
               background: ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.3)'};
               color: ${isDark ? '#f9fafb' : '#111827'};
             }
+            
+            /* Expandable Note styles */
+            .note-reference {
+              position: relative;
+              display: inline-block;
+              cursor: pointer;
+              border-bottom: 1px dotted ${isDark ? 'rgba(244, 63, 94, 0.6)' : 'rgba(8, 145, 178, 0.6)'};
+              color: inherit;
+              transition: all 0.2s ease;
+            }
+            
+            .note-reference:hover {
+              background-color: ${isDark ? 'rgba(244, 63, 94, 0.1)' : 'rgba(8, 145, 178, 0.1)'};
+              border-bottom-color: ${isDark ? 'rgba(244, 63, 94, 1)' : 'rgba(8, 145, 178, 1)'};
+            }
+            
+            .note-reference::after {
+              content: '📝';
+              font-size: 0.7em;
+              margin-left: 2px;
+              opacity: 0.7;
+            }
+            
+            .note-content {
+              display: none;
+              margin-top: 8px;
+              padding: 12px;
+              background: ${isDark ? 'rgba(31, 41, 55, 0.95)' : 'rgba(248, 250, 252, 0.95)'};
+              border: 1px solid ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.2)'};
+              border-left: 3px solid ${isDark ? 'rgba(244, 63, 94, 0.6)' : 'rgba(8, 145, 178, 0.6)'};
+              border-radius: 4px;
+              font-size: 0.9em;
+              line-height: 1.4;
+              color: ${isDark ? 'rgba(209, 213, 219, 0.9)' : 'rgba(55, 65, 81, 0.9)'};
+              font-style: italic;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            
+            .note-content.show {
+              display: block;
+              animation: slideDown 0.2s ease;
+            }
+            
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translateY(-5px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
           `;
           iframe.contentDocument.head.appendChild(style);
         }
@@ -345,6 +464,24 @@ const initializeTinymce = () => {
             
             .tox-tbtn:hover .tox-icon svg {
               fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+            }
+            
+            /* Custom note button - no fill, stroke only */
+            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg,
+            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg path {
+              fill: none !important;
+              stroke: currentColor !important;
+            }
+            
+            .tox-tbtn[aria-label*="tooltip"]:hover .tox-icon svg,
+            .tox-tbtn[aria-label*="tooltip"]:hover .tox-icon svg path {
+              fill: none !important;
+              stroke: currentColor !important;
+            }
+            
+            /* Override any inherited fill styles */
+            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg * {
+              fill: none !important;
             }
             
             /* Additional specificity for nested elements */

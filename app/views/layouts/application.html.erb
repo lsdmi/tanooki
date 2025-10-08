@@ -65,6 +65,7 @@
 
     <%= javascript_include_tag 'font_toggler' if requires_font? %>
     <%= javascript_include_tag 'mode_toggler' %>
+    <%= javascript_include_tag 'note_handler' %>
 
     <% if controller_name.to_sym == :translation_requests %>
       <%= javascript_import_module_tag 'translation_requests' %>
