@@ -1,6 +1,7 @@
 <div id="chapters-accordion" class="my-6 space-y-4">
-  <% if chapters.pluck(:volume_number).uniq.size > 1 %>
-    <% chapters.pluck(:volume_number).uniq.each do |volume_number| %>
+  <% volumes = chapters.pluck(:volume_number).compact.uniq %>
+  <% if volumes.size > 0 %>
+    <% volumes.each do |volume_number| %>
       <% volume_number_integer = volume_number_integer(volume_number) %>
       <div class="accordion bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg">
         <div class="accordion-header flex justify-between items-center bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4 cursor-pointer">
