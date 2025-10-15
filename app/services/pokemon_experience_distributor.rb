@@ -32,6 +32,8 @@ class PokemonExperienceDistributor
     rank_difference = user_rank(winner_rate) - user_rank(loser_rate)
 
     case rank_difference <=> 0
+    when 1
+      update_higher_rank(winner, loser)
     when 0
       update_equal_rank(winner, loser)
     when -1
@@ -39,14 +41,19 @@ class PokemonExperienceDistributor
     end
   end
 
+  def update_higher_rank(winner, loser)
+    update_rate(winner, 1)
+    update_rate(loser, -1)
+  end
+
   def update_equal_rank(user1, user2)
     update_rate(user1, 2)
-    update_rate(user2, -1)
+    update_rate(user2, -2)
   end
 
   def update_lower_rank(winner, loser)
     update_rate(winner, 3)
-    update_rate(loser, -2)
+    update_rate(loser, -3)
   end
 
   def update_rate(user, rate)

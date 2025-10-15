@@ -79,8 +79,7 @@ const initializeTinymce = () => {
       'lists',
       'media',
       'quickbars',
-      'wordcount',
-      'textcolor'
+      'wordcount'
     ],
     menubar: false,
     toolbar: 'undo redo | bold italic underline strikethrough | forecolor | link tooltip | fontfamily fontsize align lineheight | removeformat | outdent indent | image media | hr | code | wordcount',
@@ -90,7 +89,7 @@ const initializeTinymce = () => {
     statusbar: false,
     newline_behavior: 'linebreak',
     link_title: false,
-    extended_valid_elements: 'span[class|data-note|data-note-id]',
+    extended_valid_elements: 'span[class|data-note|data-note-id|style]',
     valid_children: '+body[style],+span[data-note]',
     setup: function(editor) {
       // Add custom note button
