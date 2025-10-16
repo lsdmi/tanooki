@@ -2,7 +2,13 @@
   display: flex;
 }
 
+.pagy-nav .pagy form {
+  display: inline-block;
+  margin: 0;
+}
+
 .pagy-nav .pagy a,
+.pagy-nav .pagy button,
 .pagy-nav .pagy .current,
 .pagy-nav .pagy .prev.disabled,
 .pagy-nav .pagy .next.disabled {
@@ -17,20 +23,24 @@
   transition: background 0.2s, color 0.2s;
   text-align: center;
   min-width: 2rem;
+  cursor: pointer;
 }
 
-.pagy-nav .pagy a:hover {
+.pagy-nav .pagy a:hover,
+.pagy-nav .pagy button:hover {
   background-color: #f3f4f6;
   color: #374151;
 }
 
-.pagy-nav .pagy a:active {
+.pagy-nav .pagy a:active,
+.pagy-nav .pagy button:active {
   background-color: #e5e7eb;
   color: #111827;
 }
 
 .pagy-nav .pagy .prev.disabled,
-.pagy-nav .pagy .next.disabled {
+.pagy-nav .pagy .next.disabled,
+.pagy-nav .pagy button.disabled {
   color: #d1d5db;
   background-color: #fff;
   cursor: default;
@@ -40,7 +50,9 @@
 .pagy-nav .pagy .prev.disabled:hover,
 .pagy-nav .pagy .next.disabled:hover,
 .pagy-nav .pagy .prev.disabled:active,
-.pagy-nav .pagy .next.disabled:active {
+.pagy-nav .pagy .next.disabled:active,
+.pagy-nav .pagy button.disabled:hover,
+.pagy-nav .pagy button.disabled:active {
   color: #d1d5db;
   background-color: #fff;
 }
@@ -74,7 +86,13 @@
   display: flex;
 }
 
+.dark .pagy-nav .pagy form {
+  display: inline-block;
+  margin: 0;
+}
+
 .dark .pagy-nav .pagy a,
+.dark .pagy-nav .pagy button,
 .dark .pagy-nav .pagy .current,
 .dark .pagy-nav .pagy .prev.disabled,
 .dark .pagy-nav .pagy .next.disabled {
@@ -89,20 +107,24 @@
   transition: background 0.2s, color 0.2s;
   text-align: center;
   min-width: 2rem;
+  cursor: pointer;
 }
 
-.dark .pagy-nav .pagy a:hover {
+.dark .pagy-nav .pagy a:hover,
+.dark .pagy-nav .pagy button:hover {
   background-color: #374151; /* slightly lighter dark */
   color: #f3f4f6; /* off-white */
 }
 
-.dark .pagy-nav .pagy a:active {
+.dark .pagy-nav .pagy a:active,
+.dark .pagy-nav .pagy button:active {
   background-color: #4b5563; /* medium dark */
   color: #f9fafb; /* near white */
 }
 
 .dark .pagy-nav .pagy .prev.disabled,
-.dark .pagy-nav .pagy .next.disabled {
+.dark .pagy-nav .pagy .next.disabled,
+.dark .pagy-nav .pagy button.disabled {
   color: #6b7280; /* muted gray */
   background-color: #1f2937;
   cursor: default;
@@ -112,7 +134,9 @@
 .dark .pagy-nav .pagy .prev.disabled:hover,
 .dark .pagy-nav .pagy .next.disabled:hover,
 .dark .pagy-nav .pagy .prev.disabled:active,
-.dark .pagy-nav .pagy .next.disabled:active {
+.dark .pagy-nav .pagy .next.disabled:active,
+.dark .pagy-nav .pagy button.disabled:hover,
+.dark .pagy-nav .pagy button.disabled:active {
   color: #6b7280;
   background-color: #1f2937;
 }
@@ -142,7 +166,13 @@
   pointer-events: none;
 }
 
+.pagy-nav.watch .pagy form {
+  display: inline-block;
+  margin: 0;
+}
+
 .pagy-nav.watch .pagy a,
+.pagy-nav.watch .pagy button,
 .pagy-nav.watch .pagy .current,
 .pagy-nav.watch .pagy .prev.disabled,
 .pagy-nav.watch .pagy .next.disabled {
@@ -157,23 +187,27 @@
   transition: background 0.2s, color 0.2s, border 0.2s, transform 0.2s;
   text-align: center;
   min-width: 2rem;
+  cursor: pointer;
 }
 
-.pagy-nav.watch .pagy a:hover {
+.pagy-nav.watch .pagy a:hover,
+.pagy-nav.watch .pagy button:hover {
   background-color: #155e75;        /* cyan-800 */
   border-color: #164e63;            /* cyan-900 */
   color: #fff;
   transform: scale(1.05);
 }
 
-.pagy-nav.watch .pagy a:active {
+.pagy-nav.watch .pagy a:active,
+.pagy-nav.watch .pagy button:active {
   background-color: #164e63;        /* cyan-900 */
   border-color: #155e75;
   color: #fff;
 }
 
 .pagy-nav.watch .pagy .prev.disabled,
-.pagy-nav.watch .pagy .next.disabled {
+.pagy-nav.watch .pagy .next.disabled,
+.pagy-nav.watch .pagy button.disabled {
   color: #bae6fd;                   /* cyan-200 */
   background-color: #e0f2fe;        /* cyan-100 */
   cursor: default;
@@ -200,30 +234,40 @@
 }
 
 /* Dark mode overrides */
+.dark .pagy-nav.watch .pagy form {
+  display: inline-block;
+  margin: 0;
+}
+
 .dark .pagy-nav.watch .pagy a,
+.dark .pagy-nav.watch .pagy button,
 .dark .pagy-nav.watch .pagy .current,
 .dark .pagy-nav.watch .pagy .prev.disabled,
 .dark .pagy-nav.watch .pagy .next.disabled {
   background-color: #881337;        /* rose-900 */
   color: #fff;
   border: 1px solid #7f1d1d;        /* rose-900 */
+  cursor: pointer;
 }
 
-.dark .pagy-nav.watch .pagy a:hover {
+.dark .pagy-nav.watch .pagy a:hover,
+.dark .pagy-nav.watch .pagy button:hover {
   background-color: #be123c;        /* rose-700 */
   border-color: #be123c;
   color: #fff;
   transform: scale(1.05);
 }
 
-.dark .pagy-nav.watch .pagy a:active {
+.dark .pagy-nav.watch .pagy a:active,
+.dark .pagy-nav.watch .pagy button:active {
   background-color: #9f1239;        /* rose-800 */
   border-color: #9f1239;
   color: #fff;
 }
 
 .dark .pagy-nav.watch .pagy .prev.disabled,
-.dark .pagy-nav.watch .pagy .next.disabled {
+.dark .pagy-nav.watch .pagy .next.disabled,
+.dark .pagy-nav.watch .pagy button.disabled {
   color: #fecdd3;                   /* rose-200 */
   background-color: #f43f5e;        /* rose-500 */
   cursor: default;

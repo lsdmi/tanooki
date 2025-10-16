@@ -10,6 +10,13 @@ class YoutubeVideosController < ApplicationController
     @popular = popular
     @latest = latest
     @pagy, @other_youtube_videos = pagy(other, limit: 4)
+
+    return unless turbo_frame_request?
+
+    render partial: 'video_list', locals: {
+      other_youtube_videos: @other_youtube_videos,
+      pagy: @pagy
+    }
   end
 
   def show

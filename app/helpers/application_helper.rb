@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  include Pagy::Frontend
-
   PRODUCTION_URL = 'https://baka.in.ua'
 
   def punch(string)
@@ -36,9 +34,5 @@ module ApplicationHelper
 
   def requires_sweetalert?
     controller_name.in?(%w[studio readings])
-  end
-
-  def pagy_nav_with_turbo_frame(pagy, frame_id = 'tab-content')
-    pagy_nav(pagy).gsub('<a ', "<a data-turbo-frame=\"#{frame_id}\" data-turbo-stream=\"true\" ")
   end
 end

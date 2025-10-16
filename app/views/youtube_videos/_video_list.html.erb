@@ -1,0 +1,32 @@
+<%= turbo_frame_tag 'video-list' do %>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <% other_youtube_videos.each do |video| %>
+      <div class="overflow-hidden">
+        <%= link_to youtube_video_path(video), data: { turbo: false }, class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
+          <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative">
+            <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
+              <!-- Spinner SVG or content here -->
+            </div>
+            <%= image_tag url_for(video.thumbnail),
+              alt: video.title,
+              id: "image-#{video.id}",
+              width: 185,
+              height: 103,
+              class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
+              loading: "lazy",
+              data: { url: url_for(video.thumbnail) } %>
+          </div>
+        <% end %>
+        <div class="py-2">
+          <%= link_to video.title, youtube_video_path(video), data: { turbo: false }, class: 'drop-shadow lg:leading-tight text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-8 flex justify-center">
+    <div class="pagy-nav watch">
+      <%== pagy_nav_buttons(pagy, frame_id: 'video-list') %>
+    </div>
+  </div>
+<% end %>
+
