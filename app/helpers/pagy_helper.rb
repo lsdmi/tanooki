@@ -7,23 +7,23 @@ module PagyHelper
     pagy_nav(pagy).gsub('<a ', "<a data-turbo-frame=\"#{frame_id}\" data-turbo-stream=\"true\" ")
   end
 
-  def pagy_nav_buttons(pagy, pagy_id: 'pagy', frame_id: nil, aria_label: 'Сторінок')
+  def pagy_nav_buttons(pagy, pagy_id: 'pagy', frame_id: nil, aria_label: 'Сторінок', custom_params: {})
     html = "<nav id=\"#{pagy_id}\" class=\"pagy nav\" aria-label=\"#{aria_label}\">"
 
-    html << pagy_prev_button(pagy, frame_id)
+    html << pagy_prev_button(pagy, frame_id, custom_params)
     pagy.series.each do |item|
       html << case item
-              when Integer then pagy_page_button(item, pagy, frame_id)
+              when Integer then pagy_page_button(item, pagy, frame_id, custom_params)
               when String  then if item.to_i.to_s == item
                                   pagy_page_button(item.to_i, pagy,
-                                                   frame_id)
+                                                   frame_id, custom_params)
                                 else
                                   pagy_gap_span(item)
                                 end
               when :gap    then pagy_gap_span
               end
     end
-    html << pagy_next_button(pagy, frame_id)
+    html << pagy_next_button(pagy, frame_id, custom_params)
 
     html << '</nav>'
     html
@@ -31,14 +31,14 @@ module PagyHelper
 
   private
 
-  def pagy_prev_button(pagy, frame_id)
+  def pagy_prev_button(pagy, frame_id, custom_params = {})
     if pagy.prev
       form_options = frame_id ? { data: { turbo_frame: frame_id } } : {}
       button_to(
         '&lt;'.html_safe,
         request.path,
         method: :get,
-        params: { page: pagy.prev },
+        params: custom_params.merge(page: pagy.prev),
         class: 'pagy-prev',
         'aria-label': 'Назад',
         form: form_options
@@ -48,14 +48,14 @@ module PagyHelper
     end
   end
 
-  def pagy_next_button(pagy, frame_id)
+  def pagy_next_button(pagy, frame_id, custom_params = {})
     if pagy.next
       form_options = frame_id ? { data: { turbo_frame: frame_id } } : {}
       button_to(
         '&gt;'.html_safe,
         request.path,
         method: :get,
-        params: { page: pagy.next },
+        params: custom_params.merge(page: pagy.next),
         class: 'pagy-next',
         'aria-label': 'Далі',
         form: form_options
@@ -65,7 +65,7 @@ module PagyHelper
     end
   end
 
-  def pagy_page_button(page, pagy, frame_id)
+  def pagy_page_button(page, pagy, frame_id, custom_params = {})
     if page == pagy.page
       %(<button role="link" aria-disabled="true" aria-current="page" class="current">#{page}</button>)
     else
@@ -74,7 +74,7 @@ module PagyHelper
         page.to_s,
         request.path,
         method: :get,
-        params: { page: page },
+        params: custom_params.merge(page: page),
         form: form_options
       )
     end

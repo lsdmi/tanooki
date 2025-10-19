@@ -26,6 +26,18 @@ class SearchController < ApplicationController
       @pagy_videos, @videos = pagy_searchkick(videos, limit: 3)
     end
 
+    # Handle turbo frame requests for pagination
+    if turbo_frame_request_id.present?
+      case turbo_frame_request_id
+      when 'fictions-section'
+        return render partial: 'search/fictions_section', locals: { fictions: @fictions, pagy_fictions: @pagy_fictions }
+      when 'results-section'
+        return render partial: 'search/results_section', locals: { results: @results, pagy_results: @pagy_results }
+      when 'videos-section'
+        return render partial: 'search/videos_section', locals: { videos: @videos, pagy_videos: @pagy_videos }
+      end
+    end
+
     respond_to do |format|
       format.html { render 'index' }
       format.turbo_stream do
