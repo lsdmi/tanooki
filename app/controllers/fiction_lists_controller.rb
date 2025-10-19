@@ -7,6 +7,10 @@ class FictionListsController < ApplicationController
   def alphabetical
     @pagy, @fictions = paginated_fictions
 
+    if turbo_frame_request_id == 'fiction-list-page'
+      return render partial: 'fiction_lists/dynamic_content', locals: { fictions: @fictions, pagy: @pagy }
+    end
+
     respond_to do |format|
       format.html
       format.turbo_stream { render_fictions_list }
