@@ -20,10 +20,12 @@ class FictionListsController < ApplicationController
   private
 
   def paginated_fictions
+    base_scope = params[:adult_content].present? ? Fiction.all : Fiction.safe_content
+
     pagy(
       FictionListQueryBuilder.new(
-        Fiction.all,
-        params.permit(:genre, :only_new, :longreads, :finished)
+        base_scope,
+        params.permit(:genre, :only_new, :longreads, :finished, :adult_content)
       ).call,
       limit: 20
     )
