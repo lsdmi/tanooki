@@ -24,7 +24,7 @@
           <% if pagy.pages > 1 %>
             <div class="pagy-nav pt-4 sm:pt-6">
               <div class="flex justify-center">
-                <%== pagy_nav_buttons(pagy, frame_id: 'fiction-list-page') %>
+                <%== pagy_nav_buttons(pagy, frame_id: 'fiction-list-page', custom_params: params.permit(:genre, :only_new, :longreads, :finished, :adult_content)) %>
               </div>
             </div>
           <% end %>
