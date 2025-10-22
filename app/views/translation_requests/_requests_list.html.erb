@@ -1,19 +1,19 @@
-<div class="flex items-center justify-between mb-4">
+<div class="flex items-center justify-between mb-6">
   <div class="flex items-center">
     <div class="h-6 w-6 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-2">
       <svg class="h-3 w-3 text-cyan-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
       </svg>
     </div>
-    <h3 class="text-lg font-extrabold text-gray-700 dark:text-gray-200">Активні Запити</h3>
+    <h3 class="text-lg font-extrabold text-gray-700 dark:text-gray-200">Всі Запити</h3>
   </div>
-  <span class="text-xs font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full"><%= total_requests_count %></span>
+  <span class="text-sm font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full"><%= total_requests_count %></span>
 </div>
 
 <div class="space-y-3">
   <% if translation_requests.any? %>
     <% translation_requests.each do |request| %>
-      <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-2.5 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300" id="request-card-<%= request.id %>">
+      <div class="bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-6 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300" id="request-card-<%= request.id %>">
         <!-- View Mode -->
         <div id="view-mode-<%= request.id %>">
           <div class="mb-2">
@@ -219,13 +219,13 @@
       </div>
     <% end %>
   <% else %>
-    <div class="text-center py-8">
-      <div class="h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-4">
-        <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="text-center py-12">
+      <div class="h-16 w-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-6">
+        <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
         </svg>
       </div>
-      <p class="text-gray-500 dark:text-gray-400 text-sm">
+      <p class="text-gray-500 dark:text-gray-400 text-lg">
         Поки що немає активних запитів на переклад.<br>
         Станьте першим, хто додасть запит!
       </p>

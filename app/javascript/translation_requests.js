@@ -476,6 +476,10 @@ function deleteRequest(requestId) {
     requestCard.style.pointerEvents = 'none';
   }
   
+  // Check if this is the newest request by looking for it in the newest request section
+  const newestRequestSection = document.getElementById('newest-request-section');
+  const isNewestRequest = newestRequestSection && newestRequestSection.querySelector(`#request-card-${requestId}`);
+  
   fetch(`/translate/${requestId}`, {
     method: 'DELETE',
     headers: {
@@ -490,8 +494,13 @@ function deleteRequest(requestId) {
       // Show success message
       showSuccessMessage(data.message);
       
-      // Reload the entire list to show updated pagination and counts
-      reloadCurrentPage();
+      if (isNewestRequest) {
+        // If this was the newest request, reload the entire page to update both sections
+        window.location.reload();
+      } else {
+        // If this was not the newest request, just reload the requests list
+        reloadCurrentPage();
+      }
     } else {
       // Re-enable the card on error
       if (requestCard) {

@@ -1,0 +1,205 @@
+<div class="" id="request-card-<%= request.id %>">
+  <!-- View Mode -->
+  <div id="view-mode-<%= request.id %>">
+    <div class="mb-3">
+      <div class="flex items-start justify-between">
+        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 leading-tight flex-1"><%= request.title %></h4>
+        <% if user_signed_in? && current_user == request.user %>
+          <div class="flex items-center gap-2 ml-3 flex-shrink-0">
+            <button onclick="toggleEditMode(<%= request.id %>)"
+                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200"
+                    title="Редагувати">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+            </button>
+            <button onclick="deleteRequest(<%= request.id %>)"
+                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
+                    title="Видалити">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="space-y-1 mb-2">
+        <% if request.author.present? %>
+          <div class="text-sm">
+            <span class="text-gray-500 dark:text-gray-500">Автор:</span>
+            <span class="font-medium text-gray-700 dark:text-gray-300"><%= request.author %></span>
+          </div>
+        <% end %>
+        <% if request.source_url.present? %>
+          <div class="text-sm">
+            <span class="text-gray-500 dark:text-gray-500">Джерело:</span>
+            <%= link_to "Переглянути", request.source_url,
+                class: "text-cyan-600 dark:text-rose-400 hover:underline font-medium",
+                target: "_blank", rel: "noopener" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 whitespace-pre-line"><%= request.notes %></p>
+
+    <!-- Voting Section -->
+    <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-600">
+      <div class="flex items-center gap-3">
+        <% if user_signed_in? %>
+          <button
+            onclick="voteOnRequest(<%= request.id %>)"
+            class="vote-btn upvote-btn-<%= request.id %> flex items-center gap-2 px-3 py-1.5 rounded text-sm transition-colors duration-200
+              <%= request.user_voted?(current_user) ? 'bg-cyan-100 text-cyan-700 dark:bg-rose-900/30 dark:text-rose-400' : 'text-gray-500 hover:bg-cyan-50 hover:text-cyan-600 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400' %>">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <span class="upvote-count-<%= request.id %>"><%= request.votes_count %></span>
+          </button>
+          <div class="text-sm font-medium text-gray-600 dark:text-gray-400 votes-text-<%= request.id %>">
+            <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів
+          </div>
+        <% else %>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span><%= request.votes_count %></span>
+            </div>
+            <div class="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <span class="votes-count-<%= request.id %>"><%= request.votes_count %></span> голосів
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Assignment Status and Actions -->
+    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+      <div id="assignment-status-<%= request.id %>">
+        <% if request.assigned? %>
+          <!-- Already assigned -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <div class="h-4 w-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                <svg class="h-2 w-2 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <span class="text-sm font-medium text-green-700 dark:text-green-400 truncate"><%= request.scanlator.title %></span>
+            </div>
+            <% if user_signed_in? && current_user.scanlators.include?(request.scanlator) %>
+              <button onclick="unassignRequest(<%= request.id %>)"
+                      class="text-sm bg-red-500 hover:bg-red-600 text-white font-medium px-3 py-1 rounded text-center flex-shrink-0 transition-colors duration-200">
+                ×
+              </button>
+            <% end %>
+          </div>
+        <% elsif user_signed_in? && current_user.scanlators.any? %>
+          <!-- Available for assignment and user is a scanlator member -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <div class="h-4 w-4 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+                <svg class="h-2 w-2 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <span class="text-sm text-orange-700 dark:text-orange-400">Вільний</span>
+            </div>
+            <div class="relative flex-shrink-0">
+              <button onclick="toggleAssignmentDropdown(<%= request.id %>)"
+                      class="assign-btn text-sm bg-cyan-500 hover:bg-cyan-600 dark:bg-rose-500 dark:hover:bg-rose-600 text-white font-medium px-3 py-1 rounded transition-colors duration-200 flex items-center gap-1">
+                +
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <div id="assignment-dropdown-<%= request.id %>" class="hidden absolute right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded shadow-lg z-10 border border-gray-200 dark:border-gray-600">
+                <div class="py-1">
+                  <% current_user.scanlators.each do |scanlator| %>
+                    <button onclick="assignRequest(<%= request.id %>, <%= scanlator.id %>)"
+                            class="block w-full text-left px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-cyan-50 dark:hover:bg-rose-900/20 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200 truncate">
+                      <%= scanlator.title %>
+                    </button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <!-- Available but user is not a scanlator member -->
+          <div class="flex items-center gap-2">
+            <div class="h-4 w-4 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center flex-shrink-0">
+              <svg class="h-2 w-2 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <span class="text-sm text-orange-700 dark:text-orange-400">Вільний</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="flex justify-between items-center text-sm pt-2 border-t border-gray-200 dark:border-gray-600 mt-3">
+      <span class="text-gray-500 dark:text-gray-500 truncate mr-2">
+        <%= link_to request.user.name, profile_path(request.user.sqid),
+            class: "font-medium text-cyan-600 dark:text-rose-400 hover:underline" %>
+      </span>
+      <span class="text-gray-500 dark:text-gray-500 flex-shrink-0">
+        <%= time_ago_in_words(request.created_at) %> тому
+      </span>
+    </div>
+  </div>
+
+  <!-- Edit Mode -->
+  <% if user_signed_in? && current_user == request.user %>
+    <div id="edit-mode-<%= request.id %>" class="hidden">
+      <form id="edit-form-<%= request.id %>" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Назва проекту</label>
+          <input type="text"
+                 id="edit-title-<%= request.id %>"
+                 value="<%= request.title %>"
+                 class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Автор оригіналу</label>
+          <input type="text"
+                 id="edit-author-<%= request.id %>"
+                 value="<%= request.author %>"
+                 class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Посилання на оригінал</label>
+          <input type="url"
+                 id="edit-source-url-<%= request.id %>"
+                 value="<%= request.source_url %>"
+                 class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Опис проекту та деталі</label>
+          <textarea id="edit-notes-<%= request.id %>"
+                    rows="4"
+                    class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 whitespace-pre-line"><%= request.notes %></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button"
+                  onclick="cancelEdit(<%= request.id %>)"
+                  class="text-sm bg-gray-500 hover:bg-gray-600 text-white font-medium px-4 py-2 rounded transition-colors duration-200">
+            Скасувати
+          </button>
+          <button type="button"
+                  onclick="saveEdit(<%= request.id %>)"
+                  class="text-sm bg-cyan-500 hover:bg-cyan-600 dark:bg-rose-500 dark:hover:bg-rose-600 text-white font-medium px-4 py-2 rounded transition-colors duration-200">
+            Зберегти
+          </button>
+        </div>
+      </form>
+    </div>
+  <% end %>
+</div>

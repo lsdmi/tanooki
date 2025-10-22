@@ -118,11 +118,22 @@ class TranslationRequestsController < ApplicationController
   end
 
   def load_index_data
-    @pagy, @translation_requests = pagy(
-      TranslationRequest.includes(:user, :scanlator).by_votes,
-      limit: 3
-    )
+    # Get the newest request (most recent)
+    @newest_request = TranslationRequest.includes(:user, :scanlator).order(created_at: :desc).first
+
+    # Get all other requests (excluding the newest one) with pagination
+    other_requests = TranslationRequest.includes(:user, :scanlator).by_votes
+    other_requests = other_requests.where.not(id: @newest_request.id) if @newest_request
+
+    @pagy, @translation_requests = pagy(other_requests, limit: 5)
     @total_requests_count = TranslationRequest.count
+
+    # Load a second advertisement for the new layout (different from first ad)
+    available_ads = Advertisement.includes(%i[cover_attachment poster_attachment]).enabled
+    @second_advertisement = available_ads.where.not(id: @advertisement.id).sample
+
+    # Load showcase fiction from FictionIndexVariablesManager
+    @showcase_fiction = FictionIndexVariablesManager.showcase.sample
   end
 
   def translation_request_params

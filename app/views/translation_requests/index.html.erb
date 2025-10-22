@@ -16,44 +16,101 @@
   </div>
 
   <div class="w-full max-w-7xl relative z-10">
-    <!-- Two Column Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-      <!-- Left Column: Active Requests -->
-      <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2"/>
-            <path d="M50 10v80M10 50h80" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
+    <!-- 2x2 Grid Layout on Large Screens -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+      <!-- First Column: Newest Request + Ad (1/3 width) -->
+      <div class="lg:col-span-1 space-y-6">
+        <!-- Newest Request -->
+        <% if @newest_request %>
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="h-6 w-6 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center mr-2">
+                <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-gray-700 dark:text-gray-200">Найновіший Запит</h3>
+            </div>
 
-        <!-- Background pattern -->
-        <div class="absolute inset-0 z-0 opacity-5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <pattern id="left-requests-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M0 0h40v40H0z" fill="none"/>
-              <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
-              <circle cx="20" cy="20" r="1" fill="currentColor"/>
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#left-requests-pattern)"/>
-          </svg>
-        </div>
+            <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden" id="newest-request-section">
+              <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <path d="M50 10v80M10 50h80" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
 
-        <div class="relative z-10">
-          <div id="requests-container">
-            <%= render 'translation_requests/requests_list',
-                translation_requests: @translation_requests,
-                pagy: @pagy,
-                total_requests_count: @total_requests_count %>
+              <!-- Background pattern -->
+              <div class="absolute inset-0 z-0 opacity-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                  <pattern id="newest-request-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M0 0h40v40H0z" fill="none"/>
+                    <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+                    <circle cx="20" cy="20" r="1" fill="currentColor"/>
+                  </pattern>
+                  <rect width="100%" height="100%" fill="url(#newest-request-pattern)"/>
+                </svg>
+              </div>
+
+              <div class="relative z-10">
+                <%= render 'translation_requests/single_request', request: @newest_request, is_newest: true %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        <% end %>
 
-      <!-- Right Column: Ad + Form Section -->
-      <div class="lg:col-span-2 space-y-8">
-        <!-- Ad Banner -->
+        <!-- Ad under newest request -->
         <div class="border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
           <%= render 'shared/ads', advertisement: @advertisement %>
+        </div>
+
+        <!-- Fiction Showcase Banner -->
+        <% if @showcase_fiction %>
+          <div class="relative overflow-hidden rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
+            <div class="relative h-48">
+              <%= image_tag @showcase_fiction.banner, 
+                  alt: @showcase_fiction.title,
+                  class: "absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover rounded-xl" %>
+              <!-- Overlay for better contrast -->
+              <div class="absolute inset-0 bg-black/80 transition-opacity duration-700 ease-in-out"></div>
+              <div class="absolute top-1/2 z-10 w-full max-w-[95%] mx-auto -translate-y-1/2 px-4 transition-all duration-700 ease-in-out">
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <% if @showcase_fiction.adult_content? %>
+                    <span class="transition-transform duration-300 hover:scale-105 inline-block rounded-lg bg-red-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-md ring-1 ring-red-700 dark:bg-red-700 dark:text-gray-100 dark:ring-red-800">
+                      18+
+                    </span>
+                  <% end %>
+                  <span class="transition-transform duration-300 hover:scale-105 inline-block rounded-lg bg-cyan-700 px-2.5 py-0.5 text-xs font-bold text-white shadow-md ring-1 ring-cyan-800 dark:bg-rose-700 dark:text-gray-100 dark:ring-rose-800">
+                    Рекомендовано
+                  </span>
+                </div>
+                <%= link_to fiction_path(@showcase_fiction), class: "block" do %>
+                  <h2 class="mb-2 text-xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg line-clamp-2 dark:text-white">
+                    <%= @showcase_fiction.title %>
+                  </h2>
+                  <p class="text-sm mb-3 font-semibold text-gray-100 drop-shadow-md tracking-tight line-clamp-2 dark:text-gray-200">
+                    <%= @showcase_fiction.short_description %>
+                  </p>
+                <% end %>
+                <div class="flex items-center">
+                  <%= link_to fiction_path(@showcase_fiction), class: 'gap-1 inline-flex rounded-lg bg-cyan-700 px-3 py-2 text-sm font-bold text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-300 shadow-md ring-1 ring-cyan-800 transition duration-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:ring-rose-800 shadow-md hover:shadow-xl transition-shadow duration-300' do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                    </svg>
+                    Читати
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Second Column: Ad + Form (2/3 width) -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Ad Banner -->
+        <div class="border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
+          <%= render 'shared/ads', advertisement: @second_advertisement %>
         </div>
 
         <!-- Request Form Section -->
@@ -112,7 +169,7 @@
                 </div>
               <% end %>
               <%= form_with model: @translation_request, url: translation_requests_path, method: :post, local: true, class: "space-y-6" do |f| %>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4">
                   <div>
                     <%= f.label :title, 'Назва проекту', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
                     <%= f.text_field :title, placeholder: 'Наприклад: Solo Leveling - розділи 100-150',
@@ -131,7 +188,7 @@
                 </div>
                 <div>
                   <%= f.label :notes, 'Опис проекту та деталі', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
-                  <%= f.text_area :notes, rows: 5, placeholder: 'Детально опишіть ваш проект, вимоги до перекладача, особливості роботи, бюджет, терміни, мову оригіналу тощо...',
+                  <%= f.text_area :notes, rows: 4, placeholder: 'Детально опишіть ваш проект, вимоги до перекладача, особливості роботи, бюджет, терміни, мову оригіналу тощо...',
                       class: "whitespace-pre-line w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                 </div>
                 <div class="flex justify-end">
@@ -242,6 +299,37 @@
             </div>
           </div>
         <% end %>
+      </div>
+    </div>
+
+    <!-- Second Row: Full Width Requests List -->
+    <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M50 10v80M10 50h80" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- Background pattern -->
+      <div class="absolute inset-0 z-0 opacity-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <pattern id="requests-list-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M0 0h40v40H0z" fill="none"/>
+            <path d="M0 20h40M20 0v40" stroke="currentColor" stroke-width="0.5"/>
+            <circle cx="20" cy="20" r="1" fill="currentColor"/>
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#requests-list-pattern)"/>
+        </svg>
+      </div>
+
+      <div class="relative z-10">
+        <div id="requests-container">
+          <%= render 'translation_requests/requests_list',
+              translation_requests: @translation_requests,
+              pagy: @pagy,
+              total_requests_count: @total_requests_count %>
+        </div>
       </div>
     </div>
   </div>
