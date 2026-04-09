@@ -26,11 +26,15 @@ class Chapter < ApplicationRecord
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
+  validate :publish_at_must_be_in_future, if: :publish_at_changed?
 
   scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
   scope :ordered_by_volume_and_number, lambda {
     order(Arel.sql('COALESCE(volume_number, 0), number, chapters.created_at'))
   }
+  scope :published, -> { where(publish_at: nil).or(where(publish_at: ..Time.current)) }
+  scope :scheduled, -> { where(publish_at: Time.current..) }
+  scope :scheduled_ready, -> { where.not(publish_at: nil).where(publish_at: ..Time.current) }
 
   def author
     fiction.author
@@ -79,9 +83,23 @@ class Chapter < ApplicationRecord
     ]
   end
 
+  def scheduled?
+    publish_at.present? && publish_at > Time.current
+  end
+
+  def published?
+    publish_at.nil? || publish_at <= Time.current
+  end
+
   private
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)
+  end
+
+  def publish_at_must_be_in_future
+    return if publish_at.blank?
+
+    errors.add(:publish_at, 'має бути у майбутньому') if publish_at <= Time.current
   end
 end

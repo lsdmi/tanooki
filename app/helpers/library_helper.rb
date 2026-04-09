@@ -17,15 +17,15 @@ module LibraryHelper
   end
 
   def ordered_chapters(fiction)
-    fiction.chapters.order(order_clause)
+    fiction.chapters.published.order(order_clause)
   end
 
   def ordered_chapters_desc(fiction)
-    fiction.chapters.order(order_clause_desc)
+    fiction.chapters.published.order(order_clause_desc)
   end
 
   def ordered_user_chapters_desc(fiction, user)
-    chapters = ordered_chapters_desc(fiction)
+    chapters = fiction.chapters.order(order_clause_desc)
     return chapters if user.admin?
 
     chapters.joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct

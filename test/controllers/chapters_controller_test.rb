@@ -86,4 +86,32 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     patch chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
     assert_response :unprocessable_content
   end
+
+  test 'should create chapter with publish_at' do
+    publish_time = 3.days.from_now
+    assert_difference('Chapter.count') do
+      post chapters_url, params: {
+        chapter: {
+          content: @chapter.content,
+          fiction_id: @chapter.fiction_id,
+          number: 99,
+          scanlator_ids: [1],
+          title: 'Scheduled chapter',
+          user_id: @chapter.user_id,
+          publish_at: publish_time.strftime('%Y-%m-%dT%H:%M')
+        }
+      }
+    end
+
+    created_chapter = Chapter.last
+    assert created_chapter.scheduled?
+    assert_not_nil created_chapter.publish_at
+  end
+
+  test 'should redirect reader from scheduled chapter' do
+    sign_in users(:user_two)
+    scheduled_chapter = chapters(:scheduled)
+    get chapter_url(scheduled_chapter)
+    assert_redirected_to fiction_path(scheduled_chapter.fiction)
+  end
 end

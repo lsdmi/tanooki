@@ -52,6 +52,6 @@ class ReadingProgressesController < ApplicationController
   end
 
   def ordered_chapters(fiction)
-    fiction.chapters.order(:number)
+    fiction.chapters.published.order(:number)
   end
 end

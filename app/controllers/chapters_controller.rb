@@ -6,6 +6,7 @@ class ChaptersController < ApplicationController
 
   before_action :authenticate_user!, except: %i[show comments]
   before_action :set_chapter, only: %i[show edit update comments]
+  before_action :reject_scheduled_chapter, only: :show
   before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show comments]
   before_action :pokemon_appearance, only: [:show]
@@ -65,8 +66,18 @@ class ChaptersController < ApplicationController
 
   def chapter_params
     params.require(:chapter).permit(
-      :content, :fiction_id, :number, :title, :user_id, :volume_number, scanlator_ids: []
+      :content, :fiction_id, :number, :title, :user_id, :volume_number, :publish_at, scanlator_ids: []
     )
+  end
+
+  def can_manage_chapter?(chapter)
+    current_user&.admin? || current_user&.chapters&.include?(chapter)
+  end
+
+  def reject_scheduled_chapter
+    return unless @chapter.scheduled? && !can_manage_chapter?(@chapter)
+
+    redirect_to fiction_path(@chapter.fiction), alert: 'Цей розділ ще не опубліковано.'
   end
 
   def track_reading_progress

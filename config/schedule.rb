@@ -45,4 +45,8 @@ when 'production'
     runner 'Fiction.all.each { |fiction| fiction.set_dropped_status unless fiction.finished? }'
     runner 'Youtube::TelegramJob.perform_now'
   end
+
+  every 5.minutes do
+    runner 'PublishScheduledChaptersJob.perform_now'
+  end
 end

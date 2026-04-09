@@ -22,3 +22,12 @@ three:
   fiction_id: 2
   user_id: 1
   views: 10
+
+scheduled:
+  id: 4
+  slug: 'scheduled'
+  title: "Scheduled Chapter"
+  number: 3
+  fiction_id: 1
+  user_id: 1
+  publish_at: <%= 3.days.from_now.to_fs(:db) %>

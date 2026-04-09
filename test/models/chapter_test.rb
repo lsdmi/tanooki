@@ -100,4 +100,49 @@ class ChapterTest < ActiveSupport::TestCase
       chapter.destroy
     end
   end
+
+  test 'chapter without publish_at is published' do
+    assert @chapter.published?
+    refute @chapter.scheduled?
+  end
+
+  test 'chapter with future publish_at is scheduled' do
+    @chapter.publish_at = 3.days.from_now
+    assert @chapter.scheduled?
+    refute @chapter.published?
+  end
+
+  test 'chapter with past publish_at is published' do
+    @chapter.publish_at = 1.day.ago
+    refute @chapter.scheduled?
+    assert @chapter.published?
+  end
+
+  test 'published scope excludes scheduled chapters' do
+    published = Chapter.published
+    scheduled = chapters(:scheduled)
+    refute published.include?(scheduled)
+  end
+
+  test 'scheduled scope includes only scheduled chapters' do
+    scheduled_chapters = Chapter.scheduled
+    assert scheduled_chapters.include?(chapters(:scheduled))
+    refute scheduled_chapters.include?(chapters(:one))
+  end
+
+  test 'invalid with publish_at in the past' do
+    @chapter.publish_at = 1.day.ago
+    refute @chapter.valid?
+    assert_not_nil @chapter.errors[:publish_at]
+  end
+
+  test 'valid with publish_at in the future' do
+    @chapter.publish_at = 3.days.from_now
+    assert @chapter.valid?
+  end
+
+  test 'valid without publish_at' do
+    @chapter.publish_at = nil
+    assert @chapter.valid?
+  end
 end

@@ -28,7 +28,8 @@ class FictionUpdatesPresenter
   end
 
   def recent_chapters
-    Chapter.includes(fiction: %i[scanlators genres])
+    Chapter.published
+           .includes(fiction: %i[scanlators genres])
            .where(fictions: { id: @fictions.pluck(:id) })
            .where(created_at: last_days_range)
            .order(:created_at)

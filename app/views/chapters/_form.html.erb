@@ -76,6 +76,37 @@
           <p class="text-xs text-gray-500 dark:text-gray-400">Оберіть команду, яка працювала над цим розділом</p>
         </div>
       </div>
+
+      <!-- Scheduled Publication -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Запланувати публікацію</h3>
+        </div>
+        <div class="space-y-4">
+          <%= f.label :publish_at, 'Дата та час публікації', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+          <%= f.input :publish_at, as: :string, input_html: {
+            type: 'datetime-local',
+            class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{chapter.errors[:publish_at].any? ? 'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' : ''}",
+            value: chapter.publish_at&.strftime('%Y-%m-%dT%H:%M')
+          }, label: false, placeholder: '' %>
+          <%= tag.p chapter.errors[:publish_at].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+            <%= chapter.errors[:publish_at].first %>
+          <% end if chapter.errors[:publish_at].any? %>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Залиште порожнім для негайної публікації. Вкажіть дату та час, щоб розділ з'явився автоматично у визначений момент.</p>
+          <% if chapter.scheduled? %>
+            <div class="flex items-center p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
+              <svg class="h-5 w-5 text-amber-500 dark:text-amber-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+              <span class="text-sm text-amber-700 dark:text-amber-300">Цей розділ заплановано на <strong><%= l(chapter.publish_at, format: :short) %></strong></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 
