@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_02_225152) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_15_143707) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -105,10 +105,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_02_225152) do
     t.decimal "volume_number", precision: 9, scale: 1
     t.integer "comments_count", default: 0
     t.integer "views", default: 0
+    t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
+    t.index ["published_at"], name: "index_chapters_on_published_at"
     t.index ["slug"], name: "index_chapters_on_slug", unique: true
     t.index ["user_id"], name: "index_chapters_on_user_id"
   end
