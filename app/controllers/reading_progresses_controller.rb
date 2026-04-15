@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ReadingProgressesController < ApplicationController
+  include LibraryHelper
+
   before_action :authenticate_user!
   before_action :set_fiction
 
@@ -22,7 +24,7 @@ class ReadingProgressesController < ApplicationController
   end
 
   def create_new_reading_progress
-    first_chapter = ordered_chapters(@fiction).first
+    first_chapter = ordered_chapters(@fiction, viewer: current_user).first
     return unless first_chapter
 
     ReadingProgress.create!(
@@ -49,9 +51,5 @@ class ReadingProgressesController < ApplicationController
 
   def set_fiction
     @fiction = Fiction.find(params[:fiction_id])
-  end
-
-  def ordered_chapters(fiction)
-    fiction.chapters.order(:number)
   end
 end

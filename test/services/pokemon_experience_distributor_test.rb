@@ -16,7 +16,8 @@ class PokemonExperienceDistributorTest < ActiveSupport::TestCase
   test 'winner and loser battle rates are updated correctly' do
     @service.refresh
 
+    # Same rank (fixtures default battle_win_rate 50) → update_equal_rank: +2 / -2
     assert_equal @attacker.battle_win_rate + 2, User.find(@attacker.id).battle_win_rate
-    assert_equal @defender.battle_win_rate - 1, User.find(@defender.id).battle_win_rate
+    assert_equal @defender.battle_win_rate - 2, User.find(@defender.id).battle_win_rate
   end
 end

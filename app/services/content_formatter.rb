@@ -30,12 +30,35 @@ class ContentFormatter
       @css ||= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'epub_content.css'))
     end
 
+    # EPUB chapter XHTML must use proper empty elements: <hr />, <br />, <img ... /> — not <hr></hr> or <img></img>.
     def format_content(content)
-      content.gsub(%r{</br>}i, '')
-             .gsub(/<br\s*>/i, '<br></br>')
-             .gsub(/<hr\s*>/i, '<hr></hr>')
-             .gsub(/<img(.*?)>/, '<img\1></img>')
-             .gsub(/&nbsp;/i, '&#160;')
+      html = content.to_s
+      html = html.gsub(%r{</hr>}i, '').gsub(%r{</br>}i, '')
+      html = html.gsub(/&nbsp;/i, '&#160;')
+      html = normalize_void_tag(html, 'hr')
+      html = normalize_void_tag(html, 'br')
+      normalize_img_tag(html)
+    end
+
+    def normalize_void_tag(html, tag)
+      html.gsub(/<#{tag}\b([^>]*)>/i) do
+        raw = Regexp.last_match(1)
+        inner = raw.strip.sub(%r{/\s*\z}, '').strip
+        inner.empty? ? "<#{tag} />" : "<#{tag} #{inner} />"
+      end
+    end
+
+    def normalize_img_tag(html)
+      html.gsub(/<img\b([^>]*?)>/i) do
+        attrs = Regexp.last_match(1).strip
+        if attrs.empty?
+          '<img />'
+        elsif attrs.match?(%r{/\s*\z})
+          "<img #{attrs}>"
+        else
+          "<img #{attrs} />"
+        end
+      end
     end
   end
 end

@@ -27,7 +27,19 @@ class Chapter < ApplicationRecord
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
 
+  # When set, this is the moment the chapter becomes visible to everyone (nil = visible as soon as saved).
+  validate :published_at_not_in_the_past
+
   scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
+  # Visible to the general public now: no schedule, or published_at has passed.
+  scope :released, lambda {
+    t = arel_table
+    where(t[:published_at].eq(nil).or(t[:published_at].lteq(Time.current)))
+  }
+  # published_at is still in the future — not visible to everyone yet (teams may still see theirs in UI).
+  scope :scheduled, lambda {
+    where(arel_table[:published_at].gt(Time.current))
+  }
   scope :ordered_by_volume_and_number, lambda {
     order(Arel.sql('COALESCE(volume_number, 0), number, chapters.created_at'))
   }
@@ -73,6 +85,11 @@ class Chapter < ApplicationRecord
     end
   end
 
+  # Not yet visible to the general public (published_at is still in the future).
+  def scheduled?
+    published_at.present? && published_at > Time.current
+  end
+
   def slug_candidates
     [
       "#{fiction&.title&.downcase}-rozdil-#{number}"
@@ -80,6 +97,14 @@ class Chapter < ApplicationRecord
   end
 
   private
+
+  def published_at_not_in_the_past
+    return if published_at.blank?
+    return if published_at >= Time.current
+    return if persisted? && !published_at_changed?
+
+    errors.add(:published_at, 'не може бути в минулому')
+  end
 
   def cleanup_scanlator_ids
     self.scanlator_ids = scanlator_ids&.reject(&:blank?)

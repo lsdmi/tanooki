@@ -84,25 +84,26 @@ class FictionShowPresenter
   end
 
   def handle_missing_chapter(progress)
-    # If no chapters exist at all, remove the reading progress
-    if @fiction.chapters.empty?
-      progress.destroy
-      nil
-    else
-      # If chapters exist but the current one is missing, update to last chapter
-      last_chapter = ordered_chapters_desc(@fiction).first
-      if last_chapter
-        progress.update(chapter: last_chapter)
-        progress.reload
-      else
-        progress.destroy
-        nil
-      end
-    end
+    return clear_reading_progress(progress) if chapters_scope_for_list(@fiction, @current_user).empty?
+
+    advance_reading_progress_to_last_available(progress)
+  end
+
+  def clear_reading_progress(progress)
+    progress.destroy
+    nil
+  end
+
+  def advance_reading_progress_to_last_available(progress)
+    last = ordered_chapters_desc(@fiction, viewer: @current_user).first
+    return clear_reading_progress(progress) unless last
+
+    progress.update(chapter: last)
+    progress.reload
   end
 
   def last_chapter
-    @last_chapter ||= ordered_chapters_desc(@fiction).first
+    @last_chapter ||= ordered_chapters_desc(@fiction, viewer: @current_user).first
   end
 
   def set_translator
@@ -119,6 +120,6 @@ class FictionShowPresenter
   end
 
   def chapter_manager
-    @chapter_manager ||= FictionChapterListManager.new(@fiction, reading_progress, @translator)
+    @chapter_manager ||= FictionChapterListManager.new(@fiction, reading_progress, @translator, @current_user)
   end
 end

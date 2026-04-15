@@ -6,7 +6,7 @@
   <% end %>
 
   <div id="chapters-list" class="space-y-6">
-    <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction) : ordered_chapters(fiction) %>
+    <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: current_user) : ordered_chapters(fiction, viewer: current_user) %>
 
     <% filtered_chapters = if duplicate_chapters(fiction).any?
                             chapters.joins(:scanlators)
@@ -20,7 +20,7 @@
 
     <%= render 'chapter_collection',
                chapters: filtered_chapters,
-               before_next_chapter: reading_progress.present? ? following_chapter(reading_progress.fiction, reading_progress.chapter) : nil,
+               before_next_chapter: reading_progress.present? ? following_chapter(reading_progress.fiction, reading_progress.chapter, viewer: current_user) : nil,
                order: order %>
   </div>
 </div>

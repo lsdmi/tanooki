@@ -2,20 +2,20 @@
 <%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
 
 <div class="mx-auto">
-  <!-- Main Content Area - Columns Layout -->
-  <div class="grid lg:grid-cols-2 gap-4 sm:gap-8 mb-8">
+  <!-- Top row: details | team -->
+  <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:items-stretch">
     <!-- Left Column - Chapter Details -->
-    <div class="space-y-4 sm:space-y-6">
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
-        <div class="flex items-center mb-4">
-          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+    <div class="flex flex-col min-h-0">
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-sm h-full flex flex-col">
+        <div class="flex items-center gap-3 pb-4 mb-1 border-b border-gray-100 dark:border-gray-700/80">
+          <div class="h-9 w-9 shrink-0 rounded-lg bg-cyan-100 dark:bg-rose-900/30 flex items-center justify-center ring-1 ring-cyan-200/60 dark:ring-rose-800/40">
             <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Деталі розділу</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Деталі розділу</h3>
         </div>
-        <div class="space-y-4">
+        <div class="space-y-5 flex-1 pt-2">
           <div>
             <%= f.label :title, 'Заголовок', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
             <%= f.input :title, input_html: { class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if chapter.errors[:title].any?}" }, label: false, placeholder: "Додайте заголовок (необов'язково)" %>
@@ -45,18 +45,18 @@
         </div>
       </div>
     </div>
-    <!-- Right Column - Scanlator Team -->
-    <div class="space-y-4 sm:space-y-6">
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
-        <div class="flex items-center mb-4">
-          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+    <!-- Right Column — team only -->
+    <div class="flex flex-col min-h-0">
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-sm h-full flex flex-col">
+        <div class="flex items-center gap-3 pb-4 mb-1 border-b border-gray-100 dark:border-gray-700/80">
+          <div class="h-9 w-9 shrink-0 rounded-lg bg-cyan-100 dark:bg-rose-900/30 flex items-center justify-center ring-1 ring-cyan-200/60 dark:ring-rose-800/40">
             <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Перекладацька команда</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Перекладацька команда</h3>
         </div>
-        <div class="space-y-4">
+        <div class="space-y-4 pt-2">
           <% if current_user.scanlators.any? %>
             <%= f.label :scanlator_ids, 'Оберіть команду', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
           <% else %>
@@ -73,21 +73,76 @@
             <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
             <%= chapter.errors[:scanlator_ids].first %>
           <% end if chapter.errors[:scanlator_ids].any? %>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Оберіть команду, яка працювала над цим розділом</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 pt-1">Оберіть команду, яка працювала над цим розділом</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Scheduled publication — full width below the two-column row -->
+  <div class="mb-8 bg-gradient-to-br from-white to-gray-50/80 dark:from-gray-800 dark:to-gray-800/95 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-sm ring-1 ring-cyan-500/5 dark:ring-rose-500/10">
+    <div class="flex items-start gap-3 pb-4 mb-1 border-b border-gray-200 dark:border-gray-700">
+      <div class="h-9 w-9 shrink-0 rounded-lg bg-cyan-100 dark:bg-rose-900/40 flex items-center justify-center ring-1 ring-cyan-200/70 dark:ring-rose-800/50">
+        <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="min-w-0 flex-1 pt-0.5">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-snug">Запланувати публікацію</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Необов'язково — керуйте моментом появи розділу</p>
+      </div>
+    </div>
+    <% schedule_at = chapter.published_at&.in_time_zone %>
+    <% published_at_date_value = params.dig(:chapter, :published_at_date).presence || schedule_at&.strftime('%Y-%m-%d') %>
+    <% published_at_time_value = params.dig(:chapter, :published_at_time).presence || schedule_at&.strftime('%H:%M') %>
+    <% sched_field_class = "dark:[color-scheme:dark] bg-gray-50 dark:bg-gray-700/90 text-gray-900 dark:text-white text-sm rounded-lg block w-full py-3 px-3 transition-all duration-200 #{'ring-red-200 dark:ring-red-900/20' if chapter.errors[:published_at].any?}" %>
+    <div class="space-y-3 pt-2">
+      <%= f.label :published_at, 'Дата та час публікації', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300' %>
+      <%# Native time input follows OS 12h/24h; select keeps 24h + 30-minute slots everywhere %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <%= label_tag 'chapter_published_at_date', 'Дата', class: 'block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5' %>
+          <%= text_field_tag 'chapter[published_at_date]', published_at_date_value,
+            id: 'chapter_published_at_date',
+            class: "#{sched_field_class} border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500",
+            placeholder: 'рррр-мм-дд',
+            autocomplete: 'off',
+            data: { controller: 'published-at-date-picker' } %>
+        </div>
+        <div>
+          <%= label_tag 'chapter_published_at_time', 'Час (24 год, крок 30 хв)', class: 'block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5' %>
+          <%= select_tag 'chapter[published_at_time]',
+            options_for_select(chapter_publish_time_select_options(published_at_time_value), published_at_time_value),
+            include_blank: 'Оберіть час…',
+            id: 'chapter_published_at_time',
+            class: "#{sched_field_class} [border-right:16px_solid_transparent]" %>
+        </div>
+      </div>
+      <%= tag.p chapter.errors[:published_at].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 -mt-1 flex items-center' do %>
+        <svg class="h-4 w-4 mr-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+        <%= chapter.errors[:published_at].first %>
+      <% end if chapter.errors[:published_at].any? %>
+      <div class="rounded-lg bg-gray-100/80 dark:bg-gray-700/40 border border-gray-200/80 dark:border-gray-600/60 px-3 py-2.5">
+        <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">Залиште порожнім для негайної публікації. Вкажіть дату та час, щоб розділ з'явився автоматично у визначений момент.</p>
+      </div>
+      <% if chapter.scheduled? %>
+        <div class="flex items-start gap-2.5 p-3 bg-amber-50 dark:bg-amber-900/25 rounded-lg border border-amber-200/90 dark:border-amber-800/80">
+          <svg class="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+          <span class="text-sm text-amber-800 dark:text-amber-200 leading-snug">Цей розділ заплановано на <strong><%= l(chapter.published_at, format: :long) %></strong></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <!-- Content Section - Full Width at Bottom -->
-  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-6 shadow-sm">
-    <div class="flex items-center mb-6">
-      <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+  <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-sm">
+    <div class="flex items-center gap-3 pb-4 mb-4 border-b border-gray-100 dark:border-gray-700/80">
+      <div class="h-9 w-9 shrink-0 rounded-lg bg-cyan-100 dark:bg-rose-900/30 flex items-center justify-center ring-1 ring-cyan-200/60 dark:ring-rose-800/40">
         <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       </div>
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Зміст розділу</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Зміст розділу</h3>
     </div>
     <div class="space-y-4">
       <div>

@@ -2,7 +2,7 @@
 
 class BookBuilder
   def initialize(chapters, volume_title = nil)
-    @chapters = Chapter.where(id: chapters.pluck(:id)).ordered_by_volume_and_number
+    @chapters = Chapter.where(id: chapters.pluck(:id)).released.ordered_by_volume_and_number
     @volume_title = volume_title
   end
 

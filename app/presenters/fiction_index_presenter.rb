@@ -48,16 +48,23 @@ class FictionIndexPresenter
   private
 
   def filtered_fiction_with_max_created_at_query
-    latest_chapters = Chapter.select('fiction_id, MAX(created_at) AS max_created_at')
-                             .group(:fiction_id)
-                             .to_sql
+    fictions_joined_to_latest_released_chapter
+      .where(genres: { id: sample_genre })
+      .select('fictions.*, latest_chapters.max_created_at')
+      .order('latest_chapters.max_created_at DESC')
+      .limit(8)
+  end
 
+  def fictions_joined_to_latest_released_chapter
     Fiction.joins(:genres)
-           .joins("INNER JOIN (#{latest_chapters}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
+           .joins("INNER JOIN (#{latest_released_chapters_subquery_sql}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
            .includes(:cover_attachment)
-           .where(genres: { id: sample_genre })
-           .select('fictions.*, latest_chapters.max_created_at')
-           .order('latest_chapters.max_created_at DESC')
-           .limit(8)
+  end
+
+  def latest_released_chapters_subquery_sql
+    Chapter.released
+           .select('fiction_id, MAX(created_at) AS max_created_at')
+           .group(:fiction_id)
+           .to_sql
   end
 end

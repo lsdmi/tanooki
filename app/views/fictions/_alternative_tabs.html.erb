@@ -1,6 +1,6 @@
 <div class="mb-6">
   <div class="flex flex-wrap gap-2">
-    <% grouped_chapters_desc(fiction).each do |scanlator_id, chapters|
+    <% grouped_chapters_desc(fiction, viewer: current_user).each do |scanlator_id, chapters|
         selected = (scanlator_id.join('-') == selected_scanlator_id.join('-'))
         scanlator_ids = scanlator_id
         scanlator_names = Scanlator.where(id: scanlator_ids).pluck(:title).to_sentence

@@ -4,3 +4,45 @@
 
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Flatpickr (chapter schedule date) — calendar is portaled to <body>; match dark UI */
+@layer components {
+  html.dark .flatpickr-calendar {
+    background: rgb(31 41 55);
+    color: rgb(243 244 246);
+    border-color: rgb(75 85 99);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.35);
+  }
+
+  html.dark .flatpickr-months .flatpickr-month {
+    background: rgb(31 41 55);
+    color: rgb(243 244 246);
+    fill: rgb(243 244 246);
+  }
+
+  html.dark span.flatpickr-weekday {
+    color: rgb(156 163 175);
+  }
+
+  html.dark .flatpickr-day {
+    color: rgb(229 231 235);
+  }
+
+  html.dark .flatpickr-day.prevMonthDay,
+  html.dark .flatpickr-day.nextMonthDay {
+    color: rgb(107 114 128);
+  }
+
+  html.dark .flatpickr-day.selected,
+  html.dark .flatpickr-day.startRange,
+  html.dark .flatpickr-day.endRange {
+    background: rgb(8 145 178);
+    border-color: rgb(8 145 178);
+    color: white;
+  }
+
+  html.dark .flatpickr-day:hover {
+    background: rgb(55 65 81);
+    border-color: rgb(75 85 99);
+  }
+}

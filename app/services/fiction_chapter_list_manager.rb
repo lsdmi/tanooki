@@ -3,12 +3,13 @@
 class FictionChapterListManager
   include LibraryHelper
 
-  attr_reader :fiction, :reading_progress, :translator_id
+  attr_reader :fiction, :reading_progress, :translator_id, :viewer
 
-  def initialize(fiction, reading_progress, translator_id)
+  def initialize(fiction, reading_progress, translator_id, viewer = nil)
     @fiction = fiction
     @reading_progress = reading_progress
     @translator_id = translator_id
+    @viewer = viewer
   end
 
   def translator
@@ -32,14 +33,15 @@ class FictionChapterListManager
 
     following_chapter(
       reading_progress.chapter.fiction,
-      reading_progress.chapter
+      reading_progress.chapter,
+      viewer:
     ) || first_chapter
   end
 
   private
 
   def chapters
-    ordered_chapters_desc(fiction)
+    ordered_chapters_desc(fiction, viewer:)
   end
 
   def fiction_chapters
@@ -51,7 +53,7 @@ class FictionChapterListManager
   end
 
   def first_chapter
-    ordered_chapters(fiction).first
+    ordered_chapters(fiction, viewer:).first
   end
 
   def following_chapter_index
