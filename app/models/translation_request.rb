@@ -18,7 +18,6 @@ class TranslationRequest < ApplicationRecord
             allow_blank: true
 
   # Scopes
-  scope :by_creation_date, -> { order(created_at: :desc) }
   scope :by_votes, -> { order(votes_count: :desc, created_at: :desc) }
 
   # Helper methods for voting

@@ -56,8 +56,9 @@ class FictionIndexPresenter
   end
 
   def fictions_joined_to_latest_released_chapter
+    subquery_sql = latest_released_chapters_subquery_sql
     Fiction.joins(:genres)
-           .joins("INNER JOIN (#{latest_released_chapters_subquery_sql}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
+           .joins("INNER JOIN (#{subquery_sql}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id")
            .includes(:cover_attachment)
   end
 

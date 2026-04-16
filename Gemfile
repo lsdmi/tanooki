@@ -8,8 +8,6 @@ ruby '3.3.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 8.0.0'
 
-gem 'rack'
-
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
@@ -26,9 +24,6 @@ gem 'turbo-rails'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
-
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem 'jbuilder'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
@@ -63,7 +58,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'simplecov'
-  gem 'webdrivers'
 end
 
 group :production do
@@ -71,7 +65,6 @@ group :production do
 end
 
 gem 'bcrypt_pbkdf'
-gem 'cable_ready'
 gem 'devise'
 gem 'dotenv-rails'
 gem 'ed25519'
@@ -81,7 +74,6 @@ gem 'fastimage'
 gem 'friendly_id'
 gem 'gepub'
 gem 'google-apis-youtube_v3'
-gem 'i18n'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'pagy'
@@ -90,7 +82,6 @@ gem 'rails-i18n'
 gem 'searchkick'
 gem 'simple_form'
 gem 'sqids'
-gem 'streamio-ffmpeg'
 gem 'tailwindcss-rails'
 gem 'telegram-bot-ruby'
 gem 'tinymce-rails'

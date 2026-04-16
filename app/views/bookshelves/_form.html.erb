@@ -1,5 +1,5 @@
-<%= form_with model: @bookshelf, local: true, class: "space-y-6" do |form| %>
-  <% if @bookshelf.errors.any? %>
+<%= form_with model: bookshelf, local: true, class: "space-y-6" do |form| %>
+  <% if bookshelf.errors.any? %>
     <div class="rounded-md bg-red-50 p-4 dark:bg-red-900/20">
       <div class="flex">
         <div class="flex-shrink-0">
@@ -13,7 +13,7 @@
           </h3>
           <div class="mt-2 text-sm text-red-700 dark:text-red-300">
             <ul class="list-disc list-inside space-y-1">
-              <% @bookshelf.errors.full_messages.each do |message| %>
+              <% bookshelf.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
             </ul>
@@ -68,7 +68,7 @@
           </div>
           <div class="space-y-4">
             <%= form.select :fiction_ids,
-                  options_from_collection_for_select(@fictions, :id, :title, @bookshelf.fiction_ids),
+                  options_from_collection_for_select(fictions, :id, :title, bookshelf.fiction_ids),
                   {},
                   { multiple: true,
                     class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200",

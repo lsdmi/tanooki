@@ -27,17 +27,11 @@ class PokemonExperienceDistributor
   private
 
   def update_battle_rates(winner, loser)
-    winner_rate = winner.battle_win_rate
-    loser_rate = loser.battle_win_rate
-    rank_difference = user_rank(winner_rate) - user_rank(loser_rate)
-
-    case rank_difference <=> 0
-    when 1
-      update_higher_rank(winner, loser)
-    when 0
-      update_equal_rank(winner, loser)
-    when -1
-      update_lower_rank(winner, loser)
+    delta = user_rank(winner.battle_win_rate) - user_rank(loser.battle_win_rate)
+    case delta <=> 0
+    when 1 then update_higher_rank(winner, loser)
+    when 0 then update_equal_rank(winner, loser)
+    when -1 then update_lower_rank(winner, loser)
     end
   end
 

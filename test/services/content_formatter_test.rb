@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'ostruct'
 
 class ContentFormatterTest < ActiveSupport::TestCase
+  ChapterContent = Struct.new(:body, keyword_init: true)
+  Chapter = Struct.new(:display_title_no_volume, :title, :content, keyword_init: true)
+
   test 'format_content emits valid empty elements for EPUB XHTML' do
     fragment = <<~HTML
       <p>Hi</p>
@@ -14,10 +16,10 @@ class ContentFormatterTest < ActiveSupport::TestCase
       <img src="https://example.com/b.png" />
     HTML
 
-    chapter = OpenStruct.new(
+    chapter = Chapter.new(
       display_title_no_volume: 'Test',
       title: nil,
-      content: OpenStruct.new(body: fragment)
+      content: ChapterContent.new(body: fragment)
     )
 
     html = ContentFormatter.html(chapter)

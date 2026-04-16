@@ -39,14 +39,11 @@ class VideosJobTest < ActiveSupport::TestCase
         fake_video_response = @fake_video_response
         fake_content_details_response = @fake_content_details_response
 
-        youtube_service.define_singleton_method(:list_videos) do |part, options = {}|
-          case part
-          when 'snippet'
-            fake_video_response
-          when 'contentDetails'
+        youtube_service.define_singleton_method(:list_videos) do |part, _options = {}|
+          if part == 'contentDetails'
             fake_content_details_response
           else
-            fake_video_response # fallback
+            fake_video_response
           end
         end
 

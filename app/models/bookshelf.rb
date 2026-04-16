@@ -16,7 +16,6 @@ class Bookshelf < ApplicationRecord
   after_save :assign_fictions
 
   scope :ordered, -> { order(:created_at) }
-  scope :by_user, ->(user) { where(user: user) }
   scope :most_viewed, -> { order(views: :desc) }
 
   def self.find_by_sqid(sqid_string)
