@@ -1,0 +1,27 @@
+<% if user_signed_in? %>
+  <% all_active = !@subscriptions_filter_active %>
+  <% subs_active = @subscriptions_filter_active %>
+  <div class="flex justify-center mb-8">
+    <% segmented = "inline-flex rounded-xl border border-stone-200 dark:border-stone-600 p-1 bg-white/70 dark:bg-stone-800/70 backdrop-blur-sm shadow-sm" %>
+    <div class="<%= segmented %>" role="group" aria-label="<%= t('chapters_calendar.all_updates') %> / <%= t('chapters_calendar.my_subscriptions') %>">
+      <%= form_with url: calendar_fictions_path, method: :get, local: true,
+                    data: { turbo_stream: "" },
+                    html: { class: "inline m-0 align-middle" } do %>
+        <button type="submit"
+                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 <%= all_active ? 'bg-stone-800 text-stone-50 dark:bg-stone-200 dark:text-stone-900 shadow' : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200' %>">
+          <%= t('chapters_calendar.all_updates') %>
+        </button>
+      <% end %>
+      <%= form_with url: calendar_fictions_path, method: :get, local: true,
+                    data: { turbo_stream: "" },
+                    html: { class: "inline m-0 align-middle" } do %>
+        <%= hidden_field_tag :subscriptions, true %>
+        <button type="submit"
+                class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 <%= subs_active ? 'bg-stone-800 text-stone-50 dark:bg-stone-200 dark:text-stone-900 shadow' : 'text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200' %>">
+          <%= t('chapters_calendar.my_subscriptions') %>
+        </button>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<%= render "chapters_calendar/calendar_grid" %>

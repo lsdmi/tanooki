@@ -91,11 +91,11 @@ module LibraryChapterCatalogHelper
   def order_clause
     Arel.sql(
       'CASE WHEN volume_number IS NULL OR volume_number = 0 ' \
-      'THEN number ELSE volume_number END, number, chapters.created_at'
+      "THEN number ELSE volume_number END, number, #{Chapter::PUBLIC_TIME_SQL}"
     )
   end
 
   def order_clause_desc
-    Arel.sql('COALESCE(volume_number, 0) DESC, number DESC, chapters.created_at DESC')
+    Arel.sql("COALESCE(volume_number, 0) DESC, number DESC, #{Chapter::PUBLIC_TIME_SQL} DESC")
   end
 end

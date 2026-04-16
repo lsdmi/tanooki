@@ -40,8 +40,17 @@ class Chapter < ApplicationRecord
   scope :scheduled, lambda {
     where(arel_table[:published_at].gt(Time.current))
   }
+
+  # SQL fragment (qualified for joins): wall-clock moment a chapter became public on the site.
+  PUBLIC_TIME_SQL = 'COALESCE(chapters.published_at, chapters.created_at)'
+
+  scope :order_by_public_time, lambda { |direction = :desc|
+    dir = direction.to_s.downcase == 'asc' ? 'ASC' : 'DESC'
+    order(Arel.sql("#{PUBLIC_TIME_SQL} #{dir}"))
+  }
+
   scope :ordered_by_volume_and_number, lambda {
-    order(Arel.sql('COALESCE(volume_number, 0), number, chapters.created_at'))
+    order(Arel.sql("COALESCE(volume_number, 0), number, #{PUBLIC_TIME_SQL}"))
   }
 
   def author
@@ -88,6 +97,11 @@ class Chapter < ApplicationRecord
   # Not yet visible to the general public (published_at is still in the future).
   def scheduled?
     published_at.present? && published_at > Time.current
+  end
+
+  # When the chapter went (or goes) live for readers: scheduled time, or save time if unscheduled.
+  def public_at
+    published_at.presence || created_at
   end
 
   def slug_candidates

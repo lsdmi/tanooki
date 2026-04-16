@@ -51,7 +51,7 @@ class Scanlator < ApplicationRecord
   end
 
   def active_this_month?
-    chapters.where(created_at: 60.days.ago..Time.current).exists?
+    chapters.where("#{Chapter::PUBLIC_TIME_SQL} BETWEEN ? AND ?", 60.days.ago, Time.current).exists?
   end
 
   def average_rating

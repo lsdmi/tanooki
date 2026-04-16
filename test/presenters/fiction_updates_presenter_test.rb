@@ -8,21 +8,37 @@ class FictionUpdatesPresenterTest < ActiveSupport::TestCase
     updates = presenter.last_three_days_updates
 
     assert_kind_of Array, updates
-    assert updates.any?, 'Should have updates for at least one day'
+    assert_equal 3, updates.size
 
-    # Check structure of the first day's updates
-    day_update = updates.first
-    assert_includes day_update.keys, :day
-    assert_includes day_update.keys, :date
-    assert_includes day_update.keys, :updates
+    day_with_releases = updates.find { |d| d[:updates].any? }
+    assert day_with_releases, 'fixture should include at least one release in the window'
 
-    # Check structure of the first fiction update
-    fiction_update = day_update[:updates].first
+    assert_includes day_with_releases.keys, :day
+    assert_includes day_with_releases.keys, :date
+    assert_includes day_with_releases.keys, :updates
+
+    fiction_update = day_with_releases[:updates].first
     assert_equal 'one', fiction_update[:fiction_slug]
     assert_equal 'Test Fiction', fiction_update[:fiction_title]
     assert_equal 'One', fiction_update[:scanlator_title]
     assert_equal 'one', fiction_update[:scanlator_slug]
-    assert_kind_of String, fiction_update[:chapters_created_at]
+    assert_kind_of String, fiction_update[:chapters_released_at]
     assert_kind_of Integer, fiction_update[:chapters_count]
+  end
+
+  test 'subscriptions_only returns no updates when user follows no scanlators with releases' do
+    presenter = FictionUpdatesPresenter.new(user: users(:user_two), subscriptions_only: true)
+    updates = presenter.last_three_days_updates
+
+    assert_equal 3, updates.size
+    assert(updates.all? { |d| d[:updates].empty? })
+  end
+
+  test 'subscriptions_only includes releases from followed scanlators' do
+    presenter = FictionUpdatesPresenter.new(user: users(:user_one), subscriptions_only: true)
+    updates = presenter.last_three_days_updates
+
+    assert_equal 3, updates.size
+    assert(updates.any? { |d| d[:updates].any? }, 'Expected chapter releases from subscribed scanlators')
   end
 end

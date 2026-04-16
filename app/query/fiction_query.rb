@@ -7,9 +7,9 @@ module FictionQuery
            .joins(:chapters)
            .merge(Chapter.released)
            .where('chapters.user_id = ? OR users.id = ?', current_user.id, current_user.id)
-           .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+           .select("fictions.*, MAX(#{Chapter::PUBLIC_TIME_SQL}) AS max_created_at")
            .group('fictions.id, fictions.created_at')
-           .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
+           .order(Arel.sql("COALESCE(MAX(#{Chapter::PUBLIC_TIME_SQL}), fictions.created_at) DESC"))
            .distinct
   end
 
@@ -19,8 +19,8 @@ module FictionQuery
 
   def fiction_all_ordered_by_latest_chapter
     fiction_all_query
-      .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+      .select("fictions.*, MAX(#{Chapter::PUBLIC_TIME_SQL}) AS max_created_at")
       .group('fictions.id, fictions.created_at')
-      .order(Arel.sql('COALESCE(MAX(chapters.created_at), fictions.created_at) DESC'))
+      .order(Arel.sql("COALESCE(MAX(#{Chapter::PUBLIC_TIME_SQL}), fictions.created_at) DESC"))
   end
 end

@@ -64,7 +64,7 @@ class FictionIndexPresenter
 
   def latest_released_chapters_subquery_sql
     Chapter.released
-           .select('fiction_id, MAX(created_at) AS max_created_at')
+           .select('fiction_id, MAX(COALESCE(published_at, created_at)) AS max_created_at')
            .group(:fiction_id)
            .to_sql
   end

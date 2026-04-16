@@ -3,7 +3,7 @@
 class ReadingHistoryPresenter
   attr_reader :readings
 
-  def initialize(readings, chapter_fetcher: ->(fiction) { fiction.chapters.released.order(created_at: :desc).first })
+  def initialize(readings, chapter_fetcher: ->(fiction) { fiction.chapters.released.order_by_public_time.first })
     @readings = readings
     @grouper = ReadingHistoryGrouper.new(readings, chapter_fetcher: chapter_fetcher)
     @grouped = @grouper.group
@@ -16,6 +16,6 @@ class ReadingHistoryPresenter
   private
 
   def ordered_chapters_desc(fiction)
-    fiction.chapters.released.order(created_at: :desc)
+    fiction.chapters.released.order_by_public_time
   end
 end

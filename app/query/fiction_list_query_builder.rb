@@ -50,7 +50,9 @@ class FictionListQueryBuilder
   end
 
   def with_recent_chapters_subquery(scope)
-    max_chapters = Chapter.released.select('fiction_id, MAX(created_at) AS max_created_at').group(:fiction_id)
+    max_chapters = Chapter.released
+                          .select('fiction_id, MAX(COALESCE(published_at, created_at)) AS max_created_at')
+                          .group(:fiction_id)
 
     scope.joins("LEFT JOIN (#{max_chapters.to_sql}) AS chapters_max ON chapters_max.fiction_id = fictions.id")
          .order(Arel.sql('COALESCE(chapters_max.max_created_at, fictions.created_at) DESC'))

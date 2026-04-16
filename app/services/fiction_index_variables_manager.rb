@@ -23,7 +23,7 @@ class FictionIndexVariablesManager
       .joins(:chapters)
       .merge(Chapter.released)
       .includes(%i[cover_attachment genres])
-      .select('fictions.*, MAX(chapters.created_at) AS max_created_at')
+      .select("fictions.*, MAX(#{Chapter::PUBLIC_TIME_SQL}) AS max_created_at")
       .group('fictions.id')
       .order('max_created_at DESC')
       .limit(9)
