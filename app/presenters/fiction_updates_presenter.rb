@@ -49,7 +49,8 @@ class FictionUpdatesPresenter
   def pluck_recent_chapter_ids(base)
     return base.distinct.pluck(:id) unless @subscriptions_only && @user
 
-    base.merge(Chapter.by_user_scanlators(@user)).distinct.pluck(:id)
+    fiction_scope = @user.readings.select(:fiction_id)
+    base.where(fiction_id: fiction_scope).distinct.pluck(:id)
   end
 
   def last_days_range

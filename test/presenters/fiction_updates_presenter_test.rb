@@ -26,7 +26,7 @@ class FictionUpdatesPresenterTest < ActiveSupport::TestCase
     assert_kind_of Integer, fiction_update[:chapters_count]
   end
 
-  test 'subscriptions_only returns no updates when user follows no scanlators with releases' do
+  test 'subscriptions_only returns no updates when user has no reading progress' do
     presenter = FictionUpdatesPresenter.new(user: users(:user_two), subscriptions_only: true)
     updates = presenter.last_three_days_updates
 
@@ -34,11 +34,11 @@ class FictionUpdatesPresenterTest < ActiveSupport::TestCase
     assert(updates.all? { |d| d[:updates].empty? })
   end
 
-  test 'subscriptions_only includes releases from followed scanlators' do
+  test 'subscriptions_only includes releases for fictions in the user library' do
     presenter = FictionUpdatesPresenter.new(user: users(:user_one), subscriptions_only: true)
     updates = presenter.last_three_days_updates
 
     assert_equal 3, updates.size
-    assert(updates.any? { |d| d[:updates].any? }, 'Expected chapter releases from subscribed scanlators')
+    assert(updates.any? { |d| d[:updates].any? }, 'Expected chapter releases for fictions on reading progress')
   end
 end
