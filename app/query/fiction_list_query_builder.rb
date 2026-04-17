@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FictionListQueryBuilder
+  TOP_RATED_MIN_AVERAGE = 4.5
+
   def initialize(relation = Fiction.all, params = {})
     @relation = relation
     @params = params.to_h.with_indifferent_access
@@ -11,6 +13,8 @@ class FictionListQueryBuilder
     results = by_genre(results)
     results = only_new_fictions(results)
     results = longreads_only(results)
+    results = evening_only(results)
+    results = top_rated_only(results)
     results = finished_only(results)
     results = with_recent_chapters_subquery(results)
     results.includes(:cover_attachment, :genres)
@@ -41,6 +45,30 @@ class FictionListQueryBuilder
                               .pluck(:id)
 
     scope.where(id: long_fiction_ids)
+  end
+
+  def evening_only(scope)
+    return scope unless @params['evening'].present?
+
+    # At most 10 released chapters (includes fictions with none: they are not in the "many" set).
+    many_chapter_ids = Fiction.joins(:chapters)
+                              .merge(Chapter.released)
+                              .group('fictions.id')
+                              .having('COUNT(chapters.id) > ?', 10)
+                              .pluck(:id)
+
+    many_chapter_ids.any? ? scope.where.not(id: many_chapter_ids) : scope
+  end
+
+  def top_rated_only(scope)
+    return scope unless @params['top_rated'].present?
+
+    top_ids = Fiction.joins(:fiction_ratings)
+                     .group('fictions.id')
+                     .having('AVG(fiction_ratings.rating) > ?', TOP_RATED_MIN_AVERAGE)
+                     .pluck(:id)
+
+    top_ids.any? ? scope.where(id: top_ids) : scope.none
   end
 
   def finished_only(scope)

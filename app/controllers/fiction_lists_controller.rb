@@ -25,7 +25,7 @@ class FictionListsController < ApplicationController
     pagy(
       FictionListQueryBuilder.new(
         base_scope,
-        params.permit(:genre, :only_new, :longreads, :finished, :adult_content)
+        params.permit(:genre, :only_new, :longreads, :evening, :top_rated, :finished, :adult_content)
       ).call,
       limit: 20
     )

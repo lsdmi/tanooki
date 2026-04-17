@@ -24,7 +24,7 @@
           <% if pagy.pages > 1 %>
             <div class="pagy-nav pt-4 sm:pt-6">
               <div class="flex justify-center">
-                <%== pagy_nav_buttons(pagy, frame_id: 'fiction-list-page', custom_params: params.permit(:genre, :only_new, :longreads, :finished, :adult_content)) %>
+                <%== pagy_nav_buttons(pagy, frame_id: 'fiction-list-page', custom_params: params.permit(:genre, :only_new, :longreads, :evening, :top_rated, :finished, :adult_content)) %>
               </div>
             </div>
           <% end %>
@@ -32,7 +32,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="flex flex-col items-center justify-center py-12">
+    <div class="flex flex-col items-center justify-center py-20">
       <svg class="w-16 h-16 mb-4 text-cyan-600 dark:text-rose-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
       </svg>
