@@ -89,6 +89,51 @@ const initializeTinymce = () => {
     statusbar: false,
     newline_behavior: 'linebreak',
     link_title: false,
+    // GDocs/WebKit paste: drop background* and fixed colors so content inherits editor + site
+    // theme (light/dark). Keep weight, italic, size, family, underline (without its color).
+    paste_webkit_styles: 'font-weight font-style text-decoration font-size font-family',
+    paste_postprocess: function(editor, args) {
+      const stripNonInheritedPasteStyles = function(styleStr) {
+        if (!styleStr || !styleStr.trim()) return null;
+        const dropName = function(name) {
+          if (name.indexOf('background') === 0) return true;
+          if (name === 'color' || name === 'text-decoration-color') return true;
+          if (name === '-webkit-text-fill-color') return true;
+          return false;
+        };
+        const next = styleStr
+          .split(';')
+          .map(function(s) { return s.trim(); })
+          .filter(Boolean)
+          .filter(function(decl) {
+            const prop = decl.split(':')[0];
+            if (!prop) return true;
+            return !dropName(prop.trim().toLowerCase());
+          })
+          .join('; ');
+        return next.length ? next : null;
+      };
+
+      const walk = function(node) {
+        if (node.nodeType !== 1) return;
+        const el = node;
+        if (el.hasAttribute('style')) {
+          const cleaned = stripNonInheritedPasteStyles(el.getAttribute('style'));
+          if (cleaned) el.setAttribute('style', cleaned);
+          else el.removeAttribute('style');
+        }
+        if (el.hasAttribute('data-mce-style')) {
+          const cleanedMce = stripNonInheritedPasteStyles(el.getAttribute('data-mce-style'));
+          if (cleanedMce) el.setAttribute('data-mce-style', cleanedMce);
+          else el.removeAttribute('data-mce-style');
+        }
+        for (let i = 0; i < el.children.length; i++) {
+          walk(el.children[i]);
+        }
+      };
+
+      walk(args.node);
+    },
     extended_valid_elements: 'span[class|data-note|data-note-id|style]',
     valid_children: '+body[style],+span[data-note]',
     setup: function(editor) {
