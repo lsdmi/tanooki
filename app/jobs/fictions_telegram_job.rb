@@ -22,10 +22,9 @@ class FictionsTelegramJob < ApplicationJob
 
   def recent_fictions
     Fiction.recent.map do |fiction|
-      fiction_details = "📖 <b><a href=\"#{route(fiction)}\">#{fiction.title}</a></b> \n\n"
-      fiction_description = "<i>#{fiction.description[0..100]}...</i> \n\n"
-      genre_details = fiction.genres.map { |genre| "<i>##{formatted_genres(genre)}</i>" }.join(', ')
-      "#{fiction_details}#{fiction_description}#{genre_details}"
+      fiction_details = "📖 <b><a href=\"#{route(fiction)}\">#{fiction.title}</a></b>"
+      genre_details = fiction.genres.first(5).map { |genre| "##{formatted_genres(genre)}" }.join(', ')
+      genre_details.present? ? "#{fiction_details} #{genre_details}" : fiction_details
     end.join("\n\n")
   end
 
@@ -35,9 +34,9 @@ class FictionsTelegramJob < ApplicationJob
 
   def text_message
     ActionController::Base.helpers.sanitize(
-      "📚 <i>Нові веб-романи на <b><a href=\"#{index_path}\">Баці</a></b></i> 📚 \n\n" \
+      "📚 <i><b>Нові веб-романи на <a href=\"#{index_path}\">Баці</a></b> 📚 \n\n" \
       "#{recent_fictions} \n\n" \
-      "✨ <i>Підтримайте нас на <b><a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a></b>!</i> ✨ \n\n "
+      "✨ <b>Підтримайте нас на <a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a>!</b></i> ✨ \n\n "
     )
   end
 end

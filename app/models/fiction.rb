@@ -58,7 +58,7 @@ class Fiction < ApplicationRecord
       )
       .order('recent_readings_count DESC')
   }
-  scope :recent, -> { where('created_at >= ?', 3.days.ago) }
+  scope :recent, -> { where('created_at >= ?', 7.days.ago) }
   scope :safe_content, -> { where(adult_content: false) }
 
   def search_data

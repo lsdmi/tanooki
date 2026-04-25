@@ -4,10 +4,7 @@ require 'test_helper'
 
 class PublicationsTelegramJobTest < ActiveSupport::TestCase
   test 'perform sends message in production when there are recent publications' do
-    rails_env_mock = Minitest::Mock.new
-    rails_env_mock.expect(:production?, true)
-
-    Rails.stub(:env, rails_env_mock) do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
       api_mock = Minitest::Mock.new
       api_mock.expect(:send_message, nil) do |params|
         assert_equal '@bakaInUa', params[:chat_id]
@@ -29,20 +26,15 @@ class PublicationsTelegramJobTest < ActiveSupport::TestCase
 
   def expected_text_message
     ActionController::Base.helpers.sanitize(
-      "📝 <i>Збірка останніх дописів на нашому <b><a href=\"https://baka.in.ua/tales\">сайті</a></b></i> 📝 \n\n" \
+      "📝 <i><b>Збірка останніх дописів на <a href=\"https://baka.in.ua/tales\">сайті</a></b> \n\n" \
       "#{recent_publications} \n\n" \
-      "🎉 <i>Підтримуйте нас на <b><a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a></b>!</i> 🎉 \n\n"
+      "✨ <b>Підтримайте нас на <a href=\"https://www.buymeacoffee.com/bakainua\">buymeacoffee</a>!</b></i> ✨ \n\n "
     )
   end
 
   def recent_publications
-    Publication.recent.map do |tale|
-      publication_details = "🏷️ <b><a href=\"https://baka.in.ua/tales/#{tale.slug}\">#{tale.title}</a></b> \n\n"
-      publication_description = "<i>#{tale.description.to_plain_text[0..120]}...</i> \n\n"
-      tag_details = tale.tags.map do |tag|
-        "<i>##{tag.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')}</i>"
-      end.join(', ')
-      "#{publication_details}#{publication_description}#{tag_details}"
+    Publication.weekly.map do |tale|
+      "📰 <b><a href=\"https://baka.in.ua/tales/#{tale.slug}\">#{tale.title}</a></b>"
     end.join("\n\n")
   end
 end

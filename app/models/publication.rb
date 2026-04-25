@@ -26,7 +26,7 @@ class Publication < ApplicationRecord
 
   scope :highlights, -> { where(highlight: true) }
   scope :last_month, -> { where(created_at: 1.month.ago..) }
-  scope :recent, -> { where(created_at: 5.days.ago..) }
+  scope :weekly, -> { where(created_at: 7.days.ago..) }
   scope :popular, -> { order(views: :desc) }
   scope :recent, -> { order(created_at: :desc) }
 

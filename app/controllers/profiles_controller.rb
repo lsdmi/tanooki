@@ -20,7 +20,7 @@ class ProfilesController < ApplicationController
   end
 
   def load_user_data
-    @recent_publications = @user.publications.includes(:cover_attachment, :rich_text_description).recent.limit(3)
+    @recent_publications = @user.publications.includes(:cover_attachment, :rich_text_description).weekly.recent.limit(3)
     @user_scanlators = @user.scanlators
     @recent_comments = @user.comments.order(created_at: :desc).includes(:commentable).limit(3)
     @recent_readings = @user.readings.includes(fiction: :cover_attachment,
