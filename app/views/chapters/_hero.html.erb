@@ -1,4 +1,11 @@
-<section class="bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 py-8 sm:py-12 md:py-16 relative overflow-hidden">
+<section class="bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 py-8 sm:py-12 md:py-16 relative">
+  <%# Section cannot use overflow-hidden: it clips the mobile fixed action bar. %>
+  <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-stone-300 dark:bg-gray-600 rounded-full transform translate-x-1/3 -translate-y-1/3 opacity-20"></div>
+    <div class="absolute bottom-0 left-0 w-48 sm:w-72 h-48 sm:h-72 bg-stone-300 dark:bg-gray-600 rounded-full transform -translate-x-1/3 translate-y-1/3 opacity-20"></div>
+    <div class="absolute top-1/2 left-1/4 w-16 sm:w-20 h-16 sm:h-20 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/3 w-12 sm:w-16 h-12 sm:h-16 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+  </div>
   <div class="container mx-auto px-4 relative z-10">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
       <div class="max-w-3xl w-full md:w-auto">
@@ -60,8 +67,4 @@
       </div>
     </div>
   </div>
-  <div class="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-stone-300 dark:bg-gray-600 rounded-full transform translate-x-1/3 -translate-y-1/3 opacity-20"></div>
-  <div class="absolute bottom-0 left-0 w-48 sm:w-72 h-48 sm:h-72 bg-stone-300 dark:bg-gray-600 rounded-full transform -translate-x-1/3 translate-y-1/3 opacity-20"></div>
-  <div class="absolute top-1/2 left-1/4 w-16 sm:w-20 h-16 sm:h-20 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse"></div>
-  <div class="absolute bottom-1/4 right-1/3 w-12 sm:w-16 h-12 sm:h-16 bg-stone-400 dark:bg-gray-500 rounded-full opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
 </section>
