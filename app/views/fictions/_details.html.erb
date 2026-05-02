@@ -194,11 +194,12 @@
           <div class="relative">
             <!-- Main Badge - Largest -->
             <% main_rank = show_presenter.ranks.first %>
-            <% if main_rank && Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[main_rank[0]]}.webp"].present? %>
+            <% main_badge_slug = main_rank && genre_badge_slug(main_rank[0]) %>
+            <% if main_badge_slug.present? && Rails.application.assets_manifest.assets["badges/#{main_badge_slug}.webp"].present? %>
               <div class="text-center mb-4">
                 <div class="relative inline-block">
-                  <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[main_rank[0]]}.webp"),
-                                alt: "badge-#{FictionsHelper::GENRE_BADGES[main_rank[0]]}",
+                  <%= image_tag asset_path("badges/#{main_badge_slug}.webp"),
+                                alt: "badge-#{main_badge_slug}",
                                 class: "h-24 w-24 rounded-full object-cover shadow-lg ring-4 ring-yellow-400 dark:ring-yellow-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" %>
                   <div class="absolute -top-2 -right-2 bg-red-500 text-white text-lg font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
                     #<%= main_rank[1] %>
@@ -214,11 +215,12 @@
               <div class="flex justify-center space-x-3">
                 <% show_presenter.ranks.to_a[1..3].each do |rank_data| %>
                   <% rank, value = rank_data %>
-                  <% if Rails.application.assets_manifest.assets["badges/#{FictionsHelper::GENRE_BADGES[rank]}.webp"].present? %>
+                  <% rank_badge_slug = genre_badge_slug(rank) %>
+                  <% if rank_badge_slug.present? && Rails.application.assets_manifest.assets["badges/#{rank_badge_slug}.webp"].present? %>
                     <div class="text-center">
                       <div class="relative">
-                        <%= image_tag asset_path("badges/#{FictionsHelper::GENRE_BADGES[rank]}.webp"),
-                                      alt: "badge-#{FictionsHelper::GENRE_BADGES[rank]}",
+                        <%= image_tag asset_path("badges/#{rank_badge_slug}.webp"),
+                                      alt: "badge-#{rank_badge_slug}",
                                       class: "h-12 w-12 rounded-full object-cover shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" %>
                         <div class="absolute -top-1 -right-1 bg-blue-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                           #<%= value %>

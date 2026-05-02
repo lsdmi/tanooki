@@ -16,17 +16,11 @@ export default class extends Controller {
   }
 
   startAutoAdvance() {
-    this.intervalId = setInterval(() => this.next(), 5000);
-  }
-
-  next() {
-    this.currentIndex = (this.currentIndex + 1) % this.slideCount();
-    this.update();
-  }
-
-  prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.slideCount()) % this.slideCount();
-    this.update();
+    if (this.slideCount() <= 1) return;
+    this.intervalId = setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.slideCount();
+      this.update();
+    }, 5000);
   }
 
   slideCount() {
@@ -37,24 +31,26 @@ export default class extends Controller {
     const idx = parseInt(event.currentTarget.dataset.index, 10);
     this.currentIndex = idx;
     this.update();
-  }  
+  }
 
   update() {
     const offset = -this.currentIndex * 100;
     this.slidesTarget.style.transform = `translateX(${offset}%)`;
-  
+
     if (this.hasIndicatorTarget) {
+      const inactive = ["h-2.5", "w-2.5", "rounded-full", "bg-white/35", "hover:bg-white/55"];
+      const active = ["h-1.5", "w-8", "rounded-full", "bg-cyan-500", "shadow-sm", "dark:bg-rose-500"];
       this.indicatorTargets.forEach((btn, idx) => {
         if (idx === this.currentIndex) {
-          btn.classList.add("bg-cyan-700", "dark:bg-rose-700");
-          btn.classList.remove("bg-gray-200", "dark:!bg-white/50");
+          inactive.forEach((c) => btn.classList.remove(c));
+          active.forEach((c) => btn.classList.add(c));
         } else {
-          btn.classList.remove("bg-cyan-700", "dark:bg-rose-700");
-          btn.classList.add("bg-gray-200", "dark:!bg-white/50");
+          active.forEach((c) => btn.classList.remove(c));
+          inactive.forEach((c) => btn.classList.add(c));
         }
       });
     }
-  
+
     const activeSlide = this.slidesTarget.children[this.currentIndex];
     const lazyBg = activeSlide.querySelector('[data-controller="lazy-bg"]');
     if (lazyBg) {
@@ -71,5 +67,5 @@ export default class extends Controller {
       }
       lazyBg.dispatchEvent(new CustomEvent('lazy-bg:load', { bubbles: true }));
     }
-  }  
+  }
 }

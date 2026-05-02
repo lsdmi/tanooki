@@ -1,11 +1,17 @@
 one:
   id: 1
-  name: <%= Faker::Book.title %>
+  name: Жанр Альфа
+  slug: genre-alpha
+  description: "Тестовий жанр «Альфа» — короткий унікальний опис для фікстур і перевірок асоціацій."
 
 two:
   id: 2
-  name: <%= Faker::Book.title %>
+  name: Жанр Бета
+  slug: genre-beta
+  description: "Тестовий жанр «Бета» — окремий текст, щоб відрізняти записи в тестах і адмінці."
 
 three:
   id: 3
-  name: <%= Faker::Book.title %>
+  name: Жанр Гамма
+  slug: genre-gamma
+  description: "Тестовий жанр «Гамма» — третій незалежний опис для стабільних модельних тестів."

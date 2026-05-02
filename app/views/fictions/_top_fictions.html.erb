@@ -5,17 +5,19 @@
   <div class="border border-cyan-700 dark:border-rose-700"></div>
 </div>
 
+<%# locals: fictions:, released_chapter_counts: {} %>
+<% released_chapter_counts = local_assigns.fetch(:released_chapter_counts, {}) %>
 <div class="flex lg:block overflow-x-auto lg:overflow-x-visible -mx-4 lg:mx-0 px-4 lg:px-0">
-  <div class="flex lg:block space-x-4 lg:space-x-0 lg:space-y-4">
+  <div class="flex max-xl:justify-center xl:justify-start lg:block space-x-4 lg:space-x-0 lg:space-y-4">
     <% fictions.each_with_index do |fiction, index| %>
-      <div class="flex-shrink-0 w-32 lg:w-full lg:flex lg:items-center">
+      <div class="flex-shrink-0 w-32 lg:w-full lg:flex lg:items-center max-xl:justify-center xl:justify-start">
         <div class="lg:grid lg:grid-cols-12 lg:gap-4 lg:w-full">
           <span class="hidden lg:flex lg:items-center lg:col-span-1 text-sm font-bold text-stone-600 dark:text-gray-400"><%= index+1 %></span>
 
           <%= link_to fiction_path(fiction), class: 'relative block lg:col-span-3 transition duration-300 transform hover:scale-105' do %>
             <%= image_tag url_for(fiction.cover),
               alt: fiction.cover.blob.filename.to_s,
-              class: "w-full h-48 lg:h-24 object-cover rounded-md shadow-sm",
+              class: "w-full h-48 lg:h-32 object-cover rounded-md shadow-sm",
               loading: "lazy",
               data: {
                 controller: "lazy-image",
@@ -24,25 +26,47 @@
               } %>
           <% end %>
 
-          <div class="mt-2 lg:mt-1 lg:col-span-8 lg:pl-0 flex flex-col space-y-2">
-            <%= link_to fiction_path(fiction), class: 'group' do %>
-              <p class="leading-tight text-md font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
+          <div class="mt-2 lg:col-span-8 lg:pl-0 flex flex-col space-y-2 text-center lg:text-left">
+            <%= link_to fiction_path(fiction), class: 'group mt-2 lg:mt-0' do %>
+              <p class="leading-tight text-xs lg:text-md font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 lg:line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
                 <%= fiction.title %>
               </p>
             <% end %>
-            <div class="text-xs text-black mx-1 dark:text-gray-300 flex flex-row gap-1">
-              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
-                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-              </svg>
-              <%= tag.span format_view_count(fiction.views), class: '' %>
+            <% released_n = released_chapter_counts.fetch(fiction.id) { fiction.chapters.merge(Chapter.released).count } %>
+            <p class="text-xs text-stone-600 dark:text-gray-400 line-clamp-1">
+              <span class="text-stone-500 dark:text-gray-500"></span>
+              <%= fiction.author %>
+              <span class="hidden lg:inline">
+                <span class="mx-1 text-stone-400 dark:text-gray-600 select-none" aria-hidden="true">·</span><%= released_n %> розділів
+              </span>
+            </p>
+            <div class="mb-3 text-xs text-stone-600 dark:text-gray-400 flex flex-wrap items-center justify-center gap-x-3 lg:justify-start">
+              <span class="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400" title="Середня оцінка">
+                <svg class="w-4 h-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <%= fiction.average_rating.positive? ? number_with_precision(fiction.average_rating, precision: 1) : '—' %>
+              </span>
+              <span class="inline-flex items-center gap-1" title="Перегляди">
+                <svg class="w-4 h-4 shrink-0 text-stone-500 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                  <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                </svg>
+                <%= format_view_count(fiction.views) %>
+              </span>
+              <span class="hidden lg:inline-flex items-center gap-1" title="Статус перекладу">
+                <svg class="w-4 h-4 shrink-0 text-stone-500 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class='text-stone-600 dark:text-gray-400'><%= Fiction.statuses[fiction.status] %></span>
+              </span>
             </div>
             <% if fiction.genres.any? %>
-              <div class="text-xs flex flex-wrap gap-2">
-                <% genres = fiction.genres.sample(2) %>
-                <% genres.each_with_index do |genre, i| %>
+              <div class="hidden text-xs lg:flex lg:flex-wrap lg:gap-2">
+                <% genres = fiction.genres.sample(3) %>
+                <% genres.each do |genre| %>
                   <%= tag.span genre.name,
-                    class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i == 1}" %>
+                    class: 'shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md' %>
                 <% end %>
               </div>
             <% end %>

@@ -17,6 +17,18 @@ class FictionIndexPresenter
     @most_reads ||= FictionIndexVariablesManager.most_reads
   end
 
+  def released_chapters_counts_for_most_reads
+    @released_chapters_counts_for_most_reads ||= begin
+      fiction_ids = most_reads.ids
+      Rails.cache.fetch(['fiction_index/released_chapters_by_fiction', fiction_ids.sort], expires_in: 12.hours) do
+        Chapter.released
+               .where(fiction_id: fiction_ids)
+               .group(:fiction_id)
+               .count
+      end
+    end
+  end
+
   def latest_updates
     @latest_updates ||= FictionIndexVariablesManager.latest_updates
   end

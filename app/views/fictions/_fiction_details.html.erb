@@ -1,5 +1,5 @@
-<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-4 fade-in-active dark:bg-gray-800 rounded-lg">
-  <div data-controller="lazy-image" data-lazy-image-image-id="<%= fiction.id %>" class="relative sm:h-64 transition duration-300 transform hover:scale-105">
+<div id="fiction_details" data-fiction-picker-target="frame" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-y-4 gap-x-4 sm:gap-x-6 px-0 sm:px-2 fade-in-active dark:bg-gray-800 rounded-lg">
+  <div data-controller="lazy-image" data-lazy-image-image-id="<%= fiction.id %>" class="relative sm:h-70 transition duration-300 transform hover:scale-105">
     <div id="spinner-<%= fiction.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
       <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -19,26 +19,26 @@
   <div class="col-span-2 md:col-span-3 lg:col-span-2 my-1">
     <div>
       <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
-        <h3 class="text-xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
+        <h3 class="text-sm sm:text-2xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
           <%= fiction.title %>
         </h3>
       <% end %>
 
         <% if fiction.genres.any? %>
-          <div class="text-xs flex flex-wrap gap-2 mt-1">
+          <div class="text-xs flex flex-wrap gap-2 mt-2">
             <% genres = fiction.genres.sample(4) %>
             <% genres.each_with_index do |genre, i| %>
               <%= tag.span genre.name,
-                class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i == 1}" %>
+                class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md #{'hidden lg:inline' if i > 1}" %>
             <% end %>
           </div>
         <% end %>
     </div>
 
-    <p class="text-stone-700 dark:text-gray-300 text-sm line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
+    <p class="text-stone-700 dark:text-gray-300 text-xs sm:text-sm line-clamp-4 sm:line-clamp-6 whitespace-break-spaces my-2 sm:my-4"><%= fiction.description %></p>
 
-    <%= link_to fiction_path(fiction), data: { turbo: false }, class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-2 px-2 sm:px-6 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+    <%= link_to fiction_path(fiction), data: { turbo: false }, class: "shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:py-2 sm:px-2 sm:px-6 rounded-xl hover:bg-cyan-800 dark:hover:bg-rose-800 transition duration-300" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 sm:block shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
       </svg>
       <span class="">Читати</span>

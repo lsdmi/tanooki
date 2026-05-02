@@ -1,11 +1,11 @@
 <div class="min-h-screen">
-  <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
+  <div class="max-w-[1440px] mx-auto px-4 pb-8 z-10 relative">
     <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
 
     <!-- First Section: Rising and Cheering Fictions -->
-    <div class="flex flex-col lg:flex-row mb-8 mt-8 lg:mt-12">
+    <div class="flex flex-col gap-8 lg:flex-row lg:gap-10 mb-8 mt-8 lg:mt-12">
       <!-- Rising Fictions -->
-      <div class="w-full lg:w-2/4 lg:pr-4 mb-8 lg:mb-0">
+      <div class="w-full lg:w-2/4 lg:mb-0">
         <%= render 'hot_updates', fictions: @index_presenter.latest_updates %>
       </div>
 
@@ -61,10 +61,10 @@
     </div>
 
     <!-- Second Section: Rankings and Filtered Fictions -->
-    <div class="flex flex-col lg:flex-row">
+    <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
       <!-- Rankings -->
-      <div class="w-full lg:w-1/3 lg:pr-4 mb-8 lg:mb-0">
-        <%= render 'top_fictions', fictions: @index_presenter.most_reads %>
+      <div class="w-full lg:w-1/3">
+        <%= render 'top_fictions', fictions: @index_presenter.most_reads, released_chapter_counts: @index_presenter.released_chapters_counts_for_most_reads %>
       </div>
 
       <!-- Filtered Fictions -->
