@@ -2,7 +2,7 @@
 <% carousel_nav_visible = showcase.many? %>
 <section class="relative overflow-hidden mt-8 mb-4 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
-    <div data-controller="custom-carousel" class="relative w-full overflow-hidden h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]">
+    <div data-controller="custom-carousel" class="relative w-full overflow-hidden h-[calc(16rem+1em)] md:h-[calc(24rem+1em)]">
       <!-- Spinner overlay -->
       <div data-custom-carousel-target="spinner" class="absolute inset-0 flex items-center justify-center bg-black/80 z-40">
         <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -12,7 +12,7 @@
       </div>
       <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out w-full h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]" style="transform: translateX(0);">
         <% showcase.each do |fiction| %>
-          <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)] overflow-hidden rounded-xl">
+          <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-xl">
             <div
               data-controller="lazy-bg"
               data-lazy-bg-id-value="<%= fiction.id %>"
@@ -21,8 +21,8 @@
               id="lazy-bg-<%= fiction.id %>"
               style="background-image: none;"
             >
-              <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% sm:to-80% transition-opacity duration-700 ease-in-out"></div>
-              <div class="absolute left-0 top-1/2 z-10 min-w-0 -translate-y-1/2 px-4 sm:px-12 w-full max-w-[min(40rem,calc(100%-2rem))] lg:max-w-[min(60rem,calc(100%-3rem))] transition-all duration-700 ease-in-out">
+              <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80% transition-opacity duration-700 ease-in-out"></div>
+              <div class="absolute left-0 top-1/2 z-10 min-w-0 -translate-y-1/2 px-4 md:px-12 w-full max-w-[min(30rem,calc(100%-2rem))] md:max-w-[min(40rem,calc(100%-3rem))] lg:max-w-[min(60rem,calc(100%-3rem))] transition-all duration-700 ease-in-out">
                 <div class="flex flex-wrap items-center gap-2 mb-4">
                   <% if fiction.adult_content? %>
                     <span class="inline-flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-1 text-xs md:text-sm font-bold text-white shadow-md ring-1 ring-red-800/80 dark:bg-red-700 dark:ring-red-900">
@@ -93,13 +93,13 @@
 
                 <div class="flex flex-wrap items-center gap-3">
                   <% first_readable_chapter = ordered_chapters(fiction, viewer: current_user).first %>
-                  <%= link_to (first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction)), class: 'inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white shadow-lg ring-1 ring-cyan-500/30 hover:bg-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-300/40 transition dark:bg-rose-600 dark:hover:bg-rose-500 dark:ring-rose-500/30 dark:focus:ring-rose-300/30 sm:px-5 sm:py-3 lg:text-lg', data: { turbo: false } do %>
+                  <%= link_to (first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction)), class: 'inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white shadow-lg ring-1 ring-cyan-500/30 hover:bg-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-300/40 transition dark:bg-rose-600 dark:hover:bg-rose-500 dark:ring-rose-500/30 dark:focus:ring-rose-300/30 lg:text-lg', data: { turbo: false } do %>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                     </svg>
                     Читати зараз
                   <% end %>
-                  <%= link_to fiction_path(fiction), class: 'inline-flex items-center justify-center rounded-xl border border-white/35 bg-white/5 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white backdrop-blur-sm hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 transition sm:px-5 sm:py-3 lg:text-lg' do %>
+                  <%= link_to fiction_path(fiction), class: 'inline-flex items-center justify-center rounded-xl border border-white/35 bg-white/5 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white backdrop-blur-sm hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 transition lg:text-lg' do %>
                     Детальніше
                   <% end %>
                 </div>

@@ -161,7 +161,7 @@
                         <%= chapter.display_title %>
                       </a>
                       <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Опубліковано: <%= l(chapter.public_at, format: :short).downcase %>
+                        Опубліковано: <%= l(chapter.public_at.in_time_zone('Kyiv'), format: :short_datetime).downcase %>
                       </p>
                     </div>
                   </div>
@@ -238,7 +238,7 @@
                   <%= chapter.display_title %>
                 </a>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Опубліковано: <%= l(chapter.public_at, format: :short).downcase %>
+                  Опубліковано: <%= l(chapter.public_at.in_time_zone('Kyiv'), format: :short_datetime).downcase %>
                 </p>
               </div>
             </div>
