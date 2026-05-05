@@ -1,0 +1,8 @@
+<%# locals: skeleton:, pagy:, fictions:, released_by_fiction: %>
+<%= turbo_frame_tag 'genre-recent-fictions-page' do %>
+  <%= render 'fictions/genres/genre_recent_fictions_list',
+             skeleton: skeleton,
+             pagy: pagy,
+             fictions: fictions,
+             released_by_fiction: released_by_fiction %>
+<% end %>

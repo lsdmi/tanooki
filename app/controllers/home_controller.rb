@@ -19,7 +19,7 @@ class HomeController < ApplicationController
   end
 
   def top_fictions
-    FictionIndexVariablesManager.hot_updates
+    Fictions::IndexVariablesManager.hot_updates
   end
 
   def top_tales

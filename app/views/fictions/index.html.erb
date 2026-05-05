@@ -1,6 +1,10 @@
 <div class="min-h-screen">
   <div class="max-w-[1440px] mx-auto px-4 pb-8 z-10 relative">
-    <%= render 'showcase_carousel', showcase: @index_presenter.showcase, popular_novelty: @index_presenter.popular_novelty, top_fictions: @index_presenter.most_reads, latest_updates: @index_presenter.latest_updates %>
+    <%= render 'showcase_carousel',
+               showcase: @index_presenter.showcase,
+               popular_novelty_ids: @index_presenter.carousel_popular_novelty_ids,
+               top_fiction_ids: @index_presenter.carousel_most_read_ids,
+               latest_update_ids: @index_presenter.carousel_latest_update_ids %>
 
     <!-- First Section: Rising and Cheering Fictions -->
     <div class="flex flex-col gap-8 lg:flex-row lg:gap-10 mb-8 mt-8 lg:mt-12">

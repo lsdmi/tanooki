@@ -1,0 +1,22 @@
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-16 lg:pb-20 z-10 relative">
+  <div class="px-5 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
+    <%= render 'fictions/genres/breadcrumbs', skeleton: @skeleton %>
+    <%= render 'fictions/genres/genre_heading', skeleton: @skeleton %>
+    <% if @genre_showcase.any? %>
+      <%= render 'fictions/showcase_carousel',
+                 showcase: @genre_showcase,
+                 popular_novelty_ids: @genre_showcase_popular_ids,
+                 top_fiction_ids: @genre_showcase_top_ids,
+                 latest_update_ids: @genre_showcase_latest_ids %>
+    <% end %>
+    <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton %>
+    <%= render 'fictions/genres/promo_row' %>
+    <% if @pagy_genre_recent.count.positive? %>
+      <%= render 'fictions/genres/recommended_section',
+                 skeleton: @skeleton,
+                 pagy: @pagy_genre_recent,
+                 fictions: @genre_recent_fictions,
+                 released_by_fiction: @genre_recent_released_counts %>
+    <% end %>
+  </div>
+</div>

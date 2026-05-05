@@ -38,8 +38,8 @@ class FictionShowPresenter
   end
 
   def ranks
-    Rails.cache.fetch("fiction-#{@fiction.slug}-ranks", expires_in: 24.hours) do
-      FictionRanker.new(fiction: @fiction).call.sort_by { |_genre, rank| rank }.to_h
+    @ranks ||= Rails.cache.fetch("fiction-#{@fiction.slug}-ranks", expires_in: 1.hour) do
+      Fictions::Ranker.new(fiction: @fiction).call.sort_by { |_genre, rank| rank }.to_h
     end
   end
 

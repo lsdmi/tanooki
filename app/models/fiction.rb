@@ -56,7 +56,7 @@ class Fiction < ApplicationRecord
         "GROUP BY fiction_id\n" \
         ') AS readings_counts ON readings_counts.fiction_id = fictions.id'
       )
-      .order('recent_readings_count DESC')
+      .order(Arel.sql('recent_readings_count DESC, fictions.id ASC'))
   }
   scope :recent, -> { where('created_at >= ?', 7.days.ago) }
   scope :safe_content, -> { where(adult_content: false) }

@@ -10,11 +10,11 @@ class FictionIndexPresenter
   end
 
   def popular_novelty
-    @popular_novelty ||= FictionIndexVariablesManager.popular_novelty
+    @popular_novelty ||= Fictions::IndexVariablesManager.popular_novelty
   end
 
   def most_reads
-    @most_reads ||= FictionIndexVariablesManager.most_reads
+    @most_reads ||= Fictions::IndexVariablesManager.most_reads
   end
 
   def released_chapters_counts_for_most_reads
@@ -30,7 +30,19 @@ class FictionIndexPresenter
   end
 
   def latest_updates
-    @latest_updates ||= FictionIndexVariablesManager.latest_updates
+    @latest_updates ||= Fictions::IndexVariablesManager.latest_updates
+  end
+
+  def carousel_popular_novelty_ids
+    @carousel_popular_novelty_ids ||= Fictions::IndexVariablesManager.popular_novelty_ids_for_badges
+  end
+
+  def carousel_most_read_ids
+    @carousel_most_read_ids ||= Fictions::IndexVariablesManager.most_reads_ids_for_badges
+  end
+
+  def carousel_latest_update_ids
+    @carousel_latest_update_ids ||= Fictions::IndexVariablesManager.latest_updates_ids_for_badges
   end
 
   def genres
@@ -46,7 +58,7 @@ class FictionIndexPresenter
   end
 
   def showcase
-    @showcase ||= FictionIndexVariablesManager.showcase
+    @showcase ||= Fictions::IndexVariablesManager.showcase
   end
 
   def filtered_fictions_locals

@@ -1,0 +1,15 @@
+<%# locals: skeleton: FictionGenrePageSkeleton %>
+<header class="mb-8 lg:mb-10">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]">
+        <%= skeleton.genre.name %>
+      </h1>
+      <% if (genre_desc = skeleton.genre.description.presence) %>
+        <p class="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+          <%= genre_desc %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</header>

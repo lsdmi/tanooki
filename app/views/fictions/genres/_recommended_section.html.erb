@@ -1,0 +1,20 @@
+<%# locals: skeleton:, pagy:, fictions:, released_by_fiction: %>
+<section class="mt-10 lg:mt-14" aria-labelledby="genre-recommended">
+  <header class="flex gap-3 sm:gap-4 mb-5 lg:mb-6">
+    <div class="w-1.5 shrink-0 self-stretch min-h-[2.75rem] rounded-full bg-cyan-600 dark:bg-rose-500" aria-hidden="true"></div>
+    <div class="min-w-0 pt-0.5">
+      <h2 id="genre-recommended" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
+        <%= skeleton.recommended_title %>
+      </h2>
+      <p class="mt-1.5 text-sm sm:text-[15px] text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
+        <%= skeleton.recommended_subtitle %>
+      </p>
+    </div>
+  </header>
+
+  <%= render 'fictions/genres/genre_recent_fictions_frame',
+             skeleton: skeleton,
+             pagy: pagy,
+             fictions: fictions,
+             released_by_fiction: released_by_fiction %>
+</section>

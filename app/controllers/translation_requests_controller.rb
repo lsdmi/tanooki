@@ -132,8 +132,8 @@ class TranslationRequestsController < ApplicationController
     available_ads = Advertisement.includes(%i[cover_attachment poster_attachment]).enabled
     @second_advertisement = available_ads.where.not(id: @advertisement.id).sample
 
-    # Load showcase fiction from FictionIndexVariablesManager
-    @showcase_fiction = FictionIndexVariablesManager.showcase.sample
+    # Load showcase fiction from Fictions::IndexVariablesManager
+    @showcase_fiction = Fictions::IndexVariablesManager.showcase.sample
   end
 
   def translation_request_params
