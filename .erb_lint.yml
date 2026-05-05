@@ -1,0 +1,10 @@
+---
+glob: "**/*.{html,turbo_stream}.erb"
+EnableDefaultLinters: true
+exclude:
+  - "**/vendor/**/*"
+  - "**/node_modules/**/*"
+linters:
+  # Default on otherwise; TrailingWhitespace can crash better_html on large templates.
+  TrailingWhitespace:
+    enabled: false

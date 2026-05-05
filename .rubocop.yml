@@ -1,12 +1,17 @@
+plugins:
+  - rubocop-capybara
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rails
+
 AllCops:
   NewCops: enable
+  SuggestExtensions: false
+  TargetRailsVersion: 8.0
   Exclude:
     - 'bin/**'
     - 'db/migrate/**'
     - 'db/schema.rb'
-
-Layout/EndOfLine:
-  Enabled: False
 
 Layout/LineLength:
   Exclude:
@@ -16,7 +21,3 @@ Metrics/BlockLength:
   Exclude:
     - 'config/environments/*'
     - 'config/routes.rb'
-
-
-Style/Documentation:
-  Enabled: false

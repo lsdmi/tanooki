@@ -39,14 +39,20 @@ group :development, :test do
 end
 
 group :development do
+  gem 'brakeman', require: false
   gem 'bullet'
   gem 'bundler-audit'
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
+  gem 'erb_lint', require: false
   gem 'letter_opener'
   gem 'rails_best_practices'
   gem 'rubocop'
+  gem 'rubocop-capybara', require: false
+  gem 'rubocop-minitest', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
 end

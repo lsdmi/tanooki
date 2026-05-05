@@ -158,6 +158,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Назва проекту</label>
           <input type="text"
+                 autocomplete="off"
                  id="edit-title-<%= request.id %>"
                  value="<%= request.title %>"
                  class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
@@ -166,6 +167,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Автор оригіналу</label>
           <input type="text"
+                 autocomplete="off"
                  id="edit-author-<%= request.id %>"
                  value="<%= request.author %>"
                  class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">
@@ -174,6 +176,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Посилання на оригінал</label>
           <input type="url"
+                 autocomplete="off"
                  id="edit-source-url-<%= request.id %>"
                  value="<%= request.source_url %>"
                  class="w-full text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded p-2 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500">

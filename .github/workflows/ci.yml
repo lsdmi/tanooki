@@ -1,4 +1,4 @@
-name: Run Tests
+name: CI
 
 on:
   push:
@@ -6,7 +6,24 @@ on:
       - '*'
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.4
+          bundler-cache: true
+      - name: RuboCop
+        run: bundle exec rubocop
+      - name: Brakeman
+        run: bundle exec brakeman --no-pager -q -A
+      - name: ERB Lint
+        run: bundle exec erb_lint --lint-all
+
+  test:
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -23,17 +40,16 @@ jobs:
           --health-retries=3
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.4
-      - name: Install dependencies
+          bundler-cache: true
+      - name: Install MySQL client
         run: |
           sudo apt-get update
           sudo apt-get install -y default-libmysqlclient-dev
-          sudo gem install bundler -v 2.3.7
-          bundle install
       - name: Set up environment variables
         run: cp .env.test .env
       - name: Compile assets
