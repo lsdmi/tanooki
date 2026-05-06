@@ -109,13 +109,15 @@
         <% end %>
       </div>
       <% if carousel_nav_visible %>
-        <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
-          <% showcase.each_with_index do |_fiction, idx| %>
+        <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2" role="group" aria-label="Навігація по слайдах вітрини">
+          <% showcase.each_with_index do |fiction, idx| %>
             <button
               type="button"
               data-custom-carousel-target="indicator"
               data-action="custom-carousel#goTo"
               data-index="<%= idx %>"
+              aria-label="Перейти до слайду <%= idx + 1 %> з <%= showcase.size %>: <%= fiction.title %>"
+              <% if idx.zero? %>aria-current="true"<% end %>
               class="carousel-indicator shrink-0 h-2.5 w-2.5 rounded-full bg-white/35 transition-all duration-300 hover:bg-white/55 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             ></button>
           <% end %>

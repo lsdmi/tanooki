@@ -15,7 +15,7 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     mock_epub_generator.expect :file_path, @dummy_file_path.to_s
     mock_epub_generator.expect :filename, 'generated_book.epub'
 
-    EpubGenerator.stub :new, mock_epub_generator do
+    Books::EpubExport.stub :new, mock_epub_generator do
       get epub_download_path(id: @rich_text)
     end
 
@@ -33,7 +33,7 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     mock_epub_generator.expect :file_path, @dummy_file_path.to_s
     mock_epub_generator.expect :filename, 'generated_book.epub'
 
-    EpubGenerator.stub :new, mock_epub_generator do
+    Books::EpubExport.stub :new, mock_epub_generator do
       get epub_multiple_downloads_path(chapter_ids: [1, 2, 3], volume_title: 'Том 1')
     end
 
@@ -46,7 +46,7 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should handle error and redirect' do
-    EpubGenerator.stub :new, ->(_) { raise StandardError } do
+    Books::EpubExport.stub :new, ->(_) { raise StandardError } do
       get epub_download_path(id: @rich_text)
     end
 

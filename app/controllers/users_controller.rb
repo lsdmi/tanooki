@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def pokemon_details
-    result = PokemonDetailsService.new(params[:pokemon_id]).call
+    result = Pokemons::UserPokemonDetails.new(params[:pokemon_id]).call
     render turbo_stream: update_pokemon_details(result.data)
   end
 

@@ -7,6 +7,8 @@ module MetaDescriptionHelper
   def meta_description
     if description_object.present?
       object_description
+    elsif genre_show_page?
+      genre_meta_description
     elsif title_object.present?
       scanlator_description
     elsif consts_paths?
@@ -89,6 +91,10 @@ module MetaDescriptionHelper
     "#{@scanlator.title} перекладають ранобе та фанфіки українською " \
       "(#{@scanlator.fictions.map(&:title).to_sentence.truncate(75)}). " \
       'Читайте онлайн на Бака!'
+  end
+
+  def genre_meta_description
+    I18n.t('meta.description.genres.show', name: @genre.name, count: @genre.fictions.count)
   end
 
   def title_object

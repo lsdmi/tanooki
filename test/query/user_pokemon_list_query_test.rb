@@ -9,31 +9,31 @@ class UserPokemonListQueryTest < ActiveSupport::TestCase
 
   test 'initializes with user' do
     query = UserPokemonListQuery.new(@user)
+
     assert_equal @user, query.instance_variable_get(:@user)
   end
 
-  test 'call returns ActiveRecord relation' do
+  test 'call returns a UserPokemon relation scoped to the user' do
     query = UserPokemonListQuery.new(@user)
     result = query.call
 
-    assert result.is_a?(ActiveRecord::Relation)
+    assert_kind_of ActiveRecord::Relation, result
     assert_equal UserPokemon, result.klass
+    assert_not result.where.not(user_id: @user.id).exists?
   end
 
-  test 'call returns query for correct user' do
+  test 'call is executable and chainable' do
     query = UserPokemonListQuery.new(@user)
     result = query.call
 
-    # The result should be a relation that can be executed
-    assert result.respond_to?(:to_a)
-    assert result.respond_to?(:where)
+    assert_respond_to result, :to_a
+    assert_respond_to result, :where
+    assert_respond_to result, :includes
   end
 
-  test 'call returns query with includes' do
-    query = UserPokemonListQuery.new(@user)
-    result = query.call
+  test 'call preloads pokemon and sprite attachment' do
+    result = UserPokemonListQuery.new(@user).call
 
-    # Check that the result has the expected structure
-    assert result.respond_to?(:includes)
+    assert_includes result.includes_values, { pokemon: :sprite_attachment }
   end
 end

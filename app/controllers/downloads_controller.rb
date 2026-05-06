@@ -13,9 +13,9 @@ class DownloadsController < ApplicationController
   private
 
   def generate_and_send_epub(ids, volume_title = nil)
-    epub_generator = EpubGenerator.new(ids, volume_title)
-    epub_generator.generate
-    send_file epub_generator.file_path, filename: epub_generator.filename, type: 'application/epub+zip'
+    epub_export = Books::EpubExport.new(ids, volume_title)
+    epub_export.generate
+    send_file epub_export.file_path, filename: epub_export.filename, type: 'application/epub+zip'
   rescue StandardError => _e
     handle_error
   end

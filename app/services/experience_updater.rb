@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ExperienceUpdater
-  include BattleConstants
+  include Pokemons::Battle::Constants
 
   def initialize(attacker, defender, attacker_experience, defender_experience)
     @attacker = attacker
@@ -44,7 +44,7 @@ class ExperienceUpdater
   end
 
   def apply_persistent_character_effects
-    CharacterHandler.handle_persistent_character(@attacker, @attacker_experience) if @attacker.character == 'persistent'
-    CharacterHandler.handle_persistent_character(@defender, @defender_experience) if @defender.character == 'persistent'
+    Pokemons::Battle::CharacterTraits.handle_persistent_character(@attacker, @attacker_experience) if @attacker.character == 'persistent'
+    Pokemons::Battle::CharacterTraits.handle_persistent_character(@defender, @defender_experience) if @defender.character == 'persistent'
   end
 end

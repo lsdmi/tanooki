@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BattleEngine
-  include BattleConstants
+  include Pokemons::Battle::Constants
 
   def initialize(attacker_team, defender_team, logger)
     @attacker_team_manager = TeamManager.new(attacker_team)

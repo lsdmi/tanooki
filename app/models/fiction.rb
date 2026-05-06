@@ -76,7 +76,7 @@ class Fiction < ApplicationRecord
   end
 
   def set_dropped_status
-    FictionStatusUpdater.new(self).call
+    Fictions::InactivityDrop.new(self).call
   end
 
   def related_fictions

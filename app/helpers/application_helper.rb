@@ -35,4 +35,8 @@ module ApplicationHelper
   def requires_sweetalert?
     controller_name.in?(%w[studio readings])
   end
+
+  def genre_show_page?
+    controller_path == 'fictions/genres' && action_name == 'show'
+  end
 end

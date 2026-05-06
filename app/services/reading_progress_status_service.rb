@@ -22,6 +22,6 @@ class ReadingProgressStatusService
   private
 
   def clear_caches
-    CacheClearer.new(@user, @reading_progress.fiction).clear_reading_caches
+    Reading::ProgressCacheInvalidation.new(@user, @reading_progress.fiction).clear
   end
 end

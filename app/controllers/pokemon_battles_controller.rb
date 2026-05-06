@@ -19,7 +19,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def battle_service
-    @battle_service ||= PokemonBattleService.new(
+    @battle_service ||= Pokemons::BattleRun.new(
       attacker_pokemons: current_user.user_pokemons,
       defender_pokemons: defender.user_pokemons,
       attacker_id: current_user.id,

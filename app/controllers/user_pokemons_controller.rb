@@ -26,7 +26,7 @@ class UserPokemonsController < ApplicationController
 
   def regenerate_opponent
     Rails.cache.delete("opponent_for_user:#{current_user.id}")
-    @pokemon_show = PokemonShow.new(current_user)
+    @pokemon_show = Pokemons::StudioTab.new(current_user)
     render turbo_stream: turbo_stream.update(
       'pokemon-leaderboard-screen',
       partial: 'users/pokemons/dex_leaderboard',

@@ -8,8 +8,8 @@ class TypeAdvantageTest < ActiveSupport::TestCase
   end
 
   test 'calculating effectiveness for valid types' do
-    assert_equal 1.25, TypeAdvantage.effectiveness('Вогняний', "Трав'яний")
-    assert_equal 1.25, TypeAdvantage.effectiveness('Водяний', 'Вогняний')
-    assert_equal 1.25, TypeAdvantage.effectiveness("Трав'яний", 'Водяний')
+    assert_in_delta 1.25, TypeAdvantage.effectiveness('Вогняний', "Трав'яний")
+    assert_in_delta 1.25, TypeAdvantage.effectiveness('Водяний', 'Вогняний')
+    assert_in_delta 1.25, TypeAdvantage.effectiveness("Трав'яний", 'Водяний')
   end
 end

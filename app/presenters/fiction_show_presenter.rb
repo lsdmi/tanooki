@@ -120,6 +120,6 @@ class FictionShowPresenter
   end
 
   def chapter_manager
-    @chapter_manager ||= FictionChapterListManager.new(@fiction, reading_progress, @translator, @current_user)
+    @chapter_manager ||= Fictions::ChapterNav.new(@fiction, reading_progress, @translator, @current_user)
   end
 end

@@ -21,11 +21,14 @@ module MetaHelper
     return scanlator_meta_title if scanlator_present?
     return user_profile_meta_title if user_profile_present?
     return bookshelf_meta_title if bookshelf_present?
+    return genre_meta_title if genre_show_page? && @genre&.persisted?
 
     default_meta_title
   end
 
   def meta_type
+    return 'website' if genre_show_page?
+
     case request.path
     when root_path, search_index_path, fictions_path, youtube_videos_path,
          alphabetical_fictions_path, calendar_fictions_path, tales_path, rules_path,
@@ -80,6 +83,10 @@ module MetaHelper
 
   def bookshelf_meta_title
     "#{@bookshelf.title} | Бака"
+  end
+
+  def genre_meta_title
+    I18n.t('meta.title.genres.show', name: @genre.name)
   end
 
   def default_meta_title

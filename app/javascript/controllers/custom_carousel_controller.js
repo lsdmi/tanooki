@@ -41,10 +41,13 @@ export default class extends Controller {
       const inactive = ["h-2.5", "w-2.5", "rounded-full", "bg-white/35", "hover:bg-white/55"];
       const active = ["h-1.5", "w-8", "rounded-full", "bg-cyan-500", "shadow-sm", "dark:bg-rose-500"];
       this.indicatorTargets.forEach((btn, idx) => {
-        if (idx === this.currentIndex) {
+        const isActive = idx === this.currentIndex;
+        if (isActive) {
+          btn.setAttribute("aria-current", "true");
           inactive.forEach((c) => btn.classList.remove(c));
           active.forEach((c) => btn.classList.add(c));
         } else {
+          btn.removeAttribute("aria-current");
           active.forEach((c) => btn.classList.remove(c));
           inactive.forEach((c) => btn.classList.add(c));
         }

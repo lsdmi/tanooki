@@ -14,26 +14,29 @@ class PublicationTest < ActiveSupport::TestCase
   end
 
   test 'should have one attached cover' do
-    assert @publication.cover.attached?
+    assert_predicate @publication.cover, :attached?
   end
 
   test 'should have rich text description' do
-    assert @publication.description.present?
+    assert_predicate @publication.description, :present?
   end
 
   test 'should be invalid without title' do
     @publication.title = nil
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should be invalid without description' do
     @publication.description = nil
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should be invalid without cover' do
     @publication.cover = nil
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should have highlights scope' do
@@ -60,25 +63,29 @@ class PublicationTest < ActiveSupport::TestCase
 
   test 'should not save publication with a description shorter than 500 characters' do
     @publication.description = 'Short description'
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should not save publication with a title shorter than 10 characters' do
     @publication.title = 'Title'
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should not save publication with a title longer than 100 characters' do
     @publication.title = 'Title' * 25
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 
   test 'should not save publication with a cover that is not a JPEG, PNG, SVG, or WebP' do
     invalid_image = Rack::Test::UploadedFile.new(
-      Rails.root.join('app', 'assets', 'stylesheets', 'actiontext.css')
+      Rails.root.join('app/assets/stylesheets/actiontext.css')
     )
 
     @publication.cover.attach(invalid_image)
-    assert_not @publication.valid?
+
+    assert_not_predicate @publication, :valid?
   end
 end
