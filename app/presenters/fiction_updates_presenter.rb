@@ -94,7 +94,7 @@ class FictionUpdatesPresenter
     {
       chapters_count: fiction_chapters.count,
       chapters_released_at: min_public_at_formatted(fiction_chapters),
-      fiction_genres: fiction.genres.sample(3).pluck(:name),
+      fiction_genres: fiction.genres.sample(3).map { |g| { name: g.name, slug: g.slug } },
       fiction_slug: fiction_slug,
       fiction_title: fiction.title,
       scanlator_bank_url: scanlator&.bank_url.presence,

@@ -39,7 +39,7 @@
           <% if fiction.genres.any? %>
             <div class="flex flex-wrap gap-0.5 mb-1">
               <% fiction.genres.limit(2).each do |genre| %>
-                  <%= link_to genre.name, search_index_path(search: [genre.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium px-1.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 transition duration-300', data: { turbo: false } %>
+                  <%= link_to genre.name, fiction_genre_fictions_path(genre), class: 'inline-block no-underline bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium px-1.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 dark:focus-visible:ring-purple-500 focus-visible:ring-offset-1', data: { turbo: false } %>
               <% end %>
             </div>
           <% end %>

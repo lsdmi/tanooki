@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
+  # Per-genre hub: hero, showcase carousel, new releases, and paginated “recommended” list.
   class GenresController < ApplicationController
     include LibraryHelper
 

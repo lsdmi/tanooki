@@ -63,7 +63,9 @@
                 <% if fiction_update[:fiction_genres].present? %>
                   <div class="mt-2 flex flex-wrap gap-1">
                     <% fiction_update[:fiction_genres].each do |genre| %>
-                      <span class="bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 sm:px-3 py-1 rounded-full text-xs hover:bg-stone-300 dark:hover:bg-stone-600 transition duration-300"><%= genre %></span>
+                      <%= link_to genre[:name], fiction_genre_fictions_path(genre[:slug]),
+                                  class: 'inline-block no-underline bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 sm:px-3 py-1 rounded-full text-xs hover:bg-stone-300 dark:hover:bg-stone-600 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-stone-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-stone-800',
+                                  data: { turbo_frame: '_top' } %>
                     <% end %>
                   </div>
                 <% end %>

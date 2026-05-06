@@ -51,11 +51,11 @@ class PopulateGenreSlugsAndDescriptions < ActiveRecord::Migration[8.0]
         effective_slug = genre.slug.presence || new_slug
 
         updates = {}
-        updates[:slug] = new_slug if genre.slug.blank? && new_slug.present?
+        updates[:slug] = new_slug if !genre.slug? && new_slug.present?
 
         if (text = DESCRIPTIONS_BY_SLUG[effective_slug]).present?
           updates[:description] = text
-        elsif genre.description.blank?
+        elsif !genre.description?
           updates[:description] = default_description(genre.name)
         end
 

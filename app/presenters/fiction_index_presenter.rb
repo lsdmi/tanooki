@@ -61,14 +61,6 @@ class FictionIndexPresenter
     @showcase ||= Fictions::IndexVariablesManager.showcase
   end
 
-  def filtered_fictions_locals
-    {
-      fictions: other,
-      genres:,
-      sample_genre:
-    }
-  end
-
   private
 
   def filtered_fiction_with_max_created_at_query

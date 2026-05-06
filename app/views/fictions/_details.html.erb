@@ -72,7 +72,8 @@
 
             <!-- Genre Tags -->
             <% fiction.genres.each do |genre| %>
-              <%= tag.span genre.name, class: 'bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300' %>
+              <%= link_to genre.name, fiction_genre_fictions_path(genre),
+                          class: 'inline-block bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm no-underline hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800' %>
             <% end %>
           </div>
         </div>
@@ -155,7 +156,15 @@
                 <% end %>
                 <div class="flex-1 min-w-0">
                   <%= link_to similar_fiction.title, fiction_path(similar_fiction), class: 'font-medium text-sm text-gray-900 dark:text-white truncate line-clamp-1' %>
-                  <div class="text-xs text-gray-600 dark:text-gray-300"><%= similar_fiction.genres.sample(2).map(&:name).join(', ') %></div>
+                  <div class="text-xs text-gray-600 dark:text-gray-300 min-w-0 line-clamp-1">
+                    <%= safe_join(
+                          similar_fiction.genres.sample(2).map { |genre|
+                            link_to genre.name, fiction_genre_fictions_path(genre),
+                                    class: 'text-inherit hover:text-cyan-700 dark:hover:text-rose-400 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-gray-500 rounded-sm'
+                          },
+                          ', '
+                        ) %>
+                  </div>
                 </div>
               </div>
             <% end %>
@@ -196,7 +205,8 @@
             <% main_rank = show_presenter.ranks.first %>
             <% main_badge_slug = main_rank && genre_badge_slug(main_rank[0]) %>
             <% if main_badge_slug.present? && Rails.application.assets_manifest.assets["badges/#{main_badge_slug}.webp"].present? %>
-              <div class="text-center mb-4">
+              <%= link_to fiction_genre_fictions_path(main_badge_slug),
+                          class: 'text-center mb-4 block text-inherit no-underline rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 dark:focus-visible:ring-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800' do %>
                 <div class="relative inline-block">
                   <%= image_tag asset_path("badges/#{main_badge_slug}.webp"),
                                 alt: "badge-#{main_badge_slug}",
@@ -208,7 +218,7 @@
                 <div class="mt-3 text-sm font-bold text-gray-900 dark:text-white">
                   <%= main_rank[0].to_s.titleize %>
                 </div>
-              </div>
+              <% end %>
             <% end %>
 
             <% if show_presenter.ranks.to_a[1..3].any? %>
@@ -217,7 +227,8 @@
                   <% rank, value = rank_data %>
                   <% rank_badge_slug = genre_badge_slug(rank) %>
                   <% if rank_badge_slug.present? && Rails.application.assets_manifest.assets["badges/#{rank_badge_slug}.webp"].present? %>
-                    <div class="text-center">
+                    <%= link_to fiction_genre_fictions_path(rank_badge_slug),
+                                class: 'text-center text-inherit no-underline inline-block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 dark:focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800' do %>
                       <div class="relative">
                         <%= image_tag asset_path("badges/#{rank_badge_slug}.webp"),
                                       alt: "badge-#{rank_badge_slug}",
@@ -229,7 +240,7 @@
                       <div class="mt-1 text-xs text-gray-600 dark:text-gray-400 font-medium">
                         <%= rank.to_s.titleize.length > 5 ? "#{rank.to_s.titleize[0..4]}..." : rank.to_s.titleize %>
                       </div>
-                    </div>
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>

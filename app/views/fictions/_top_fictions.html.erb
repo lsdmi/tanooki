@@ -65,8 +65,8 @@
               <div class="hidden text-xs lg:flex lg:flex-wrap lg:gap-2">
                 <% genres = fiction.genres.sample(3) %>
                 <% genres.each do |genre| %>
-                  <%= tag.span genre.name,
-                    class: 'shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md' %>
+                  <%= link_to genre.name, fiction_genre_fictions_path(genre),
+                    class: 'inline-block no-underline shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-md hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 dark:focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900' %>
                 <% end %>
               </div>
             <% end %>

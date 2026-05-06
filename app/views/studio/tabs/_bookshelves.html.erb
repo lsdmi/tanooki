@@ -1,3 +1,4 @@
+<% bookshelves = local_assigns.fetch(:bookshelves, []) %>
 <%= turbo_frame_tag "bookshelves-list" do %>
   <div class="space-y-6">
     <!-- CTA Card -->
@@ -20,7 +21,7 @@
     </div>
 
     <!-- Bookshelves List -->
-    <% if @bookshelves.any? %>
+    <% if bookshelves.any? %>
       <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
         <!-- Desktop Table View -->
         <div class="hidden sm:block rounded-lg relative overflow-x-auto">
@@ -36,7 +37,7 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-              <% @bookshelves.each do |bookshelf| %>
+              <% bookshelves.each do |bookshelf| %>
                 <tr class="hover:bg-cyan-50 dark:hover:bg-rose-900/10 transition-colors duration-200">
                   <th scope="row" class="whitespace-nowrap p-4 text-sm font-medium text-gray-900 dark:text-white">
                     <div class="flex items-center space-x-3">
@@ -121,7 +122,7 @@
         <!-- Card View (Mobile Only) -->
         <div class="sm:hidden p-6">
           <div class="grid grid-cols-1 gap-6">
-            <% @bookshelves.each do |bookshelf| %>
+            <% bookshelves.each do |bookshelf| %>
               <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <!-- Header with icon and title -->
                 <div class="flex items-start space-x-3 mb-3">

@@ -14,10 +14,6 @@ class FictionsController < ApplicationController
 
   def index
     @index_presenter = FictionIndexPresenter.new(params)
-    respond_to do |format|
-      format.html
-      format.turbo_stream { render_filtered_fictions }
-    end
   end
 
   def show
@@ -130,14 +126,6 @@ class FictionsController < ApplicationController
 
   def fiction_page
     (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
-  end
-
-  def render_filtered_fictions
-    render turbo_stream: turbo_stream.replace(
-      'filtered-fictions',
-      partial: 'filtered_fiction_list',
-      locals: @index_presenter.filtered_fictions_locals
-    )
   end
 
   def render_sorted_chapters
