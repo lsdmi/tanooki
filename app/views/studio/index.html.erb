@@ -9,7 +9,7 @@
 
     <!-- Tab Content -->
     <%= turbo_frame_tag 'tab-content' do %>
-      <%= render "studio/tabs/#{@active_tab}",
+      <%= render Studio.tab_partial(@active_tab),
             comments: @comments,
             fictions: @fictions,
             pagy: @pagy,

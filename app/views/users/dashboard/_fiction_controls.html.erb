@@ -19,8 +19,7 @@
           tag_id: nil,
           url: fiction_path(fiction, page: params[:page])
         }
-      )
-  %>
+      ) %>
 
   <%= link_to reading_path(fiction.slug), data: { turbo: false }, class: "px-5 py-2 text-sm font-medium text-stone-900 bg-stone-200 rounded-full hover:bg-stone-300 transition-all flex items-center gap-2" do %>
     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-stone-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -5,7 +5,7 @@
       <% if training_cooldown?(current_user) %>
         <div class="flex flex-col items-center">
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5" />
           </svg>
           <%= tag.p training_cooldown_reason(current_user), class: 'text-xs text-black dark:text-white truncate font-light mx-px mt-1' %>
         </div>
@@ -21,8 +21,7 @@
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
-              focusable="false"
-            >
+              focusable="false">
               <g>
                 <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M8.09118 8H9.36418C9.72392 8.00873 10.0086 8.30725 10.0002 8.667V15.333C10.0086 15.6927 9.72392 15.9913 9.36418 16H8.09118C7.73144 15.9913 7.4468 15.6927 7.45518 15.333V14H5.63618C5.27644 13.9913 4.9918 13.6927 5.00018 13.333V10.667C4.9918 10.3073 5.27644 10.0087 5.63618 10H7.45518V8.667C7.4468 8.30725 7.73144 8.00873 8.09118 8Z"
@@ -49,8 +48,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6 text-black dark:text-white transform transition duration-500 hover:scale-110"
-        >
+          class="w-6 h-6 text-black dark:text-white transform transition duration-500 hover:scale-110">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
         </svg>
         <p class="ml-1 mb-3 font-normal text-gray-700 dark:text-gray-300">Відомості:</p>

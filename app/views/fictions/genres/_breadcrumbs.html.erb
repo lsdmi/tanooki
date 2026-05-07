@@ -1,5 +1,5 @@
 <%# locals: skeleton: FictionGenrePageSkeleton %>
-<div class="pb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-y-2">
+<div class="pb-4 flex gap-3 flex-row flex-wrap items-center justify-between gap-y-2">
   <nav class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 min-w-0" aria-label="Навігація">
     <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
       <% skeleton.breadcrumbs.each_with_index do |crumb, i| %>
@@ -16,7 +16,7 @@
       <% end %>
     </ol>
   </nav>
-  <p class="inline-flex shrink-0 items-center gap-2 self-start sm:self-center rounded-full bg-cyan-900 px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-sm ring-1 ring-black/5 dark:bg-red-700 dark:ring-red-900" role="status" aria-label="<%= skeleton.found_fictions_badge_text %>">
+  <p class="inline-flex shrink-0 items-center gap-2 self-start sm:self-center rounded-md bg-cyan-900 px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-sm ring-1 ring-black/5 dark:bg-red-700 dark:ring-red-900" role="status" aria-label="<%= skeleton.found_fictions_badge_text %>">
     <svg class="h-4 w-4 shrink-0 opacity-95" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.984 8.984 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25A8.966 8.966 0 0118 3.75c1.052 0 2.062.18 3 .512v14.25A8.985 8.985 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
     </svg>

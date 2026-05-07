@@ -4,6 +4,15 @@ require 'test_helper'
 
 module Studio
   class TabContentTest < ActiveSupport::TestCase
+    test 'normalize_tab_id falls back to blogs for unknown ids' do
+      assert_equal 'blogs', Studio.normalize_tab_id('not-a-tab')
+    end
+
+    test 'tab_partial maps known tab ids to partial paths' do
+      assert_equal 'studio/tabs/pokemons', Studio.tab_partial('pokemons')
+      assert_equal 'studio/tabs/blogs', Studio.tab_partial('nope')
+    end
+
     test 'call with pokemons tab assigns Pokemons::StudioTab' do
       user = users(:user_one)
       service = TabContent.new(user, 'pokemons', {})
@@ -45,10 +54,15 @@ module Studio
       assert_equal expected.to_a, service.instance_variable_get(:@avatars).to_a
     end
 
-    test 'call raises when tab has no content loader' do
-      service = TabContent.new(users(:user_one), 'not_a_real_tab', {})
+    test 'call falls back to blogs when tab id is unknown' do
+      user = users(:user_one)
+      service = TabContent.new(user, 'not_a_real_tab', {})
 
-      assert_raises(NoMethodError) { service.call }
+      service.call
+
+      assert_instance_of Pagy, service.instance_variable_get(:@pagy)
+      assert_equal user.publications.order(created_at: :desc).limit(8).to_a,
+                   service.instance_variable_get(:@publications).to_a
     end
   end
 end

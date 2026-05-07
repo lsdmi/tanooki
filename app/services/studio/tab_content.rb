@@ -7,7 +7,7 @@ module Studio
 
     def initialize(user, active_tab, params = {})
       @user = user
-      @active_tab = active_tab
+      @active_tab = Studio.normalize_tab_id(active_tab)
       @params = params
     end
 
