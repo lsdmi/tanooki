@@ -10,7 +10,7 @@
                  latest_update_ids: @genre_showcase_latest_ids %>
     <% end %>
     <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton %>
-    <%= render 'fictions/genres/promo_row' %>
+    <%= render 'fictions/genres/promo_row', advertisement: @index_presenter.hero_ad %>
     <% if @pagy_genre_recent.count.positive? %>
       <%= render 'fictions/genres/recommended_section',
                  skeleton: @skeleton,

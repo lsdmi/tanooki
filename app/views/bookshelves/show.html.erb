@@ -12,7 +12,12 @@
               </h1>
             </div>
             <div class="relative z-10">
-              <%= render partial: 'fiction_lists/dynamic_content', locals: { fictions: @fictions, pagy: @pagy } %>
+              <%= render partial: 'fiction_lists/dynamic_content',
+                         locals: {
+                           fictions: @fictions,
+                           pagy: @pagy,
+                           pagy_custom_params: @fiction_list_pagy_params
+                         } %>
             </div>
           </div>
         </div>

@@ -6,9 +6,11 @@ class FictionListsController < ApplicationController
 
   def alphabetical
     @pagy, @fictions = paginated_fictions
+    @fiction_list_pagy_params = FictionListFilterParams.permit_for_pagy(params)
 
     if turbo_frame_request_id == 'fiction-list-page'
-      return render partial: 'fiction_lists/dynamic_content', locals: { fictions: @fictions, pagy: @pagy }
+      return render partial: 'fiction_lists/dynamic_content',
+                    locals: { fictions: @fictions, pagy: @pagy, pagy_custom_params: @fiction_list_pagy_params }
     end
 
     respond_to do |format|
@@ -25,7 +27,7 @@ class FictionListsController < ApplicationController
     pagy(
       FictionListQueryBuilder.new(
         base_scope,
-        params.permit(:genre, :only_new, :longreads, :evening, :top_rated, :finished, :adult_content)
+        FictionListFilterParams.permit_for_query(params)
       ).call,
       limit: 20
     )
@@ -35,7 +37,11 @@ class FictionListsController < ApplicationController
     render turbo_stream: turbo_stream.update(
       'fiction-list-page',
       partial: 'fiction_lists/dynamic_content',
-      locals: { fictions: @fictions, pagy: @pagy }
+      locals: {
+        fictions: @fictions,
+        pagy: @pagy,
+        pagy_custom_params: @fiction_list_pagy_params
+      }
     )
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# In-memory snapshot of a Pokémon's battle-relevant stats (power, luck, fatigue, etc.).
 class BattleStats
   attr_reader :id, :power, :luck, :experience, :tiredness, :type, :raw_total, :active
 

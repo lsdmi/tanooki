@@ -10,16 +10,18 @@ class FictionGenresTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @fiction_genre.valid?
+    assert_predicate @fiction_genre, :valid?
   end
 
   test 'should require fiction' do
     @fiction_genre.fiction = nil
+
     assert_not @fiction_genre.valid?
   end
 
   test 'should require genre' do
     @fiction_genre.genre = nil
+
     assert_not @fiction_genre.valid?
   end
 

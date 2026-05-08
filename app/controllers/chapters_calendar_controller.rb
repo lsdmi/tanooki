@@ -22,7 +22,10 @@ class ChaptersCalendarController < ApplicationController
     turbo_stream.update(
       'chapters_calendar_updates',
       partial: 'chapters_calendar/updates_frame',
-      locals: { fictions: @fictions }
+      locals: {
+        fictions: @fictions,
+        subscriptions_filter_active: @subscriptions_filter_active
+      }
     )
   end
 

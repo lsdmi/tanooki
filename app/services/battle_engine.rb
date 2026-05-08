@@ -47,7 +47,7 @@ class BattleEngine
   end
 
   def apply_character_effects(attacker, defender, attacker_stats, defender_stats)
-    BattleCharacterEffects.apply(attacker, defender, attacker_stats, defender_stats)
+    Pokemons::Battle::CharacterEffects.apply(attacker, defender, attacker_stats, defender_stats)
   end
 
   def handle_victory(attacker, defender, attacker_stats, defender_stats)
@@ -65,7 +65,7 @@ class BattleEngine
   end
 
   def apply_victory_character_effects(winner, loser)
-    BattleCharacterEffects.apply_victory(winner, loser, @attacker_team_manager)
+    Pokemons::Battle::CharacterEffects.apply_victory(winner, loser, @attacker_team_manager)
   end
 
   def update_experience(attacker, defender, attacker_experience, defender_experience)

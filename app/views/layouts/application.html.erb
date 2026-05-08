@@ -19,19 +19,19 @@
     <%= render 'shared/meta' %>
 
     <%= tag.script type: 'application/ld+json' do %>
-      <%= raw article_meta(@publication) %>
+      <%== json_escape(article_meta(@publication)) %>
     <% end if article_meta? %>
 
     <%= tag.script type: 'application/ld+json' do %>
-      <%= raw profile_page_meta(@scanlator) %>
+      <%== json_escape(profile_page_meta(@scanlator)) %>
     <% end if profile_page_meta? %>
 
     <%= tag.script type: 'application/ld+json' do %>
-      <%= raw user_profile_meta(@user) %>
+      <%== json_escape(user_profile_meta(@user)) %>
     <% end if user_profile_meta? %>
 
     <%= tag.script type: 'application/ld+json' do %>
-      <%= raw video_meta(@youtube_video) %>
+      <%== json_escape(video_meta(@youtube_video)) %>
     <% end if video_meta? %>
 
     <%= csrf_meta_tags %>

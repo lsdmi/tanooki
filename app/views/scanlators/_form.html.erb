@@ -34,6 +34,15 @@
               <%= scanlator.errors[:description].first %>
             <% end if scanlator.errors[:description].any? %>
           </div>
+
+          <div>
+            <%= f.label :notice, 'Оголошення', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+            <%= f.text_area :notice, class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:notice].any?}", rows: 4, placeholder: "Оголошення (необов'язково)" %>
+            <%= tag.p scanlator.errors[:notice].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600 dark:text-red-400 mt-1 flex items-center' do %>
+              <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+              <%= scanlator.errors[:notice].first %>
+            <% end if scanlator.errors[:notice].any? %>
+          </div>
         </div>
       </div>
 
@@ -77,28 +86,10 @@
           </div>
         </div>
       </div>
-
-      <!-- Settings Section -->
-      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-        <div class="flex items-center mb-4">
-          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
-            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Налаштування</h3>
-        </div>
-
-        <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-          <%= f.input :convertable, as: :boolean, label: false, input_html: { class: 'w-4 h-4 text-cyan-600 dark:text-rose-400 bg-gray-100 dark:bg-gray-700 rounded border-gray-300 dark:border-gray-600 focus:ring-cyan-500 dark:focus:ring-rose-500' } %>
-          <label for="convertable" class="ml-3 text-sm text-gray-700 dark:text-gray-300">Дозволити конвертацію та завантаження творів у EPUB</label>
-        </div>
-      </div>
     </div>
 
     <!-- Right Column - Team & Media -->
-    <div class="lg:col-span-2">
+    <div class="lg:col-span-2 space-y-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div class="flex items-center mb-6">
           <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
@@ -164,6 +155,24 @@
               <%= scanlator.errors[:avatar].first %>
             <% end if scanlator.errors[:avatar].any? %>
           </div>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Налаштування</h3>
+        </div>
+
+        <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+          <%= f.input :convertable, as: :boolean, label: false, input_html: { class: 'w-4 h-4 text-cyan-600 dark:text-rose-400 bg-gray-100 dark:bg-gray-700 rounded border-gray-300 dark:border-gray-600 focus:ring-cyan-500 dark:focus:ring-rose-500' } %>
+          <label for="convertable" class="ml-3 text-sm text-gray-700 dark:text-gray-300">Дозволити конвертацію та завантаження творів у EPUB</label>
         </div>
       </div>
     </div>

@@ -46,6 +46,9 @@ uk:
         author: "Автор оригіналу"
         source_url: "Посилання на оригінал"
         notes: "Опис проекту та деталі"
+      scanlator:
+        description: "Опис"
+        notice: "Оголошення"
     enum:
       rarity:
         common: Поширений

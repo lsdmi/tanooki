@@ -1,8 +1,9 @@
-<% if @fictions.all? { |d| d[:updates].blank? } %>
-  <%= render "chapters_calendar/calendar_empty" %>
+<% if fictions.all? { |d| d[:updates].blank? } %>
+  <%= render "chapters_calendar/calendar_empty",
+             subscriptions_filter_active: subscriptions_filter_active %>
 <% else %>
 <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
-  <% @fictions.each_with_index do |day_update, day_index| %>
+  <% fictions.each_with_index do |day_update, day_index| %>
     <div class="border border-stone-200 dark:border-stone-700 bg-white/80 dark:bg-stone-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
       <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

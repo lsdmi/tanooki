@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 
   def update
-    result = UserUpdateService.new(current_user, user_params).call
+    result = Users::ProfileUpdate.new(current_user, user_params).call
 
     if result.success?
       render turbo_stream: [update_notice, update_navbar]

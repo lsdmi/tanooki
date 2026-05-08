@@ -6,6 +6,7 @@ module Fictions
     include LibraryHelper
 
     before_action :set_genre
+    before_action :pokemon_appearance, only: [:show]
 
     def show
       @skeleton = FictionGenrePageSkeleton.new(@genre)

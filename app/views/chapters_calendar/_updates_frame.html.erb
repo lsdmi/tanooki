@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
-  <% all_active = !@subscriptions_filter_active %>
-  <% subs_active = @subscriptions_filter_active %>
+  <% all_active = !subscriptions_filter_active %>
+  <% subs_active = subscriptions_filter_active %>
   <div class="flex justify-center mb-8">
     <% segmented = "inline-flex rounded-xl border border-stone-200 dark:border-stone-600 p-1 bg-white/70 dark:bg-stone-800/70 backdrop-blur-sm shadow-sm" %>
     <div class="<%= segmented %>" role="group" aria-label="<%= t('chapters_calendar.all_updates') %> / <%= t('chapters_calendar.my_subscriptions') %>">
@@ -24,4 +24,6 @@
     </div>
   </div>
 <% end %>
-<%= render "chapters_calendar/calendar_grid" %>
+<%= render "chapters_calendar/calendar_grid",
+           fictions: fictions,
+           subscriptions_filter_active: subscriptions_filter_active %>

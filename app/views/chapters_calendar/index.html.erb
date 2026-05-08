@@ -19,6 +19,8 @@
   </div>
 
   <%= turbo_frame_tag "chapters_calendar_updates", class: "w-full flex flex-col items-center z-10 relative" do %>
-    <%= render "chapters_calendar/updates_frame" %>
+    <%= render "chapters_calendar/updates_frame",
+               fictions: @fictions,
+               subscriptions_filter_active: @subscriptions_filter_active %>
   <% end %>
 </section>
