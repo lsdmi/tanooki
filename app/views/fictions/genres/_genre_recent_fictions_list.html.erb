@@ -3,7 +3,7 @@
   <% fictions.each_with_index do |fiction, i| %>
     <% card = skeleton.genre_thumb_card_locals(fiction, released_n: released_by_fiction[fiction.id].to_i, accent_index: pagy.offset + i) %>
     <article class="group rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-black/50">
-      <%= link_to fiction_path(fiction), class: "relative block aspect-[3/4] bg-gradient-to-br #{card[:accent]} overflow-hidden rounded-t-xl transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 group-hover:brightness-105 dark:focus-visible:ring-violet-400" do %>
+      <%= link_to fiction_path(fiction), data: { turbo: false }, class: "relative block aspect-[3/4] bg-gradient-to-br #{card[:accent]} overflow-hidden rounded-t-xl transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 group-hover:brightness-105 dark:focus-visible:ring-violet-400" do %>
         <%= image_tag url_for(fiction.cover), alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" %>
         <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10">
           <span class="inline-flex min-w-0 max-w-[58%] items-center gap-1 rounded-md bg-black/40 px-2 py-0.5 text-[10px] font-medium leading-none text-white backdrop-blur-[2px] ring-1 ring-white/15 transition-opacity duration-300 group-hover:opacity-95">
@@ -18,7 +18,7 @@
       <% end %>
       <div class="px-2.5 pb-2.5 pt-2">
         <p class="min-h-[1.25rem] text-sm font-bold leading-tight text-slate-900 dark:text-slate-100">
-          <%= link_to card[:title], fiction_path(fiction), class: "block truncate rounded-sm transition-colors hover:text-cyan-600 hover:underline underline-offset-2 dark:hover:text-rose-400 group-hover:text-cyan-700 dark:group-hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800" %>
+          <%= link_to card[:title], fiction_path(fiction), data: { turbo: false }, class: "block truncate rounded-sm transition-colors hover:text-cyan-600 hover:underline underline-offset-2 dark:hover:text-rose-400 group-hover:text-cyan-700 dark:group-hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800" %>
         </p>
         <div class="mt-1.5 flex min-w-0 items-center gap-2">
           <span class="shrink-0 rounded-md border border-slate-400/90 bg-slate-100 px-2 py-0.5 text-[10px] font-medium tabular-nums text-slate-600 dark:border-slate-500 dark:bg-slate-700/80 dark:text-slate-200"><%= card[:chapters] %> Розділи</span>

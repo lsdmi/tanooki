@@ -10,7 +10,7 @@
       <%= image_tag url_for(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,
         id: "image-#{fiction.id}",
-        class: "w-full sm:w-48 lg:w-full h-full object-cover rounded-md shadow-sm opacity-0",
+        class: "w-32 sm:w-48 lg:w-full h-full object-cover rounded-md shadow-sm opacity-0",
         loading: "lazy",
         data: { url: url_for(fiction.cover) } %>
     <% end %>
