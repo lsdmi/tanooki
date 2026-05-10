@@ -40,10 +40,8 @@ module Fictions
 
     test 'sets status to dropped if last chapter is older than 90 days' do
       @fiction.update!(status: :ongoing)
-      # Backdate only; full update! re-validates rich text length on fixture chapters.
-      @fiction.chapters.find_each do |chapter|
-        chapter.update_column(:created_at, 100.days.ago) # rubocop:disable Rails/SkipsModelValidations
-      end
+      @fiction.chapters.destroy_all
+      create_chapter(created_at: 100.days.ago, number: 1)
       InactivityDrop.new(@fiction).call
 
       assert_equal 'dropped', @fiction.reload.status # dropped

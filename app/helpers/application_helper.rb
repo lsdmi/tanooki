@@ -1,7 +1,21 @@
 # frozen_string_literal: true
 
+# View helpers shared application-wide (canonical URLs, UI hints, text helpers).
 module ApplicationHelper
   PRODUCTION_URL = 'https://baka.in.ua'
+
+  # Query keys allowed on `<link rel="canonical">` / `og:url`; all other keys are dropped.
+  CANONICAL_QUERY_ALLOWLIST = %w[search].freeze
+
+  def canonical_url
+    uri = canonical_authority_uri
+    url = "#{uri.scheme}://#{uri.host}"
+    url << ":#{uri.port}" if uri.port != uri.default_port
+    url << request.path
+    query = canonical_query_string
+    url << "?#{query}" if query.present?
+    url
+  end
 
   def punch(string)
     sentences = string.scan(/.*?[.?!](?=\s|\z)/)
@@ -38,5 +52,25 @@ module ApplicationHelper
 
   def genre_show_page?
     controller_path == 'fictions/genres' && action_name == 'show'
+  end
+
+  private
+
+  def canonical_authority_uri
+    if Rails.env.production?
+      URI.parse(PRODUCTION_URL)
+    else
+      URI.parse(request.base_url)
+    end
+  end
+
+  def canonical_query_string
+    allowed = CANONICAL_QUERY_ALLOWLIST.each_with_object({}) do |key, acc|
+      value = request.query_parameters[key]
+      acc[key] = value if value.present?
+    end
+    return '' if allowed.empty?
+
+    Rack::Utils.build_nested_query(allowed)
   end
 end

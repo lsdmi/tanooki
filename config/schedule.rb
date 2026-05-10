@@ -33,6 +33,10 @@ when 'production'
     runner 'YoutubeChannel.all.each { |channel| Youtube::VideosJob.perform_now(channel.channel_id) }'
   end
 
+  every :wednesday, at: '3pm' do
+    runner 'WeeklyStatsTelegramJob.perform_now'
+  end
+
   every :thursday, at: '2pm' do
     runner 'FictionsTelegramJob.perform_now'
   end
