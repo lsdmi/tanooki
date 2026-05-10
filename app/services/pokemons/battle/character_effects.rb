@@ -8,13 +8,13 @@ module Pokemons
         CharacterEffectApplier.new(attacker, defender, attacker_stats, defender_stats).apply
       end
 
-      def self.apply_victory(winner, loser, attacker_team_manager)
+      def self.apply_victory(winner, loser, attacker_side_team)
         if winner.character == 'hardy'
-          Pokemons::Battle::CharacterTraits.handle_hardy_character(attacker_team_manager.team, { id: winner.id })
+          Pokemons::Battle::CharacterTraits.handle_hardy_character(attacker_side_team.team, { id: winner.id })
         end
         return unless loser.character == 'agile'
 
-        Pokemons::Battle::CharacterTraits.handle_agile_character(attacker_team_manager.team, { id: winner.id })
+        Pokemons::Battle::CharacterTraits.handle_agile_character(attacker_side_team.team, { id: winner.id })
       end
     end
   end

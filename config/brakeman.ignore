@@ -1,0 +1,21 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "4d1d2eb565dd55d8f1abc8719a1c0bd29962fea3f4f17584ef8f5e5fd581bc55",
+      "note": "JSON-LD NewsArticle: article_meta uses .to_json; json_escape makes output safe inside application/ld+json script tags. Weak Brakeman false positive (model attrs are JSON-encoded)."
+    },
+    {
+      "fingerprint": "e0dc93f6982f8dd3511828caeebebf50f612fe860fc18b81cd78287ee96bcb5c",
+      "note": "JSON-LD ProfilePage (scanlator): profile_page_meta + json_escape; same as other ld+json tags."
+    },
+    {
+      "fingerprint": "f21dcccdae5f79e2174776eb2fb0e8a34c15e4ce50b22e84ca532aba1570d657",
+      "note": "JSON-LD ProfilePage (user): user_profile_meta + json_escape."
+    },
+    {
+      "fingerprint": "8b842e683d40536c30af49631131a05f48c73be2d95251f68d4f1c1980b705d2",
+      "note": "JSON-LD VideoObject: video_meta + json_escape; video fields come from DB and are emitted as JSON."
+    }
+  ],
+  "brakeman_version": "8.0.4"
+}

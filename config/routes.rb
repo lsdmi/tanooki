@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   root 'home#index'
   post '/' => 'home#index'
+  get '/sitemap.xml', to: 'sitemaps#show', defaults: { format: :xml }
 
   devise_for :users,
              skip: %i[registrations],
@@ -125,6 +126,7 @@ Rails.application.routes.draw do
   patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
   get :rules, to: 'pages#rules'
+  get :privacy, to: 'pages#privacy'
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon

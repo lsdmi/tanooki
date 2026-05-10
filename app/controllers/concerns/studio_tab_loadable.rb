@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Shared Studio UI behavior: resolves the active tab from params/session, loads tab payload
+# via {Studio::TabContent}, and assigns controller instance variables for the tab partial.
 module StudioTabLoadable
   extend ActiveSupport::Concern
 
@@ -34,6 +36,7 @@ module StudioTabLoadable
     assign_instance_variables
   end
 
+  # rubocop:disable Naming/MemoizedInstanceVariableName -- ||= defaults tab collection ivars; not memoizing this method
   def assign_instance_variables
     @comments ||= []
     @fictions ||= []
@@ -42,4 +45,5 @@ module StudioTabLoadable
     @scanlators ||= []
     @bookshelves ||= []
   end
+  # rubocop:enable Naming/MemoizedInstanceVariableName
 end

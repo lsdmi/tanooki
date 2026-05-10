@@ -4,10 +4,7 @@ require 'test_helper'
 
 class FictionsTelegramJobTest < ActiveSupport::TestCase
   test 'perform sends message in production when there are recent fictions' do
-    rails_env_mock = Minitest::Mock.new
-    rails_env_mock.expect(:production?, true)
-
-    Rails.stub(:env, rails_env_mock) do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
       expected_text = FictionsTelegramJob.new.send(:text_message)
 
       api_mock = Minitest::Mock.new

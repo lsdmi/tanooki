@@ -24,3 +24,12 @@ rich_text_four:
   body: "<%= Faker::Lorem.characters(number: 984) %>"
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+rich_text_chapter_two_content:
+  id: 4
+  name: content
+  record_type: Chapter
+  record_id: 2
+  body: "<%= Faker::Lorem.characters(number: 984) %>"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

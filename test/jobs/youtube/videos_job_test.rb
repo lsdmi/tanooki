@@ -18,7 +18,7 @@ class VideosJobTest < ActiveSupport::TestCase
 
     @fake_search_response = items_struct.new([id_struct.new(video_id_struct.new('video_id'))])
     @thumbnail = maxres_struct.new(url_struct.new('thumbnail_url'))
-    @snippet = snippet_struct.new('Title', 'Description', @thumbnail, %w[tag1 tag2], Time.now)
+    @snippet = snippet_struct.new('Title', 'Description', @thumbnail, %w[tag1 tag2], Time.zone.now)
     @fake_video_response = items_struct.new([snippet_mini_struct.new(@snippet)])
 
     # Create content details response for duration check

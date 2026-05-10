@@ -64,9 +64,7 @@
     <% if defined?(pagy_videos) && pagy_videos && pagy_videos.pages > 1 %>
       <div class="mt-8 flex justify-center">
         <div class="pagy-nav">
-          <%== pagy_nav_buttons(pagy_videos,
-                frame_id: 'videos-section',
-                custom_params: { search: params[:search], filter: params[:filter], section: 'videos' }.compact) %>
+          <%== search_index_pagy_nav_html(pagy_videos, frame_id: 'videos-section', section: 'videos') %>
         </div>
       </div>
     <% end %>

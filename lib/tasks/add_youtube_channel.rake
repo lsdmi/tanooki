@@ -13,7 +13,7 @@ task :add_youtube_channel, [:channel_id] => :environment do |_task, args|
 
   YoutubeChannel.create(
     channel_id: args[:channel_id],
-    description: channel.snippet.description,
+    description: channel.snippet.description.presence || channel.snippet.title,
     thumbnail: channel.snippet.thumbnails.default.url,
     title: channel.snippet.title
   )

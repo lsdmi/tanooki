@@ -17,6 +17,7 @@ class UserMailerTest < ActionMailer::TestCase
     user_mailer.instance_variable_set(:@resource, resource)
 
     mail = user_mailer.headers_for(:action_name, {})
+
     assert_equal 'users/mailer', mail[:template_path]
   end
 end

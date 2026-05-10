@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def track_visit
-    TrackingService.new(
+    Analytics::ViewIncrement.new(
       @publication || @chapter || @fiction || @youtube_video || @bookshelf,
       session
     ).call

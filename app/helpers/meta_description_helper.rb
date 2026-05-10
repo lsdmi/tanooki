@@ -36,6 +36,7 @@ module MetaDescriptionHelper
       request.path == calendar_fictions_path ||
       request.path == tales_path ||
       request.path == rules_path ||
+      request.path == privacy_path ||
       request.path == translation_requests_path
   end
 

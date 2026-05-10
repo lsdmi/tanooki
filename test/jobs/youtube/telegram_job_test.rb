@@ -4,10 +4,7 @@ require 'test_helper'
 
 class TelegramJobTest < ActiveSupport::TestCase
   test 'perform sends video message in production' do
-    rails_env_mock = Minitest::Mock.new
-    rails_env_mock.expect(:production?, true)
-
-    Rails.stub(:env, rails_env_mock) do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
       object = mock_telegram_object
 
       bot_mock = Minitest::Mock.new

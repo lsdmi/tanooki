@@ -54,9 +54,7 @@
     <% if defined?(pagy_fictions) && pagy_fictions && pagy_fictions.pages > 1 %>
       <div class="mt-8 flex justify-center">
         <div class="pagy-nav">
-          <%== pagy_nav_buttons(pagy_fictions,
-                frame_id: 'fictions-section',
-                custom_params: { search: params[:search], filter: params[:filter], section: 'fictions' }.compact) %>
+          <%== search_index_pagy_nav_html(pagy_fictions, frame_id: 'fictions-section', section: 'fictions') %>
         </div>
       </div>
     <% end %>
