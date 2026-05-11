@@ -11,7 +11,7 @@ class ChatControllerTest < ActionDispatch::IntegrationTest
     avatar = avatars(:one)
     unless avatar.image.attached?
       avatar.image.attach(
-        io: File.open(Rails.root.join('app', 'assets', 'images', 'logo-default.svg')),
+        io: Rails.root.join('app/assets/images/logo-default.svg').open,
         filename: 'logo-default.svg',
         content_type: 'image/svg+xml'
       )
@@ -23,10 +23,14 @@ class ChatControllerTest < ActionDispatch::IntegrationTest
     message = chat_messages(:one)
 
     get chat_recent_messages_url
+
     assert_response :success
-    json = JSON.parse(response.body)
-    assert json['messages'].is_a?(Array)
-    assert_equal message.content, json['messages'].first['content']
-    assert_equal user.id, json['messages'].first['user_id']
+    json = response.parsed_body
+
+    assert_kind_of Array, json['messages']
+
+    first = json['messages'].first
+
+    assert_equal [message.content, user.id], [first['content'], first['user_id']]
   end
 end

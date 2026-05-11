@@ -23,6 +23,7 @@ class ChaptersController < ApplicationController
     @comments = load_chapter_comments
     @comment = Comment.new
     @commentable = @chapter
+    @fiction = @chapter.fiction
   end
 
   def new

@@ -14,6 +14,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     get blogs_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -24,6 +25,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     put user_path(@user), params: { user: { avatar_id: @avatar_id, name: 'John Doe' } }
 
     @user.reload
+
     assert_equal @avatar_id, @user.avatar_id
 
     assert_response :success
@@ -33,6 +35,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get avatars' do
     sign_in @user
     get avatars_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -40,6 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get blogs' do
     sign_in @user
     get blogs_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -47,6 +51,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get readings' do
     sign_in @user
     get readings_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -54,6 +59,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get pokemons' do
     sign_in @user
     get pokemons_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end

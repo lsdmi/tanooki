@@ -12,18 +12,21 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get show' do
     get chapter_url(@chapter)
+
     assert_response :success
   end
 
   test 'should get comments' do
     @chapter.comments << comments(:comment_one)
     get chapter_url(@chapter)
+
     assert_equal @chapter.comments, assigns(:comments)
   end
 
   test 'should get comments page' do
     @chapter.comments << comments(:comment_one)
     get comments_chapter_url(@chapter)
+
     assert_response :success
     assert_equal @chapter.comments.parents.order(created_at: :desc), assigns(:comments)
     assert_equal @chapter, assigns(:commentable)
@@ -31,11 +34,13 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get next chapter' do
     get chapter_path(@chapter)
+
     assert_equal chapters(:two), assigns(:next_chapter)
   end
 
   test 'should get new' do
     get new_chapter_url(fiction: 'one')
+
     assert_response :success
   end
 
@@ -66,6 +71,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get edit' do
     get chapter_url(@chapter)
+
     assert_response :success
   end
 
@@ -79,38 +85,43 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
         title: @chapter.title
       }
     }
+
     assert_redirected_to reading_path(@chapter.fiction)
   end
 
   test 'should not update chapter with invalid data' do
     patch chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
+
     assert_response :unprocessable_content
   end
 
   test 'guest is redirected to fiction when chapter is not yet public' do
     sign_out users(:user_one)
-    @chapter.update_columns(published_at: 1.day.from_now)
+    @chapter.update_columns(published_at: 1.day.from_now) # rubocop:disable Rails/SkipsModelValidations
     get chapter_url(@chapter)
+
     assert_redirected_to fiction_path(@chapter.fiction)
   ensure
-    @chapter.update_columns(published_at: nil)
+    @chapter.update_columns(published_at: nil) # rubocop:disable Rails/SkipsModelValidations
   end
 
   test 'signed in admin can view chapter before public time' do
-    @chapter.update_columns(published_at: 1.day.from_now)
+    @chapter.update_columns(published_at: 1.day.from_now) # rubocop:disable Rails/SkipsModelValidations
     get chapter_url(@chapter)
+
     assert_response :success
   ensure
-    @chapter.update_columns(published_at: nil)
+    @chapter.update_columns(published_at: nil) # rubocop:disable Rails/SkipsModelValidations
   end
 
   test 'signed in user without scanlator on chapter is redirected when not yet public' do
     sign_out users(:user_one)
     sign_in users(:user_two)
-    @chapter.update_columns(published_at: 1.day.from_now)
+    @chapter.update_columns(published_at: 1.day.from_now) # rubocop:disable Rails/SkipsModelValidations
     get chapter_url(@chapter)
+
     assert_redirected_to fiction_path(@chapter.fiction)
   ensure
-    @chapter.update_columns(published_at: nil)
+    @chapter.update_columns(published_at: nil) # rubocop:disable Rails/SkipsModelValidations
   end
 end

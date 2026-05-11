@@ -11,11 +11,11 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @ads_params = {
       cover: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+        Rails.root.join('app/assets/images/logo-default.svg'),
         'image/svg'
       ),
       poster: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+        Rails.root.join('app/assets/images/logo-default.svg'),
         'image/svg'
       ),
       resource: 'test',
@@ -25,11 +25,13 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     get admin_advertisements_url
+
     assert_response :success
   end
 
   test 'should get new' do
     get new_admin_advertisement_url
+
     assert_response :success
   end
 
@@ -43,11 +45,13 @@ class AdvertisementsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get edit' do
     get edit_admin_advertisement_url(Advertisement.first)
+
     assert_response :success
   end
 
   test 'should update advertisement' do
     patch admin_advertisement_url(Advertisement.first), params: { advertisement: @ads_params }
+
     assert_redirected_to root_path
   end
 end

@@ -21,9 +21,9 @@ class TranslationRequestVotesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['user_voted']
-    assert_equal 2, json_response['votes_count'] # Should be 2 because user_two still has a vote
+    json_response = response.parsed_body
+
+    assert_vote_create_response(json_response, votes_count: 2)
   end
 
   test 'should remove vote when user has already voted' do
@@ -33,40 +33,36 @@ class TranslationRequestVotesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal false, json_response['user_voted']
-    assert_equal 1, json_response['votes_count'] # Should be 1 because user_two still has a vote
+    json_response = response.parsed_body
+
+    assert_vote_remove_response(json_response, votes_count: 1)
   end
 
   test 'should toggle vote correctly multiple times' do
-    # First vote - should remove existing vote (user_one already voted for translation_request :one)
     post translation_request_translation_request_votes_url(@translation_request)
-    json_response = JSON.parse(response.body)
-    assert_equal false, json_response['user_voted']
-    assert_equal 1, json_response['votes_count'] # user_two still has a vote
 
-    # Second vote - should create again
-    post translation_request_translation_request_votes_url(@translation_request)
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['user_voted']
-    assert_equal 2, json_response['votes_count'] # both users have votes
+    assert_vote_remove_response(response.parsed_body, votes_count: 1)
 
-    # Third vote - should remove again
     post translation_request_translation_request_votes_url(@translation_request)
-    json_response = JSON.parse(response.body)
-    assert_equal false, json_response['user_voted']
-    assert_equal 1, json_response['votes_count'] # only user_two has a vote
+
+    assert_vote_create_response(response.parsed_body, votes_count: 2)
+
+    post translation_request_translation_request_votes_url(@translation_request)
+
+    assert_vote_remove_response(response.parsed_body, votes_count: 1)
   end
 
   test 'should require authentication' do
     sign_out @user
 
     post translation_request_translation_request_votes_url(@translation_request)
+
     assert_redirected_to new_user_session_url
   end
 
   test 'should handle non-existent translation request' do
     post translation_request_translation_request_votes_url(99_999)
+
     assert_response :not_found
   end
 
@@ -76,8 +72,20 @@ class TranslationRequestVotesControllerTest < ActionDispatch::IntegrationTest
 
     post translation_request_translation_request_votes_url(@translation_request)
 
-    json_response = JSON.parse(response.body)
-    assert_equal 1, json_response['votes_count'] # Should be 1 after removing user_one's vote
-    assert_equal false, json_response['user_voted']
+    json_response = response.parsed_body
+
+    assert_vote_remove_response(json_response, votes_count: 1)
+  end
+
+  private
+
+  def assert_vote_create_response(json_response, votes_count:)
+    assert json_response['user_voted']
+    assert_equal votes_count, json_response['votes_count']
+  end
+
+  def assert_vote_remove_response(json_response, votes_count:)
+    assert_not json_response['user_voted']
+    assert_equal votes_count, json_response['votes_count']
   end
 end

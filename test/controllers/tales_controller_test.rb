@@ -12,12 +12,14 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     get tales_url
+
     assert_response :success
   end
 
   test 'should get show' do
     Publication.stub :search, Publication.all do
       get tale_url(@tale)
+
       assert_response :success
     end
   end
@@ -28,6 +30,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
+
       assert_equal 1, @tale.reload.views
     end
   end
@@ -38,6 +41,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
+
       assert_equal 0, @tale.reload.views
     end
   end
@@ -48,6 +52,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
+
       assert_equal [@tale.slug], session[:viewed]
     end
   end
@@ -58,12 +63,14 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
       @controller.send(:track_visit)
+
       assert_equal [@tale.slug], session[:viewed]
     end
   end
 
   test '#more_tails should return a publication' do
     @controller.instance_variable_set(:@publication, @tale)
+
     Publication.stub :search, Publication.all do
       assert_equal 5, @controller.send(:more_tails).size
     end
@@ -71,6 +78,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
 
   test '#more_tails should exclude the current publication' do
     @controller.instance_variable_set(:@publication, @tale)
+
     Publication.stub :search, Publication.all do
       assert_not_includes @controller.send(:more_tails), @tale
     end

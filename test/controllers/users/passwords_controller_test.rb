@@ -8,6 +8,7 @@ module Users
 
     test 'should get new' do
       get new_user_password_path
+
       assert_response :success
     end
   end

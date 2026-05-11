@@ -20,6 +20,7 @@ class ReadingProgressesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     reading_progress.reload
+
     assert_equal 'finished', reading_progress.status
   end
 
@@ -34,13 +35,14 @@ class ReadingProgressesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     reading_progress = ReadingProgress.find_by(fiction: fiction_without_progress, user: user_without_progress)
-    assert_equal 'active', reading_progress.status
-    assert_equal chapters(:three), reading_progress.chapter
+
+    assert_equal ['active', chapters(:three)], [reading_progress.status, reading_progress.chapter]
   end
 
   test 'should require authentication' do
     sign_out @user
     patch update_status_fiction_reading_progress_path(@fiction), params: { status: :active }
+
     assert_redirected_to new_user_session_path
   end
 end

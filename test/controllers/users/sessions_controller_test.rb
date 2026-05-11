@@ -3,19 +3,18 @@
 require 'test_helper'
 
 module Users
-  class SessionsControllerTest < ActionController::TestCase
-    include Devise::Test::ControllerHelpers
+  class SessionsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    def setup
+    setup do
       @user = users(:user_one)
-      @request.env['devise.mapping'] = Devise.mappings[:user]
+      @user.update!(password: 'password', password_confirmation: 'password')
     end
 
     test 'should create new user session without catch_pokemon' do
-      post :create, params: { user: { email: @user.email, password: @user.password } }
+      post user_session_path, params: { user: { email: @user.email, password: 'password' } }
 
-      assert_response :ok
+      assert_response :redirect
       assert_equal 1, UserPokemon.where(user_id: @user.id).count
     end
   end

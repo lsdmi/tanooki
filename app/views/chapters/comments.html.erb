@@ -18,7 +18,7 @@
       <!-- Chapter Info -->
       <div class="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm border border-stone-200 dark:border-gray-700">
         <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-stone-800 dark:text-gray-200 mb-1 sm:mb-2 leading-tight">
-          <%= @chapter.fiction.title %>
+          <%= @chapter.fiction_title %>
         </h2>
         <h3 class="text-sm sm:text-base lg:text-lg text-stone-600 dark:text-gray-400 leading-tight">
           Розділ <%= @chapter.number %>: <%= @chapter.title %>
@@ -32,9 +32,9 @@
     </div>
 
     <!-- Support Creator Section -->
-    <% if @chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
+    <% if @fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
       <div class="max-w-4xl mx-auto mb-6 sm:mb-8">
-        <%= render 'fictions/support', fiction: @chapter.fiction %>
+        <%= render 'fictions/support', fiction: @fiction %>
       </div>
     <% end %>
 

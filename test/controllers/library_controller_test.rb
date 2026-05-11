@@ -12,24 +12,33 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     get library_url
+
     assert_response :success
   end
 
   test 'should fetch history with related associations' do
     get library_url
+
     assert_response :success
+    assert_library_history_preloaded(assigns(:history))
+  end
 
-    assert_not_nil assigns(:history)
-    assert_kind_of ActiveRecord::Relation, assigns(:history)
+  private
 
-    assigns(:history).each do |reading|
-      assert_not_nil reading.fiction
-      assert_not_nil reading.chapter
+  def assert_library_history_preloaded(history)
+    assert_not_nil history
+    assert_kind_of ActiveRecord::Relation, history
 
-      assert_not_nil reading.fiction.cover_attachment
-      assert_not_nil reading.fiction.cover_attachment.blob
+    history.each { |reading| assert_reading_graph_loaded(reading) }
+  end
 
-      assert_not_nil reading.fiction.genres
-    end
+  def assert_reading_graph_loaded(reading)
+    assert_not_nil reading.fiction
+    assert_not_nil reading.chapter
+
+    assert_not_nil reading.fiction.cover_attachment
+    assert_not_nil reading.fiction.cover_attachment.blob
+
+    assert_not_nil reading.fiction.genres
   end
 end

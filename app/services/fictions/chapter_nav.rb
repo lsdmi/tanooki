@@ -25,9 +25,10 @@ module Fictions
     end
 
     def before_next_chapter_by_user
-      return nil if next_chapter_index_by_user.nil?
+      idx = next_chapter_index(fiction_chapters, next_chapter)
+      return nil if idx.nil?
 
-      next_chapter_index_by_user == -1 ? [] : fiction_chapters[0...next_chapter_index_by_user + 1]
+      idx == -1 ? [] : fiction_chapters[0...idx + 1]
     end
 
     def next_chapter
@@ -60,10 +61,6 @@ module Fictions
 
     def following_chapter_index
       fiction_chapters.index(next_chapter)
-    end
-
-    def next_chapter_index_by_user
-      next_chapter_index(fiction_chapters, next_chapter)
     end
   end
 end

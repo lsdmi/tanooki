@@ -20,13 +20,7 @@ class TranslationRequestsControllerAssignmentTest < ActionDispatch::IntegrationT
     }
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['success']
-    assert_equal 'Запит успішно призначено команді', json_response['message']
-    assert_equal @scanlator.title, json_response['scanlator_title']
-
-    @translation_request.reload
-    assert_equal @scanlator.id, @translation_request.scanlator_id
+    verify_translation_request_assigned(@scanlator)
   end
 
   test 'should not assign already assigned translation request' do
@@ -38,7 +32,8 @@ class TranslationRequestsControllerAssignmentTest < ActionDispatch::IntegrationT
     }
 
     assert_response :unprocessable_content
-    json_response = JSON.parse(response.body)
+    json_response = response.parsed_body
+
     assert_equal 'Цей запит вже призначено іншій команді перекладачів', json_response['error']
   end
 
@@ -49,12 +44,7 @@ class TranslationRequestsControllerAssignmentTest < ActionDispatch::IntegrationT
     delete unassign_translation_request_path(@translation_request)
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['success']
-    assert_equal 'Запит успішно відкликано від команди', json_response['message']
-
-    @translation_request.reload
-    assert_nil @translation_request.scanlator_id
+    verify_translation_request_unassigned
   end
 
   test 'should handle assign with non-existent scanlator' do
@@ -63,6 +53,32 @@ class TranslationRequestsControllerAssignmentTest < ActionDispatch::IntegrationT
     patch assign_translation_request_path(@translation_request), params: {
       scanlator_id: 99_999
     }
+
     assert_response :not_found
+  end
+
+  private
+
+  def verify_translation_request_assigned(scanlator)
+    json_response = response.parsed_body
+
+    assert json_response['success']
+    assert_equal 'Запит успішно призначено команді', json_response['message']
+    assert_equal scanlator.title, json_response['scanlator_title']
+
+    @translation_request.reload
+
+    assert_equal scanlator.id, @translation_request.scanlator_id
+  end
+
+  def verify_translation_request_unassigned
+    json_response = response.parsed_body
+
+    assert json_response['success']
+    assert_equal 'Запит успішно відкликано від команди', json_response['message']
+
+    @translation_request.reload
+
+    assert_nil @translation_request.scanlator_id
   end
 end

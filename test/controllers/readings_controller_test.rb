@@ -16,6 +16,7 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
     # Make sure @user is authorized for this fiction (admin or included)
     @user.fictions << @fiction unless @user.admin? || @user.fictions.include?(@fiction)
     get reading_url(@fiction)
+
     assert_response :success
   end
 

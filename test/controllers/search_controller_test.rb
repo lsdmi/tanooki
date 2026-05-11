@@ -11,6 +11,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     Publication.stub :search, Publication.all do
       Fiction.stub :search, Fiction.all do
         get search_index_url, params: { search: ['test'] }
+
         assert_response :success
       end
     end
@@ -18,6 +19,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect to root without search' do
     get search_index_url
+
     assert_redirected_to root_path
   end
 

@@ -28,21 +28,25 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get edit' do
     get edit_comment_url(@comment, format: :turbo)
+
     assert_response :success
   end
 
   test 'should cancel edit' do
     get cancel_edit_comment_url(@comment, format: :turbo_stream)
+
     assert_template 'complete_update'
   end
 
   test 'should cancel reply' do
     get cancel_reply_comment_url(@comment, format: :turbo)
+
     assert_response :success
   end
 
   test 'should update comment' do
     patch comment_url(@comment, format: :turbo_stream), params: { comment: { content: 'Updated comment' } }
+
     assert_template 'complete_update'
   end
 end

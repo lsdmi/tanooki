@@ -3,18 +3,18 @@
 require 'test_helper'
 
 module Users
-  class ConfirmationsControllerTest < ActionController::TestCase
-    include Devise::Test::ControllerHelpers
+  class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
+    include Devise::Test::IntegrationHelpers
 
-    def setup
+    setup do
       @user = users(:user_one)
       @user.confirmation_token = 'abcdef'
-      @user.save
-      @request.env['devise.mapping'] = Devise.mappings[:user]
+      @user.save!
     end
 
     test 'should show confirmation page' do
-      get :show, params: { confirmation_token: @user.confirmation_token }
+      get user_confirmation_path, params: { confirmation_token: @user.reload.confirmation_token }
+
       assert_response :success
     end
   end

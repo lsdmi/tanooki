@@ -15,6 +15,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should show bookshelf' do
     get bookshelf_url(@bookshelf.sqid)
+
     assert_response :success
     assert_select 'h1', @bookshelf.title
   end
@@ -22,11 +23,13 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
   test 'should get new when authenticated' do
     sign_in @user
     get new_bookshelf_url
+
     assert_response :success
   end
 
   test 'should redirect to login when not authenticated for new' do
     get new_bookshelf_url
+
     assert_redirected_to new_user_session_url
   end
 
@@ -67,6 +70,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     # The controller has a bug - it uses find(sqid) instead of find_by_sqid for edit actions
     # So we need to use the actual ID, not sqid
     get edit_bookshelf_url(@bookshelf.id)
+
     assert_response :success
   end
 
@@ -77,6 +81,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     # The controller has a bug - it uses find(sqid) instead of find_by_sqid for edit actions
     # This will fail because the bookshelf doesn't belong to other_user
     get edit_bookshelf_url(@bookshelf.id)
+
     assert_response :not_found
   end
 
@@ -95,6 +100,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to studio_index_path(tab: 'bookshelves')
     assert_equal 'Полицю оновлено!', flash[:notice]
     @bookshelf.reload
+
     assert_equal 'Updated Title', @bookshelf.title
   end
 
@@ -123,20 +129,15 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect to login when not authenticated for protected actions' do
-    # Test create
-    post bookshelves_url, params: { bookshelf: { title: 'Test' } }
-    assert_redirected_to new_user_session_url
+    [
+      -> { post bookshelves_url, params: { bookshelf: { title: 'Test' } } },
+      -> { get edit_bookshelf_url(@bookshelf.id) },
+      -> { patch bookshelf_url(@bookshelf.id), params: { bookshelf: { title: 'Test' } } },
+      -> { delete bookshelf_url(@bookshelf.id) }
+    ].each do |request|
+      request.call
 
-    # Test edit (using ID due to controller bug)
-    get edit_bookshelf_url(@bookshelf.id)
-    assert_redirected_to new_user_session_url
-
-    # Test update (using ID due to controller bug)
-    patch bookshelf_url(@bookshelf.id), params: { bookshelf: { title: 'Test' } }
-    assert_redirected_to new_user_session_url
-
-    # Test destroy (using ID due to controller bug)
-    delete bookshelf_url(@bookshelf.id)
-    assert_redirected_to new_user_session_url
+      assert_redirected_to new_user_session_url
+    end
   end
 end

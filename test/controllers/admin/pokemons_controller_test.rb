@@ -12,7 +12,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     @pokemon_params = {
       sprite: Rack::Test::UploadedFile.new(
-        Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+        Rails.root.join('app/assets/images/logo-default.svg'),
         'image/svg'
       ),
       name: 'Pikachu',
@@ -36,6 +36,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update pokemon' do
     patch admin_pokemon_url(@pokemon), params: { pokemon: @pokemon_params }
+
     assert_redirected_to admin_pokemons_path
   end
 
@@ -50,16 +51,19 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get new' do
     get new_admin_pokemon_path
+
     assert_response :success
   end
 
   test 'should get edit' do
     get edit_admin_pokemon_path(Pokemon.first)
+
     assert_response :success
   end
 
   test 'pokemons should return all pokemons for admin users' do
     get admin_pokemons_path
+
     assert_response :success
   end
 end

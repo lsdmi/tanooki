@@ -14,7 +14,7 @@ class WeeklyStatsTelegramJobTest < ActiveSupport::TestCase
       sent = capture_telegram_weekly_send
 
       assert_equal(
-        { chat_id: '@bakaTgTest', text: expected_text, parse_mode: 'HTML' },
+        { chat_id: '@bakaInUa', text: expected_text, parse_mode: 'HTML' },
         sent
       )
     end
@@ -28,7 +28,7 @@ class WeeklyStatsTelegramJobTest < ActiveSupport::TestCase
     api.expect(:send_message, nil) { |p| slot[0] = p }
     bot = Minitest::Mock.new
     bot.expect(:api, api)
-    TelegramBot.stub(:client, bot) { WeeklyStatsTelegramJob.new.perform }
+    TelegramBot.stub(:client, bot) { WeeklyStatsTelegramJob.new.send(:send_weekly_digest_to_telegram) }
     api.verify && bot.verify
     slot[0]
   end

@@ -9,10 +9,14 @@ class WeeklyStatsTelegramJob < ApplicationJob
   def perform
     return unless Rails.env.production?
 
-    TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
+    send_weekly_digest_to_telegram
   end
 
   private
+
+  def send_weekly_digest_to_telegram
+    TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
+  end
 
   # --- message assembly
 

@@ -5,7 +5,7 @@ require 'test_helper'
 class DownloadsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @rich_text = action_text_rich_texts(:rich_text_four)
-    @dummy_file_path = Rails.root.join('tmp', 'dummy.epub')
+    @dummy_file_path = Rails.root.join('tmp/dummy.epub')
     FileUtils.touch(@dummy_file_path)
   end
 

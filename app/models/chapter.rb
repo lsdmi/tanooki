@@ -36,10 +36,6 @@ class Chapter < ApplicationRecord
     t = arel_table
     where(t[:published_at].eq(nil).or(t[:published_at].lteq(Time.current)))
   }
-  # published_at is still in the future — not visible to everyone yet (teams may still see theirs in UI).
-  scope :scheduled, lambda {
-    where(arel_table[:published_at].gt(Time.current))
-  }
 
   # SQL fragment (qualified for joins): wall-clock moment a chapter became public on the site.
   PUBLIC_TIME_SQL = 'COALESCE(chapters.published_at, chapters.created_at)'

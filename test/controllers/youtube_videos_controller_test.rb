@@ -11,6 +11,7 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get show' do
     get youtube_video_path(@youtube_video)
+
     assert_response :success
     assert_not_nil assigns(:youtube_video)
     assert_not_nil assigns(:more_videos)
@@ -18,8 +19,14 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     get youtube_videos_path
-    assert_response :success
 
+    assert_response :success
+    verify_youtube_videos_index_assigns
+  end
+
+  private
+
+  def verify_youtube_videos_index_assigns
     assert_not_nil assigns(:popular)
     assert_not_nil assigns(:latest)
     assert_not_nil assigns(:pagy)

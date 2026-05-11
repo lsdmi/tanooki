@@ -8,6 +8,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should get index as admin' do
     sign_in users(:user_one)
     get scanlators_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -15,6 +16,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should get index as non-admin user' do
     sign_in users(:user_two)
     get scanlators_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
@@ -22,6 +24,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should get new' do
     sign_in users(:user_one)
     get new_scanlator_url
+
     assert_response :success
   end
 
@@ -30,9 +33,9 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Scanlator.count') do
       post scanlators_url, params: {
         scanlator: {
-          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
                                                'image/svg'),
-          banner: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+          banner: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
                                                'image/svg'),
           member_ids: [users(:user_one).id],
           title: 'New Scanlator'
@@ -77,6 +80,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should show scanlator' do
     scanlator = scanlators(:one)
     get scanlator_path(scanlator)
+
     assert_response :success
     assert_not_nil assigns(:fictions)
   end

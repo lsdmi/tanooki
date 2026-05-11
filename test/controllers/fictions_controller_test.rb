@@ -12,39 +12,36 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get show' do
-    Rails.cache.delete("fiction_#{params[:id]}")
-    get fiction_url(@fiction)
-    assert_response :success
-    assert_template :show
-  end
+    [@fiction, @fiction_two].each do |fiction|
+      Rails.cache.delete("fiction_#{fiction.id}")
+      get fiction_url(fiction)
 
-  test 'should get show with more than one translator' do
-    Rails.cache.delete("fiction_#{params[:id]}")
-    get fiction_url(@fiction_two)
-    assert_response :success
-    assert_template :show
+      assert_response :success
+      assert_template :show
+    end
   end
 
   test 'should get dashboard' do
     get blogs_path
+
     assert_response :redirect
     assert_redirected_to studio_index_path
   end
 
   test 'should get index' do
     get fictions_path
+
     assert_response :success
 
     index_presenter = assigns(:index_presenter)
-    assert_instance_of FictionIndexPresenter, index_presenter
 
-    assert_equal advertisements(:advertisement_three), index_presenter.hero_ad
-    assert_equal [Fiction.find('two').title, Fiction.find('one').title], index_presenter.popular_novelty.map(&:title)
-    assert_equal [Fiction.find('two').title, Fiction.find('one').title], index_presenter.most_reads.map(&:title)
+    assert_instance_of FictionIndexPresenter, index_presenter
+    verify_fiction_index_presenter_lists(index_presenter)
   end
 
   test 'should get new' do
     get new_fiction_url
+
     assert_response :success
   end
 
@@ -56,7 +53,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
           author: 'New Author',
           description: 'a' * 50,
           cover: Rack::Test::UploadedFile.new(
-            Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+            Rails.root.join('app/assets/images/logo-default.svg'),
             'image/svg'
           ),
           scanlator_ids: [1],
@@ -80,6 +77,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   test 'should get edit' do
     @fiction.stub :cover, ActiveStorage::Attachment.last do
       get edit_fiction_url(@fiction)
+
       assert_response :success
     end
   end
@@ -87,21 +85,25 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   test 'should update fiction' do
     patch fiction_url(@fiction), params: {
       fiction: {
-        cover: Rack::Test::UploadedFile.new(Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+        cover: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
                                             'image/svg'),
         scanlator_ids: [1],
         title: 'Updated Title'
       }
     }
+
     assert_redirected_to fiction_path(@fiction)
     @fiction.reload
+
     assert_equal 'Updated Title', @fiction.title
   end
 
   test 'should not update fiction with invalid params' do
     patch fiction_url(@fiction), params: { fiction: { title: '' } }
+
     assert_response :unprocessable_content
     @fiction.reload
+
     assert_not_equal '', @fiction.title
   end
 
@@ -113,13 +115,18 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   test 'should update fiction with genres' do
     genre_ids = Genre.all.sample(2).map(&:id)
     patch fiction_url(@fiction), params: { fiction: { genre_ids:, scanlator_ids: [1] } }
+
     assert_redirected_to fiction_path(@fiction)
     assert_equal genre_ids.sort, @fiction.genres.ids.sort
   end
 
   private
 
-  def params
-    { id: @fiction.id }
+  def verify_fiction_index_presenter_lists(index_presenter)
+    titles = [Fiction.find('two').title, Fiction.find('one').title]
+
+    assert_equal advertisements(:advertisement_three), index_presenter.hero_ad
+    assert_equal titles, index_presenter.popular_novelty.map(&:title)
+    assert_equal titles, index_presenter.most_reads.map(&:title)
   end
 end

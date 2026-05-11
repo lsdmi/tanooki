@@ -42,11 +42,11 @@ class ChapterTest < ActiveSupport::TestCase
     end
   end
 
-  test 'scheduled scope includes chapter when published_at is in the future' do
+  test 'released scope excludes chapter when published_at is in the future' do
     travel_to Time.zone.parse('2026-04-15 12:00') do
       c = Chapter.new(
         scanlator_ids: [1],
-        title: 'Scheduled scope test',
+        title: 'Future publish test',
         number: 99,
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' * 100,
         user: @user,
@@ -57,7 +57,6 @@ class ChapterTest < ActiveSupport::TestCase
       c.update!(published_at: 1.day.from_now)
 
       assert_not Chapter.released.exists?(c.id)
-      assert_includes Chapter.scheduled, c
     end
   end
 

@@ -20,6 +20,7 @@ module Users
 
     test 'should show confirmation page' do
       get register_path
+
       assert_response :success
     end
 
@@ -30,11 +31,7 @@ module Users
 
       assert_redirected_to root_path
       assert_equal I18n.t('devise.registrations.signed_up_but_unconfirmed'), flash[:notice]
-
-      last_user = User.last
-      assert_equal @user_params[:user][:name], last_user.name
-      assert_equal @user_params[:user][:avatar_id], last_user.avatar_id
-      assert_equal @user_params[:user][:email], last_user.email
+      verify_signup_user_matches_params
     end
 
     test 'should render the sign-up form with invalid parameters' do
@@ -44,6 +41,16 @@ module Users
       assert_response :success
       assert_template :new
       assert_equal 'Перевірте та виправте форму реєстрації:', flash[:alert]
+    end
+
+    private
+
+    def verify_signup_user_matches_params
+      last_user = User.last
+
+      assert_equal @user_params[:user][:name], last_user.name
+      assert_equal @user_params[:user][:avatar_id], last_user.avatar_id
+      assert_equal @user_params[:user][:email], last_user.email
     end
   end
 end

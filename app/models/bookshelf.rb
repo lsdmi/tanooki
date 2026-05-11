@@ -5,7 +5,7 @@ class Bookshelf < ApplicationRecord
   has_many :bookshelf_fictions, dependent: :destroy
   has_many :fictions, through: :bookshelf_fictions
 
-  delegate :name, to: :user, prefix: true
+  delegate :name, :sqid, to: :user, prefix: true
 
   attr_accessor :fiction_ids
 

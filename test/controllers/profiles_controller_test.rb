@@ -10,6 +10,7 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get show with valid user' do
     get "/profile/#{@sqid}"
+
     assert_response :success
     assert_not_nil assigns(:user)
     assert_equal @user, assigns(:user)
@@ -17,12 +18,14 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect to root with invalid user' do
     get '/profile/invalid_sqid'
+
     assert_response :redirect
     assert_redirected_to root_path
   end
 
   test 'should set user instance variable' do
     get "/profile/#{@sqid}"
+
     assert_equal @user, assigns(:user)
   end
 end

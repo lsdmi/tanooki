@@ -13,30 +13,25 @@ class TranslationRequestsControllerDestroyTest < ActionDispatch::IntegrationTest
 
   test 'should require authentication for protected actions' do
     tr = new_translation_request
+    [
+      lambda {
+        post translation_requests_url, params: {
+          translation_request: {
+            title: 'Test',
+            author: 'Test',
+            source_url: 'https://example.com'
+          }
+        }
+      },
+      -> { patch translation_request_url(tr), params: { translation_request: { title: 'Updated' } } },
+      -> { patch assign_translation_request_path(tr), params: { scanlator_id: @scanlator.id } },
+      -> { delete unassign_translation_request_path(tr) },
+      -> { delete translation_request_url(tr) }
+    ].each do |request|
+      request.call
 
-    # Test create
-    post translation_requests_url, params: {
-      translation_request: { title: 'Test', author: 'Test', source_url: 'https://example.com' }
-    }
-    assert_redirected_to new_user_session_url
-
-    # Test update
-    patch translation_request_url(tr), params: {
-      translation_request: { title: 'Updated' }
-    }
-    assert_redirected_to new_user_session_url
-
-    # Test assign
-    patch assign_translation_request_path(tr), params: { scanlator_id: @scanlator.id }
-    assert_redirected_to new_user_session_url
-
-    # Test unassign
-    delete unassign_translation_request_path(tr)
-    assert_redirected_to new_user_session_url
-
-    # Test destroy
-    delete translation_request_url(tr)
-    assert_redirected_to new_user_session_url
+      assert_redirected_to new_user_session_url
+    end
   end
 
   test 'should handle non-existent translation request' do
@@ -45,6 +40,7 @@ class TranslationRequestsControllerDestroyTest < ActionDispatch::IntegrationTest
     patch translation_request_url(99_999), params: {
       translation_request: { title: 'Updated' }
     }
+
     assert_response :not_found
   end
 
@@ -69,12 +65,17 @@ class TranslationRequestsControllerDestroyTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['success']
-    assert_equal 'Запит успішно видалено!', json_response['message']
+    verify_translation_request_json_destroy_success
   end
 
   private
+
+  def verify_translation_request_json_destroy_success
+    json_response = response.parsed_body
+
+    assert json_response['success']
+    assert_equal 'Запит успішно видалено!', json_response['message']
+  end
 
   def new_translation_request
     TranslationRequest.create!(

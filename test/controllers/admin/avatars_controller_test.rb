@@ -13,17 +13,19 @@ class AvatarsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect to root path if user is not an admin' do
     sign_in users(:user_two)
     get admin_avatars_path
+
     assert_redirected_to root_path
   end
 
   test 'should get index' do
     get admin_avatars_path
+
     assert_response :success
   end
 
   test 'should create avatar' do
     avatar_image = Rack::Test::UploadedFile.new(
-      Rails.root.join('app', 'assets', 'images', 'logo-default.svg'),
+      Rails.root.join('app/assets/images/logo-default.svg'),
       'image/svg'
     )
     assert_difference('Avatar.count') do

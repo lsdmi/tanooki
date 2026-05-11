@@ -14,11 +14,13 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index' do
     get translation_requests_url
+
     assert_response :success
   end
 
   test 'should get index with turbo stream format' do
     get translation_requests_url(format: :turbo_stream)
+
     assert_response :success
   end
 
@@ -69,6 +71,7 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to translation_requests_path
     assert_equal 'Запит на переклад успішно оновлено!', flash[:notice]
     @translation_request.reload
+
     assert_equal 'Updated Title', @translation_request.title
   end
 
@@ -82,8 +85,9 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert_equal true, json_response['success']
+    json_response = response.parsed_body
+
+    assert json_response['success']
     assert_equal 'Запит успішно оновлено!', json_response['message']
   end
 
