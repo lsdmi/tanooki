@@ -6,7 +6,7 @@ class SitemapsController < ApplicationController
 
   def show
     expires_in 6.hours, public: true if Rails.env.production?
-    @entries = SitemapEntries.new(sitemap_url_options).to_a
+    @entries = Sitemaps::EntryBuilder.new(sitemap_url_options).to_a
   end
 
   private

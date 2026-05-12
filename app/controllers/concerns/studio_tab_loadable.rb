@@ -9,7 +9,7 @@ module StudioTabLoadable
 
   def set_active_tab
     requested = params[:tab].presence || session[:studio_tab].presence || default_tab
-    @active_tab = Studio.normalize_tab_id(requested)
+    @active_tab = Studio::TabCatalog.normalize_tab_id(requested)
     session[:studio_tab] = @active_tab
   end
 

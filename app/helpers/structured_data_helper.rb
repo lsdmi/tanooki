@@ -5,6 +5,19 @@ module StructuredDataHelper
     controller_name.to_sym == :tales && action_name.to_sym == :show
   end
 
+  def article_author_meta?
+    article_meta? && @publication&.persisted?
+  end
+
+  # Absolute profile URL for the publication author (meta tags + JSON-LD).
+  def publication_author_profile_url(publication)
+    profile_url(
+      publication.user.sqid,
+      only_path: false,
+      **Rails.application.config.action_mailer.default_url_options.symbolize_keys
+    )
+  end
+
   def article_meta(publication)
     {
       '@context': 'https://schema.org',
@@ -66,7 +79,8 @@ module StructuredDataHelper
   def author_data(publication)
     {
       '@type': 'Person',
-      name: publication.username
+      name: publication.username,
+      url: publication_author_profile_url(publication)
     }
   end
 

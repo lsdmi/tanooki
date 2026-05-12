@@ -54,7 +54,7 @@
                     <%= t('chapters_added', count: fiction_update[:chapters_count]) %>
                   </p>
                   <% if fiction_update[:scanlator_bank_url].present? %>
-                    <%= link_to format_url(fiction_update[:scanlator_bank_url]),
+                    <%= link_to https_url(fiction_update[:scanlator_bank_url]),
                                 class: 'text-stone-600 dark:text-stone-400 hover:text-stone-500 dark:hover:text-stone-300 transition-colors duration-300 text-xs flex items-center',
                                 data: { turbo_frame: '_top' } do %>
                       Підтримка

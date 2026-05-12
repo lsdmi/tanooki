@@ -12,12 +12,12 @@ class StudioController < ApplicationController
   end
 
   def set_tab_and_redirect
-    session[:studio_tab] = Studio.normalize_tab_id(params[:tab])
+    session[:studio_tab] = Studio::TabCatalog.normalize_tab_id(params[:tab])
     redirect_to studio_index_path
   end
 
   def tab
-    @active_tab = Studio.normalize_tab_id(params[:id])
+    @active_tab = Studio::TabCatalog.normalize_tab_id(params[:id])
     session[:studio_tab] = @active_tab
     load_tab_content
     render turbo_stream: turbo_stream_updates
@@ -28,7 +28,11 @@ class StudioController < ApplicationController
   def turbo_stream_updates
     [
       turbo_stream.update('tabs', partial: 'studio/tab_list', locals: { active_tab: @active_tab }),
-      turbo_stream.update('tab-content', partial: Studio.tab_partial(@active_tab), locals: tab_content_locals),
+      turbo_stream.update(
+        'tab-content',
+        partial: Studio::TabCatalog.partial_for(@active_tab),
+        locals: tab_content_locals
+      ),
       turbo_stream.update('sweet-alert', partial: 'shared/sweet_alert')
     ]
   end

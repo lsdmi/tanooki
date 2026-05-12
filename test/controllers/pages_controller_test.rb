@@ -14,4 +14,17 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test 'privacy-policy slug redirects to privacy for crawlers' do
+    get '/privacy-policy'
+
+    assert_redirected_to '/privacy'
+  end
+
+  test 'privacy page surfaces Privacy Policy wording for crawlers' do
+    get privacy_url
+
+    assert_response :success
+    assert_includes response.body, 'Privacy Policy'
+  end
 end

@@ -1,15 +1,22 @@
 <%# locals: skeleton: FictionGenrePageSkeleton %>
+<% genre_desc = skeleton.genre.description.presence %>
 <header class="mb-8 lg:mb-10">
   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div class="min-w-0 flex-1">
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]">
         <%= skeleton.genre.name %>
       </h1>
-      <% if (genre_desc = skeleton.genre.description.presence) %>
+      <% if genre_desc %>
         <p class="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
           <%= genre_desc %>
         </p>
       <% end %>
+      <p class="<%= genre_desc ? 'mt-3' : 'mt-4' %> inline-flex w-fit max-w-full items-center gap-2 rounded-lg border border-slate-200/90 bg-slate-50/90 px-3 py-1.5 text-sm font-medium text-slate-600 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-400" role="status" aria-label="<%= skeleton.found_fictions_badge_text %>">
+        <svg class="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.984 8.984 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25A8.966 8.966 0 0118 3.75c1.052 0 2.062.18 3 .512v14.25A8.985 8.985 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+        <span><%= skeleton.found_fictions_badge_text %></span>
+      </p>
     </div>
   </div>
 </header>

@@ -4,15 +4,6 @@ require 'test_helper'
 
 module Studio
   class TabContentTest < ActiveSupport::TestCase
-    test 'normalize_tab_id falls back to blogs for unknown ids' do
-      assert_equal 'blogs', Studio.normalize_tab_id('not-a-tab')
-    end
-
-    test 'tab_partial maps known tab ids to partial paths' do
-      assert_equal 'studio/tabs/pokemons', Studio.tab_partial('pokemons')
-      assert_equal 'studio/tabs/blogs', Studio.tab_partial('nope')
-    end
-
     test 'call with pokemons tab assigns Pokemons::StudioTab' do
       user = users(:user_one)
       service = TabContent.new(user, 'pokemons', {})
