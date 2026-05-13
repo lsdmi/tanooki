@@ -15,11 +15,15 @@ class ChaptersHelperTest < ActionView::TestCase
 
   test 'chapters_allow_epub_download? is false when any scanlator is not convertable' do
     c1 = chapters(:one)
-    scanlators(:one).update_column(:convertable, false)
+    sl = scanlators(:one)
+    sl.convertable = false
+    sl.save(validate: false)
 
     assert_not chapters_allow_epub_download?([c1])
   ensure
-    scanlators(:one).update_column(:convertable, true)
+    sl = scanlators(:one)
+    sl.convertable = true
+    sl.save(validate: false)
   end
 
   test 'chapter_epub_download_allowed? is true when all scanlators are convertable' do
@@ -28,11 +32,15 @@ class ChaptersHelperTest < ActionView::TestCase
 
   test 'chapter_epub_download_allowed? is false when a scanlator is not convertable' do
     c1 = chapters(:one)
-    scanlators(:one).update_column(:convertable, false)
+    sl = scanlators(:one)
+    sl.convertable = false
+    sl.save(validate: false)
 
     assert_not chapter_epub_download_allowed?(c1)
   ensure
-    scanlators(:one).update_column(:convertable, true)
+    sl = scanlators(:one)
+    sl.convertable = true
+    sl.save(validate: false)
   end
 
   test "volume_number_integer returns 'NA' when nil is passed" do

@@ -11,14 +11,14 @@ module ApplicationCable
     test 'connection identifies current_user' do
       # Test that the connection can identify a user
       # This is a basic test to ensure the connection class works
-      assert ApplicationCable::Connection.identified_by.include?(:current_user)
+      assert_includes ApplicationCable::Connection.identified_by, :current_user
     end
 
     test 'connection class has required methods' do
       # Test that the connection class has the required methods
       assert_respond_to ApplicationCable::Connection, :identified_by
-      assert ApplicationCable::Connection.instance_methods.include?(:connect)
-      assert ApplicationCable::Connection.instance_methods.include?(:current_user)
+      assert_includes ApplicationCable::Connection.instance_methods, :connect
+      assert_includes ApplicationCable::Connection.instance_methods, :current_user
     end
   end
 end

@@ -11,17 +11,27 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 
   test 'subscribes to chat_room' do
     subscribe
-    assert subscription.confirmed?
+
+    assert_predicate subscription, :confirmed?
     assert_has_stream 'chat_room'
   end
 
   test 'speak creates a chat message' do
     stub_connection(current_user: @user)
     subscribe
+
     assert_difference 'ChatMessage.count', 1 do
       perform :speak, message: @message_content
     end
+  end
+
+  test 'speak assigns content, user, and room on the new message' do
+    stub_connection(current_user: @user)
+    subscribe
+    perform :speak, message: @message_content
+
     message = ChatMessage.last
+
     assert_equal @message_content, message.content
     assert_equal @user, message.user
     assert_equal 'general', message.room

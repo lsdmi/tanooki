@@ -16,11 +16,11 @@
 <%= tag.meta property: 'og:type', content: meta_type %>
 <%= tag.meta property: 'og:url', content: canonical_url %>
 
-<% if article_author_meta? %>
-  <%= tag.meta name: 'author', content: @publication.username %>
-  <%= tag.meta property: 'article:author', content: publication_author_profile_url(@publication) %>
-  <%= tag.meta property: 'article:published_time', content: @publication.created_at.iso8601 %>
-  <%= tag.meta property: 'article:modified_time', content: @publication.updated_at.iso8601 %>
+<% if article_author_meta?(publication) %>
+  <%= tag.meta name: 'author', content: publication.username %>
+  <%= tag.meta property: 'article:author', content: publication_author_profile_url(publication) %>
+  <%= tag.meta property: 'article:published_time', content: publication.created_at.iso8601 %>
+  <%= tag.meta property: 'article:modified_time', content: publication.updated_at.iso8601 %>
 <% end %>
 
 <%= tag.meta name: 'twitter:card', content: 'summary_large_image' %>

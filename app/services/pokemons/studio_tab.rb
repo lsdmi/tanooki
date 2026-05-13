@@ -13,6 +13,10 @@ module Pokemons
       assign_pokemon_details if @pokemons.any?
     end
 
+    def leaderboard_cooldown?
+      BattleLeaderboardCooldown.call(user)
+    end
+
     private
 
     def assign_pokemon_details

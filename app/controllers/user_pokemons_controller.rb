@@ -30,7 +30,8 @@ class UserPokemonsController < ApplicationController
     render turbo_stream: turbo_stream.update(
       'pokemon-leaderboard-screen',
       partial: 'users/pokemons/dex_leaderboard',
-      locals: { dex_overall: @pokemon_show.dex_overall, opponent: @pokemon_show.opponent }
+      locals: { dex_overall: @pokemon_show.dex_overall, opponent: @pokemon_show.opponent,
+                cooldown: @pokemon_show.leaderboard_cooldown? }
     )
   end
 

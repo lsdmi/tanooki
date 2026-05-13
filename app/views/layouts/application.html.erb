@@ -16,7 +16,7 @@
       })();
     </script>
 
-    <%= render 'shared/meta' %>
+    <%= render 'shared/meta', publication: @publication %>
 
     <%= tag.script type: 'application/ld+json' do %>
       <%== json_escape(article_meta(@publication)) %>

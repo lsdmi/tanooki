@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Validates uploaded fiction banners: WebP type, minimum width, and target aspect ratio.
 class BannerImageValidator
   MIN_WIDTH = 1000
   IDEAL_ASPECT = 3.0
@@ -13,7 +14,7 @@ class BannerImageValidator
   end
 
   def valid?
-    return true unless file.present?
+    return true if file.blank?
 
     validate_format
     dimensions = extract_dimensions

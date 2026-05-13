@@ -49,22 +49,29 @@ class LibraryHelperTest < ActionView::TestCase
   end
 
   test 'fiction_epub_download_support is none when no listable chapter allows epub' do
-    scanlators(:one).update_column(:convertable, false)
+    sl = scanlators(:one)
+    sl.convertable = false
+    sl.save(validate: false)
 
     assert_equal :none, fiction_epub_download_support(@fiction, viewer: nil)
   ensure
-    scanlators(:one).update_column(:convertable, true)
+    sl = scanlators(:one)
+    sl.convertable = true
+    sl.save(validate: false)
   end
 
   test 'fiction_epub_download_support is mixed when some chapters allow epub and some do not' do
     s2 = scanlators(:two)
-    s2.update_column(:convertable, false)
+    s2.convertable = false
+    s2.save(validate: false)
     @chapter_two.chapter_scanlators.destroy_all
     ChapterScanlatorsManager.new([s2.id.to_s], @chapter_two.reload).operate
 
     assert_equal :mixed, fiction_epub_download_support(@fiction, viewer: nil)
   ensure
-    s2.update_column(:convertable, true)
+    s2 = scanlators(:two)
+    s2.convertable = true
+    s2.save(validate: false)
     @chapter_two.reload.chapter_scanlators.destroy_all
     ChapterScanlatorsManager.new([scanlators(:one).id.to_s], @chapter_two).operate
   end

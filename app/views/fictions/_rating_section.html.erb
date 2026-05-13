@@ -2,7 +2,7 @@
   <%= render 'shared/decorative_ornament' %>
   <h3 class="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
     <svg class="w-5 h-5 text-cyan-600 dark:text-rose-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696"/>
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696" />
     </svg>
     Якість перекладу
   </h3>
@@ -19,7 +19,7 @@
                     data-fiction-id="<%= fiction.id %>"
                     data-action="click->rating#setRating">
               <svg class="w-full h-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696"/>
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696" />
               </svg>
             </button>
           <% end %>
@@ -27,7 +27,7 @@
           <% (1..5).each do |fish| %>
             <span class="w-8 h-8 lg:w-4 lg:h-4 xl:w-8 xl:h-8 <%= fish <= fiction.average_rating.ceil ? 'text-cyan-600 dark:text-rose-700' : 'text-gray-300 dark:text-gray-600' %>">
               <svg class="w-full h-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696"/>
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12c0 1.6 3.35786 4 7.5 4 4.1421 0 6.9231-3.2 7.5-4-.5769-.8-3.3579-4-7.5-4C9.35786 8 6 10.4 6 12Zm0 0L3 9m3 3-3 3m12.9866-3.3723h.01m-1.9995-3.61229c-1.7265 3.30199-1.7113 5.02539-.0015 7.96929m-4.6104-.7956L7.7 17.4c-.49443.6592-.02401 1.6.80004 1.6H10c1 0 2.7576-3.0256 2.7576-3.0256M9 5l3.056 3.09696" />
               </svg>
             </span>
           <% end %>

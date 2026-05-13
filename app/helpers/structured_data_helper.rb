@@ -5,8 +5,8 @@ module StructuredDataHelper
     controller_name.to_sym == :tales && action_name.to_sym == :show
   end
 
-  def article_author_meta?
-    article_meta? && @publication&.persisted?
+  def article_author_meta?(publication)
+    article_meta? && publication&.persisted?
   end
 
   # Absolute profile URL for the publication author (meta tags + JSON-LD).

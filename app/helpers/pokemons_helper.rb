@@ -2,7 +2,7 @@
 
 module PokemonsHelper
   def cooldown?(current_user)
-    (current_user.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago
+    Pokemons::BattleLeaderboardCooldown.call(current_user)
   end
 
   def training_cooldown?(user)
