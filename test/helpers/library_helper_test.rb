@@ -20,18 +20,6 @@ class LibraryHelperTest < ActionView::TestCase
     assert_equal 2, chapters_size(@fiction)
   end
 
-  test 'next_chapter_index returns correct index for a chapter within the list' do
-    chapters = [@chapter_one, @chapter_two, @chapter_three]
-
-    assert_equal 1, next_chapter_index(chapters, @chapter_two)
-  end
-
-  test 'next_chapter_index returns -1 for the last chapter in the list' do
-    chapters = [@chapter_one, @chapter_two, @chapter_three]
-
-    assert_equal 2, next_chapter_index(chapters, @chapter_three)
-  end
-
   test 'ordered_chapters for guest excludes chapters not yet visible to everyone' do
     travel_to Time.zone.parse('2026-06-01 12:00') do
       update_chapter_schedule!(@chapter_one, published_at: 1.day.from_now)
@@ -54,6 +42,31 @@ class LibraryHelperTest < ActionView::TestCase
       update_chapter_schedule!(@chapter_one, published_at: nil)
       update_chapter_schedule!(@chapter_two, published_at: nil)
     end
+  end
+
+  test 'fiction_epub_download_support is all when every listable chapter allows epub' do
+    assert_equal :all, fiction_epub_download_support(@fiction, viewer: nil)
+  end
+
+  test 'fiction_epub_download_support is none when no listable chapter allows epub' do
+    scanlators(:one).update_column(:convertable, false)
+
+    assert_equal :none, fiction_epub_download_support(@fiction, viewer: nil)
+  ensure
+    scanlators(:one).update_column(:convertable, true)
+  end
+
+  test 'fiction_epub_download_support is mixed when some chapters allow epub and some do not' do
+    s2 = scanlators(:two)
+    s2.update_column(:convertable, false)
+    @chapter_two.chapter_scanlators.destroy_all
+    ChapterScanlatorsManager.new([s2.id.to_s], @chapter_two.reload).operate
+
+    assert_equal :mixed, fiction_epub_download_support(@fiction, viewer: nil)
+  ensure
+    s2.update_column(:convertable, true)
+    @chapter_two.reload.chapter_scanlators.destroy_all
+    ChapterScanlatorsManager.new([scanlators(:one).id.to_s], @chapter_two).operate
   end
 
   private

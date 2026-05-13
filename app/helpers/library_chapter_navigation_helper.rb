@@ -13,18 +13,8 @@ module LibraryChapterNavigationHelper
     chapters.index { |obj| obj.number == chapter.number && obj.volume_number == chapter.volume_number } || 0
   end
 
-  def next_chapter_index(chapters, chapter)
-    chapters.rindex do |obj|
-      (chapter.volume_number || 0) <= (obj.volume_number || 0) && chapter.number <= obj.number
-    end || -1
-  end
-
   def unique_chapters(chapters)
     chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
-  end
-
-  def grouped_chapters_desc(fiction, viewer: nil)
-    ordered_chapters_desc(fiction, viewer:).joins(:scanlators).group_by { |chapter| chapter.scanlators.pluck(:id).sort }
   end
 
   private

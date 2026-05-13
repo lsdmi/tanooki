@@ -20,7 +20,7 @@
         <%= link_to fiction.title, fiction_path(fiction), class: "text-lg sm:text-xl text-stone-600 dark:text-gray-300 hover:text-stone-800 dark:hover:text-white transition duration-300 border-b-2 border-transparent hover:border-stone-800 dark:hover:border-white" %>
       </div>
       <div class="fixed z-10 bottom-4 left-4 lg:relative lg:bottom-auto lg:left-auto mt-4 lg:mt-0 flex items-center space-x-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none border border-stone-200 dark:border-gray-600 lg:border-none p-2 lg:p-0 rounded-tr-lg lg:rounded-none shadow-lg lg:shadow-none z-50">
-        <% if chapter.scanlators.all?(&:convertable?) %>
+        <% if chapter_epub_download_allowed?(chapter) %>
           <div data-controller="epub-download" data-epub-download-url-value="<%= epub_download_path(chapter.content) %>">
             <button data-epub-download-target="button" data-action="click->epub-download#download" class="text-stone-600 dark:text-gray-300 hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-gray-700 hover:scale-110 transition-all duration-300 p-2 rounded-lg" title="Завантажити EPUB">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

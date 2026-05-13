@@ -3,13 +3,10 @@
 class FictionShowPresenter
   include LibraryHelper
 
-  attr_reader :translator
-
-  def initialize(fiction, current_user, params)
+  def initialize(fiction, current_user, params = {})
     @fiction = fiction
     @current_user = current_user
     @params = params
-    set_translator
   end
 
   def comments
@@ -51,21 +48,10 @@ class FictionShowPresenter
     @params[:order] || :desc
   end
 
-  def before_next_chapter
-    if duplicate_chapters?
-      chapter_manager.before_next_chapter_by_user
-    else
-      chapter_manager.before_next_chapter
-    end
-  end
-
   def sorted_chapters_locals
     {
       fiction: @fiction,
-      translator:,
       reading_progress:,
-      reading_status:,
-      before_next_chapter:,
       order:
     }
   end
@@ -104,22 +90,5 @@ class FictionShowPresenter
 
   def last_chapter
     @last_chapter ||= ordered_chapters_desc(@fiction, viewer: @current_user).first
-  end
-
-  def set_translator
-    @translator = @params[:translator] || chapter_manager.translator
-    @translator = Array(@translator) unless @translator.is_a?(Array)
-
-    return unless @translator.any? { |t| !@fiction.scanlators.ids.include?(t.to_i) }
-
-    @translator = chapter_manager.translator
-  end
-
-  def duplicate_chapters?
-    @duplicate_chapters ||= @fiction.chapters.group(:number).having('COUNT(*) > 1').exists?
-  end
-
-  def chapter_manager
-    @chapter_manager ||= Fictions::ChapterNav.new(@fiction, reading_progress, @translator, @current_user)
   end
 end

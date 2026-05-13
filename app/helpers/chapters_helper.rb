@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module ChaptersHelper
+  def chapter_epub_download_allowed?(chapter)
+    chapter.scanlators.all?(&:convertable?)
+  end
+
+  def chapters_allow_epub_download?(chapters)
+    list = Array(chapters)
+    list.any? && list.all? { |ch| chapter_epub_download_allowed?(ch) }
+  end
+
   def check_decimal(number)
     decimal_part = number.to_s.split('.').last.to_i
     decimal_part.zero? ? number.to_i : number

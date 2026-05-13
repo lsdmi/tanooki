@@ -9,14 +9,27 @@
   </div>
 
   <div class="relative z-10">
+    <% epub_support = fiction_epub_download_support(fiction, viewer: current_user) %>
     <% if current_user&.scanlators&.any? && (current_user.scanlators.ids & fiction.scanlators.ids).any? %>
+      <% user_teams_on_fiction = fiction.scanlators.where(id: current_user.scanlators.ids) %>
+      <% workshop_href = fiction.scanlators.size == 1 ? edit_scanlator_path(fiction.scanlators.first) : scanlators_path %>
       <%= tag.p class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' do %>
-        Ваша команда <%= fiction.scanlators.all?(&:convertable?) ? 'підтримує' : 'не підтримує' %> завантаження в форматі EPUB. Ви можете змінити налаштування
-        <%= link_to "в майстерні", fiction.scanlators.size == 1 ? edit_scanlator_path(fiction.scanlators.first) : scanlators_path, class: "text-stone-800 dark:text-gray-100 font-semibold hover:text-stone-600 dark:hover:text-gray-300 transition duration-300" %>.
+        <% if user_teams_on_fiction.any? && user_teams_on_fiction.all?(&:convertable?) %>
+          Ваша команда підтримує завантаження в форматі EPUB. Ви можете змінити налаштування
+        <% elsif user_teams_on_fiction.any? && user_teams_on_fiction.none?(&:convertable?) %>
+          Ваша команда не підтримує завантаження в форматі EPUB. Ви можете змінити налаштування
+        <% else %>
+          Серед ваших команд на цьому творі різні правила щодо EPUB. Ви можете змінити налаштування
+        <% end %>
+        <%= link_to "в майстерні", workshop_href, class: "text-stone-800 dark:text-gray-100 font-semibold hover:text-stone-600 dark:hover:text-gray-300 transition duration-300" %>.
       <% end %>
-    <% elsif fiction.scanlators.all?(&:convertable?) %>
+    <% elsif epub_support == :all %>
       <%= tag.p class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' do %>
         Це ранобе підтримує завантаження в форматі EPUB. Пам'ятайте, що автори зчаста оновлюють історії, тому завантажена версія може відрізнятися від останньої версії на сайті.
+      <% end %>
+    <% elsif epub_support == :mixed %>
+      <%= tag.p class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' do %>
+        Команди по-різному ставляться до EPUB: частину розділів можна завантажити, для інших доступне лише онлайн-читання. Кнопка завантаження з’являється лише там, де всі команди, що працювали над розділом, дозволяють експорт.
       <% end %>
     <% else %>
       <p class="text-sm sm:text-base text-stone-600 dark:text-gray-300">На жаль, це ранобе не підтримує завантаження EPUB. Та ви можете насолоджуватися його читанням онлайн на нашому сайті.</p>

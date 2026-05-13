@@ -25,17 +25,6 @@ module LibraryChapterCatalogHelper
     chapters_scope_for_list(fiction, viewer).exists?
   end
 
-  def duplicate_chapters(fiction)
-    cache_key = build_duplicate_chapters_cache_key(fiction)
-    Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      find_duplicated_chapters(fiction)
-    end
-  rescue StandardError => e
-    Rails.logger.error "Error in duplicate_chapters for fiction #{fiction.id}: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    fiction.chapters.none
-  end
-
   private
 
   # Guests: only chapters already public. Team on this fiction: also chapters with future published_at they scanlate.
@@ -64,28 +53,6 @@ module LibraryChapterCatalogHelper
   def sql_visible_now_or_future_for_team(visible_to_all_sql)
     "#{visible_to_all_sql} OR (chapters.published_at > ? AND EXISTS (" \
       'SELECT 1 FROM chapter_scanlators cs WHERE cs.chapter_id = chapters.id AND cs.scanlator_id IN (?)))'
-  end
-
-  def build_duplicate_chapters_cache_key(fiction)
-    max_updated_at = fiction.chapters.maximum(:updated_at) || fiction.updated_at
-    "duplicate_chapters/#{fiction.id}/#{max_updated_at}"
-  end
-
-  def find_duplicated_chapters(fiction)
-    chapter_groups = fiction.chapters.includes(:scanlators).group_by(&:number)
-    duplicated_numbers = find_duplicated_chapter_numbers(chapter_groups)
-    fiction.chapters.where(number: duplicated_numbers)
-  end
-
-  def find_duplicated_chapter_numbers(chapter_groups)
-    chapter_groups.filter_map do |number, chapters|
-      scanlator_combinations = extract_scanlator_combinations(chapters)
-      number if scanlator_combinations.size > 1
-    end
-  end
-
-  def extract_scanlator_combinations(chapters)
-    chapters.map { |chapter| chapter.scanlators.pluck(:id).sort }.uniq
   end
 
   def order_clause
