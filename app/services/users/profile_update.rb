@@ -11,9 +11,9 @@ module Users
 
     def call
       if update_user
-        ServiceResult.new(success: true, data: { avatars: fetch_avatars })
+        Outcomes::OperationOutcome.new(success: true, data: { avatars: fetch_avatars })
       else
-        ServiceResult.new(success: false, data: { avatars: fetch_avatars })
+        Outcomes::OperationOutcome.new(success: false, data: { avatars: fetch_avatars })
       end
     end
 

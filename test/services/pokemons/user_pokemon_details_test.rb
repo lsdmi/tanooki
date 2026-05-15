@@ -14,10 +14,10 @@ module Pokemons
       assert_equal @user_pokemon.id, @service.instance_variable_get(:@pokemon_id)
     end
 
-    test 'call returns successful ServiceResult' do
+    test 'call returns successful OperationOutcome' do
       result = @service.call
 
-      assert_instance_of ServiceResult, result
+      assert_instance_of Outcomes::OperationOutcome, result
       assert_predicate result, :success?
     end
 

@@ -8,7 +8,7 @@ module Pokemons
     end
 
     def call
-      ServiceResult.new(
+      Outcomes::OperationOutcome.new(
         success: true,
         data: {
           selected_pokemon: selected_pokemon,

@@ -3,6 +3,9 @@
 class FictionsTelegramJob < ApplicationJob
   queue_as :default
 
+  # Telegram caps messages at 4096 characters; cap how many fictions we list.
+  RECENT_FICTIONS_LIMIT = 5
+
   def perform
     return unless Rails.env.production?
     return unless Fiction.recent.any?
@@ -21,7 +24,7 @@ class FictionsTelegramJob < ApplicationJob
   end
 
   def recent_fictions
-    Fiction.recent.map do |fiction|
+    Fiction.recent.limit(RECENT_FICTIONS_LIMIT).map do |fiction|
       fiction_details = "📖 <b><a href=\"#{route(fiction)}\">#{fiction.title}</a></b>"
       genre_details = fiction.genres.first(5).map { |genre| "##{formatted_genres(genre)}" }.join(', ')
       genre_details.present? ? "#{fiction_details} #{genre_details}" : fiction_details

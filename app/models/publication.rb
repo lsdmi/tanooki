@@ -4,7 +4,6 @@ require_relative '../../config/initializers/telegram_bot'
 
 class Publication < ApplicationRecord
   extend FriendlyId
-  include TagsHelper
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async

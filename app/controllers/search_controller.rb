@@ -73,7 +73,7 @@ class SearchController < ApplicationController
         boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
       ).includes(%i[tags rich_text_description])
     else
-      SearchService.publications(params[:search])
+      Search::Fallback.publications(params[:search])
     end
   end
 
@@ -84,7 +84,7 @@ class SearchController < ApplicationController
         fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
       ).includes(%i[genres scanlators])
     else
-      SearchService.fictions(params[:search])
+      Search::Fallback.fictions(params[:search])
     end
   end
 
@@ -96,7 +96,7 @@ class SearchController < ApplicationController
         boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
       ).includes(:youtube_channel)
     else
-      SearchService.videos(params[:search])
+      Search::Fallback.videos(params[:search])
     end
   end
 

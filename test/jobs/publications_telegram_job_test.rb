@@ -33,7 +33,7 @@ class PublicationsTelegramJobTest < ActiveSupport::TestCase
   end
 
   def recent_publications
-    Publication.weekly.map do |tale|
+    Publication.weekly.limit(PublicationsTelegramJob::WEEKLY_PUBLICATIONS_LIMIT).map do |tale|
       "📰 <b><a href=\"https://baka.in.ua/tales/#{tale.slug}\">#{tale.title}</a></b>"
     end.join("\n\n")
   end

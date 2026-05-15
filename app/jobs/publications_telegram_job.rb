@@ -3,6 +3,9 @@
 class PublicationsTelegramJob < ApplicationJob
   queue_as :default
 
+  # Telegram caps messages at 4096 characters; cap how many publications we list.
+  WEEKLY_PUBLICATIONS_LIMIT = 5
+
   def perform
     return unless Rails.env.production?
     return unless Publication.weekly.any?
@@ -17,7 +20,7 @@ class PublicationsTelegramJob < ApplicationJob
   end
 
   def recent_publications
-    Publication.weekly.map do |publication|
+    Publication.weekly.limit(WEEKLY_PUBLICATIONS_LIMIT).map do |publication|
       "📰 <b><a href=\"#{route(publication)}\">#{publication.title}</a></b>"
     end.join("\n\n")
   end
