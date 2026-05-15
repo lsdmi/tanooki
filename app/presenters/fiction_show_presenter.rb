@@ -51,7 +51,6 @@ class FictionShowPresenter
   def sorted_chapters_locals
     {
       fiction: @fiction,
-      reading_progress:,
       order:
     }
   end

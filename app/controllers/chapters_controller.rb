@@ -17,6 +17,7 @@ class ChaptersController < ApplicationController
     @comment = Comment.new
     @previous_chapter = previous_chapter(@chapter.fiction, @chapter, viewer: current_user)
     @next_chapter = following_chapter(@chapter.fiction, @chapter, viewer: current_user)
+    @fiction_sidebar_presenter = FictionShowPresenter.new(@chapter.fiction, current_user, params)
   end
 
   def comments

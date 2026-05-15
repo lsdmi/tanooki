@@ -1,8 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["button"]
-
   connect() {
     this.button = document.getElementById('jump-to-top')
     this.handleScroll = this.handleScroll.bind(this)

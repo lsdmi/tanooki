@@ -39,6 +39,17 @@
       </div>
 
       <div class="fixed z-50 bottom-3 left-3 flex flex-wrap items-center gap-1 rounded-md border border-slate-300/70 bg-white/95 px-1.5 py-1 shadow-md shadow-slate-400/20 sm:bottom-4 sm:left-4 lg:static lg:z-auto lg:bottom-auto lg:left-auto lg:shrink-0 lg:self-start dark:border-slate-500/45 dark:bg-slate-800/85 dark:shadow-lg dark:shadow-slate-900/25 lg:dark:shadow-md lg:dark:shadow-slate-900/20">
+        <% if fiction_has_listable_chapters?(fiction, current_user) %>
+          <button type="button"
+                  class="<%= action_icon %>"
+                  data-action="click->chapter-drawer#open"
+                  title="Список розділів"
+                  aria-label="Відкрити список розділів">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
+            </svg>
+          </button>
+        <% end %>
         <% if chapter_epub_download_allowed?(chapter) %>
           <div data-controller="epub-download" data-epub-download-url-value="<%= epub_download_path(chapter.content) %>">
             <button type="button" data-epub-download-target="button" data-action="click->epub-download#download" class="<%= action_icon %>" title="Завантажити EPUB">

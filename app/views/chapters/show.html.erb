@@ -1,4 +1,4 @@
-<div class="bg-stone-50 dark:bg-stone-900 min-h-screen z-10 relative" data-controller="comments-toggle jump-to-top">
+<div class="bg-stone-50 dark:bg-stone-900 min-h-screen relative" data-controller="comments-toggle jump-to-top chapter-drawer">
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 bg-stone-50/95 dark:bg-stone-900/95"></div>
 
@@ -26,4 +26,11 @@
       </div>
     </div>
   </main>
+
+  <% if fiction_has_listable_chapters?(@chapter.fiction, current_user) %>
+    <%= render "chapter_drawer",
+               fiction: @chapter.fiction,
+               order: @fiction_sidebar_presenter.order,
+               toggle_order_button_id: "toggle-fictions-order-drawer" %>
+  <% end %>
 </div>

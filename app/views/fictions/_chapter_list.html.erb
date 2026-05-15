@@ -1,7 +1,9 @@
-<%# locals: fiction:, reading_progress:, order: %>
-<div class="rounded-lg">
-  <div id="chapters-list" class="space-y-6">
+<%# locals: fiction:, order:, compact: false (optional), drawer_toc: false (optional) %>
+<% compact = local_assigns.fetch(:compact, false) %>
+<% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
+<div class="<%= compact ? '' : 'rounded-lg' %>">
+  <div id="chapters-list" class="<%= compact ? '' : 'space-y-6' %>">
     <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: current_user).includes(:scanlators) : ordered_chapters(fiction, viewer: current_user).includes(:scanlators) %>
-    <%= render 'chapter_collection', chapters: chapters %>
+    <%= render 'fictions/chapter_collection', chapters: chapters, compact: compact, drawer_toc: drawer_toc %>
   </div>
 </div>

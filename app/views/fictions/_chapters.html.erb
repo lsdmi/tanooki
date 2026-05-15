@@ -1,33 +1,24 @@
-<%# locals: fiction:, reading_progress:, order: %>
-<section>
-  <div class="flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6">
-    <h3 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200">Розділи</h3>
+<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), compact: false (optional), drawer_toc: false (optional) %>
+<% toggle_btn_id = local_assigns.fetch(:toggle_order_button_id, 'toggle-fictions-order') %>
+<% compact = local_assigns.fetch(:compact, false) %>
+<% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
+<section class="<%= compact ? (drawer_toc ? 'max-w-full bg-transparent' : 'max-w-full bg-zinc-950') : '' %>">
+  <div class="<%= compact ? "flex items-center justify-between gap-3 border-b px-4 py-3 #{drawer_toc ? 'border-stone-200/45 bg-white/10 backdrop-blur-md dark:border-zinc-100/10 dark:bg-black/15' : 'border-zinc-800'}" : 'flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6' %>">
+    <h3 class="<%= compact ? (drawer_toc ? 'text-sm font-semibold tracking-tight text-stone-800 dark:text-white' : 'text-sm font-semibold tracking-tight text-white') : 'text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200' %>">
+      Розділи
+    </h3>
     <%= button_to toggle_order_fictions_path(id: fiction, order: order),
                   data: { turbo_stream: '', 'turbo-method': :post },
-                  id: 'toggle-fictions-order',
-                  class: 'bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0' do %>
+                  id: toggle_btn_id,
+                  class: compact ? (drawer_toc ? "fictions-order-toggle inline-flex shrink-0 items-center justify-center rounded-md border border-stone-400/35 bg-white/25 p-2 text-stone-800 backdrop-blur-sm transition hover:border-stone-500/45 hover:bg-white/40 hover:text-stone-900 dark:border-zinc-500/25 dark:bg-white/10 dark:text-zinc-200 dark:hover:border-zinc-400/35 dark:hover:bg-white/15 dark:hover:text-white" : "fictions-order-toggle inline-flex shrink-0 items-center justify-center rounded-md border border-zinc-700 bg-zinc-800 p-2 text-zinc-300 transition hover:border-zinc-600 hover:bg-zinc-700 hover:text-white") : "fictions-order-toggle bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0" do %>
       <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= compact ? 'h-4 w-4' : 'h-5 w-5' %> transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
       </svg>
     <% end %>
   </div>
 
-  <div data-controller="flowbite" class="mt-4 sm:mt-6">
-    <%= render 'chapter_list', fiction: fiction, reading_progress: reading_progress, order: order %>
+  <div data-controller="flowbite" class="<%= compact ? '' : 'mt-4 sm:mt-6' %>">
+    <%= render 'fictions/chapter_list', fiction: fiction, order: order, compact: compact, drawer_toc: drawer_toc %>
   </div>
 </section>
-
-<script>
-  document.addEventListener('turbo:load', function() {
-    const toggleButton = document.getElementById('toggle-fictions-order');
-    if (toggleButton) {
-      toggleButton.addEventListener('click', function() {
-        this.classList.add('animate-spin');
-        setTimeout(() => {
-          this.classList.remove('animate-spin');
-        }, 500);
-      });
-    }
-  });
-</script>

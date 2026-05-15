@@ -68,7 +68,7 @@ class FictionsController < ApplicationController
 
   def toggle_order
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, toggle_order_params)
-    render turbo_stream: [update_sorted_chapters]
+    render turbo_stream: sorted_chapters_turbo_streams
   end
 
   def details
@@ -129,19 +129,27 @@ class FictionsController < ApplicationController
   end
 
   def render_sorted_chapters
-    render turbo_stream: turbo_stream.update(
-      'sort-chapters',
-      partial: 'chapters',
-      locals: @show_presenter.sorted_chapters_locals
-    )
+    render turbo_stream: sorted_chapters_turbo_streams
   end
 
-  def update_sorted_chapters
-    turbo_stream.update(
-      'sort-chapters',
-      partial: 'chapters',
-      locals: @show_presenter.sorted_chapters_locals
-    )
+  def sorted_chapters_turbo_streams
+    locals = @show_presenter.sorted_chapters_locals
+    if chapters_sort_from_chapter_reader?
+      frame_dom_id = 'sort-chapters-mobile'
+      locals = locals.merge(compact: true, toggle_order_button_id: 'toggle-fictions-order-drawer', drawer_toc: true)
+    else
+      frame_dom_id = 'sort-chapters'
+    end
+    [turbo_stream.update(frame_dom_id, partial: 'chapters', locals: locals)]
+  end
+
+  def chapters_sort_from_chapter_reader?
+    ref = request.referer
+    return false if ref.blank?
+
+    URI.parse(ref).path.match?(%r{\A/chapters/})
+  rescue URI::InvalidURIError
+    false
   end
 
   def toggle_order_params
