@@ -19,6 +19,7 @@
   background-color: #fff;
   color: #6b7280;
   border: 1px solid #d1d5db;
+  border-radius: 8px;
   box-shadow: none;
   transition: background 0.2s, color 0.2s;
   text-align: center;
@@ -103,6 +104,7 @@
   background-color: #1f2937; /* dark gray background */
   color: #9ca3af; /* lighter gray text */
   border: 1px solid #374151; /* darker border */
+  border-radius: 8px;
   box-shadow: none;
   transition: background 0.2s, color 0.2s;
   text-align: center;
@@ -183,6 +185,7 @@
   background-color: #0e7490;        /* cyan-700 */
   color: #fff;
   border: 1px solid #155e75;        /* cyan-800 */
+  border-radius: 8px;
   box-shadow: none;
   transition: background 0.2s, color 0.2s, border 0.2s, transform 0.2s;
   text-align: center;
@@ -247,6 +250,7 @@
   background-color: #881337;        /* rose-900 */
   color: #fff;
   border: 1px solid #7f1d1d;        /* rose-900 */
+  border-radius: 8px;
   cursor: pointer;
 }
 

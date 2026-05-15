@@ -8,7 +8,7 @@
         <% end %>
         <li class="<%= crumb[:path].blank? ? 'font-semibold text-slate-900 dark:text-slate-100' : '' %>">
           <% if crumb[:path].present? %>
-            <%= link_to crumb[:label], crumb[:path], class: 'rounded-sm transition-colors hover:text-cyan-700 dark:hover:text-rose-300 hover:underline underline-offset-2' %>
+            <%= link_to crumb[:label], crumb[:path], class: 'rounded-lg transition-colors hover:text-cyan-700 dark:hover:text-rose-300 hover:underline underline-offset-2' %>
           <% else %>
             <span aria-current="page"><%= crumb[:label] %></span>
           <% end %>

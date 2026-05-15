@@ -1,7 +1,7 @@
 <%# locals: skeleton: FictionGenrePageSkeleton %>
 <section class="my-10 lg:my-14" aria-labelledby="genre-new-releases">
   <header class="flex gap-3 sm:gap-4 mb-5 lg:mb-6">
-    <div class="w-1.5 shrink-0 self-stretch min-h-[2.75rem] rounded-md bg-cyan-600 dark:bg-rose-500" aria-hidden="true"></div>
+    <div class="w-1.5 shrink-0 self-stretch min-h-[2.75rem] rounded-lg bg-cyan-600 dark:bg-rose-500" aria-hidden="true"></div>
     <div class="min-w-0 pt-0.5">
       <h2 id="genre-new-releases" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-snug">
         <%= skeleton.new_releases_title %>
@@ -30,10 +30,10 @@
     <div class="mb-6 hidden lg:mb-8 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-5">
       <% skeleton.new_releases_featured.each do |card| %>
         <% fiction = card[:fiction] %>
-        <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-2xl border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
-          <%= link_to fiction_path(fiction), class: "relative aspect-[3/4] w-full shrink-0 bg-gradient-to-br #{card[:accent]} sm:aspect-auto sm:w-[34%] sm:self-stretch sm:min-h-0 overflow-hidden rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none block transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset group-hover:brightness-110 dark:focus-visible:ring-rose-500" do %>
+        <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-lg border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
+          <%= link_to fiction_path(fiction), class: "relative aspect-[3/4] w-full shrink-0 bg-gradient-to-br #{card[:accent]} sm:aspect-auto sm:w-[34%] sm:self-stretch sm:min-h-0 overflow-hidden rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none block transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset group-hover:brightness-110 dark:focus-visible:ring-rose-500" do %>
             <% if card[:rank].present? %>
-              <span class="absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center rounded-md bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm backdrop-blur-[2px] pointer-events-none" aria-label="Місце в рейтингу: <%= card[:rank] %>">
+              <span class="absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center rounded-lg bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm backdrop-blur-[2px] pointer-events-none" aria-label="Місце в рейтингу: <%= card[:rank] %>">
                 <%= card[:rank] %>
               </span>
             <% end %>
@@ -54,7 +54,7 @@
             </div>
             <div class="relative z-[1] flex min-h-0 flex-1 flex-col">
               <h3 class="text-lg font-bold leading-snug text-white sm:text-xl line-clamp-2">
-                <%= link_to card[:title], fiction_path(fiction), class: "text-inherit line-clamp-2 rounded-sm transition-colors hover:text-cyan-200 hover:underline underline-offset-2 dark:hover:text-rose-200 group-hover:text-cyan-100 dark:group-hover:text-rose-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c] dark:focus-visible:ring-rose-500" %>
+                <%= link_to card[:title], fiction_path(fiction), class: "text-inherit line-clamp-2 rounded-lg transition-colors hover:text-cyan-200 hover:underline underline-offset-2 dark:hover:text-rose-200 group-hover:text-cyan-100 dark:group-hover:text-rose-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c] dark:focus-visible:ring-rose-500" %>
               </h3>
               <p class="mt-1.5 text-sm text-slate-300">
                 <%= card[:author] %> · <%= card[:chapters] %> розділів
@@ -80,7 +80,7 @@
                 <% if card[:genres].present? %>
                   <div class="mt-auto flex flex-wrap gap-2 pt-4">
                     <% card[:genres].each do |g| %>
-                      <%= link_to g[:name], fiction_genre_fictions_path(g[:slug]), class: "rounded-md border border-slate-500/45 bg-slate-800/85 px-3 py-1 text-xs font-medium text-slate-200 transition-colors hover:border-slate-400/55 hover:bg-slate-700/90 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c] dark:focus-visible:ring-rose-500" %>
+                      <%= link_to g[:name], fiction_genre_fictions_path(g[:slug]), class: "rounded-lg border border-slate-500/45 bg-slate-800/85 px-3 py-1 text-xs font-medium text-slate-200 transition-colors hover:border-slate-400/55 hover:bg-slate-700/90 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c] dark:focus-visible:ring-rose-500" %>
                     <% end %>
                   </div>
                 <% end %>

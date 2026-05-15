@@ -16,11 +16,19 @@
       })();
     </script>
 
-    <%= render 'shared/meta', publication: @publication %>
+    <%= render 'shared/meta', publication: @publication, chapter: @chapter %>
+
+    <%= tag.script type: 'application/ld+json' do %>
+      <%== json_escape(site_identity_meta) %>
+    <% end %>
 
     <%= tag.script type: 'application/ld+json' do %>
       <%== json_escape(article_meta(@publication)) %>
     <% end if article_meta? %>
+
+    <%= tag.script type: 'application/ld+json' do %>
+      <%== json_escape(chapter_article_meta(@chapter)) %>
+    <% end if chapter_reader_meta? && @chapter %>
 
     <%= tag.script type: 'application/ld+json' do %>
       <%== json_escape(profile_page_meta(@scanlator)) %>
@@ -47,11 +55,6 @@
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <% if Rails.env.production? %>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-BW05CDN8VS"></script>
-      <%= javascript_include_tag 'ga' %>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5596031369567303" crossorigin="anonymous"></script>
-    <% end %>
 
     <% if controller_name.to_sym == :fictions && action_name.to_sym == :show %>
       <%= javascript_include_tag 'accordion' %>
@@ -77,7 +80,7 @@
     <% end %>
   </head>
 
-  <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen">
+  <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen" data-load-google-scripts="<%= Rails.env.production? %>">
     <div class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
@@ -96,6 +99,8 @@
       <% end if @wild_pokemon %>
     </main>
     <%= render "shared/footer" %>
+    <%= render "shared/cookie_consent_banner" %>
+    <%= javascript_include_tag 'cookie_consent' %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>
   </body>
 </html>

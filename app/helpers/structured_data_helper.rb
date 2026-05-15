@@ -5,6 +5,10 @@ module StructuredDataHelper
     controller_name.to_sym == :tales && action_name.to_sym == :show
   end
 
+  def chapter_reader_meta?
+    controller_name.to_sym == :chapters && action_name.to_sym == :show
+  end
+
   def article_author_meta?(publication)
     article_meta? && publication&.persisted?
   end
@@ -74,7 +78,58 @@ module StructuredDataHelper
     }.to_json
   end
 
+  def site_identity_meta
+    root = root_url(only_path: false, **default_public_url_options)
+    {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          name: 'Бака',
+          url: root,
+          inLanguage: 'uk-UA',
+          publisher: { '@id' => "#{root}#publisher" }
+        },
+        {
+          '@type': 'Organization',
+          '@id' => "#{root}#publisher",
+          name: 'Бака',
+          url: root
+        }
+      ]
+    }.to_json
+  end
+
+  def chapter_article_meta(chapter)
+    fiction = chapter.fiction
+    url = chapter_url(chapter, only_path: false, **default_public_url_options)
+    published = (chapter.published_at || chapter.created_at).iso8601
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: "#{fiction.title} — #{chapter.display_title}",
+      image: [url_for(fiction.cover)],
+      datePublished: published,
+      dateModified: chapter.updated_at.iso8601,
+      author: {
+        '@type' => 'Person',
+        name: fiction.author,
+        url: fiction_author_search_url(fiction)
+      },
+      url:,
+      mainEntityOfPage: url
+    }.to_json
+  end
+
   private
+
+  def default_public_url_options
+    Rails.application.config.action_mailer.default_url_options.symbolize_keys
+  end
+
+  def fiction_author_search_url(fiction)
+    search_index_url(search: [fiction.author], only_path: false, **default_public_url_options)
+  end
 
   def author_data(publication)
     {

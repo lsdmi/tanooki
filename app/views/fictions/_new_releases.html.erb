@@ -17,7 +17,7 @@
       <%= link_to fiction_path(fiction), class: 'w-full h-48 sm:h-56 md:h-72 lg:h-48 aspect-[2/3] mb-2 relative transition duration-300 transform hover:scale-105' do %>
         <%= image_tag url_for(fiction.cover),
           alt: fiction.cover.blob.filename.to_s,
-          class: "w-full h-48 sm:h-56 md:h-72 lg:h-48 object-cover rounded-md shadow-sm",
+          class: "w-full h-48 sm:h-56 md:h-72 lg:h-48 object-cover rounded-lg shadow-sm",
           loading: "lazy",
           data: {
             controller: "lazy-image",

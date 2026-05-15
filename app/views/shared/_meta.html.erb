@@ -21,6 +21,10 @@
   <%= tag.meta property: 'article:author', content: publication_author_profile_url(publication) %>
   <%= tag.meta property: 'article:published_time', content: publication.created_at.iso8601 %>
   <%= tag.meta property: 'article:modified_time', content: publication.updated_at.iso8601 %>
+<% elsif chapter_reader_meta? && chapter %>
+  <%= tag.meta name: 'author', content: chapter.fiction.author %>
+  <%= tag.meta property: 'article:published_time', content: (chapter.published_at || chapter.created_at).iso8601 %>
+  <%= tag.meta property: 'article:modified_time', content: chapter.updated_at.iso8601 %>
 <% end %>
 
 <%= tag.meta name: 'twitter:card', content: 'summary_large_image' %>
