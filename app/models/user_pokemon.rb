@@ -32,4 +32,18 @@ class UserPokemon < ApplicationRecord
   def pokemon_power_level
     pokemon.power_level
   end
+
+  def train!
+    return level_up_training! if rand(2).zero?
+
+    update(battle_experience: battle_experience + 1) if battle_experience < 100
+    { alert: "#{pokemon_name} набув нового бойового досвіду!" }
+  end
+
+  private
+
+  def level_up_training!
+    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: user.id).evolve
+    { alert: "#{pokemon.name} набув нового якісного рівня!" }
+  end
 end

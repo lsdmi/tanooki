@@ -1,5 +1,5 @@
-<%# locals: fiction:, order:, toggle_order_button_id: %>
-<%# Floating sheet: 50vh tall, vertically centered (~25vh margin top & bottom). Slides in from the left. %>
+<%# locals: fiction:, order:, toggle_order_button_id:, current_chapter: (optional) %>
+<%# Floating sheet: 80vh tall, narrow width, vertically centered. Slides in from the left. %>
 <%# Backdrop full screen (z-40); panel z-[49]; site nav z-50 stays on top. %>
 <div data-chapter-drawer-target="backdrop"
      class="fixed inset-0 z-40 bg-black/60 transition-opacity duration-200 ease-out opacity-0 pointer-events-none"
@@ -7,7 +7,7 @@
      aria-hidden="true"></div>
 
 <aside data-chapter-drawer-target="panel"
-       class="fixed left-0 top-1/2 z-[49] flex h-[50vh] w-full max-w-[min(22rem,calc(100vw-1.5rem))] lg:max-w-md -translate-x-full -translate-y-1/2 flex-col overflow-hidden rounded-r-2xl border border-stone-200 border-l-0 bg-transparent text-stone-900 shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-800 dark:text-zinc-100 dark:shadow-black/50"
+       class="fixed left-0 top-1/2 z-[49] flex h-[70vh] w-full max-w-[min(17.5rem,calc(100vw-2rem))] lg:max-w-xs -translate-x-full -translate-y-1/2 flex-col overflow-hidden rounded-r-2xl border border-stone-200 border-l-0 bg-transparent text-stone-900 shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-800 dark:text-zinc-100 dark:shadow-black/50"
        role="dialog"
        aria-modal="true"
        aria-labelledby="chapter-drawer-fiction-title">
@@ -46,7 +46,7 @@
             <%= link_to fiction.title, fiction_path(fiction), class: "line-clamp-1 text-stone-900 hover:text-stone-700 dark:text-white dark:hover:text-zinc-200", data: { turbo: false } %>
           </h2>
 
-          <% if fiction.author.present? %>
+          <% if fiction.author? %>
             <%= link_to fiction.author,
                         search_index_path(search: [fiction.author]),
                         class: "block max-w-full truncate text-left text-[11px] leading-snug text-stone-600 transition-colors hover:text-stone-900 dark:text-zinc-400 dark:hover:text-zinc-200" %>
@@ -85,7 +85,8 @@
                      order: order,
                      toggle_order_button_id: toggle_order_button_id,
                      compact: true,
-                     drawer_toc: true %>
+                     drawer_toc: true,
+                     current_chapter: local_assigns[:current_chapter] %>
         <% end %>
       </div>
     </div>

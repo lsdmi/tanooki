@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Applies Pokemon type matchup multipliers to battle stats.
 class BattleTypeEffectiveness
   def self.calculate(stats, own_pokemon, opponent_pokemon)
     effectiveness = 1.0

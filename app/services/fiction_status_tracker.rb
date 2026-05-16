@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Derives fiction status from unique chapter release progress.
 class FictionStatusTracker
   include LibraryHelper
 

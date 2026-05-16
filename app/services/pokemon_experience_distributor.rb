@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Refreshes winner and loser battle rates after PvP.
 class PokemonExperienceDistributor
   attr_reader :winner_id, :loser_id
 

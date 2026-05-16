@@ -29,7 +29,7 @@ module Books
       private
 
       def css
-        @css ||= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'epub_content.css'))
+        @css ||= Rails.root.join('app/assets/stylesheets/epub_content.css').read
       end
 
       # EPUB chapter XHTML must use proper empty elements: <hr />, <br />, <img ... /> — not <hr></hr> or <img></img>.

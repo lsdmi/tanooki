@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Samples a nearby dex rank for battle matchmaking.
 class DexLeaderboard
   attr_reader :rank, :dex_overall
 

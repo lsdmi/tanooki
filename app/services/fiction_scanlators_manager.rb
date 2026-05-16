@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Creates and removes scanlator links on a fiction.
 class FictionScanlatorsManager
   attr_reader :scanlators_ids, :fiction
 

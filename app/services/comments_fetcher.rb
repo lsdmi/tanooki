@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Loads comments on the user's publications, chapters, and fictions.
 class CommentsFetcher
   attr_reader :user
 
@@ -16,7 +17,7 @@ class CommentsFetcher
   def blog_comments
     Comment.where(commentable_type: 'Publication')
            .joins('INNER JOIN publications ON comments.commentable_id = publications.id')
-           .where('publications.user_id = ?', user.id)
+           .where(publications: { user_id: user.id })
            .where.not(comments: { user_id: user.id })
   end
 

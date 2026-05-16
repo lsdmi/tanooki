@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Updates fiction associations and recomputed publication status.
 class FictionUpdater
   def initialize(fiction, genre_ids:, scanlator_ids:)
     @fiction = fiction
@@ -16,6 +17,6 @@ class FictionUpdater
 
   def update_fiction_status
     new_status = FictionStatusTracker.new(@fiction).call
-    @fiction.update_column(:status, new_status)
+    @fiction.update!(status: new_status)
   end
 end

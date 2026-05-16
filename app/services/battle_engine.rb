@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Runs one round of Pokemon battle combat between attacker and defender teams.
 class BattleEngine
   include Pokemons::Battle::Constants
 

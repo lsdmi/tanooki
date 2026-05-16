@@ -117,6 +117,10 @@ class Chapter < ApplicationRecord
   end
 
   def cleanup_scanlator_ids
-    self.scanlator_ids = scanlator_ids&.reject(&:blank?)
+    if scanlator_ids.nil? && persisted? && scanlators.exists?
+      self.scanlator_ids = scanlators.ids
+    else
+      self.scanlator_ids = scanlator_ids&.reject(&:blank?)
+    end
   end
 end

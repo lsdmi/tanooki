@@ -20,28 +20,14 @@ class ProfilesController < ApplicationController
   end
 
   def load_user_data
-    @recent_publications = @user.publications.includes(:cover_attachment, :rich_text_description).weekly.recent.limit(3)
-    @user_scanlators = @user.scanlators
-    @recent_comments = @user.comments.order(created_at: :desc).includes(:commentable).limit(3)
-    @recent_readings = @user.readings.includes(fiction: :cover_attachment,
-                                               chapter: {}).order(updated_at: :desc).limit(4)
-    @user_bookshelves = @user.bookshelves.includes(fictions: [:cover_attachment]).most_viewed.limit(1)
+    @user.profile_show_assignments.each do |name, value|
+      instance_variable_set(:"@#{name}", value)
+    end
   end
 
   def load_pokemon_stats
-    @pokemon_count = @user.pokemons.count
-    @total_pokemon = Pokemon.where(descendant_level: 0).count
-    @victories = calculate_victories
-    @total_battles = calculate_total_battles
-    @user_rating = User.dex_leaders.index(@user) + 1
-  end
-
-  def calculate_victories
-    @user.attacker_battle_logs.where(winner: @user).count +
-      @user.defender_battle_logs.where(winner: @user).count
-  end
-
-  def calculate_total_battles
-    @user.attacker_battle_logs.count + @user.defender_battle_logs.count
+    @user.profile_pokemon_stats.each do |name, value|
+      instance_variable_set(:"@#{name}", value)
+    end
   end
 end

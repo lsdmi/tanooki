@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Collects related fictions from genres of the user's readings.
 class RelatedFictionsCollector
   def initialize(readings, limit = 5, exclude_ids: Set.new)
     @readings = readings

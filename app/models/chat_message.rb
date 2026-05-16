@@ -12,4 +12,16 @@ class ChatMessage < ApplicationRecord
   def formatted_time
     created_at.in_time_zone(Rails.application.config.time_zone).strftime('%H:%M')
   end
+
+  def as_recent_api_json
+    {
+      id: id,
+      content: content,
+      user_id: user.id,
+      user_name: user.name,
+      user_avatar: user.chat_avatar_url,
+      formatted_time: formatted_time,
+      created_at: created_at
+    }
+  end
 end

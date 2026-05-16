@@ -1,21 +1,25 @@
-<%# locals: chapters:, compact: false (optional), drawer_toc: false (optional) %>
+<%# locals: chapters:, compact: false (optional), drawer_toc: false (optional), current_chapter: nil (optional) %>
 <% compact = local_assigns.fetch(:compact, false) %>
 <% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
 <% sheet = compact && drawer_toc %>
+<% current_chapter_id = local_assigns[:current_chapter]&.id %>
+<% drawer_accordion_opened = false %>
 <% accordion_shell = sheet ? 'border-b border-stone-200/45 bg-white/10 backdrop-blur-md last:border-b-0 dark:border-zinc-100/10 dark:bg-black/15' : (compact ? 'border-b border-zinc-800 bg-zinc-950 last:border-b-0' : 'bg-white dark:bg-gray-800 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg') %>
 <% accordion_head = sheet ? 'border-b border-stone-200/40 bg-white/10 px-4 py-4 backdrop-blur-sm hover:bg-white/20 dark:border-zinc-100/10 dark:bg-black/15 dark:hover:bg-black/25' : (compact ? 'border-b border-zinc-800/90 bg-zinc-950 px-4 py-4 hover:bg-zinc-900' : 'bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4') %>
 <% accordion_body = sheet ? 'border-0 bg-white/5 dark:bg-black/10' : (compact ? 'border-0 bg-zinc-900/40' : 'rounded-b border border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900') %>
-<div class="<%= compact ? 'my-0' : 'my-6 space-y-4' %>" data-chapters-accordion-root>
+<div class="<%= compact ? 'my-0' : 'my-6 space-y-4' %>" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if sheet %>>
   <% volumes = chapters.pluck(:volume_number).compact.uniq %>
   <% if volumes.size > 0 %>
-    <% volumes.each do |volume_number| %>
+    <% volumes.each_with_index do |volume_number, volume_index| %>
+      <% volume_chapters = chapters.where(volume_number: volume_number).includes(:scanlators) %>
+      <% accordion_open = sheet && !drawer_accordion_opened && (volume_chapters.exists?(id: current_chapter_id) || (current_chapter_id.nil? && volume_index.zero?)) %>
+      <% drawer_accordion_opened = true if accordion_open %>
       <div class="accordion overflow-hidden <%= accordion_shell %>">
         <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>">
           <h3 class="min-w-0 flex-1 truncate text-left <%= sheet ? 'text-sm font-normal text-stone-800 dark:text-white' : (compact ? 'text-sm font-normal text-white' : 'text-lg font-semibold text-stone-800 dark:text-gray-200') %>">
             Том <%= volume_number || '??' %>
           </h3>
           <div class="flex shrink-0 items-center gap-1">
-            <% volume_chapters = chapters.where(volume_number: volume_number).includes(:scanlators) %>
             <% if !compact && chapters_allow_epub_download?(volume_chapters) %>
               <div data-controller="epub-download"
                    data-epub-download-url-value="<%= epub_multiple_downloads_path %>"
@@ -29,34 +33,36 @@
                 </button>
               </div>
             <% end %>
-            <button type="button" class="accordion-icon transition-transform duration-200 <%= compact ? (sheet ? 'text-stone-500 dark:text-zinc-400' : 'text-zinc-400') : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
+            <button type="button" class="accordion-icon transition-transform duration-200 <%= accordion_open ? 'rotate-180 ' : '' %><%= compact ? (sheet ? 'text-stone-500 dark:text-zinc-400' : 'text-zinc-400') : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" class="<%= compact ? 'h-5 w-5' : 'h-6 w-6' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
           </div>
         </div>
-        <div class="accordion-content hidden max-h-96 overflow-y-auto <%= accordion_body %>">
+        <div class="accordion-content <%= accordion_open ? '' : 'hidden' %> max-h-96 overflow-y-auto <%= accordion_body %>">
           <ul class="<%= compact ? (sheet ? 'divide-y divide-stone-200/90 dark:divide-zinc-800' : 'divide-y divide-zinc-800') : 'divide-y divide-stone-100 dark:divide-gray-700' %>">
-            <% chapters.where(volume_number: volume_number).each do |chapter| %>
-              <%= render 'fictions/chapter_item', chapter: chapter, compact: compact %>
+            <% volume_chapters.each do |chapter| %>
+              <%= render 'fictions/chapter_item', chapter: chapter, compact: compact, current_chapter: local_assigns[:current_chapter] %>
             <% end %>
           </ul>
         </div>
       </div>
     <% end %>
   <% else %>
-    <% chapters_collection(chapters.includes(:scanlators)).each do |range, chapters| %>
+    <% chapters_collection(chapters.includes(:scanlators)).each_with_index do |(range, range_chapters), range_index| %>
+      <% accordion_open = sheet && !drawer_accordion_opened && (range_chapters.any? { |chapter| chapter.id == current_chapter_id } || (current_chapter_id.nil? && range_index.zero?)) %>
+      <% drawer_accordion_opened = true if accordion_open %>
       <div class="accordion overflow-hidden <%= accordion_shell %>">
         <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>">
           <h3 class="min-w-0 flex-1 truncate text-left <%= sheet ? 'text-sm font-normal text-stone-800 dark:text-white' : (compact ? 'text-sm font-normal text-white' : 'text-lg font-semibold text-stone-800 dark:text-gray-200') %>">
             Розділи <%= range %>
           </h3>
           <div class="flex shrink-0 items-center gap-1">
-            <% if !compact && chapters_allow_epub_download?(chapters) %>
+            <% if !compact && chapters_allow_epub_download?(range_chapters) %>
               <div data-controller="epub-download"
                    data-epub-download-url-value="<%= epub_multiple_downloads_path %>"
-                   data-epub-download-params-value="<%= { chapter_ids: chapters.map(&:id), volume_title: "Розділи #{range}" }.to_json %>">
+                   data-epub-download-params-value="<%= { chapter_ids: range_chapters.map(&:id), volume_title: "Розділи #{range}" }.to_json %>">
                 <button data-epub-download-target="button"
                         data-action="click->epub-download#download"
                         class="text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded">
@@ -66,17 +72,17 @@
                 </button>
               </div>
             <% end %>
-            <button type="button" class="accordion-icon transition-transform duration-200 <%= compact ? (sheet ? 'text-stone-500 dark:text-zinc-400' : 'text-zinc-400') : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
+            <button type="button" class="accordion-icon transition-transform duration-200 <%= accordion_open ? 'rotate-180 ' : '' %><%= compact ? (sheet ? 'text-stone-500 dark:text-zinc-400' : 'text-zinc-400') : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" class="<%= compact ? 'h-5 w-5' : 'h-6 w-6' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
           </div>
         </div>
-        <div class="accordion-content hidden max-h-96 overflow-y-auto <%= accordion_body %>">
+        <div class="accordion-content <%= accordion_open ? '' : 'hidden' %> max-h-96 overflow-y-auto <%= accordion_body %>">
           <ul class="<%= compact ? (sheet ? 'divide-y divide-stone-200/90 dark:divide-zinc-800' : 'divide-y divide-zinc-800') : 'divide-y divide-stone-100 dark:divide-gray-700' %>">
-            <% chapters.each do |chapter| %>
-              <%= render 'fictions/chapter_item', chapter: chapter, compact: compact %>
+            <% range_chapters.each do |chapter| %>
+              <%= render 'fictions/chapter_item', chapter: chapter, compact: compact, current_chapter: local_assigns[:current_chapter] %>
             <% end %>
           </ul>
         </div>

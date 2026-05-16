@@ -43,7 +43,7 @@ module Pokemons
     def caught_pokemon_id
       pokemon_array = []
 
-      Pokemon.includes(sprite_attachment: :blob).each do |pokemon|
+      Pokemon.includes(sprite_attachment: :blob).find_each do |pokemon|
         populate_pokemon_array(pokemon.rarity, pokemon_array, pokemon)
       end
 
@@ -60,12 +60,12 @@ module Pokemons
     end
 
     def precatch_session
-      session[:pokemon_catch_last_seen] ||= Time.now
+      session[:pokemon_catch_last_seen] ||= Time.zone.now
       session[:pokemon_guest_caught] = nil
     end
 
     def postcatch_session
-      session[:pokemon_catch_last_seen] = Time.now
+      session[:pokemon_catch_last_seen] = Time.zone.now
     end
   end
 end

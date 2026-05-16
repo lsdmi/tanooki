@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Assigns a starter or guest-caught Pokemon on user signup.
 class PokemonSignupHandler
   def initialize(user, session)
     @user = user
@@ -12,6 +13,6 @@ class PokemonSignupHandler
     else
       PokemonCatchService.new(pokemon_id: @session[:caught_pokemon_id], user_id: @user.id).trap
     end
-    @user.inactive_message if @user.inactive_message.present?
+    @user.inactive_message.presence
   end
 end

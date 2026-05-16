@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds paginated library section data for a user.
 class LibraryDataService
   def initialize(user, section, page = 1)
     @user = user

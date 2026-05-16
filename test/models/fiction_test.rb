@@ -130,4 +130,20 @@ class FictionTest < ActiveSupport::TestCase
 
     assert_difference('FictionGenre.count', -1) { fiction.destroy }
   end
+
+  test 'valid when scanlator_ids unset but scanlator associations exist' do
+    fiction = fictions(:one)
+    fiction.scanlator_ids = nil
+
+    assert_predicate fiction, :valid?
+  end
+
+  test 'invalid when scanlator_ids cleared and no scanlator associations' do
+    fiction = fictions(:one)
+    fiction.fiction_scanlators.destroy_all
+    fiction.scanlator_ids = []
+
+    assert_not fiction.valid?
+    assert_includes fiction.errors[:scanlator_ids], 'має бути принаймні одна команда'
+  end
 end

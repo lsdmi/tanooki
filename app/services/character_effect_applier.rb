@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Applies character trait effects during Pokemon battle rounds.
 class CharacterEffectApplier
   def initialize(attacker, defender, attacker_stats, defender_stats)
     @attacker = attacker
@@ -25,8 +26,14 @@ class CharacterEffectApplier
   end
 
   def apply_ambitious_character_effects
-    Pokemons::Battle::CharacterTraits.handle_ambitious_character(@defender_stats, @defender) if @attacker.character == 'ambitious'
-    Pokemons::Battle::CharacterTraits.handle_ambitious_character(@attacker_stats, @attacker) if @defender.character == 'ambitious'
+    if @attacker.character == 'ambitious'
+      Pokemons::Battle::CharacterTraits.handle_ambitious_character(@defender_stats,
+                                                                   @defender)
+    end
+    return unless @defender.character == 'ambitious'
+
+    Pokemons::Battle::CharacterTraits.handle_ambitious_character(@attacker_stats,
+                                                                 @attacker)
   end
 
   def apply_prideful_character_effects
@@ -35,12 +42,24 @@ class CharacterEffectApplier
   end
 
   def apply_patient_character_effects
-    Pokemons::Battle::CharacterTraits.handle_patient_character(@attacker_stats, @defender_stats) if @attacker.character == 'patient'
-    Pokemons::Battle::CharacterTraits.handle_patient_character(@defender_stats, @attacker_stats) if @defender.character == 'patient'
+    if @attacker.character == 'patient'
+      Pokemons::Battle::CharacterTraits.handle_patient_character(@attacker_stats,
+                                                                 @defender_stats)
+    end
+    return unless @defender.character == 'patient'
+
+    Pokemons::Battle::CharacterTraits.handle_patient_character(@defender_stats,
+                                                               @attacker_stats)
   end
 
   def apply_decisive_character_effects
-    Pokemons::Battle::CharacterTraits.handle_decisive_character(@attacker_stats, @defender_stats) if @attacker.character == 'decisive'
-    Pokemons::Battle::CharacterTraits.handle_decisive_character(@defender_stats, @attacker_stats) if @defender.character == 'decisive'
+    if @attacker.character == 'decisive'
+      Pokemons::Battle::CharacterTraits.handle_decisive_character(@attacker_stats,
+                                                                  @defender_stats)
+    end
+    return unless @defender.character == 'decisive'
+
+    Pokemons::Battle::CharacterTraits.handle_decisive_character(@defender_stats,
+                                                                @attacker_stats)
   end
 end

@@ -14,7 +14,7 @@ module Analytics
       identifier = @object.respond_to?(:slug) ? @object.slug : @object.sqid
       return if @session[:viewed]&.include?(identifier)
 
-      @object.increment!(:views)
+      @object.with_lock { @object.update_column(:views, @object.views + 1) } # rubocop:disable Rails/SkipsModelValidations
       @session[:viewed] ||= []
       @session[:viewed] << identifier
       @session[:viewed] = @session[:viewed].last(10)

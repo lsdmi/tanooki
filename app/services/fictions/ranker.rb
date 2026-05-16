@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
+  # Computes per-genre leaderboard ranks for a fiction.
   class Ranker
     attr_reader :fiction
 

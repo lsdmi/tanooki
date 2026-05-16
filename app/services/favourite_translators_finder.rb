@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Returns the most frequent scanlators in a user's reading list.
 class FavouriteTranslatorsFinder
   def initialize(readings)
     @readings = readings

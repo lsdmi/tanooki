@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Records the current chapter in the user's reading progress.
 class ReadingProgressTracker
   attr_reader :chapter, :user
 

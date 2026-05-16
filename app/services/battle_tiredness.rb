@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Maps post-battle experience gap to a tiredness penalty value.
 class BattleTiredness
   def self.calculate(attacker, defender)
     difference = attacker - defender

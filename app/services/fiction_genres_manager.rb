@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Creates and removes genre links on a fiction.
 class FictionGenresManager
   attr_reader :genre_ids, :fiction
 

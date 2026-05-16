@@ -15,6 +15,19 @@ module Studio
       send("#{@active_tab}_content_loader")
     end
 
+    def to_controller_assignments
+      {
+        pagy: @pagy,
+        publications: @publications,
+        pokemon_show: @pokemon_show,
+        scanlators: @scanlators,
+        fictions: @fictions,
+        comments: @comments,
+        avatars: @avatars,
+        bookshelves: @bookshelves
+      }
+    end
+
     private
 
     attr_reader :user, :active_tab, :params

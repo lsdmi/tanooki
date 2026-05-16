@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds a GEPUB book from ordered chapter records.
 class BookBuilder
   def initialize(chapters, volume_title = nil)
     @chapters = Chapter.where(id: chapters.pluck(:id)).released.ordered_by_volume_and_number

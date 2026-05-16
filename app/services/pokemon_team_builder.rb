@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Selects the strongest Pokemon up to a team size limit.
 class PokemonTeamBuilder
   def initialize(pokemon_list, team_limit)
     @pokemon_list = pokemon_list

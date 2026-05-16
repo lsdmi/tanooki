@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Grants, traps, or evolves Pokemon for a user.
 class PokemonCatchService
   attr_reader :pokemon_id, :user_id
 
@@ -51,6 +52,8 @@ class PokemonCatchService
   end
 
   def pokemon_data
-    @pokemon_data ||= Pokemon.find_by(id: pokemon_id)
+    return @pokemon_data if defined?(@pokemon_data)
+
+    @pokemon_data = Pokemon.find_by(id: pokemon_id)
   end
 end

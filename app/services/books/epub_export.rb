@@ -9,7 +9,7 @@ module Books
       @rich_texts = ActionText::RichText.where(id: Array(rich_text_ids))
       @volume_title = volume_title
       @chapters = @rich_texts.map(&:record)
-      @file_path = File.join(Rails.root, 'tmp', "book_#{Time.now.to_i}.epub")
+      @file_path = Rails.root.join('tmp', "book_#{Time.now.to_i}.epub").to_s
     end
 
     def generate

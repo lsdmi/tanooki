@@ -8,7 +8,8 @@ class FictionForm
   validate :banner_is_valid
 
   def save
-    fiction.assign_attributes(params)
+    fiction.assign_attributes(params.except(:genre_ids, :scanlator_ids))
+    assign_association_ids_from_params
     if valid? && fiction.save
       true
     else
@@ -18,6 +19,11 @@ class FictionForm
   end
 
   private
+
+  def assign_association_ids_from_params
+    fiction.genre_ids = params[:genre_ids] if params.key?(:genre_ids)
+    fiction.scanlator_ids = params[:scanlator_ids] if params.key?(:scanlator_ids)
+  end
 
   def banner_is_valid
     banner_file = params[:banner]

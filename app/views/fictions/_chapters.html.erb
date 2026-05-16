@@ -1,4 +1,4 @@
-<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), compact: false (optional), drawer_toc: false (optional) %>
+<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), compact: false (optional), drawer_toc: false (optional), current_chapter: nil (optional) %>
 <% toggle_btn_id = local_assigns.fetch(:toggle_order_button_id, 'toggle-fictions-order') %>
 <% compact = local_assigns.fetch(:compact, false) %>
 <% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
@@ -19,6 +19,6 @@
   </div>
 
   <div data-controller="flowbite" class="<%= compact ? '' : 'mt-4 sm:mt-6' %>">
-    <%= render 'fictions/chapter_list', fiction: fiction, order: order, compact: compact, drawer_toc: drawer_toc %>
+    <%= render 'fictions/chapter_list', fiction: fiction, order: order, compact: compact, drawer_toc: drawer_toc, current_chapter: local_assigns[:current_chapter] %>
   </div>
 </section>

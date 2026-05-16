@@ -31,6 +31,7 @@
     <%= render "chapter_drawer",
                fiction: @chapter.fiction,
                order: @fiction_sidebar_presenter.order,
-               toggle_order_button_id: "toggle-fictions-order-drawer" %>
+               toggle_order_button_id: "toggle-fictions-order-drawer",
+               current_chapter: @chapter %>
   <% end %>
 </div>

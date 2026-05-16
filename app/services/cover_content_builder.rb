@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds inner HTML for an EPUB cover page.
 class CoverContentBuilder
   include Rails.application.routes.url_helpers
 

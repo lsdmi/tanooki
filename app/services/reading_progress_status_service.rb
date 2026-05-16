@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Updates or destroys reading progress and invalidates caches.
 class ReadingProgressStatusService
   def initialize(reading_progress, new_status, user)
     @reading_progress = reading_progress

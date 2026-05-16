@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Loads a user's readings with fiction and scanlator data.
 class ReadingHistoryFetcher
   def initialize(user)
     @user = user

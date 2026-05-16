@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Updates Pokemon battle experience after a combat round.
 class ExperienceUpdater
   include Pokemons::Battle::Constants
 
@@ -44,7 +45,13 @@ class ExperienceUpdater
   end
 
   def apply_persistent_character_effects
-    Pokemons::Battle::CharacterTraits.handle_persistent_character(@attacker, @attacker_experience) if @attacker.character == 'persistent'
-    Pokemons::Battle::CharacterTraits.handle_persistent_character(@defender, @defender_experience) if @defender.character == 'persistent'
+    if @attacker.character == 'persistent'
+      Pokemons::Battle::CharacterTraits.handle_persistent_character(@attacker,
+                                                                    @attacker_experience)
+    end
+    return unless @defender.character == 'persistent'
+
+    Pokemons::Battle::CharacterTraits.handle_persistent_character(@defender,
+                                                                  @defender_experience)
   end
 end

@@ -22,7 +22,7 @@
           <% if title_includes_rozdil?(chapter.title) %>
             <%= chapter.title.presence || chapter.display_title %>
           <% else %>
-            Розділ <%= check_decimal(chapter.number) %><% if chapter.title.present? || chapter.display_title.present? %> — <%= chapter.title.presence || chapter.display_title %><% end %>
+            Розділ <%= check_decimal(chapter.number) %><% if chapter.title? || chapter.display_title.present? %> — <%= chapter.title.presence || chapter.display_title %><% end %>
           <% end %>
         </h1>
 

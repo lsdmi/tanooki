@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Authorization rules for fiction create, edit, update, and destroy.
 class FictionPolicy
   attr_reader :user, :fiction
 

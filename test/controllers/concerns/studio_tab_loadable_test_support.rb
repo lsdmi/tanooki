@@ -23,8 +23,9 @@ module StudioTabLoadableStubHelpers
       pagy: nil, pokemon_show: nil, fictions: nil, publications: nil,
       scanlators: nil, comments: nil, avatars: nil, bookshelves: nil
     }
+    assignments = defaults.merge(overrides)
     Object.new.tap do |service|
-      defaults.merge(overrides).each { |key, val| service.instance_variable_set(:"@#{key}", val) }
+      service.define_singleton_method(:to_controller_assignments) { assignments }
     end
   end
 end

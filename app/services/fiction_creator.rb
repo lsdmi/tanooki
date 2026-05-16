@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Syncs genre and scanlator associations when saving fiction.
 class FictionCreator
   def initialize(fiction, genre_ids:, scanlator_ids:)
     @fiction = fiction

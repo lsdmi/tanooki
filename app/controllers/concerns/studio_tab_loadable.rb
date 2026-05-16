@@ -24,14 +24,9 @@ module StudioTabLoadable
   end
 
   def assign_instance_variables_from_service(service)
-    @pagy = service.instance_variable_get(:@pagy)
-    @publications = service.instance_variable_get(:@publications)
-    @pokemon_show = service.instance_variable_get(:@pokemon_show)
-    @scanlators = service.instance_variable_get(:@scanlators)
-    @fictions = service.instance_variable_get(:@fictions)
-    @comments = service.instance_variable_get(:@comments)
-    @avatars = service.instance_variable_get(:@avatars)
-    @bookshelves = service.instance_variable_get(:@bookshelves)
+    service.to_controller_assignments.each do |name, value|
+      instance_variable_set(:"@#{name}", value)
+    end
 
     assign_instance_variables
   end

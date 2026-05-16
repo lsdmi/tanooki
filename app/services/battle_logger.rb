@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Renders battle log HTML partials for the live battle UI.
 class BattleLogger
   include Rails.application.routes.url_helpers
 

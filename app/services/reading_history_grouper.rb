@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Groups readings by library status for presentation.
 class ReadingHistoryGrouper
   def initialize(readings, chapter_fetcher:)
     @readings = readings

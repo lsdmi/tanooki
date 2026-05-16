@@ -15,7 +15,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def training
-    if current_user.pokemon_last_training > 4.hours.ago
+    if current_user.pokemon_training_on_cooldown?
       render turbo_stream: refresh_error_screen
     else
       train_pokemon
@@ -38,7 +38,7 @@ class UserPokemonsController < ApplicationController
   private
 
   def pokemon_catch_permitted?
-    current_user.pokemon_last_catch < 4.hours.ago
+    current_user.pokemon_catch_permitted?
   end
 
   def pokemons
@@ -68,19 +68,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def train_pokemon
-    user_pokemon = UserPokemon.find(params[:user_pokemon_id])
-
-    if rand(2).zero?
-      train_level(user_pokemon.pokemon)
-    else
-      user_pokemon.update(battle_experience: user_pokemon.battle_experience + 1) if user_pokemon.battle_experience < 100
-      @alert = "#{user_pokemon.pokemon_name} набув нового бойового досвіду!"
-    end
-  end
-
-  def train_level(pokemon)
-    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: current_user.id).evolve
-    @alert = "#{pokemon.name} набув нового якісного рівня!"
+    @alert = UserPokemon.find(params[:user_pokemon_id]).train![:alert]
   end
 
   def update_notice(message)

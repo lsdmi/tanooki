@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Renders a complete EPUB cover XHTML document for a chapter.
 class CoverGenerator
   def self.generate(chapter, volume_title = nil)
     new(chapter, volume_title).generate
@@ -42,7 +43,7 @@ class CoverGenerator
   end
 
   def cover_styles
-    @cover_styles ||= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'epub_cover.css'))
+    @cover_styles ||= Rails.root.join('app/assets/stylesheets/epub_cover.css').read
   end
 
   def cover_content

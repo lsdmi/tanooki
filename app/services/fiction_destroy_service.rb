@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Destroys fiction or drops the current user's scanlator link when shared.
 class FictionDestroyService
   def initialize(fiction, current_user)
     @fiction = fiction

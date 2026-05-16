@@ -1,27 +1,32 @@
 # frozen_string_literal: true
 
 module Fictions
+  # Cached fiction lists and badge ids for the fictions index.
   class IndexVariablesManager
     def self.popular_novelty
       Rails.cache.fetch('popular_novelty', expires_in: 24.hours) do
-        Fiction.joins(:readings)
-               .includes(%i[cover_attachment])
-               .group(:id)
-               .where(id: Fiction.last(15).pluck(:id))
-               .order('COUNT(reading_progresses.fiction_id) DESC')
-               .limit(8)
+        popular_novelty_scope.to_a
       end
     end
 
     def self.popular_novelty_ids_for_badges
+      popular_novelty_scope.pluck(:id).to_set
+    end
+
+    def self.popular_novelty_scope
       Fiction.joins(:readings)
+             .includes(%i[cover_attachment])
              .group(:id)
-             .where(id: Fiction.last(15).pluck(:id))
+             .where(id: recent_fiction_ids)
              .order('COUNT(reading_progresses.fiction_id) DESC')
              .limit(8)
-             .pluck(:id)
-             .to_set
     end
+    private_class_method :popular_novelty_scope
+
+    def self.recent_fiction_ids
+      Fiction.order(id: :desc).limit(15).pluck(:id)
+    end
+    private_class_method :recent_fiction_ids
 
     def self.most_reads
       Rails.cache.fetch('most_reads', expires_in: 24.hours) do
@@ -67,7 +72,7 @@ module Fictions
         Fiction.joins(:readings)
                .includes({ cover_attachment: :blob })
                .group(:id)
-               .where(readings: { created_at: 1.month.ago..Time.now })
+               .where(readings: { created_at: 1.month.ago..Time.zone.now })
                .order('COUNT(readings.fiction_id) DESC')
       end
     end

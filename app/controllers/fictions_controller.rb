@@ -136,7 +136,12 @@ class FictionsController < ApplicationController
     locals = @show_presenter.sorted_chapters_locals
     if chapters_sort_from_chapter_reader?
       frame_dom_id = 'sort-chapters-mobile'
-      locals = locals.merge(compact: true, toggle_order_button_id: 'toggle-fictions-order-drawer', drawer_toc: true)
+      locals = locals.merge(
+        compact: true,
+        toggle_order_button_id: 'toggle-fictions-order-drawer',
+        drawer_toc: true,
+        current_chapter: current_chapter_from_chapter_reader_referer
+      )
     else
       frame_dom_id = 'sort-chapters'
     end
@@ -150,6 +155,18 @@ class FictionsController < ApplicationController
     URI.parse(ref).path.match?(%r{\A/chapters/})
   rescue URI::InvalidURIError
     false
+  end
+
+  def current_chapter_from_chapter_reader_referer
+    ref = request.referer
+    return nil if ref.blank?
+
+    chapter_id = URI.parse(ref).path[%r{\A/chapters/([^/]+)\z}, 1]
+    return nil if chapter_id.blank?
+
+    Chapter.find_by(id: chapter_id)
+  rescue URI::InvalidURIError
+    nil
   end
 
   def toggle_order_params

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Creates and removes scanlator team member links.
 class ScanlatorUsersManager
   attr_reader :member_ids, :scanlator
 
