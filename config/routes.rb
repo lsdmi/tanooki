@@ -99,6 +99,7 @@ Rails.application.routes.draw do
 
   # Chat routes
   get '/chat/recent_messages', to: 'chat#recent_messages'
+  post '/adult_content_acknowledge', to: 'adult_content_acknowledgements#create', as: :adult_content_acknowledge
 
   # Redirect old routes to new studio controller with appropriate tabs
   get :blogs, to: 'studio#set_tab_and_redirect', defaults: { tab: 'blogs' }
@@ -125,6 +126,7 @@ Rails.application.routes.draw do
   get :library, to: 'library#index'
   patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
+  get :about, to: 'pages#about'
   get :rules, to: 'pages#rules'
   get :privacy, to: 'pages#privacy'
   # English slug: automated AdSense / policy crawlers often match this path literally.

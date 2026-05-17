@@ -7,7 +7,7 @@ module Sitemaps
 
     STATIC_URL_HELPERS = %i[
       root_url fictions_url alphabetical_fictions_url calendar_fictions_url tales_url youtube_videos_url
-      translation_requests_url rules_url privacy_url
+      translation_requests_url about_url rules_url privacy_url
     ].freeze
 
     def initialize(default_url_options)

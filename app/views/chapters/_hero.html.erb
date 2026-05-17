@@ -27,7 +27,10 @@
         </h1>
 
         <div class="mt-2.5 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-          <%= link_to fiction.author, search_index_path(search: [fiction.author]), class: chapter_meta_link_class %>
+          <%= render 'shared/author_byline',
+                     name: fiction.author,
+                     url: search_index_path(search: [fiction.author]),
+                     link_class: chapter_meta_link_class %>
           <% if chapter.scanlators.any? %>
             <span class="text-stone-400 dark:text-gray-600 select-none" aria-hidden="true">·</span>
             <% chapter.scanlators.each_with_index do |scanlator, i| %>

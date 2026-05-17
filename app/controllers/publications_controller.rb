@@ -75,7 +75,7 @@ class PublicationsController < ApplicationController
   end
 
   def set_publication
-    @publication = Publication.find(params[:id])
+    @publication = Publication.friendly.find(params[:id])
   end
 
   def set_tags

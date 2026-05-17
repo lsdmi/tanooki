@@ -16,7 +16,7 @@ class LibraryController < ApplicationController
   end
 
   def update_status
-    reading_progress = ReadingProgress.find(params[:id])
+    reading_progress = current_user.readings.find(params[:id])
     new_status = params[:status]&.to_sym
     current_section = params[:current_section]&.to_sym || :active
 
@@ -32,7 +32,7 @@ class LibraryController < ApplicationController
 
   def related_fictions
     Rails.cache.fetch("user:#{current_user.id}:related_fictions:#{@section}", expires_in: 5.minutes) do
-      RelatedFictionsCollector.new(
+      Library::RelatedFictionsFromReadings.new(
         @history_presenter.section(:active),
         5,
         exclude_ids: @history.to_set(&:fiction_id)

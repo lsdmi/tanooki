@@ -49,7 +49,7 @@ class YoutubeVideosController < ApplicationController
 
   def set_video
     @youtube_video = Rails.cache.fetch("video_#{params[:id]}", expires_in: 1.hour) do
-      YoutubeVideo.find(params[:id])
+      YoutubeVideo.friendly.find(params[:id])
     end
   end
 end

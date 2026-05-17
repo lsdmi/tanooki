@@ -54,7 +54,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def refresh_screen
-    selected_pokemon = UserPokemon.find(params[:user_pokemon_id])
+    selected_pokemon = current_user.user_pokemons.find(params[:user_pokemon_id])
 
     turbo_stream.update(
       'pokemon-data-screen',
@@ -68,7 +68,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def train_pokemon
-    @alert = UserPokemon.find(params[:user_pokemon_id]).train![:alert]
+    @alert = current_user.user_pokemons.find(params[:user_pokemon_id]).train![:alert]
   end
 
   def update_notice(message)

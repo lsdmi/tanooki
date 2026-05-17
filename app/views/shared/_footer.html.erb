@@ -1,5 +1,5 @@
 <footer class="bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-  <div class="p-4 py-6 mx-auto max-w-screen-xl md:p-8 lg:-10">
+  <div class="p-4 py-6 mx-auto max-w-screen-2xl md:p-8 lg:-10">
     <div class="grid grid-cols-2 gap-8 lg:grid-cols-6">
       <div class="col-span-2">
         <a href="/" class="flex items-center mb-2 text-2xl font-semibold sm:mb-0 text-white">
@@ -21,24 +21,27 @@
       <% end %>
     </div>
     <hr class="my-6 sm:mx-auto border-gray-700 lg:my-8">
-    <div class="flex flex-col gap-6 text-sm text-gray-400 lg:flex-row lg:items-start lg:justify-between">
+    <div class="flex flex-col items-center gap-6 text-sm text-gray-400 lg:flex-row lg:items-start lg:justify-between">
       <p class="text-center lg:mb-0 lg:max-w-md lg:text-left">
         © 2023-<%= Time.zone.now.year %>
         <a href="/" class="hover:underline">baka.in.ua™</a>.
         Всі права захищені.
       </p>
-      <nav class="mx-auto grid w-full max-w-xl grid-cols-2 gap-x-6 gap-y-3 sm:max-w-2xl sm:gap-x-8 lg:mx-0 lg:ml-auto lg:mr-0 lg:w-auto lg:max-w-lg" aria-label="Юридична інформація та контакти">
-        <%= link_to privacy_path, class: 'hover:underline underline-offset-2 block', title: 'Privacy Policy — baka.in.ua' do %>
-          Політика конфіденційності</span>
+      <nav class="mx-auto grid w-fit grid-cols-3 gap-x-6 gap-y-3 justify-items-center text-center lg:ml-auto lg:mr-0 lg:justify-items-start lg:text-left" aria-label="Юридична інформація та контакти">
+        <%= link_to about_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Про Баку — baka.in.ua' do %>
+          Про Бака
         <% end %>
-        <%= link_to privacy_path(anchor: 'cookies'), class: 'hover:underline underline-offset-2 block', title: 'Cookie Policy — baka.in.ua' do %>
-          Політика cookies</span>
+        <%= link_to privacy_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Політика конфіденційності — baka.in.ua' do %>
+          Конфіденційність
         <% end %>
-        <%= link_to rules_path, class: 'hover:underline underline-offset-2 block', title: 'Terms of Use & community rules — baka.in.ua' do %>
-          Правила спільноти<span>
+        <%= link_to privacy_path(anchor: 'cookies'), class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Політика cookies — baka.in.ua' do %>
+          Cookies
         <% end %>
-        <%= link_to 'https://t.me/bakaInUa', class: 'hover:underline underline-offset-2 block', title: 'Contact — baka.in.ua (Telegram)', rel: 'noopener', target: '_blank' do %>
-          Контакти</span>
+        <%= link_to rules_path, class: 'col-start-2 hover:underline underline-offset-2 block whitespace-nowrap lg:col-start-auto', title: 'Правила спільноти — baka.in.ua' do %>
+          Правила
+        <% end %>
+        <%= link_to 'https://t.me/bakaInUa', class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Контакти (Telegram) — baka.in.ua', rel: 'noopener noreferrer', target: '_blank' do %>
+          Контакти
         <% end %>
       </nav>
     </div>

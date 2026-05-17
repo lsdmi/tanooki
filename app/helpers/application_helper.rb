@@ -17,6 +17,16 @@ module ApplicationHelper
     url
   end
 
+  def adult_content_acknowledged?
+    return true if current_user&.adult_content_acknowledged?
+
+    session[:adult_content_ack].present?
+  end
+
+  def show_adult_content_disclaimer?(fiction)
+    fiction.adult_content? && !adult_content_acknowledged?
+  end
+
   def punch(string)
     sentences = string.scan(/.*?[.?!](?=\s|\z)/)
     result = ''

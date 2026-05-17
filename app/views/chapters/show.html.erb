@@ -8,6 +8,8 @@
 
     <!-- Main Content and Comments -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <%= render 'fictions/adult_content_disclaimer', fiction: @chapter.fiction if show_adult_content_disclaimer?(@chapter.fiction) %>
+
       <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
         <!-- Content Section -->
         <div data-comments-toggle-target="contentSection" class="w-full lg:w-2/3">

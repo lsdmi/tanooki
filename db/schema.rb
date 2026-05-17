@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_08_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -354,6 +354,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_08_120000) do
     t.bigint "avatar_id"
     t.integer "battle_win_rate", default: 50
     t.bigint "latest_read_comment_id"
+    t.date "adult_content_acknowledged_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"

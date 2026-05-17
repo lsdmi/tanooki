@@ -97,8 +97,16 @@ class MetaHelperTest < ActionView::TestCase
     assert_equal 'website', meta_type
   end
 
-  test 'meta_type returns article for all other pages' do
-    request.path = '/about'
+  test 'meta_type returns website for static informational pages' do
+    [about_path, rules_path, privacy_path].each do |path|
+      request.path = path
+
+      assert_equal 'website', meta_type, "expected website for #{path}"
+    end
+  end
+
+  test 'meta_type returns article for content pages' do
+    request.path = fiction_path(fictions(:one))
 
     assert_equal 'article', meta_type
   end

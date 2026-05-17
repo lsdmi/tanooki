@@ -16,31 +16,23 @@
       })();
     </script>
 
-    <%= render 'shared/meta', publication: @publication, chapter: @chapter %>
+    <%= render 'shared/meta', publication: @publication, chapter: @chapter, fiction: @fiction %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(site_identity_meta) %>
-    <% end %>
+    <%= json_ld_script(site_identity_meta) %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(article_meta(@publication)) %>
-    <% end if article_meta? %>
+    <%= json_ld_script(article_meta(@publication)) if article_meta? %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(chapter_article_meta(@chapter)) %>
-    <% end if chapter_reader_meta? && @chapter %>
+    <%= json_ld_script(chapter_article_meta(@chapter)) if chapter_reader_meta? && @chapter %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(profile_page_meta(@scanlator)) %>
-    <% end if profile_page_meta? %>
+    <%= json_ld_script(fiction_book_meta(@fiction)) if fiction_reader_meta? && @fiction %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(user_profile_meta(@user)) %>
-    <% end if user_profile_meta? %>
+    <%= json_ld_script(about_page_meta) if about_page_meta? %>
 
-    <%= tag.script type: 'application/ld+json' do %>
-      <%== json_escape(video_meta(@youtube_video)) %>
-    <% end if video_meta? %>
+    <%= json_ld_script(profile_page_meta(@scanlator)) if profile_page_meta? %>
+
+    <%= json_ld_script(user_profile_meta(@user)) if user_profile_meta? %>
+
+    <%= json_ld_script(video_meta(@youtube_video)) if video_meta? %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

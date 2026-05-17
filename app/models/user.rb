@@ -73,6 +73,10 @@ class User < ApplicationRecord
     find_by(id: ids.first) if ids.any?
   end
 
+  def adult_content_acknowledged?
+    adult_content_acknowledged_at.present?
+  end
+
   def sqid
     Sqids.new.encode([id])
   end

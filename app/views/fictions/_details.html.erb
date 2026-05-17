@@ -17,13 +17,11 @@
           <div class="text-sm text-gray-600 dark:text-gray-300 text-center lg:text-left">
             <p><span class="font-medium italic line-clamp-1"><%= fiction.alternative_title %></span></p>
             <p><span class="font-medium italic line-clamp-1"><%= fiction.english_title %></span></p>
-            <div class="mt-4 flex items-center gap-2 justify-center lg:justify-start">
-              <span class="font-bold">Автор:</span>
-              <%= button_to fiction.author, search_index_path, method: :get, id: 'fictions-author-search',
-                class: 'inline-block bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105',
-                params: { search: [fiction.author] },
-                form: { class: 'inline' } %>
-            </div>
+            <%= render 'shared/author_byline',
+                       name: fiction.author,
+                       url: search_index_path(search: [fiction.author]),
+                       wrapper_class: 'mt-4 justify-center lg:justify-start',
+                       link_class: 'inline-block bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105' %>
             <div class="mt-4 flex items-center gap-2 justify-center lg:justify-start">
               <span class="font-bold">Перекладач:</span>
               <% fiction.scanlators.each do |scanlator| %>

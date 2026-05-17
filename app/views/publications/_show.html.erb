@@ -8,9 +8,13 @@
   <div class="flex relative z-20 justify-between p-6 bg-gradient-to-r xl:p-9">
     <article class="w-full xl:w-2/3 max-w-none format format-sm sm:format-base lg:format-lg format-blue dark:format-invert xl:mr-8">
       <div class="flex flex-row justify-between items-center mb-4">
-        <div class="flex items-center space-x-3 text-gray-500 dark:text-gray-400 text-base mb-2 lg:mb-0">
-          <%= link_to publication.username, profile_path(publication.user.sqid), class: 'text-gray-900 dark:text-white font-semibold hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200', rel: 'author', data: { turbo: false } %>
-          <span class="bg-gray-300 dark:bg-gray-400 w-2 h-2 rounded-full"></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-base mb-2 lg:mb-0">
+          <%= render 'shared/author_byline',
+                     name: publication.username,
+                     url: profile_path(publication.user.sqid),
+                     wrapper_class: 'mb-0',
+                     link_class: 'text-gray-900 dark:text-white font-semibold hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200' %>
+          <span class="bg-gray-300 dark:bg-gray-400 w-2 h-2 rounded-full hidden sm:inline-block" aria-hidden="true"></span>
           <%= tag.span l(publication.created_at, format: :short).downcase.downcase, class: 'text-gray-500 dark:text-gray-400 ' %>
         </div>
         <aside aria-label="content controls">

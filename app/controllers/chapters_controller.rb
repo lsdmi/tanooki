@@ -75,7 +75,7 @@ class ChaptersController < ApplicationController
   end
 
   def set_chapter
-    @chapter = @commentable = Chapter.find(params[:id])
+    @chapter = @commentable = Chapter.friendly.find(params[:id])
   end
 
   def chapter_params

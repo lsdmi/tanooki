@@ -21,7 +21,7 @@ class ScanlatorsController < ApplicationController
     @scanlator = Scanlator.new(scanlator_params)
 
     if @scanlator.save
-      ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
+      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
       redirect_to scanlator_path(@scanlator), notice: 'Команду додано, час додати ваші твори.'
     else
       render 'new', status: :unprocessable_content
@@ -36,7 +36,7 @@ class ScanlatorsController < ApplicationController
 
   def update
     if @scanlator.update(scanlator_params)
-      ScanlatorUsersManager.new(scanlator_params[:member_ids], @scanlator).operate
+      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
       redirect_to scanlator_path(@scanlator), notice: 'Команду оновлено.'
     else
       render 'edit', status: :unprocessable_content
