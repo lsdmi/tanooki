@@ -3,16 +3,21 @@
 require 'test_helper'
 
 class PagesAboutTest < ActionDispatch::IntegrationTest
-  test 'about page renders credentials and AboutPage JSON-LD' do
+  test 'about page renders credentials copy' do
     get about_url
 
     assert_response :success
     assert_match StructuredData::SiteProfile::DESCRIPTION, response.body
     assert_match 'Досвід і спеціалізація', response.body
+  end
+
+  test 'about page includes AboutPage JSON-LD' do
+    get about_url
 
     about_ld = json_ld_type_from_response('AboutPage')
+
     assert_equal 'Про Баку', about_ld['name']
-    assert about_ld.dig('mainEntity', 'description').present?
+    assert_predicate about_ld.dig('mainEntity', 'description'), :present?
   end
 
   private

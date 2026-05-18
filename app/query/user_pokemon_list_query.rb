@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Loads a user's party ordered by Pokédex id with sprites preloaded.
 class UserPokemonListQuery
   def initialize(user)
     @user = user

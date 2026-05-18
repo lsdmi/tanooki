@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# View-model for fiction#show: chapters, comments, reading progress, and sidebar data.
 class FictionShowPresenter
   include LibraryHelper
 

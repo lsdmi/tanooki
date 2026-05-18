@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+# Assembles trusted battle-log HTML fragments into the grid layout for the battle UI.
 class BattleDetailsPresenter
+  include ActionView::Helpers::OutputSafetyHelper
+  include ActionView::Helpers::TagHelper
+
   def initialize(start_message, outcome_blocks, conclusion_message)
     @start_message = start_message
     @outcome_blocks = outcome_blocks
@@ -10,13 +14,13 @@ class BattleDetailsPresenter
   def render
     grid_content, conclusion_html = prepare_grid_content
 
-    <<~HTML.html_safe
-      #{@start_message}
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
-        #{grid_content.join}
-      </div>
-      #{conclusion_html}
-    HTML
+    safe_join(
+      [
+        @start_message,
+        tag.div(class: 'grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2') { safe_join(grid_content) },
+        conclusion_html
+      ].compact
+    )
   end
 
   private

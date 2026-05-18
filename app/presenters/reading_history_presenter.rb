@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Groups library reading progress rows by status for the history UI.
 class ReadingHistoryPresenter
   attr_reader :readings
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Groups recent chapter releases by day for the fiction updates calendar view.
 class FictionUpdatesPresenter
   UKRAINE_TIME_ZONE = 'Kyiv'
   DATE_FORMAT = '%d/%m'

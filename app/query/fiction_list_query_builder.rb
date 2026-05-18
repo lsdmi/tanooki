@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds filtered fiction list scopes from index/list params (genre, filters, ordering).
 class FictionListQueryBuilder
   TOP_RATED_MIN_AVERAGE = 4.5
 
@@ -23,19 +24,19 @@ class FictionListQueryBuilder
   private
 
   def by_genre(scope)
-    return scope unless @params['genre'].present?
+    return scope if @params['genre'].blank?
 
     scope.joins(:genres).where(genres: { id: @params['genre'] })
   end
 
   def only_new_fictions(scope)
-    return scope unless @params['only_new'].present?
+    return scope if @params['only_new'].blank?
 
-    scope.where('fictions.created_at >= ?', 30.days.ago)
+    scope.where(fictions: { created_at: 30.days.ago.. })
   end
 
   def longreads_only(scope)
-    return scope unless @params['longreads'].present?
+    return scope if @params['longreads'].blank?
 
     # Use a subquery to find fictions with many chapters
     long_fiction_ids = Fiction.joins(:chapters)
@@ -48,7 +49,7 @@ class FictionListQueryBuilder
   end
 
   def evening_only(scope)
-    return scope unless @params['evening'].present?
+    return scope if @params['evening'].blank?
 
     # At most 10 released chapters (includes fictions with none: they are not in the "many" set).
     many_chapter_ids = Fiction.joins(:chapters)
@@ -61,7 +62,7 @@ class FictionListQueryBuilder
   end
 
   def top_rated_only(scope)
-    return scope unless @params['top_rated'].present?
+    return scope if @params['top_rated'].blank?
 
     top_ids = Fiction.joins(:fiction_ratings)
                      .group('fictions.id')
@@ -72,7 +73,7 @@ class FictionListQueryBuilder
   end
 
   def finished_only(scope)
-    return scope unless @params['finished'].present?
+    return scope if @params['finished'].blank?
 
     scope.where(status: 'Завершено')
   end

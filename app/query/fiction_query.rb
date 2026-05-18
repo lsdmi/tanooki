@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller concern: fiction lists scoped to the current user and dashboard.
 module FictionQuery
   def dashboard_fiction_list
     Fiction.joins(:users)

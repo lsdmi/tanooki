@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+# View-model for the fictions index: hero ad, carousels, and list filter state.
 class FictionIndexPresenter
   def initialize(params)
     @params = params
   end
 
   def hero_ad
-    @hero_ad ||= Advertisement.find_by(slug: 'fictions-index-hero-ad')
+    return @hero_ad if defined?(@hero_ad)
+
+    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
   end
 
   def popular_novelty

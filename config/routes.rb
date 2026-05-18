@@ -129,7 +129,6 @@ Rails.application.routes.draw do
   get :about, to: 'pages#about'
   get :rules, to: 'pages#rules'
   get :privacy, to: 'pages#privacy'
-  # English slug: automated AdSense / policy crawlers often match this path literally.
   get '/privacy-policy', to: redirect('/privacy', status: 301)
 
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
