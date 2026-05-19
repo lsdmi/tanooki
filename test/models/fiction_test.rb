@@ -2,7 +2,6 @@
 
 require 'test_helper'
 
-# rubocop:disable Metrics/ClassLength
 class FictionTest < ActiveSupport::TestCase
   def setup
     @user = users(:user_one)
@@ -148,4 +147,3 @@ class FictionTest < ActiveSupport::TestCase
     assert_includes fiction.errors[:scanlator_ids], 'має бути принаймні одна команда'
   end
 end
-# rubocop:enable Metrics/ClassLength
