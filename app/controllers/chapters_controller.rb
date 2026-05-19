@@ -88,7 +88,7 @@ class ChaptersController < ApplicationController
   end
 
   def track_reading_progress
-    ReadingProgressTracker.new(chapter: @chapter, user: current_user).call
+    Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
   end
 
   def verify_permissions

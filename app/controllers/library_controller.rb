@@ -20,7 +20,7 @@ class LibraryController < ApplicationController
     new_status = params[:status]&.to_sym
     current_section = params[:current_section]&.to_sym || :active
 
-    ReadingProgressStatusService.new(reading_progress, new_status, current_user).call
+    Reading::UpdateStatus.new(reading_progress, new_status, current_user).call
     library_data = LibraryDataService.new(current_user, current_section, page_param).call
 
     @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module PokemonsHelper
-  def cooldown?(current_user)
-    Pokemons::BattleLeaderboardCooldown.call(current_user)
-  end
-
   def training_cooldown?(user)
     user.pokemon_last_training > 4.hours.ago
   end

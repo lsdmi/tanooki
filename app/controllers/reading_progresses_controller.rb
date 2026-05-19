@@ -37,7 +37,7 @@ class ReadingProgressesController < ApplicationController
 
   def update_existing_progress(reading_progress)
     new_status = params[:status]&.to_sym
-    ReadingProgressStatusService.new(reading_progress, new_status, current_user).call
+    Reading::UpdateStatus.new(reading_progress, new_status, current_user).call
   end
 
   def render_status_update
