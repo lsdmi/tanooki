@@ -37,7 +37,8 @@ class FictionsController < ApplicationController
       FictionCreator.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
-        scanlator_ids: fiction_params[:scanlator_ids]
+        scanlator_ids: fiction_params[:scanlator_ids],
+        user: current_user
       ).call
       redirect_to @fiction, notice: 'Твір створено.'
     else
@@ -52,7 +53,8 @@ class FictionsController < ApplicationController
       FictionUpdater.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
-        scanlator_ids: fiction_params[:scanlator_ids]
+        scanlator_ids: fiction_params[:scanlator_ids],
+        user: current_user
       ).call
       redirect_to @fiction, notice: 'Твір оновлено.'
     else

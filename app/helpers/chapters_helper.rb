@@ -27,6 +27,45 @@ module ChaptersHelper
     end
   end
 
+  # Builds accordion sections for the chapter list: numbered volumes first, then unnumbered chapters by range.
+  def chapter_list_sections(chapters)
+    sections = []
+
+    # Drop inherited ORDER BY before DISTINCT/PLUCK (MySQL rejects ORDER BY columns outside SELECT with DISTINCT).
+    volume_numbers = chapters.unscope(:order).where.not(volume_number: nil).pluck(:volume_number).uniq.sort_by(&:to_f)
+    volume_numbers.each do |volume_number|
+      sections << {
+        title: "Том #{check_decimal(volume_number)}",
+        chapters: chapters.where(volume_number: volume_number).includes(:scanlators),
+        epub_title: "Том #{check_decimal(volume_number)}"
+      }
+    end
+
+    unnumbered = chapters.where(volume_number: nil)
+    return sections unless unnumbered.exists?
+
+    range_source = sections.any? ? unnumbered : chapters
+    chapters_collection(range_source.includes(:scanlators)).each do |range, grouped|
+      sections << {
+        title: "Розділи #{range}",
+        chapters: grouped,
+        epub_title: "Розділи #{range}"
+      }
+    end
+
+    sections
+  end
+
+  def chapter_list_section_ids(section_chapters)
+    section_chapters.pluck(:id)
+  end
+
+  def chapter_list_section_current?(section_chapters, current_chapter_id)
+    return false if current_chapter_id.blank?
+
+    section_chapters.any? { |chapter| chapter.id == current_chapter_id }
+  end
+
   def title_includes_rozdil?(title)
     return true if title.blank?
 
