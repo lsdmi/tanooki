@@ -27,7 +27,7 @@
 
   <% if skeleton.new_releases_featured.any? %>
     <%# lg+: large featured pair %>
-    <div class="mb-6 hidden lg:mb-8 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-5">
+    <div class="mb-6 hidden lg:mb-4 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-x-4">
       <% skeleton.new_releases_featured.each do |card| %>
         <% fiction = card[:fiction] %>
         <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-lg border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
@@ -95,7 +95,7 @@
   <% if skeleton.new_releases_thumbs.any? %>
     <%# lg+ only: ranks 3–8 as grid (mobile uses single strip above) %>
     <div
-      class="hidden lg:grid lg:grid-cols-6 lg:gap-3 lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0"
+      class="hidden lg:grid lg:grid-cols-6 lg:gap-4 lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0"
       role="region"
       aria-label="<%= skeleton.new_releases_title %> — решта топу">
       <% skeleton.new_releases_thumbs.each do |card| %>
