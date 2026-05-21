@@ -69,6 +69,7 @@ end
 
 group :production do
   gem 'aws-sdk-s3'
+  gem 'solid_cache'
 end
 
 gem 'bcrypt_pbkdf'

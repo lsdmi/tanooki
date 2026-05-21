@@ -34,12 +34,9 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bund
        'public/uploads'
 
 # Default value for default_env is {}
+# DB_* are read from the server-linked .env at runtime; do not export them here or empty
+# local values override production credentials during cap tasks.
 set :default_env, {
-  'DB_HOST' => ENV.fetch('DB_HOST'),
-  'DB_NAME' => ENV.fetch('DB_NAME'),
-  'DB_PASSWORD' => ENV.fetch('DB_PASSWORD'),
-  'DB_PORT' => ENV.fetch('DB_PORT'),
-  'DB_USER' => ENV.fetch('DB_USER'),
   'DEPLOY_PRODUCTION_IP' => ENV.fetch('DEPLOY_PRODUCTION_IP'),
   'DEPLOY_PRODUCTION_USER' => ENV.fetch('DEPLOY_PRODUCTION_USER'),
   'ELASTICSEARCH_PASSWORD' => ENV.fetch('ELASTICSEARCH_PASSWORD'),

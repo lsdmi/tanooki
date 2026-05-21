@@ -1,29 +1,25 @@
-development:
+default: &default
   adapter: mysql2
   encoding: utf8mb4
   charset: utf8mb4_general_ci
   collation: utf8mb4_general_ci
+
+development:
+  <<: *default
   database: tanooki_development
   host: localhost
   username: root
   password: <%= ENV.fetch('DB_PASSWORD') %>
 
 test:
-  adapter: mysql2
-  encoding: utf8mb4
-  charset: utf8mb4_general_ci
-  collation: utf8mb4_general_ci
+  <<: *default
   database: tanooki_test
   host: 127.0.0.1
   username: root
   password: <%= ENV.fetch('DB_PASSWORD') %>
-  collation: utf8mb4_general_ci
 
 production:
-  adapter: mysql2
-  encoding: utf8mb4
-  charset: utf8mb4_general_ci
-  collation: utf8mb4_general_ci
+  <<: *default
   database: <%= ENV.fetch('DB_NAME') %>
   host: <%= ENV.fetch('DB_HOST') %>
   username: <%= ENV.fetch('DB_USER') %>
