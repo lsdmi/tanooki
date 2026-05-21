@@ -7,9 +7,9 @@ class AddUniqueIndexesForModelValidations < ActiveRecord::Migration[8.0]
     replace_index :pokemons, :name, unique: true
 
     deduplicate_user_names
-    add_index :users, :name, unique: true
+    replace_index :users, :name, unique: true
 
-    add_index :reading_progresses, %i[user_id fiction_id], unique: true
+    replace_index :reading_progresses, %i[user_id fiction_id], unique: true
   end
 
   def down
