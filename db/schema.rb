@@ -148,7 +148,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_21_120000) do
     t.index ["genre_id"], name: "index_fiction_genres_on_genre_id"
   end
 
-  create_table "fiction_ratings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "fiction_ratings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "fiction_id", null: false
     t.integer "rating", limit: 1, null: false
@@ -309,7 +309,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_21_120000) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "translation_request_votes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "translation_request_votes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "translation_request_id", null: false
     t.datetime "created_at", null: false
@@ -319,7 +319,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_21_120000) do
     t.index ["user_id"], name: "index_translation_request_votes_on_user_id"
   end
 
-  create_table "translation_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "translation_requests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "scanlator_id"
     t.string "title", null: false

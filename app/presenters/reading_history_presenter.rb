@@ -6,8 +6,7 @@ class ReadingHistoryPresenter
 
   def initialize(readings, chapter_fetcher: ->(fiction) { fiction.chapters.released.order_by_public_time.first })
     @readings = readings
-    @grouper = ReadingHistoryGrouper.new(readings, chapter_fetcher: chapter_fetcher)
-    @grouped = @grouper.group
+    @grouped = ReadingHistory::GroupByStatus.new(readings, chapter_fetcher: chapter_fetcher).call
   end
 
   def section(name = :active)

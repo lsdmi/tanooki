@@ -33,7 +33,7 @@ class LibraryDataService
 
   def reading_history
     Rails.cache.fetch("user:#{@user.id}:reading_history", expires_in: 5.minutes) do
-      ReadingHistoryFetcher.new(@user).call
+      ReadingHistory::Fetch.new(@user).call
     end
   end
 end

@@ -2,6 +2,22 @@
 // Keep track of current page
 let currentPage = 1;
 
+function safeHttpUrl(url) {
+  const trimmed = (url || '').trim();
+  if (!trimmed) return null;
+
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return parsed.href;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 // Make functions globally available for onclick handlers
 window.loadPage = loadPage;
 window.voteOnRequest = voteOnRequest;
@@ -449,15 +465,15 @@ function updateRequestView(requestId, title, author, sourceUrl, notes) {
     }
     if (element.textContent.includes('Джерело:')) {
       const sourceLink = element.querySelector('a');
+      const href = safeHttpUrl(sourceUrl);
       if (sourceLink) {
-        sourceLink.href = sourceUrl || '#';
+        if (href) {
+          sourceLink.href = href;
+        } else {
+          sourceLink.removeAttribute('href');
+        }
       }
-      // Hide the whole div if source URL is empty
-      if (!sourceUrl || sourceUrl.trim() === '') {
-        element.style.display = 'none';
-      } else {
-        element.style.display = 'block';
-      }
+      element.style.display = href ? 'block' : 'none';
     }
   });
   

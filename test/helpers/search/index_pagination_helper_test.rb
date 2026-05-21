@@ -5,7 +5,7 @@ require 'test_helper'
 module Search
   class IndexPaginationHelperTest < ActionView::TestCase
     include IndexPaginationHelper
-    include PagyHelper
+    include Pagination::TurboNavHelper
     include Rails.application.routes.url_helpers
 
     setup do

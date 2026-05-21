@@ -1,6 +1,6 @@
 <%# locals: showcase:, popular_novelty_ids:, top_fiction_ids:, latest_update_ids: %>
 <% carousel_nav_visible = showcase.many? %>
-<section class="relative overflow-hidden mt-8 mb-4 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
+<section class="relative overflow-hidden mt-8 mb-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
     <div data-controller="custom-carousel" class="relative w-full overflow-hidden h-[calc(16rem+1em)] md:h-[calc(24rem+1em)]">
       <!-- Spinner overlay -->
@@ -12,12 +12,12 @@
       </div>
       <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out w-full h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]" style="transform: translateX(0);">
         <% showcase.each do |fiction| %>
-          <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-lg">
+          <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-2xl">
             <div
               data-controller="lazy-bg"
               data-lazy-bg-id-value="<%= fiction.id %>"
               data-lazy-bg-url-value="<%= url_for(fiction.banner) %>"
-              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-lg"
+              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-2xl"
               id="lazy-bg-<%= fiction.id %>"
               style="background-image: none;">
               <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80% transition-opacity duration-700 ease-in-out"></div>

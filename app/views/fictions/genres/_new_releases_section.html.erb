@@ -30,8 +30,8 @@
     <div class="mb-6 hidden lg:mb-4 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-x-4">
       <% skeleton.new_releases_featured.each do |card| %>
         <% fiction = card[:fiction] %>
-        <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-lg border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
-          <%= link_to fiction_path(fiction), class: "relative aspect-[3/4] w-full shrink-0 bg-gradient-to-br #{card[:accent]} sm:aspect-auto sm:w-[34%] sm:self-stretch sm:min-h-0 overflow-hidden rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none block transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset group-hover:brightness-110 dark:focus-visible:ring-rose-500" do %>
+        <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-2xl border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
+          <%= link_to fiction_path(fiction), class: "relative aspect-[3/4] w-full shrink-0 bg-gradient-to-br #{card[:accent]} sm:aspect-auto sm:w-[34%] sm:self-stretch sm:min-h-0 overflow-hidden rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none block transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset group-hover:brightness-110 dark:focus-visible:ring-rose-500" do %>
             <% if card[:rank].present? %>
               <span class="absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center rounded-lg bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm backdrop-blur-[2px] pointer-events-none" aria-label="Місце в рейтингу: <%= card[:rank] %>">
                 <%= card[:rank] %>

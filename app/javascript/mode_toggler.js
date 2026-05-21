@@ -1,7 +1,30 @@
+function safeLogoSrc(url) {
+  if (!url || typeof url !== 'string') return null;
+
+  const trimmed = url.trim();
+  if (!trimmed.startsWith('/') || trimmed.startsWith('//')) return null;
+
+  try {
+    const parsed = new URL(trimmed, window.location.origin);
+    if (parsed.origin !== window.location.origin) return null;
+
+    const path = parsed.pathname;
+    if (!path.endsWith('.svg')) return null;
+    if (!path.includes('logo-default') && !path.includes('logo-dark')) return null;
+
+    return parsed.href;
+  } catch {
+    return null;
+  }
+}
+
 const initializeModeToggler = () => {
   const siteLogo = document.getElementById('site-logo');
-  const defaultLogo = siteLogo.getAttribute('data-default-logo');
-  const darkLogo = siteLogo.getAttribute('data-dark-logo');
+  if (!siteLogo) return;
+
+  const defaultLogo = safeLogoSrc(siteLogo.getAttribute('data-default-logo'));
+  const darkLogo = safeLogoSrc(siteLogo.getAttribute('data-dark-logo'));
+  if (!defaultLogo || !darkLogo) return;
 
   const setLogo = (isDark) => {
     siteLogo.src = isDark ? darkLogo : defaultLogo;
