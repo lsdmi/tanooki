@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# Registered site member (reader, author, or admin).
 class User < ApplicationRecord
+  include UserProfile
+
   devise :database_authenticatable, :registerable,
          :recoverable, :validatable, :confirmable
 
@@ -10,17 +13,19 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :avatar
-  belongs_to :latest_read_comment, class_name: 'Comment', optional: true
-  has_many :comments
-  has_many :publications
+  belongs_to :latest_read_comment, class_name: 'Comment', inverse_of: :users, optional: true
+  has_many :comments, dependent: :destroy
+  has_many :publications, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :chat_messages, dependent: :destroy
   has_many :fiction_ratings, dependent: :destroy
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
-  has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id
-  has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id
+  has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id,
+                                  inverse_of: :attacker, dependent: :nullify
+  has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id,
+                                  inverse_of: :defender, dependent: :nullify
 
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
@@ -49,7 +54,7 @@ class User < ApplicationRecord
 
     user || User.create(
       avatar_id: Avatar.all.sample.id,
-      confirmed_at: Time.now,
+      confirmed_at: Time.zone.now,
       email: data[:email],
       name: data[:name][0, 20],
       password: Devise.friendly_token[0, 20]
@@ -73,6 +78,14 @@ class User < ApplicationRecord
     find_by(id: ids.first) if ids.any?
   end
 
+  def manages_chapter?(chapter)
+    admin? || chapters.exists?(id: chapter.id)
+  end
+
+  def manages_fiction?(fiction)
+    admin? || fictions.exists?(id: fiction.id)
+  end
+
   def adult_content_acknowledged?
     adult_content_acknowledged_at.present?
   end
@@ -93,54 +106,5 @@ class User < ApplicationRecord
 
   def pokemon_training_on_cooldown?
     pokemon_last_training > 4.hours.ago
-  end
-
-  def profile_show_assignments
-    {
-      recent_publications: profile_recent_publications,
-      user_scanlators: scanlators,
-      recent_comments: profile_recent_comments,
-      recent_readings: profile_recent_readings,
-      user_bookshelves: profile_featured_bookshelves
-    }
-  end
-
-  def profile_recent_publications
-    publications.includes(:cover_attachment, :rich_text_description).weekly.recent.limit(3)
-  end
-
-  def profile_recent_comments
-    comments.order(created_at: :desc).includes(:commentable).limit(3)
-  end
-
-  def profile_recent_readings
-    readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(4)
-  end
-
-  def profile_featured_bookshelves
-    bookshelves.includes(fictions: [:cover_attachment]).most_viewed.limit(1)
-  end
-
-  def profile_pokemon_stats
-    {
-      pokemon_count: pokemons.count,
-      total_pokemon: Pokemon.where(descendant_level: 0).count,
-      victories: battle_victory_count,
-      total_battles: battle_total_count,
-      user_rating: dex_leader_rank
-    }
-  end
-
-  def battle_victory_count
-    attacker_battle_logs.where(winner: self).count +
-      defender_battle_logs.where(winner: self).count
-  end
-
-  def battle_total_count
-    attacker_battle_logs.count + defender_battle_logs.count
-  end
-
-  def dex_leader_rank
-    self.class.dex_leaders.index(self) + 1
   end
 end

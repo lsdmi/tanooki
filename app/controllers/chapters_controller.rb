@@ -92,7 +92,7 @@ class ChaptersController < ApplicationController
   end
 
   def verify_permissions
-    redirect_to root_path unless current_user.admin? || current_user.chapters.include?(@chapter)
+    redirect_to root_path unless current_user.manages_chapter?(@chapter)
   end
 
   def redirect_if_chapter_not_yet_public

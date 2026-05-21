@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Pokemon owned by a user for the dex and battle features.
 class UserPokemon < ApplicationRecord
   belongs_to :user
   belongs_to :pokemon
@@ -25,13 +26,7 @@ class UserPokemon < ApplicationRecord
   SUCCESS_MESSSAGE = 'Вітаємо, із оновленням у команді!'
   TRAINING_FRAUD_ALERT = 'Ця дія наразі неможлива. Спробуйте пізніше.'
 
-  def pokemon_name
-    pokemon.name
-  end
-
-  def pokemon_power_level
-    pokemon.power_level
-  end
+  delegate :name, :power_level, to: :pokemon, prefix: true
 
   def train!
     return level_up_training! if rand(2).zero?

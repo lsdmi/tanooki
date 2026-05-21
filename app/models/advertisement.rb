@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Site advertisement banner configuration.
 class Advertisement < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates

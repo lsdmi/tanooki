@@ -30,7 +30,7 @@ class ChaptersHelperTest < ActionView::TestCase
     assert chapter_epub_download_allowed?(chapters(:one))
   end
 
-  test 'chapter_list_sections uses volume groups and range groups for unnumbered chapters' do
+  test 'chapter_list_sections groups chapters by volume' do
     fiction = fictions(:one)
     with_vol = Chapter.create!(
       fiction: fiction,
@@ -41,6 +41,18 @@ class ChaptersHelperTest < ActionView::TestCase
       content: 'x' * 500,
       scanlator_ids: [scanlators(:one).id]
     )
+
+    sections = chapter_list_sections(fiction.chapters.where(id: with_vol.id))
+
+    assert_equal 1, sections.size
+    assert_equal 'Том 1', sections.first[:title]
+    assert_includes sections.first[:chapters], with_vol
+  ensure
+    with_vol&.destroy
+  end
+
+  test 'chapter_list_sections uses range groups for unnumbered chapters' do
+    fiction = fictions(:one)
     without_vol = Chapter.create!(
       fiction: fiction,
       user: users(:user_one),
@@ -51,15 +63,12 @@ class ChaptersHelperTest < ActionView::TestCase
       scanlator_ids: [scanlators(:one).id]
     )
 
-    sections = chapter_list_sections(fiction.chapters.where(id: [with_vol.id, without_vol.id]))
+    sections = chapter_list_sections(fiction.chapters.where(id: without_vol.id))
 
-    assert_equal 2, sections.size
-    assert_equal 'Том 1', sections.first[:title]
-    assert_includes sections.first[:chapters], with_vol
-    assert sections.second[:title].start_with?('Розділи ')
-    assert_includes sections.second[:chapters], without_vol
+    assert_equal 1, sections.size
+    assert sections.first[:title].start_with?('Розділи ')
+    assert_includes sections.first[:chapters], without_vol
   ensure
-    with_vol&.destroy
     without_vol&.destroy
   end
 

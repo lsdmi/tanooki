@@ -2,9 +2,10 @@
 
 require 'yaml'
 
+# Loads Pokemon type matchup data from YAML.
 class TypeAdvantage
   def self.load
-    YAML.load_file(Rails.root.join('config', 'type_advantage.yml'))
+    YAML.load_file(Rails.root.join('config/type_advantage.yml'))
   end
 
   def self.effectiveness(attacking_type, defending_type)

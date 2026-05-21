@@ -91,6 +91,34 @@ uk:
             title:
               blank: "не може бути пуста"
               too_short: "занадто коротка (мінімум %{count} знаки)"
+        chapter:
+          attributes:
+            scanlator_ids:
+              blank: мусить бути принаймні одна команда
+            published_at:
+              in_the_past: не може бути в минулому
+        fiction:
+          attributes:
+            scanlator_ids:
+              blank: має бути принаймні одна команда
+            cover:
+              invalid_format: має бути JPEG, PNG, SVG, або WebP
+        fiction_rating:
+          attributes:
+            user:
+              taken: можна оцінити твір лише один раз
+        reading_progress:
+          attributes:
+            user:
+              taken: already has reading progress for this fiction
+        scanlator:
+          attributes:
+            member_ids:
+              blank: мусить бути принаймні один учасник
+            avatar:
+              invalid_format: має бути JPEG, PNG, SVG, або WebP
+            banner:
+              invalid_format: має бути JPEG, PNG, SVG, або WebP
         translation_request:
           attributes:
             title:
@@ -98,7 +126,11 @@ uk:
             notes:
               blank: "не можуть бути пустими"
             source_url:
-              invalid: "повинно бути дійсним URL"
+              invalid: повинно бути дійсним URL
+        translation_request_vote:
+          attributes:
+            user:
+              taken: можна голосувати за запит лише один раз
   cover_generator:
     disclaimer: "Це фанатський, некомерційний переклад, створений виключно для ознайомлення. Усі права на оригінальний твір належать їх законним власникам. Якщо ви є правовласником і вважаєте, що цей переклад порушує ваші права, будь ласка, зв'яжіться з нами, і ми негайно видалимо матеріал. Поширення цього перекладу з комерційною метою суворо заборонено. Використовуючи цей переклад, ви погоджуєтесь з тим, що робите це на власний ризик і що перекладачі не несуть відповідальності за будь-які наслідки його використання."
   errors:

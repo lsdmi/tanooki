@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Preset avatar image selectable by users.
 class Avatar < ApplicationRecord
   has_one_attached :image
   has_many :users, dependent: :nullify

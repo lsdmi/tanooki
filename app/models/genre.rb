@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Fiction genre taxonomy entry.
 class Genre < ApplicationRecord
   extend FriendlyId
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A single installment of a {Fiction} work.
 class Chapter < ApplicationRecord
   extend FriendlyId
   include ChaptersHelper
@@ -21,7 +22,7 @@ class Chapter < ApplicationRecord
 
   before_validation :cleanup_scanlator_ids
 
-  validates :scanlator_ids, presence: { message: 'мусить бути принаймні одна команда' }
+  validates :scanlator_ids, presence: true
   validates :content, length: { minimum: 500 }
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
@@ -49,13 +50,7 @@ class Chapter < ApplicationRecord
     order(Arel.sql("COALESCE(volume_number, 0), number, #{PUBLIC_TIME_SQL}"))
   }
 
-  def author
-    fiction.author
-  end
-
-  def cover
-    fiction.cover
-  end
+  delegate :author, :cover, to: :fiction
 
   def display_title
     header = ''
@@ -72,17 +67,7 @@ class Chapter < ApplicationRecord
     header
   end
 
-  def fiction_description
-    fiction.description
-  end
-
-  def fiction_title
-    fiction.title
-  end
-
-  def fiction_slug
-    fiction.slug
-  end
+  delegate :description, :title, :slug, to: :fiction, prefix: true
 
   def manage_users
     scanlator_ids.each do |scanlator_id|
@@ -113,14 +98,15 @@ class Chapter < ApplicationRecord
     return if published_at >= Time.current
     return if persisted? && !published_at_changed?
 
-    errors.add(:published_at, 'не може бути в минулому')
+    errors.add(:published_at, :in_the_past)
   end
 
   def cleanup_scanlator_ids
-    if scanlator_ids.nil? && persisted? && scanlators.exists?
-      self.scanlator_ids = scanlators.ids
-    else
-      self.scanlator_ids = scanlator_ids&.reject(&:blank?)
-    end
+    self.scanlator_ids =
+      if scanlator_ids.nil? && persisted? && scanlators.exists?
+        scanlators.ids
+      else
+        scanlator_ids&.compact_blank
+      end
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Collectible creature used in the site dex and battle mini-game.
 class Pokemon < ApplicationRecord
   extend FriendlyId
 
@@ -8,8 +9,8 @@ class Pokemon < ApplicationRecord
   friendly_id :slug_candidates
 
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
-  belongs_to :descendant, foreign_key: :descendant_id, class_name: 'Pokemon'
-  has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon'
+  belongs_to :descendant, class_name: 'Pokemon'
+  has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon', inverse_of: :ancestor, dependent: :nullify
 
   has_many :pokemon_type_relations, dependent: :destroy
   has_many :pokemon_types, through: :pokemon_type_relations

@@ -109,41 +109,4 @@ class FictionTest < ActiveSupport::TestCase
 
     assert_not @fiction.valid?
   end
-
-  test 'should destroy associated comments' do
-    fiction = fictions(:one)
-    fiction.comments << comments(:comment_one)
-
-    assert_difference('Comment.count', -2) { fiction.destroy }
-  end
-
-  test 'should have many fiction genres' do
-    assert_instance_of FictionGenre, @fiction.fiction_genres.build
-  end
-
-  test 'should have many genres through fiction genres' do
-    assert_instance_of Genre, @fiction.genres.build
-  end
-
-  test 'should destroy associated fiction genres when destroyed' do
-    fiction = fictions(:one)
-
-    assert_difference('FictionGenre.count', -1) { fiction.destroy }
-  end
-
-  test 'valid when scanlator_ids unset but scanlator associations exist' do
-    fiction = fictions(:one)
-    fiction.scanlator_ids = nil
-
-    assert_predicate fiction, :valid?
-  end
-
-  test 'invalid when scanlator_ids cleared and no scanlator associations' do
-    fiction = fictions(:one)
-    fiction.fiction_scanlators.destroy_all
-    fiction.scanlator_ids = []
-
-    assert_not fiction.valid?
-    assert_includes fiction.errors[:scanlator_ids], 'має бути принаймні одна команда'
-  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_21_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -195,7 +195,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_genres_on_name"
+    t.index ["name"], name: "index_genres_on_name", unique: true
     t.index ["slug"], name: "index_genres_on_slug", unique: true
   end
 
@@ -239,7 +239,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
     t.datetime "updated_at", null: false
     t.index ["ancestor_id"], name: "index_pokemons_on_ancestor_id"
     t.index ["descendant_id"], name: "index_pokemons_on_descendant_id"
-    t.index ["name"], name: "index_pokemons_on_name"
+    t.index ["name"], name: "index_pokemons_on_name", unique: true
   end
 
   create_table "publication_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -276,6 +276,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
     t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
     t.index ["fiction_id"], name: "index_reading_progresses_on_fiction_id"
     t.index ["status"], name: "index_reading_progresses_on_status"
+    t.index ["user_id", "fiction_id"], name: "index_reading_progresses_on_user_id_and_fiction_id", unique: true
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
   end
 
@@ -305,7 +306,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_tags_on_name"
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "translation_request_votes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -368,6 +369,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_17_120000) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["latest_read_comment_id"], name: "index_users_on_latest_read_comment_id"
+    t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

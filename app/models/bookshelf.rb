@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# User-curated list of fictions.
 class Bookshelf < ApplicationRecord
   belongs_to :user
   has_many :bookshelf_fictions, dependent: :destroy
@@ -30,17 +31,17 @@ class Bookshelf < ApplicationRecord
   private
 
   def must_have_at_least_one_fiction
-    return unless fiction_ids.blank? || fiction_ids.reject(&:blank?).empty?
+    return unless fiction_ids.blank? || fiction_ids.compact_blank.empty?
 
     errors.add(:fiction_ids, 'Оберіть принаймні один твір')
   end
 
   def assign_fictions
-    return unless fiction_ids.present?
+    return if fiction_ids.blank?
 
     bookshelf_fictions.destroy_all
 
-    fiction_ids.reject(&:blank?).each do |fiction_id|
+    fiction_ids.compact_blank.each do |fiction_id|
       bookshelf_fictions.create!(fiction_id: fiction_id)
     end
   end

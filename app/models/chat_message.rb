@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Message posted in the site chat.
 class ChatMessage < ApplicationRecord
   belongs_to :user
 

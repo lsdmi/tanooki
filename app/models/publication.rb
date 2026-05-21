@@ -2,6 +2,7 @@
 
 require_relative '../../config/initializers/telegram_bot'
 
+# Blog-style article or news post.
 class Publication < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid

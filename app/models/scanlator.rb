@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Translation team (scanlator group) publishing fictions and chapters.
 class Scanlator < ApplicationRecord
   extend FriendlyId
 
@@ -10,6 +11,7 @@ class Scanlator < ApplicationRecord
 
   attr_accessor :member_ids
 
+  before_validation :cleanup_member_ids
   before_destroy :check_associations
 
   has_many :chapter_scanlators, dependent: :destroy
@@ -21,12 +23,10 @@ class Scanlator < ApplicationRecord
   has_many :scanlator_users, dependent: :destroy
   has_many :users, through: :scanlator_users
 
-  before_validation :cleanup_member_ids
-
   validates :avatar, :banner, presence: true
   validates :description, length: { minimum: 3, maximum: 255 }, allow_blank: true
   validates :notice, length: { minimum: 3, maximum: 255 }, allow_blank: true
-  validates :member_ids, presence: { message: 'мусить бути принаймні один учасник' }
+  validates :member_ids, presence: true
   validates :title, length: { minimum: 3, maximum: 100 }
   validates :telegram_id, length: { minimum: 3, maximum: 50 }, allow_blank: true
   validate :avatar_format, :banner_format
@@ -35,14 +35,14 @@ class Scanlator < ApplicationRecord
     return unless avatar.attached?
     return if avatar.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
-    errors.add(:avatar, 'має бути JPEG, PNG, SVG, або WebP')
+    errors.add(:avatar, :invalid_format)
   end
 
   def banner_format
     return unless banner.attached?
     return if banner.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
-    errors.add(:banner, 'має бути JPEG, PNG, SVG, або WebP')
+    errors.add(:banner, :invalid_format)
   end
 
   def slug_candidates
@@ -52,7 +52,7 @@ class Scanlator < ApplicationRecord
   end
 
   def active_this_month?
-    chapters.where("#{Chapter::PUBLIC_TIME_SQL} BETWEEN ? AND ?", 60.days.ago, Time.current).exists?
+    chapters.exists?(["#{Chapter::PUBLIC_TIME_SQL} BETWEEN ? AND ?", 60.days.ago, Time.current])
   end
 
   def average_rating
@@ -82,6 +82,6 @@ class Scanlator < ApplicationRecord
   end
 
   def cleanup_member_ids
-    self.member_ids = member_ids&.reject(&:blank?)
+    self.member_ids = member_ids&.compact_blank
   end
 end

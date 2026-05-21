@@ -9,9 +9,20 @@
     return document.body && document.body.dataset.loadGoogleScripts === 'true'
   }
 
-  function injectGoogle() {
-    if (!prodEnabled() || window.__bakaGoogleInjected) return
-    window.__bakaGoogleInjected = true
+  function injectAdSense() {
+    if (!prodEnabled() || window.__bakaAdSenseInjected) return
+    window.__bakaAdSenseInjected = true
+
+    var ads = document.createElement('script')
+    ads.async = true
+    ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
+    ads.setAttribute('crossorigin', 'anonymous')
+    document.head.appendChild(ads)
+  }
+
+  function injectAnalytics() {
+    if (!prodEnabled() || window.__bakaAnalyticsInjected) return
+    window.__bakaAnalyticsInjected = true
 
     var gtagScript = document.createElement('script')
     gtagScript.async = true
@@ -27,12 +38,6 @@
       gtag('js', new Date())
       gtag('config', GA_ID)
     }
-
-    var ads = document.createElement('script')
-    ads.async = true
-    ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
-    ads.setAttribute('crossorigin', 'anonymous')
-    document.head.appendChild(ads)
   }
 
   function hideBanner() {
@@ -41,11 +46,13 @@
   }
 
   function initConsentUi() {
-    // Banner shows in every environment so you can verify the UI locally; only `injectGoogle` runs in production.
+    // Banner is visible in every environment for UI checks; AdSense/Analytics scripts load only in production.
+    injectAdSense()
+
     var stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {
       hideBanner()
-      injectGoogle()
+      injectAnalytics()
       return
     }
     if (stored === 'declined') {
@@ -60,7 +67,7 @@
   window.bakaAcceptCookies = function () {
     localStorage.setItem(STORAGE_KEY, 'accepted')
     hideBanner()
-    injectGoogle()
+    injectAnalytics()
   }
 
   window.bakaDeclineCookies = function () {

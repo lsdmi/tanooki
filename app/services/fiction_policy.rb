@@ -10,7 +10,7 @@ class FictionPolicy
   end
 
   def edit?
-    user.admin? || user.fictions.include?(fiction)
+    user.manages_fiction?(fiction)
   end
 
   def update?

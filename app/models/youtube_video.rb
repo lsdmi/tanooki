@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
+# YouTube video entry displayed on the site.
 class YoutubeVideo < ApplicationRecord
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
 
-  belongs_to :youtube_channel
+  belongs_to :youtube_channel, inverse_of: :videos
 
   has_rich_text :description
   has_many :comments, as: :commentable, dependent: :destroy
 
-  validates :description, :published_at, :title, :thumbnail, :youtube_channel, :video_id, presence: true
+  validates :description, :published_at, :title, :thumbnail, :video_id, presence: true
 
   scope :last_week, -> { where(published_at: 1.week.ago..) }
   scope :last_month, -> { where(published_at: 1.month.ago..) }
@@ -31,9 +32,5 @@ class YoutubeVideo < ApplicationRecord
     [
       title.downcase
     ]
-  end
-
-  def youtube_channel_title
-    youtube_channel.title
   end
 end

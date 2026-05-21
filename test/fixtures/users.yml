@@ -42,7 +42,7 @@ user_102:
   id: 102
   email: example102@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohtwo
   admin: false
   avatar_id: 1
   confirmation_token: '102'
@@ -55,7 +55,7 @@ user_103:
   id: 103
   email: example103@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohthree
   admin: false
   avatar_id: 1
   confirmation_token: '103'
@@ -68,7 +68,7 @@ user_104:
   id: 104
   email: example104@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohfour
   admin: false
   avatar_id: 1
   confirmation_token: '104'
@@ -81,7 +81,7 @@ user_105:
   id: 105
   email: example105@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohfive
   admin: false
   avatar_id: 1
   confirmation_token: '105'
@@ -94,7 +94,7 @@ user_106:
   id: 106
   email: example106@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohsix
   admin: false
   avatar_id: 1
   confirmation_token: '106'
@@ -107,7 +107,7 @@ user_107:
   id: 107
   email: example107@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohseven
   admin: false
   avatar_id: 1
   confirmation_token: '107'
@@ -120,7 +120,7 @@ user_108:
   id: 108
   email: example108@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneoheight
   admin: false
   avatar_id: 1
   confirmation_token: '108'
@@ -133,7 +133,7 @@ user_109:
   id: 109
   email: example109@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohnine
   admin: false
   avatar_id: 1
   confirmation_token: '109'
@@ -146,7 +146,7 @@ user_one_one_zero:
   id: 110
   email: example110@example.com
   encrypted_password: password102
-  name: John Oneohone
+  name: John Oneohten
   admin: false
   avatar_id: 1
   confirmation_token: '110'

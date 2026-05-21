@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Tracks a user's reading status and position within a fiction.
 class ReadingProgress < ApplicationRecord
   belongs_to :chapter
   belongs_to :fiction
@@ -8,15 +9,9 @@ class ReadingProgress < ApplicationRecord
   enum :status, { active: 0, finished: 1, postponed: 2, dropped: 3 }
 
   validates :status, presence: true, inclusion: { in: statuses.keys }
-  validates :user_id, uniqueness: { scope: :fiction_id, message: 'already has reading progress for this fiction' }
+  validates :user_id, uniqueness: { scope: :fiction_id }
 
   scope :recent, -> { order(updated_at: :desc) }
 
-  def fiction_description
-    fiction.description
-  end
-
-  def fiction_title
-    fiction.title
-  end
+  delegate :description, :title, to: :fiction, prefix: true
 end

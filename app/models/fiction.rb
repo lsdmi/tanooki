@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# User-submitted novel, web-fiction, or fan-fiction work.
 class Fiction < ApplicationRecord
+  include FictionPresentation
+  include FictionRatings
   include Pagy::Backend
   extend FriendlyId
 
@@ -32,7 +35,7 @@ class Fiction < ApplicationRecord
   before_validation :cleanup_scanlator_ids
 
   validates :cover, presence: true
-  validates :scanlator_ids, presence: { message: 'має бути принаймні одна команда' }
+  validates :scanlator_ids, presence: true
   validates :author, length: { in: 2..50 }
   validates :description, length: { in: 25..1000 }
   validates :short_description, length: { in: 25..120 }, allow_blank: true
@@ -63,7 +66,7 @@ class Fiction < ApplicationRecord
       .joins(readings_join_sql)
       .order(Arel.sql('recent_readings_count DESC, fictions.id ASC'))
   }
-  scope :recent, -> { where('created_at >= ?', 7.days.ago) }
+  scope :recent, -> { where(created_at: 7.days.ago..) }
   scope :safe_content, -> { where(adult_content: false) }
 
   def search_data
@@ -84,53 +87,6 @@ class Fiction < ApplicationRecord
     Fictions::InactivityDrop.new(self).call
   end
 
-  def as_hikka_json
-    routes = Rails.application.routes.url_helpers
-    public_url_options = Rails.application.config.action_mailer.default_url_options.symbolize_keys
-
-    {
-      alternative_title: alternative_title,
-      cover_url: routes.rails_blob_url(cover, only_path: false, **public_url_options),
-      description: description,
-      english_title: english_title,
-      reference: routes.fiction_url(self, only_path: false, **public_url_options),
-      title: title
-    }
-  end
-
-  def related_fictions
-    Rails.cache.fetch("related-to-#{slug}", expires_in: 24.hours) do
-      Fiction.joins(:scanlators)
-             .includes(:genres)
-             .where(scanlators: { id: scanlators.pluck(:id) })
-             .includes(:cover_attachment)
-             .where.not(id: id)
-             .order(views: :desc)
-             .distinct
-    end
-  end
-
-  def finished_and_complete?
-    unique_chapters = chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
-    unique_chapters.size >= total_chapters && status.to_sym == :finished
-  end
-
-  def average_rating
-    return 0.0 if fiction_ratings.empty?
-
-    fiction_ratings.average(:rating).round(1)
-  end
-
-  def rating_count
-    fiction_ratings.count
-  end
-
-  def user_rating(user)
-    return nil unless user
-
-    fiction_ratings.find_by(user: user)&.rating
-  end
-
   private
 
   def cover_format
@@ -138,14 +94,15 @@ class Fiction < ApplicationRecord
 
     return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
 
-    errors.add(:cover, 'має бути JPEG, PNG, SVG, або WebP')
+    errors.add(:cover, :invalid_format)
   end
 
   def cleanup_scanlator_ids
-    if scanlator_ids.nil? && persisted? && scanlators.exists?
-      self.scanlator_ids = scanlators.ids
-    else
-      self.scanlator_ids = scanlator_ids&.reject(&:blank?)
-    end
+    self.scanlator_ids =
+      if scanlator_ids.nil? && persisted? && scanlators.exists?
+        scanlators.ids
+      else
+        scanlator_ids&.compact_blank
+      end
   end
 end
