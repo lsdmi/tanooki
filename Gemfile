@@ -94,4 +94,3 @@ gem 'sqids'
 gem 'tailwindcss-rails'
 gem 'telegram-bot-ruby'
 gem 'tinymce-rails'
-gem 'whenever', require: false

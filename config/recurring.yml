@@ -1,5 +1,5 @@
 # Solid Queue recurring tasks (tanooki2 worker). Schedules use app time zone (Europe/Kiev).
-# Former VPS cron: config/schedule.rb — remove crontab after one cycle matches log/cron.log.
+# Production cron (Europe/Kiev). VPS whenever/crontab removed after F cutover.
 
 production:
   clear_solid_queue_finished_jobs:
