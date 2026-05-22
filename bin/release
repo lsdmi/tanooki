@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# PRE_DEPLOY on DO App Platform (or Procfile `release:`) — see docs/INFRASTRUCTURE.md Phase G.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+exec bundle exec rails db:migrate

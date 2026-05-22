@@ -20,6 +20,9 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+#
+# Production schedules moved to config/recurring.yml (Solid Queue on DO tanooki2).
+# Keep this file for reference until VPS crontab is removed.
 
 set :output, './log/cron.log'
 set :path, '/home/deploy/tanooki/current'

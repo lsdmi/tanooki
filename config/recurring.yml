@@ -1,15 +1,31 @@
-# examples:
-#   periodic_cleanup:
-#     class: CleanSoftDeletedRecordsJob
-#     queue: background
-#     args: [ 1000, { batch_size: 500 } ]
-#     schedule: every hour
-#   periodic_cleanup_with_command:
-#     command: "SoftDeletedRecord.due.delete_all"
-#     priority: 2
-#     schedule: at 5am every day
+# Solid Queue recurring tasks (tanooki2 worker). Schedules use app time zone (Europe/Kiev).
+# Former VPS cron: config/schedule.rb — remove crontab after one cycle matches log/cron.log.
 
 production:
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
+
+  youtube_sync_all_channels:
+    class: Youtube::SyncAllChannelsVideosJob
+    schedule: every day
+
+  weekly_stats_telegram:
+    class: WeeklyStatsTelegramJob
+    schedule: every wednesday at 3:00pm
+
+  fictions_telegram:
+    class: FictionsTelegramJob
+    schedule: every thursday at 2:00pm
+
+  publications_telegram:
+    class: PublicationsTelegramJob
+    schedule: every friday at 3:00pm
+
+  fictions_refresh_dropped_status:
+    class: Fictions::RefreshDroppedStatusJob
+    schedule: every sunday at 12:00pm
+
+  youtube_telegram:
+    class: Youtube::TelegramJob
+    schedule: every sunday at 12:00pm
