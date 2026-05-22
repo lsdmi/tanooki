@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Creates the solid_cache_entries table used by Solid Cache in production.
+# Creates solid_cache_entries on the primary DB (Solid Cache uses database: primary in cache.yml).
 class CreateSolidCacheEntries < ActiveRecord::Migration[8.0]
   def change
     create_table :solid_cache_entries, charset: 'utf8mb4', collation: 'utf8mb4_general_ci' do |t|

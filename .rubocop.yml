@@ -12,7 +12,6 @@ AllCops:
     - 'bin/**'
     - 'db/migrate/**'
     - 'db/schema.rb'
-    - 'db/cache_schema.rb'
 
 Layout/LineLength:
   Exclude:
