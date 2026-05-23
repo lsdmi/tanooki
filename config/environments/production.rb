@@ -20,8 +20,21 @@ Rails.application.configure do
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { 'cache-control' => "public, max-age=#{1.year.to_i}" }
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.asset_host = "http://assets.example.com"
+  # App host for url_for / Active Storage (must stay baka.in.ua, not the Spaces CDN).
+  config.action_controller.default_url_options = { host: 'baka.in.ua', protocol: 'https' }
+
+  if ENV['ASSET_HOST'].present?
+    cdn_host = ENV['ASSET_HOST'].chomp('/')
+    config.asset_host = proc do |source, _request|
+      next unless source
+
+      path = source.start_with?('/') ? source : "/#{source}"
+      next unless path.start_with?('/assets/')
+      next if path.match?(/\.js(?:\.map)?(?:\?|#|$)/i)
+
+      cdn_host
+    end
+  end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :digitalocean
