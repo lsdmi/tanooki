@@ -2,15 +2,19 @@ function safeLogoSrc(url) {
   if (!url || typeof url !== 'string') return null;
 
   const trimmed = url.trim();
-  if (!trimmed.startsWith('/') || trimmed.startsWith('//')) return null;
+  if (trimmed.startsWith('//')) return null;
 
   try {
     const parsed = new URL(trimmed, window.location.origin);
-    if (parsed.origin !== window.location.origin) return null;
-
     const path = parsed.pathname;
     if (!path.endsWith('.svg')) return null;
     if (!path.includes('logo-default') && !path.includes('logo-dark')) return null;
+
+    const sameOrigin = parsed.origin === window.location.origin;
+    const cdnAssets =
+      /\.digitaloceanspaces\.com$/i.test(parsed.hostname) && path.startsWith('/assets/');
+
+    if (!sameOrigin && !cdnAssets) return null;
 
     return parsed.href;
   } catch {
@@ -19,24 +23,25 @@ function safeLogoSrc(url) {
 }
 
 const initializeModeToggler = () => {
-  const siteLogo = document.getElementById('site-logo');
-  if (!siteLogo) return;
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  if (!themeToggleBtn || themeToggleBtn.dataset.modeTogglerBound === 'true') return;
 
-  const defaultLogo = safeLogoSrc(siteLogo.getAttribute('data-default-logo'));
-  const darkLogo = safeLogoSrc(siteLogo.getAttribute('data-dark-logo'));
-  if (!defaultLogo || !darkLogo) return;
-
-  const setLogo = (isDark) => {
-    siteLogo.src = isDark ? darkLogo : defaultLogo;
-  };
+  themeToggleBtn.dataset.modeTogglerBound = 'true';
 
   const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
   const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-  const themeToggleBtn = document.getElementById('theme-toggle');
+
+  const siteLogo = document.getElementById('site-logo');
+  const defaultLogo = siteLogo ? safeLogoSrc(siteLogo.getAttribute('data-default-logo')) : null;
+  const darkLogo = siteLogo ? safeLogoSrc(siteLogo.getAttribute('data-dark-logo')) : null;
+
+  const setLogo = (isDark) => {
+    if (siteLogo && defaultLogo && darkLogo) siteLogo.src = isDark ? darkLogo : defaultLogo;
+  };
 
   const setIconVisibility = (isDark) => {
-    themeToggleDarkIcon.style.display = isDark ? 'none' : 'inline';
-    themeToggleLightIcon.style.display = isDark ? 'inline' : 'none';
+    if (themeToggleDarkIcon) themeToggleDarkIcon.style.display = isDark ? 'none' : 'inline';
+    if (themeToggleLightIcon) themeToggleLightIcon.style.display = isDark ? 'inline' : 'none';
   };
 
   // Function to update TinyMCE styles based on current theme

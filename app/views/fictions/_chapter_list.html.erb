@@ -4,6 +4,6 @@
 <div class="<%= compact ? '' : 'rounded-lg' %>">
   <div id="chapters-list" class="<%= compact ? '' : 'space-y-6' %>">
     <% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: current_user).includes(:scanlators) : ordered_chapters(fiction, viewer: current_user).includes(:scanlators) %>
-    <%= render 'fictions/chapter_collection', chapters: chapters, compact: compact, drawer_toc: drawer_toc, current_chapter: local_assigns[:current_chapter] %>
+    <%= render 'fictions/chapter_collection', chapters: chapters, order: order, compact: compact, drawer_toc: drawer_toc, current_chapter: local_assigns[:current_chapter] %>
   </div>
 </div>

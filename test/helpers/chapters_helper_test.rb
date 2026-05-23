@@ -77,8 +77,40 @@ class ChaptersHelperTest < ActionView::TestCase
     ordered = fiction.chapters.order(number: :desc)
 
     assert_nothing_raised do
-      chapter_list_sections(ordered)
+      chapter_list_sections(ordered, order: :desc)
     end
+  end
+
+  test 'chapter_list_sections reverses volume order when desc' do
+    fiction = fictions(:one)
+    vol1 = Chapter.create!(
+      fiction: fiction,
+      user: users(:user_one),
+      title: 'Vol 1',
+      number: 1,
+      volume_number: 1,
+      content: 'a' * 500,
+      scanlator_ids: [scanlators(:one).id]
+    )
+    vol2 = Chapter.create!(
+      fiction: fiction,
+      user: users(:user_one),
+      title: 'Vol 2',
+      number: 1,
+      volume_number: 2,
+      content: 'b' * 500,
+      scanlator_ids: [scanlators(:one).id]
+    )
+    scope = fiction.chapters.where(id: [vol1.id, vol2.id])
+
+    asc_titles = chapter_list_sections(scope, order: :asc).map { |s| s[:title] }
+    desc_titles = chapter_list_sections(scope, order: :desc).map { |s| s[:title] }
+
+    assert_equal ['Том 1', 'Том 2'], asc_titles
+    assert_equal ['Том 2', 'Том 1'], desc_titles
+  ensure
+    vol2&.destroy
+    vol1&.destroy
   end
 
   test 'chapter_list_sections uses only ranges when no volume numbers exist' do

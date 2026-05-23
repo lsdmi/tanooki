@@ -31,4 +31,4 @@
 coverage/*
 
 # Local performance audit notes (not for version control)
-/docs/PERFORMANCE_AUDIT.md
+/docs/

@@ -28,11 +28,14 @@ module ChaptersHelper
   end
 
   # Builds accordion sections for the chapter list: numbered volumes first, then unnumbered chapters by range.
-  def chapter_list_sections(chapters)
+  # +order+ (:asc / :desc) reverses volume and range section order to match the chapter sort toggle.
+  def chapter_list_sections(chapters, order: :asc)
     sections = []
+    descending = order.to_sym == :desc
 
     # Drop inherited ORDER BY before DISTINCT/PLUCK (MySQL rejects ORDER BY columns outside SELECT with DISTINCT).
     volume_numbers = chapters.unscope(:order).where.not(volume_number: nil).pluck(:volume_number).uniq.sort_by(&:to_f)
+    volume_numbers.reverse! if descending
     volume_numbers.each do |volume_number|
       sections << {
         title: "Том #{check_decimal(volume_number)}",
@@ -45,7 +48,10 @@ module ChaptersHelper
     return sections unless unnumbered.exists?
 
     range_source = sections.any? ? unnumbered : chapters
-    chapters_collection(range_source.includes(:scanlators)).each do |range, grouped|
+    range_groups = chapters_collection(range_source.includes(:scanlators)).to_a
+    range_groups.sort_by! { |range, _| range_sort_key(range) }
+    range_groups.reverse! if descending
+    range_groups.each do |range, grouped|
       sections << {
         title: "Розділи #{range}",
         chapters: grouped,
@@ -55,6 +61,11 @@ module ChaptersHelper
 
     sections
   end
+
+  def range_sort_key(range_label)
+    range_label.to_s.split('-').first.to_i
+  end
+  private :range_sort_key
 
   def chapter_list_section_ids(section_chapters)
     section_chapters.pluck(:id)
