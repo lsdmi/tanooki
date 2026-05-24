@@ -298,6 +298,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_200000) do
     t.string "description"
     t.string "notice"
     t.boolean "convertable", default: true
+    t.integer "fictions_count", default: 0, null: false
+    t.integer "members_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

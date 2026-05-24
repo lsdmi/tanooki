@@ -3,13 +3,13 @@
 class BookshelvesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
+  before_action :load_selected_fictions, only: %i[new create edit update]
   before_action :track_visit, only: :show
 
   def index; end
 
   def show
     @pagy, @fictions = pagy(@bookshelf.fictions.includes(:cover_attachment, :genres), limit: 20)
-    @fiction_list_pagy_params = FictionListFilterParams.permit_for_pagy(params)
     @advertisement = Advertisement.enabled.includes(:cover_attachment, :poster_attachment).sample
 
     return unless turbo_frame_request_id == 'fiction-list-page'
@@ -17,19 +17,20 @@ class BookshelvesController < ApplicationController
     render partial: 'fiction_lists/dynamic_content',
            locals: {
              fictions: @fictions,
-             pagy: @pagy,
-             pagy_custom_params: @fiction_list_pagy_params
+             pagy: @pagy
            }
+  end
+
+  def fiction_options
+    render json: Bookshelves::FictionSearch.call(query: params[:q])
   end
 
   def new
     @bookshelf = current_user.bookshelves.build
-    @fictions = Fiction.all.order(:title)
   end
 
   def create
     @bookshelf = current_user.bookshelves.build(bookshelf_params)
-    @fictions = Fiction.all.order(:title)
 
     if @bookshelf.save
       redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю дадано'
@@ -39,13 +40,10 @@ class BookshelvesController < ApplicationController
   end
 
   def edit
-    @fictions = Fiction.all.order(:title)
     @bookshelf.fiction_ids = @bookshelf.fictions.pluck(:id)
   end
 
   def update
-    @fictions = Fiction.all.order(:title)
-
     if @bookshelf.update(bookshelf_params)
       redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю оновлено!'
     else
@@ -71,6 +69,18 @@ class BookshelvesController < ApplicationController
 
   def bookshelf_params
     params.require(:bookshelf).permit(:title, :description, fiction_ids: [])
+  end
+
+  def load_selected_fictions
+    ids = if params[:bookshelf]&.key?(:fiction_ids)
+            Array(params.dig(:bookshelf, :fiction_ids)).compact_blank
+          elsif @bookshelf&.persisted?
+            @bookshelf.fictions.pluck(:id)
+          else
+            []
+          end
+
+    @selected_fictions = ids.any? ? Fiction.where(id: ids).order(:title) : Fiction.none
   end
 
   def refresh_list

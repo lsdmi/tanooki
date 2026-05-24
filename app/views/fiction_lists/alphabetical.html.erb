@@ -34,7 +34,7 @@
     <main class="flex-1 p-2 sm:p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200">
       <%= turbo_frame_tag 'fiction-list-page', data: { controller: 'fiction-picker' }, class: 'mb-4' do %>
         <%= render partial: 'fiction_lists/dynamic_content',
-                   locals: { fictions: @fictions, pagy: @pagy, pagy_custom_params: @fiction_list_pagy_params } %>
+                   locals: { fictions: @fictions, pagy: @pagy } %>
       <% end %>
     </main>
   </div>

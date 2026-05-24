@@ -79,7 +79,7 @@ module Pokemons
     end
 
     def initialize_team(pokemon_list)
-      PokemonTeamBuilder.new(pokemon_list, pokemon_limit).build_team
+      Battle::RosterBuilder.new(pokemon_list, pokemon_limit).build
     end
   end
 end

@@ -5,8 +5,8 @@ require 'test_helper'
 class MetaHelperTest < ActionView::TestCase
   include Rails.application.routes.url_helpers
   include ApplicationHelper
+  include Meta::TagsHelper
   include MetaCoverHelper
-  include MetaDescriptionHelper
   include Devise::Test::IntegrationHelpers
 
   test 'should get meta_title for root path' do

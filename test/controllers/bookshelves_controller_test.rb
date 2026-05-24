@@ -27,6 +27,22 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'fiction_options returns json for authenticated user' do
+    sign_in @user
+    get fiction_options_bookshelves_url(q: @fiction.title.first(3), as: :json)
+
+    assert_response :success
+    body = response.parsed_body
+
+    assert(body.any? { |option| option['value'] == @fiction.id.to_s })
+  end
+
+  test 'fiction_options requires authentication' do
+    get fiction_options_bookshelves_url(q: 'test', as: :json)
+
+    assert_redirected_to new_user_session_url
+  end
+
   test 'should redirect to login when not authenticated for new' do
     get new_bookshelf_url
 

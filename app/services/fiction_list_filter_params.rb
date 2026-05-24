@@ -4,6 +4,7 @@
 class FictionListFilterParams
   KEYS = %i[genre only_new longreads evening top_rated finished adult_content].freeze
   FLAG_KEYS = (KEYS - [:genre]).freeze
+  PERMIT_KEYS = (KEYS + [:page]).freeze
 
   class << self
     def permit_for_query(controller_params)
@@ -16,11 +17,11 @@ class FictionListFilterParams
   end
 
   def initialize(controller_params)
-    @permitted = controller_params.permit(*KEYS)
+    @permitted = controller_params.permit(*PERMIT_KEYS)
   end
 
   def to_query_hash
-    @permitted.to_h
+    @permitted.slice(*KEYS).to_h
   end
 
   def to_pagy_hash

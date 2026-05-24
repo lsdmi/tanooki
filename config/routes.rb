@@ -73,7 +73,11 @@ Rails.application.routes.draw do
   end
   resources :publications, except: %i[index show]
   resources :scanlators
-  resources :bookshelves, param: :sqid
+  resources :bookshelves, param: :sqid do
+    collection do
+      get :fiction_options
+    end
+  end
   resources :search, only: :index
   resources :studio, only: :index do
     member do

@@ -6,11 +6,10 @@ class FictionListsController < ApplicationController
 
   def alphabetical
     @pagy, @fictions = paginated_fictions
-    @fiction_list_pagy_params = FictionListFilterParams.permit_for_pagy(params)
 
     if turbo_frame_request_id == 'fiction-list-page'
       return render partial: 'fiction_lists/dynamic_content',
-                    locals: { fictions: @fictions, pagy: @pagy, pagy_custom_params: @fiction_list_pagy_params }
+                    locals: { fictions: @fictions, pagy: @pagy }
     end
 
     respond_to do |format|
@@ -39,8 +38,7 @@ class FictionListsController < ApplicationController
       partial: 'fiction_lists/dynamic_content',
       locals: {
         fictions: @fictions,
-        pagy: @pagy,
-        pagy_custom_params: @fiction_list_pagy_params
+        pagy: @pagy
       }
     )
   end

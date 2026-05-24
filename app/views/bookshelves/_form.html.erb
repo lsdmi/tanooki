@@ -68,12 +68,15 @@
           </div>
           <div class="space-y-4">
             <%= form.select :fiction_ids,
-                  options_from_collection_for_select(fictions, :id, :title, bookshelf.fiction_ids),
+                  options_from_collection_for_select(selected_fictions, :id, :title, bookshelf.fiction_ids),
                   {},
                   { multiple: true,
                     class: "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 dark:focus:ring-rose-500 dark:focus:border-rose-500 block w-full p-3 transition-all duration-200",
-                    data: { controller: 'slim' } } %>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Можете вибрати кілька творів одночасно</p>
+                    data: {
+                      controller: 'slim-fiction-search',
+                      slim_fiction_search_url_value: fiction_options_bookshelves_path
+                    } } %>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Відкрийте список або введіть назву чи автора для пошуку</p>
           </div>
         </div>
       </div>

@@ -3,8 +3,12 @@ one:
   slug: one
   telegram_id: one
   title: One
+  fictions_count: 2
+  members_count: 1
 
 two:
   id: 2
   slug: two
   title: Two
+  fictions_count: 0
+  members_count: 1
