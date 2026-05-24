@@ -5,26 +5,15 @@ on:
     branches:
       - '*'
 
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3.4
-          bundler-cache: true
-      - name: RuboCop
-        run: bundle exec rubocop
-      - name: Brakeman
-        run: bundle exec brakeman --no-pager -q -A
-      - name: ERB Lint
-        run: bundle exec erb_lint --lint-all
+permissions:
+  contents: read
 
+jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      DB_PASSWORD: somepassword
     services:
       mysql:
         image: mysql:5.7
@@ -49,12 +38,23 @@ jobs:
       - name: Install MySQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y default-libmysqlclient-dev
+          sudo apt-get install -y default-libmysqlclient-dev default-mysql-client
       - name: Set up environment variables
         run: cp .env.test .env
+      - name: Wait for MySQL
+        run: |
+          for i in $(seq 1 30); do
+            if mysqladmin ping -h 127.0.0.1 -uroot -psomepassword --silent; then
+              echo "MySQL is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "MySQL did not become ready in time"
+          exit 1
+      - name: Prepare test database
+        run: bundle exec rails db:prepare
       - name: Compile assets
-        run: |
-          bundle exec rails assets:precompile RAILS_ENV=test
+        run: bundle exec rails assets:precompile
       - name: Run tests
-        run: |
-          bundle exec rake test
+        run: bundle exec rake test

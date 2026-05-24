@@ -13,7 +13,9 @@ module Pokemons
     def call
       precatch_session
 
-      return nil if rand > catch_rate
+      rate = catch_rate
+      return nil if rate.zero?
+      return nil if rand > rate
 
       postcatch_session
       caught_pokemon
@@ -32,31 +34,17 @@ module Pokemons
     end
 
     def caught_pokemon
-      if user.nil?
-        session[:caught_pokemon_id] = caught_pokemon_id
-        Pokemon.find_by(id: session[:caught_pokemon_id])
-      else
-        Pokemon.find_by(id: caught_pokemon_id)
-      end
+      pokemon_id = caught_pokemon_id
+      session[:caught_pokemon_id] = pokemon_id if user.nil?
+      find_caught_pokemon(pokemon_id)
     end
 
     def caught_pokemon_id
-      pokemon_array = []
-
-      Pokemon.includes(sprite_attachment: :blob).find_each do |pokemon|
-        populate_pokemon_array(pokemon.rarity, pokemon_array, pokemon)
-      end
-
-      pokemon_array.sample
+      WildCatchPool.sample_id
     end
 
-    def populate_pokemon_array(rarity, pokemon_array, pokemon)
-      case Pokemon::RARITY_LEVELS[rarity]
-      when 1 then 27.times { pokemon_array << pokemon.id }
-      when 2 then 9.times { pokemon_array << pokemon.id }
-      when 3 then 3.times { pokemon_array << pokemon.id }
-      when 4 then pokemon_array << pokemon.id
-      end
+    def find_caught_pokemon(id)
+      Pokemon.includes(sprite_attachment: :blob).find_by(id: id)
     end
 
     def precatch_session

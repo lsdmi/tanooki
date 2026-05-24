@@ -12,6 +12,10 @@ AllCops:
     - 'bin/**'
     - 'db/migrate/**'
     - 'db/schema.rb'
+    - 'vendor/**'
+    - 'node_modules/**'
+    - 'tmp/**'
+    - 'coverage/**'
 
 Layout/LineLength:
   Exclude:

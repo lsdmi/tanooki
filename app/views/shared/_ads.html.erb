@@ -1,3 +1,4 @@
+<% cache advertisement_fragment_cache_key(advertisement) do %>
 <%= link_to advertisement.resource, class: "relative block", aria: { label: advertisement.cover.blob.filename } do %>
   <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[3/1]">
     <div class="relative w-full h-full">
@@ -19,4 +20,5 @@
                     poster: url_for(advertisement.poster) %>
     </div>
   </div>
+<% end %>
 <% end %>
