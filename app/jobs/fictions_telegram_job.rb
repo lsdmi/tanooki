@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Production digest: recent fictions posted to the @bakaInUa Telegram channel.
 class FictionsTelegramJob < ApplicationJob
   queue_as :default
 

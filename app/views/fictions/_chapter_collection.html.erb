@@ -1,4 +1,4 @@
-<%# locals: chapters:, order: :asc, compact: false (optional), drawer_toc: false (optional), current_chapter: nil (optional) %>
+<%# locals: fiction:, chapters:, order: :asc, compact: false (optional), drawer_toc: false (optional), current_chapter: nil (optional) %>
 <% list_order = local_assigns.fetch(:order, :asc) %>
 <% compact = local_assigns.fetch(:compact, false) %>
 <% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
@@ -11,8 +11,10 @@
 <div class="<%= compact ? 'my-0' : 'my-6 space-y-4' %>" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if sheet %>>
   <% chapter_list_sections(chapters, order: list_order).each_with_index do |section, section_index| %>
     <% section_chapters = section[:chapters] %>
-    <% accordion_open = sheet && !drawer_accordion_opened && (chapter_list_section_current?(section_chapters, current_chapter_id) || (current_chapter_id.nil? && section_index.zero?)) %>
+    <% accordion_open = sheet && !drawer_accordion_opened && (chapter_list_section_current?(section, current_chapter_id) || (current_chapter_id.nil? && section_index.zero?)) %>
     <% drawer_accordion_opened = true if accordion_open %>
+    <% preload_section = accordion_open %>
+    <% section_path = fiction_chapter_section_path(fiction, section[:section_key], order: list_order) %>
     <div class="accordion overflow-hidden <%= accordion_shell %>">
       <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>">
         <h3 class="min-w-0 flex-1 truncate text-left <%= sheet ? 'text-sm font-normal text-stone-800 dark:text-white' : (compact ? 'text-sm font-normal text-white' : 'text-lg font-semibold text-stone-800 dark:text-gray-200') %>">
@@ -40,11 +42,20 @@
         </div>
       </div>
       <div class="accordion-content <%= accordion_open ? '' : 'hidden' %> max-h-96 overflow-y-auto <%= accordion_body %>">
-        <ul class="<%= compact ? (sheet ? 'divide-y divide-stone-200/90 dark:divide-zinc-800' : 'divide-y divide-zinc-800') : 'divide-y divide-stone-100 dark:divide-gray-700' %>">
-          <% section_chapters.each do |chapter| %>
-            <%= render 'fictions/chapter_item', chapter: chapter, compact: compact, current_chapter: local_assigns[:current_chapter] %>
-          <% end %>
-        </ul>
+        <% if preload_section %>
+          <%= render 'fictions/chapter_section_items',
+                     chapters: section_chapters.includes(:scanlators),
+                     compact: compact,
+                     current_chapter: local_assigns[:current_chapter] %>
+        <% else %>
+          <% lazy_params = { chapter_ids: chapter_list_section_ids(section_chapters).join(',') } %>
+          <% lazy_params[:compact] = true if compact %>
+          <% lazy_params[:current_chapter_id] = current_chapter_id if current_chapter_id.present? %>
+          <div data-chapter-section-url="<%= section_path %>"
+               data-chapter-section-params="<%= lazy_params.to_json %>">
+            <p class="px-4 py-3 text-sm text-stone-500 dark:text-gray-400 chapter-section-placeholder">Натисніть, щоб завантажити розділи…</p>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

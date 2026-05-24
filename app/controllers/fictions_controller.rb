@@ -4,8 +4,8 @@ class FictionsController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
-  before_action :authenticate_user!, except: %i[index show toggle_order details]
-  before_action :set_fiction, only: %i[show edit update destroy toggle_order]
+  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section]
+  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section]
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
@@ -73,6 +73,21 @@ class FictionsController < ApplicationController
     render turbo_stream: sorted_chapters_turbo_streams
   end
 
+  def chapter_section
+    order = params[:order].presence&.to_sym || :desc
+    @section_chapters = Fictions::ChapterSectionLoader.new(
+      fiction: @fiction,
+      viewer: current_user,
+      section_key: params[:section],
+      order: order,
+      chapter_ids: params[:chapter_ids]
+    ).call
+
+    render partial: 'fictions/chapter_section_items',
+           layout: false,
+           locals: chapter_section_locals(order)
+  end
+
   def details
     @fiction = Fiction.find(params[:id])
     respond_to do |format|
@@ -89,7 +104,22 @@ class FictionsController < ApplicationController
   private
 
   def set_fiction
-    @fiction = @commentable = Fiction.find(params[:id])
+    @fiction = @commentable = Fiction.includes(:genres, :scanlators, cover_attachment: :blob).find(params[:id])
+    @commentable = @fiction
+  end
+
+  def chapter_from_section_params
+    return nil if params[:current_chapter_id].blank?
+
+    Chapter.find_by(id: params[:current_chapter_id])
+  end
+
+  def chapter_section_locals(_order)
+    {
+      chapters: @section_chapters,
+      compact: ActiveModel::Type::Boolean.new.cast(params[:compact]),
+      current_chapter: chapter_from_section_params
+    }
   end
 
   def set_genres

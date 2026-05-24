@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Youtube
+  # Production digest: top videos of the week posted to the @bakaInUa Telegram channel.
   class TelegramJob < ApplicationJob
     queue_as :default
 

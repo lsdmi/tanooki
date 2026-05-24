@@ -77,6 +77,14 @@ module Fictions
       end
     end
 
+    def self.hot_updates_counts
+      Rails.cache.fetch('hot_updates_counts', expires_in: 12.hours) do
+        ReadingProgress.where(created_at: 1.month.ago..Time.zone.now)
+                       .group(:fiction_id)
+                       .count
+      end
+    end
+
     def self.showcase
       IndexShowcase.for_index
     end

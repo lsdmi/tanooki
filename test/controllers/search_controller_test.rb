@@ -21,11 +21,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     Fiction.stub :search, Fiction.all do
       get search_index_url, params: { search: ['test'], filter: 'fiction' }
 
-      assert_response :success
-      assert_equal Fiction.all.to_a, assigns(:fictions).to_a
-      assert_empty assigns(:results)
-      assert_empty assigns(:videos)
-      assert_not_nil assigns(:pagy_fictions)
+      assert_fiction_filter_search_response
     end
   end
 
@@ -53,5 +49,15 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
         end
       end
     end
+  end
+
+  private
+
+  def assert_fiction_filter_search_response
+    assert_response :success
+    assert_equal Fiction.all.to_a, assigns(:fictions).to_a
+    assert_empty assigns(:results)
+    assert_empty assigns(:videos)
+    assert_not_nil assigns(:pagy_fictions)
   end
 end

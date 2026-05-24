@@ -10,60 +10,57 @@ module Pagination
     end
 
     def pagy_nav_buttons(pagy, pagy_id: 'pagy', frame_id: nil, aria_label: 'Сторінок', custom_params: {})
-      html = "<nav id=\"#{pagy_id}\" class=\"pagy nav\" aria-label=\"#{aria_label}\">"
-
-      html << pagy_prev_button(pagy, frame_id, custom_params)
-      pagy.series.each do |item|
-        html << case item
-                when Integer then pagy_page_button(item, pagy, frame_id, custom_params)
-                when String  then if item.to_i.to_s == item
-                                    pagy_page_button(item.to_i, pagy,
-                                                     frame_id, custom_params)
-                                  else
-                                    pagy_gap_span(item)
-                                  end
-                when :gap    then pagy_gap_span
-                end
-      end
-      html << pagy_next_button(pagy, frame_id, custom_params)
-
-      html << '</nav>'
-      html
+      [
+        pagy_nav_open(pagy_id, aria_label),
+        pagy_prev_button(pagy, frame_id, custom_params),
+        pagy_series_buttons(pagy, frame_id, custom_params),
+        pagy_next_button(pagy, frame_id, custom_params),
+        '</nav>'
+      ].join
     end
 
     private
 
+    def pagy_nav_open(pagy_id, aria_label)
+      %(<nav id="#{pagy_id}" class="pagy nav" aria-label="#{aria_label}">)
+    end
+
+    def pagy_series_buttons(pagy, frame_id, custom_params)
+      pagy.series.map { |item| pagy_series_item(item, pagy, frame_id, custom_params) }.join
+    end
+
+    def pagy_series_item(item, pagy, frame_id, custom_params)
+      case item
+      when Integer then pagy_page_button(item, pagy, frame_id, custom_params)
+      when String
+        if item.to_i.to_s == item
+          pagy_page_button(item.to_i, pagy, frame_id, custom_params)
+        else
+          pagy_gap_span(item)
+        end
+      when :gap then pagy_gap_span
+      end
+    end
+
     def pagy_prev_button(pagy, frame_id, custom_params = {})
       if pagy.prev
-        form_options = frame_id ? { data: { turbo_frame: frame_id } } : {}
-        button_to(
-          '&lt;'.html_safe,
-          request.path,
-          method: :get,
-          params: custom_params.merge(page: pagy.prev),
-          class: 'pagy-prev',
-          'aria-label': 'Назад',
-          form: form_options
+        pagy_nav_link_button(
+          label: '&lt;'.html_safe, page: pagy.prev, frame_id: frame_id, custom_params: custom_params,
+          css_class: 'pagy-prev', aria_label: 'Назад'
         )
       else
-        %(<button role="link" aria-disabled="true" aria-label="Назад" class="pagy-prev disabled">&lt;</button>)
+        pagy_disabled_nav_button('pagy-prev', 'Назад', '&lt;')
       end
     end
 
     def pagy_next_button(pagy, frame_id, custom_params = {})
       if pagy.next
-        form_options = frame_id ? { data: { turbo_frame: frame_id } } : {}
-        button_to(
-          '&gt;'.html_safe,
-          request.path,
-          method: :get,
-          params: custom_params.merge(page: pagy.next),
-          class: 'pagy-next',
-          'aria-label': 'Далі',
-          form: form_options
+        pagy_nav_link_button(
+          label: '&gt;'.html_safe, page: pagy.next, frame_id: frame_id, custom_params: custom_params,
+          css_class: 'pagy-next', aria_label: 'Далі'
         )
       else
-        %(<button role="link" aria-disabled="true" aria-label="Далі" class="pagy-next disabled">&gt;</button>)
+        pagy_disabled_nav_button('pagy-next', 'Далі', '&gt;')
       end
     end
 
@@ -71,15 +68,28 @@ module Pagination
       if page == pagy.page
         %(<button role="link" aria-disabled="true" aria-current="page" class="current">#{page}</button>)
       else
-        form_options = frame_id ? { data: { turbo_frame: frame_id } } : {}
-        button_to(
-          page.to_s,
-          request.path,
-          method: :get,
-          params: custom_params.merge(page: page),
-          form: form_options
-        )
+        pagy_nav_link_button(label: page.to_s, page: page, frame_id: frame_id, custom_params: custom_params)
       end
+    end
+
+    def pagy_nav_link_button(config)
+      options = {
+        method: :get,
+        params: config.fetch(:custom_params).merge(page: config.fetch(:page)),
+        form: pagy_turbo_form_options(config[:frame_id])
+      }
+      options[:class] = config[:css_class] if config[:css_class]
+      options[:'aria-label'] = config[:aria_label] if config[:aria_label]
+      button_to(config.fetch(:label), request.path, **options)
+    end
+
+    def pagy_turbo_form_options(frame_id)
+      frame_id ? { data: { turbo_frame: frame_id } } : {}
+    end
+
+    def pagy_disabled_nav_button(css_class, aria_label, label)
+      %(<button role="link" aria-disabled="true" aria-label="#{aria_label}") +
+        %( class="#{css_class} disabled">#{label}</button>)
     end
 
     def pagy_gap_span(text = '…')

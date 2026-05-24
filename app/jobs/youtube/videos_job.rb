@@ -3,6 +3,7 @@
 require 'google/apis/youtube_v3'
 
 module Youtube
+  # Imports the latest non-short videos from a YouTube channel into YoutubeVideo records.
   class VideosJob < ApplicationJob
     queue_as :default
 
@@ -41,7 +42,7 @@ module Youtube
 
     def fetch_video_ids(youtube, channel_id)
       response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
-      response.items.map { |item| item.id.video_id }.compact
+      response.items.filter_map { |item| item.id.video_id }
     end
 
     def short_video?(youtube, video_id)

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   resources :fictions do
     member do
       get :details
+      get :chapter_section
     end
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'

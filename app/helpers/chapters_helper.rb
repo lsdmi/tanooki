@@ -38,8 +38,11 @@ module ChaptersHelper
     volume_numbers.reverse! if descending
     volume_numbers.each do |volume_number|
       sections << {
+        kind: :volume,
+        section_key: volume_section_key(volume_number),
+        volume_number: volume_number,
         title: "Том #{check_decimal(volume_number)}",
-        chapters: chapters.where(volume_number: volume_number).includes(:scanlators),
+        chapters: chapters.where(volume_number: volume_number),
         epub_title: "Том #{check_decimal(volume_number)}"
       }
     end
@@ -48,13 +51,17 @@ module ChaptersHelper
     return sections unless unnumbered.exists?
 
     range_source = sections.any? ? unnumbered : chapters
-    range_groups = chapters_collection(range_source.includes(:scanlators)).to_a
+    range_groups = chapters_collection(range_source).to_a
     range_groups.sort_by! { |range, _| range_sort_key(range) }
     range_groups.reverse! if descending
     range_groups.each do |range, grouped|
+      section_scope = grouped.is_a?(ActiveRecord::Relation) ? grouped : Chapter.where(id: grouped.map(&:id))
       sections << {
+        kind: :range,
+        section_key: range_section_key(range),
+        range: range,
         title: "Розділи #{range}",
-        chapters: grouped,
+        chapters: section_scope,
         epub_title: "Розділи #{range}"
       }
     end
@@ -65,17 +72,30 @@ module ChaptersHelper
   def range_sort_key(range_label)
     range_label.to_s.split('-').first.to_i
   end
-  private :range_sort_key
+
+  def volume_section_key(volume_number)
+    "v-#{volume_number}"
+  end
+
+  def range_section_key(range_label)
+    "r-#{range_label}"
+  end
+
+  def fiction_chapter_section_path(fiction, section_key, order:)
+    chapter_section_fiction_path(fiction, section: section_key, order: order)
+  end
 
   def chapter_list_section_ids(section_chapters)
     section_chapters.pluck(:id)
   end
 
-  def chapter_list_section_current?(section_chapters, current_chapter_id)
+  def chapter_list_section_current?(section, current_chapter_id)
     return false if current_chapter_id.blank?
 
-    section_chapters.any? { |chapter| chapter.id == current_chapter_id }
+    section[:chapters].exists?(id: current_chapter_id)
   end
+
+  private :range_sort_key
 
   def title_includes_rozdil?(title)
     return true if title.blank?

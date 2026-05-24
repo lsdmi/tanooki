@@ -1,0 +1,6 @@
+<%# locals: chapters:, compact: false, current_chapter: nil %>
+<ul class="<%= compact ? 'divide-y divide-stone-200/90 dark:divide-zinc-800' : 'divide-y divide-stone-100 dark:divide-gray-700' %>">
+  <% chapters.each do |chapter| %>
+    <%= render 'fictions/chapter_item', chapter: chapter, compact: compact, current_chapter: current_chapter %>
+  <% end %>
+</ul>

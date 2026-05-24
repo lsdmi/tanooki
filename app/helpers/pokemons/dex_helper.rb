@@ -30,7 +30,7 @@ module Pokemons
     private
 
     def cooldown_message_for(time)
-      remaining_cooldown_seconds = 4.hours.to_i - (Time.now - time)
+      remaining_cooldown_seconds = 4.hours.to_i - (Time.current - time)
       remaining_cooldown_hours = (remaining_cooldown_seconds / 1.minute).floor
       remaining_cooldown_hours = 240 if remaining_cooldown_hours.negative?
 
