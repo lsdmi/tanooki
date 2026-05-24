@@ -16,7 +16,7 @@ jobs:
       DB_PASSWORD: somepassword
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: somepassword
           MYSQL_DATABASE: tanooki_test
