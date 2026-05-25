@@ -1,6 +1,6 @@
 <%# locals: card (ranked new-release hash from FictionGenrePageNewReleases) %>
 <% fiction = card[:fiction] %>
-<article class="group w-[min(42vw,9.5rem)] shrink-0 snap-start rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-black/50 sm:w-[min(30vw,10rem)] lg:w-auto lg:min-w-0 lg:max-w-none">
+<article class="group w-[calc(66.666%_-_0.5rem)] shrink-0 snap-start rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-black/50 sm:w-[calc(50%_-_0.375rem)] md:w-[calc(33.333%_-_0.5rem)] lg:w-auto lg:min-w-0 lg:max-w-none">
   <%= link_to fiction_path(fiction), class: "relative block aspect-[3/4] bg-gradient-to-br #{card[:accent]} overflow-hidden rounded-t-lg transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 group-hover:brightness-105 dark:focus-visible:ring-violet-400" do %>
     <% if card[:rank].present? %>
       <span class="absolute left-2 top-2 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-lg bg-white/55 px-1.5 text-xs font-bold text-slate-900 shadow-sm backdrop-blur-[2px] pointer-events-none dark:bg-slate-900/55 dark:text-white" aria-label="Місце в рейтингу: <%= card[:rank] %>">

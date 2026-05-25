@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Dashboard view helpers for Pokemon stats and action icons.
 module DashboardHelper
   TYPE_COLORS = {
     'Звичайний' => 'bg-gray-400 dark:bg-gray-600',
@@ -32,7 +33,7 @@ module DashboardHelper
   def delete_icon
     content_tag(:div, class: delete_icon_container_classes) do
       content_tag(:svg, delete_icon_svg_options) do
-        tag(:path, delete_icon_path_options)
+        tag.path(delete_icon_path_options)
       end
     end
   end

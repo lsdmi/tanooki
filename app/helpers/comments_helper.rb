@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Comment presentation helpers for commentable models and empty states.
 module CommentsHelper
   def application_record_child(object)
     object.class.superclass == ApplicationRecord ? object.class : object.class.superclass

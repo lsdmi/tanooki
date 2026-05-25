@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Library view helpers composed from chapter catalog/navigation helpers.
 module LibraryHelper
   include LibraryChapterCatalogHelper
   include LibraryChapterNavigationHelper

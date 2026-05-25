@@ -7,17 +7,13 @@ class FictionListFilterParamsTest < ActiveSupport::TestCase
     params = ActionController::Parameters.new(page: '2', genre: '3', only_new: '1')
     hash = FictionListFilterParams.permit_for_query(params)
 
-    assert_not hash.key?(:page)
-    assert_not hash.key?('page')
-    assert_equal '3', hash[:genre]
-    assert_equal '1', hash[:only_new]
+    assert_equal({ genre: '3', only_new: '1' }, hash.symbolize_keys)
   end
 
   test 'permit_for_pagy ignores page param in pagy hash' do
     params = ActionController::Parameters.new(page: '2', top_rated: '1')
     hash = FictionListFilterParams.permit_for_pagy(params)
 
-    assert_not hash.key?(:page)
-    assert_equal '1', hash[:top_rated]
+    assert_equal({ top_rated: '1' }, hash)
   end
 end

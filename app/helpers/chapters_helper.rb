@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# Chapter view helpers: grouping, navigation ids, EPUB availability, and publish-time options.
 module ChaptersHelper
+  HALF_HOUR_MINUTES = [0, 30].freeze
+
   def chapter_epub_download_allowed?(chapter)
     chapter.scanlators.all?(&:convertable?)
   end
@@ -30,56 +33,21 @@ module ChaptersHelper
   # Builds accordion sections for the chapter list: numbered volumes first, then unnumbered chapters by range.
   # +order+ (:asc / :desc) reverses volume and range section order to match the chapter sort toggle.
   def chapter_list_sections(chapters, order: :asc)
-    sections = []
-    descending = order.to_sym == :desc
-
-    # Drop inherited ORDER BY before DISTINCT/PLUCK (MySQL rejects ORDER BY columns outside SELECT with DISTINCT).
-    volume_numbers = chapters.unscope(:order).where.not(volume_number: nil).pluck(:volume_number).uniq.sort_by(&:to_f)
-    volume_numbers.reverse! if descending
-    volume_numbers.each do |volume_number|
-      sections << {
-        kind: :volume,
-        section_key: volume_section_key(volume_number),
-        volume_number: volume_number,
-        title: "Том #{check_decimal(volume_number)}",
-        chapters: chapters.where(volume_number: volume_number),
-        epub_title: "Том #{check_decimal(volume_number)}"
-      }
-    end
-
+    descending = descending_order?(order)
+    volume_sections = volume_chapter_sections(chapters, descending)
     unnumbered = chapters.where(volume_number: nil)
-    return sections unless unnumbered.exists?
+    return volume_sections unless unnumbered.exists?
 
-    range_source = sections.any? ? unnumbered : chapters
-    range_groups = chapters_collection(range_source).to_a
-    range_groups.sort_by! { |range, _| range_sort_key(range) }
-    range_groups.reverse! if descending
-    range_groups.each do |range, grouped|
-      section_scope = grouped.is_a?(ActiveRecord::Relation) ? grouped : Chapter.where(id: grouped.map(&:id))
-      sections << {
-        kind: :range,
-        section_key: range_section_key(range),
-        range: range,
-        title: "Розділи #{range}",
-        chapters: section_scope,
-        epub_title: "Розділи #{range}"
-      }
-    end
-
-    sections
+    volume_sections + range_chapter_sections(range_source(chapters, unnumbered, volume_sections), descending)
   end
 
   def range_sort_key(range_label)
     range_label.to_s.split('-').first.to_i
   end
 
-  def volume_section_key(volume_number)
-    "v-#{volume_number}"
-  end
+  def volume_section_key(volume_number) = "v-#{volume_number}"
 
-  def range_section_key(range_label)
-    "r-#{range_label}"
-  end
+  def range_section_key(range_label) = "r-#{range_label}"
 
   def fiction_chapter_section_path(fiction, section_key, order:)
     chapter_section_fiction_path(fiction, section: section_key, order: order)
@@ -97,6 +65,59 @@ module ChaptersHelper
 
   private :range_sort_key
 
+  def descending_order?(order) = order.to_sym == :desc
+
+  def volume_chapter_sections(chapters, descending)
+    volume_numbers = chapter_volume_numbers(chapters)
+    volume_numbers.reverse! if descending
+
+    volume_numbers.map do |volume_number|
+      volume_chapter_section(chapters, volume_number)
+    end
+  end
+
+  def chapter_volume_numbers(chapters)
+    # Drop inherited ORDER BY before DISTINCT/PLUCK (MySQL rejects ORDER BY columns outside SELECT with DISTINCT).
+    chapters.unscope(:order).where.not(volume_number: nil).pluck(:volume_number).uniq.sort_by(&:to_f)
+  end
+
+  def volume_chapter_section(chapters, volume_number)
+    {
+      kind: :volume,
+      section_key: volume_section_key(volume_number),
+      volume_number: volume_number,
+      title: "Том #{check_decimal(volume_number)}",
+      chapters: chapters.where(volume_number: volume_number),
+      epub_title: "Том #{check_decimal(volume_number)}"
+    }
+  end
+
+  def range_source(chapters, unnumbered, volume_sections) = volume_sections.any? ? unnumbered : chapters
+
+  def range_chapter_sections(chapters, descending)
+    range_groups = chapters_collection(chapters).to_a.sort_by { |range, _| range_sort_key(range) }
+    range_groups.reverse! if descending
+
+    range_groups.map { |range, grouped| range_chapter_section(range, grouped) }
+  end
+
+  def range_chapter_section(range, grouped)
+    {
+      kind: :range,
+      section_key: range_section_key(range),
+      range: range,
+      title: "Розділи #{range}",
+      chapters: chapter_scope_for_group(grouped),
+      epub_title: "Розділи #{range}"
+    }
+  end
+
+  def chapter_scope_for_group(grouped)
+    return grouped if grouped.is_a?(ActiveRecord::Relation)
+
+    Chapter.where(id: grouped.map(&:id))
+  end
+
   def title_includes_rozdil?(title)
     return true if title.blank?
 
@@ -106,7 +127,7 @@ module ChaptersHelper
   # Half-hour slots 00:00–23:30 (24h labels). Includes +selected+ if it is not on the grid (legacy data).
   def chapter_publish_time_select_options(selected = nil)
     slots = (0..23).flat_map do |h|
-      [0, 30].map { |m| format('%<hour>02d:%<minute>02d', hour: h, minute: m) }
+      HALF_HOUR_MINUTES.map { |m| format('%<hour>02d:%<minute>02d', hour: h, minute: m) }
     end
     options = slots.map { |t| [t, t] }
     options.unshift([selected, selected]) if selected.present? && slots.exclude?(selected)

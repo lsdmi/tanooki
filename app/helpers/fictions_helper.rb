@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Fiction view helpers for status styling and compact counters.
 module FictionsHelper
   STATUS_COLORS = {
     announced: 'text-[#D4AF37]', # Metallic Gold

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Chapter catalog helpers for visible, ordered fiction chapter lists.
 module LibraryChapterCatalogHelper
   # viewer: pass current_user from views; nil = guest (only chapters already visible to everyone).
   def ordered_chapters(fiction, viewer: nil)

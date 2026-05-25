@@ -19,7 +19,7 @@ module FragmentCacheHelper
 
   def footer_fragment_cache_key
     [
-      'footer/v1',
+      'footer/v2',
       I18n.locale,
       Time.zone.now.year,
       fragment_cache_version_bucket(12.hours)
@@ -28,7 +28,7 @@ module FragmentCacheHelper
 
   def advertisement_fragment_cache_key(advertisement)
     [
-      'ad/v1',
+      'ad/v2',
       advertisement,
       advertisement.cover.blob&.id,
       advertisement.poster.blob&.id

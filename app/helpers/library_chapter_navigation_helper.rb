@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Chapter navigation helpers for previous/next reader links.
 module LibraryChapterNavigationHelper
   def previous_chapter(fiction, chapter, viewer: nil)
     find_adjacent_chapter(fiction, chapter, :previous, viewer:)

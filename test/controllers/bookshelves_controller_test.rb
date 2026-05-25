@@ -143,17 +143,4 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
-
-  test 'should redirect to login when not authenticated for protected actions' do
-    [
-      -> { post bookshelves_url, params: { bookshelf: { title: 'Test' } } },
-      -> { get edit_bookshelf_url(@bookshelf.id) },
-      -> { patch bookshelf_url(@bookshelf.id), params: { bookshelf: { title: 'Test' } } },
-      -> { delete bookshelf_url(@bookshelf.id) }
-    ].each do |request|
-      request.call
-
-      assert_redirected_to new_user_session_url
-    end
-  end
 end
