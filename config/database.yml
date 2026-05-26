@@ -3,7 +3,7 @@ default: &default
   encoding: utf8mb4
   charset: utf8mb4_general_ci
   collation: utf8mb4_general_ci
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 3) %>
+  pool: <%= ENV.fetch("DB_POOL", 5) %>
 
 development:
   <<: *default
