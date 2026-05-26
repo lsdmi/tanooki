@@ -66,7 +66,7 @@ class PublicationsController < ApplicationController
   end
 
   def publication_params
-    params.expect(publication: %i[type title description cover highlight])
+    params.expect(publication: [:type, :title, :description, :cover, :highlight, { tag_ids: [] }])
   end
 
   def publication_tags_ids

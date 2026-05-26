@@ -9,14 +9,14 @@
 - Адмін-панель
 - Прогрес читання
 - Коментарі
-- Пошук (Elasticsearch)
+- Пошук (OpenSearch)
 - Система битв Покемонів
 
 ## Технології
 
 - Ruby on Rails 7
 - MySQL
-- Elasticsearch
+- OpenSearch
 - Tailwind CSS
 
 ## Встановлення
