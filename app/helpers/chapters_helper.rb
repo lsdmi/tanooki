@@ -5,12 +5,11 @@ module ChaptersHelper
   HALF_HOUR_MINUTES = [0, 30].freeze
 
   def chapter_epub_download_allowed?(chapter)
-    chapter.scanlators.all?(&:convertable?)
+    Books::EpubDownloadPermission.allowed?([chapter])
   end
 
   def chapters_allow_epub_download?(chapters)
-    list = Array(chapters)
-    list.any? && list.all? { |ch| chapter_epub_download_allowed?(ch) }
+    Books::EpubDownloadPermission.allowed?(chapters)
   end
 
   def check_decimal(number)

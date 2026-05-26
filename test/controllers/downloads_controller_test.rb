@@ -45,12 +45,40 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     mock_epub_generator.verify
   end
 
+  test 'should block single chapter epub when scanlator disallows conversion' do
+    scanlator = scanlators(:one)
+    scanlator.update!(convertable: false, member_ids: scanlator.user_ids)
+
+    Books::EpubExport.stub :new, ->(*) { flunk 'EPUB export should not be generated' } do
+      get epub_download_path(id: @rich_text)
+    end
+
+    assert_redirected_to 'http://www.example.com/'
+    assert_equal I18n.t('downloads.handle_forbidden.forbidden'), flash[:alert]
+  ensure
+    scanlator&.update!(convertable: true, member_ids: scanlator.user_ids)
+  end
+
+  test 'should block multiple chapters epub when any scanlator disallows conversion' do
+    scanlator = scanlators(:one)
+    scanlator.update!(convertable: false, member_ids: scanlator.user_ids)
+
+    Books::EpubExport.stub :new, ->(*) { flunk 'EPUB export should not be generated' } do
+      get epub_multiple_downloads_path(chapter_ids: [1, 2], volume_title: 'Том 1')
+    end
+
+    assert_redirected_to 'http://www.example.com/'
+    assert_equal I18n.t('downloads.handle_forbidden.forbidden'), flash[:alert]
+  ensure
+    scanlator&.update!(convertable: true, member_ids: scanlator.user_ids)
+  end
+
   test 'should handle error and redirect' do
     Books::EpubExport.stub :new, ->(_) { raise StandardError } do
       get epub_download_path(id: @rich_text)
     end
 
     assert_redirected_to 'http://www.example.com/'
-    assert_equal 'Ох, тр*сця! Під час генерування EPUB сталася помилка!', flash[:alert]
+    assert_equal I18n.t('downloads.handle_error.error'), flash[:alert]
   end
 end
