@@ -56,6 +56,17 @@ class TranslationRequestsControllerDestroyTest < ActionDispatch::IntegrationTest
     assert_equal 'Запит на переклад успішно видалено!', flash[:notice]
   end
 
+  test 'should forbid destroying another users translation request' do
+    sign_in users(:user_two)
+    tr = new_translation_request
+
+    assert_no_difference('TranslationRequest.count') do
+      delete translation_request_url(tr)
+    end
+
+    assert_response :forbidden
+  end
+
   test 'should destroy translation request with JSON format' do
     sign_in @user
     tr = new_translation_request

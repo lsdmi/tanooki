@@ -75,6 +75,19 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Updated Title', @translation_request.title
   end
 
+  test 'should forbid updating another users translation request' do
+    sign_in users(:user_two)
+
+    patch translation_request_url(@translation_request), params: {
+      translation_request: {
+        title: 'Cross-user update'
+      }
+    }
+
+    assert_response :forbidden
+    assert_equal 'Test Translation Request One', @translation_request.reload.title
+  end
+
   test 'should update translation request with JSON format' do
     sign_in @user
 

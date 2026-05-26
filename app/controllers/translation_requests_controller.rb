@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+# Handles community translation requests, assignment, editing, and deletion.
 class TranslationRequestsController < ApplicationController
+  include TranslationRequestsResponses
+
   before_action :authenticate_user!, only: %i[create update assign unassign destroy]
   before_action :load_advertisement
   before_action :set_translation_request, only: %i[update assign unassign destroy]
+  before_action :authorize_translation_request_owner!, only: %i[update destroy]
 
   def index
     load_index_data
@@ -19,7 +23,7 @@ class TranslationRequestsController < ApplicationController
     @translation_request = current_user.translation_requests.build(translation_request_params)
 
     if @translation_request.save
-      redirect_to translation_requests_path, notice: 'Запит на переклад успішно надіслано!'
+      redirect_to translation_requests_path, notice: t('translation_requests.notices.create_success')
     else
       handle_create_failure
     end
@@ -49,10 +53,10 @@ class TranslationRequestsController < ApplicationController
     if @translation_request.update(scanlator: nil)
       render json: {
         success: true,
-        message: 'Запит успішно відкликано від команди'
+        message: t('translation_requests.messages.unassign_success')
       }
     else
-      render json: { error: 'Не вдалося відкликати запит' }, status: :unprocessable_content
+      render json: { error: t('translation_requests.alerts.unassign_error') }, status: :unprocessable_content
     end
   end
 
@@ -66,93 +70,17 @@ class TranslationRequestsController < ApplicationController
 
   private
 
-  def handle_create_failure
-    load_index_data
-    render :index, status: :unprocessable_content
-  end
-
-  def handle_update_success
-    respond_to do |format|
-      format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно оновлено!' }
-      format.json { render json: { success: true, message: 'Запит успішно оновлено!' } }
-    end
-  end
-
-  def handle_update_failure
-    respond_to do |format|
-      format.html { redirect_to translation_requests_path, alert: 'Помилка при оновленні запиту.' }
-      format.json { render json: { success: false, errors: @translation_request.errors.full_messages } }
-    end
-  end
-
-  def render_already_assigned_error
-    render json: { error: 'Цей запит вже призначено іншій команді перекладачів' }, status: :unprocessable_content
-  end
-
-  def render_assign_success(scanlator)
-    render json: {
-      success: true,
-      message: 'Запит успішно призначено команді',
-      scanlator_title: scanlator.title
-    }
-  end
-
-  def render_assign_error
-    render json: { error: 'Не вдалося призначити запит' }, status: :unprocessable_content
-  end
-
-  def handle_destroy_success
-    respond_to do |format|
-      format.html { redirect_to translation_requests_path, notice: 'Запит на переклад успішно видалено!' }
-      format.json { render json: { success: true, message: 'Запит успішно видалено!' } }
-    end
-  end
-
-  def handle_destroy_failure
-    respond_to do |format|
-      format.html { redirect_to translation_requests_path, alert: 'Помилка при видаленні запиту.' }
-      format.json do
-        render json: { success: false, error: 'Не вдалося видалити запит' }, status: :unprocessable_content
-      end
-    end
-  end
-
-  def load_index_data
-    # Get the newest request (most recent)
-    @newest_request = TranslationRequest.includes(:user, :scanlator).order(created_at: :desc).first
-
-    # Get all other requests (excluding the newest one) with pagination
-    other_requests = TranslationRequest.includes(:user, :scanlator).by_votes
-    other_requests = other_requests.where.not(id: @newest_request.id) if @newest_request
-
-    @pagy, @translation_requests = pagy(other_requests, limit: 5)
-    @total_requests_count = TranslationRequest.count
-
-    # Load a second advertisement for the new layout (different from first ad)
-    available_ads = Advertisement.includes(%i[cover_attachment poster_attachment]).enabled
-    @second_advertisement = available_ads.where.not(id: @advertisement.id).sample
-
-    # Load showcase fiction from Fictions::IndexVariablesManager
-    @showcase_fiction = Fictions::IndexVariablesManager.showcase.sample
-  end
-
   def translation_request_params
-    params.require(:translation_request).permit(:title, :author, :source_url, :notes)
+    params.expect(translation_request: %i[title author source_url notes])
   end
 
   def set_translation_request
     @translation_request = TranslationRequest.find(params[:id])
   end
 
-  def render_requests_list
-    render turbo_stream: turbo_stream.update(
-      'requests-container',
-      partial: 'translation_requests/requests_list',
-      locals: {
-        translation_requests: @translation_requests,
-        pagy: @pagy,
-        total_requests_count: @total_requests_count
-      }
-    )
+  def authorize_translation_request_owner!
+    return if @translation_request.user_id == current_user.id || current_user.admin?
+
+    head :forbidden
   end
 end

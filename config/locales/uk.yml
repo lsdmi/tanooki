@@ -342,3 +342,28 @@ uk:
       error: Ох, тр*сця! Під час генерування EPUB сталася помилка!
       expired: Термін дії EPUB-завантаження минув. Спробуйте створити файл ще раз.
       forbidden: EPUB-завантаження недоступне для вибраних розділів.
+  publications:
+    notices:
+      create_success: Допис створено.
+      update_success: Допис оновлено.
+  scanlators:
+    notices:
+      create_success: Команду додано, час додати ваші твори.
+      update_success: Команду оновлено.
+  translation_requests:
+    alerts:
+      already_assigned: Цей запит вже призначено іншій команді перекладачів
+      assign_error: Не вдалося призначити запит
+      destroy_error: Помилка при видаленні запиту.
+      destroy_json_error: Не вдалося видалити запит
+      unassign_error: Не вдалося відкликати запит
+      update_error: Помилка при оновленні запиту.
+    messages:
+      assign_success: Запит успішно призначено команді
+      destroy_success: Запит успішно видалено!
+      unassign_success: Запит успішно відкликано від команди
+      update_success: Запит успішно оновлено!
+    notices:
+      create_success: Запит на переклад успішно надіслано!
+      destroy_success: Запит на переклад успішно видалено!
+      update_success: Запит на переклад успішно оновлено!

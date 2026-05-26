@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Handles translation team pages and authenticated team management.
 class ScanlatorsController < ApplicationController
   include FictionQuery
 
@@ -17,27 +18,27 @@ class ScanlatorsController < ApplicationController
     @fictions = @scanlator.fictions.most_reads.includes(%i[cover_attachment genres])
   end
 
-  def create
-    @scanlator = Scanlator.new(scanlator_params)
-
-    if @scanlator.save
-      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
-      redirect_to scanlator_path(@scanlator), notice: 'Команду додано, час додати ваші твори.'
-    else
-      render 'new', status: :unprocessable_content
-    end
-  end
-
   def new
     @scanlator = Scanlator.new
   end
 
   def edit; end
 
+  def create
+    @scanlator = Scanlator.new(scanlator_params)
+
+    if @scanlator.save
+      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
+      redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.create_success')
+    else
+      render 'new', status: :unprocessable_content
+    end
+  end
+
   def update
     if @scanlator.update(scanlator_params)
       Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
-      redirect_to scanlator_path(@scanlator), notice: 'Команду оновлено.'
+      redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.update_success')
     else
       render 'edit', status: :unprocessable_content
     end
@@ -58,9 +59,11 @@ class ScanlatorsController < ApplicationController
   private
 
   def scanlator_params
-    params.require(:scanlator).permit(
-      :avatar, :banner, :bank_url, :description, :notice, :convertable, :extra_url, :telegram_id, :title,
-      member_ids: []
+    params.expect(
+      scanlator: [
+        :avatar, :banner, :bank_url, :description, :notice, :convertable, :extra_url, :telegram_id, :title,
+        { member_ids: [] }
+      ]
     )
   end
 
@@ -76,7 +79,7 @@ class ScanlatorsController < ApplicationController
     if current_user.admin?
       Scanlator.includes(:avatar_attachment).order(:title)
     else
-      user.scanlators.includes(:avatar_attachment).order(:title)
+      current_user.scanlators.includes(:avatar_attachment).order(:title)
     end
   end
 

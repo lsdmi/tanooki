@@ -1,17 +1,24 @@
 # frozen_string_literal: true
 
+# Handles authenticated creation, editing, and deletion of blog-style publications.
 class PublicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_publication, only: %i[edit update destroy]
   before_action :set_tags, only: %i[new create edit update]
   before_action :verify_permissions, except: %i[new create]
 
+  def new
+    @publication = Publication.new
+  end
+
+  def edit; end
+
   def create
-    @publication = Publication.new(publication_params)
+    @publication = current_user.publications.build(publication_params)
 
     if @publication.save
       manage_tags if params[:publication][:tag_ids]
-      redirect_to root_path, notice: 'Допис створено.'
+      redirect_to root_path, notice: t('publications.notices.create_success')
     else
       render 'publications/new', status: :unprocessable_content
     end
@@ -20,7 +27,7 @@ class PublicationsController < ApplicationController
   def update
     if @publication.update(publication_params)
       manage_tags if params[:publication][:tag_ids]
-      redirect_to tale_path(@publication), notice: 'Допис оновлено.'
+      redirect_to tale_path(@publication), notice: t('publications.notices.update_success')
     else
       render 'sweetalert/edit', status: :unprocessable_content
     end
@@ -38,17 +45,11 @@ class PublicationsController < ApplicationController
     render turbo_stream: [refresh_list, refresh_sweetalert]
   end
 
-  def new
-    @publication = Publication.new
-  end
-
-  def edit; end
-
   private
 
   def publications
     if current_user.admin?
-      Publication.all.order(created_at: :desc)
+      Publication.order(created_at: :desc)
     else
       current_user.publications.order(created_at: :desc)
     end
@@ -65,13 +66,11 @@ class PublicationsController < ApplicationController
   end
 
   def publication_params
-    params.require(:publication).permit(
-      :type, :title, :description, :cover, :highlight, :user_id
-    )
+    params.expect(publication: %i[type title description cover highlight])
   end
 
   def publication_tags_ids
-    @publication_tags_ids ||= params[:publication][:tag_ids].reject(&:blank?).map(&:to_i)
+    @publication_tags_ids ||= params[:publication][:tag_ids].compact_blank.map(&:to_i)
   end
 
   def set_publication
@@ -79,7 +78,7 @@ class PublicationsController < ApplicationController
   end
 
   def set_tags
-    @tags = Tag.all.order(:name)
+    @tags = Tag.order(:name)
   end
 
   def verify_permissions

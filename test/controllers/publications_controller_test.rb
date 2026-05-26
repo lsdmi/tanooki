@@ -18,8 +18,7 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
       description: action_text_rich_texts(:rich_text_one),
       highlight: @publication.highlight,
       title: @publication.title,
-      type: @publication.type,
-      user_id: @publication.user_id
+      type: @publication.type
     }
   end
 
@@ -31,10 +30,24 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test 'should assign created publication to current user' do
+    sign_in users(:user_two)
+
+    post publications_url, params: { publication: @publication_params.merge(user_id: users(:user_one).id) }
+
+    assert_equal users(:user_two), Publication.last.user
+  end
+
   test 'should update publication' do
     patch publication_url(@publication), params: { publication: @publication_params }
 
     assert_redirected_to tale_path(@publication)
+  end
+
+  test 'should not reassign publication owner on update' do
+    patch publication_url(@publication), params: { publication: @publication_params.merge(user_id: users(:user_two).id) }
+
+    assert_equal users(:user_one), @publication.reload.user
   end
 
   test 'should destroy publication' do

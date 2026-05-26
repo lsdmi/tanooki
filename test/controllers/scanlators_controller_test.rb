@@ -77,6 +77,23 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Updated Scanlator', scanlator.reload.title
   end
 
+  test 'non-admin should update own scanlator' do
+    sign_in users(:user_two)
+    scanlator = scanlators(:two)
+
+    patch scanlator_url(scanlator), params: {
+      scanlator: {
+        avatar: uploaded_svg,
+        banner: uploaded_svg,
+        member_ids: [users(:user_two).id],
+        title: 'Updated Own Scanlator'
+      }
+    }
+
+    assert_redirected_to scanlator_path(scanlator)
+    assert_equal 'Updated Own Scanlator', scanlator.reload.title
+  end
+
   test 'should show scanlator' do
     scanlator = scanlators(:one)
     get scanlator_path(scanlator)
@@ -92,5 +109,19 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Scanlator.count', -1) do
       delete scanlator_path(scanlator, format: :turbo)
     end
+  end
+
+  test 'non-admin should destroy own scanlator' do
+    sign_in users(:user_two)
+
+    assert_difference('Scanlator.count', -1) do
+      delete scanlator_path(scanlators(:two), format: :turbo)
+    end
+  end
+
+  private
+
+  def uploaded_svg
+    Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'), 'image/svg+xml')
   end
 end
