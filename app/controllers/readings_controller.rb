@@ -44,7 +44,9 @@ class ReadingsController < ApplicationController
   def handle_scanlators_destruction(stack_size)
     return unless @chapter.fiction.scanlators.size > 1 && stack_size == 1
 
-    current_user.scanlators.each { |scanlator| destroy_association(scanlator) }
+    current_user.scanlators.each do |scanlator|
+      Fictions::ScanlatorAssociationRemover.new(@chapter.fiction, scanlator).call
+    end
   end
 
   def reload_fiction_chapters

@@ -28,4 +28,15 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
   end
+
+  test 'should remove user scanlator link after destroying last team chapter from shared fiction' do
+    FictionScanlator.create!(fiction: @fiction, scanlator: scanlators(:two))
+    chapters(:two).destroy
+
+    assert_difference('FictionScanlator.count', -1) do
+      delete reading_url(@chapter), as: :turbo_stream
+    end
+
+    assert_not FictionScanlator.exists?(fiction: @fiction, scanlator: scanlators(:one))
+  end
 end
