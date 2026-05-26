@@ -1,28 +1,38 @@
 # frozen_string_literal: true
 
+# Handles authenticated comment creation, replies, editing, and deletion.
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_comment, only: %i[edit update destroy cancel_edit cancel_reply]
+  before_action :authorize_comment_owner!, only: %i[edit update destroy cancel_edit]
 
   def new
-    @comment = Comment.new(comment_params)
+    @comment = Comment.new(new_comment_params)
     @commentable = @comment.commentable
-  end
-
-  def create
-    @created_comment = Comment.create(comment_params)
-    @commentable = @created_comment.commentable
-
-    update_parent
-
-    @new_comment = Comment.new
-  end
-
-  def destroy
-    @comment.destroy
   end
 
   def edit
     @commentable = @comment.commentable
+  end
+
+  def create
+    comment_params = create_comment_params
+    @created_comment = current_user.comments.create(comment_params)
+    @commentable = @created_comment.commentable
+
+    update_parent(comment_params[:parent_id])
+
+    @new_comment = Comment.new
+  end
+
+  def update
+    @comment.update(update_comment_params)
+
+    render 'complete_update'
+  end
+
+  def destroy
+    @comment.destroy
   end
 
   def cancel_edit
@@ -33,28 +43,36 @@ class CommentsController < ApplicationController
     @commentable = @comment.commentable
   end
 
-  def update
-    @comment.update(comment_params)
-
-    render 'complete_update'
-  end
-
   private
 
   def set_comment
-    @comment = Comment.find_by(id: params[:id] || params[:comment_id])
+    @comment = Comment.find(params[:id] || params[:comment_id])
   end
 
-  def comment_params
-    params.require(:comment).permit(:content, :commentable_id, :commentable_type, :user_id, :parent_id)
+  def authorize_comment_owner!
+    return if @comment.user_id == current_user.id || current_user.admin?
+
+    head :forbidden
   end
 
-  def update_parent
-    return unless comment_params[:parent_id].present?
+  def new_comment_params
+    params.expect(comment: %i[commentable_id commentable_type parent_id])
+  end
 
-    @reply_parent = Comment.find_by(id: comment_params[:parent_id])
+  def create_comment_params
+    params.expect(comment: %i[content commentable_id commentable_type parent_id])
+  end
 
-    return unless @reply_parent.parent_id.present?
+  def update_comment_params
+    params.expect(comment: [:content])
+  end
+
+  def update_parent(parent_id)
+    return if parent_id.blank?
+
+    @reply_parent = Comment.find_by(id: parent_id)
+
+    return if @reply_parent&.parent_id.blank?
 
     @created_comment.update(parent_id: @reply_parent.parent_id)
   end
