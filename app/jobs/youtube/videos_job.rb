@@ -41,8 +41,12 @@ module Youtube
     end
 
     def fetch_video_ids(youtube, channel_id)
-      response = youtube.list_searches('snippet', channel_id:, max_results: 5, type: 'video', order: 'date')
-      response.items.filter_map { |item| item.id.video_id }
+      response = youtube.list_playlist_items('snippet', playlist_id: uploads_playlist_id(channel_id), max_results: 5)
+      response.items.filter_map { |item| item.snippet.resource_id.video_id }
+    end
+
+    def uploads_playlist_id(channel_id)
+      channel_id.to_s.sub(/\AUC/, 'UU')
     end
 
     def short_video?(youtube, video_id)
