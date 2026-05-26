@@ -10,7 +10,8 @@ module Studio
       'writings' => 'studio/tabs/writings',
       'notifications' => 'studio/tabs/notifications',
       'profile' => 'studio/tabs/profile',
-      'bookshelves' => 'studio/tabs/bookshelves'
+      'bookshelves' => 'studio/tabs/bookshelves',
+      'epub_exports' => 'studio/tabs/epub_exports'
     }.freeze
 
     def self.normalize_tab_id(tab, fallback: 'blogs')

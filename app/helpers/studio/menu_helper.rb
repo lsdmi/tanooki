@@ -47,6 +47,13 @@ module Studio
 
       },
       {
+        id: 'epub_exports',
+        label: 'EPUB',
+        icon:
+          'M12 16V4m0 12-4-4m4 4 4-4M5 20h14'
+
+      },
+      {
         id: 'profile',
         label: 'Профіль',
         icon:

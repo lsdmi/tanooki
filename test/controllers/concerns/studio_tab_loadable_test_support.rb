@@ -21,7 +21,7 @@ module StudioTabLoadableStubHelpers
   def stub_tab_content_service(overrides = {})
     defaults = {
       pagy: nil, pokemon_show: nil, fictions: nil, publications: nil,
-      scanlators: nil, comments: nil, avatars: nil, bookshelves: nil
+      scanlators: nil, comments: nil, avatars: nil, bookshelves: nil, epub_export_requests: nil
     }
     assignments = defaults.merge(overrides)
     Object.new.tap do |service|

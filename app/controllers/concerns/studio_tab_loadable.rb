@@ -39,6 +39,7 @@ module StudioTabLoadable
     @avatars ||= []
     @scanlators ||= []
     @bookshelves ||= []
+    @epub_export_requests ||= []
   end
   # rubocop:enable Naming/MemoizedInstanceVariableName
 end

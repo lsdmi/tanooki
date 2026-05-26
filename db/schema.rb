@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_22_200000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_26_163100) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -137,6 +137,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_200000) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "epub_export_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "token", null: false
+    t.integer "status", default: 0, null: false
+    t.json "rich_text_ids", null: false
+    t.string "volume_title"
+    t.string "filename"
+    t.text "error_message"
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_epub_export_requests_on_expires_at"
+    t.index ["status"], name: "index_epub_export_requests_on_status"
+    t.index ["token"], name: "index_epub_export_requests_on_token", unique: true
+    t.index ["user_id"], name: "index_epub_export_requests_on_user_id"
   end
 
   create_table "fiction_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -543,6 +560,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_200000) do
   add_foreign_key "chat_messages", "users"
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "epub_export_requests", "users"
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
   add_foreign_key "fiction_ratings", "fictions"

@@ -15,6 +15,7 @@ class User < ApplicationRecord
   belongs_to :avatar
   belongs_to :latest_read_comment, class_name: 'Comment', inverse_of: :users, optional: true
   has_many :comments, dependent: :destroy
+  has_many :epub_export_requests, dependent: :destroy
   has_many :publications, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :chat_messages, dependent: :destroy

@@ -10,6 +10,10 @@ production:
     class: Youtube::SyncAllChannelsVideosJob
     schedule: every day
 
+  purge_expired_epub_exports:
+    class: Books::PurgeExpiredEpubExportsJob
+    schedule: every day at 4:00am
+
   weekly_stats_telegram:
     class: WeeklyStatsTelegramJob
     schedule: every wednesday at 3:00pm

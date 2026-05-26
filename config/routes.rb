@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   get :readings, to: 'studio#set_tab_and_redirect', defaults: { tab: 'writings' }
   get :scanlators, to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
   get :notifications, to: 'studio#set_tab_and_redirect', defaults: { tab: 'notifications' }
+  get :epub_exports, to: 'studio#set_tab_and_redirect', defaults: { tab: 'epub_exports' }
 
   post :blogs, to: 'studio#set_tab_and_redirect', defaults: { tab: 'blogs' }
   post :pokemons, to: 'studio#set_tab_and_redirect', defaults: { tab: 'pokemons' }
@@ -120,9 +121,11 @@ Rails.application.routes.draw do
   post :readings, to: 'studio#set_tab_and_redirect', defaults: { tab: 'writings' }
   post :scanlators, to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
   post :notifications, to: 'studio#set_tab_and_redirect', defaults: { tab: 'notifications' }
+  post :epub_exports, to: 'studio#set_tab_and_redirect', defaults: { tab: 'epub_exports' }
 
   # Redirect scanlators index to studio teams tab
   get 'scanlators/index', to: 'studio#set_tab_and_redirect', defaults: { tab: 'teams' }
+  get 'downloads/epub_exports', to: 'studio#set_tab_and_redirect', defaults: { tab: 'epub_exports' }
 
   resources :readings, only: %i[show destroy]
 
@@ -145,6 +148,10 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [] do
     member { get :epub }
-    collection { get :epub_multiple }
+    collection do
+      get :epub_multiple
+      get 'epub_exports/:token/status', to: 'downloads#epub_export_status', as: :epub_export_status
+      get 'epub_exports/:token/file', to: 'downloads#epub_export_file', as: :epub_export_file
+    end
   end
 end

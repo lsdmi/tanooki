@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# Generates EPUB downloads only for chapters whose teams allow conversion.
+# Queues EPUB exports and serves generated files once background generation finishes.
 class DownloadsController < ApplicationController
   def epub
     rich_text = chapter_rich_text(params[:id])
     return handle_forbidden unless epub_allowed?([rich_text&.record])
 
-    generate_and_send_epub(rich_text.id)
+    enqueue_epub_export([rich_text.id])
   end
 
   def epub_multiple
@@ -14,7 +14,20 @@ class DownloadsController < ApplicationController
     return handle_forbidden unless epub_allowed?(chapters)
 
     content_ids = chapter_content_ids(chapters)
-    generate_and_send_epub(content_ids, params[:volume_title])
+    enqueue_epub_export(content_ids, params[:volume_title])
+  end
+
+  def epub_export_status
+    export_request = find_epub_export_request
+
+    render json: epub_export_status_payload(export_request)
+  end
+
+  def epub_export_file
+    export_request = find_epub_export_request
+    return handle_forbidden unless export_request.downloadable?
+
+    redirect_to rails_blob_path(export_request.file, disposition: :attachment)
   end
 
   private
@@ -35,21 +48,62 @@ class DownloadsController < ApplicationController
     Books::EpubDownloadPermission.allowed?(Array(chapters).compact)
   end
 
-  def generate_and_send_epub(ids, volume_title = nil)
-    epub_export = Books::EpubExport.new(ids, volume_title)
-    epub_export.generate
-    send_file epub_export.file_path, filename: epub_export.filename, type: 'application/epub+zip'
+  def enqueue_epub_export(rich_text_ids, volume_title = nil)
+    export_request = EpubExportRequest.create!(
+      user: current_user,
+      rich_text_ids:,
+      volume_title:
+    )
+    Books::GenerateEpubJob.perform_later(export_request.id)
+
+    render json: {
+      status: export_request.status,
+      status_url: epub_export_status_path_for(export_request)
+    }, status: :accepted
   rescue StandardError => _e
     handle_error
   end
 
+  def find_epub_export_request
+    EpubExportRequest.find_by!(token: params[:token])
+  end
+
+  def epub_export_status_payload(export_request)
+    {
+      status: epub_export_status_value(export_request),
+      download_url: epub_export_download_url(export_request),
+      error_message: epub_export_error_message(export_request)
+    }.compact
+  end
+
+  def epub_export_status_value(export_request)
+    return 'expired' if export_request.expired?
+
+    export_request.status
+  end
+
+  def epub_export_download_url(export_request)
+    return unless export_request.downloadable?
+
+    url_for(controller: :downloads, action: :epub_export_file, token: export_request.token, only_path: true)
+  end
+
+  def epub_export_error_message(export_request)
+    return t('downloads.alerts.expired') if export_request.expired?
+    return export_request.error_message if export_request.failed?
+  end
+
+  def epub_export_status_path_for(export_request)
+    url_for(controller: :downloads, action: :epub_export_status, token: export_request.token, only_path: true)
+  end
+
   def handle_error
-    flash[:alert] = t('.error')
+    flash[:alert] = t('downloads.alerts.error')
     redirect_to request.referer || root_path
   end
 
   def handle_forbidden
-    flash[:alert] = t('.forbidden')
+    flash[:alert] = t('downloads.alerts.forbidden')
     redirect_to request.referer || root_path
   end
 end

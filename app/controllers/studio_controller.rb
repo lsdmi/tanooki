@@ -46,7 +46,8 @@ class StudioController < ApplicationController
       avatars: @avatars,
       comments: @comments,
       scanlators: @scanlators,
-      bookshelves: @bookshelves
+      bookshelves: @bookshelves,
+      epub_export_requests: @epub_export_requests
     }
   end
 end

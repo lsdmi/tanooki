@@ -24,7 +24,8 @@ module Studio
         fictions: @fictions,
         comments: @comments,
         avatars: @avatars,
-        bookshelves: @bookshelves
+        bookshelves: @bookshelves,
+        epub_export_requests: @epub_export_requests
       }
     end
 
@@ -71,6 +72,10 @@ module Studio
 
     def bookshelves_content_loader
       @bookshelves = user.bookshelves.ordered
+    end
+
+    def epub_exports_content_loader
+      @epub_export_requests = user.epub_export_requests.with_attached_file.order(created_at: :desc).limit(50)
     end
 
     def fiction_list

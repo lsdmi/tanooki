@@ -20,14 +20,18 @@ class StudioTabLoadableTest < ActiveSupport::TestCase
     @harness.instance_variable_set(:@fictions, nil)
     @harness.send(:assign_instance_variables)
 
-    expected = { comments: [], fictions: [], publications: [], avatars: [], scanlators: [], bookshelves: [] }
+    expected = {
+      comments: [], fictions: [], publications: [], avatars: [], scanlators: [], bookshelves: [],
+      epub_export_requests: []
+    }
     actual = {
       comments: @harness.instance_variable_get(:@comments),
       fictions: @harness.instance_variable_get(:@fictions),
       publications: @harness.instance_variable_get(:@publications),
       avatars: @harness.instance_variable_get(:@avatars),
       scanlators: @harness.instance_variable_get(:@scanlators),
-      bookshelves: @harness.instance_variable_get(:@bookshelves)
+      bookshelves: @harness.instance_variable_get(:@bookshelves),
+      epub_export_requests: @harness.instance_variable_get(:@epub_export_requests)
     }
 
     assert_equal expected, actual
@@ -48,14 +52,18 @@ class StudioTabLoadableTest < ActiveSupport::TestCase
     service = stub_tab_content_service
     @harness.send(:assign_instance_variables_from_service, service)
 
-    expected = { publications: [], scanlators: [], fictions: [], comments: [], avatars: [], bookshelves: [] }
+    expected = {
+      publications: [], scanlators: [], fictions: [], comments: [], avatars: [], bookshelves: [],
+      epub_export_requests: []
+    }
     actual = {
       publications: @harness.instance_variable_get(:@publications),
       scanlators: @harness.instance_variable_get(:@scanlators),
       fictions: @harness.instance_variable_get(:@fictions),
       comments: @harness.instance_variable_get(:@comments),
       avatars: @harness.instance_variable_get(:@avatars),
-      bookshelves: @harness.instance_variable_get(:@bookshelves)
+      bookshelves: @harness.instance_variable_get(:@bookshelves),
+      epub_export_requests: @harness.instance_variable_get(:@epub_export_requests)
     }
 
     assert_equal expected, actual
