@@ -2,7 +2,7 @@
 
 # View-model for fiction#show: chapters, comments, reading progress, and sidebar data.
 class FictionShowPresenter
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   def initialize(fiction, current_user, params = {})
     @fiction = fiction

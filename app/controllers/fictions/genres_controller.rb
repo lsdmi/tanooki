@@ -3,7 +3,7 @@
 module Fictions
   # Per-genre hub: hero, showcase carousel, new releases, and paginated “recommended” list.
   class GenresController < ApplicationController
-    include LibraryHelper
+    include Library::ReadingStateHelper
 
     before_action :set_genre
     before_action :pokemon_appearance, only: [:show]

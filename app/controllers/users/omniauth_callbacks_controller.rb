@@ -36,12 +36,12 @@ module Users
     end
 
     def no_pokemon_notice
-      PokemonCatchService.new(pokemon_id: nil, user_id: @user.id).grant if @user&.pokemons&.empty?
+      Pokemons::CollectionUpdater.new(pokemon_id: nil, user_id: @user.id).grant if @user&.pokemons&.empty?
       flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
     end
 
     def pokemon_notice
-      PokemonCatchService.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id).trap
+      Pokemons::CollectionUpdater.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id).trap
       flash[:notice] = I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
     end
 

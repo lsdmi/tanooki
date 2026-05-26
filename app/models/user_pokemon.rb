@@ -38,7 +38,7 @@ class UserPokemon < ApplicationRecord
   private
 
   def level_up_training!
-    PokemonCatchService.new(pokemon_id: pokemon.id, user_id: user.id).evolve
+    Pokemons::CollectionUpdater.new(pokemon_id: pokemon.id, user_id: user.id).evolve
     { alert: "#{pokemon.name} набув нового якісного рівня!" }
   end
 end

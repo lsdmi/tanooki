@@ -2,7 +2,7 @@
 
 # Counts active, finished, postponed, and dropped readings for a fiction.
 class BookmarksAccounter
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   attr_reader :fiction
 

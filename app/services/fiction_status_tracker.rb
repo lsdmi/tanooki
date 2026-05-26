@@ -2,7 +2,7 @@
 
 # Derives fiction status from unique chapter release progress.
 class FictionStatusTracker
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   attr_reader :fiction_status, :total_chapters, :unique
 

@@ -4,7 +4,7 @@ class UserPokemonsController < ApplicationController
   def create
     if pokemon_catch_permitted?
       current_user.update(pokemon_last_catch: Time.now)
-      PokemonCatchService.new(
+      Pokemons::CollectionUpdater.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
         user_id: user_pokemon_params[:user_id]
       ).trap

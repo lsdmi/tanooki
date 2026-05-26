@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReadingsController < ApplicationController
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   before_action :authenticate_user!
   before_action :set_fiction, only: :show

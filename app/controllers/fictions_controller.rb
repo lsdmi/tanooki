@@ -2,7 +2,7 @@
 
 class FictionsController < ApplicationController
   include FictionQuery
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   AD_EXCLUDED_SLUGS = %w[
     lehendarnyi-skulptor-misiachnoho-svitla

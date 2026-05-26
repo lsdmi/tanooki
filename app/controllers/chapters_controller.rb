@@ -3,7 +3,7 @@
 class ChaptersController < ApplicationController
   include ChapterScheduleParams
   include FictionQuery
-  include LibraryHelper
+  include Library::ReadingStateHelper
 
   before_action :authenticate_user!, except: %i[show comments]
   before_action :set_chapter, only: %i[show edit update comments]

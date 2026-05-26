@@ -35,9 +35,9 @@ class PokemonBattlesController < ApplicationController
       details: battle_service.fight_details
     )
 
-    experience_distributor = PokemonExperienceDistributor.new(winner_id: battle_service.winner_id,
-                                                              loser_id: battle_service.loser_id)
-    experience_distributor.refresh
+    rating_updater = Pokemons::Battle::RatingUpdater.new(winner_id: battle_service.winner_id,
+                                                         loser_id: battle_service.loser_id)
+    rating_updater.refresh
   end
 
   def defender

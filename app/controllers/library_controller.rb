@@ -5,7 +5,7 @@ class LibraryController < ApplicationController
   before_action :pokemon_appearance, only: [:index]
 
   def index
-    data = LibraryDataService.new(current_user, section_param, page_param).call
+    data = Library::SectionDataBuilder.new(current_user, section_param).call
 
     @section = data[:section]
     @history = data[:history]
@@ -21,7 +21,7 @@ class LibraryController < ApplicationController
     current_section = params[:current_section]&.to_sym || :active
 
     Reading::UpdateStatus.new(reading_progress, new_status, current_user).call
-    library_data = LibraryDataService.new(current_user, current_section, page_param).call
+    library_data = Library::SectionDataBuilder.new(current_user, current_section).call
 
     @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
 
@@ -48,10 +48,6 @@ class LibraryController < ApplicationController
 
   def section_param
     params.fetch(:section, :active).to_sym
-  end
-
-  def page_param
-    params[:page]&.to_i || 1
   end
 
   def render_library_list(section)
