@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+# Handles authenticated Pokemon catching, training, and opponent refreshes.
 class UserPokemonsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     if pokemon_catch_permitted?
-      current_user.update(pokemon_last_catch: Time.now)
+      current_user.update(pokemon_last_catch: Time.current)
       Pokemons::CollectionUpdater.new(
         pokemon_id: user_pokemon_params[:pokemon_id],
-        user_id: user_pokemon_params[:user_id]
+        user_id: current_user.id
       ).trap
       render turbo_stream: [remove_pokemon, update_notice(UserPokemon::SUCCESS_MESSSAGE)]
     else
@@ -19,7 +22,7 @@ class UserPokemonsController < ApplicationController
       render turbo_stream: refresh_error_screen
     else
       train_pokemon
-      current_user.update(pokemon_last_training: Time.now)
+      current_user.update(pokemon_last_training: Time.current)
       render turbo_stream: [refresh_screen, update_notice(@alert)]
     end
   end
@@ -80,6 +83,6 @@ class UserPokemonsController < ApplicationController
   end
 
   def user_pokemon_params
-    params.require(:user_pokemon).permit(:pokemon_id, :user_id)
+    params.expect(user_pokemon: [:pokemon_id])
   end
 end

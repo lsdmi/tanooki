@@ -19,4 +19,14 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, PokemonBattleLog.count
   end
+
+  test 'guest should not start a battle' do
+    sign_out @attacker
+
+    assert_no_difference('PokemonBattleLog.count') do
+      post battle_start_path(format: :turbo_stream), params: { defender: @defender.id }
+    end
+
+    assert_redirected_to new_user_session_url
+  end
 end

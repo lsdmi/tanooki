@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# Starts authenticated Pokemon battles and refreshes related battle UI.
 class PokemonBattlesController < ApplicationController
+  before_action :authenticate_user!
+
   def start
     if possible_fraud?
       render turbo_stream: refresh_error_screen
