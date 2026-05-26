@@ -9,8 +9,12 @@
     return document.body && document.body.dataset.loadGoogleScripts === 'true'
   }
 
+  function adsenseEnabled() {
+    return prodEnabled() && document.body.dataset.loadAdsense === 'true'
+  }
+
   function injectAdSense() {
-    if (!prodEnabled() || window.__bakaAdSenseInjected) return
+    if (!adsenseEnabled() || window.__bakaAdSenseInjected) return
     window.__bakaAdSenseInjected = true
 
     var ads = document.createElement('script')

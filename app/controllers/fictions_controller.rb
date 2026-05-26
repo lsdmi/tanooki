@@ -4,10 +4,15 @@ class FictionsController < ApplicationController
   include FictionQuery
   include LibraryHelper
 
+  AD_EXCLUDED_SLUGS = %w[
+    lehendarnyi-skulptor-misiachnoho-svitla
+  ].freeze
+
   before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section]
   before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section]
   before_action :set_genres, only: %i[new create edit update]
-  before_action :load_advertisement, :track_visit, only: :show
+  before_action :load_advertisement, only: :show, unless: :ads_disabled_for_current_page?
+  before_action :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
   before_action :authorize_fiction_creation, only: %i[new create]
   before_action :pokemon_appearance, only: %i[index show]
@@ -106,6 +111,10 @@ class FictionsController < ApplicationController
   def set_fiction
     @fiction = @commentable = Fiction.includes(:genres, :scanlators, cover_attachment: :blob).find(params[:id])
     @commentable = @fiction
+  end
+
+  def ads_disabled_for_current_page?
+    @fiction&.slug.in?(AD_EXCLUDED_SLUGS) || super
   end
 
   def chapter_from_section_params

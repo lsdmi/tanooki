@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
-  helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos
+  helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
+                :adsense_allowed?
 
   def handle_error
     render :error, status: :internal_server_error
@@ -42,6 +43,10 @@ class ApplicationController < ActionController::Base
 
   def verify_user_permissions
     redirect_to root_path unless current_user.admin?
+  end
+
+  def adsense_allowed?
+    Rails.env.production? && !ads_disabled_for_current_page?
   end
 
   def videos
@@ -85,5 +90,9 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch(['enabled_ad_sample', bucket], expires_in: 10.minutes) do
       Advertisement.includes(%i[cover_attachment poster_attachment]).enabled.sample
     end
+  end
+
+  def ads_disabled_for_current_page?
+    false
   end
 end
