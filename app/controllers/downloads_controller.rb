@@ -2,6 +2,10 @@
 
 # Queues EPUB exports and serves generated files once background generation finishes.
 class DownloadsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_epub_export_request, only: %i[epub_export_status epub_export_file]
+  before_action :authorize_epub_export_owner!, only: %i[epub_export_status epub_export_file]
+
   def epub
     rich_text = chapter_rich_text(params[:id])
     return handle_forbidden unless epub_allowed?([rich_text&.record])
@@ -18,16 +22,13 @@ class DownloadsController < ApplicationController
   end
 
   def epub_export_status
-    export_request = find_epub_export_request
-
-    render json: epub_export_status_payload(export_request)
+    render json: epub_export_status_payload(@epub_export_request)
   end
 
   def epub_export_file
-    export_request = find_epub_export_request
-    return handle_forbidden unless export_request.downloadable?
+    return handle_forbidden unless @epub_export_request.downloadable?
 
-    redirect_to rails_blob_path(export_request.file, disposition: :attachment)
+    redirect_to rails_blob_path(@epub_export_request.file, disposition: :attachment)
   end
 
   private
@@ -48,6 +49,17 @@ class DownloadsController < ApplicationController
     Books::EpubDownloadPermission.allowed?(Array(chapters).compact)
   end
 
+  def set_epub_export_request
+    @epub_export_request = EpubExportRequest.find_by!(token: params[:token])
+  end
+
+  def authorize_epub_export_owner!
+    return if @epub_export_request.user_id == current_user.id
+    return if current_user.admin?
+
+    handle_forbidden
+  end
+
   def enqueue_epub_export(rich_text_ids, volume_title = nil)
     export_request = EpubExportRequest.create!(
       user: current_user,
@@ -62,10 +74,6 @@ class DownloadsController < ApplicationController
     }, status: :accepted
   rescue StandardError => _e
     handle_error
-  end
-
-  def find_epub_export_request
-    EpubExportRequest.find_by!(token: params[:token])
   end
 
   def epub_export_status_payload(export_request)
@@ -89,8 +97,11 @@ class DownloadsController < ApplicationController
   end
 
   def epub_export_error_message(export_request)
-    return t('downloads.alerts.expired') if export_request.expired?
-    return export_request.error_message if export_request.failed?
+    if export_request.expired?
+      t('downloads.alerts.expired')
+    elsif export_request.failed?
+      export_request.error_message
+    end
   end
 
   def epub_export_status_path_for(export_request)

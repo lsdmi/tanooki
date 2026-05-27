@@ -6,6 +6,12 @@
     <!-- Hero Section -->
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
 
+    <% if epub_download_requires_login?(@chapter) %>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+        <%= render 'shared/epub_info_card', content: epub_notice_paragraph(epub_guest_login_message(@chapter.fiction)) %>
+      </div>
+    <% end %>
+
     <!-- Main Content and Comments -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
       <%= render 'fictions/adult_content_disclaimer', fiction: @chapter.fiction if show_adult_content_disclaimer?(@chapter.fiction) %>

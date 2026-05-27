@@ -3,8 +3,24 @@
 require 'test_helper'
 
 class DownloadsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   def setup
+    @user = users(:user_one)
     @rich_text = action_text_rich_texts(:rich_text_four)
+    sign_in @user
+  end
+
+  test 'should require login for single chapter epub export' do
+    sign_out @user
+
+    assert_no_difference('EpubExportRequest.count') do
+      Books::GenerateEpubJob.stub :perform_later, ->(*) { flunk 'EPUB export should not be enqueued' } do
+        get epub_download_path(id: @rich_text), headers: { 'Accept' => 'application/json' }
+      end
+    end
+
+    assert_response :unauthorized
   end
 
   test 'should enqueue single chapter epub export job' do
@@ -22,8 +38,10 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should persist single chapter epub export details' do
     enqueue_single_epub_export
+    export_request = EpubExportRequest.last
 
-    assert_equal [@rich_text.id], EpubExportRequest.last.rich_text_ids
+    assert_equal [@rich_text.id], export_request.rich_text_ids
+    assert_equal @user.id, export_request.user_id
   end
 
   test 'should return single chapter epub export polling status' do

@@ -329,6 +329,11 @@ uk:
       error: Ох, тр*сця! Під час генерування EPUB сталася помилка!
       expired: Термін дії EPUB-завантаження минув. Спробуйте створити файл ще раз.
       forbidden: EPUB-завантаження недоступне для вибраних розділів.
+    epub_export:
+      storage_integrity_error: Не вдалося зберегти EPUB. Спробуйте ще раз або зверніться до підтримки.
+      login_link_text: Увійдіть
+      login_required_fiction_all: Це ранобе підтримує завантаження в форматі EPUB. %{login_link}, щоб завантажити файли.
+      login_required_fiction_mixed: Частину розділів можна завантажити в EPUB. %{login_link}, щоб завантажити файли.
   admin:
     advertisements:
       notices:

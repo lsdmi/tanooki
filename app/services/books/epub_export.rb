@@ -5,11 +5,12 @@ module Books
   class EpubExport
     attr_reader :file_path, :filename
 
-    def initialize(rich_text_ids, volume_title = nil)
+    def initialize(rich_text_ids, volume_title = nil, export_request_id: nil)
       @rich_texts = ActionText::RichText.where(id: Array(rich_text_ids))
       @volume_title = volume_title
       @chapters = @rich_texts.map(&:record)
-      @file_path = Rails.root.join('tmp', "book_#{Time.current.to_i}.epub").to_s
+      suffix = export_request_id || SecureRandom.hex(8)
+      @file_path = Rails.root.join('tmp', "epub_export_#{suffix}.epub").to_s
     end
 
     def generate

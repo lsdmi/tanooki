@@ -12,6 +12,33 @@ module ChaptersHelper
     Books::EpubDownloadPermission.allowed?(chapters)
   end
 
+  def epub_download_available?(chapters)
+    chapters_allow_epub_download?(chapters) && user_signed_in?
+  end
+
+  def epub_download_requires_login?(chapters)
+    chapters_allow_epub_download?(chapters) && !user_signed_in?
+  end
+
+  def epub_login_link(**html_options)
+    default_class = 'font-semibold text-stone-800 underline underline-offset-2 hover:text-stone-600 dark:text-gray-100 dark:hover:text-gray-300'
+    link_to(
+      t('downloads.epub_export.login_link_text'),
+      new_user_session_path,
+      class: html_options[:class].presence || default_class,
+      **html_options.except(:class)
+    )
+  end
+
+  def epub_guest_login_message(fiction)
+    key = fiction_epub_download_support(fiction, viewer: nil) == :mixed ? :login_required_fiction_mixed : :login_required_fiction_all
+    t("downloads.epub_export.#{key}", login_link: epub_login_link).html_safe
+  end
+
+  def epub_notice_paragraph(content)
+    tag.p(content, class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300')
+  end
+
   def check_decimal(number)
     decimal_part = number.to_s.split('.').last.to_i
     decimal_part.zero? ? number.to_i : number

@@ -21,13 +21,14 @@
           <%= section[:title] %>
         </h3>
         <div class="flex shrink-0 items-center gap-1">
-          <% if !compact && chapters_allow_epub_download?(section_chapters) %>
+          <% if !compact && epub_download_available?(section_chapters) %>
             <div data-controller="epub-download"
                  data-epub-download-url-value="<%= epub_multiple_downloads_path %>"
                  data-epub-download-params-value="<%= { chapter_ids: chapter_list_section_ids(section_chapters), volume_title: section[:epub_title] }.to_json %>">
               <button data-epub-download-target="button"
                       data-action="click->epub-download#download"
-                      class="text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded">
+                      class="text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded"
+                      title="Завантажити EPUB">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>

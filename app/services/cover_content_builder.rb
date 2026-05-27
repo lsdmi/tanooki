@@ -2,18 +2,14 @@
 
 # Builds inner HTML for an EPUB cover page.
 class CoverContentBuilder
-  include Rails.application.routes.url_helpers
-
   def initialize(chapter, volume_title: nil)
     @chapter = chapter
     @volume_title = volume_title
-
-    default_url_options[:host] = Rails.env.production? ? 'baka.in.ua' : 'localhost:3000'
   end
 
   def build
     <<-HTML
-      <img src="#{cover_image_url}" alt="#{cover_image_alt}" class="cover-image"/>
+      #{cover_image_tag}
       <div class="fiction-title">#{@chapter.fiction_title}</div>
       <div class="display-title">#{chapter_title}</div>
       <div class="author">Автор: <b>#{@chapter.author}</b></div>
@@ -25,12 +21,23 @@ class CoverContentBuilder
 
   private
 
-  def cover_image_url
-    url_for(@chapter.fiction.cover)
+  def cover_image_tag
+    cover = @chapter.fiction.cover
+    alt = ERB::Util.html_escape(cover.blob.filename.to_s)
+    src = cover_image_data_uri(cover)
+    return '' if src.blank?
+
+    %(<img src="#{src}" alt="#{alt}" class="cover-image"/>)
+  rescue ActiveStorage::FileNotFoundError, ActiveStorage::IntegrityError
+    ''
   end
 
-  def cover_image_alt
-    @chapter.fiction.cover.blob.filename
+  def cover_image_data_uri(cover)
+    data = cover.download
+    encoded = Base64.strict_encode64(data)
+    "data:#{cover.blob.content_type};base64,#{encoded}"
+  rescue StandardError
+    nil
   end
 
   def chapter_title

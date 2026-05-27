@@ -6,9 +6,11 @@ class DownloadsEpubExportsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   def setup
+    @user = users(:user_one)
     @rich_text = action_text_rich_texts(:rich_text_four)
     @dummy_file_path = Rails.root.join('tmp/dummy.epub')
     FileUtils.touch(@dummy_file_path)
+    sign_in @user
   end
 
   test 'should return ready export status with download url' do
@@ -33,7 +35,7 @@ class DownloadsEpubExportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should block export file before it is ready' do
-    export_request = EpubExportRequest.create!(rich_text_ids: [@rich_text.id])
+    export_request = EpubExportRequest.create!(user: @user, rich_text_ids: [@rich_text.id])
 
     get "/downloads/epub_exports/#{export_request.token}/file"
 
@@ -41,10 +43,31 @@ class DownloadsEpubExportsControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t('downloads.alerts.forbidden'), flash[:alert]
   end
 
+  test 'should block export status for another user' do
+    export_request = ready_export_request
+    sign_in users(:user_two)
+
+    get "/downloads/epub_exports/#{export_request.token}/status"
+
+    assert_redirected_to 'http://www.example.com/'
+    assert_equal I18n.t('downloads.alerts.forbidden'), flash[:alert]
+  end
+
+  test 'should require login for export status' do
+    export_request = ready_export_request
+    sign_out @user
+
+    get "/downloads/epub_exports/#{export_request.token}/status",
+        headers: { 'Accept' => 'application/json' }
+
+    assert_response :unauthorized
+  end
+
   private
 
   def ready_export_request
     export_request = EpubExportRequest.create!(
+      user: @user,
       rich_text_ids: [@rich_text.id],
       status: :ready,
       filename: 'generated_book.epub'

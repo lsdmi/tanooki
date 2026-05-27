@@ -10,7 +10,7 @@ class EpubExportRequest < ApplicationRecord
     'failed' => 'Помилка'
   }.freeze
 
-  belongs_to :user, optional: true
+  belongs_to :user
   has_one_attached :file
 
   enum :status, { queued: 0, processing: 1, ready: 2, failed: 3 }
