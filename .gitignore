@@ -32,3 +32,6 @@ coverage/*
 
 # Local performance audit notes (not for version control)
 /docs/
+
+# Editor settings (machine-specific paths, e.g. mise Ruby/RuboCop)
+.vscode/settings.json

@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.3.4'
+ruby '3.4.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 8.0.0'
@@ -32,7 +32,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem 'image_processing', '~> 1.2'
+gem 'image_processing'
 
 group :development, :test do
   gem 'debug'
@@ -42,9 +42,6 @@ group :development do
   gem 'brakeman', require: false
   gem 'bullet'
   gem 'bundler-audit'
-  gem 'capistrano'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv'
   gem 'erb_lint', require: false
   gem 'letter_opener'
   gem 'rails_best_practices'
@@ -58,7 +55,7 @@ group :development do
 end
 
 group :test do
-  gem 'minitest', '~> 5'
+  gem 'minitest'
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'faker'

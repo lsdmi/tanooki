@@ -32,9 +32,7 @@ rails server
 
 ## Деплой
 
-```bash
-cap production deploy
-```
+Production runs on [DigitalOcean App Platform](https://docs.digitalocean.com/products/app-platform/). Push to `main` on GitHub (`lsdmi/tanooki`) to trigger a deploy. Set environment variables in the App Platform dashboard (see `.env.example`).
 
 ## Структура
 
@@ -50,8 +48,7 @@ db/                 # Міграції
 
 - `config/database.yml` - налаштування БД
 - `config/credentials.yml.enc` - секрети
-- `.env` - змінні середовища
-- `config/deploy.rb` - налаштування деплою
+- `.env` - змінні середовища (локально; production — App Platform env vars)
 
 ## 📝 Ліцензія
 
