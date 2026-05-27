@@ -7,8 +7,12 @@ module Books
     def setup
       @rich_text = action_text_rich_texts(:rich_text_four)
       @export_request = EpubExportRequest.create!(user: users(:user_one), rich_text_ids: [@rich_text.id])
-      @dummy_file_path = Rails.root.join('tmp/generated_book.epub')
-      FileUtils.touch(@dummy_file_path)
+      @dummy_file_path = Rails.root.join('tmp', "epub_job_test_#{Process.pid}_#{@export_request.id}.epub")
+      write_minimal_epub_fixture(@dummy_file_path)
+    end
+
+    def teardown
+      FileUtils.rm_f(@dummy_file_path)
     end
 
     test 'perform marks request ready with generated filename' do
@@ -53,7 +57,7 @@ module Books
       job = GenerateEpubJob.new
       job.define_singleton_method(:attach_epub) { |*, **| raise ActiveStorage::IntegrityError }
 
-      EpubExport.stub(:new, fake_epub_export) do
+      EpubExport.stub(:new, ->(*) { build_fake_epub_export }) do
         job.perform(@export_request.id)
       end
 
@@ -66,12 +70,12 @@ module Books
     private
 
     def run_successful_export
-      EpubExport.stub(:new, fake_epub_export) do
+      EpubExport.stub(:new, ->(*) { build_fake_epub_export }) do
         GenerateEpubJob.perform_now(@export_request.id)
       end
     end
 
-    def fake_epub_export
+    def build_fake_epub_export
       Struct.new(:file_path, :filename) do
         def generate
           self
@@ -80,7 +84,6 @@ module Books
     end
 
     def attach_dummy_epub(export_request)
-      File.binread(@dummy_file_path)
       export_request.file.attach(
         io: StringIO.new(File.binread(@dummy_file_path)),
         filename: 'generated_book.epub',
@@ -89,5 +92,9 @@ module Books
       )
     end
 
+    def write_minimal_epub_fixture(path)
+      # Empty ZIP end-of-central-directory record (valid enough for binread + attach tests).
+      File.binwrite(path, "PK\x05\x06#{'\0' * 18}")
+    end
   end
 end

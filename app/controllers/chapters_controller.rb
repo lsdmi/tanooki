@@ -50,7 +50,9 @@ class ChaptersController < ApplicationController
 
   def persist_new_chapter
     if @chapter.save
-      ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
+      Chapters::SyncScanlatorAssociations.new(
+        chapter_params[:scanlator_ids], @chapter, user: current_user
+      ).call
       update_fiction_status
       redirect_to reading_path(@chapter.fiction), notice: 'Розділ додано.'
     else
@@ -60,7 +62,9 @@ class ChaptersController < ApplicationController
 
   def persist_chapter_update
     if @chapter.update(chapter_params)
-      ChapterScanlatorsManager.new(chapter_params[:scanlator_ids], @chapter).operate
+      Chapters::SyncScanlatorAssociations.new(
+        chapter_params[:scanlator_ids], @chapter, user: current_user
+      ).call
       redirect_to reading_path(@chapter.fiction), notice: 'Розділ оновлено.'
     else
       render 'chapters/edit', status: :unprocessable_content

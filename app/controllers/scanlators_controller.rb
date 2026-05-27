@@ -26,9 +26,12 @@ class ScanlatorsController < ApplicationController
 
   def create
     @scanlator = Scanlator.new(scanlator_params)
+    ensure_creator_in_member_ids unless current_user.admin?
 
     if @scanlator.save
-      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
+      Scanlators::SyncMembers.new(
+        scanlator_params[:member_ids], @scanlator, user: current_user, initial: true
+      ).call
       redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.create_success')
     else
       render 'new', status: :unprocessable_content
@@ -37,7 +40,7 @@ class ScanlatorsController < ApplicationController
 
   def update
     if @scanlator.update(scanlator_params)
-      Scanlators::MembersSync.new(scanlator_params[:member_ids], @scanlator).operate
+      Scanlators::SyncMembers.new(scanlator_params[:member_ids], @scanlator, user: current_user).call
       redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.update_success')
     else
       render 'edit', status: :unprocessable_content
@@ -89,5 +92,12 @@ class ScanlatorsController < ApplicationController
 
   def verify_permissions
     redirect_to root_path unless current_user.admin? || current_user.scanlators.include?(@scanlator)
+  end
+
+  def ensure_creator_in_member_ids
+    ids = Array(@scanlator.member_ids).map(&:to_i)
+    return if ids.include?(current_user.id)
+
+    @scanlator.member_ids = (ids + [current_user.id]).map(&:to_s)
   end
 end

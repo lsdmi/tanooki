@@ -1,38 +1,38 @@
 # frozen_string_literal: true
 
-module Fictions
-  # Creates and removes scanlator links on a fiction.
-  # Non-admin editors only change teams they belong to; other teams on the fiction stay linked.
+module Chapters
+  # Creates and removes scanlator links on a chapter.
+  # Non-admin editors only change teams they belong to; other teams on the chapter stay linked.
   class SyncScanlatorAssociations
-    attr_reader :scanlators_ids, :fiction, :user
+    attr_reader :scanlators_ids, :chapter, :user
 
-    def initialize(scanlators_ids, fiction, user: nil)
+    def initialize(scanlators_ids, chapter, user: nil)
       @scanlators_ids = scanlators_ids
-      @fiction = fiction
+      @chapter = chapter
       @user = user
     end
 
     def call
       return if scanlators_ids.nil?
 
-      create_fiction_scanlators
-      destroy_fiction_scanlators
+      create_chapter_scanlators
+      destroy_chapter_scanlators
     end
 
     private
 
-    def create_fiction_scanlators
+    def create_chapter_scanlators
       scanlators_to_add = effective_scanlator_ids - existing_scanlators_ids
-      scanlators_to_add.each { |scanlator_id| fiction.fiction_scanlators.create(scanlator_id:) }
+      scanlators_to_add.each { |scanlator_id| chapter.chapter_scanlators.create(scanlator_id:) }
     end
 
-    def destroy_fiction_scanlators
+    def destroy_chapter_scanlators
       scanlators_to_remove = existing_scanlators_ids - effective_scanlator_ids
-      scanlators_to_remove.each { |scanlator_id| fiction.fiction_scanlators.find_by(scanlator_id:).destroy }
+      scanlators_to_remove.each { |scanlator_id| chapter.chapter_scanlators.find_by(scanlator_id:).destroy }
     end
 
     def existing_scanlators_ids
-      fiction.scanlators.ids
+      chapter.scanlators.ids
     end
 
     def submitted_scanlator_ids

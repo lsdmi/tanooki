@@ -66,7 +66,7 @@ module Library
       s2.convertable = false
       s2.save(validate: false)
       @chapter_two.chapter_scanlators.destroy_all
-      ChapterScanlatorsManager.new([s2.id.to_s], @chapter_two.reload).operate
+      Chapters::SyncScanlatorAssociations.new([s2.id.to_s], @chapter_two.reload).call
 
       assert_equal :mixed, fiction_epub_download_support(@fiction, viewer: nil)
     ensure
@@ -74,7 +74,7 @@ module Library
       s2.convertable = true
       s2.save(validate: false)
       @chapter_two.reload.chapter_scanlators.destroy_all
-      ChapterScanlatorsManager.new([scanlators(:one).id.to_s], @chapter_two).operate
+      Chapters::SyncScanlatorAssociations.new([scanlators(:one).id.to_s], @chapter_two).call
     end
 
     private

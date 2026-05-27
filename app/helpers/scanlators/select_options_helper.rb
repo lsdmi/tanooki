@@ -7,5 +7,12 @@ module Scanlators
       scanlators = user.admin? ? Scanlator.all : user.scanlators
       scanlators.order(:title).pluck(:title, :id)
     end
+
+    def can_manage_scanlator_members?(user, scanlator:)
+      return false unless user
+      return true if user.admin? || scanlator.new_record?
+
+      scanlator.users.exists?(id: user.id)
+    end
   end
 end

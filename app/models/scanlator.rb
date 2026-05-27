@@ -82,6 +82,11 @@ class Scanlator < ApplicationRecord
   end
 
   def cleanup_member_ids
-    self.member_ids = member_ids&.compact_blank
+    self.member_ids =
+      if member_ids.nil? && persisted? && users.exists?
+        users.ids
+      else
+        member_ids&.compact_blank
+      end
   end
 end
