@@ -11,7 +11,7 @@ if Rails.env.production?
   transport_options = {
     request: {
       open_timeout: ENV.fetch('OPENSEARCH_OPEN_TIMEOUT', 2).to_i,
-      timeout: ENV.fetch('OPENSEARCH_TIMEOUT', 5).to_i
+      timeout: ENV.fetch('OPENSEARCH_TIMEOUT', 60).to_i
     },
     headers: { 'Authorization' => "Basic #{Base64.strict_encode64(credentials)}" }
   }
