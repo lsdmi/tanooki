@@ -1,17 +1,28 @@
 # frozen_string_literal: true
 
 module Admin
+  # Manages publication tags via Turbo Stream CRUD.
   class TagsController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
 
     def index
       @tag = Tag.new
-      @tags = Tag.all.order(:name)
+      @tags = Tag.order(:name)
+    end
+
+    def edit
+      @tag = Tag.find(params[:id])
+      render turbo_stream: edit_tag
     end
 
     def create
       @tag = Tag.new(tag_params)
       render turbo_stream: (@tag.save ? [prepend_form, refresh_form(:persisted)] : refresh_form(:new))
+    end
+
+    def update
+      @tag = Tag.find(params[:id])
+      render turbo_stream: (@tag.update(tag_params) ? refresh_list : edit_tag)
     end
 
     def destroy
@@ -20,20 +31,10 @@ module Admin
       render turbo_stream: refresh_list
     end
 
-    def edit
-      @tag = Tag.find(params[:id])
-      render turbo_stream: edit_tag
-    end
-
-    def update
-      @tag = Tag.find(params[:id])
-      render turbo_stream: (@tag.update(tag_params) ? refresh_list : edit_tag)
-    end
-
     private
 
     def tag_params
-      params.require(:tag).permit(:name) if params[:tag]
+      params.expect(tag: [:name])
     end
 
     def prepend_form
@@ -45,7 +46,7 @@ module Admin
     end
 
     def refresh_list
-      turbo_stream.update('index-list', partial: 'list', locals: { tags: Tag.all.order(:name) })
+      turbo_stream.update('index-list', partial: 'list', locals: { tags: Tag.order(:name) })
     end
 
     def edit_tag

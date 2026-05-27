@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Rails.env.production?
+if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].present?)
   require 'opensearch-ruby'
 
   credentials = [
@@ -20,13 +20,15 @@ if Rails.env.production?
   File.write(ca_file, ENV.fetch('OPENSEARCH_CA_CERT').gsub('\\n', "\n"))
   transport_options[:ssl] = { ca_file: ca_file.to_s }
 
+  opensearch_url = ENV.fetch('OPENSEARCH_URL')
+
   Searchkick.client = OpenSearch::Client.new(
-    url: ENV.fetch('OPENSEARCH_URL'),
+    url: opensearch_url,
     transport_options: transport_options
   )
 
   Searchkick.client_options = {
-    url: ENV.fetch('OPENSEARCH_URL'),
+    url: opensearch_url,
     transport_options: transport_options
   }
 end

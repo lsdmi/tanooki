@@ -297,19 +297,6 @@ uk:
       last_word_connector: " та "
       two_words_connector: " і "
       words_connector: ", "
-  sweetalert:
-    chapters:
-      description: Цей розділ буде назавжди видалено. Продовжити?
-      message: Певні, що прагнете видалити цей розділ?
-    fictions:
-      description: Цей твір буде назавжди видалено. Продовжити?
-      message: Певні, що прагнете видалити цей твір?
-    publications:
-      description: Цей допис буде назавжди видалено. Продовжити?
-      message: Певні, що прагнете видалити цей допис?
-    scanlators:
-      description: Команду та її сторінку на сайті буде видалено назавжди. Продовжити?
-      message: Певні, що прагнете видалити цю команду?
   time:
     am: до полудня
     formats:
@@ -342,6 +329,15 @@ uk:
       error: Ох, тр*сця! Під час генерування EPUB сталася помилка!
       expired: Термін дії EPUB-завантаження минув. Спробуйте створити файл ще раз.
       forbidden: EPUB-завантаження недоступне для вибраних розділів.
+  admin:
+    advertisements:
+      notices:
+        create_success: Оголошення створено.
+        update_success: Оголошення оновлено.
+    pokemons:
+      notices:
+        create_success: Дані про покемона додано.
+        update_success: Дані про покемона оновлено.
   publications:
     notices:
       create_success: Допис створено.

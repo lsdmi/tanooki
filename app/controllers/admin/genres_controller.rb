@@ -1,17 +1,28 @@
 # frozen_string_literal: true
 
 module Admin
+  # Manages fiction genres via Turbo Stream CRUD.
   class GenresController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
 
     def index
       @genre = Genre.new
-      @genres = Genre.all.order(:name)
+      @genres = Genre.order(:name)
+    end
+
+    def edit
+      @genre = Genre.find(params[:id])
+      render turbo_stream: edit_genre
     end
 
     def create
       @genre = Genre.new(genre_params)
       render turbo_stream: (@genre.save ? [prepend_form, refresh_form(:persisted)] : refresh_form(:new))
+    end
+
+    def update
+      @genre = Genre.find(params[:id])
+      render turbo_stream: (@genre.update(genre_params) ? refresh_list : edit_genre)
     end
 
     def destroy
@@ -20,20 +31,10 @@ module Admin
       render turbo_stream: refresh_list
     end
 
-    def edit
-      @genre = Genre.find(params[:id])
-      render turbo_stream: edit_genre
-    end
-
-    def update
-      @genre = Genre.find(params[:id])
-      render turbo_stream: (@genre.update(genre_params) ? refresh_list : edit_genre)
-    end
-
     private
 
     def genre_params
-      params.require(:genre).permit(:name) if params[:genre]
+      params.expect(genre: [:name])
     end
 
     def prepend_form
@@ -45,7 +46,7 @@ module Admin
     end
 
     def refresh_list
-      turbo_stream.update('index-list', partial: 'list', locals: { genres: Genre.all.order(:name) })
+      turbo_stream.update('index-list', partial: 'list', locals: { genres: Genre.order(:name) })
     end
 
     def edit_genre

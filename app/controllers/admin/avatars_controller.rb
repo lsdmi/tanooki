@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
+  # Manages selectable user avatars via Turbo Stream CRUD.
   class AvatarsController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
 
@@ -33,7 +34,7 @@ module Admin
     private
 
     def avatar_params
-      params.require(:avatar).permit(:image) if params[:avatar]
+      params.expect(avatar: [:image])
     end
 
     def prepend_avatar_and_refresh_form

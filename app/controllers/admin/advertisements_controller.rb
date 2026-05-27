@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
+  # Manages site advertisements (create, edit) for privileged users.
   class AdvertisementsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_advertisement, only: %i[edit update]
@@ -20,7 +21,7 @@ module Admin
       @advertisement = Advertisement.new(advertisement_params)
 
       if @advertisement.save
-        redirect_to root_path, notice: 'Оголошення створено.'
+        redirect_to root_path, notice: t('admin.advertisements.notices.create_success')
       else
         render 'admin/advertisements/new', status: :unprocessable_content
       end
@@ -28,7 +29,7 @@ module Admin
 
     def update
       if @advertisement.update(advertisement_params)
-        redirect_to root_path, notice: 'Оголошення оновлено.'
+        redirect_to root_path, notice: t('admin.advertisements.notices.update_success')
       else
         render 'admin/advertisements/edit', status: :unprocessable_content
       end
@@ -41,7 +42,7 @@ module Admin
     end
 
     def advertisement_params
-      params.require(:advertisement).permit(:description, :cover, :resource, :enabled, :poster)
+      params.expect(advertisement: %i[description cover resource enabled poster])
     end
   end
 end

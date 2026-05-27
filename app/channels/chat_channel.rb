@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Streams the general chat room and broadcasts new messages to subscribers.
 class ChatChannel < ApplicationCable::Channel
   def subscribed
     stream_from 'chat_room'

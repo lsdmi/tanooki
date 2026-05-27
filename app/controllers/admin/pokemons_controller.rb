@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
+  # Manages the Pokemon catalog (dex entries, types, sprites) for privileged users.
   class PokemonsController < ApplicationController
     before_action :authenticate_user!, :verify_user_permissions
     before_action :set_pokemon, only: %i[edit update destroy]
@@ -10,12 +11,18 @@ module Admin
       @pagy, @pokemons = pagy(Pokemon.includes(sprite_attachment: :blob).order(:dex_id), limit: 10)
     end
 
+    def new
+      @pokemon = Pokemon.new
+    end
+
+    def edit; end
+
     def create
       @pokemon = Pokemon.new(pokemon_params)
 
       if @pokemon.save
         manage_types if params[:pokemon][:type_ids]
-        redirect_to admin_pokemons_path, notice: 'Дані про покемона додано.'
+        redirect_to admin_pokemons_path, notice: t('admin.pokemons.notices.create_success')
       else
         render 'admin/pokemons/new', status: :unprocessable_content
       end
@@ -24,7 +31,7 @@ module Admin
     def update
       if @pokemon.update(pokemon_params)
         manage_types if params[:pokemon][:type_ids]
-        redirect_to admin_pokemons_path, notice: 'Дані про покемона оновлено.'
+        redirect_to admin_pokemons_path, notice: t('admin.pokemons.notices.update_success')
       else
         render 'admin/pokemons/edit', status: :unprocessable_content
       end
@@ -42,12 +49,6 @@ module Admin
       render turbo_stream: refresh_list
     end
 
-    def new
-      @pokemon = Pokemon.new
-    end
-
-    def edit; end
-
     private
 
     def manage_types
@@ -60,16 +61,16 @@ module Admin
     end
 
     def pokemon_types_ids
-      @pokemon_types_ids ||= params[:pokemon][:type_ids].reject(&:blank?).map(&:to_i)
+      @pokemon_types_ids ||= params[:pokemon][:type_ids].compact_blank.map(&:to_i)
     end
 
     def set_types
-      @types = PokemonType.all.order(:name)
+      @types = PokemonType.order(:name)
     end
 
     def pokemon_params
-      params.require(:pokemon).permit(
-        :ancestor_id, :descendant_id, :descendant_level, :dex_id, :name, :power_level, :rarity, :sprite
+      params.expect(
+        pokemon: %i[ancestor_id descendant_id descendant_level dex_id name power_level rarity sprite]
       )
     end
 

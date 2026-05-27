@@ -29,7 +29,7 @@ class PublicationsController < ApplicationController
       manage_tags if params[:publication][:tag_ids]
       redirect_to tale_path(@publication), notice: t('publications.notices.update_success')
     else
-      render 'sweetalert/edit', status: :unprocessable_content
+      render :edit, status: :unprocessable_content
     end
   end
 

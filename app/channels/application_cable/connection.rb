@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationCable
+  # Resolves the current user from Warden for authenticated Action Cable connections.
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
 
