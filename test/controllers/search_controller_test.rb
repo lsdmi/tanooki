@@ -10,9 +10,11 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   test 'should get index with search' do
     Publication.stub :search, Publication.all do
       Fiction.stub :search, Fiction.all do
-        get search_index_url, params: { search: ['test'] }
+        YoutubeVideo.stub :search, YoutubeVideo.all do
+          get search_index_url, params: { search: ['test'] }
 
-        assert_response :success
+          assert_response :success
+        end
       end
     end
   end
@@ -29,26 +31,6 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_index_url
 
     assert_redirected_to root_path
-  end
-
-  test 'should add extra publications when searching by tag when es is turned off' do
-    tag = tags(:one)
-    tag_name = tag.name
-
-    searchkick = Searchkick.client
-
-    Publication.stub :search, Publication.all do
-      Fiction.stub :search, Fiction.all do
-        Searchkick.stub :client, searchkick do
-          searchkick.stub :ping, false do
-            get search_index_url, params: { search: [tag_name] }
-            results = assigns(:results)
-
-            assert_includes results, publications(:tale_approved_one)
-          end
-        end
-      end
-    end
   end
 
   private

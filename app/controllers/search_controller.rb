@@ -66,38 +66,26 @@ class SearchController < ApplicationController
   end
 
   def publications
-    if Searchkick.client.ping
-      Publication.search(
-        params[:search],
-        fields: ['tags^10', 'title^5', 'description'],
-        boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-      ).includes(%i[tags rich_text_description])
-    else
-      Search::Fallback.publications(params[:search])
-    end
+    Publication.search(
+      params[:search],
+      fields: ['tags^10', 'title^5', 'description'],
+      boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
+    ).includes(%i[tags rich_text_description])
   end
 
   def fictions
-    if Searchkick.client.ping
-      Fiction.search(
-        params[:search],
-        fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
-      ).includes(%i[genres scanlators])
-    else
-      Search::Fallback.fictions(params[:search])
-    end
+    Fiction.search(
+      params[:search],
+      fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
+    ).includes(%i[genres scanlators])
   end
 
   def videos
-    if Searchkick.client.ping
-      YoutubeVideo.search(
-        params[:search],
-        fields: ['title^2', 'description', 'tags'],
-        boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
-      ).includes(:youtube_channel)
-    else
-      Search::Fallback.videos(params[:search])
-    end
+    YoutubeVideo.search(
+      params[:search],
+      fields: ['title^2', 'description', 'tags'],
+      boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
+    ).includes(:youtube_channel)
   end
 
   def pagy_searchkick(searchkick_results, limit:)

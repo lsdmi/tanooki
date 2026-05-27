@@ -31,8 +31,6 @@ class TalesController < ApplicationController
   end
 
   def base_search
-    return [] unless Searchkick.client.ping
-
     @base_search ||= Publication.search(
       @publication.tags.pluck(:name).join(' '),
       fields: ['tags^10', 'title^5', 'description'],

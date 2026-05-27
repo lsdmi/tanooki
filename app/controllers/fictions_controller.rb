@@ -11,7 +11,7 @@ class FictionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section]
   before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section]
   before_action :set_genres, only: %i[new create edit update]
-  before_action :load_advertisement, only: :show, unless: :ads_disabled_for_current_page?
+  before_action :load_advertisement, only: :show
   before_action :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
   before_action :authorize_fiction_creation, only: %i[new create]
