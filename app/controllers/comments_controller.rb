@@ -50,7 +50,7 @@ class CommentsController < ApplicationController
   end
 
   def authorize_comment_owner!
-    return if @comment.user_id == current_user.id || current_user.admin?
+    return if current_user.admin? || current_user.comments.exists?(id: @comment.id)
 
     head :forbidden
   end

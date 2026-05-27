@@ -55,7 +55,7 @@ class FictionsController < ApplicationController
     @fiction = Fiction.find(params[:id])
     form = FictionForm.new(fiction: @fiction, params: fiction_params)
     if form.save
-      FictionUpdater.new(
+      Fictions::SyncAssociationsAndStatus.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
         scanlator_ids: fiction_params[:scanlator_ids],

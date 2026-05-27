@@ -79,7 +79,7 @@ class TranslationRequestsController < ApplicationController
   end
 
   def authorize_translation_request_owner!
-    return if @translation_request.user_id == current_user.id || current_user.admin?
+    return if current_user.admin? || current_user.translation_requests.exists?(id: @translation_request.id)
 
     head :forbidden
   end

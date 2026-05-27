@@ -104,7 +104,7 @@ class ChaptersController < ApplicationController
   end
 
   def update_fiction_status
-    new_status = FictionStatusTracker.new(@chapter.fiction).call
+    new_status = Fictions::DeriveStatusFromChapters.new(@chapter.fiction).call
     @chapter.fiction.status = new_status
     @chapter.fiction.save(validate: false)
   end

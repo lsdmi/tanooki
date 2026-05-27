@@ -3,8 +3,8 @@
 module Library
   # Reading status and EPUB support helpers for library views.
   module ReadingStateHelper
-    include LibraryChapterCatalogHelper
-    include LibraryChapterNavigationHelper
+    include ChapterCatalogHelper
+    include ChapterNavigationHelper
     include ChaptersHelper
 
     STATUSES = {

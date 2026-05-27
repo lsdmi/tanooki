@@ -23,12 +23,19 @@ ProtectMassAssignmentCheck: { }
 RemoveEmptyHelpersCheck: { }
 #RemoveTabCheck: { }
 RemoveTrailingWhitespaceCheck: { }
-RemoveUnusedMethodsInControllersCheck: { except_methods: [] }
+RemoveUnusedMethodsInControllersCheck: {
+  except_methods: ['ApplicationController#verify_user_permissions']
+}
 RemoveUnusedMethodsInHelpersCheck: {
   except_methods: ['#meta_assign_persisted?', '#meta_assign_persisted']
 }
 RemoveUnusedMethodsInModelsCheck: {
-  except_methods: ['#search_data', '#slug_candidates', '#send_devise_notification']
+  except_methods: [
+    '#search_data',
+    '#slug_candidates',
+    '#send_devise_notification',
+    'ChatMessage#as_recent_api_json'
+  ]
 }
 ReplaceComplexCreationWithFactoryMethodCheck: { attribute_assignment_count: 2 }
 ReplaceInstanceVariableWithLocalVariableCheck: { }

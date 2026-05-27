@@ -11,6 +11,6 @@ class FictionCreator
 
   def call
     FictionGenresManager.new(@genre_ids, @fiction).operate
-    FictionScanlatorsManager.new(@scanlator_ids, @fiction, user: @user).operate
+    Fictions::SyncScanlatorAssociations.new(@scanlator_ids, @fiction, user: @user).call
   end
 end

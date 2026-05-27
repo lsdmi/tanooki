@@ -3,7 +3,7 @@
 module Fictions
   # Loads chapters for one fiction TOC accordion section (volume or numeric range).
   class ChapterSectionLoader
-    include LibraryChapterCatalogHelper
+    include Library::ChapterCatalogHelper
     include ChaptersHelper
 
     def initialize(fiction:, viewer:, section_key:, order:, chapter_ids: nil)
