@@ -61,24 +61,42 @@ class DownloadsController < ApplicationController
   end
 
   def enqueue_epub_export(rich_text_ids, volume_title = nil)
-    export_request = EpubExportRequest.create!(
-      user: current_user,
-      rich_text_ids:,
-      volume_title:
-    )
-    Books::GenerateEpubJob.perform_later(export_request.id)
-
-    render json: {
-      status: export_request.status,
-      status_url: epub_export_status_path_for(export_request)
-    }, status: :accepted
+    export_request, cached = find_or_create_epub_export(rich_text_ids, volume_title)
+    render_epub_enqueue_response(export_request, cached:)
   rescue StandardError => _e
     handle_error
+  end
+
+  def find_or_create_epub_export(rich_text_ids, volume_title)
+    export_request = EpubExportRequest.find_reusable_for(
+      user: current_user, rich_text_ids:, volume_title:
+    )
+    return [export_request, true] if export_request
+
+    [create_epub_export(rich_text_ids, volume_title), false]
+  end
+
+  def create_epub_export(rich_text_ids, volume_title)
+    export_request = EpubExportRequest.create!(
+      user: current_user, rich_text_ids:, volume_title:
+    )
+    Books::GenerateEpubJob.perform_later(export_request.id)
+    export_request
+  end
+
+  def render_epub_enqueue_response(export_request, cached:)
+    render json: epub_enqueue_payload(export_request, cached:),
+           status: cached && export_request.ready? ? :ok : :accepted
+  end
+
+  def epub_enqueue_payload(export_request, cached:)
+    epub_export_status_payload(export_request).merge(cached:)
   end
 
   def epub_export_status_payload(export_request)
     {
       status: epub_export_status_value(export_request),
+      status_url: epub_export_status_path_for(export_request),
       download_url: epub_export_download_url(export_request),
       error_message: epub_export_error_message(export_request)
     }.compact

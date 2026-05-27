@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_26_163100) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -146,6 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_26_163100) do
     t.json "rich_text_ids", null: false
     t.string "volume_title"
     t.string "filename"
+    t.string "content_fingerprint", limit: 64
     t.text "error_message"
     t.datetime "expires_at", null: false
     t.datetime "created_at", null: false
@@ -153,6 +154,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_26_163100) do
     t.index ["expires_at"], name: "index_epub_export_requests_on_expires_at"
     t.index ["status"], name: "index_epub_export_requests_on_status"
     t.index ["token"], name: "index_epub_export_requests_on_token", unique: true
+    t.index ["user_id", "content_fingerprint"], name: "index_epub_export_requests_on_user_id_and_fingerprint"
     t.index ["user_id"], name: "index_epub_export_requests_on_user_id"
   end
 

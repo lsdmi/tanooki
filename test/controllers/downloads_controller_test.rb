@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require_relative 'concerns/downloads_epub_test_case'
 
 class DownloadsControllerTest < ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
-
-  def setup
-    @user = users(:user_one)
-    @rich_text = action_text_rich_texts(:rich_text_four)
-    sign_in @user
-  end
+  include DownloadsEpubTestCase
 
   test 'should require login for single chapter epub export' do
     sign_out @user
@@ -73,34 +68,6 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Том 1', export_request.volume_title
   end
 
-  test 'should block single chapter epub when scanlator disallows conversion' do
-    scanlator = scanlators(:one)
-    scanlator.update!(convertable: false, member_ids: scanlator.user_ids)
-
-    Books::GenerateEpubJob.stub :perform_later, ->(*) { flunk 'EPUB export should not be enqueued' } do
-      get epub_download_path(id: @rich_text)
-    end
-
-    assert_redirected_to 'http://www.example.com/'
-    assert_equal I18n.t('downloads.alerts.forbidden'), flash[:alert]
-  ensure
-    scanlator&.update!(convertable: true, member_ids: scanlator.user_ids)
-  end
-
-  test 'should block multiple chapters epub when any scanlator disallows conversion' do
-    scanlator = scanlators(:one)
-    scanlator.update!(convertable: false, member_ids: scanlator.user_ids)
-
-    Books::GenerateEpubJob.stub :perform_later, ->(*) { flunk 'EPUB export should not be enqueued' } do
-      get epub_multiple_downloads_path(chapter_ids: [1, 2], volume_title: 'Том 1')
-    end
-
-    assert_redirected_to 'http://www.example.com/'
-    assert_equal I18n.t('downloads.alerts.forbidden'), flash[:alert]
-  ensure
-    scanlator&.update!(convertable: true, member_ids: scanlator.user_ids)
-  end
-
   test 'should handle error and redirect' do
     EpubExportRequest.stub :create!, ->(*) { raise StandardError } do
       get epub_download_path(id: @rich_text)
@@ -108,24 +75,5 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to 'http://www.example.com/'
     assert_equal I18n.t('downloads.alerts.error'), flash[:alert]
-  end
-
-  private
-
-  def enqueue_single_epub_export
-    enqueued_id = nil
-    Books::GenerateEpubJob.stub(:perform_later, ->(id) { enqueued_id = id }) do
-      get epub_download_path(id: @rich_text), headers: { 'Accept' => 'application/json' }
-    end
-    enqueued_id
-  end
-
-  def enqueue_multiple_epub_export
-    enqueued_id = nil
-    Books::GenerateEpubJob.stub(:perform_later, ->(id) { enqueued_id = id }) do
-      get epub_multiple_downloads_path(chapter_ids: [1, 2], volume_title: 'Том 1'),
-          headers: { 'Accept' => 'application/json' }
-    end
-    enqueued_id
   end
 end
