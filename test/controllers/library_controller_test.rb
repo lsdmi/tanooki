@@ -23,6 +23,18 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
     assert_library_history_preloaded(assigns(:history))
   end
 
+  test 'should not change status for invalid status param' do
+    sign_in users(:user_one)
+    reading_progress = reading_progresses(:one)
+    reading_progress.update!(status: :active)
+
+    patch update_reading_progress_path(reading_progress), params: { status: :invalid, current_section: :active }
+
+    assert_response :success
+    assert_equal 'active', reading_progress.reload.status
+    assert_includes response.body, I18n.t('reading_progress.alerts.invalid_status')
+  end
+
   private
 
   def assert_library_history_preloaded(history)

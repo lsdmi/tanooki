@@ -17,12 +17,13 @@ class LibraryController < ApplicationController
 
   def update_status
     reading_progress = current_user.readings.find(params[:id])
-    new_status = params[:status]&.to_sym
     current_section = params[:current_section]&.to_sym || :active
 
-    Reading::UpdateStatus.new(reading_progress, new_status, current_user).call
-    library_data = Library::SectionDataBuilder.new(current_user, current_section).call
+    @status_update_result = Reading::UpdateStatus.new(
+      reading_progress, params[:status], current_user
+    ).call
 
+    library_data = Library::SectionDataBuilder.new(current_user, current_section).call
     @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
 
     render_library_list(current_section)
@@ -51,14 +52,27 @@ class LibraryController < ApplicationController
   end
 
   def render_library_list(section)
-    render turbo_stream: turbo_stream.update(
-      'library-list',
-      partial: 'library/list',
-      locals: {
-        paginated_readings: @paginated_readings,
-        pagy: @pagy,
-        section: section
-      }
+    streams = [
+      turbo_stream.update(
+        'library-list',
+        partial: 'library/list',
+        locals: {
+          paginated_readings: @paginated_readings,
+          pagy: @pagy,
+          section: section
+        }
+      )
+    ]
+    streams << invalid_reading_status_notice if @status_update_result&.failure?
+
+    render turbo_stream: streams
+  end
+
+  def invalid_reading_status_notice
+    turbo_stream.update(
+      'application-notice',
+      partial: 'shared/notice',
+      locals: { notice: t('reading_progress.alerts.invalid_status') }
     )
   end
 end

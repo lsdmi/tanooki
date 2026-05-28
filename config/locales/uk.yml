@@ -334,6 +334,9 @@ uk:
     one: "розділ додано"
     few: "розділи додано"
     many: "розділів додано"
+  reading_progress:
+    alerts:
+      invalid_status: Невірний статус читання.
   downloads:
     alerts:
       error: Ох, тр*сця! Під час генерування EPUB сталася помилка!
