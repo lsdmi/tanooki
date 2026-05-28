@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
   include ChapterScheduleParams
   include FictionQuery
@@ -31,14 +32,14 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new
   end
 
+  def edit; end
+
   def create
     @chapter = Chapter.new(chapter_params)
     return render_new_with_schedule_error if published_at_schedule_invalid?
 
     persist_new_chapter
   end
-
-  def edit; end
 
   def update
     return render_edit_with_schedule_error if published_at_schedule_invalid?
@@ -54,7 +55,7 @@ class ChaptersController < ApplicationController
         chapter_params[:scanlator_ids], @chapter, user: current_user
       ).call
       update_fiction_status
-      redirect_to reading_path(@chapter.fiction), notice: 'Розділ додано.'
+      redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
     else
       render 'chapters/new', status: :unprocessable_content
     end
@@ -65,7 +66,7 @@ class ChaptersController < ApplicationController
       Chapters::SyncScanlatorAssociations.new(
         chapter_params[:scanlator_ids], @chapter, user: current_user
       ).call
-      redirect_to reading_path(@chapter.fiction), notice: 'Розділ оновлено.'
+      redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.update_success')
     else
       render 'chapters/edit', status: :unprocessable_content
     end
@@ -83,10 +84,10 @@ class ChaptersController < ApplicationController
   end
 
   def chapter_params
-    permitted = params.require(:chapter).permit(
-      :content, :fiction_id, :number, :title, :user_id, :volume_number,
-      :published_at_date, :published_at_time,
-      scanlator_ids: []
+    permitted = params.expect(
+      chapter: [:content, :fiction_id, :number, :title, :user_id, :volume_number,
+                :published_at_date, :published_at_time,
+                { scanlator_ids: [] }]
     )
     merge_published_at_from_schedule_fields(permitted)
   end
@@ -104,7 +105,7 @@ class ChaptersController < ApplicationController
     return if current_user&.admin?
     return if current_user && current_user.scanlators.ids.intersect?(@chapter.scanlators.ids)
 
-    redirect_to fiction_path(@chapter.fiction), alert: 'Цей розділ ще недоступний для читання.'
+    redirect_to fiction_path(@chapter.fiction), alert: t('chapters.alerts.not_yet_public')
   end
 
   def update_fiction_status

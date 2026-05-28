@@ -64,7 +64,7 @@
         <div>
           <% selected_pokemon.pokemon.types.pluck(:name).each do |type| %>
             <div class="leading-tight mb-1">
-              <%= tag.span type, class: "text-sm font-light #{DashboardHelper::TYPE_COLORS[type]} px-2 rounded-lg text-white" %>
+              <%= tag.span type, class: "text-sm font-light #{Pokemons::StatsHelper::TYPE_COLORS[type]} px-2 rounded-lg text-white" %>
             </div>
           <% end %>
         </div>
@@ -107,7 +107,7 @@
         </p>
         <div class="flex items-center justify-center mb-4">
           <% descendant.types.pluck(:name).each do |type| %>
-            <%= tag.span type, class: "text-sm font-light #{DashboardHelper::TYPE_COLORS[type]} px-2 mx-1 rounded-lg text-white" %>
+            <%= tag.span type, class: "text-sm font-light #{Pokemons::StatsHelper::TYPE_COLORS[type]} px-2 mx-1 rounded-lg text-white" %>
           <% end %>
         </div>
       </div>

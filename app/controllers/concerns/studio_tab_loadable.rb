@@ -5,6 +5,10 @@
 module StudioTabLoadable
   extend ActiveSupport::Concern
 
+  STUDIO_TAB_COLLECTION_DEFAULTS = %i[
+    comments fictions publications avatars scanlators bookshelves epub_export_requests
+  ].freeze
+
   private
 
   def set_active_tab
@@ -31,15 +35,10 @@ module StudioTabLoadable
     assign_instance_variables
   end
 
-  # rubocop:disable Naming/MemoizedInstanceVariableName -- ||= defaults tab collection ivars; not memoizing this method
   def assign_instance_variables
-    @comments ||= []
-    @fictions ||= []
-    @publications ||= []
-    @avatars ||= []
-    @scanlators ||= []
-    @bookshelves ||= []
-    @epub_export_requests ||= []
+    STUDIO_TAB_COLLECTION_DEFAULTS.each do |name|
+      ivar = :"@#{name}"
+      instance_variable_set(ivar, instance_variable_get(ivar) || [])
+    end
   end
-  # rubocop:enable Naming/MemoizedInstanceVariableName
 end

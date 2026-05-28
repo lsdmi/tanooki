@@ -2,6 +2,7 @@
 
 module Api
   module V1
+    # Public JSON list of fictions for external integrations (e.g. Hikka).
     class FictionsController < ApplicationController
       def index
         @fictions = Rails.cache.fetch('fictions_hikka', expires_in: 1.hour) do

@@ -147,12 +147,12 @@ class FictionsController < ApplicationController
   end
 
   def authorize_fiction
-    policy = FictionPolicy.new(current_user, @fiction)
+    policy = Fictions::Authorization.new(current_user, @fiction)
     redirect_to root_path unless policy.edit?
   end
 
   def authorize_fiction_creation
-    policy = FictionPolicy.new(current_user, nil)
+    policy = Fictions::Authorization.new(current_user, nil)
     redirect_to new_scanlator_path unless policy.create?
   end
 

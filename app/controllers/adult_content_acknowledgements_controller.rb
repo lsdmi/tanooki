@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Records that the visitor acknowledged the adult-content notice.
 class AdultContentAcknowledgementsController < ApplicationController
   def create
     if user_signed_in?

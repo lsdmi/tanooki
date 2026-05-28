@@ -10,7 +10,7 @@ class FictionCreator
   end
 
   def call
-    FictionGenresManager.new(@genre_ids, @fiction).operate
+    Fictions::SyncGenres.new(@genre_ids, @fiction).call
     Fictions::SyncScanlatorAssociations.new(@scanlator_ids, @fiction, user: @user).call
   end
 end

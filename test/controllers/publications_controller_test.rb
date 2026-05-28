@@ -45,7 +45,8 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not reassign publication owner on update' do
-    patch publication_url(@publication), params: { publication: @publication_params.merge(user_id: users(:user_two).id) }
+    patch publication_url(@publication),
+          params: { publication: @publication_params.merge(user_id: users(:user_two).id) }
 
     assert_equal users(:user_one), @publication.reload.user
   end

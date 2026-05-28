@@ -26,7 +26,7 @@ class FictionListsController < ApplicationController
     pagy(
       FictionListQueryBuilder.new(
         base_scope,
-        FictionListFilterParams.permit_for_query(params)
+        Fictions::ListFilters.permit_for_query(params)
       ).call,
       limit: 20
     )

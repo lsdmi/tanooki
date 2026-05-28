@@ -33,7 +33,7 @@ module Scanlators
     end
 
     test 'non-member cannot change roster' do
-      outsider = users(:user_101)
+      outsider = User.find(101) # users fixture id 101 — not on scanlators(:two)
 
       SyncMembers.new([@other_user.id], @scanlator, user: outsider).call
 

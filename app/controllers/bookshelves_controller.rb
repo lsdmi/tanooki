@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# User-curated fiction lists (bookshelves) for browsing and managing collections.
 class BookshelvesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
@@ -29,23 +30,23 @@ class BookshelvesController < ApplicationController
     @bookshelf = current_user.bookshelves.build
   end
 
+  def edit
+    @bookshelf.fiction_ids = @bookshelf.fictions.pluck(:id)
+  end
+
   def create
     @bookshelf = current_user.bookshelves.build(bookshelf_params)
 
     if @bookshelf.save
-      redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю дадано'
+      redirect_to studio_index_path(tab: 'bookshelves'), notice: t('bookshelves.notices.create_success')
     else
       render :new, status: :unprocessable_content
     end
   end
 
-  def edit
-    @bookshelf.fiction_ids = @bookshelf.fictions.pluck(:id)
-  end
-
   def update
     if @bookshelf.update(bookshelf_params)
-      redirect_to studio_index_path(tab: 'bookshelves'), notice: 'Полицю оновлено!'
+      redirect_to studio_index_path(tab: 'bookshelves'), notice: t('bookshelves.notices.update_success')
     else
       render :edit, status: :unprocessable_content
     end
@@ -61,14 +62,14 @@ class BookshelvesController < ApplicationController
 
   def set_bookshelf
     @bookshelf = if action_name == 'show'
-                   Bookshelf.find_by_sqid(params[:sqid])
+                   Bookshelf.by_sqid(params[:sqid]).first!
                  else
-                   current_user.bookshelves.find(params[:sqid])
+                   current_user.bookshelves.by_sqid(params[:sqid]).first!
                  end
   end
 
   def bookshelf_params
-    params.require(:bookshelf).permit(:title, :description, fiction_ids: [])
+    params.expect(bookshelf: [:title, :description, { fiction_ids: [] }])
   end
 
   def load_selected_fictions

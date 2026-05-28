@@ -18,10 +18,13 @@ class Bookshelf < ApplicationRecord
 
   scope :ordered, -> { order(:created_at) }
   scope :most_viewed, -> { order(views: :desc) }
+  scope :by_sqid, lambda { |sqid_string|
+    decoded = Sqids.new.decode(sqid_string.to_s)
+    decoded.any? ? where(id: decoded.first) : none
+  }
 
   def self.find_by_sqid(sqid_string)
-    ids = Sqids.new.decode(sqid_string)
-    find_by(id: ids.first) if ids.any?
+    by_sqid(sqid_string).first
   end
 
   def sqid

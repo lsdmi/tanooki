@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 

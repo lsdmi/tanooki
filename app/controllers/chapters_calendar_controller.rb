@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Calendar of recent chapter releases, optionally filtered to subscribed fictions.
 class ChaptersCalendarController < ApplicationController
   # Bump when calendar payload shape changes (e.g. presenter hash keys).
   CALENDAR_CACHE_VERSION = 2

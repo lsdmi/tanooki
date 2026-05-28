@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# JSON API for recent messages in the site-wide chat room.
 class ChatController < ApplicationController
   def recent_messages
     ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?

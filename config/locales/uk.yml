@@ -320,6 +320,16 @@ uk:
     empty_hint_subscriptions: Перемкніть до «Усі оновлення» або відкрийте %{catalog_link}.
     empty_catalog_link: каталог творів
     empty_day: Цього дня немає нових розділів.
+  bookshelves:
+    notices:
+      create_success: Полицю дадано
+      update_success: Полицю оновлено!
+  chapters:
+    notices:
+      create_success: Розділ додано.
+      update_success: Розділ оновлено.
+    alerts:
+      not_yet_public: Цей розділ ще недоступний для читання.
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"

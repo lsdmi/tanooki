@@ -83,9 +83,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get edit when owner' do
     sign_in @user
-    # The controller has a bug - it uses find(sqid) instead of find_by_sqid for edit actions
-    # So we need to use the actual ID, not sqid
-    get edit_bookshelf_url(@bookshelf.id)
+    get edit_bookshelf_url(@bookshelf.sqid)
 
     assert_response :success
   end
@@ -94,9 +92,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     other_user = users(:user_two)
     sign_in other_user
 
-    # The controller has a bug - it uses find(sqid) instead of find_by_sqid for edit actions
-    # This will fail because the bookshelf doesn't belong to other_user
-    get edit_bookshelf_url(@bookshelf.id)
+    get edit_bookshelf_url(@bookshelf.sqid)
 
     assert_response :not_found
   end
@@ -104,8 +100,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
   test 'should update bookshelf when owner' do
     sign_in @user
 
-    # The controller has a bug - it uses find(sqid) instead of find_by_sqid for update actions
-    patch bookshelf_url(@bookshelf.id), params: {
+    patch bookshelf_url(@bookshelf.sqid), params: {
       bookshelf: {
         title: 'Updated Title',
         description: 'Updated description',
@@ -123,8 +118,7 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
   test 'should not update bookshelf with invalid params' do
     sign_in @user
 
-    # The controller has a bug - it uses find(sqid) instead of find_by_sqid for update actions
-    patch bookshelf_url(@bookshelf.id), params: {
+    patch bookshelf_url(@bookshelf.sqid), params: {
       bookshelf: {
         title: '' # Invalid - empty title
       }
@@ -136,9 +130,8 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
   test 'should destroy bookshelf when owner' do
     sign_in @user
 
-    # The controller has a bug - it uses find(sqid) instead of find_by_sqid for destroy actions
     assert_difference('Bookshelf.count', -1) do
-      delete bookshelf_url(@bookshelf.id, format: :turbo_stream)
+      delete bookshelf_url(@bookshelf.sqid, format: :turbo_stream)
     end
 
     assert_response :success
