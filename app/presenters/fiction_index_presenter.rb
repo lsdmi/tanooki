@@ -22,7 +22,7 @@ class FictionIndexPresenter
 
   def released_chapters_counts_for_most_reads
     @released_chapters_counts_for_most_reads ||= begin
-      fiction_ids = most_reads.ids
+      fiction_ids = Array(most_reads).map(&:id)
       Rails.cache.fetch(['fiction_index/released_chapters_by_fiction', fiction_ids.sort], expires_in: 12.hours) do
         Chapter.released
                .where(fiction_id: fiction_ids)

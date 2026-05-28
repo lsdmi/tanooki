@@ -10,6 +10,7 @@ class Fiction < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
+  extend Pagy::Searchkick
 
   attr_accessor :genre_ids, :scanlator_ids, :user_id
 

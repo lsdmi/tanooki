@@ -9,21 +9,21 @@ class SearchController < ApplicationController
 
     case params[:filter]
     when 'fiction'
-      @pagy_fictions, @fictions = pagy_searchkick(fictions, limit: 24)
+      @pagy_fictions, @fictions = pagy_searchkick_for(fiction_search, limit: 24)
       @results = []
       @videos = []
     when 'blog'
-      @pagy_results, @results = pagy_searchkick(publications, limit: 7)
+      @pagy_results, @results = pagy_searchkick_for(publication_search, limit: 7)
       @fictions = []
       @videos = []
     when 'video'
-      @pagy_videos, @videos = pagy_searchkick(videos, limit: 6)
+      @pagy_videos, @videos = pagy_searchkick_for(video_search, limit: 6)
       @fictions = []
       @results = []
     else
-      @pagy_fictions, @fictions = pagy_searchkick(fictions, limit: 12)
-      @pagy_results, @results = pagy_searchkick(publications, limit: 7)
-      @pagy_videos, @videos = pagy_searchkick(videos, limit: 3)
+      @pagy_fictions, @fictions = pagy_searchkick_for(fiction_search, limit: 12)
+      @pagy_results, @results = pagy_searchkick_for(publication_search, limit: 7)
+      @pagy_videos, @videos = pagy_searchkick_for(video_search, limit: 3)
     end
 
     # Handle turbo frame requests for pagination
@@ -65,34 +65,45 @@ class SearchController < ApplicationController
     params[:search] = Array(params[:search])
   end
 
-  def publications
-    Publication.search(
+  def fiction_search
+    Fiction.pagy_searchkick(
+      params[:search],
+      fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
+    ).includes(%i[genres scanlators])
+  end
+
+  def publication_search
+    Publication.pagy_searchkick(
       params[:search],
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
     ).includes(%i[tags rich_text_description])
   end
 
-  def fictions
-    Fiction.search(
-      params[:search],
-      fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
-    ).includes(%i[genres scanlators])
-  end
-
-  def videos
-    YoutubeVideo.search(
+  def video_search
+    YoutubeVideo.pagy_searchkick(
       params[:search],
       fields: ['title^2', 'description', 'tags'],
       boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
     ).includes(:youtube_channel)
   end
 
-  def pagy_searchkick(searchkick_results, limit:)
-    return pagy_array([], limit: limit) if searchkick_results.blank?
+  OPENSEARCH_CONNECTION_ERRORS = [
+    Faraday::Error,
+    Errno::ECONNREFUSED,
+    SocketError,
+    Timeout::Error
+  ].freeze
 
-    # Convert searchkick results to array for pagination
-    results_array = searchkick_results.to_a
-    pagy_array(results_array, limit: limit)
+  def pagy_searchkick_for(search_args, limit:)
+    pagy_searchkick(search_args, limit: limit)
+  rescue *OPENSEARCH_CONNECTION_ERRORS => e
+    Rails.logger.warn("[search] OpenSearch unavailable: #{e.class}: #{e.message}")
+    @search_unavailable = true
+    [empty_search_pagy(limit), []]
+  end
+
+  def empty_search_pagy(limit)
+    Pagy.new(count: 0, page: params[:page] || 1, limit: limit)
   end
 end

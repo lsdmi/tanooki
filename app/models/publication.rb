@@ -8,6 +8,7 @@ class Publication < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
+  extend Pagy::Searchkick
 
   attr_accessor :tag_ids
 

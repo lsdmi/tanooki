@@ -6,6 +6,7 @@ class YoutubeVideo < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
   searchkick callbacks: :async
+  extend Pagy::Searchkick
 
   belongs_to :youtube_channel, inverse_of: :videos
 
