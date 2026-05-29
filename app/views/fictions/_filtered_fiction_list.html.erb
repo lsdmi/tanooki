@@ -30,14 +30,14 @@
     <% fictions.each do |fiction| %>
       <div class="">
         <%= link_to fiction_path(fiction), class: 'relative block transition duration-300 transform hover:scale-105' do %>
-          <%= image_tag url_for(fiction.cover),
+          <%= image_tag cover_card_url(fiction.cover),
             alt: fiction.cover.blob.filename.to_s,
             class: "w-full aspect-[2/3] object-cover rounded-lg shadow-sm mb-2",
             loading: "lazy",
             data: {
               controller: "lazy-image",
               lazy_image_target: "image",
-              lazy_image_url_value: url_for(fiction.cover)
+              lazy_image_url_value: cover_card_url(fiction.cover)
             } %>
         <% end %>
         <div class="flex justify-center">

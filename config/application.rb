@@ -32,7 +32,7 @@ module Tanooki
     config.active_job.queue_name_prefix = Rails.env
     # config.eager_load_paths << Rails.root.join('extras')
 
-    config.active_storage.variant_processor = :mini_magick
+    config.active_storage.variant_processor = :vips
     config.autoload_paths += %W[#{config.root}/app/services]
     config.autoload_paths += %W[#{config.root}/app/query]
     config.autoload_paths += %W[#{config.root}/app/forms]

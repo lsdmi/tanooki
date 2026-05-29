@@ -4,7 +4,7 @@
       <div class="rounded-md float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-48 mb-2 md:mb-1 lg:mb-2">
         <%= link_to tale_path(highlight) do %>
           <div class="float-left relative mb-2 w-full">
-            <%= image_tag url_for(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "rounded-lg h-72 md:h-48 w-full object-cover" %>
+            <%= image_tag cover_card_url(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "rounded-lg h-72 md:h-48 w-full object-cover" %>
             <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
           </div>
         <% end %>

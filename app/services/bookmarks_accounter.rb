@@ -2,7 +2,7 @@
 
 # Counts active, finished, postponed, and dropped readings for a fiction.
 class BookmarksAccounter
-  include Library::ReadingStateHelper
+  STATUS_ORDER = ReadingProgress.statuses.keys.freeze
 
   attr_reader :fiction
 
@@ -11,24 +11,14 @@ class BookmarksAccounter
   end
 
   def call
-    [active, finished, postponed, dropped]
+    counts = fiction.readings.group(:status).count
+
+    STATUS_ORDER.map { |status| count_for_status(counts, status) }
   end
 
   private
 
-  def active
-    fiction.readings.active.count
-  end
-
-  def finished
-    fiction.readings.finished.count
-  end
-
-  def postponed
-    fiction.readings.postponed.count
-  end
-
-  def dropped
-    fiction.readings.dropped.count
+  def count_for_status(counts, status)
+    counts[status] || counts[ReadingProgress.statuses[status]] || 0
   end
 end

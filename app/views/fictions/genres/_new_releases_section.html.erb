@@ -37,7 +37,7 @@
                 <%= card[:rank] %>
               </span>
             <% end %>
-            <%= image_tag url_for(fiction.cover), alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" %>
+            <%= image_tag cover_card_url(fiction.cover), alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" %>
           <% end %>
           <div class="relative isolate flex min-h-0 flex-1 flex-col overflow-hidden bg-gradient-to-br from-[#142a32]/38 via-[#0f252c] to-[#0a171c] p-5 sm:p-6 sm:pl-7 sm:border-l sm:border-white/[0.05]">
             <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">

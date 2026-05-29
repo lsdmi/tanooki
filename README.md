@@ -34,6 +34,8 @@ rails server
 
 Production runs on [DigitalOcean App Platform](https://docs.digitalocean.com/products/app-platform/). Push to `main` on GitHub (`lsdmi/tanooki`) to trigger a deploy. Set environment variables in the App Platform dashboard (see `.env.example`).
 
+`Aptfile` installs libvips for Active Storage cover thumbnails. After deploy, verify with `bundle exec rails runner "puts Attachments::VariantProcessing.available?"` (should print `true`).
+
 ## Структура
 
 ```

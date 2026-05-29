@@ -1,7 +1,7 @@
 <div class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 lg:mb-2 block md:flex justify-center">
   <div class="rounded-xl float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-44 lg:h-36 mb-2 md:mb-1">
     <%= link_to tale_path(publication) do %>
-      <%= image_tag url_for(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] h-72 md:h-44 lg:h-36 object-cover", width: 320, height: 144 %>
+      <%= image_tag cover_card_url(publication.cover), alt: publication.cover.blob.filename.to_s, class: "rounded-xl opacity-80 lg:absolute m-auto w-full l-[-9999px] r-[-9999px] h-72 md:h-44 lg:h-36 object-cover", width: 320, height: 144 %>
       <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
     <% end %>
   </div>

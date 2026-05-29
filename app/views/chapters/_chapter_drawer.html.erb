@@ -35,7 +35,7 @@
       <div class="flex items-start gap-3 pr-10 sm:gap-3.5 sm:pr-11">
         <%= link_to fiction_path(fiction), class: "relative block h-16 w-[4.5rem] shrink-0 overflow-hidden rounded-md bg-stone-200 ring-1 ring-stone-300/90 sm:h-[5.25rem] sm:w-[3.75rem] dark:bg-zinc-800 dark:ring-zinc-700/80", data: { turbo: false } do %>
           <% if fiction.cover.attached? %>
-            <%= image_tag url_for(fiction.cover), alt: fiction.title, class: "h-full w-full object-cover" %>
+            <%= image_tag cover_thumbnail_url(fiction.cover), alt: fiction.title, class: "h-full w-full object-cover" %>
           <% else %>
             <span class="flex h-full w-full items-center justify-center text-[10px] font-medium text-stone-500 dark:text-zinc-500">—</span>
           <% end %>
