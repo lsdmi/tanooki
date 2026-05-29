@@ -3,9 +3,6 @@
 module Fictions
   # Loads chapters for one fiction TOC accordion section (volume or numeric range).
   class ChapterSectionLoader
-    include Library::ChapterCatalogHelper
-    include ChaptersHelper
-
     def initialize(fiction:, viewer:, section_key:, order:, chapter_ids: nil)
       @fiction = fiction
       @viewer = viewer
@@ -15,14 +12,10 @@ module Fictions
     end
 
     def call
-      scope = chapters_scope_for_list(@fiction, @viewer)
-      scoped = if @chapter_ids.present?
-                 scope.where(id: @chapter_ids)
-               else
-                 apply_section_filter(scope)
-               end
-      order_sql = @order.to_sym == :desc ? order_clause_desc : order_clause
-      scoped.includes(:scanlators).reorder(order_sql)
+      Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer)
+                             .then { |scope| filter_scope(scope) }
+                             .includes(:scanlators)
+                             .reorder(list_order_sql)
     end
 
     def self.parse_section_key(key)
@@ -35,6 +28,20 @@ module Fictions
     end
 
     private
+
+    def filter_scope(scope)
+      return scope.where(id: @chapter_ids) if @chapter_ids.present?
+
+      apply_section_filter(scope)
+    end
+
+    def list_order_sql
+      if @order.to_sym == :desc
+        Library::ChapterCatalog.order_clause_desc
+      else
+        Library::ChapterCatalog.order_clause
+      end
+    end
 
     def parse_chapter_ids(raw)
       return [] if raw.blank?
@@ -58,7 +65,7 @@ module Fictions
 
     def range_chapters(scope, range_label)
       unnumbered = scope.where(volume_number: nil)
-      grouped = chapters_collection(unnumbered)
+      grouped = Library::ChapterCatalog.group_by_number_range(unnumbered)
       records = grouped[range_label]
       return Chapter.none if records.blank?
 

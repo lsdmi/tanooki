@@ -2,8 +2,6 @@
 
 # View-model for fiction#show: chapters, comments, reading progress, and sidebar data.
 class FictionShowPresenter
-  include Library::ReadingStateHelper
-
   def initialize(fiction, current_user, params = {})
     @fiction = fiction
     @current_user = current_user
@@ -91,7 +89,7 @@ class FictionShowPresenter
   end
 
   def first_chapter
-    @first_chapter ||= ordered_chapters(@fiction, viewer: @current_user).first
+    @first_chapter ||= Library::ChapterCatalog.ordered_chapters(@fiction, viewer: @current_user).first
   end
 
   private
@@ -108,7 +106,9 @@ class FictionShowPresenter
   end
 
   def handle_missing_chapter(progress)
-    return clear_reading_progress(progress) if chapters_scope_for_list(@fiction, @current_user).empty?
+    if Library::ChapterCatalog.chapters_scope_for_list(@fiction, @current_user).empty?
+      return clear_reading_progress(progress)
+    end
 
     advance_reading_progress_to_last_available(progress)
   end
@@ -119,7 +119,7 @@ class FictionShowPresenter
   end
 
   def advance_reading_progress_to_last_available(progress)
-    last = ordered_chapters_desc(@fiction, viewer: @current_user).first
+    last = Library::ChapterCatalog.ordered_chapters_desc(@fiction, viewer: @current_user).first
     return clear_reading_progress(progress) unless last
 
     progress.update(chapter: last)
@@ -127,6 +127,6 @@ class FictionShowPresenter
   end
 
   def last_chapter
-    @last_chapter ||= ordered_chapters_desc(@fiction, viewer: @current_user).first
+    @last_chapter ||= Library::ChapterCatalog.ordered_chapters_desc(@fiction, viewer: @current_user).first
   end
 end

@@ -3,7 +3,6 @@
 # A single installment of a {Fiction} work.
 class Chapter < ApplicationRecord
   extend FriendlyId
-  include ChaptersHelper
   acts_as_paranoid
   friendly_id :slug_candidates
 
@@ -54,15 +53,15 @@ class Chapter < ApplicationRecord
 
   def display_title
     header = ''
-    header += "Том #{check_decimal(volume_number)}. " if volume_number&.nonzero?
-    header += "Розділ #{check_decimal(number)}"
+    header += "Том #{Chapters::Formatting.format_decimal(volume_number)}. " if volume_number&.nonzero?
+    header += "Розділ #{Chapters::Formatting.format_decimal(number)}"
     header += " - #{title}" if title.present?
     header
   end
 
   def display_title_no_volume
     header = ''
-    header += "Розділ #{check_decimal(number)}"
+    header += "Розділ #{Chapters::Formatting.format_decimal(number)}"
     header += " - #{title}" if title.present?
     header
   end

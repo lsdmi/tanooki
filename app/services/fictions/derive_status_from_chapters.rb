@@ -3,14 +3,12 @@
 module Fictions
   # Derives fiction status from unique chapter release progress.
   class DeriveStatusFromChapters
-    include Library::ReadingStateHelper
-
     attr_reader :fiction_status, :total_chapters, :unique
 
     def initialize(fiction)
       @fiction_status = fiction.status
       @total_chapters = fiction.total_chapters
-      @unique = unique_chapters(fiction.chapters)
+      @unique = Library::ChapterNavigation.unique_chapters(fiction.chapters)
     end
 
     def call

@@ -5,32 +5,12 @@ module Library
   module ReadingStateHelper
     include ChapterCatalogHelper
     include ChapterNavigationHelper
-    include ChaptersHelper
+    include Chapters::EpubDownloadHelper
 
-    STATUSES = {
-      'Читаю' => :active,
-      'Прочитано' => :finished,
-      'Відкладено' => :postponed,
-      'Покинуто' => :dropped
-    }.freeze
-
-    def status_filters
-      STATUSES
-    end
-
-    def status_label_for(status)
-      status_filters.key(status)
-    end
+    delegate :status_filters, :status_label_for, to: ReadingState
 
     def fiction_epub_download_support(fiction, viewer: nil)
-      list = ordered_chapters(fiction, viewer: viewer).includes(:scanlators).to_a
-      return :none if list.empty?
-
-      allowed = list.count { |ch| chapter_epub_download_allowed?(ch) }
-      return :all if allowed == list.size
-      return :none if allowed.zero?
-
-      :mixed
+      ReadingState.fiction_epub_download_support(fiction, viewer: viewer)
     end
   end
 end
