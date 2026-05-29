@@ -6,22 +6,22 @@ class SyncAllChannelsVideosJobTest < ActiveSupport::TestCase
   test 'perform is a no-op outside production' do
     called = false
 
-    Youtube::VideosJob.stub(:perform_now, ->(*) { called = true }) do
+    Youtube::VideosJob.stub(:perform_later, ->(*) { called = true }) do
       Youtube::SyncAllChannelsVideosJob.new.perform
     end
 
     assert_not called
   end
 
-  test 'perform syncs each channel in production' do
-    synced_channel_ids = []
+  test 'perform enqueues a VideosJob per channel in production' do
+    enqueued_channel_ids = []
 
     Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-      Youtube::VideosJob.stub(:perform_now, ->(channel_id) { synced_channel_ids << channel_id }) do
+      Youtube::VideosJob.stub(:perform_later, ->(channel_id) { enqueued_channel_ids << channel_id }) do
         Youtube::SyncAllChannelsVideosJob.new.perform
       end
     end
 
-    assert_equal YoutubeChannel.pluck(:channel_id), synced_channel_ids
+    assert_equal YoutubeChannel.pluck(:channel_id), enqueued_channel_ids
   end
 end

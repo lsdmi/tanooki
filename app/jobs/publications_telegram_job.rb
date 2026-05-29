@@ -2,6 +2,8 @@
 
 # Production digest: weekly publications posted to the @bakaInUa Telegram channel.
 class PublicationsTelegramJob < ApplicationJob
+  include TelegramApiJob
+
   queue_as :default
 
   # Telegram caps messages at 4096 characters; cap how many publications we list.

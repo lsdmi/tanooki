@@ -5,6 +5,8 @@ require 'google/apis/youtube_v3'
 module Youtube
   # Imports the latest non-short videos from a YouTube channel into YoutubeVideo records.
   class VideosJob < ApplicationJob
+    include YoutubeApiJob
+
     queue_as :default
 
     MAX_TAG_LENGTH = 255

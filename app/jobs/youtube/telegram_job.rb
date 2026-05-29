@@ -3,6 +3,8 @@
 module Youtube
   # Production digest: top videos of the week posted to the @bakaInUa Telegram channel.
   class TelegramJob < ApplicationJob
+    include TelegramApiJob
+
     queue_as :default
 
     def perform

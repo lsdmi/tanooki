@@ -2,6 +2,8 @@
 
 # Wednesday digest: stats for this week + highlights from last calendar week (Europe/Kiev).
 class WeeklyStatsTelegramJob < ApplicationJob
+  include TelegramApiJob
+
   queue_as :default
 
   BUYMECOFFEE_URL = 'https://www.buymeacoffee.com/bakainua'

@@ -2,6 +2,8 @@
 
 # Production digest: recent fictions posted to the @bakaInUa Telegram channel.
 class FictionsTelegramJob < ApplicationJob
+  include TelegramApiJob
+
   queue_as :default
 
   # Telegram caps messages at 4096 characters; cap how many fictions we list.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -205,7 +205,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
+    t.index ["status"], name: "index_fictions_on_status"
+    t.index ["views"], name: "index_fictions_on_views"
   end
 
   create_table "genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -281,8 +284,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["created_at"], name: "index_publications_on_created_at"
     t.index ["slug"], name: "index_publications_on_slug", unique: true
     t.index ["user_id"], name: "index_publications_on_user_id"
+    t.index ["views"], name: "index_publications_on_views"
   end
 
   create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -293,9 +298,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
+    t.index ["created_at", "fiction_id"], name: "index_reading_progresses_on_created_at_and_fiction_id"
     t.index ["fiction_id"], name: "index_reading_progresses_on_fiction_id"
     t.index ["status"], name: "index_reading_progresses_on_status"
     t.index ["user_id", "fiction_id"], name: "index_reading_progresses_on_user_id_and_fiction_id", unique: true
+    t.index ["user_id", "updated_at"], name: "index_reading_progresses_on_user_id_and_updated_at"
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
   end
 
@@ -547,6 +554,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["published_at"], name: "index_youtube_videos_on_published_at"
+    t.index ["views"], name: "index_youtube_videos_on_views"
+    t.index ["youtube_channel_id", "published_at"], name: "index_youtube_videos_on_channel_id_and_published_at"
     t.index ["youtube_channel_id"], name: "index_youtube_videos_on_youtube_channel_id"
   end
 
