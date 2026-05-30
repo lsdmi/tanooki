@@ -3,8 +3,22 @@
 require 'test_helper'
 
 module ExternalUrls
-  class LinkifierHelperTest < ActionView::TestCase
-    tests LinkifierHelper
+  class UrlsHelperTest < ActionView::TestCase
+    tests UrlsHelper
+
+    test 'https_url leaves http and https URLs unchanged' do
+      assert_equal 'https://a.test', view.https_url('https://a.test')
+      assert_equal 'http://b.test', view.https_url('http://b.test')
+    end
+
+    test 'https_url prepends https scheme for host-only input' do
+      assert_equal 'https://example.com', view.https_url('example.com')
+    end
+
+    test 'https_url returns empty string for blank input' do
+      assert_equal '', view.https_url(nil)
+      assert_equal '', view.https_url('')
+    end
 
     test 'linkify_urls returns nil for blank input' do
       assert_nil view.linkify_urls(nil)
@@ -22,7 +36,7 @@ module ExternalUrls
       html = view.linkify_urls('https://example.com/path')
 
       assert_includes html, 'rel="noopener noreferrer"'
-      assert_includes html, LinkifierHelper::DEFAULT_LINKIFY_LINK_CLASS
+      assert_includes html, UrlsHelper::DEFAULT_LINKIFY_LINK_CLASS
     end
 
     test 'linkify_urls uses custom link_class when given' do
@@ -41,7 +55,7 @@ module ExternalUrls
     test 'linkify_urls does not wrap URLs without a host' do
       html = view.linkify_urls('broken http:// text')
 
-      assert_not_includes html, '<a '
+      assert_not_includes html, 'href='
     end
   end
 end

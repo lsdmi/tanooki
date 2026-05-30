@@ -3,12 +3,19 @@
 require 'uri'
 
 module ExternalUrls
-  # Turns http(s) substrings in plain text into sanitized external links.
-  module LinkifierHelper
+  # Normalizes external URLs and linkifies http(s) substrings in plain text.
+  module UrlsHelper
     DEFAULT_LINKIFY_LINK_CLASS =
       'underline text-sky-700 dark:text-sky-400 hover:text-sky-900 dark:hover:text-sky-300 break-words'
 
     HTTP_URL_PATTERN = URI::DEFAULT_PARSER.make_regexp(%w[http https]).freeze
+
+    def https_url(url)
+      s = url.to_s
+      return s if s.blank?
+
+      s.start_with?('http') ? s : "https://#{s}"
+    end
 
     # Plain text with http(s) URLs turned into external links. HTML in the source is escaped.
     def linkify_urls(text, link_class: DEFAULT_LINKIFY_LINK_CLASS)

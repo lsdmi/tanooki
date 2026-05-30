@@ -50,19 +50,27 @@ Rails.application.routes.draw do
       get :comments
     end
   end
-  resources :fictions do
-    member do
-      get :details
-      get :chapter_section
-    end
+  resources :fictions, only: [] do
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'
       get :calendar, to: 'chapters_calendar#index'
       post :toggle_order
+    end
+  end
+  resources :fictions, only: [] do
+    collection do
       scope :genres do
         get ':slug', to: 'fictions/genres#show', as: :fiction_genre
       end
     end
+  end
+  resources :fictions, only: [] do
+    member do
+      get :details
+      get :chapter_section
+    end
+  end
+  resources :fictions do
     resources :fiction_ratings, only: %i[create update]
   end
 
@@ -148,8 +156,12 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [] do
     member { get :epub }
+  end
+  resources :downloads, only: [] do
+    collection { get :epub_multiple }
+  end
+  resources :downloads, only: [] do
     collection do
-      get :epub_multiple
       get 'epub_exports/:token/status', to: 'downloads#epub_export_status', as: :epub_export_status
       get 'epub_exports/:token/file', to: 'downloads#epub_export_file', as: :epub_export_file
     end

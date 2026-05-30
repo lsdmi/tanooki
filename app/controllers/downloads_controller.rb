@@ -56,8 +56,8 @@ class DownloadsController < ApplicationController
   end
 
   def authorize_epub_export_owner!
-    return if @epub_export_request.user == current_user
     return if current_user.admin?
+    return if current_user.epub_export_requests.exists?(id: @epub_export_request.id)
 
     handle_forbidden
   end

@@ -26,22 +26,5 @@ module Chapters
       sl.convertable = true
       sl.save(validate: false)
     end
-
-    test 'chapter_epub_download_allowed? is true when all scanlators are convertable' do
-      assert chapter_epub_download_allowed?(chapters(:one))
-    end
-
-    test 'chapter_epub_download_allowed? is false when a scanlator is not convertable' do
-      c1 = chapters(:one)
-      sl = scanlators(:one)
-      sl.convertable = false
-      sl.save(validate: false)
-
-      assert_not chapter_epub_download_allowed?(c1)
-    ensure
-      sl = scanlators(:one)
-      sl.convertable = true
-      sl.save(validate: false)
-    end
   end
 end

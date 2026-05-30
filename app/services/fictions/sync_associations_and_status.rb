@@ -11,7 +11,7 @@ module Fictions
     end
 
     def call
-      FictionCreator.new(@fiction, genre_ids: @genre_ids, scanlator_ids: @scanlator_ids, user: @user).call
+      SyncAssociations.new(@fiction, genre_ids: @genre_ids, scanlator_ids: @scanlator_ids, user: @user).call
       refresh_status
     end
 

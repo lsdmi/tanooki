@@ -43,7 +43,7 @@ class LibraryController < ApplicationController
 
   def favourite_translators
     Rails.cache.fetch("user:#{current_user.id}:favourite_translators:#{@section}", expires_in: 5.minutes) do
-      FavouriteTranslatorsFinder.new(@history_presenter.section(:active)).find
+      Library::TopScanlatorsFromReadings.new(@history_presenter.section(:active)).call
     end
   end
 

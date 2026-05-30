@@ -39,7 +39,7 @@ class FictionsController < ApplicationController
     @fiction = Fiction.new
     form = FictionForm.new(fiction: @fiction, params: fiction_params)
     if form.save
-      FictionCreator.new(
+      Fictions::SyncAssociations.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
         scanlator_ids: fiction_params[:scanlator_ids],
@@ -68,7 +68,7 @@ class FictionsController < ApplicationController
   end
 
   def destroy
-    FictionDestroyService.new(@fiction, current_user).call
+    Fictions::DestroyOrUnlink.new(@fiction, current_user).call
     @pagy, @fictions = paginate_fictions
     render turbo_stream: [refresh_list, refresh_sweetalert]
   end
