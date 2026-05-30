@@ -45,8 +45,6 @@ class Pokemon < ApplicationRecord
 
   STARTER_DEX_IDS = [1, 4, 7].freeze
 
-  before_destroy :nullify_descendant_references
-
   def slug_candidates
     [
       name.downcase
@@ -63,11 +61,5 @@ class Pokemon < ApplicationRecord
 
   def types
     pokemon_types
-  end
-
-  private
-
-  def nullify_descendant_references
-    descendants.update_all(ancestor_id: nil)
   end
 end

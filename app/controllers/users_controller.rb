@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Authenticated profile updates and Pokemon detail refreshes in Studio.
 class UsersController < ApplicationController
   include FictionQuery
   include UserUpdateable

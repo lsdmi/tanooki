@@ -4,6 +4,7 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
@@ -11,6 +12,10 @@ class ApplicationController < ActionController::Base
 
   def handle_error
     render :error, status: :internal_server_error
+  end
+
+  def record_not_found
+    render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
   end
 
   private

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Authenticated toggle of upvotes on community translation requests.
 class TranslationRequestVotesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_translation_request

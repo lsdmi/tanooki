@@ -39,8 +39,8 @@ module StructuredData
       profiles_show_page?
     end
 
-    def video_meta?
-      youtube_videos_show_page?
+    def video_meta?(youtube_video)
+      youtube_videos_show_page? && youtube_video.present?
     end
 
     private

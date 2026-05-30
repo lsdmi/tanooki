@@ -32,7 +32,7 @@
 
     <%= json_ld_script(user_profile_meta(@user)) if user_profile_meta? %>
 
-    <%= json_ld_script(video_meta(@youtube_video)) if video_meta? %>
+    <%= json_ld_script(video_meta(@youtube_video)) if video_meta?(@youtube_video) %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

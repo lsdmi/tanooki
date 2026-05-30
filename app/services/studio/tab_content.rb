@@ -5,6 +5,10 @@ module Studio
   class TabContent
     include Pagy::Backend
 
+    ASSIGNMENT_KEYS = %i[
+      pagy publications pokemon_show scanlators fictions comments avatars bookshelves epub_export_requests
+    ].freeze
+
     def initialize(user, active_tab, params = {})
       @user = user
       @active_tab = TabCatalog.normalize_tab_id(active_tab)
@@ -16,17 +20,7 @@ module Studio
     end
 
     def to_controller_assignments
-      {
-        pagy: @pagy,
-        publications: @publications,
-        pokemon_show: @pokemon_show,
-        scanlators: @scanlators,
-        fictions: @fictions,
-        comments: @comments,
-        avatars: @avatars,
-        bookshelves: @bookshelves,
-        epub_export_requests: @epub_export_requests
-      }
+      ASSIGNMENT_KEYS.index_with { |key| instance_variable_get(:"@#{key}") }
     end
 
     private

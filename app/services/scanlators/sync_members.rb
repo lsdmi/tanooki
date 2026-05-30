@@ -37,7 +37,7 @@ module Scanlators
     end
 
     def requested_member_ids
-      Array(member_ids).flatten.map(&:to_s).reject(&:blank?).map(&:to_i)
+      Array(member_ids).flatten.map(&:to_s).compact_blank.map(&:to_i)
     end
 
     def effective_member_ids

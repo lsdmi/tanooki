@@ -17,6 +17,12 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil assigns(:more_videos)
   end
 
+  test 'show returns not found for missing video' do
+    get youtube_video_path('missing-video-slug')
+
+    assert_response :not_found
+  end
+
   test 'should get index' do
     get youtube_videos_path
 

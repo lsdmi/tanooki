@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Users
+  # Devise sign-up with avatar/name params and guest Pokemon assignment.
   class RegistrationsController < Devise::RegistrationsController
     before_action :configure_sign_up_params, only: [:create]
 

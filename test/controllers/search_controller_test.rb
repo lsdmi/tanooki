@@ -59,14 +59,12 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   private
 
-  def with_stubbed_search(*models)
-    if models.empty?
-      yield
-    else
-      model = models.first
-      model.stub(:search, stubbed_search_results(model.all)) do
-        with_stubbed_search(*models[1..]) { yield }
-      end
+  def with_stubbed_search(*models, &)
+    return yield if models.empty?
+
+    model = models.first
+    model.stub(:search, stubbed_search_results(model.all)) do
+      with_stubbed_search(*models[1..], &)
     end
   end
 

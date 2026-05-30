@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Form object for creating/updating a fiction with banner validation and association params.
 class FictionForm
   include ActiveModel::Model
 

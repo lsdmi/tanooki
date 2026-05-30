@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Paginated fiction browse lists (alphabetical index with filters and Turbo updates).
 class FictionListsController < ApplicationController
   before_action :load_advertisement
   before_action :pokemon_appearance, only: [:alphabetical]

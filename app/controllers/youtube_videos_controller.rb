@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# YouTube video index and watch pages with curated highlights and related videos.
 class YoutubeVideosController < ApplicationController
   before_action :load_advertisement
   before_action :set_video, :track_visit, only: :show
