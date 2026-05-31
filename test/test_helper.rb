@@ -12,6 +12,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'minitest/autorun'
+require 'view_component/test_helpers'
 
 module ActiveSupport
   class TestCase
@@ -31,4 +32,8 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
   end
+end
+
+class ViewComponentTestCase < ViewComponent::TestCase
+  include Devise::Test::IntegrationHelpers if defined?(Devise)
 end

@@ -166,4 +166,10 @@ Rails.application.routes.draw do
       get 'epub_exports/:token/file', to: 'downloads#epub_export_file', as: :epub_export_file
     end
   end
+
+  if Rails.env.development?
+    require 'lookbook'
+
+    mount Lookbook::Engine, at: '/lookbook'
+  end
 end

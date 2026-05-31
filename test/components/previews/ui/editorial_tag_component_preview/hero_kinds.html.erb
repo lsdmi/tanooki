@@ -1,0 +1,5 @@
+<div class="flex flex-wrap gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+  <% Ui::EditorialTagComponent::KINDS.each_key do |kind| %>
+    <%= render Ui::EditorialTagComponent.new(kind: kind) %>
+  <% end %>
+</div>

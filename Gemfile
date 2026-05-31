@@ -44,6 +44,7 @@ group :development do
   gem 'bundler-audit'
   gem 'erb_lint', require: false
   gem 'letter_opener'
+  gem 'lookbook'
   gem 'rails_best_practices'
   gem 'rubocop'
   gem 'rubocop-capybara', require: false
@@ -90,3 +91,4 @@ gem 'sqids'
 gem 'tailwindcss-rails'
 gem 'telegram-bot-ruby'
 gem 'tinymce-rails'
+gem 'view_component'

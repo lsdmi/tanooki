@@ -74,16 +74,6 @@
               <!-- Overlay for better contrast -->
               <div class="absolute inset-0 bg-black/80 transition-opacity duration-700 ease-in-out"></div>
               <div class="absolute top-1/2 z-10 w-full max-w-[95%] mx-auto -translate-y-1/2 px-4 transition-all duration-700 ease-in-out">
-                <div class="flex flex-wrap gap-2 mb-3">
-                  <% if @showcase_fiction.adult_content? %>
-                    <span class="transition-transform duration-300 hover:scale-105 inline-block rounded-lg bg-red-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-md ring-1 ring-red-700 dark:bg-red-700 dark:text-gray-100 dark:ring-red-800">
-                      18+
-                    </span>
-                  <% end %>
-                  <span class="transition-transform duration-300 hover:scale-105 inline-block rounded-lg bg-cyan-700 px-2.5 py-0.5 text-xs font-bold text-white shadow-md ring-1 ring-cyan-800 dark:bg-rose-700 dark:text-gray-100 dark:ring-rose-800">
-                    Рекомендовано
-                  </span>
-                </div>
                 <%= link_to fiction_path(@showcase_fiction), class: "block" do %>
                   <h2 class="mb-2 text-xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg line-clamp-2 dark:text-white">
                     <%= @showcase_fiction.title %>
