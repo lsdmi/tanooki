@@ -33,9 +33,7 @@
         <article class="group flex h-full min-h-[240px] w-full flex-col overflow-hidden rounded-2xl border border-slate-800/75 bg-[#0a181d] shadow-xl shadow-black/30 ring-1 ring-white/[0.06] transition-shadow duration-300 hover:shadow-2xl hover:ring-white/[0.1] sm:flex-row sm:items-stretch">
           <%= link_to fiction_path(fiction), class: "relative aspect-[3/4] w-full shrink-0 bg-gradient-to-br #{card[:accent]} sm:aspect-auto sm:w-[34%] sm:self-stretch sm:min-h-0 overflow-hidden rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none block transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-inset group-hover:brightness-110 dark:focus-visible:ring-rose-500" do %>
             <% if card[:rank].present? %>
-              <span class="absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center rounded-lg bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm backdrop-blur-[2px] pointer-events-none" aria-label="Місце в рейтингу: <%= card[:rank] %>">
-                <%= card[:rank] %>
-              </span>
+              <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: card[:rank], rank_size: :featured) %>
             <% end %>
             <%= image_tag cover_card_url(fiction.cover), alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" %>
           <% end %>
@@ -78,11 +76,7 @@
                   <%= card[:excerpt] %>
                 </p>
                 <% if card[:genres].present? %>
-                  <div class="mt-auto flex flex-wrap gap-2 pt-4">
-                    <% card[:genres].each do |g| %>
-                      <%= link_to g[:name], fiction_genre_fictions_path(g[:slug]), class: "rounded-lg border border-slate-500/45 bg-slate-800/85 px-3 py-1 text-xs font-medium text-slate-200 transition-colors hover:border-slate-400/55 hover:bg-slate-700/90 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c] dark:focus-visible:ring-rose-500" %>
-                    <% end %>
-                  </div>
+                  <%= render Ui::GenrePageTagListComponent.new(genres: card[:genres]) %>
                 <% end %>
               </div>
             </div>

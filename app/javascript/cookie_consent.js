@@ -13,15 +13,43 @@
     return prodEnabled() && document.body.dataset.loadAdsense === 'true'
   }
 
+  var ADSENSE_SCRIPT_ID = 'baka-adsense-script'
+
   function injectAdSense() {
     if (!adsenseEnabled() || window.__bakaAdSenseInjected) return
     window.__bakaAdSenseInjected = true
 
     var ads = document.createElement('script')
+    ads.id = ADSENSE_SCRIPT_ID
     ads.async = true
     ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
     ads.setAttribute('crossorigin', 'anonymous')
     document.head.appendChild(ads)
+  }
+
+  function removeAdSense() {
+    if (!window.__bakaAdSenseInjected) return
+
+    var script = document.getElementById(ADSENSE_SCRIPT_ID)
+    if (script) script.remove()
+
+    document.querySelectorAll('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle"]').forEach(function (node) {
+      node.remove()
+    })
+    document.querySelectorAll('ins.adsbygoogle, .google-auto-placed').forEach(function (node) {
+      node.remove()
+    })
+
+    window.__bakaAdSenseInjected = false
+    delete window.adsbygoogle
+  }
+
+  function syncAdSense() {
+    if (adsenseEnabled()) {
+      injectAdSense()
+    } else {
+      removeAdSense()
+    }
   }
 
   function injectAnalytics() {
@@ -51,7 +79,8 @@
 
   function initConsentUi() {
     // Banner is visible in every environment for UI checks; AdSense/Analytics scripts load only in production.
-    injectAdSense()
+    // Re-sync on turbo:load so AdSense does not persist after navigating to ad-excluded pages.
+    syncAdSense()
 
     var stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {

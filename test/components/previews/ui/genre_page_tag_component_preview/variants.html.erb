@@ -1,0 +1,50 @@
+<div class="space-y-10">
+  <section>
+    <p class="mb-3 text-sm font-medium text-slate-500">Rank badges</p>
+    <div class="relative h-24 w-40 rounded-lg bg-slate-300">
+      <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: '1', rank_size: :featured) %>
+    </div>
+    <div class="relative mt-4 h-24 w-32 rounded-lg bg-slate-300">
+      <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: '3', rank_size: :thumb) %>
+    </div>
+    <div class="dark relative mt-4 h-24 w-32 rounded-lg bg-slate-800">
+      <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: '3', rank_size: :thumb) %>
+    </div>
+  </section>
+
+  <section>
+    <p class="mb-3 text-sm font-medium text-slate-500">Cover overlay stats</p>
+    <div class="group relative h-40 w-32 rounded-lg bg-slate-400">
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 to-transparent px-2 pb-2 pt-10">
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: '23.9т') %>
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: '4.9') %>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="mb-3 text-sm font-medium text-slate-500">Card footer meta — light</p>
+    <div class="flex flex-wrap items-center gap-2 rounded-xl bg-stone-50 p-6">
+      <%= render Ui::GenrePageTagComponent.new(variant: :chapters, label: '252 Розділи') %>
+      <%= render Ui::GenrePageTagComponent.new(variant: :status, label: 'Покинуто') %>
+    </div>
+  </section>
+
+  <section class="dark">
+    <p class="mb-3 text-sm font-medium text-slate-400">Card footer meta — dark</p>
+    <div class="flex flex-wrap items-center gap-2 rounded-xl bg-gray-800 p-6">
+      <%= render Ui::GenrePageTagComponent.new(variant: :chapters, label: '252 Розділи') %>
+      <%= render Ui::GenrePageTagComponent.new(variant: :status, label: 'Покинуто') %>
+    </div>
+  </section>
+
+  <section>
+    <p class="mb-3 text-sm font-medium text-slate-500">Featured card genres</p>
+    <div class="rounded-xl bg-[#0f252c] p-6">
+      <%= render Ui::GenrePageTagListComponent.new(
+            genres: [{ name: 'Бойовик', slug: 'action' }, { name: 'Пригоди', slug: 'adventure' }],
+            html: { class: 'mt-0 pt-0' }
+          ) %>
+    </div>
+  </section>
+</div>
