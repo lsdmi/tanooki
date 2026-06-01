@@ -9,4 +9,5 @@ module ApplicationHelper
   include ExternalUrls::UrlsHelper
   include Layout::PageContextHelper
   include Text::ExcerptHelper
+  include Search::TagCountsHelper
 end

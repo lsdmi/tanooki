@@ -11,16 +11,21 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get tales_url
+    Search::TagCounts.stub(:call, {}) do
+      get tales_url
+    end
 
     assert_response :success
+    assert_equal({}, assigns(:publication_tag_counts))
   end
 
   test 'should get show' do
-    Publication.stub :search, Publication.all do
-      get tale_url(@tale)
+    Search::TagCounts.stub(:call, {}) do
+      Publication.stub :search, Publication.all do
+        get tale_url(@tale)
 
-      assert_response :success
+        assert_response :success
+      end
     end
   end
 

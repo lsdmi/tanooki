@@ -8,7 +8,8 @@ module Ui
       render_inline(EditorialTagComponent.new(kind: :adult))
 
       assert_text '18+'
-      assert_selector 'span.rounded-xl'
+      assert_selector 'span.rounded-lg'
+      assert_selector 'span.md\\:rounded-xl'
     end
 
     test 'renders custom label' do

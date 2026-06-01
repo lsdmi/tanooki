@@ -1,0 +1,30 @@
+<% tags = [
+  { label: 'аніме', variant: :keyword, size: :sm, href: '#' },
+  { label: 'аніме', variant: :filter, size: :sm, href: '#' },
+  { label: '18+', variant: :adult, size: :sm },
+  { label: 'Fantasy', variant: :genre, size: :md, href: '#' },
+  { label: 'аніме', variant: :keyword, size: :sm, href: '#', count: 12 },
+  { label: 'аніме', variant: :filter, size: :sm, href: '#', count: 12 },
+  { label: '18+', variant: :adult, size: :sm, count: 3 },
+  { label: 'Fantasy', variant: :genre, size: :md, href: '#', count: 42 }
+] %>
+
+<div class="space-y-8">
+  <section>
+    <p class="mb-3 text-sm font-medium text-gray-500">Light</p>
+    <div class="flex flex-wrap items-center gap-4 rounded-xl bg-white p-8">
+      <% tags.each do |tag| %>
+        <%= render Ui::TagComponent.new(**tag) %>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="dark">
+    <p class="mb-3 text-sm font-medium text-gray-400">Dark</p>
+    <div class="flex flex-wrap items-center gap-4 rounded-xl bg-gray-950 p-8">
+      <% tags.each do |tag| %>
+        <%= render Ui::TagComponent.new(**tag) %>
+      <% end %>
+    </div>
+  </section>
+</div>

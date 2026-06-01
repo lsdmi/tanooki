@@ -11,6 +11,7 @@ class YoutubeVideosController < ApplicationController
     @popular = popular
     @latest = latest
     @pagy, @other_youtube_videos = pagy(other, limit: 4)
+    @video_tag_counts = search_tag_counts(index_video_search_tags)
 
     return unless turbo_frame_request?
 
@@ -22,6 +23,8 @@ class YoutubeVideosController < ApplicationController
 
   def show
     @more_videos = more_videos
+    @video_tags = video_tags_for_sidebar
+    @video_tag_counts = Search::TagCounts.call(@video_tags, scope: :all)
   end
 
   private
@@ -52,5 +55,17 @@ class YoutubeVideosController < ApplicationController
     @youtube_video = Rails.cache.fetch("video_#{params[:id]}", expires_in: 1.hour) do
       YoutubeVideo.friendly.find(params[:id])
     end
+  end
+
+  def video_tags_for_sidebar
+    return [] unless @youtube_video.tags?
+
+    @youtube_video.tags.split(', ').sample(9)
+  end
+
+  def index_video_search_tags
+    latest_labels = Search::TagCounts.labels_from_youtube_videos(@latest, limit: 3)
+    highlight_labels = Search::TagCounts.labels_from_youtube_video(@highlight, limit: 5)
+    (latest_labels + highlight_labels).uniq
   end
 end

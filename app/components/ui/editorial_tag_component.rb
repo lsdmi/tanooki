@@ -41,11 +41,12 @@ module Ui
     end
 
     def base_classes
-      'inline-flex items-center gap-1.5 rounded-xl px-3 py-1 text-lg font-normal text-white'
+      'inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-sm font-normal text-white ' \
+        'md:gap-1.5 md:rounded-xl md:px-3 md:py-1 md:text-lg'
     end
 
     def icon_classes
-      'h-5 w-5 shrink-0'
+      'h-4 w-4 shrink-0 md:h-5 md:w-5'
     end
   end
 end

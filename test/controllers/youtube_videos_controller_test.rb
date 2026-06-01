@@ -10,11 +10,13 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get show' do
-    get youtube_video_path(@youtube_video)
+    Search::TagCounts.stub(:call, { 'one' => 5 }) do
+      get youtube_video_path(@youtube_video)
+    end
 
     assert_response :success
-    assert_not_nil assigns(:youtube_video)
-    assert_not_nil assigns(:more_videos)
+    assert_equal ['one'], assigns(:video_tags)
+    assert_equal({ 'one' => 5 }, assigns(:video_tag_counts))
   end
 
   test 'show returns not found for missing video' do
@@ -24,10 +26,13 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get youtube_videos_path
+    Search::TagCounts.stub(:call, {}) do
+      get youtube_videos_path
+    end
 
     assert_response :success
     verify_youtube_videos_index_assigns
+    assert_equal({}, assigns(:video_tag_counts))
   end
 
   private

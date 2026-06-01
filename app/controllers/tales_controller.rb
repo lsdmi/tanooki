@@ -8,6 +8,7 @@ class TalesController < ApplicationController
   def index
     @highlights = highlights
     @pagy, @publications = pagy_countless(publications, limit: 17)
+    @publication_tag_counts = search_tag_counts(publication_search_tags)
 
     render 'home/scrollable_list' if params[:page]
   end
@@ -17,6 +18,7 @@ class TalesController < ApplicationController
     @comments = @publication.comments.parents.includes(user: { avatar: :image_attachment },
                                                        replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
     @comment = Comment.new
+    @publication_tag_counts = search_tag_counts(Search::TagCounts.labels_from_publications(@publication))
   end
 
   private
@@ -67,5 +69,12 @@ class TalesController < ApplicationController
     Rails.cache.fetch('highlights', expires_in: 4.hours) do
       all_publications.first(11).map(&:id)
     end
+  end
+
+  def publication_search_tags
+    (
+      Search::TagCounts.labels_from_publications(@publications) +
+        Search::TagCounts.labels_from_publications(@highlights)
+    ).uniq
   end
 end

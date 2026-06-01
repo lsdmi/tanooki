@@ -10,8 +10,11 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index' do
-    get root_url
+    Search::TagCounts.stub(:call, {}) do
+      get root_url
+    end
 
     assert_response :success
+    assert_equal({}, assigns(:video_tag_counts))
   end
 end

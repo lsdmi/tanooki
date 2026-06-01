@@ -3,6 +3,7 @@
 # Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  include Search::TagCountsHelper
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from StandardError, with: :handle_error if Rails.env.production?

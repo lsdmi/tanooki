@@ -11,9 +11,13 @@
       </div>
       <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0">
         <div class="col-span-6 lg:col-span-5">
-          <% highlight.tags.each do |tg| %>
-            <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 dark:hover:text-purple-100' %>
-          <% end %>
+          <%= render Ui::TagListComponent.new(
+                labels: highlight.tags.map(&:name),
+                variant: :keyword,
+                size: :sm,
+                href_builder: ->(name) { search_index_path(search: [name]) },
+                counts: @publication_tag_counts
+              ) %>
           <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline">
             <%= link_to highlight.title, tale_path(highlight) %>
           </h2>

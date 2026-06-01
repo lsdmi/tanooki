@@ -1,0 +1,15 @@
+<% if interactive? %>
+  <%= link_to href, tag_attributes do %>
+    <span><%= label %></span>
+    <% if count? %>
+      <span class="<%= count_classes %>"><%= count %></span>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= content_tag(:span, tag_attributes) do %>
+    <span><%= label %></span>
+    <% if count? %>
+      <span class="<%= count_classes %>"><%= count %></span>
+    <% end %>
+  <% end %>
+<% end %>

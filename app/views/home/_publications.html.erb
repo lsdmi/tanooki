@@ -13,9 +13,13 @@
             <div class="w-full float-left rounded-xl mb-1 text-gray-500 dark:text-gray-400">
               <div class="block">
                 <div class="sm:mb-1 lg:mb-0">
-                  <% highlight.tags.each do |tg| %>
-                    <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 dark:hover:text-purple-100' %>
-                  <% end %>
+                  <%= render Ui::TagListComponent.new(
+                        labels: highlight.tags.map(&:name),
+                        variant: :keyword,
+                        size: :sm,
+                        href_builder: ->(name) { search_index_path(search: [name]) },
+                        counts: @publication_tag_counts
+                      ) %>
                 </div>
               </div>
               <h2 class="mt-2 mb-1 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline line-clamp-3">
@@ -41,9 +45,13 @@
         </div>
         <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0 lg:mb-4">
           <div class="col-span-6 lg:col-span-5">
-            <% tale.tags.each do |tg| %>
-              <%= link_to tg.name, search_index_path(search: [tg.name]), class: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded hover:bg-purple-800 hover:text-purple-100 dark:hover:bg-purple-700 dark:hover:text-purple-100' %>
-            <% end %>
+            <%= render Ui::TagListComponent.new(
+                  labels: tale.tags.map(&:name),
+                  variant: :keyword,
+                  size: :sm,
+                  href_builder: ->(name) { search_index_path(search: [name]) },
+                  counts: @publication_tag_counts
+                ) %>
             <h2 class="mt-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline">
               <%= link_to tale.title, tale_path(tale) %>
             </h2>

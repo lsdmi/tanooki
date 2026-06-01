@@ -36,15 +36,13 @@
         <%= publication.description %>
       </div>
       <div class="mt-4">
-        <ul class="mb-2 overflow-hidden break-words text-center text-left inline-block md:flex flex-wrap">
-          <% publication.tags.order(:name).each do |tg| %>
-            <div class="relative inline-block pr-2 xl:p-0 xl:mx-1">
-              <h2 class="relative w-full text-center mb-1 2xl:mb-3">
-                <%= link_to tg.name, search_index_path(search: [tg.name]), class: "text-xs inline-block text-white font-bold leading-none px-4 py-2 relative uppercase z-10 bg-gradient-to-r from-pink-500 to-pink-600 hover:bg-gradient-to-br rounded-xl" %>
-              </h2>
-            </div>
-          <% end %>
-        </ul>
+        <%= render Ui::TagListComponent.new(
+              labels: publication.tags.order(:name).map(&:name),
+              variant: :keyword,
+              size: :md,
+              href_builder: ->(name) { search_index_path(search: [name]) },
+              counts: @publication_tag_counts
+            ) %>
       </div>
       <div class="my-4 w-[95%] mx-auto">
         <%= render 'shared/ads', advertisement: advertisement %>
