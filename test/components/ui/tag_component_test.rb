@@ -8,14 +8,14 @@ module Ui
       render_inline(TagComponent.new(label: 'аніме', variant: :keyword, href: '/search'))
 
       assert_selector 'a.border-gray-300.bg-white.text-gray-800.dark\\:bg-gray-900.dark\\:border-zinc-500'
-      assert_no_selector 'a.bg-cyan-700, a.bg-orange-600'
+      assert_no_selector 'a.bg-cyan-700, a.bg-red-600'
     end
 
-    test 'renders filter with primary cyan in light and orange in dark' do
+    test 'renders filter with primary cyan in light and red in dark' do
       render_inline(TagComponent.new(label: 'аніме', variant: :filter, href: '/search'))
 
       assert_selector 'a.border-cyan-800.bg-cyan-700.text-white'
-      assert_selector 'a.dark\\:border-orange-400.dark\\:bg-orange-600'
+      assert_selector 'a.dark\\:border-red-400.dark\\:bg-red-600'
     end
 
     test 'renders current keyword as filter style' do
@@ -52,6 +52,23 @@ module Ui
       render_inline(TagComponent.new(label: 'аніме', variant: :filter, href: '/search', count: 12))
 
       assert_selector 'a span.bg-white\\/25.text-white', text: '12'
+    end
+
+    test 'renders button with filter variant and count' do
+      render_inline(
+        TagComponent.new(
+          label: 'Усе',
+          variant: :filter,
+          size: :md,
+          count: 0,
+          as: :button,
+          html: { data: { action: 'click->search-filter#filter' } }
+        )
+      )
+
+      assert_selector 'button[type="button"].bg-cyan-700', text: /Усе/
+      assert_selector 'button span', text: '0'
+      assert_no_selector 'a'
     end
 
     test 'rejects unknown variant' do

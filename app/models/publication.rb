@@ -4,6 +4,8 @@ require_relative '../../config/initializers/telegram_bot'
 
 # Blog-style article or news post.
 class Publication < ApplicationRecord
+  include SearchkickSoftDeletable
+
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
@@ -36,7 +38,8 @@ class Publication < ApplicationRecord
       created_at:,
       description: description.to_plain_text[0..15_000],
       tags: tags.pluck(:name).to_sentence,
-      title:
+      title:,
+      active: true
     }
   end
 

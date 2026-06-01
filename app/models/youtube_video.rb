@@ -2,6 +2,8 @@
 
 # YouTube video entry displayed on the site.
 class YoutubeVideo < ApplicationRecord
+  include SearchkickSoftDeletable
+
   extend FriendlyId
   acts_as_paranoid
   friendly_id :slug_candidates
@@ -25,7 +27,8 @@ class YoutubeVideo < ApplicationRecord
       published_at:,
       description: description.to_plain_text,
       tags:,
-      title:
+      title:,
+      active: true
     }
   end
 

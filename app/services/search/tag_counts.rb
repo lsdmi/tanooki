@@ -6,6 +6,9 @@ module Search
   class TagCounts
     SCOPES = %i[all videos publications fictions].freeze
     CACHE_TTL = 6.hours
+    HOME_YOUTUBE_TAG_LIMIT = 5
+    INDEX_LATEST_YOUTUBE_TAG_LIMIT = 2
+    INDEX_HIGHLIGHT_YOUTUBE_TAG_LIMIT = 5
 
     OPENSEARCH_CONNECTION_ERRORS = [
       Faraday::Error,

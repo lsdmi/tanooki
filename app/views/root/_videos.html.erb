@@ -18,7 +18,10 @@
 
             <% if video.tags? %>
               <%= render Ui::TagListComponent.new(
-                    labels: video.tags.split(', ').first(6),
+                    labels: Search::TagCounts.labels_from_youtube_video(
+                      video,
+                      limit: Search::TagCounts::HOME_YOUTUBE_TAG_LIMIT
+                    ),
                     variant: :keyword,
                     size: :md,
                     href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },

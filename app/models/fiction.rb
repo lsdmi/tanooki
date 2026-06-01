@@ -4,6 +4,7 @@
 class Fiction < ApplicationRecord
   include FictionPresentation
   include FictionRatings
+  include SearchkickSoftDeletable
   include Pagy::Backend
   extend FriendlyId
 
@@ -76,7 +77,8 @@ class Fiction < ApplicationRecord
       alternative_title:,
       english_title:,
       scanlators: scanlators.pluck(:title).to_sentence,
-      title:
+      title:,
+      active: true
     }
   end
 

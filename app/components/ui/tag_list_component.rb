@@ -12,6 +12,7 @@ module Ui
       @current_label = options[:current_label]
       @counts = options.fetch(:counts, {}).to_h
       @html = options.fetch(:html, {})
+      @tag_html = options.fetch(:tag_html, {})
     end
 
     def render?
@@ -20,7 +21,7 @@ module Ui
 
     private
 
-    attr_reader :labels, :variant, :size, :href_builder, :current_label, :counts, :html
+    attr_reader :labels, :variant, :size, :href_builder, :current_label, :counts, :html, :tag_html
 
     def wrapper_classes
       ['flex flex-wrap items-center gap-2', html[:class]].compact.join(' ')

@@ -39,6 +39,15 @@ module Search
       assert_equal %w[аніме fantasy], labels
     end
 
+    test 'home youtube tag limit matches labels shown on home videos' do
+      video = youtube_videos(:one)
+      video.tags = (1..6).map { |index| "tag#{index}" }.join(', ')
+
+      labels = TagCounts.labels_from_youtube_video(video, limit: TagCounts::HOME_YOUTUBE_TAG_LIMIT)
+
+      assert_equal %w[tag1 tag2 tag3 tag4 tag5], labels
+    end
+
     test 'labels_from_publications collects tag names' do
       publication = publications(:tale_approved_one)
 

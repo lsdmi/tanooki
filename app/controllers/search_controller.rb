@@ -4,27 +4,29 @@ class SearchController < ApplicationController
   before_action :load_advertisement
   before_action :pokemon_appearance, only: [:index]
 
+  VIDEOS_PER_PAGE = 4
+  VIDEOS_FILTER_PER_PAGE = 8
+
+  OPENSEARCH_CONNECTION_ERRORS = [
+    Faraday::Error,
+    Errno::ECONNREFUSED,
+    SocketError,
+    Timeout::Error,
+    OpenSearch::Transport::Transport::Error
+  ].freeze
+
   def index
     return redirect_to root_path if transformed_param.nil?
 
-    case params[:filter]
-    when 'fiction'
-      @pagy_fictions, @fictions = pagy_searchkick_for(fiction_search, limit: 24)
-      @results = []
-      @videos = []
-    when 'blog'
-      @pagy_results, @results = pagy_searchkick_for(publication_search, limit: 7)
-      @fictions = []
-      @videos = []
-    when 'video'
-      @pagy_videos, @videos = pagy_searchkick_for(video_search, limit: 6)
-      @fictions = []
-      @results = []
-    else
-      @pagy_fictions, @fictions = pagy_searchkick_for(fiction_search, limit: 12)
-      @pagy_results, @results = pagy_searchkick_for(publication_search, limit: 7)
-      @pagy_videos, @videos = pagy_searchkick_for(video_search, limit: 3)
-    end
+    @pagy_fictions, fiction_records = pagy_searchkick_for(fiction_search, limit: fiction_per_page)
+    @pagy_results, publication_records = pagy_searchkick_for(publication_search, limit: publication_per_page)
+    @pagy_videos, video_records = pagy_searchkick_for(video_search, limit: video_per_page)
+
+    @fictions = show_fictions? ? fiction_records : []
+    @results = show_publications? ? publication_records : []
+    @videos = show_videos? ? video_records : []
+    @trending_tag_labels = trending_tag_labels_for_sidebar
+    @trending_tag_counts = search_tag_counts(@trending_tag_labels)
 
     # Handle turbo frame requests for pagination
     if turbo_frame_request_id.present?
@@ -60,7 +62,7 @@ class SearchController < ApplicationController
   private
 
   def transformed_param
-    return nil unless params[:search].present?
+    return nil if params[:search].blank?
 
     params[:search] = Array(params[:search])
   end
@@ -77,7 +79,7 @@ class SearchController < ApplicationController
       params[:search],
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-    ).includes(%i[tags rich_text_description])
+    ).includes(:rich_text_description, :cover_attachment)
   end
 
   def video_search
@@ -85,18 +87,11 @@ class SearchController < ApplicationController
       params[:search],
       fields: ['title^2', 'description', 'tags'],
       boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
-    ).includes(:youtube_channel)
+    )
   end
 
-  OPENSEARCH_CONNECTION_ERRORS = [
-    Faraday::Error,
-    Errno::ECONNREFUSED,
-    SocketError,
-    Timeout::Error
-  ].freeze
-
   def pagy_searchkick_for(search_args, limit:)
-    pagy_searchkick(search_args, limit: limit)
+    pagy_searchkick(search_args, limit: limit, limit_extra: false)
   rescue *OPENSEARCH_CONNECTION_ERRORS => e
     Rails.logger.warn("[search] OpenSearch unavailable: #{e.class}: #{e.message}")
     @search_unavailable = true
@@ -104,6 +99,48 @@ class SearchController < ApplicationController
   end
 
   def empty_search_pagy(limit)
-    Pagy.new(count: 0, page: params[:page] || 1, limit: limit)
+    Pagy.new(count: 0, page: params[:page] || 1, limit: [limit, 1].max)
+  end
+
+  def fiction_per_page
+    case params[:filter]
+    when 'fiction' then 24
+    when 'blog', 'video' then 1
+    else 12
+    end
+  end
+
+  def publication_per_page
+    return 1 if params[:filter].in?(%w[fiction video])
+
+    7
+  end
+
+  def video_per_page
+    case params[:filter]
+    when 'video' then VIDEOS_FILTER_PER_PAGE
+    when 'fiction', 'blog' then 1
+    else VIDEOS_PER_PAGE
+    end
+  end
+
+  def show_fictions?
+    all_filter? || params[:filter] == 'fiction'
+  end
+
+  def show_publications?
+    all_filter? || params[:filter] == 'blog'
+  end
+
+  def show_videos?
+    all_filter? || params[:filter] == 'video'
+  end
+
+  def all_filter?
+    %w[fiction blog video].exclude?(params[:filter])
+  end
+
+  def trending_tag_labels_for_sidebar
+    trending_tags.filter_map { |tag| tag[:name].presence }
   end
 end

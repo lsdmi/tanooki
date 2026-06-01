@@ -2,56 +2,18 @@
 
 module Ui
   # Taxonomy / keyword tag (genres, news tags, video keywords).
-  # Keyword: neutral outline. Filter: primary (cyan light / orange dark). Adult: red.
+  # Keyword: neutral outline. Filter: primary (cyan light / red dark). Adult: red.
   # Light filled borders darker than fill; dark filled borders lighter than fill.
   class TagComponent < ViewComponent::Base
+    include TagComponentStyles
+
     VARIANTS = %i[keyword genre status filter adult].freeze
     SIZES = %i[sm md].freeze
 
-    OUTLINED_CLASSES = [
-      'border border-gray-300 bg-white text-gray-800',
-      'hover:bg-gray-50',
-      'dark:border-zinc-500 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800'
-    ].join(' ').freeze
-
-    FILTER_CLASSES = [
-      'border border-cyan-800 bg-cyan-700 text-white hover:bg-cyan-800',
-      'dark:border-orange-400 dark:bg-orange-600 dark:hover:bg-orange-700 dark:text-white'
-    ].join(' ').freeze
-
-    ADULT_CLASSES = [
-      'border border-red-800 bg-red-600 text-white hover:bg-red-700',
-      'dark:border-red-400 dark:bg-red-600 dark:hover:bg-red-700'
-    ].join(' ').freeze
-
-    SIZE_CLASSES = {
-      sm: 'rounded-lg px-2.5 py-0.5 text-xs font-normal',
-      md: 'rounded-lg px-3 py-1 text-sm font-normal md:rounded-xl'
-    }.freeze
-
-    INTERACTIVE_CLASSES = [
-      'transition-colors focus:outline-none focus-visible:ring-2',
-      'focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
-      'dark:focus-visible:ring-orange-400 dark:focus-visible:ring-offset-gray-900'
-    ].join(' ').freeze
-
-    COUNT_SIZE_CLASSES = {
-      sm: 'min-w-[1.25rem] px-1 py-px text-[10px] leading-4',
-      md: 'min-w-[1.5rem] px-1.5 py-0.5 text-xs leading-4'
-    }.freeze
-
     def initialize(label:, variant: :keyword, size: :sm, **options)
       super()
-      @label = label.to_s
-      @variant = variant.to_sym
-      @size = size.to_sym
-      @href = options[:href]
-      @current = options.fetch(:current, false)
-      @count = options[:count]
-      @html = options.fetch(:html, {})
-
-      raise ArgumentError, "unknown variant: #{@variant}" unless VARIANTS.include?(@variant)
-      raise ArgumentError, "unknown size: #{@size}" unless SIZES.include?(@size)
+      assign_options(label, variant, size, options)
+      validate!
     end
 
     def render?
@@ -60,14 +22,35 @@ module Ui
 
     private
 
-    attr_reader :label, :variant, :size, :href, :current, :count, :html
+    attr_reader :label, :variant, :size, :as, :href, :current, :count, :html
+
+    def assign_options(label, variant, size, options)
+      @label = label.to_s
+      @variant = variant.to_sym
+      @size = size.to_sym
+      @as = options.fetch(:as, :link).to_sym
+      @href = options[:href]
+      @current = options.fetch(:current, false)
+      @count = options[:count]
+      @html = options.fetch(:html, {})
+    end
+
+    def validate!
+      raise ArgumentError, "unknown variant: #{@variant}" unless VARIANTS.include?(@variant)
+      raise ArgumentError, "unknown size: #{@size}" unless SIZES.include?(@size)
+      raise ArgumentError, "unknown as: #{@as}" unless %i[link button span].include?(@as)
+    end
 
     def count?
-      count.present?
+      !count.nil?
+    end
+
+    def button?
+      as == :button
     end
 
     def interactive?
-      href.present?
+      (as == :link && href.present?) || button?
     end
 
     def tag_attributes

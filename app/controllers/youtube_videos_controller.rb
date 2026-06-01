@@ -64,8 +64,14 @@ class YoutubeVideosController < ApplicationController
   end
 
   def index_video_search_tags
-    latest_labels = Search::TagCounts.labels_from_youtube_videos(@latest, limit: 3)
-    highlight_labels = Search::TagCounts.labels_from_youtube_video(@highlight, limit: 5)
+    latest_labels = Search::TagCounts.labels_from_youtube_videos(
+      @latest,
+      limit: Search::TagCounts::INDEX_LATEST_YOUTUBE_TAG_LIMIT
+    )
+    highlight_labels = Search::TagCounts.labels_from_youtube_video(
+      @highlight,
+      limit: Search::TagCounts::INDEX_HIGHLIGHT_YOUTUBE_TAG_LIMIT
+    )
     (latest_labels + highlight_labels).uniq
   end
 end

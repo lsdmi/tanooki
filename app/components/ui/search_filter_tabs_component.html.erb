@@ -1,0 +1,18 @@
+<div class="flex flex-wrap items-center gap-2" data-controller="search-filter">
+  <% tabs.each do |tab| %>
+    <%= render Ui::TagComponent.new(
+          label: tab.label,
+          variant: tab.selected ? :filter : :keyword,
+          size: :md,
+          count: tab.count,
+          as: :button,
+          html: {
+            class: 'cursor-pointer',
+            data: {
+              action: 'click->search-filter#filter',
+              search_filter_url_value: tab.url
+            }
+          }
+        ) %>
+  <% end %>
+</div>

@@ -1,4 +1,11 @@
-<% if interactive? %>
+<% if button? %>
+  <%= button_tag type: 'button', **tag_attributes do %>
+    <span><%= label %></span>
+    <% if count? %>
+      <span class="<%= count_classes %>"><%= count %></span>
+    <% end %>
+  <% end %>
+<% elsif interactive? %>
   <%= link_to href, tag_attributes do %>
     <span><%= label %></span>
     <% if count? %>

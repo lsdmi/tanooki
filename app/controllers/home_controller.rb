@@ -7,7 +7,9 @@ class HomeController < ApplicationController
   def index
     @top_fictions = top_fictions
     @videos = videos
-    @video_tag_counts = search_tag_counts(Search::TagCounts.labels_from_youtube_videos(@videos, limit: 4))
+    @video_tag_counts = search_tag_counts(
+      Search::TagCounts.labels_from_youtube_videos(@videos, limit: Search::TagCounts::HOME_YOUTUBE_TAG_LIMIT)
+    )
     @top_tales = top_tales
     @tales = tales
     @pokemon_ad = Advertisement.find_by(slug: 'pokemon')
