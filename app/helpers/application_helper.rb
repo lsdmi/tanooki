@@ -10,4 +10,5 @@ module ApplicationHelper
   include Layout::PageContextHelper
   include Text::ExcerptHelper
   include Search::TagCountsHelper
+  include AdsenseHelper
 end

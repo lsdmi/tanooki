@@ -1,0 +1,19 @@
+<%# locals: placement: (:top|:bottom) %>
+<% return unless chapter_reader_ad_live?(placement) %>
+
+<% wrapper_classes = [
+  'reader-ad-slot relative my-4 sm:my-6 overflow-hidden rounded-lg hidden',
+  (placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top')
+].join(' ') %>
+
+<div class="<%= wrapper_classes %>"
+     data-controller="adsense-unit"
+     data-adsense-unit-live-value="true"
+     data-adsense-unit-placement-value="<%= placement %>">
+  <ins class="adsbygoogle block w-full"
+       style="display:block"
+       data-ad-client="<%= adsense_client_id %>"
+       data-ad-slot="<%= chapter_reader_ad_slot(placement) %>"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>

@@ -4,8 +4,7 @@ export default class extends Controller {
   static targets = ["icon", "contentSection", "commentsSection"]
 
     connect() {
-      // Initialize state - comments are visible by default
-      this.commentsVisible = true
+      this.commentsVisible = false
       this.updateUI()
 
       // Listen for window resize to handle screen size changes

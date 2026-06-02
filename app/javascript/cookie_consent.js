@@ -24,6 +24,9 @@
     ads.async = true
     ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
     ads.setAttribute('crossorigin', 'anonymous')
+    ads.onload = function () {
+      document.dispatchEvent(new CustomEvent('baka:adsense-ready'))
+    }
     document.head.appendChild(ads)
   }
 

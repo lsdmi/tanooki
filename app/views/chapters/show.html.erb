@@ -7,18 +7,18 @@
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
 
     <% if epub_download_requires_login?(@chapter) %>
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
-        <%= render 'shared/epub_info_card', content: epub_notice_paragraph(epub_guest_login_message(@chapter.fiction)) %>
+      <div class="container mx-auto px-4 py-4 sm:py-5">
+        <%= render 'reader_epub_login_banner', fiction: @chapter.fiction %>
       </div>
     <% end %>
 
     <!-- Main Content and Comments -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+    <div class="container mx-auto px-4 py-2 sm:py-4 lg:py-8">
       <%= render 'fictions/adult_content_disclaimer', fiction: @chapter.fiction if show_adult_content_disclaimer?(@chapter.fiction) %>
 
       <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
         <!-- Content Section -->
-        <div data-comments-toggle-target="contentSection" class="w-full lg:w-2/3">
+        <div data-comments-toggle-target="contentSection" class="w-full lg:w-full">
           <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
         </div>
 

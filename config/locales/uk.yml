@@ -330,6 +330,9 @@ uk:
       update_success: Розділ оновлено.
     alerts:
       not_yet_public: Цей розділ ще недоступний для читання.
+    reader_epub_banner:
+      title: Завантажити EPUB
+      login_description: Увійдіть, щоб зберегти розділ та читати офлайн на будь-якому пристрої.
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"
@@ -344,7 +347,7 @@ uk:
       forbidden: EPUB-завантаження недоступне для вибраних розділів.
     epub_export:
       storage_integrity_error: Не вдалося зберегти EPUB. Спробуйте ще раз або зверніться до підтримки.
-      login_link_text: Увійдіть
+      login_link_text: Увійти
       login_required_fiction_all: Це ранобе підтримує завантаження в форматі EPUB. %{login_link}, щоб завантажити файли.
       login_required_fiction_mixed: Частину розділів можна завантажити в EPUB. %{login_link}, щоб завантажити файли.
   admin:

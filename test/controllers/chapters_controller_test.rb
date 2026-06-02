@@ -24,6 +24,27 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
     assert_not_includes response.body, 'Популярні теґи'
     assert_not_includes response.body, 'id="site-logo"'
+    assert_includes response.body, 'reader-comments hidden'
+    assert_includes response.body, 'data-comments-toggle-target="contentSection" class="w-full lg:w-full"'
+    assert_not_includes response.body, 'reader-ad-slot'
+  end
+
+  test 'guest sees login to download epub banner when epub is available' do
+    sign_out users(:user_one)
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_includes response.body, 'reader-epub-banner'
+    assert_includes response.body, I18n.t('chapters.reader_epub_banner.title')
+    assert_includes response.body, I18n.t('chapters.reader_epub_banner.login_description')
+    assert_includes response.body, new_user_session_path
+  end
+
+  test 'signed in user does not see login epub banner' do
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_not_includes response.body, 'reader-epub-banner'
   end
 
   test 'should get comments' do
