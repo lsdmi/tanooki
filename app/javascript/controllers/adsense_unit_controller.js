@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
-const FILL_TIMEOUT_MS = 5000
+const FILL_TIMEOUT_MS = 10000
 
-// Pushes AdSense for one unit; shows the slot only when an ad fills, hides on unfilled/error.
+// Pushes AdSense for one unit. Slot must stay visible until the request runs (hidden = no fill).
+// Collapses the wrapper only when Google marks the unit unfilled or nothing fills in time.
 export default class extends Controller {
   static values = { live: Boolean, placement: String }
 
@@ -32,7 +33,7 @@ export default class extends Controller {
       ins.dataset.adsensePushed = "true"
       this.watchFill(ins)
     } catch (_error) {
-      this.hideSlot()
+      this.collapseSlot()
     }
   }
 
@@ -41,11 +42,11 @@ export default class extends Controller {
 
     const resolved = () => {
       if (this.isFilled(ins)) {
-        this.showSlot()
+        this.expandSlot()
         return true
       }
       if (this.isUnfilled(ins)) {
-        this.hideSlot()
+        this.collapseSlot()
         return true
       }
       return false
@@ -65,7 +66,7 @@ export default class extends Controller {
 
     this.fillTimeout = window.setTimeout(() => {
       this.stopWatching()
-      if (!this.isFilled(ins)) this.hideSlot()
+      if (!this.isFilled(ins)) this.collapseSlot()
     }, FILL_TIMEOUT_MS)
   }
 
@@ -81,15 +82,15 @@ export default class extends Controller {
     return this.element.querySelector("ins.adsbygoogle")
   }
 
-  showSlot() {
-    this.element.classList.remove("hidden")
+  expandSlot() {
+    this.element.classList.remove("reader-ad-slot--collapsed")
     if (this.placementValue === "bottom") {
       this.element.classList.add("md:block")
     }
   }
 
-  hideSlot() {
-    this.element.classList.add("hidden")
+  collapseSlot() {
+    this.element.classList.add("reader-ad-slot--collapsed")
     if (this.placementValue === "bottom") {
       this.element.classList.remove("md:block")
     }

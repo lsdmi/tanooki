@@ -191,3 +191,15 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   box-shadow: none;
   --tw-ring-shadow: 0 0 #0000;
 }
+
+/* Collapse unfilled manual AdSense units (Google data-ad-status) */
+.immersive-reader .reader-ad-slot ins.adsbygoogle[data-ad-status='unfilled'] {
+  display: none !important;
+}
+
+.immersive-reader .reader-ad-slot--collapsed {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
