@@ -11,12 +11,12 @@ module Ui
 
     FILTER_CLASSES = [
       'border border-cyan-800 bg-cyan-700 text-white hover:bg-cyan-800',
-      'dark:border-red-400 dark:bg-red-600 dark:hover:bg-red-700 dark:text-white'
+      'dark:border-rose-400 dark:bg-rose-600 dark:hover:bg-rose-700 dark:text-white'
     ].join(' ').freeze
 
     ADULT_CLASSES = [
-      'border border-red-800 bg-red-600 text-white hover:bg-red-700',
-      'dark:border-red-400 dark:bg-red-600 dark:hover:bg-red-700'
+      'border border-orange-800 bg-orange-600 text-white hover:bg-orange-700',
+      'dark:border-orange-400 dark:bg-orange-600 dark:hover:bg-orange-700'
     ].join(' ').freeze
 
     SIZE_CLASSES = {
@@ -27,7 +27,7 @@ module Ui
     INTERACTIVE_CLASSES = [
       'transition-colors focus:outline-none focus-visible:ring-2',
       'focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
-      'dark:focus-visible:ring-red-400 dark:focus-visible:ring-offset-gray-900'
+      'dark:focus-visible:ring-rose-400 dark:focus-visible:ring-offset-gray-900'
     ].join(' ').freeze
 
     COUNT_SIZE_CLASSES = {

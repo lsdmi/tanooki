@@ -8,14 +8,14 @@ module Ui
       render_inline(TagComponent.new(label: 'аніме', variant: :keyword, href: '/search'))
 
       assert_selector 'a.border-gray-300.bg-white.text-gray-800.dark\\:bg-gray-900.dark\\:border-zinc-500'
-      assert_no_selector 'a.bg-cyan-700, a.bg-red-600'
+      assert_no_selector 'a.bg-cyan-700, a.bg-orange-600'
     end
 
     test 'renders filter with primary cyan in light and red in dark' do
       render_inline(TagComponent.new(label: 'аніме', variant: :filter, href: '/search'))
 
       assert_selector 'a.border-cyan-800.bg-cyan-700.text-white'
-      assert_selector 'a.dark\\:border-red-400.dark\\:bg-red-600'
+      assert_selector 'a.dark\\:border-rose-400.dark\\:bg-rose-600'
     end
 
     test 'renders current keyword as filter style' do
@@ -37,8 +37,8 @@ module Ui
     test 'renders adult with darker red border in light and lighter in dark' do
       render_inline(TagComponent.new(label: '18+', variant: :adult))
 
-      assert_selector 'span.border-red-800.bg-red-600.text-white'
-      assert_selector 'span.dark\\:border-red-400.dark\\:bg-red-600'
+      assert_selector 'span.border-orange-800.bg-orange-600.text-white'
+      assert_selector 'span.dark\\:border-orange-400.dark\\:bg-orange-600'
     end
 
     test 'renders count badge on outlined keyword' do

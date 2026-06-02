@@ -12,19 +12,14 @@
     <% end %>
   </div>
 
-  <div class="flex flex-wrap gap-2 mb-4 pb-2 justify-center sm:justify-start">
-    <% genres.each do |genre| %>
-      <%= link_to genre.name, fiction_genre_fictions_path(genre),
-                  class: [
-                    'inline-block no-underline px-2 lg:px-3 py-1 rounded-lg text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap',
-                    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500',
-                    genre == sample_genre ?
-                      'bg-cyan-600 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105' :
-                      'bg-cyan-50 dark:bg-rose-900 text-cyan-800 dark:text-rose-100 ring-cyan-200 dark:ring-rose-900 hover:bg-cyan-100 dark:hover:bg-rose-800 hover:ring-cyan-300 dark:hover:ring-rose-700 hover:scale-105'
-                  ].join(' '),
-                  **(genre == sample_genre ? { aria: { current: 'page' } } : {}) %>
-    <% end %>
-  </div>
+  <%= render Ui::TagListComponent.new(
+        labels: genres.map(&:name),
+        variant: :genre,
+        size: :sm,
+        current_label: sample_genre.name,
+        href_builder: ->(name) { fiction_genre_fictions_path(genres.find { |genre| genre.name == name }) },
+        html: { class: 'flex flex-wrap gap-2 mb-4 pb-2 justify-center sm:justify-start' }
+      ) %>
 
   <div class="grid grid-cols-4 lg:grid-cols-4 gap-3 lg:gap-4">
     <% fictions.each do |fiction| %>

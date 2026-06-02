@@ -17,6 +17,7 @@
                         labels: highlight.tags.map(&:name),
                         variant: :keyword,
                         size: :sm,
+                        max: 3,
                         href_builder: ->(name) { search_index_path(search: [name]) },
                         counts: @publication_tag_counts
                       ) %>
@@ -49,6 +50,7 @@
                   labels: tale.tags.map(&:name),
                   variant: :keyword,
                   size: :sm,
+                  max: 3,
                   href_builder: ->(name) { search_index_path(search: [name]) },
                   counts: @publication_tag_counts
                 ) %>

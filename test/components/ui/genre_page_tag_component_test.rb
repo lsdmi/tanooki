@@ -42,11 +42,18 @@ module Ui
       assert_selector 'span.dark\\:text-slate-300', text: 'Покинуто'
     end
 
-    test 'renders genre link' do
+    test 'renders genre link with light and dark classes' do
       render_inline(GenrePageTagComponent.new(variant: :genre, label: 'Бойовик', href: '/fictions/genres/action'))
 
-      assert_selector 'a.bg-slate-800\\/85.text-slate-200', text: 'Бойовик'
-      assert_selector 'a.dark\\:hover\\:border-slate-300\\/55.dark\\:focus-visible\\:ring-slate-400'
+      assert_selector 'a.border-slate-300.bg-white.text-slate-700', text: 'Бойовик'
+      assert_selector 'a.dark\\:bg-slate-800\\/85.dark\\:text-slate-200'
+    end
+
+    test 'renders adult genre link with warning icon' do
+      render_inline(GenrePageTagComponent.new(variant: :adult, label: 'BL', href: '/fictions/genres/bl'))
+
+      assert_selector 'a.bg-orange-600', text: 'BL'
+      assert_selector 'a svg[aria-hidden="true"]'
     end
 
     test 'rejects unknown variant' do

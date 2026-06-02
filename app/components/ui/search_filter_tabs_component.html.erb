@@ -2,9 +2,10 @@
   <% tabs.each do |tab| %>
     <%= render Ui::TagComponent.new(
           label: tab.label,
-          variant: tab.selected ? :filter : :keyword,
+          variant: :keyword,
           size: :md,
           count: tab.count,
+          current: tab.selected,
           as: :button,
           html: {
             class: 'cursor-pointer',

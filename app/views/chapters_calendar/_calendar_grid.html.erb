@@ -2,17 +2,17 @@
   <%= render "chapters_calendar/calendar_empty",
              subscriptions_filter_active: subscriptions_filter_active %>
 <% else %>
-<div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
+<div class="relative z-10 grid w-full max-w-7xl grid-cols-1 gap-10 md:grid-cols-3">
   <% fictions.each_with_index do |day_update, day_index| %>
-    <div class="border border-stone-200 dark:border-stone-700 bg-white/80 dark:bg-stone-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
+    <div class="relative overflow-hidden rounded-2xl border border-stone-200 bg-white/80 p-8 shadow-2xl backdrop-blur-xl dark:border-gray-700 dark:bg-gray-800/85">
+      <div class="absolute top-0 right-0 h-24 w-24 opacity-10 text-stone-800 dark:text-gray-200">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" />
           <path d="M50 10v80M10 50h80" stroke="currentColor" stroke-width="2" />
         </svg>
       </div>
 
-      <div class="absolute inset-0 z-0 opacity-5">
+      <div class="absolute inset-0 z-0 opacity-5 text-stone-800 dark:text-gray-300">
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
           <pattern id="subtle-pattern-<%= day_index %>" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M0 0h40v40H0z" fill="none" />
@@ -23,52 +23,56 @@
         </svg>
       </div>
 
-      <div class="flex justify-between items-center mb-6">
-        <p class="text-md font-bold text-stone-500 dark:text-stone-400"><%= day_update[:date] %></p>
-        <h2 class="text-2xl font-extrabold text-stone-700 dark:text-stone-200"><%= day_update[:day] %></h2>
+      <div class="relative z-10 mb-6 flex items-center justify-between">
+        <p class="text-md font-bold text-stone-500 dark:text-gray-400"><%= day_update[:date] %></p>
+        <h2 class="text-2xl font-extrabold text-stone-700 dark:text-gray-200"><%= day_update[:day] %></h2>
       </div>
 
       <% if day_update[:updates].present? %>
-        <div class="space-y-8">
+        <div class="relative z-10 space-y-8">
           <% day_update[:updates].each do |fiction_update| %>
-            <div class="event-card relative pl-6 py-2">
-              <div class="absolute left-0 top-0 h-full w-0.5 bg-stone-300 dark:bg-stone-600"></div>
-              <div class="absolute left-[-5px] top-0 w-[10px] h-[10px] bg-stone-400 dark:bg-stone-500 rounded-full"></div>
+            <div class="event-card relative py-2 pl-6">
+              <div class="absolute top-0 left-0 h-full w-0.5 bg-stone-300 dark:bg-gray-600"></div>
+              <div class="absolute top-0 left-[-5px] h-[10px] w-[10px] rounded-full bg-stone-400 dark:bg-gray-500"></div>
               <div>
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-stone-700 px-3 py-1 rounded-full inline-block shadow-sm">
+                <div class="mb-2 flex items-center justify-between">
+                  <span class="inline-block rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-500 shadow-sm dark:bg-gray-700 dark:text-gray-300">
                     <%= fiction_update[:chapters_released_at] %>
                   </span>
                   <%= link_to fiction_update[:scanlator_title], scanlator_path(fiction_update[:scanlator_slug]),
-                              class: 'text-stone-800 dark:text-stone-200 hover:text-stone-600 dark:hover:text-stone-400 transition-colors duration-300 text-xs',
+                              class: 'text-xs text-stone-800 transition-colors duration-300 hover:text-stone-600 dark:text-gray-200 dark:hover:text-rose-400',
                               data: { turbo_frame: '_top' } %>
                 </div>
-                <h3 class="text-md font-bold text-stone-800 dark:text-stone-200 mb-1">
+                <h3 class="text-md mb-1 font-bold text-stone-800 dark:text-gray-200">
                   <%= link_to fiction_update[:fiction_title], fiction_path(fiction_update[:fiction_slug]),
-                              class: 'text-stone-800 dark:text-stone-200 hover:text-stone-600 dark:hover:text-stone-400 transition-colors duration-300',
+                              class: 'text-stone-800 transition-colors duration-300 hover:text-stone-600 dark:text-gray-200 dark:hover:text-rose-400',
                               data: { turbo_frame: '_top' } %>
                 </h3>
-                <div class="flex items-center justify-between mb-1">
-                  <p class="text-xs text-stone-500 dark:text-stone-400">
+                <div class="mb-1 flex items-center justify-between">
+                  <p class="text-xs text-stone-500 dark:text-gray-400">
                     <%= fiction_update[:chapters_count] %>
                     <%= t('chapters_added', count: fiction_update[:chapters_count]) %>
                   </p>
                   <% if fiction_update[:scanlator_bank_url].present? %>
                     <%= link_to https_url(fiction_update[:scanlator_bank_url]),
-                                class: 'text-stone-600 dark:text-stone-400 hover:text-stone-500 dark:hover:text-stone-300 transition-colors duration-300 text-xs flex items-center',
+                                class: 'flex items-center text-xs text-stone-600 transition-colors duration-300 hover:text-stone-500 dark:text-gray-400 dark:hover:text-gray-300',
                                 data: { turbo_frame: '_top' } do %>
                       Підтримка
                     <% end %>
                   <% end %>
                 </div>
                 <% if fiction_update[:fiction_genres].present? %>
-                  <div class="mt-2 flex flex-wrap gap-1">
-                    <% fiction_update[:fiction_genres].each do |genre| %>
-                      <%= link_to genre[:name], fiction_genre_fictions_path(genre[:slug]),
-                                  class: 'inline-block no-underline bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-2 sm:px-3 py-1 rounded-full text-xs hover:bg-stone-300 dark:hover:bg-stone-600 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-stone-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-stone-800',
-                                  data: { turbo_frame: '_top' } %>
-                    <% end %>
-                  </div>
+                  <%= render Ui::TagListComponent.new(
+                        labels: fiction_update[:fiction_genres].map { |genre| genre[:name] },
+                        variant: :genre,
+                        size: :sm,
+                        href_builder: ->(name) {
+                          slug = fiction_update[:fiction_genres].find { |genre| genre[:name] == name }&.dig(:slug)
+                          fiction_genre_fictions_path(slug)
+                        },
+                        html: { class: 'mt-2 flex flex-wrap gap-1' },
+                        tag_html: { data: { turbo_frame: '_top' } }
+                      ) %>
                 <% end %>
               </div>
             </div>

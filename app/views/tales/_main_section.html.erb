@@ -12,6 +12,7 @@
             labels: main_highlight.tags.map(&:name),
             variant: :keyword,
             size: :md,
+            max: 3,
             href_builder: ->(name) { search_index_path(search: [name]) },
             counts: @publication_tag_counts,
             html: { class: 'mb-1' }

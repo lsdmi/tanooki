@@ -55,4 +55,31 @@ class GenreTest < ActiveSupport::TestCase
   test 'badge_asset_slug returns nil when no genre matches name' do
     assert_nil Genre.badge_asset_slug('__no_such_genre_name__')
   end
+
+  test 'explicit_content? by slug and name' do
+    bl = Genre.create!(name: 'BL', slug: 'bl')
+    drama = Genre.create!(name: 'Драма-test', slug: 'drama-test')
+
+    assert_predicate bl, :explicit_content?
+    assert Genre.explicit_content?(slug: 'gl')
+    assert_not Genre.explicit_content?(slug: 'romance')
+    assert Genre.explicit_content?(name: 'BL')
+    assert_not drama.explicit_content?
+  ensure
+    bl&.destroy
+    drama&.destroy
+  end
+
+  test 'tag_variant returns adult for explicit genres' do
+    assert_equal :adult, Genre.tag_variant(slug: 'omegaverse')
+    assert_equal :adult, Genre.tag_variant(name: '18+')
+    assert_equal :genre, Genre.tag_variant(slug: 'fantasy')
+  end
+
+  test 'sort_labels_adult_first puts 18+ and explicit genres before others' do
+    slugs = { 'BL' => 'bl', 'Драма' => 'drama', 'Романтика' => 'romance' }
+    labels = %w[Романтика 18+ Драма BL]
+
+    assert_equal %w[18+ BL Романтика Драма], Genre.sort_labels_adult_first(labels, slugs: slugs)
+  end
 end

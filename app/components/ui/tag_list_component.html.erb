@@ -1,13 +1,23 @@
 <div class="<%= wrapper_classes %>">
-  <% labels.each do |label| %>
+  <% visible_labels.each do |label| %>
+    <% tag_href = href_for(label) %>
     <%= render Ui::TagComponent.new(
           label: label,
-          variant: variant,
+          variant: variant_for(label),
           size: size,
-          href: href_for(label),
+          as: tag_href.present? ? :link : :span,
+          href: tag_href,
           current: current?(label),
           count: count_for(label),
           html: tag_html
+        ) %>
+  <% end %>
+  <% if overflow_count.positive? %>
+    <%= render Ui::TagComponent.new(
+          label: "+#{overflow_count}",
+          variant: :genre,
+          size: size,
+          as: :span
         ) %>
   <% end %>
 </div>

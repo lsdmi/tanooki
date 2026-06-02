@@ -21,7 +21,7 @@ module Ui
     test 'uses solid background without drop shadow' do
       render_inline(EditorialTagComponent.new(kind: :novelty))
 
-      assert_selector 'span.bg-blue-600'
+      assert_selector 'span.bg-violet-600'
       assert_no_selector 'span.bg-gradient-to-r'
       assert_no_selector 'span[class*="shadow-"]'
     end

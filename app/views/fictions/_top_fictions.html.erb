@@ -61,15 +61,19 @@
                 <span class='text-stone-600 dark:text-gray-400'><%= Fiction.statuses[fiction.status] %></span>
               </span>
             </div>
-            <% if fiction.genres.any? %>
-              <div class="hidden text-xs lg:flex lg:flex-wrap lg:gap-2">
-                <% genres = fiction.genres.sample(3) %>
-                <% genres.each do |genre| %>
-                  <%= link_to genre.name, fiction_genre_fictions_path(genre),
-                    class: 'inline-block no-underline shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-300 px-2 py-1 rounded-lg hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 dark:focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900' %>
-                <% end %>
-              </div>
-            <% end %>
+        <% if fiction.genres.any? %>
+          <%= render Ui::TagListComponent.new(
+                labels: fiction.genres.map(&:name),
+                variant: :genre,
+                size: :sm,
+                max: 3,
+                href_builder: ->(name) {
+                  fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
+                },
+                html: { class: 'hidden lg:flex lg:flex-wrap lg:gap-2' },
+                tag_html: { data: { turbo: false } }
+              ) %>
+        <% end %>
           </div>
         </div>
       </div>

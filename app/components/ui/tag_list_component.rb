@@ -5,9 +5,12 @@ module Ui
   class TagListComponent < ViewComponent::Base
     def initialize(labels:, variant: :keyword, size: :sm, **options)
       super()
+      @genre_slugs = options.fetch(:genre_slugs, {}).to_h
       @labels = Array(labels).compact_blank
+      @labels = Genre.sort_labels_adult_first(@labels, slugs: @genre_slugs) if options[:sort_adult_first]
       @variant = variant
       @size = size
+      @max = options[:max]
       @href_builder = options[:href_builder]
       @current_label = options[:current_label]
       @counts = options.fetch(:counts, {}).to_h
@@ -21,10 +24,31 @@ module Ui
 
     private
 
-    attr_reader :labels, :variant, :size, :href_builder, :current_label, :counts, :html, :tag_html
+    attr_reader :labels, :variant, :size, :max, :href_builder, :current_label, :counts, :genre_slugs, :html,
+                :tag_html
+
+    def variant_for(label)
+      return variant unless variant == :genre
+
+      Genre.tag_variant(name: label, slug: genre_slugs[label] || genre_slugs[label.to_s])
+    end
+
+    def visible_labels
+      return labels if max.nil? || labels.size <= max
+
+      labels.first(max)
+    end
+
+    def overflow_count
+      return 0 if max.nil? || labels.size <= max
+
+      labels.size - max
+    end
 
     def wrapper_classes
-      ['flex flex-wrap items-center gap-2', html[:class]].compact.join(' ')
+      wrap = html[:class].to_s.include?('nowrap') ? 'flex-nowrap' : 'flex-wrap'
+
+      ['flex items-center gap-2', wrap, html[:class]].compact.join(' ')
     end
 
     def href_for(label)

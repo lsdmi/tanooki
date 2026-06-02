@@ -44,12 +44,22 @@ module Ui
     ].join(' ').freeze
 
     GENRE_CLASSES = [
-      'rounded-lg border border-slate-500/45 bg-slate-800/85 px-3 py-1 text-xs font-medium text-slate-200',
-      'transition-colors hover:border-slate-400/55 hover:bg-slate-700/90 hover:text-white',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500',
-      'focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f252c]',
-      'dark:border-slate-500/50 dark:hover:border-slate-300/55 dark:hover:text-white',
-      'dark:focus-visible:ring-slate-400 dark:focus-visible:ring-offset-gray-900'
+      'inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700',
+      'transition-colors hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-white',
+      'dark:border-slate-500/45 dark:bg-slate-800/85 dark:text-slate-200',
+      'dark:hover:border-slate-400/55 dark:hover:bg-slate-700/90 dark:hover:text-white',
+      'dark:focus-visible:ring-slate-400 dark:focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#0f252c]'
+    ].join(' ').freeze
+
+    ADULT_CLASSES = [
+      'inline-flex items-center gap-1 rounded-lg border border-orange-700 bg-orange-600 px-3 py-1',
+      'text-xs font-medium text-white transition-colors hover:bg-orange-700',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-white',
+      'dark:border-orange-400/80 dark:bg-orange-600 dark:hover:bg-orange-700',
+      'dark:focus-visible:ring-orange-400 dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
     RANK_CLASSES = {
@@ -62,8 +72,11 @@ module Ui
       stat_rating: STAT_RATING_CLASSES,
       chapters: CHAPTERS_CLASSES,
       status: STATUS_CLASSES,
-      genre: GENRE_CLASSES
+      genre: GENRE_CLASSES,
+      adult: ADULT_CLASSES
     }.freeze
+
+    ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0 text-white'.freeze
 
     ICON_CLASSES = {
       stat_views: 'h-3 w-3 shrink-0 text-white/90',

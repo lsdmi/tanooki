@@ -36,6 +36,7 @@
                       ),
                       variant: :keyword,
                       size: :sm,
+                      max: 3,
                       href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
                       counts: @video_tag_counts
                     ) %>
@@ -71,6 +72,7 @@
                   ),
                   variant: :keyword,
                   size: :md,
+                  max: 3,
                   href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
                   counts: @video_tag_counts,
                   html: { class: 'flex flex-wrap gap-2' }

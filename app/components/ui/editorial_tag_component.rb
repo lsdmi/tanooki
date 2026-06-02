@@ -13,11 +13,12 @@ module Ui
       update: { label: 'Оновлення', icon: :refresh }
     }.freeze
 
+    # Adult uses orange (not rose/cyan — those are site primaries). Other kinds match label meaning.
     KIND_COLORS = {
-      adult: 'bg-red-600',
-      novelty: 'bg-blue-600',
-      popular: 'bg-amber-500',
-      update: 'bg-orange-600'
+      adult: 'bg-orange-600',
+      novelty: 'bg-violet-600',
+      popular: 'bg-fuchsia-700',
+      update: 'bg-teal-600'
     }.freeze
 
     def initialize(kind:, label: nil)

@@ -39,10 +39,28 @@
   </section>
 
   <section>
-    <p class="mb-3 text-sm font-medium text-slate-500">Featured card genres</p>
+    <p class="mb-3 text-sm font-medium text-slate-500">Featured card genres — light panel</p>
+    <div class="rounded-xl border border-stone-200 bg-gradient-to-br from-stone-50 via-white to-stone-100 p-6">
+      <%= render Ui::GenrePageTagListComponent.new(
+            genres: [
+              { name: 'Романтика', slug: 'romance' },
+              { name: 'BL', slug: 'bl' },
+              { name: 'Гарем', slug: 'harem' }
+            ],
+            html: { class: 'mt-0 pt-0' }
+          ) %>
+    </div>
+  </section>
+
+  <section class="dark">
+    <p class="mb-3 text-sm font-medium text-slate-400">Featured card genres — dark panel</p>
     <div class="rounded-xl bg-[#0f252c] p-6">
       <%= render Ui::GenrePageTagListComponent.new(
-            genres: [{ name: 'Бойовик', slug: 'action' }, { name: 'Пригоди', slug: 'adventure' }],
+            genres: [
+              { name: 'Романтика', slug: 'romance' },
+              { name: 'BL', slug: 'bl' },
+              { name: 'Гарем', slug: 'harem' }
+            ],
             html: { class: 'mt-0 pt-0' }
           ) %>
     </div>

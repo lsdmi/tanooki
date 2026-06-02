@@ -62,18 +62,23 @@
         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
           <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Теґи</h4>
-          <div class="flex flex-wrap gap-2">
-            <!-- Adult Content Tag -->
-            <% if fiction.adult_content? %>
-              <%= tag.span '18+ Контент для дорослих', class: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm border border-red-200 dark:border-red-700 font-medium' %>
-            <% end %>
+          <% fiction_tag_labels = [] %>
+          <% fiction_tag_labels << '18+' if fiction.adult_content? %>
+          <% fiction_tag_labels.concat(fiction.genres.map(&:name)) %>
+          <%= render Ui::TagListComponent.new(
+                labels: fiction_tag_labels,
+                variant: :genre,
+                sort_adult_first: true,
+                genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
+                size: :sm,
+                href_builder: ->(name) {
+                  next if name == '18+'
 
-            <!-- Genre Tags -->
-            <% fiction.genres.each do |genre| %>
-              <%= link_to genre.name, fiction_genre_fictions_path(genre),
-                          class: 'inline-block bg-stone-200 dark:bg-gray-700 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm no-underline hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800' %>
-            <% end %>
-          </div>
+                  genre = fiction.genres.find { |g| g.name == name }
+                  fiction_genre_fictions_path(genre) if genre
+                },
+                tag_html: { data: { turbo: false } }
+              ) %>
         </div>
       <% end %>
 

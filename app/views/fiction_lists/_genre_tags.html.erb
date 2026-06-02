@@ -1,12 +1,7 @@
-<% genres.sample(5).each_with_index do |genre, i| %>
-  <%= render Ui::TagComponent.new(
-        label: genre.name,
-        variant: :genre,
-        size: :sm,
-        href: fiction_genre_fictions_path(genre),
-        html: {
-          data: { turbo: false },
-          class: ('hidden lg:inline-flex' if i == 1)
-        }
-      ) %>
-<% end %>
+<%= render Ui::TagListComponent.new(
+      labels: genres.map(&:name),
+      variant: :genre,
+      size: :sm,
+      href_builder: ->(name) { fiction_genre_fictions_path(genres.find { |genre| genre.name == name }) },
+      tag_html: { data: { turbo: false } }
+    ) %>

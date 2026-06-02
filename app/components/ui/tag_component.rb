@@ -2,7 +2,7 @@
 
 module Ui
   # Taxonomy / keyword tag (genres, news tags, video keywords).
-  # Keyword: neutral outline. Filter: primary (cyan light / red dark). Adult: red.
+  # Keyword: neutral outline. Filter: primary (cyan light / rose dark). Adult: orange (18+ / mature).
   # Light filled borders darker than fill; dark filled borders lighter than fill.
   class TagComponent < ViewComponent::Base
     include TagComponentStyles
@@ -45,6 +45,14 @@ module Ui
       !count.nil?
     end
 
+    def adult?
+      variant == :adult
+    end
+
+    def adult_icon_classes
+      size == :md ? 'h-4 w-4 shrink-0' : 'h-3.5 w-3.5 shrink-0'
+    end
+
     def button?
       as == :button
     end
@@ -64,7 +72,7 @@ module Ui
     def css_classes
       [
         'inline-flex w-fit items-center whitespace-nowrap',
-        (count? ? 'gap-1.5' : nil),
+        (adult? || count? ? 'gap-1.5' : nil),
         size_classes,
         variant_classes,
         (INTERACTIVE_CLASSES if interactive?)

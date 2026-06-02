@@ -1,5 +1,8 @@
 <% if button? %>
   <%= button_tag type: 'button', **tag_attributes do %>
+    <% if adult? %>
+      <%= render Ui::AdultWarningIconComponent.new(class: adult_icon_classes) %>
+    <% end %>
     <span><%= label %></span>
     <% if count? %>
       <span class="<%= count_classes %>"><%= count %></span>
@@ -7,6 +10,9 @@
   <% end %>
 <% elsif interactive? %>
   <%= link_to href, tag_attributes do %>
+    <% if adult? %>
+      <%= render Ui::AdultWarningIconComponent.new(class: adult_icon_classes) %>
+    <% end %>
     <span><%= label %></span>
     <% if count? %>
       <span class="<%= count_classes %>"><%= count %></span>
@@ -14,6 +20,9 @@
   <% end %>
 <% else %>
   <%= content_tag(:span, tag_attributes) do %>
+    <% if adult? %>
+      <%= render Ui::AdultWarningIconComponent.new(class: adult_icon_classes) %>
+    <% end %>
     <span><%= label %></span>
     <% if count? %>
       <span class="<%= count_classes %>"><%= count %></span>
