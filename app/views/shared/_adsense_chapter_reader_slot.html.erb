@@ -3,13 +3,12 @@
 
 <% wrapper_classes = [
   'reader-ad-slot relative my-4 sm:my-6 overflow-hidden rounded-lg',
-  (placement == :bottom ? 'reader-ad-slot--bottom hidden md:block' : 'reader-ad-slot--top')
+  (placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top')
 ].join(' ') %>
 
 <div class="<%= wrapper_classes %>"
      data-controller="adsense-unit"
-     data-adsense-unit-live-value="true"
-     data-adsense-unit-placement-value="<%= placement %>">
+     data-adsense-unit-live-value="true">
   <ins class="adsbygoogle block w-full"
        style="display:block"
        data-ad-client="<%= adsense_client_id %>"

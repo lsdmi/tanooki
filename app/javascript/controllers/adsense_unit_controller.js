@@ -5,7 +5,7 @@ const FILL_TIMEOUT_MS = 10000
 // Pushes AdSense for one unit. Slot must stay visible until the request runs (hidden = no fill).
 // Collapses the wrapper only when Google marks the unit unfilled or nothing fills in time.
 export default class extends Controller {
-  static values = { live: Boolean, placement: String }
+  static values = { live: Boolean }
 
   connect() {
     this.boundReady = this.onReady.bind(this)
@@ -84,16 +84,10 @@ export default class extends Controller {
 
   expandSlot() {
     this.element.classList.remove("reader-ad-slot--collapsed")
-    if (this.placementValue === "bottom") {
-      this.element.classList.add("md:block")
-    }
   }
 
   collapseSlot() {
     this.element.classList.add("reader-ad-slot--collapsed")
-    if (this.placementValue === "bottom") {
-      this.element.classList.remove("md:block")
-    }
   }
 
   stopWatching() {
