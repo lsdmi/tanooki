@@ -22,14 +22,15 @@ function safeLogoSrc(url) {
   }
 }
 
+const THEME_ICON_PAIRS = [
+  ['theme-toggle-dark-icon', 'theme-toggle-light-icon'],
+  ['reader-theme-toggle-dark-icon', 'reader-theme-toggle-light-icon'],
+];
+
 const initializeModeToggler = () => {
   const themeToggleBtn = document.getElementById('theme-toggle');
-  if (!themeToggleBtn || themeToggleBtn.dataset.modeTogglerBound === 'true') return;
-
-  themeToggleBtn.dataset.modeTogglerBound = 'true';
-
-  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+  const readerThemeToggleBtn = document.getElementById('reader-theme-toggle');
+  if (!themeToggleBtn && !readerThemeToggleBtn) return;
 
   const siteLogo = document.getElementById('site-logo');
   const defaultLogo = siteLogo ? safeLogoSrc(siteLogo.getAttribute('data-default-logo')) : null;
@@ -40,8 +41,37 @@ const initializeModeToggler = () => {
   };
 
   const setIconVisibility = (isDark) => {
-    if (themeToggleDarkIcon) themeToggleDarkIcon.style.display = isDark ? 'none' : 'inline';
-    if (themeToggleLightIcon) themeToggleLightIcon.style.display = isDark ? 'inline' : 'none';
+    THEME_ICON_PAIRS.forEach(([darkId, lightId]) => {
+      const darkIcon = document.getElementById(darkId);
+      const lightIcon = document.getElementById(lightId);
+      if (darkIcon) darkIcon.style.display = isDark ? 'none' : 'inline';
+      if (lightIcon) lightIcon.style.display = isDark ? 'inline' : 'none';
+    });
+
+    const readerLabel = document.getElementById('reader-theme-toggle-label');
+    if (readerLabel) readerLabel.textContent = isDark ? 'Світла тема' : 'Темна тема';
+  };
+
+  const bindThemeToggle = (btn) => {
+    if (!btn || btn.dataset.modeTogglerBound === 'true') return;
+    btn.dataset.modeTogglerBound = 'true';
+    btn.addEventListener('click', performThemeToggle);
+  };
+
+  const performThemeToggle = () => {
+    document.documentElement.classList.toggle('dark');
+    const newIsDark = document.documentElement.classList.contains('dark');
+    localStorage.setItem('color-theme', newIsDark ? 'dark' : 'light');
+    setLogo(newIsDark);
+    setIconVisibility(newIsDark);
+    document.cookie = `color_theme=${newIsDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
+
+    if (typeof tinymce !== 'undefined') {
+      setTimeout(() => {
+        const editorContainer = document.querySelector('.tox-tinymce');
+        if (editorContainer) updateTinymceStyles(newIsDark);
+      }, 100);
+    }
   };
 
   // Function to update TinyMCE styles based on current theme
@@ -619,27 +649,8 @@ const initializeModeToggler = () => {
     }, 100);
   }
 
-  themeToggleBtn.addEventListener('click', function() {
-    const currentlyDark = document.documentElement.classList.toggle('dark');
-    const newIsDark = document.documentElement.classList.contains('dark');
-    localStorage.setItem('color-theme', newIsDark ? 'dark' : 'light');
-    setLogo(newIsDark);
-    setIconVisibility(newIsDark);
-
-    // Set the Rails cookie for server-side theme detection
-    document.cookie = `color_theme=${newIsDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
-    
-    // Update TinyMCE styles if editor exists
-    if (typeof tinymce !== 'undefined') {
-      // Wait a bit for TinyMCE to initialize
-      setTimeout(() => {
-        const editorContainer = document.querySelector('.tox-tinymce');
-        if (editorContainer) {
-          updateTinymceStyles(newIsDark);
-        }
-      }, 100);
-    }
-  });
+  bindThemeToggle(themeToggleBtn);
+  bindThemeToggle(readerThemeToggleBtn);
 };
 
 document.addEventListener('turbo:load', initializeModeToggler);

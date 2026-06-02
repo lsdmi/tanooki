@@ -13,9 +13,8 @@ module Ui
       update: { label: 'Оновлення', icon: :refresh }
     }.freeze
 
-    # Adult uses orange (not rose/cyan — those are site primaries). Other kinds match label meaning.
     KIND_COLORS = {
-      adult: 'bg-orange-600',
+      adult: 'bg-rose-600',
       novelty: 'bg-violet-600',
       popular: 'bg-fuchsia-700',
       update: 'bg-teal-600'

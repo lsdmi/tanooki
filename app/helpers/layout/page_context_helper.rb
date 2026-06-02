@@ -7,6 +7,11 @@ module Layout
       controller_name.to_sym == :chapters && action_name.to_sym == :show
     end
 
+    # Chapter reader: hide site navbar/footer; use reader chrome + minimal copyright.
+    def immersive_reader_layout?
+      chapters_show_page?
+    end
+
     def chapters_show_referer?
       request.referer&.include?('chapters') && controller_name.to_sym == :comments
     end

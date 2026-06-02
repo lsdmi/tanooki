@@ -76,7 +76,7 @@
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
     </div>
-    <%= render "shared/navbar" %>
+    <%= render "shared/navbar" unless immersive_reader_layout? %>
     <%= turbo_frame_tag 'application-notice' do %>
       <%= render "shared/notice" if notice %>
     <% end %>
@@ -89,7 +89,7 @@
         <%= render 'shared/pokemon', pokemon: @wild_pokemon %>
       <% end if @wild_pokemon %>
     </main>
-    <%= render "shared/footer" %>
+    <%= render "shared/footer" unless immersive_reader_layout? %>
     <%= render "shared/cookie_consent_banner" %>
     <%= javascript_include_tag 'cookie_consent' %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>

@@ -5,13 +5,12 @@ export default class extends Controller {
     this.button = document.getElementById('jump-to-top')
     this.handleScroll = this.handleScroll.bind(this)
     this.jumpToTop = this.jumpToTop.bind(this)
-    
-    // Listen for scroll events
+
     window.addEventListener('scroll', this.handleScroll)
-    
-    // Add click event to button
+
     if (this.button) {
       this.button.addEventListener('click', this.jumpToTop)
+      this.handleScroll()
     }
   }
 

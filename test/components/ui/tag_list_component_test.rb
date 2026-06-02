@@ -47,8 +47,8 @@ module Ui
         )
       )
 
-      assert_selector 'span.bg-orange-600', text: '18+'
-      assert_selector 'span.bg-orange-600 svg'
+      assert_selector 'span.bg-rose-200', text: '18+'
+      assert_selector 'span.bg-rose-200 svg'
       assert_selector 'a.border-gray-300', text: 'Драма'
     end
 
@@ -75,8 +75,8 @@ module Ui
         )
       )
 
-      assert_selector 'a.bg-orange-600', text: 'BL'
-      assert_selector 'a.bg-orange-600 svg'
+      assert_selector 'a.bg-rose-200', text: 'BL'
+      assert_selector 'a.bg-rose-200 svg'
       assert_selector 'a.border-gray-300', text: 'Драма'
     end
 

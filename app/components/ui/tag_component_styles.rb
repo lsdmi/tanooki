@@ -14,9 +14,11 @@ module Ui
       'dark:border-rose-400 dark:bg-rose-600 dark:hover:bg-rose-700 dark:text-white'
     ].join(' ').freeze
 
+    # Adult: rose-200 fill, rose-700 border, rose-800 label/icon (light + dark)
     ADULT_CLASSES = [
-      'border border-orange-800 bg-orange-600 text-white hover:bg-orange-700',
-      'dark:border-orange-400 dark:bg-orange-600 dark:hover:bg-orange-700'
+      'border border-rose-700 bg-rose-200 text-rose-800',
+      'hover:bg-rose-300 hover:text-rose-900 hover:border-rose-800',
+      'focus-visible:ring-rose-600'
     ].join(' ').freeze
 
     SIZE_CLASSES = {

@@ -52,7 +52,7 @@ module Ui
     test 'renders adult genre link with warning icon' do
       render_inline(GenrePageTagComponent.new(variant: :adult, label: 'BL', href: '/fictions/genres/bl'))
 
-      assert_selector 'a.bg-orange-600', text: 'BL'
+      assert_selector 'a.bg-rose-200', text: 'BL'
       assert_selector 'a svg[aria-hidden="true"]'
     end
 

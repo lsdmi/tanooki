@@ -8,7 +8,7 @@ module Ui
       render_inline(TagComponent.new(label: 'аніме', variant: :keyword, href: '/search'))
 
       assert_selector 'a.border-gray-300.bg-white.text-gray-800.dark\\:bg-gray-900.dark\\:border-zinc-500'
-      assert_no_selector 'a.bg-cyan-700, a.bg-orange-600'
+      assert_no_selector 'a.bg-cyan-700, a.bg-rose-200'
     end
 
     test 'renders filter with primary cyan in light and red in dark' do
@@ -34,11 +34,18 @@ module Ui
       assert_no_selector 'a'
     end
 
-    test 'renders adult with darker red border in light and lighter in dark' do
+    test 'renders adult with rose-200 fill rose-700 border and rose-800 text' do
       render_inline(TagComponent.new(label: '18+', variant: :adult))
 
-      assert_selector 'span.border-orange-800.bg-orange-600.text-white'
-      assert_selector 'span.dark\\:border-orange-400.dark\\:bg-orange-600'
+      assert_selector 'span.border-rose-700.bg-rose-200.text-rose-800'
+      assert_selector 'span.bg-rose-200 svg'
+      assert_no_selector 'span.text-white'
+    end
+
+    test 'rejects count on adult variant' do
+      assert_raises(ArgumentError) do
+        TagComponent.new(label: '18+', variant: :adult, count: 3)
+      end
     end
 
     test 'renders count badge on outlined keyword' do

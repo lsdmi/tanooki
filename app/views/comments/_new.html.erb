@@ -20,15 +20,26 @@
   <%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
   <%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
 
+  <% reader_comment_form = chapters_show_page? || chapters_show_referer? %>
+  <% comment_field_class = if reader_comment_form
+    "w-full p-3 border rounded-lg transition-colors bg-stone-50 dark:bg-zinc-900 text-stone-900 dark:text-zinc-100 placeholder-stone-500 dark:placeholder-zinc-500 border-stone-300 dark:border-zinc-600 focus:outline-none focus:ring-0 focus:border-stone-500 dark:focus:border-zinc-500 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
+  else
+    "w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-stone-400 dark:focus:ring-gray-500 focus:border-transparent transition duration-300 bg-white dark:bg-gray-800 text-stone-900 dark:text-gray-100 placeholder-stone-400 dark:placeholder-gray-500 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
+  end %>
   <%= f.text_area :content,
       id: 'comment',
       rows: '3',
-      class: "w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-stone-400 dark:focus:ring-gray-500 focus:border-transparent transition duration-300 bg-white dark:bg-gray-800 text-stone-900 dark:text-gray-100 placeholder-stone-400 dark:placeholder-gray-500 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}",
+      class: comment_field_class,
       placeholder: 'Лишіть коментар...',
       required: true %>
 
-  <div class="mt-3 flex <%= chapters_show_page? || chapters_show_referer? ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
-    <%= f.submit 'Надіслати', class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer" %>
+  <div class="mt-3 flex <%= reader_comment_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
+    <% submit_class = if reader_comment_form
+      'w-full reader-comment-submit px-6 py-2 bg-stone-700 dark:bg-zinc-700 text-white rounded-full hover:bg-stone-800 dark:hover:bg-zinc-600 transition-colors duration-300 cursor-pointer focus:outline-none focus:ring-0'
+    else
+      "#{chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto'} px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer"
+    end %>
+    <%= f.submit 'Надіслати', class: submit_class %>
 
     <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
       <%= button_to cancel_reply_comment_path(comment.parent_id),

@@ -54,12 +54,11 @@ module Ui
     ].join(' ').freeze
 
     ADULT_CLASSES = [
-      'inline-flex items-center gap-1 rounded-lg border border-orange-700 bg-orange-600 px-3 py-1',
-      'text-xs font-medium text-white transition-colors hover:bg-orange-700',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2',
-      'focus-visible:ring-offset-white',
-      'dark:border-orange-400/80 dark:bg-orange-600 dark:hover:bg-orange-700',
-      'dark:focus-visible:ring-orange-400 dark:focus-visible:ring-offset-[#0f252c]'
+      'inline-flex items-center gap-1 rounded-lg border border-rose-700 bg-rose-200 px-3 py-1',
+      'text-xs font-medium text-rose-800 transition-colors hover:bg-rose-300 hover:text-rose-900',
+      'hover:border-rose-800',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
     RANK_CLASSES = {
@@ -76,7 +75,7 @@ module Ui
       adult: ADULT_CLASSES
     }.freeze
 
-    ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0 text-white'.freeze
+    ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0'.freeze
 
     ICON_CLASSES = {
       stat_views: 'h-3 w-3 shrink-0 text-white/90',

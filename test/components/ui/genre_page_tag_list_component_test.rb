@@ -25,8 +25,8 @@ module Ui
         )
       )
 
-      assert_selector 'a.bg-orange-600', text: 'BL'
-      assert_selector 'a.bg-orange-600 svg'
+      assert_selector 'a.bg-rose-200', text: 'BL'
+      assert_selector 'a.bg-rose-200 svg'
       assert_selector 'a.border-slate-300.bg-white', text: 'Романтика'
       assert_text(/BL.*Романтика/m)
     end

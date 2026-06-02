@@ -2,7 +2,7 @@
 
 module Ui
   # Taxonomy / keyword tag (genres, news tags, video keywords).
-  # Keyword: neutral outline. Filter: primary (cyan light / rose dark). Adult: orange (18+ / mature).
+  # Keyword: neutral outline. Filter: primary (cyan light / rose-600 dark). Adult: rose-200 (18+ / mature).
   # Light filled borders darker than fill; dark filled borders lighter than fill.
   class TagComponent < ViewComponent::Base
     include TagComponentStyles
@@ -39,6 +39,7 @@ module Ui
       raise ArgumentError, "unknown variant: #{@variant}" unless VARIANTS.include?(@variant)
       raise ArgumentError, "unknown size: #{@size}" unless SIZES.include?(@size)
       raise ArgumentError, "unknown as: #{@as}" unless %i[link button span].include?(@as)
+      raise ArgumentError, 'count is not supported for adult variant' if @variant == :adult && !@count.nil?
     end
 
     def count?
@@ -95,7 +96,7 @@ module Ui
     end
 
     def count_variant_classes
-      if solid_variant? || variant == :adult
+      if solid_variant?
         'bg-white/25 text-white'
       else
         'bg-cyan-100 text-cyan-700 dark:bg-zinc-600 dark:text-zinc-100'

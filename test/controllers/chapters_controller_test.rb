@@ -16,6 +16,16 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'show uses immersive reader layout without site navbar or footer' do
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_includes response.body, 'Налаштування читання'
+    assert_includes response.body, 'baka.in.ua™'
+    assert_not_includes response.body, 'Популярні теґи'
+    assert_not_includes response.body, 'id="site-logo"'
+  end
+
   test 'should get comments' do
     @chapter.comments << comments(:comment_one)
     get chapter_url(@chapter)

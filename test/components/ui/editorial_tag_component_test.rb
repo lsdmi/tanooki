@@ -10,6 +10,8 @@ module Ui
       assert_text '18+'
       assert_selector 'span.rounded-lg'
       assert_selector 'span.md\\:rounded-xl'
+      assert_selector 'span.bg-rose-600.text-white'
+      assert_no_selector 'span.bg-orange-600'
     end
 
     test 'renders custom label' do
