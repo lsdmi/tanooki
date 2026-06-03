@@ -1,5 +1,9 @@
 <%= turbo_frame_tag "reply-#{reply.id}" do %>
-  <div data-controller="flowbite">
-    <%= render 'comments/comment_body', comment: reply %>
+  <div data-controller="flowbite" class="<%= local_assigns[:drawer] ? 'ml-4 border-l-2 border-stone-200 pl-3 dark:border-zinc-700 sm:ml-6 sm:pl-4' : '' %>">
+    <% if local_assigns[:drawer] %>
+      <%= render 'comments/comment_drawer_body', comment: reply, commentable: commentable %>
+    <% else %>
+      <%= render 'comments/comment_body', comment: reply %>
+    <% end %>
   </div>
 <% end %>

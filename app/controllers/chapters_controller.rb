@@ -7,11 +7,11 @@ class ChaptersController < ApplicationController
   include FictionQuery
   include Library::ReadingStateHelper
 
-  before_action :authenticate_user!, except: %i[show comments]
-  before_action :set_chapter, only: %i[show edit update comments]
-  before_action :redirect_if_chapter_not_yet_public, only: %i[show comments]
+  before_action :authenticate_user!, except: %i[show]
+  before_action :set_chapter, only: %i[show edit update]
+  before_action :redirect_if_chapter_not_yet_public, only: :show
   before_action :track_visit, :track_reading_progress, only: :show
-  before_action :verify_permissions, except: %i[new create show comments]
+  before_action :verify_permissions, except: %i[new create show]
   before_action :pokemon_appearance, only: [:show]
 
   def show
@@ -21,13 +21,6 @@ class ChaptersController < ApplicationController
     @next_chapter = following_chapter(@chapter.fiction, @chapter, viewer: current_user)
     @fiction_sidebar_presenter = FictionShowPresenter.new(@chapter.fiction, current_user, params)
     assign_reader_ad_drawer_session
-  end
-
-  def comments
-    @comments = load_chapter_comments
-    @comment = Comment.new
-    @commentable = @chapter
-    @fiction = @chapter.fiction
   end
 
   def new

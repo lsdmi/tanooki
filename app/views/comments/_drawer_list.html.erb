@@ -1,0 +1,15 @@
+<%# locals: comments:, comment:, commentable: %>
+<% if current_user || comments.any? %>
+  <div class="space-y-4">
+    <%= turbo_frame_tag "comments" do %>
+      <%= render partial: "comments/comment", collection: comments, as: :comment, locals: { commentable: commentable, drawer: true } %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="py-8 text-center">
+    <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+    <%= link_to t('chapters.reader_comments_drawer.login_to_comment'),
+                new_user_session_path,
+                class: 'inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-cyan-800 dark:bg-rose-600 dark:hover:bg-rose-700' %>
+  </div>
+<% end %>

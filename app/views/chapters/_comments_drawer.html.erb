@@ -1,0 +1,53 @@
+<%# locals: chapter:, comments:, comment:, commentable: %>
+<div data-comments-drawer-target="backdrop"
+     class="fixed inset-0 z-[51] bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
+     data-action="click->comments-drawer#close"
+     aria-hidden="true"></div>
+
+<aside id="reader-comments-panel"
+       data-comments-drawer-target="panel"
+       class="reader-comments-drawer fixed inset-y-0 right-0 z-[52] flex h-dvh max-h-dvh w-full max-w-md translate-x-full flex-col overflow-hidden border-l border-stone-200 bg-white shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-black/40"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="reader-comments-title">
+  <div class="flex shrink-0 flex-col gap-0.5 border-b border-stone-200 px-4 py-4 dark:border-zinc-700 sm:px-5">
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0 pr-2">
+        <h2 id="reader-comments-title" class="text-base font-semibold text-stone-900 dark:text-zinc-50">
+          <%= t('chapters.reader_comments_drawer.title') %>
+        </h2>
+        <p id="reader-comments-count" class="mt-0.5 text-sm text-stone-500 dark:text-zinc-400">
+          <%= render 'chapters/comments_drawer_count', chapter: chapter %>
+        </p>
+      </div>
+      <button type="button"
+              class="shrink-0 rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus-visible:ring-zinc-500"
+              data-action="click->comments-drawer#close"
+              aria-label="<%= t('chapters.reader_comments_drawer.close') %>">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="reader-comments-drawer__scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
+    <% if chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
+      <div class="mb-4">
+        <%= render 'fictions/support', fiction: chapter.fiction %>
+      </div>
+    <% end %>
+
+    <%= render 'comments/drawer_list', comments: comments, comment: comment, commentable: commentable %>
+  </div>
+
+  <% if current_user %>
+    <div class="reader-comments-drawer__composer shrink-0 border-t border-stone-200 bg-white px-4 py-4 dark:border-zinc-700 dark:bg-zinc-900 sm:px-5">
+      <%= turbo_frame_tag "new_comment" do %>
+        <%= simple_form_for comment, url: comments_path, method: :post do |f| %>
+          <%= render "comments/new", comment: comment, commentable: commentable, f: f, drawer: true %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</aside>

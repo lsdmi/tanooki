@@ -356,6 +356,21 @@ uk:
         spectral: Спектрал
         eb_garamond: Гарамонд
         pt_serif: Сериф
+    reader_comments_drawer:
+      title: Коментарі
+      close: Закрити коментарі
+      count:
+        one: "%{count} коментар до цього розділу"
+        few: "%{count} коментарі до цього розділу"
+        many: "%{count} коментарів до цього розділу"
+        other: "%{count} коментарів до цього розділу"
+      ago_suffix: тому
+      reply: Відповісти
+      placeholder: Напишіть коментар...
+      submit: Надіслати коментар
+      login_to_comment: Увійти, аби лишити коментар
+      edit: Редагувати коментар
+      delete: Видалити коментар
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"

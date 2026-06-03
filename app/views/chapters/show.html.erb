@@ -1,5 +1,5 @@
 <div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
-     data-controller="comments-toggle jump-to-top chapter-drawer reader-settings<%= ' reader-ad-drawer' if chapter_reader_ad_drawer_live? %>"
+     data-controller="comments-drawer jump-to-top chapter-drawer reader-settings<%= ' reader-ad-drawer' if chapter_reader_ad_drawer_live? %>"
      <% if chapter_reader_ad_drawer_live? %>
      data-reader-ad-drawer-should-open-value="<%= @reader_ad_drawer_open %>"
      data-reader-ad-drawer-auto-close-ms-value="10000"
@@ -10,6 +10,7 @@
 
   <%= render 'reader_ad_drawer' if chapter_reader_ad_drawer_live? %>
   <%= render 'reader_settings_drawer', chapter: @chapter %>
+  <%= render 'comments_drawer', chapter: @chapter, comments: @comments, comment: @comment, commentable: @commentable %>
 
   <main class="relative z-10">
     <%= render 'reader_toolbar', chapter: @chapter, fiction: @chapter.fiction %>
@@ -21,25 +22,12 @@
       </div>
     <% end %>
 
-    <!-- Main Content and Comments -->
+    <!-- Main Content -->
     <div class="container mx-auto px-4 py-2 sm:py-4 lg:py-8">
       <%= render 'fictions/adult_content_disclaimer', fiction: @chapter.fiction if show_adult_content_disclaimer?(@chapter.fiction) %>
 
-      <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
-        <!-- Content Section -->
-        <div data-comments-toggle-target="contentSection" class="w-full lg:w-full">
-          <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
-        </div>
-
-        <!-- Comments Section - Desktop Sidebar -->
-        <div data-comments-toggle-target="commentsSection" class="reader-comments hidden w-full lg:w-1/3 mt-8 lg:mt-0 transition-all duration-300">
-          <!-- Support Creator Section -->
-          <% if @chapter.fiction.scanlators.pluck(:bank_url).compact_blank.any? %>
-            <%= render 'fictions/support', fiction: @chapter.fiction %>
-          <% end %>
-
-          <%= render 'comments/index', comments: @comments, comment: @comment, commentable: @commentable %>
-        </div>
+      <div class="w-full">
+        <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
       </div>
     </div>
 

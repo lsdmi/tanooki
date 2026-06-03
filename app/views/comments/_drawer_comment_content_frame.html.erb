@@ -1,0 +1,4 @@
+<%# locals: comment: %>
+<%= turbo_frame_tag "comment-content-#{comment.id}", class: 'reader-comments-drawer__content' do %>
+  <%= render 'comments/drawer_comment_content', comment: comment %>
+<% end %>

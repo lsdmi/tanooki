@@ -36,15 +36,20 @@
           </button>
         </div>
       <% end %>
-      <button type="button" data-action="click->comments-toggle#toggle" class="<%= action_icon %> relative" title="Коментарі" aria-label="Коментарі">
-        <svg data-comments-toggle-target="icon" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <button type="button"
+              data-action="click->comments-drawer#open"
+              class="<%= action_icon %> relative"
+              title="<%= t('chapters.reader_comments_drawer.title') %>"
+              aria-label="<%= t('chapters.reader_comments_drawer.title') %>"
+              aria-expanded="false"
+              aria-controls="reader-comments-panel"
+              data-comments-drawer-target="trigger">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
-        <% if chapter.comments_count.positive? %>
-          <span class="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-cyan-600 px-1 text-[10px] font-semibold leading-none text-white dark:bg-rose-600">
-            <%= chapter.comments_count > 99 ? '99+' : chapter.comments_count %>
-          </span>
-        <% end %>
+        <span id="reader-comments-badge">
+          <%= render 'chapters/reader_comments_badge', chapter: chapter %>
+        </span>
       </button>
       <button type="button"
               class="<%= action_icon %>"

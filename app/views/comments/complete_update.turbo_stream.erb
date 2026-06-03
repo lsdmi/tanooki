@@ -1,11 +1,22 @@
+<% drawer = @comment.commentable.is_a?(Chapter) %>
 <% if @comment.invalid? %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-    <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @comment, commentable: @comment.commentable, f: f %>
+    <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form#{' mb-6' unless drawer}" } do |f| %>
+      <%= render "comments/new", comment: @comment, commentable: @comment.commentable, f: f, drawer: drawer %>
+    <% end %>
+  <% end %>
+<% elsif drawer %>
+  <%= turbo_stream.replace "comment-content-#{@comment.id}" do %>
+    <%= render 'comments/drawer_comment_content_frame', comment: @comment %>
+  <% end %>
+  <% if @comment.parent_id.blank? %>
+    <%= turbo_stream.update "comment-reply-#{@comment.id}" do %>
+      <%= render 'comments/actions', comment: @comment, commentable: @comment.commentable, drawer: true %>
     <% end %>
   <% end %>
 <% else %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-    <%= tag.p @comment.content, class: "text-stone-600 dark:text-gray-300 text-sm leading-relaxed pr-4 pb-2" %>
+    <%= tag.p @comment.content.to_s.strip,
+              class: 'whitespace-pre-line break-words text-sm leading-relaxed text-stone-600 dark:text-gray-300 pr-4 pb-2' %>
   <% end %>
 <% end %>

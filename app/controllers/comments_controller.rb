@@ -32,6 +32,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @commentable = @comment.commentable
     @comment.destroy
   end
 

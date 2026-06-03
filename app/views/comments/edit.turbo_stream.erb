@@ -1,8 +1,9 @@
+<% drawer = @comment.commentable.is_a?(Chapter) %>
 <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-  <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form mb-6" } do |f| %>
-    <%= render "comments/new", comment: @comment, commentable: @commentable, f: f %>
+  <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form#{' mb-6' unless drawer}" } do |f| %>
+    <%= render "comments/new", comment: @comment, commentable: @commentable, f: f, drawer: drawer %>
   <% end %>
 <% end %>
 <%= turbo_stream.update "comment-reply-#{@comment.id}" do %>
-  <%= render 'comments/actions', comment: @comment, commentable: @commentable %>
+  <%= render 'comments/actions', comment: @comment, commentable: @commentable, drawer: drawer %>
 <% end %>

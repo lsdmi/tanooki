@@ -32,61 +32,6 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(68 64 60); /* stone-700 */
 }
 
-html:not(.dark) .immersive-reader .reader-comments h2 {
-  color: rgb(28 25 23);
-  border-color: rgb(231 229 228); /* stone-200 */
-}
-
-html:not(.dark) .immersive-reader .reader-comments .text-stone-600 {
-  color: rgb(87 83 78);
-}
-
-html:not(.dark) .immersive-reader .reader-comments .bg-white {
-  background-color: rgb(250 250 249);
-}
-
-html:not(.dark) .immersive-reader .reader-comments .border-stone-200 {
-  border-color: rgb(231 229 228);
-}
-
-html:not(.dark) .immersive-reader .reader-comments textarea,
-html:not(.dark) .immersive-reader .reader-comments #comment {
-  background-color: rgb(250 250 249);
-  color: rgb(28 25 23);
-  border-color: rgb(214 211 209);
-}
-
-html:not(.dark) .immersive-reader .reader-comments textarea::placeholder,
-html:not(.dark) .immersive-reader .reader-comments #comment::placeholder {
-  color: rgb(120 113 108); /* stone-500 */
-}
-
-html:not(.dark) .immersive-reader .reader-comments textarea:focus,
-html:not(.dark) .immersive-reader .reader-comments #comment:focus {
-  border-color: rgb(120 113 108);
-  outline: none;
-  box-shadow: none;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-ring-color: transparent;
-}
-
-html:not(.dark) .immersive-reader .reader-comments input[type='submit'],
-html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit {
-  background-color: rgb(68 64 60); /* stone-700 */
-}
-
-html:not(.dark) .immersive-reader .reader-comments input[type='submit']:hover,
-html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:hover {
-  background-color: rgb(41 37 36); /* stone-800 */
-}
-
-html:not(.dark) .immersive-reader .reader-comments input[type='submit']:focus,
-html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus {
-  outline: none;
-  box-shadow: none;
-  --tw-ring-shadow: 0 0 #0000;
-}
-
 /* Immersive chapter reader — dark mode (solid scrim, high contrast, no blue form glow) */
 
 .dark .immersive-reader #user-content {
@@ -119,77 +64,6 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   border-color: rgb(159 18 57 / 0.35);
   border-left-color: rgb(190 18 60 / 0.55);
   color: rgb(228 228 231);
-}
-
-/* Comments sidebar */
-.dark .immersive-reader .reader-comments h2 {
-  color: rgb(250 250 250);
-  border-color: rgb(63 63 70);
-}
-
-.dark .immersive-reader .reader-comments .text-stone-600 {
-  color: rgb(161 161 170);
-}
-
-.dark .immersive-reader .reader-comments .dark\:text-gray-400,
-.dark .immersive-reader .reader-comments .dark\:text-gray-300,
-.dark .immersive-reader .reader-comments .dark\:text-gray-200 {
-  color: rgb(212 212 216);
-}
-
-.dark .immersive-reader .reader-comments .dark\:bg-gray-700,
-.dark .immersive-reader .reader-comments .dark\:bg-gray-800 {
-  background-color: rgb(39 39 42);
-}
-
-.dark .immersive-reader .reader-comments .dark\:border-gray-700,
-.dark .immersive-reader .reader-comments .dark\:border-gray-600 {
-  border-color: rgb(63 63 70);
-}
-
-.dark .immersive-reader .reader-comments .dark\:hover\:bg-gray-600:hover {
-  background-color: rgb(63 63 70);
-}
-
-/* Comment form — neutral focus, no @tailwindcss/forms blue ring */
-.dark .immersive-reader .reader-comments textarea,
-.dark .immersive-reader .reader-comments #comment {
-  background-color: rgb(24 24 27);
-  color: rgb(244 244 245);
-  border-color: rgb(63 63 70);
-}
-
-.dark .immersive-reader .reader-comments textarea::placeholder,
-.dark .immersive-reader .reader-comments #comment::placeholder {
-  color: rgb(113 113 122);
-}
-
-.dark .immersive-reader .reader-comments textarea:focus,
-.dark .immersive-reader .reader-comments #comment:focus {
-  background-color: rgb(24 24 27);
-  color: rgb(244 244 245);
-  border-color: rgb(113 113 122);
-  outline: none;
-  box-shadow: none;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-ring-color: transparent;
-}
-
-.dark .immersive-reader .reader-comments input[type='submit'],
-.dark .immersive-reader .reader-comments .reader-comment-submit {
-  background-color: rgb(63 63 70);
-}
-
-.dark .immersive-reader .reader-comments input[type='submit']:hover,
-.dark .immersive-reader .reader-comments .reader-comment-submit:hover {
-  background-color: rgb(82 82 91);
-}
-
-.dark .immersive-reader .reader-comments input[type='submit']:focus,
-.dark .immersive-reader .reader-comments .reader-comment-submit:focus {
-  outline: none;
-  box-shadow: none;
-  --tw-ring-shadow: 0 0 #0000;
 }
 
 /* Collapse unfilled manual AdSense units (Google data-ad-status) */
@@ -252,4 +126,40 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   border-color: rgb(225 29 72);
   background-color: rgb(225 29 72);
   color: rgb(255 255 255);
+}
+
+/* Comments drawer: keep body tight under timestamp (no turbo-frame / paragraph stack gap) */
+.immersive-reader turbo-frame.reader-comments-drawer__content {
+  display: block;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+}
+
+.immersive-reader .reader-comments-drawer__content > p {
+  margin: 0;
+}
+
+/* Comments drawer — textarea padding (composer + inline edit/reply inside cards) */
+.immersive-reader .reader-comments-drawer__input,
+.immersive-reader .reader-comments-drawer__composer textarea,
+.immersive-reader .reader-comments-drawer__card form.comment textarea {
+  box-sizing: border-box;
+  padding: 0.75rem;
+}
+
+.dark .immersive-reader .reader-comments-drawer__input,
+.dark .immersive-reader .reader-comments-drawer__composer textarea,
+.dark .immersive-reader .reader-comments-drawer__card form.comment textarea {
+  background-color: rgb(39 39 42);
+  color: rgb(244 244 245);
+  border-color: rgb(63 63 70);
+}
+
+.dark .immersive-reader .reader-comments-drawer__input:focus,
+.dark .immersive-reader .reader-comments-drawer__composer textarea:focus,
+.dark .immersive-reader .reader-comments-drawer__card form.comment textarea:focus {
+  border-color: rgb(244 63 94);
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(244 63 94 / 0.2);
 }

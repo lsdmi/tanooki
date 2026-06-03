@@ -1,3 +1,6 @@
+<% if @commentable.is_a?(Chapter) %>
+  <%= render partial: 'comments/reader_chapter_count_streams', locals: { commentable: @commentable }, formats: [:html] %>
+<% end %>
 <% if @comment.parent_id.present? %>
   <%= turbo_stream.remove "reply-#{@comment.id}" %>
 <% else %>

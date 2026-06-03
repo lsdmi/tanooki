@@ -1,0 +1,10 @@
+<%# locals: commentable: %>
+<% if commentable.is_a?(Chapter) %>
+  <% chapter = commentable.reload %>
+  <%= turbo_stream.update 'reader-comments-count' do %>
+    <%= render 'chapters/comments_drawer_count', chapter: chapter %>
+  <% end %>
+  <%= turbo_stream.update 'reader-comments-badge' do %>
+    <%= render 'chapters/reader_comments_badge', chapter: chapter %>
+  <% end %>
+<% end %>

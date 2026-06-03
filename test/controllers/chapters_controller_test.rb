@@ -24,8 +24,9 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
     assert_not_includes response.body, 'Популярні теґи'
     assert_not_includes response.body, 'id="site-logo"'
-    assert_includes response.body, 'reader-comments hidden'
-    assert_includes response.body, 'data-comments-toggle-target="contentSection" class="w-full lg:w-full"'
+    assert_includes response.body, 'reader-comments-drawer'
+    assert_includes response.body, 'data-comments-drawer-target="panel"'
+    assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
     assert_not_includes response.body, 'reader-ad-slot'
     assert_includes response.body, 'reader-anchor-card'
     assert_includes response.body, I18n.t('chapters.reader_anchor_card.home')
@@ -57,15 +58,6 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     get chapter_url(@chapter)
 
     assert_equal @chapter.comments, assigns(:comments)
-  end
-
-  test 'should get comments page' do
-    @chapter.comments << comments(:comment_one)
-    get comments_chapter_url(@chapter)
-
-    assert_response :success
-    assert_equal @chapter.comments.parents.order(created_at: :desc), assigns(:comments)
-    assert_equal @chapter, assigns(:commentable)
   end
 
   test 'should get next chapter' do

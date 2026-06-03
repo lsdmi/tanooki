@@ -1,26 +1,30 @@
+<% drawer = @commentable.is_a?(Chapter) %>
+<% if drawer && !@created_comment.invalid? %>
+  <%= render partial: 'comments/reader_chapter_count_streams', locals: { commentable: @commentable }, formats: [:html] %>
+<% end %>
 <% if @created_comment.invalid? && @created_comment.parent_id.present? %>
   <% @created_comment.update(parent_id: @reply_parent.id) if @reply_parent %>
   <%= turbo_stream.update "comment-reply-#{@reply_parent.id || @created_comment.parent_id}" do %>
-    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mt-2.5" } do |f| %>
-      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
+    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form#{' mt-2.5' unless drawer}" } do |f| %>
+      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f, drawer: drawer %>
     <% end %>
   <% end %>
 <% elsif @created_comment.invalid? %>
   <%= turbo_stream.update "new_comment" do %>
-    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f %>
+    <%= simple_form_for @created_comment, url: comments_path, method: :post, html: { class: "comment form#{' mb-6' unless drawer}" } do |f| %>
+      <%= render "comments/new", comment: @created_comment, commentable: @commentable, f: f, drawer: drawer %>
     <% end %>
   <% end %>
 <% elsif @created_comment.parent_id.present? %>
-  <%= turbo_stream.append "replies-#{@created_comment.parent_id}", partial: "comments/reply", locals: { reply: @created_comment, commentable: @commentable } %>
+  <%= turbo_stream.append "replies-#{@created_comment.parent_id}", partial: "comments/reply", locals: { reply: @created_comment, commentable: @commentable, drawer: @commentable.is_a?(Chapter) } %>
   <%= turbo_stream.update "comment-reply-#{@reply_parent.id}" do %>
-    <%= render 'comments/actions', comment: @reply_parent || @created_comment.parent, commentable: @commentable %>
+    <%= render 'comments/actions', comment: @reply_parent || @created_comment.parent, commentable: @commentable, drawer: @commentable.is_a?(Chapter) %>
   <% end %>
 <% else %>
-  <%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @created_comment, commentable: @commentable } %>
+  <%= turbo_stream.prepend "comments", partial: "comments/comment", locals: { comment: @created_comment, commentable: @commentable, drawer: @commentable.is_a?(Chapter) } %>
   <%= turbo_stream.update "new_comment" do %>
-    <%= simple_form_for @new_comment, url: comments_path, method: :post, html: { class: "comment form mb-6" } do |f| %>
-      <%= render "comments/new", comment: @new_comment, commentable: @commentable, f: f %>
+    <%= simple_form_for @new_comment, url: comments_path, method: :post, html: { class: "comment form#{' mb-6' unless drawer}" } do |f| %>
+      <%= render "comments/new", comment: @new_comment, commentable: @commentable, f: f, drawer: drawer %>
     <% end %>
   <% end %>
 <% end %>

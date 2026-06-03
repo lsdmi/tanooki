@@ -1,4 +1,4 @@
-<div class="mb-4">
+<div class="<%= local_assigns.fetch(:drawer, false) || (commentable.is_a?(Chapter) && immersive_comments_drawer_form?) ? 'mb-0' : 'mb-4' %>">
   <% if comment.errors.any? %>
     <div class="bg-red-50 dark:bg-red-900 border-l-4 border-red-400 p-3 mb-4">
       <div class="flex items-center">
@@ -20,31 +20,45 @@
   <%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
   <%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
 
-  <% reader_comment_form = chapters_show_page? || chapters_show_referer? %>
-  <% comment_field_class = if reader_comment_form
-    "w-full p-3 border rounded-lg transition-colors bg-stone-50 dark:bg-zinc-900 text-stone-900 dark:text-zinc-100 placeholder-stone-500 dark:placeholder-zinc-500 border-stone-300 dark:border-zinc-600 focus:outline-none focus:ring-0 focus:border-stone-500 dark:focus:border-zinc-500 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
+  <% drawer_form = local_assigns.fetch(:drawer, false) || (commentable.is_a?(Chapter) && immersive_comments_drawer_form?) %>
+  <% comment_field_class = if drawer_form
+    "reader-comments-drawer__input w-full resize-none rounded-lg border border-stone-200 bg-white p-3 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-rose-500 dark:focus:ring-rose-500/20 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
   else
     "w-full p-3 border border-stone-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-stone-400 dark:focus:ring-gray-500 focus:border-transparent transition duration-300 bg-white dark:bg-gray-800 text-stone-900 dark:text-gray-100 placeholder-stone-400 dark:placeholder-gray-500 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
   end %>
   <%= f.text_area :content,
-      id: 'comment',
-      rows: '3',
+      id: drawer_form ? "comment-field-#{comment.id || 'new'}" : 'comment',
+      rows: 3,
       class: comment_field_class,
-      placeholder: 'Лишіть коментар...',
+      placeholder: drawer_form ? t('chapters.reader_comments_drawer.placeholder') : 'Лишіть коментар...',
       required: true %>
 
-  <div class="mt-3 flex <%= reader_comment_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
-    <% submit_class = if reader_comment_form
-      'w-full reader-comment-submit px-6 py-2 bg-stone-700 dark:bg-zinc-700 text-white rounded-full hover:bg-stone-800 dark:hover:bg-zinc-600 transition-colors duration-300 cursor-pointer focus:outline-none focus:ring-0'
+  <div class="mt-3 flex <%= drawer_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
+    <% submit_class = if drawer_form
+      'w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus-visible:ring-rose-500 dark:focus-visible:ring-offset-zinc-900'
     else
-      "#{chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto'} px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer"
+      'w-full sm:w-auto px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer'
     end %>
-    <%= f.submit 'Надіслати', class: submit_class %>
+    <% if drawer_form %>
+      <%= button_tag type: 'submit', class: submit_class do %>
+        <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+        </svg>
+        <span><%= t('chapters.reader_comments_drawer.submit') %></span>
+      <% end %>
+    <% else %>
+      <%= f.submit 'Надіслати', class: submit_class %>
+    <% end %>
 
+    <% cancel_class = if drawer_form
+      'w-full rounded-lg border border-stone-200 bg-stone-100 px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700'
+    else
+      'w-full sm:w-auto px-6 py-2 bg-stone-200 dark:bg-gray-700 text-stone-600 dark:text-gray-200 rounded-full hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105'
+    end %>
     <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
       <%= button_to cancel_reply_comment_path(comment.parent_id),
         method: :get,
-        class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-200 dark:bg-gray-700 text-stone-600 dark:text-gray-200 rounded-full hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105",
+        class: cancel_class,
         data: { turbo_stream: "" } do %>
           <span>Скасувати</span>
       <% end %>
@@ -53,7 +67,7 @@
     <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
       <%= button_to cancel_edit_comment_path(comment),
         method: :get,
-        class: "#{ chapters_show_page? || chapters_show_referer? ? 'w-full' : 'w-full sm:w-auto' } px-6 py-2 bg-stone-200 dark:bg-gray-700 text-stone-600 dark:text-gray-200 rounded-full hover:bg-stone-300 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105",
+        class: cancel_class,
         data: { turbo_stream: "" } do %>
           <span>Скасувати</span>
       <% end %>
