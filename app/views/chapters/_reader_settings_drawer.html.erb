@@ -1,0 +1,124 @@
+<%# locals: chapter: %>
+<div data-reader-settings-target="backdrop"
+     class="fixed inset-0 z-[51] bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
+     data-action="click->reader-settings#close"
+     aria-hidden="true"></div>
+
+<aside id="reader-settings-panel"
+       data-reader-settings-target="panel"
+       class="reader-settings__panel fixed inset-y-0 right-0 z-[52] flex h-dvh max-h-dvh w-full max-w-sm translate-x-full flex-col overflow-hidden border-l border-stone-200 bg-white shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-black/40"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="reader-settings-title">
+  <div class="flex shrink-0 items-start justify-between gap-3 border-b border-stone-200 px-4 py-4 dark:border-zinc-700 sm:px-5">
+    <div class="min-w-0 pr-2">
+      <h2 id="reader-settings-title" class="text-base font-semibold text-stone-900 dark:text-zinc-50">
+        <%= t('chapters.reader_settings.title') %>
+      </h2>
+      <p class="mt-0.5 text-sm text-stone-500 dark:text-zinc-400">
+        <%= t('chapters.reader_settings.subtitle') %>
+      </p>
+    </div>
+    <button type="button"
+            class="shrink-0 rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus-visible:ring-zinc-500"
+            data-action="click->reader-settings#close"
+            aria-label="<%= t('chapters.reader_settings.close') %>">
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5 sm:py-5">
+    <section class="border-b border-stone-200 pb-5 dark:border-zinc-700">
+      <div class="mb-3 flex items-center gap-2 text-sm font-medium text-stone-800 dark:text-zinc-200">
+        <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+        <%= t('chapters.reader_settings.font') %>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <% reader_font_choices.each do |font| %>
+          <button type="button"
+                  class="reader-settings__font rounded-lg border border-stone-200 bg-white px-3 py-2 text-left text-sm font-medium text-stone-700 transition-colors hover:border-stone-300 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-500"
+                  data-reader-settings-target="fontOption"
+                  data-font-id="<%= font[:id] %>"
+                  data-action="click->reader-settings#selectFont"
+                  aria-pressed="false">
+            <%= font[:label] %>
+          </button>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="border-b border-stone-200 py-5 dark:border-zinc-700">
+      <div class="mb-3 flex items-center gap-2 text-sm font-medium text-stone-800 dark:text-zinc-200">
+        <svg class="h-4 w-4 shrink-0 text-stone-500 dark:text-zinc-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="m22 6-3-4-3 4h2v4h-2l3 4 3-4h-2V6zM9.307 4l-6 16h2.137l1.875-5h6.363l1.875 5h2.137l-6-16H9.307zm-1.239 9L10.5 6.515 12.932 13H8.068z" />
+        </svg>
+        <%= t('chapters.reader_settings.font_size') %>
+      </div>
+      <div class="flex items-center gap-0 overflow-hidden rounded-lg border border-stone-200 dark:border-zinc-600">
+        <button type="button"
+                class="flex h-11 w-12 shrink-0 items-center justify-center text-lg font-medium text-stone-600 transition-colors hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                data-reader-settings-font-step="decrease"
+                data-action="click->reader-settings#decreaseFontSize"
+                aria-label="<%= t('chapters.reader_settings.decrease_font_size') %>">
+          −
+        </button>
+        <div class="flex h-11 min-w-0 flex-1 items-center justify-center border-x border-stone-200 bg-stone-50 text-sm font-semibold tabular-nums text-stone-800 dark:border-zinc-600 dark:bg-zinc-800/80 dark:text-zinc-100"
+             data-reader-settings-target="fontSizeValue"
+             aria-live="polite">
+          16px
+        </div>
+        <button type="button"
+                class="flex h-11 w-12 shrink-0 items-center justify-center text-lg font-medium text-stone-600 transition-colors hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                data-reader-settings-font-step="increase"
+                data-action="click->reader-settings#increaseFontSize"
+                aria-label="<%= t('chapters.reader_settings.increase_font_size') %>">
+          +
+        </button>
+      </div>
+    </section>
+
+    <section class="py-5">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex min-w-0 items-start gap-2">
+          <svg class="mt-0.5 h-4 w-4 shrink-0 text-stone-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <div>
+            <p class="text-sm font-medium text-stone-800 dark:text-zinc-200">
+              <%= t('chapters.reader_settings.dark_theme') %>
+            </p>
+            <p class="text-xs text-stone-500 dark:text-zinc-400">
+              <%= t('chapters.reader_settings.dark_theme_hint') %>
+            </p>
+          </div>
+        </div>
+        <label class="relative inline-flex shrink-0 cursor-pointer items-center">
+          <input type="checkbox"
+                 class="peer sr-only"
+                 data-reader-settings-target="themeToggle"
+                 data-action="change->reader-settings#toggleTheme"
+                 aria-label="<%= t('chapters.reader_settings.dark_theme') %>">
+          <span class="h-6 w-11 rounded-full bg-stone-200 transition-colors peer-checked:bg-cyan-700 peer-focus-visible:ring-2 peer-focus-visible:ring-cyan-500/60 dark:bg-zinc-600 dark:peer-checked:bg-rose-600 dark:peer-focus-visible:ring-rose-500/60"></span>
+          <span class="pointer-events-none absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span>
+        </label>
+      </div>
+      <p class="sr-only" data-reader-settings-target="themeLabel"></p>
+    </section>
+
+    <% if current_user && (current_user.admin? || current_user == chapter.user) %>
+      <section class="border-t border-stone-200 pt-5 dark:border-zinc-700">
+        <%= link_to edit_chapter_path(chapter),
+                    class: 'flex w-full items-center justify-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-300 hover:bg-white dark:border-zinc-600 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-500 dark:hover:bg-zinc-800' do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <%= t('chapters.reader_settings.edit_chapter') %>
+        <% end %>
+      </section>
+    <% end %>
+  </div>
+</aside>

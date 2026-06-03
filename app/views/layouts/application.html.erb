@@ -44,6 +44,9 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400&display=swap", "data-turbolinks-track": "reload" %>
+    <% if chapters_show_page? %>
+      <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, "data-turbo-track": "reload" %>
+    <% end %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
@@ -62,7 +65,7 @@
       <% end %>
     <% end %>
 
-    <%= javascript_include_tag 'font_toggler' if requires_font? %>
+    <%= javascript_include_tag 'font_toggler' if requires_legacy_font_toggler? %>
     <%= javascript_include_tag 'mode_toggler' %>
     <%= javascript_include_tag 'note_handler' %>
 

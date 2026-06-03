@@ -240,3 +240,16 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
     max-height: calc((100dvh - 8.5rem) / 3 - 0.5rem);
   }
 }
+
+/* Reader settings drawer */
+.immersive-reader .reader-settings__font--active {
+  border-color: rgb(21 94 117);
+  background-color: rgb(21 94 117);
+  color: rgb(255 255 255);
+}
+
+.dark .immersive-reader .reader-settings__font--active {
+  border-color: rgb(225 29 72);
+  background-color: rgb(225 29 72);
+  color: rgb(255 255 255);
+}

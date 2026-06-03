@@ -339,6 +339,23 @@ uk:
     reader_ad_drawer:
       countdown: Автозакриття через %{seconds} с
       label: Реклама
+    reader_settings:
+      title: Налаштування читання
+      subtitle: Підлаштуйте вигляд тексту під себе.
+      close: Закрити налаштування
+      font: Шрифт
+      font_size: Розмір шрифту
+      decrease_font_size: Зменшити розмір шрифту
+      increase_font_size: Збільшити розмір шрифту
+      dark_theme: Темна тема
+      dark_theme_hint: Зручніше для очей вночі
+      edit_chapter: Редагувати розділ
+      fonts:
+        golos_text: Голос
+        literata: Літерата
+        spectral: Спектрал
+        eb_garamond: Гарамонд
+        pt_serif: Сериф
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"

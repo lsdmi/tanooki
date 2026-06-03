@@ -1,5 +1,5 @@
 <div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
-     data-controller="comments-toggle jump-to-top chapter-drawer<%= ' reader-ad-drawer' if chapter_reader_ad_drawer_live? %>"
+     data-controller="comments-toggle jump-to-top chapter-drawer reader-settings<%= ' reader-ad-drawer' if chapter_reader_ad_drawer_live? %>"
      <% if chapter_reader_ad_drawer_live? %>
      data-reader-ad-drawer-should-open-value="<%= @reader_ad_drawer_open %>"
      data-reader-ad-drawer-auto-close-ms-value="10000"
@@ -9,6 +9,7 @@
   <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
 
   <%= render 'reader_ad_drawer' if chapter_reader_ad_drawer_live? %>
+  <%= render 'reader_settings_drawer', chapter: @chapter %>
 
   <main class="relative z-10">
     <%= render 'reader_toolbar', chapter: @chapter, fiction: @chapter.fiction %>
