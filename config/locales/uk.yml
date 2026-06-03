@@ -336,6 +336,9 @@ uk:
     reader_anchor_card:
       chapter_label: Розділ %{number}
       home: Повернутися на головну
+    reader_ad_drawer:
+      countdown: Автозакриття через %{seconds} с
+      label: Реклама
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"

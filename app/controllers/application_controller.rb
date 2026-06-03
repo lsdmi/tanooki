@@ -53,7 +53,11 @@ class ApplicationController < ActionController::Base
   end
 
   def adsense_allowed?
-    Rails.env.production? && !ads_disabled_for_current_page?
+    Rails.env.production? && !ads_disabled_for_current_page? && !user_ads_free?
+  end
+
+  def user_ads_free?
+    current_user&.ads_free?
   end
 
   def videos

@@ -119,4 +119,8 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal 'Test User Test User ', User.last.name
   end
+
+  test 'ads_free is false until premium tier is implemented' do
+    assert_not @user.ads_free?
+  end
 end

@@ -49,6 +49,11 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *).deliver_later
   end
 
+  # Future Premium / No-Ads tier: return true when the member should not see AdSense or the reader ad drawer.
+  def ads_free?
+    false
+  end
+
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data[:email]).first

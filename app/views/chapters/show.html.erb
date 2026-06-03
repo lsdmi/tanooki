@@ -1,6 +1,13 @@
-<div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative" data-controller="comments-toggle jump-to-top chapter-drawer">
+<div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
+     data-controller="comments-toggle jump-to-top chapter-drawer<%= ' reader-ad-drawer' if chapter_reader_ad_drawer_live? %>"
+     <% if chapter_reader_ad_drawer_live? %>
+     data-reader-ad-drawer-should-open-value="<%= @reader_ad_drawer_open %>"
+     data-reader-ad-drawer-auto-close-ms-value="5000"
+     <% end %>>
   <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
+
+  <%= render 'reader_ad_drawer' if chapter_reader_ad_drawer_live? %>
 
   <main class="relative z-10">
     <%= render 'reader_toolbar', chapter: @chapter, fiction: @chapter.fiction %>
