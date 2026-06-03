@@ -1,4 +1,4 @@
-<section class="w-full rounded-lg bg-stone-50/95 ring-1 ring-stone-200/80 shadow-sm dark:bg-zinc-900 dark:shadow-none dark:ring-zinc-700 p-4 sm:p-6 lg:p-8 transition-shadow duration-300 hover:shadow-md dark:hover:shadow-none relative overflow-hidden">
+<section class="w-full rounded-lg bg-stone-50/95 ring-1 ring-stone-200/80 shadow-sm dark:bg-zinc-900 dark:shadow-none dark:ring-zinc-700 p-3 sm:p-6 lg:p-8 transition-shadow duration-300 hover:shadow-md dark:hover:shadow-none relative overflow-hidden">
   <%= render "chapter_navigation", previous_chapter: previous_chapter, next_chapter: next_chapter, placement: :top %>
   <%= render "shared/adsense_chapter_reader_slot", placement: :top %>
   <div class="absolute top-0 left-0 w-full h-2 bg-cyan-600 dark:bg-rose-600"></div>
@@ -10,9 +10,4 @@
   <%= render "chapter_navigation", previous_chapter: previous_chapter, next_chapter: next_chapter, placement: :bottom %>
   <%= render "shared/adsense_chapter_reader_slot", placement: :bottom %>
   <%= render "reader_anchor_card", chapter: chapter, fiction: chapter.fiction %>
-  <% if epub_download_requires_login?(chapter) %>
-    <div class="reader-epub-banner-slot mt-4 w-full md:hidden">
-      <%= render "reader_epub_login_banner", fiction: chapter.fiction, placement: :bottom %>
-    </div>
-  <% end %>
 </section>

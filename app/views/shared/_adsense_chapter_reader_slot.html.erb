@@ -2,7 +2,7 @@
 <% return unless chapter_reader_ad_live?(placement) %>
 
 <% wrapper_classes = [
-  'reader-ad-slot relative my-4 sm:my-6 overflow-hidden rounded-lg',
+  'reader-ad-slot reader-ad-slot--compact relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6',
   (placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top')
 ].join(' ') %>
 

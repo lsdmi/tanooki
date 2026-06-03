@@ -1,9 +1,8 @@
-<%# locals: fiction:, placement: (:top|:bottom) %>
-<% placement = local_assigns.fetch(:placement, :top) %>
-<% title_id = placement == :bottom ? 'reader-epub-banner-title-bottom' : 'reader-epub-banner-title' %>
+<%# locals: fiction: %>
 <section class="reader-epub-banner w-full rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-rose-900/50 dark:bg-zinc-900/95 sm:rounded-xl sm:p-4 md:p-5"
-         aria-labelledby="<%= title_id %>">
-  <div class="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+         aria-labelledby="reader-epub-banner-title">
+  <%# Mobile: copy then full-width button. md+: copy left, button right. %>
+  <div class="flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-6">
     <div class="flex min-w-0 flex-1 gap-2.5 sm:gap-3 md:gap-4">
       <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-cyan-800/80 bg-white dark:border-rose-600/55 dark:bg-zinc-950 sm:h-11 sm:w-11"
            aria-hidden="true">
@@ -13,9 +12,9 @@
         </svg>
       </div>
 
-      <div class="min-w-0">
+      <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center gap-2">
-          <h2 id="<%= title_id %>" class="text-sm font-bold text-cyan-900 dark:text-zinc-50 sm:text-base md:text-lg">
+          <h2 id="reader-epub-banner-title" class="text-sm font-bold text-cyan-900 dark:text-zinc-50 sm:text-base md:text-lg">
             <%= t('chapters.reader_epub_banner.title') %>
           </h2>
           <span class="rounded border border-cyan-800/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-cyan-800 dark:border-rose-500/65 dark:bg-rose-950/40 dark:text-rose-200">

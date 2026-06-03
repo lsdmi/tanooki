@@ -36,10 +36,10 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     get chapter_url(@chapter)
 
     assert_response :success
-    assert_includes response.body, 'reader-epub-banner-slot'
-    assert_includes response.body, 'md:hidden'
-    assert_includes response.body, 'reader-epub-banner-title-bottom'
-    assert_includes response.body, 'hidden px-4 py-4 md:block'
+    assert_select 'section.reader-epub-banner', count: 1
+    assert_includes response.body, 'reader-epub-banner-title'
+    assert_not_includes response.body, 'reader-epub-banner-title-bottom'
+    assert_not_includes response.body, 'reader-epub-banner-slot'
     assert_includes response.body, I18n.t('chapters.reader_epub_banner.title')
     assert_includes response.body, I18n.t('chapters.reader_epub_banner.login_description')
     assert_includes response.body, new_user_session_path
