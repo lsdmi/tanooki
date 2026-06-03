@@ -4,14 +4,13 @@ require 'test_helper'
 
 module Reading
   class AdDrawerSessionTest < ActiveSupport::TestCase
-    test 'opens on 1st 6th and 11th chapter view in session' do
+    test 'opens on 1st 5th and 9th chapter view in session' do
       assert_open(1, {})
       assert_skips(2, after_views(1))
       assert_skips(3, after_views(2))
       assert_skips(4, after_views(3))
-      assert_skips(5, after_views(4))
-      assert_open(6, after_views(5))
-      assert_open(11, after_views(10))
+      assert_open(5, after_views(4))
+      assert_open(9, after_views(8))
     end
 
     test 'does not reopen the same chapter on refresh' do

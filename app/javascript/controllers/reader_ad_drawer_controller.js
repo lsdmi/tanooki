@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-const DEFAULT_AUTO_CLOSE_MS = 15_000
+const DEFAULT_AUTO_CLOSE_MS = 10_000
 
 /** Full-screen ad grid drawer; auto-closes after a short delay. */
 export default class extends Controller {

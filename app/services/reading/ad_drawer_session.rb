@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module Reading
-  # Opens the chapter reader ad drawer every 5th chapter view in the session (1, 6, 11, …).
+  # Opens the chapter reader ad drawer every 4th chapter view in the session (1, 5, 9, …).
   # Suppressed entirely when +User#ads_free?+ is true (future Premium / No-Ads tier).
   class AdDrawerSession
-    INTERVAL = 5
+    INTERVAL = 4
 
     def self.call(chapter_id:, session_state:)
       new(chapter_id:, session_state:).call

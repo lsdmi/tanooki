@@ -204,13 +204,17 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   overflow: hidden !important;
 }
 
-/* Reader ad drawer: hide unfilled slots; let filled units define cell height */
+/* Reader ad drawer: panel sits below sticky reader toolbar (top-12); grid fits in remaining viewport */
 .immersive-reader .reader-ad-drawer__body {
   background: rgb(12 10 9 / 0.92); /* stone-950 */
 }
 
 .dark .immersive-reader .reader-ad-drawer__body {
   background: rgb(9 9 11 / 0.94); /* zinc-950 */
+}
+
+.immersive-reader .reader-ad-drawer__grid {
+  max-height: calc(100dvh - 7rem);
 }
 
 .immersive-reader .reader-ad-drawer__cell ins.adsbygoogle[data-ad-status='unfilled'] {
@@ -222,11 +226,17 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
 }
 
 .immersive-reader .reader-ad-drawer__cell ins.adsbygoogle {
-  min-height: 5.5rem;
+  min-height: 3.75rem;
+  max-height: calc((100dvh - 7.5rem) / 3 - 0.35rem);
 }
 
 @media (min-width: 640px) {
+  .immersive-reader .reader-ad-drawer__grid {
+    max-height: calc(100dvh - 8rem);
+  }
+
   .immersive-reader .reader-ad-drawer__cell ins.adsbygoogle {
-    min-height: 7.5rem;
+    min-height: 4.5rem;
+    max-height: calc((100dvh - 8.5rem) / 3 - 0.5rem);
   }
 }
