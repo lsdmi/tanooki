@@ -21,9 +21,9 @@
     </div>
 
     <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-stone-100/95 px-3 py-3 dark:bg-zinc-950/95 sm:px-4 sm:py-4">
-      <div class="reader-ad-drawer__grid mx-auto grid max-w-3xl grid-cols-2 gap-1.5 sm:max-w-none sm:gap-3 md:max-w-4xl">
+      <div class="reader-ad-drawer__grid mx-auto grid max-w-3xl grid-cols-2 gap-2 sm:max-w-none sm:gap-3 md:max-w-4xl">
         <% chapter_reader_ad_drawer_slots.each_with_index do |slot_id, index| %>
-          <div class="reader-ad-drawer__cell relative min-h-[4.25rem] overflow-hidden rounded-md border border-stone-200/90 bg-white dark:border-zinc-700 dark:bg-zinc-900 sm:min-h-[7rem] sm:rounded-lg<%= ' sm:hidden' if index >= 6 %>">
+          <div class="reader-ad-drawer__cell relative min-h-[4.5rem] overflow-hidden rounded-md border border-stone-200/90 bg-white dark:border-zinc-700 dark:bg-zinc-900 sm:min-h-[7rem] sm:rounded-lg">
             <span class="absolute left-1.5 top-1.5 z-[1] text-[9px] font-medium uppercase tracking-wide text-stone-400 dark:text-zinc-500 sm:left-2 sm:top-2 sm:text-[10px]">
               <%= t('chapters.reader_ad_drawer.label') %>
             </span>

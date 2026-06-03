@@ -204,13 +204,9 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   overflow: hidden !important;
 }
 
-/* Reader ad drawer: 8 compact cells on narrow viewports, 6 larger from sm */
+/* Reader ad drawer: 2×3 grid on all viewports; slightly tighter cells on narrow screens */
 @media (max-width: 639px) {
   .immersive-reader .reader-ad-drawer__grid {
-    max-width: 20rem;
-  }
-
-  .immersive-reader .reader-ad-drawer__cell {
-    min-height: 3.75rem;
+    max-width: 22rem;
   }
 }

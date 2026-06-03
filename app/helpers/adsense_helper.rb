@@ -19,7 +19,7 @@ module AdsenseHelper
     adsense_allowed? && Adsense::DRAWER_SLOTS.any?
   end
 
-  DRAWER_MAX_SLOTS = 8
+  DRAWER_MAX_SLOTS = 6
 
   def chapter_reader_ad_drawer_slots
     slots = Adsense::DRAWER_SLOTS
