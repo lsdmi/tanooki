@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-const DEFAULT_AUTO_CLOSE_MS = 5000
+const DEFAULT_AUTO_CLOSE_MS = 15_000
 
 /** Full-screen ad grid drawer; auto-closes after a short delay. */
 export default class extends Controller {
@@ -15,7 +15,7 @@ export default class extends Controller {
     this.boundReady = this.onAdsenseReady.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
     this._onEscape = this._onEscape.bind(this)
-    this._onTurboLoad = () => this.close()
+    this._onTurboLoad = this._onTurboLoad.bind(this)
 
     document.addEventListener("turbo:load", this._onTurboLoad)
 
@@ -28,8 +28,11 @@ export default class extends Controller {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
     document.removeEventListener("turbo:load", this._onTurboLoad)
     document.removeEventListener("keydown", this._onEscape)
-    this.clearAutoClose()
-    document.body.classList.remove("overflow-hidden")
+    this.close()
+  }
+
+  _onTurboLoad() {
+    if (!this.shouldOpenValue) this.close()
   }
 
   onAdsenseReady() {
@@ -106,8 +109,12 @@ export default class extends Controller {
   updateCountdownLabel() {
     if (!this.hasCountdownTarget) return
 
-    const template = this.countdownTemplateValue || "Auto-close in %{seconds} s"
-    this.countdownTarget.textContent = template.replace("__SECONDS__", String(this.remainingSeconds))
+    const template =
+      this.countdownTemplateValue || "Автозакриття через __SECONDS__ с"
+    const seconds = String(this.remainingSeconds)
+    this.countdownTarget.textContent = template
+      .replaceAll("__SECONDS__", seconds)
+      .replaceAll("%{seconds}", seconds)
   }
 
   clearAutoClose() {
