@@ -204,9 +204,29 @@ html:not(.dark) .immersive-reader .reader-comments .reader-comment-submit:focus 
   overflow: hidden !important;
 }
 
-/* Reader ad drawer: 2×3 grid on all viewports; slightly tighter cells on narrow screens */
-@media (max-width: 639px) {
-  .immersive-reader .reader-ad-drawer__grid {
-    max-width: 22rem;
+/* Reader ad drawer: hide unfilled slots; let filled units define cell height */
+.immersive-reader .reader-ad-drawer__body {
+  background: rgb(12 10 9 / 0.92); /* stone-950 */
+}
+
+.dark .immersive-reader .reader-ad-drawer__body {
+  background: rgb(9 9 11 / 0.94); /* zinc-950 */
+}
+
+.immersive-reader .reader-ad-drawer__cell ins.adsbygoogle[data-ad-status='unfilled'] {
+  display: none !important;
+}
+
+.immersive-reader .reader-ad-drawer__cell:has(ins.adsbygoogle[data-ad-status='unfilled']) {
+  display: none;
+}
+
+.immersive-reader .reader-ad-drawer__cell ins.adsbygoogle {
+  min-height: 5.5rem;
+}
+
+@media (min-width: 640px) {
+  .immersive-reader .reader-ad-drawer__cell ins.adsbygoogle {
+    min-height: 7.5rem;
   }
 }

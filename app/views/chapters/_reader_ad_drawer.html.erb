@@ -19,18 +19,15 @@
       </button>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-stone-100/95 px-3 py-3 dark:bg-zinc-950/95 sm:px-4 sm:py-4">
-      <div class="reader-ad-drawer__grid mx-auto grid max-w-3xl grid-cols-2 gap-2 sm:max-w-none sm:gap-3 md:max-w-4xl">
+    <div class="reader-ad-drawer__body min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-4 sm:px-6 sm:py-6">
+      <div class="reader-ad-drawer__grid mx-auto grid w-full max-w-lg grid-cols-2 gap-2 sm:max-w-2xl sm:gap-3 md:max-w-3xl">
         <% chapter_reader_ad_drawer_slots.each_with_index do |slot_id, index| %>
-          <div class="reader-ad-drawer__cell relative min-h-[4.5rem] overflow-hidden rounded-md border border-stone-200/90 bg-white dark:border-zinc-700 dark:bg-zinc-900 sm:min-h-[7rem] sm:rounded-lg">
-            <span class="absolute left-1.5 top-1.5 z-[1] text-[9px] font-medium uppercase tracking-wide text-stone-400 dark:text-zinc-500 sm:left-2 sm:top-2 sm:text-[10px]">
-              <%= t('chapters.reader_ad_drawer.label') %>
-            </span>
-            <ins class="adsbygoogle block h-full min-h-[inherit] w-full"
-                 style="display:block"
+          <div class="reader-ad-drawer__cell overflow-hidden rounded-lg">
+            <ins class="adsbygoogle block w-full"
+                 style="display:block;min-height:5.5rem"
                  data-ad-client="<%= adsense_client_id %>"
                  data-ad-slot="<%= slot_id %>"
-                 data-ad-format="rectangle"
+                 data-ad-format="auto"
                  data-full-width-responsive="true"
                  data-reader-ad-drawer-slot="<%= index %>"></ins>
           </div>
