@@ -1,24 +1,30 @@
 <% placement = local_assigns.fetch(:placement, :bottom) %>
 <% if previous_chapter.present? || next_chapter.present? %>
-  <div class="<%= placement == :top ? 'mt-2 md:mt-0 mb-4 sm:mb-8 pb-3 sm:pb-4 border-b' : 'mt-8 sm:mt-12 pt-6 sm:pt-8 border-t' %> border-stone-200/80 dark:border-zinc-800/60 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-    <% if previous_chapter.present? %>
-      <%= link_to chapter_path(previous_chapter), class: "w-full sm:w-auto text-center sm:text-left text-stone-600 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-zinc-100 transition-colors duration-300 flex items-center justify-center sm:justify-start" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        <span class="text-sm sm:text-base">Попередній розділ</span>
+  <% nav_btn_class = 'reader-chapter-nav__btn inline-flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-2 text-xs font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-800/80 sm:flex-none sm:rounded-lg sm:px-4 sm:py-2.5 sm:text-sm' %>
+  <nav class="<%= placement == :top ? 'reader-chapter-nav reader-chapter-nav--top mb-4 sm:mb-6' : 'reader-chapter-nav reader-chapter-nav--bottom mt-6 border-t border-stone-200/80 pt-4 dark:border-zinc-700/60 sm:mt-8 sm:pt-6' %>"
+       aria-label="<%= placement == :top ? 'Навігація розділів (зверху)' : 'Навігація розділів (знизу)' %>">
+    <div class="flex flex-row items-stretch justify-between gap-2 sm:gap-3">
+      <% if previous_chapter.present? %>
+        <%= link_to chapter_path(previous_chapter), class: "#{nav_btn_class} sm:justify-start", data: { turbo: false } do %>
+          <svg class="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span class="truncate">Попередній розділ</span>
+        <% end %>
+      <% else %>
+        <span class="hidden flex-1 sm:block sm:flex-none sm:w-0" aria-hidden="true"></span>
       <% end %>
-    <% else %>
-      <span class="w-full sm:w-auto"></span>
-    <% end %>
-    <% if next_chapter.present? %>
-      <%= link_to chapter_path(next_chapter), class: "w-full sm:w-auto text-center sm:text-right text-stone-600 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-zinc-100 transition-colors duration-300 flex items-center justify-center sm:justify-end" do %>
-        <span class="text-sm sm:text-base">Наступний розділ</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-          <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-        </svg>
+
+      <% if next_chapter.present? %>
+        <%= link_to chapter_path(next_chapter), class: "#{nav_btn_class} sm:justify-end", data: { turbo: false } do %>
+          <span class="truncate">Наступний розділ</span>
+          <svg class="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="hidden flex-1 sm:block sm:flex-none sm:w-0" aria-hidden="true"></span>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  </nav>
 <% end %>

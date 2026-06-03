@@ -5,8 +5,8 @@
 <% sheet = compact && drawer_toc %>
 <% current_chapter_id = local_assigns[:current_chapter]&.id %>
 <% drawer_accordion_opened = false %>
-<% accordion_shell = sheet ? 'border-b border-stone-200/45 bg-white/10 backdrop-blur-md last:border-b-0 dark:border-zinc-100/10 dark:bg-black/15' : (compact ? 'border-b border-zinc-800 bg-zinc-950 last:border-b-0' : 'bg-white dark:bg-gray-800 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg') %>
-<% accordion_head = sheet ? 'border-b border-stone-200/40 bg-white/10 px-4 py-4 backdrop-blur-sm hover:bg-white/20 dark:border-zinc-100/10 dark:bg-black/15 dark:hover:bg-black/25' : (compact ? 'border-b border-zinc-800/90 bg-zinc-950 px-4 py-4 hover:bg-zinc-900' : 'bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4') %>
+<% accordion_shell = sheet ? 'border-b border-stone-200/45 bg-white/10 backdrop-blur-md last:border-b-0 dark:border-zinc-100/10 dark:bg-black/15' : (compact ? 'border-b border-zinc-700 bg-zinc-950 last:border-b-0' : 'bg-white dark:bg-gray-800 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg') %>
+<% accordion_head = sheet ? 'border-b border-stone-200/40 bg-white/10 px-4 py-4 backdrop-blur-sm hover:bg-white/20 dark:border-zinc-100/10 dark:bg-black/15 dark:hover:bg-black/25' : (compact ? 'border-b border-zinc-700/90 bg-zinc-950 px-4 py-4 hover:bg-zinc-900' : 'bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4') %>
 <% accordion_body = sheet ? 'border-0 bg-white/5 dark:bg-black/10' : (compact ? 'border-0 bg-zinc-900/40' : 'rounded-b border border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900') %>
 <div class="<%= compact ? 'my-0' : 'my-6 space-y-4' %>" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if sheet %>>
   <% chapter_list_sections(chapters, order: list_order).each_with_index do |section, section_index| %>

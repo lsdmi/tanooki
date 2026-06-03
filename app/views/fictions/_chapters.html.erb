@@ -3,7 +3,7 @@
 <% compact = local_assigns.fetch(:compact, false) %>
 <% drawer_toc = local_assigns.fetch(:drawer_toc, false) %>
 <section class="<%= compact ? (drawer_toc ? 'max-w-full bg-transparent' : 'max-w-full bg-zinc-950') : '' %>">
-  <div class="<%= compact ? "flex items-center justify-between gap-3 border-b px-4 py-3 #{drawer_toc ? 'border-stone-200/45 bg-white/10 backdrop-blur-md dark:border-zinc-100/10 dark:bg-black/15' : 'border-zinc-800'}" : 'flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6' %>">
+  <div class="<%= compact ? "flex items-center justify-between gap-3 border-b px-4 py-3 #{drawer_toc ? 'border-stone-200/45 bg-white/10 backdrop-blur-md dark:border-zinc-100/10 dark:bg-black/15' : 'border-zinc-700'}" : 'flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6' %>">
     <h3 class="<%= compact ? (drawer_toc ? 'text-sm font-semibold tracking-tight text-stone-800 dark:text-white' : 'text-sm font-semibold tracking-tight text-white') : 'text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200' %>">
       Розділи
     </h3>

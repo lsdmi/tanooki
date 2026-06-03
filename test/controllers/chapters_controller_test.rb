@@ -27,6 +27,8 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'reader-comments hidden'
     assert_includes response.body, 'data-comments-toggle-target="contentSection" class="w-full lg:w-full"'
     assert_not_includes response.body, 'reader-ad-slot'
+    assert_includes response.body, 'reader-anchor-card'
+    assert_includes response.body, I18n.t('chapters.reader_anchor_card.home')
   end
 
   test 'guest sees login to download epub banner when epub is available' do

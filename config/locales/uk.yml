@@ -333,6 +333,9 @@ uk:
     reader_epub_banner:
       title: Завантажити EPUB
       login_description: Увійдіть, щоб зберегти розділ та читати офлайн на будь-якому пристрої.
+    reader_anchor_card:
+      chapter_label: Розділ %{number}
+      home: Повернутися на головну
   chapters_added:
     one: "розділ додано"
     few: "розділи додано"
