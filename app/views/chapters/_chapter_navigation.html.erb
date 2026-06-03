@@ -1,7 +1,7 @@
 <% placement = local_assigns.fetch(:placement, :bottom) %>
 <% if previous_chapter.present? || next_chapter.present? %>
   <% nav_btn_class = 'reader-chapter-nav__btn inline-flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-2 text-xs font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-800/80 sm:flex-none sm:rounded-lg sm:px-4 sm:py-2.5 sm:text-sm' %>
-  <nav class="<%= placement == :top ? 'reader-chapter-nav reader-chapter-nav--top mb-4 sm:mb-6' : 'reader-chapter-nav reader-chapter-nav--bottom mt-6 border-t border-stone-200/80 pt-4 dark:border-zinc-700/60 sm:mt-8 sm:pt-6' %>"
+  <nav class="<%= placement == :top ? 'reader-chapter-nav reader-chapter-nav--top mb-4 sm:mb-6' : 'reader-chapter-nav reader-chapter-nav--bottom mt-6 border-t border-stone-300 pt-4 dark:border-zinc-700/60 sm:mt-8 sm:pt-6' %>"
        aria-label="<%= placement == :top ? 'Навігація розділів (зверху)' : 'Навігація розділів (знизу)' %>">
     <div class="flex flex-row items-stretch justify-between gap-2 sm:gap-3">
       <% if previous_chapter.present? %>

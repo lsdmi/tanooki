@@ -1,11 +1,13 @@
-<%# locals: fiction: %>
-<section class="reader-epub-banner rounded-xl border border-stone-200/90 bg-white/95 p-4 shadow-sm dark:border-rose-900/50 dark:bg-zinc-900/95 sm:p-5"
-         aria-labelledby="reader-epub-banner-title">
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-    <div class="flex min-w-0 flex-1 gap-3 sm:gap-4">
-      <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-cyan-800/80 bg-white dark:border-rose-600/55 dark:bg-zinc-950"
+<%# locals: fiction:, placement: (:top|:bottom) %>
+<% placement = local_assigns.fetch(:placement, :top) %>
+<% title_id = placement == :bottom ? 'reader-epub-banner-title-bottom' : 'reader-epub-banner-title' %>
+<section class="reader-epub-banner w-full rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-rose-900/50 dark:bg-zinc-900/95 sm:rounded-xl sm:p-4 md:p-5"
+         aria-labelledby="<%= title_id %>">
+  <div class="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+    <div class="flex min-w-0 flex-1 gap-2.5 sm:gap-3 md:gap-4">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-cyan-800/80 bg-white dark:border-rose-600/55 dark:bg-zinc-950 sm:h-11 sm:w-11"
            aria-hidden="true">
-        <svg class="h-6 w-6 text-cyan-800 dark:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg class="h-5 w-5 text-cyan-800 dark:text-rose-300 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 10v4m0 0l-2-2m2 2l2-2" />
         </svg>
@@ -13,21 +15,21 @@
 
       <div class="min-w-0">
         <div class="flex flex-wrap items-center gap-2">
-          <h2 id="reader-epub-banner-title" class="text-base font-bold text-cyan-900 dark:text-zinc-50 sm:text-lg">
+          <h2 id="<%= title_id %>" class="text-sm font-bold text-cyan-900 dark:text-zinc-50 sm:text-base md:text-lg">
             <%= t('chapters.reader_epub_banner.title') %>
           </h2>
           <span class="rounded border border-cyan-800/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-cyan-800 dark:border-rose-500/65 dark:bg-rose-950/40 dark:text-rose-200">
             EPUB
           </span>
         </div>
-        <p class="mt-1 text-sm leading-snug text-stone-600 dark:text-zinc-400">
+        <p class="mt-1 text-xs leading-snug text-stone-600 dark:text-zinc-400 sm:text-sm">
           <%= t('chapters.reader_epub_banner.login_description') %>
         </p>
       </div>
     </div>
 
     <%= link_to new_user_session_path,
-                class: 'inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus-visible:ring-rose-500 dark:focus-visible:ring-offset-zinc-900 sm:w-auto' do %>
+                class: 'inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus-visible:ring-rose-500 dark:focus-visible:ring-offset-zinc-900 md:w-auto md:px-5' do %>
       <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h12" />

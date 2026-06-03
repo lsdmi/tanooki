@@ -7,8 +7,8 @@
     <%= render 'hero', chapter: @chapter, fiction: @chapter.fiction %>
 
     <% if epub_download_requires_login?(@chapter) %>
-      <div class="container mx-auto px-4 py-4 sm:py-5">
-        <%= render 'reader_epub_login_banner', fiction: @chapter.fiction %>
+      <div class="container mx-auto hidden px-4 py-4 md:block md:py-5">
+        <%= render 'reader_epub_login_banner', fiction: @chapter.fiction, placement: :top %>
       </div>
     <% end %>
 
