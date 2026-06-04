@@ -27,6 +27,9 @@
     ads.onload = function () {
       document.dispatchEvent(new CustomEvent('baka:adsense-ready'))
     }
+    ads.onerror = function () {
+      ads.dataset.blocked = 'true'
+    }
     document.head.appendChild(ads)
   }
 

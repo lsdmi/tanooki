@@ -1,8 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
+import { isAdblockLikely } from "adblock_detect"
 
 const DEFAULT_AUTO_CLOSE_MS = 10_000
+const ADSENSE_WAIT_MS = 2_000
 
-/** Full-screen ad grid drawer; auto-closes after a short delay. */
+/** Full-screen ad grid drawer; auto-closes after a short delay. Skipped when adblock is detected. */
 export default class extends Controller {
   static targets = ["backdrop", "panel", "countdown"]
   static values = {
@@ -19,15 +21,14 @@ export default class extends Controller {
 
     document.addEventListener("turbo:load", this._onTurboLoad)
 
-    if (this.shouldOpenValue) {
-      requestAnimationFrame(() => this.open())
-    }
+    if (this.shouldOpenValue) this.scheduleOpen()
   }
 
   disconnect() {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
     document.removeEventListener("turbo:load", this._onTurboLoad)
     document.removeEventListener("keydown", this._onEscape)
+    this.clearAdsenseWait()
     this.close()
   }
 
@@ -36,10 +37,45 @@ export default class extends Controller {
   }
 
   onAdsenseReady() {
+    if (this._adsenseWaitTimeout) {
+      this.clearAdsenseWait()
+      if (this.canShowAds()) this.open()
+      return
+    }
+
     if (this.isOpen()) this.pushAds()
   }
 
+  scheduleOpen() {
+    if (isAdblockLikely()) return
+
+    if (document.body.dataset.loadAdsense !== "true" || window.adsbygoogle) {
+      requestAnimationFrame(() => this.open())
+      return
+    }
+
+    this._adsenseWaitTimeout = window.setTimeout(() => {
+      this._adsenseWaitTimeout = null
+      if (this.canShowAds()) this.open()
+    }, ADSENSE_WAIT_MS)
+  }
+
+  clearAdsenseWait() {
+    if (this._adsenseWaitTimeout) {
+      window.clearTimeout(this._adsenseWaitTimeout)
+      this._adsenseWaitTimeout = null
+    }
+  }
+
+  canShowAds() {
+    if (isAdblockLikely()) return false
+    if (document.body.dataset.loadAdsense === "true" && !window.adsbygoogle) return false
+
+    return true
+  }
+
   open() {
+    if (!this.canShowAds()) return
     if (!this.hasBackdropTarget || !this.hasPanelTarget) return
 
     this.backdropTarget.classList.remove("opacity-0", "pointer-events-none")
