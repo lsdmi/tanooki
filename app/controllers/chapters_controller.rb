@@ -91,6 +91,7 @@ class ChaptersController < ApplicationController
     Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
   end
 
+  # Every-4th-chapter session cadence gates only the auto-opening ad drawer, not top/bottom reader slots.
   def assign_reader_ad_drawer_session
     @reader_ad_drawer_open = false
     return unless chapter_reader_ad_drawer_live?

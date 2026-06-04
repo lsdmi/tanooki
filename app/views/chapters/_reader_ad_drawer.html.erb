@@ -1,5 +1,10 @@
+<%# locals: should_open: false — session cadence applies to this overlay only, not in-chapter top/bottom slots %>
 <% return unless chapter_reader_ad_drawer_live? %>
 
+<div data-controller="reader-ad-drawer"
+     data-reader-ad-drawer-should-open-value="<%= local_assigns.fetch(:should_open, false) %>"
+     data-reader-ad-drawer-auto-close-ms-value="10000"
+     data-reader-ad-drawer-countdown-template-value="<%= t('chapters.reader_ad_drawer.countdown', seconds: '__SECONDS__') %>">
   <div data-reader-ad-drawer-target="backdrop"
        class="fixed inset-0 z-[44] bg-black/60 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
        data-action="click->reader-ad-drawer#close"
@@ -35,3 +40,4 @@
       </div>
     </div>
   </div>
+</div>

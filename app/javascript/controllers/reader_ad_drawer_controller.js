@@ -4,7 +4,7 @@ import { isAdblockLikely } from "adblock_detect"
 const DEFAULT_AUTO_CLOSE_MS = 10_000
 const ADSENSE_WAIT_MS = 2_000
 
-/** Full-screen ad grid drawer; auto-closes after a short delay. Skipped when adblock is detected. */
+/** Full-screen ad drawer only (not in-chapter top/bottom slots). Auto-opens on session cadence. */
 export default class extends Controller {
   static targets = ["backdrop", "panel", "countdown"]
   static values = {
@@ -105,9 +105,10 @@ export default class extends Controller {
   }
 
   pushAds() {
-    if (!window.adsbygoogle) return
+    if (!window.adsbygoogle || !this.hasPanelTarget) return
 
-    this.element.querySelectorAll("ins.adsbygoogle").forEach((ins) => {
+    // Panel scope only — top/bottom slots use adsense-unit on every chapter page.
+    this.panelTarget.querySelectorAll("ins.adsbygoogle").forEach((ins) => {
       if (ins.dataset.adsensePushed === "true") return
       if (ins.offsetParent === null) return
 

@@ -11,10 +11,12 @@ module AdsenseHelper
     slot.presence || Adsense::CHAPTER_READER_SLOTS[:top]
   end
 
+  # In-chapter top/bottom units: every reader chapter page when configured (no session cadence).
   def chapter_reader_ad_live?(placement)
     adsense_allowed? && chapter_reader_ad_slot(placement).present?
   end
 
+  # Full-screen drawer overlay (separate slots; auto-open uses Reading::AdDrawerSession).
   def chapter_reader_ad_drawer_live?
     adsense_allowed? && Adsense::DRAWER_SLOTS.any?
   end

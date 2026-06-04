@@ -15,8 +15,18 @@
 
   var ADSENSE_SCRIPT_ID = 'baka-adsense-script'
 
+  function notifyAdsenseReady() {
+    if (window.adsbygoogle) {
+      document.dispatchEvent(new CustomEvent('baka:adsense-ready'))
+    }
+  }
+
   function injectAdSense() {
-    if (!adsenseEnabled() || window.__bakaAdSenseInjected) return
+    if (!adsenseEnabled()) return
+    if (window.__bakaAdSenseInjected) {
+      notifyAdsenseReady()
+      return
+    }
     window.__bakaAdSenseInjected = true
 
     var ads = document.createElement('script')
@@ -24,9 +34,7 @@
     ads.async = true
     ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
     ads.setAttribute('crossorigin', 'anonymous')
-    ads.onload = function () {
-      document.dispatchEvent(new CustomEvent('baka:adsense-ready'))
-    }
+    ads.onload = notifyAdsenseReady
     document.head.appendChild(ads)
   }
 
