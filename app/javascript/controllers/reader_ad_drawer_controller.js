@@ -83,6 +83,7 @@ export default class extends Controller {
 
     this.pushAds()
     this.startAutoClose()
+    document.dispatchEvent(new CustomEvent("baka:adsense-ready"))
   }
 
   close() {

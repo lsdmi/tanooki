@@ -3,7 +3,6 @@
   <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
 
-  <%= render 'reader_ad_drawer', should_open: @reader_ad_drawer_open %>
   <%= render 'reader_settings_drawer', chapter: @chapter %>
   <%= render 'comments_drawer', chapter: @chapter, comments: @comments, comment: @comment, commentable: @commentable %>
 
@@ -46,4 +45,7 @@
                toggle_order_button_id: "toggle-fictions-order-drawer",
                current_chapter: @chapter %>
   <% end %>
+
+  <%# Drawer markup only on cadence chapters — omit hidden drawer slots on other pages so top/bottom can fill %>
+  <%= render 'reader_ad_drawer', should_open: true if chapter_reader_ad_drawer_live? && @reader_ad_drawer_open %>
 </div>

@@ -21,6 +21,14 @@
     }
   }
 
+  // Let Stimulus connect in-chapter adsense-unit controllers before the ready event fires.
+  function scheduleAdsenseReadyForUnits() {
+    if (!adsenseEnabled()) return
+    requestAnimationFrame(function () {
+      requestAnimationFrame(notifyAdsenseReady)
+    })
+  }
+
   function injectAdSense() {
     if (!adsenseEnabled()) return
     if (window.__bakaAdSenseInjected) {
@@ -92,6 +100,7 @@
     // Banner is visible in every environment for UI checks; AdSense/Analytics scripts load only in production.
     // Re-sync on turbo:load so AdSense does not persist after navigating to ad-excluded pages.
     syncAdSense()
+    scheduleAdsenseReadyForUnits()
 
     var stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {

@@ -9,12 +9,16 @@ export default class extends Controller {
 
   connect() {
     this.boundReady = this.onReady.bind(this)
+    this.boundTurboLoad = this.onReady.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
+    document.addEventListener("turbo:load", this.boundTurboLoad)
     this.onReady()
   }
 
   disconnect() {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
+    document.removeEventListener("turbo:load", this.boundTurboLoad)
+    this.clearRetry()
     this.stopWatching()
   }
 
@@ -26,7 +30,14 @@ export default class extends Controller {
   tryPush() {
     const ins = this.adElement()
     if (!ins || ins.dataset.adsensePushed === "true") return
-    if (!window.adsbygoogle) return
+    if (!window.adsbygoogle) {
+      this.scheduleRetry()
+      return
+    }
+    if (!this.slotIsRenderable(ins)) {
+      this.scheduleRetry()
+      return
+    }
 
     try {
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
@@ -34,6 +45,26 @@ export default class extends Controller {
       this.watchFill(ins)
     } catch (_error) {
       this.collapseSlot()
+    }
+  }
+
+  slotIsRenderable(ins) {
+    return ins.offsetParent !== null
+  }
+
+  scheduleRetry() {
+    if (this.retryTimeout) return
+
+    this.retryTimeout = window.setTimeout(() => {
+      this.retryTimeout = null
+      this.tryPush()
+    }, 300)
+  }
+
+  clearRetry() {
+    if (this.retryTimeout) {
+      window.clearTimeout(this.retryTimeout)
+      this.retryTimeout = null
     }
   }
 
