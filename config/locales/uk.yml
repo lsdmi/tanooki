@@ -356,6 +356,14 @@ uk:
         spectral: Спектрал
         eb_garamond: Гарамонд
         pt_serif: Сериф
+    reader_chapter_drawer:
+      close: Закрити список розділів
+      sections_heading: Розділи
+      fiction_chapters_count:
+        one: "%{count} розділ"
+        few: "%{count} розділи"
+        many: "%{count} розділів"
+        other: "%{count} розділів"
     reader_comments_drawer:
       title: Коментарі
       close: Закрити коментарі

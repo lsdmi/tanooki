@@ -20,8 +20,11 @@
         <button type="button"
                 class="<%= action_icon %>"
                 data-action="click->chapter-drawer#open"
-                title="Список розділів"
-                aria-label="Відкрити список розділів">
+                title="<%= t('chapters.reader_chapter_drawer.sections_heading') %>"
+                aria-label="<%= t('chapters.reader_chapter_drawer.sections_heading') %>"
+                aria-expanded="false"
+                aria-controls="reader-chapter-list-panel"
+                data-chapter-drawer-target="trigger">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
           </svg>

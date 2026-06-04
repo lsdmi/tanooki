@@ -1,58 +1,21 @@
-<%# locals: chapter:, compact: false (optional), current_chapter: nil (optional) %>
-<% compact = local_assigns.fetch(:compact, false) %>
+<%# locals: chapter:, reader_drawer: false (optional), current_chapter: nil (optional) %>
+<% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% is_current = local_assigns[:current_chapter]&.id == chapter.id %>
-<li class="group <%= compact ? 'list-none' : '' %>">
-  <% if compact %>
-    <div>
-      <% compact_scanlators = chapter.scanlators.any? %>
-      <% drawer_row_pad = compact_scanlators ? 'pt-3.5 pb-1' : 'py-3.5' %>
-      <% drawer_row_highlight = is_current ? 'border-l-2 border-amber-500/90 bg-white/35 pl-[calc(1rem-2px)] dark:border-amber-400/80 dark:bg-white/15 cursor-default' : '' %>
-      <% drawer_row_class = "flex items-center justify-between gap-3 px-4 #{drawer_row_pad} #{drawer_row_highlight}" %>
-      <% if is_current %>
-        <div class="<%= drawer_row_highlight %>" aria-current="page" aria-disabled="true">
-          <div class="flex items-center justify-between gap-3 px-4 pt-3.5 <%= compact_scanlators ? 'pb-1' : 'pb-3.5' %>">
-            <span class="min-w-0 flex-1 truncate text-left text-sm font-semibold leading-tight text-stone-900 dark:text-white">
-              <%= chapter.display_title_no_volume %>
-            </span>
-            <span class="whitespace-nowrap text-xs font-medium text-amber-700/90 dark:text-amber-300/90"><%= l(chapter.public_at, format: :shortest).downcase %></span>
-          </div>
-          <% if compact_scanlators %>
-            <p class="px-4 pb-2.5 text-[0.65rem] leading-tight text-stone-700 dark:text-zinc-300">
-              <%= chapter.scanlators.map(&:title).join(', ') %>
-            </p>
-          <% end %>
-        </div>
-      <% else %>
-        <%= link_to chapter_path(chapter), data: { turbo: false }, class: drawer_row_class do %>
-          <span class="min-w-0 flex-1 truncate text-left text-sm font-normal leading-tight text-stone-800 underline-offset-2 decoration-stone-700/80 hover:underline dark:text-white dark:decoration-white/70">
-            <%= chapter.display_title_no_volume %>
-          </span>
-          <div class="flex shrink-0 items-center gap-2">
-            <span class="whitespace-nowrap text-xs text-stone-500 dark:text-zinc-500"><%= l(chapter.public_at, format: :shortest).downcase %></span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-stone-400 dark:text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        <% end %>
+<li class="group">
+  <% if reader_drawer %>
+    <% if is_current %>
+      <div class="border-l-2 border-cyan-600 bg-cyan-50/80 px-4 py-3 dark:border-rose-500 dark:bg-rose-950/40" aria-current="page">
+        <span class="block truncate text-sm font-medium text-cyan-900 dark:text-rose-200">
+          <%= chapter.display_title_no_volume %>
+        </span>
+      </div>
+    <% else %>
+      <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'block px-4 py-3 transition-colors hover:bg-stone-50 dark:hover:bg-zinc-800/60' do %>
+        <span class="block truncate text-sm text-stone-700 dark:text-zinc-300">
+          <%= chapter.display_title_no_volume %>
+        </span>
       <% end %>
-      <% if compact_scanlators && !is_current %>
-        <div class="-mt-1 px-4 pb-2">
-          <p class="text-[0.65rem] leading-tight text-stone-600 dark:text-zinc-500">
-            <%= safe_join(
-                  chapter.scanlators.map { |scanlator|
-                    link_to(
-                      scanlator.title,
-                      scanlator_path(scanlator),
-                      class: "text-stone-700 underline-offset-2 hover:text-stone-900 hover:underline dark:text-zinc-400 dark:hover:text-zinc-300",
-                      data: { turbo: false }
-                    )
-                  },
-                  ', '
-                ) %>
-          </p>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
   <% else %>
     <div class="p-3 transition duration-150 ease-in-out hover:bg-stone-50 dark:hover:bg-gray-700">
       <%= link_to chapter_path(chapter), data: { turbo: false }, class: "block" do %>

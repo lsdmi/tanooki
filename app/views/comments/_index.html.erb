@@ -12,7 +12,7 @@
 
       <!-- Comment List -->
       <%= turbo_frame_tag "comments" do %>
-        <%= render comments %>
+        <%= render partial: 'comments/comment', collection: comments, as: :comment, locals: { commentable: commentable } %>
       <% end %>
     </div>
   <% else %>

@@ -126,7 +126,7 @@ class FictionsController < ApplicationController
   def chapter_section_locals(_order)
     {
       chapters: @section_chapters,
-      compact: ActiveModel::Type::Boolean.new.cast(params[:compact]),
+      reader_drawer: ActiveModel::Type::Boolean.new.cast(params[:reader_drawer]),
       current_chapter: chapter_from_section_params
     }
   end
@@ -175,39 +175,27 @@ class FictionsController < ApplicationController
 
   def sorted_chapters_turbo_streams
     locals = @show_presenter.sorted_chapters_locals
-    if chapters_sort_from_chapter_reader?
-      frame_dom_id = 'sort-chapters-mobile'
+    if reader_drawer_chapter_sort?
+      frame_dom_id = 'sort-chapters-reader-drawer'
       locals = locals.merge(
-        compact: true,
         toggle_order_button_id: 'toggle-fictions-order-drawer',
-        drawer_toc: true,
-        current_chapter: current_chapter_from_chapter_reader_referer
+        reader_drawer: true,
+        current_chapter: current_chapter_for_reader_drawer_sort
       )
     else
       frame_dom_id = 'sort-chapters'
     end
-    [turbo_stream.update(frame_dom_id, partial: 'chapters', locals: locals)]
+    [turbo_stream.update(frame_dom_id, partial: 'fictions/chapters', locals: locals)]
   end
 
-  def chapters_sort_from_chapter_reader?
-    ref = request.referer
-    return false if ref.blank?
-
-    URI.parse(ref).path.match?(%r{\A/chapters/})
-  rescue URI::InvalidURIError
-    false
+  def reader_drawer_chapter_sort?
+    ActiveModel::Type::Boolean.new.cast(params[:reader_drawer])
   end
 
-  def current_chapter_from_chapter_reader_referer
-    ref = request.referer
-    return nil if ref.blank?
+  def current_chapter_for_reader_drawer_sort
+    return nil if params[:current_chapter_id].blank?
 
-    chapter_id = URI.parse(ref).path[%r{\A/chapters/([^/]+)\z}, 1]
-    return nil if chapter_id.blank?
-
-    Chapter.find_by(id: chapter_id)
-  rescue URI::InvalidURIError
-    nil
+    Chapter.find_by(id: params[:current_chapter_id])
   end
 
   def toggle_order_params

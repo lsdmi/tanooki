@@ -26,6 +26,9 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, 'id="site-logo"'
     assert_includes response.body, 'reader-comments-drawer'
     assert_includes response.body, 'data-comments-drawer-target="panel"'
+    assert_includes response.body, 'reader-chapter-drawer'
+    assert_includes response.body, 'reader-chapter-list-panel'
+    assert_includes response.body, 'data-chapter-drawer-target="panel"'
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
     assert_not_includes response.body, 'reader-ad-slot'
     assert_includes response.body, 'reader-anchor-card'

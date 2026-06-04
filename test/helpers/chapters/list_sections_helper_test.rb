@@ -57,6 +57,22 @@ module Chapters
       end
     end
 
+    test 'chapter_list_sections reverses chapter order within a volume when desc' do
+      fiction = fictions(:one)
+      ch1 = create_volume_chapter(fiction, 1, 'First', number: 1)
+      ch2 = create_volume_chapter(fiction, 1, 'Second', number: 2)
+      scope = fiction.chapters.where(id: [ch1.id, ch2.id])
+
+      asc_ids = chapter_list_sections(scope, order: :asc).first[:chapters].pluck(:id)
+      desc_ids = chapter_list_sections(scope, order: :desc).first[:chapters].pluck(:id)
+
+      assert_equal [ch1.id, ch2.id], asc_ids
+      assert_equal [ch2.id, ch1.id], desc_ids
+    ensure
+      ch2&.destroy
+      ch1&.destroy
+    end
+
     test 'chapter_list_sections reverses volume order when desc' do
       fiction = fictions(:one)
       vol1, vol2 = create_volume_pair_chapters(fiction)
@@ -70,6 +86,38 @@ module Chapters
     ensure
       vol2&.destroy
       vol1&.destroy
+    end
+
+    test 'chapter_list_sections reverses chapter order within a range when desc' do
+      fiction = fictions(:one)
+      ch1 = Chapter.create!(
+        fiction: fiction,
+        user: users(:user_one),
+        title: 'Range low',
+        number: 1,
+        volume_number: nil,
+        content: 'a' * 500,
+        scanlator_ids: [scanlators(:one).id]
+      )
+      ch2 = Chapter.create!(
+        fiction: fiction,
+        user: users(:user_one),
+        title: 'Range high',
+        number: 2,
+        volume_number: nil,
+        content: 'b' * 500,
+        scanlator_ids: [scanlators(:one).id]
+      )
+      scope = fiction.chapters.where(id: [ch1.id, ch2.id])
+
+      asc_ids = chapter_list_sections(scope, order: :asc).first[:chapters].pluck(:id)
+      desc_ids = chapter_list_sections(scope, order: :desc).first[:chapters].pluck(:id)
+
+      assert_equal [ch1.id, ch2.id], asc_ids
+      assert_equal [ch2.id, ch1.id], desc_ids
+    ensure
+      ch2&.destroy
+      ch1&.destroy
     end
 
     test 'chapter_list_sections uses only ranges when no volume numbers exist' do
@@ -102,12 +150,12 @@ module Chapters
       [create_volume_chapter(fiction, 1, 'Vol 1'), create_volume_chapter(fiction, 2, 'Vol 2')]
     end
 
-    def create_volume_chapter(fiction, volume_number, title)
+    def create_volume_chapter(fiction, volume_number, title, number: 1)
       Chapter.create!(
         fiction: fiction,
         user: users(:user_one),
         title: title,
-        number: 1,
+        number: number,
         volume_number: volume_number,
         content: 'x' * 500,
         scanlator_ids: [scanlators(:one).id]

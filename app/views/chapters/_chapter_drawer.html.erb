@@ -1,94 +1,60 @@
 <%# locals: fiction:, order:, toggle_order_button_id:, current_chapter: (optional) %>
-<%# Floating sheet: 80vh tall, narrow width, vertically centered. Slides in from the left. %>
-<%# Backdrop full screen (z-40); panel z-[49]; site nav z-50 stays on top. %>
 <div data-chapter-drawer-target="backdrop"
-     class="fixed inset-0 z-40 bg-black/60 transition-opacity duration-200 ease-out opacity-0 pointer-events-none"
+     class="fixed inset-0 z-[51] bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
      data-action="click->chapter-drawer#close"
      aria-hidden="true"></div>
 
-<aside data-chapter-drawer-target="panel"
-       class="fixed left-0 top-1/2 z-[49] flex h-[70vh] w-full max-w-[min(17.5rem,calc(100vw-2rem))] lg:max-w-xs -translate-x-full -translate-y-1/2 flex-col overflow-hidden rounded-r-2xl border border-stone-200 border-l-0 bg-transparent text-stone-900 shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-700 dark:text-zinc-100 dark:shadow-black/50"
+<aside id="reader-chapter-list-panel"
+       data-chapter-drawer-target="panel"
+       class="reader-chapter-drawer fixed inset-y-0 right-0 z-[52] flex h-dvh max-h-dvh w-full max-w-md translate-x-full flex-col overflow-hidden border-l border-stone-200 bg-white shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-black/40"
        role="dialog"
        aria-modal="true"
-       aria-labelledby="chapter-drawer-fiction-title">
-  <% if fiction.cover.attached? %>
-    <div class="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-         style="background-image: url('<%= url_for(fiction.cover) %>');"></div>
-  <% else %>
-    <div class="pointer-events-none absolute inset-0 bg-stone-100 dark:bg-zinc-950"></div>
-  <% end %>
-  <%# Full-panel scrim; keep translucent so cover art reads through the whole sheet (header + TOC). %>
-  <div class="pointer-events-none absolute inset-0 bg-stone-100/82 dark:bg-zinc-950/92"></div>
+       aria-labelledby="reader-chapter-drawer-title">
+  <div class="flex shrink-0 flex-col border-b border-stone-200 px-4 py-4 dark:border-zinc-700 sm:px-5">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex min-w-0 flex-1 items-start gap-3 pr-2">
+        <%= link_to fiction_path(fiction), class: 'relative block h-[4.5rem] w-[3.25rem] shrink-0 overflow-hidden rounded-md bg-stone-200 ring-1 ring-stone-200 dark:bg-zinc-800 dark:ring-zinc-700', data: { turbo: false } do %>
+          <% if fiction.cover.attached? %>
+            <%= image_tag cover_thumbnail_url(fiction.cover), alt: fiction.title, class: 'h-full w-full object-cover' %>
+          <% end %>
+        <% end %>
 
-  <div class="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col">
-    <%# Header: full-width “card” — close is absolute so metadata can use the whole width %>
-    <div class="relative shrink-0 border-b border-stone-200/50 bg-white/10 p-3 pb-3.5 backdrop-blur-md sm:p-4 sm:pb-4 dark:border-zinc-100/10 dark:bg-black/15">
+        <div class="min-w-0 flex-1">
+          <h2 id="reader-chapter-drawer-title" class="text-base font-semibold leading-snug text-stone-900 dark:text-zinc-50">
+            <%= link_to fiction.title, fiction_path(fiction), class: 'block truncate hover:text-cyan-700 dark:hover:text-rose-400', data: { turbo: false } %>
+          </h2>
+          <p class="mt-1 truncate text-sm text-stone-600 dark:text-zinc-400">
+            <% if fiction.author.present? %>
+              <span><%= fiction.author %></span>
+              <span class="mx-1 text-stone-400 dark:text-zinc-600" aria-hidden="true">•</span>
+            <% end %>
+            <span><%= Fiction.statuses[fiction.status] %></span>
+          </p>
+          <p class="mt-0.5 truncate text-sm text-stone-600 dark:text-zinc-400">
+            <%= fiction_chapter_drawer_count(fiction) %>
+          </p>
+        </div>
+      </div>
+
       <button type="button"
-              class="absolute right-2 top-2 z-20 rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-200 hover:text-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 sm:right-3 sm:top-3 sm:p-2 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 dark:focus-visible:ring-zinc-500"
+              class="shrink-0 rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus-visible:ring-zinc-500"
               data-action="click->chapter-drawer#close"
-              aria-label="Закрити">
+              aria-label="<%= t('chapters.reader_chapter_drawer.close') %>">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-
-      <div class="flex items-start gap-3 pr-10 sm:gap-3.5 sm:pr-11">
-        <%= link_to fiction_path(fiction), class: "relative block h-16 w-[4.5rem] shrink-0 overflow-hidden rounded-md bg-stone-200 ring-1 ring-stone-300/90 sm:h-[5.25rem] sm:w-[3.75rem] dark:bg-zinc-800 dark:ring-zinc-700/80", data: { turbo: false } do %>
-          <% if fiction.cover.attached? %>
-            <%= image_tag cover_thumbnail_url(fiction.cover), alt: fiction.title, class: "h-full w-full object-cover" %>
-          <% else %>
-            <span class="flex h-full w-full items-center justify-center text-[10px] font-medium text-stone-500 dark:text-zinc-500">—</span>
-          <% end %>
-        <% end %>
-
-        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
-          <h2 id="chapter-drawer-fiction-title" class="pr-1 text-sm font-semibold leading-snug text-stone-900 sm:text-base dark:text-white">
-            <%= link_to fiction.title, fiction_path(fiction), class: "line-clamp-1 text-stone-900 hover:text-stone-700 dark:text-white dark:hover:text-zinc-200", data: { turbo: false } %>
-          </h2>
-
-          <% if fiction.author? %>
-            <%= link_to fiction.author,
-                        search_index_path(search: [fiction.author]),
-                        class: "block max-w-full truncate text-left text-[11px] leading-snug text-stone-600 transition-colors hover:text-stone-900 dark:text-zinc-400 dark:hover:text-zinc-200" %>
-          <% end %>
-
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-stone-600 sm:text-xs dark:text-zinc-400">
-            <span class="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400" title="Середня оцінка">
-              <svg class="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <%= fiction.average_rating.positive? ? number_with_precision(fiction.average_rating, precision: 1) : '—' %>
-            </span>
-            <span class="inline-flex items-center gap-1" title="Перегляди">
-              <svg class="h-3.5 w-3.5 shrink-0 text-stone-500 dark:text-zinc-500 sm:h-4 sm:w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-              <%= format_view_count(fiction.views) %>
-            </span>
-            <span class="inline-flex max-w-full min-w-0 items-center gap-1" title="Статус перекладу">
-              <svg class="h-3.5 w-3.5 shrink-0 text-stone-500 dark:text-zinc-500 sm:h-4 sm:w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span class="truncate text-stone-700 dark:text-zinc-300"><%= Fiction.statuses[fiction.status] %></span>
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
+  </div>
 
-    <div class="flex min-h-0 min-w-0 flex-1 flex-col bg-transparent">
-      <div class="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain">
-        <%= turbo_frame_tag "sort-chapters-mobile" do %>
-          <%= render "fictions/chapters",
-                     fiction: fiction,
-                     order: order,
-                     toggle_order_button_id: toggle_order_button_id,
-                     compact: true,
-                     drawer_toc: true,
-                     current_chapter: local_assigns[:current_chapter] %>
-        <% end %>
-      </div>
-    </div>
+  <div class="reader-chapter-drawer__scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
+    <%= turbo_frame_tag 'sort-chapters-reader-drawer' do %>
+      <%= render 'fictions/chapters',
+                 fiction: fiction,
+                 order: order,
+                 toggle_order_button_id: toggle_order_button_id,
+                 reader_drawer: true,
+                 current_chapter: local_assigns[:current_chapter] %>
+    <% end %>
   </div>
 </aside>

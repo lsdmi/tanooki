@@ -11,6 +11,17 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     @fiction_two = fictions(:two)
   end
 
+  test 'toggle_order from reader drawer updates reader drawer turbo frame' do
+    chapter = chapters(:one)
+
+    post toggle_order_fictions_path(id: @fiction.id, order: :desc, reader_drawer: true, current_chapter_id: chapter.id),
+         headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
+
+    assert_response :success
+    assert_includes response.body, 'turbo-stream action="update" target="sort-chapters-reader-drawer"'
+    assert_includes response.body, 'toggle-fictions-order-drawer'
+  end
+
   test 'should get show' do
     [@fiction, @fiction_two].each do |fiction|
       Rails.cache.delete("fiction_#{fiction.id}")
