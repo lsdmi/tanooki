@@ -1,32 +1,26 @@
-// Heuristic adblock check before showing the reader ad drawer (bait + missing AdSense script).
+// Lightweight bait check for the reader ad drawer only (does not touch AdSense units).
 
 export function isAdblockLikely() {
   if (document.body?.dataset.loadAdsense !== "true") return false
 
-  if (baitElementBlocked()) return true
-
-  const script = document.getElementById("baka-adsense-script")
-  if (script?.dataset.blocked === "true") return true
-
-  return false
+  return baitElementBlocked()
 }
 
 function baitElementBlocked() {
   const bait = document.createElement("div")
   bait.setAttribute("aria-hidden", "true")
-  bait.className = "adsbox ad-banner advertisement adsbygoogle"
+  bait.className = "adsbox"
   bait.style.cssText =
-    "height:10px!important;width:10px!important;position:fixed!important;left:-10000px!important;top:0!important;pointer-events:none!important;"
-  bait.textContent = " "
+    "position:absolute!important;top:-1px!important;left:-1px!important;width:1px!important;height:1px!important;pointer-events:none!important;"
+  bait.textContent = "\u00a0"
   document.body.appendChild(bait)
 
   const style = window.getComputedStyle(bait)
   const blocked =
-    bait.offsetParent === null ||
-    bait.offsetHeight === 0 ||
-    bait.offsetWidth === 0 ||
     style.display === "none" ||
-    style.visibility === "hidden"
+    style.visibility === "hidden" ||
+    bait.offsetHeight === 0 ||
+    bait.offsetWidth === 0
 
   bait.remove()
   return blocked

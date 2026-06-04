@@ -39,7 +39,7 @@ export default class extends Controller {
   onAdsenseReady() {
     if (this._adsenseWaitTimeout) {
       this.clearAdsenseWait()
-      if (this.canShowAds()) this.open()
+      if (!isAdblockLikely()) this.open()
       return
     }
 
@@ -49,14 +49,14 @@ export default class extends Controller {
   scheduleOpen() {
     if (isAdblockLikely()) return
 
-    if (document.body.dataset.loadAdsense !== "true" || window.adsbygoogle) {
+    if (window.adsbygoogle) {
       requestAnimationFrame(() => this.open())
       return
     }
 
     this._adsenseWaitTimeout = window.setTimeout(() => {
       this._adsenseWaitTimeout = null
-      if (this.canShowAds()) this.open()
+      if (!isAdblockLikely() && window.adsbygoogle) this.open()
     }, ADSENSE_WAIT_MS)
   }
 
@@ -67,15 +67,8 @@ export default class extends Controller {
     }
   }
 
-  canShowAds() {
-    if (isAdblockLikely()) return false
-    if (document.body.dataset.loadAdsense === "true" && !window.adsbygoogle) return false
-
-    return true
-  }
-
   open() {
-    if (!this.canShowAds()) return
+    if (isAdblockLikely()) return
     if (!this.hasBackdropTarget || !this.hasPanelTarget) return
 
     this.backdropTarget.classList.remove("opacity-0", "pointer-events-none")
