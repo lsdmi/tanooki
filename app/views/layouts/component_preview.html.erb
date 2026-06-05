@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+    <% %w[pagy slimselect actiontext adult_content_disclaimer chapters_reader sweetal2].each do |stylesheet| %>
+      <%= stylesheet_link_tag stylesheet, 'data-turbo-track': 'reload' %>
+    <% end %>
   </head>
   <body class="bg-stone-100 p-8">
     <%= yield %>

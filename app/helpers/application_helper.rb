@@ -8,6 +8,7 @@ module ApplicationHelper
   include Content::AdultContentHelper
   include ExternalUrls::UrlsHelper
   include Layout::PageContextHelper
+  include Layout::StylesheetsHelper
   include Text::ExcerptHelper
   include Search::TagCountsHelper
   include AdsenseHelper

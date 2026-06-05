@@ -324,6 +324,13 @@ uk:
     notices:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
+  fictions:
+    adult_content_disclaimer:
+      aria_label: Попередження про контент 18+
+      title: Контент 18+
+      reader_title: Контент 18+
+      description: Цей твір містить матеріали для дорослої аудиторії. Продовжуючи перегляд, ви підтверджуєте, що вам виповнилося 18 років.
+      dismiss: Зрозуміло
   chapters:
     notices:
       create_success: Розділ додано.

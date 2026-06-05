@@ -37,12 +37,14 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
-    <% if controller_name == 'chapters' && %w[new create edit update].include?(action_name) %>
+    <% if requires_flatpickr_styles? %>
       <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css', media: 'all', 'data-turbo-track': 'reload' %>
     <% end %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <% page_stylesheets.each do |stylesheet| %>
+      <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
+    <% end %>
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400&display=swap", "data-turbolinks-track": "reload" %>
     <% if chapters_show_page? %>
       <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, "data-turbo-track": "reload" %>

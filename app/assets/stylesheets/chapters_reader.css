@@ -1,3 +1,17 @@
+/* Adult content gate: blur chapter prose until the user dismisses the 18+ banner */
+.immersive-reader .adult-content-gate--locked #user-content {
+  filter: blur(2.5px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .immersive-reader #user-content {
+    transition: filter 200ms ease;
+  }
+}
+
 /* Reader toolbar: slide off on scroll down; reappear instantly on scroll up (see reader_toolbar_controller.js) */
 @media (prefers-reduced-motion: reduce) {
   .immersive-reader .reader-toolbar {

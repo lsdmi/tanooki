@@ -17,10 +17,12 @@
     <% end %>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-2 sm:py-4 lg:py-8">
-      <%= render 'fictions/adult_content_disclaimer', fiction: @chapter.fiction if show_adult_content_disclaimer?(@chapter.fiction) %>
+    <% show_adult_gate = show_adult_content_disclaimer?(@chapter.fiction) %>
+    <div class="container mx-auto px-4 py-2">
+      <%= render 'fictions/adult_content_disclaimer', reader_gate: true if show_adult_gate %>
 
-      <div class="w-full">
+      <div class="w-full<%= ' adult-content-gate--locked' if show_adult_gate %>"
+           <%= 'data-adult-content-gate-content' if show_adult_gate %>>
         <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
       </div>
     </div>

@@ -16,6 +16,18 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'show blurs chapter text behind adult content gate until consent' do
+    @chapter.fiction.update!(adult_content: true)
+
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_includes response.body, I18n.t('fictions.adult_content_disclaimer.reader_title')
+    assert_includes response.body, 'adult-content-gate--locked'
+    assert_includes response.body, 'data-adult-content-gate-content'
+    assert_includes response.body, I18n.t('fictions.adult_content_disclaimer.dismiss')
+  end
+
   test 'show uses immersive reader layout without site navbar or footer' do
     get chapter_url(@chapter)
 

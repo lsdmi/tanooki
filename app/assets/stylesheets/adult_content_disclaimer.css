@@ -1,0 +1,94 @@
+/* 18+ hard-gate banner — solid red card with decorative SVG circles */
+.adult-content-disclaimer {
+  position: relative;
+  overflow: hidden;
+  --adult-disclaimer-circle-fill: #ff8e8e;
+  --adult-disclaimer-circle-opacity: 0.55;
+}
+
+html.dark .adult-content-disclaimer {
+  --adult-disclaimer-circle-fill: #d95658;
+  --adult-disclaimer-circle-opacity: 0.34;
+}
+
+.adult-content-disclaimer__circle {
+  position: absolute;
+}
+
+.adult-content-disclaimer__circle-fill {
+  fill: var(--adult-disclaimer-circle-fill);
+  fill-opacity: var(--adult-disclaimer-circle-opacity);
+}
+
+.adult-content-disclaimer__circle--left {
+  bottom: -3.25rem;
+  left: -2.75rem;
+  width: 9.5rem;
+  height: 9.5rem;
+}
+
+.adult-content-disclaimer__circle--right {
+  top: -2.75rem;
+  right: -2.25rem;
+  width: 8.5rem;
+  height: 8.5rem;
+}
+
+@media (min-width: 640px) {
+  .adult-content-disclaimer__circle--left {
+    bottom: -3.75rem;
+    left: -3rem;
+    width: 11rem;
+    height: 11rem;
+  }
+
+  .adult-content-disclaimer__circle--right {
+    top: -3.25rem;
+    right: -2.5rem;
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+.adult-content-disclaimer__icon {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+html.dark .adult-content-disclaimer__icon {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.22);
+}
+
+.adult-content-disclaimer__dismiss {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.adult-content-disclaimer__dismiss:hover {
+  background-color: rgb(245 245 244);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.14);
+  transform: translateY(-1px);
+}
+
+.adult-content-disclaimer__dismiss:active {
+  background-color: rgb(231 229 228);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  transform: translateY(0);
+}
+
+html.dark .adult-content-disclaimer__dismiss:hover {
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adult-content-disclaimer__dismiss {
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .adult-content-disclaimer__dismiss:hover,
+  .adult-content-disclaimer__dismiss:active {
+    transform: none;
+  }
+}
