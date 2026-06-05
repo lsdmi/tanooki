@@ -1,3 +1,10 @@
+/* Reader toolbar: slide off on scroll down; reappear instantly on scroll up (see reader_toolbar_controller.js) */
+@media (prefers-reduced-motion: reduce) {
+  .immersive-reader .reader-toolbar {
+    transition: none;
+  }
+}
+
 /* Immersive chapter reader — light mode (“sunlit” stone palette, cover-visible scrim) */
 
 html:not(.dark) .immersive-reader #user-content {
