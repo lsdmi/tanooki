@@ -10,5 +10,20 @@ module Chapters
     def reader_drawer_section_title(section)
       section[:title]
     end
+
+    def reader_chapter_drawer_search_index(fiction, order:, current_chapter: nil, viewer: current_user)
+      chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: viewer) : ordered_chapters(fiction, viewer: viewer)
+      current_id = current_chapter&.id
+
+      chapters.map do |chapter|
+        {
+          id: chapter.id,
+          number: chapter.number,
+          title: chapter.display_title_no_volume,
+          url: chapter_path(chapter),
+          current: chapter.id == current_id
+        }
+      end
+    end
   end
 end

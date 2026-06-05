@@ -359,6 +359,9 @@ uk:
     reader_chapter_drawer:
       close: Закрити список розділів
       sections_heading: Розділи
+      search_label: Шукати розділ
+      search_placeholder: Шукати назву або розділ
+      search_empty: Розділів не знайдено
       fiction_chapters_count:
         one: "%{count} розділ"
         few: "%{count} розділи"

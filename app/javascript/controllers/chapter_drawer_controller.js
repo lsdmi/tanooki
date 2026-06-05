@@ -52,6 +52,17 @@ export default class extends Controller {
 
     document.body.classList.remove("overflow-hidden")
     document.removeEventListener("keydown", this._onEscape)
+
+    this.resetChapterDrawerSearch()
+  }
+
+  resetChapterDrawerSearch() {
+    const panel = this.hasPanelTarget ? this.panelTarget : null
+    const search = panel?.querySelector("[data-controller~='chapter-drawer-search']")
+    if (!search) return
+
+    const controller = this.application.getControllerForElementAndIdentifier(search, "chapter-drawer-search")
+    controller?.clear()
   }
 
   _onEscape(event) {

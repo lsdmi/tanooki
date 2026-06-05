@@ -1,28 +1,39 @@
 <%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), reader_drawer: false (optional), current_chapter: nil (optional) %>
 <% toggle_btn_id = local_assigns.fetch(:toggle_order_button_id, 'toggle-fictions-order') %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
-<section class="<%= reader_drawer ? 'max-w-full bg-transparent' : '' %>">
-  <div class="<%= reader_drawer ? 'flex items-center justify-between gap-3 border-b border-stone-200 px-4 py-3 dark:border-zinc-700' : 'flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6' %>">
-    <h3 class="<%= reader_drawer ? 'text-sm font-semibold text-stone-800 dark:text-zinc-100' : 'text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200' %>">
-      <%= reader_drawer ? t('chapters.reader_chapter_drawer.sections_heading') : 'Розділи' %>
-    </h3>
-    <% toggle_order_params = { id: fiction, order: order } %>
-    <% if reader_drawer %>
-      <% toggle_order_params[:reader_drawer] = true %>
-      <% toggle_order_params[:current_chapter_id] = local_assigns[:current_chapter].id if local_assigns[:current_chapter] %>
-    <% end %>
-    <%= button_to toggle_order_fictions_path(toggle_order_params),
-                  data: { turbo_stream: '', 'turbo-method': :post },
-                  id: toggle_btn_id,
-                  class: reader_drawer ? 'inline-flex shrink-0 items-center justify-center rounded-md border border-stone-200 bg-stone-50 p-2 text-stone-600 transition hover:bg-stone-100 hover:text-stone-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100' : 'fictions-order-toggle bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0' do %>
-      <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>
-      <svg xmlns="http://www.w3.org/2000/svg" class="<%= reader_drawer ? 'h-4 w-4' : 'h-5 w-5' %> transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-      </svg>
-    <% end %>
-  </div>
+<% if reader_drawer %>
+  <section class="max-w-full bg-transparent"
+           data-controller="chapter-drawer-search"
+           data-chapter-drawer-search-chapters-value="<%= reader_chapter_drawer_search_index(fiction, order: order, current_chapter: local_assigns[:current_chapter]).to_json %>">
+    <%= render 'fictions/reader_chapter_drawer_search',
+               fiction: fiction,
+               order: order,
+               toggle_order_button_id: toggle_btn_id,
+               current_chapter: local_assigns[:current_chapter] %>
 
-  <div data-controller="flowbite">
-    <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: reader_drawer, current_chapter: local_assigns[:current_chapter] %>
-  </div>
-</section>
+    <div data-chapter-drawer-search-target="list">
+      <div data-controller="flowbite">
+        <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: true, current_chapter: local_assigns[:current_chapter] %>
+      </div>
+    </div>
+  </section>
+<% else %>
+  <section class="">
+    <div class="flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6">
+      <h3 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200">Розділи</h3>
+      <%= button_to toggle_order_fictions_path(id: fiction, order: order),
+                    data: { turbo_stream: '', 'turbo-method': :post },
+                    id: toggle_btn_id,
+                    class: 'fictions-order-toggle bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0' do %>
+        <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
+      <% end %>
+    </div>
+
+    <div data-controller="flowbite">
+      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter] %>
+    </div>
+  </section>
+<% end %>
