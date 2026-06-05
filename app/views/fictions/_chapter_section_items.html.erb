@@ -1,7 +1,11 @@
-<%# locals: chapters:, reader_drawer: false, current_chapter: nil %>
+<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <ul class="<%= reader_drawer ? 'divide-y divide-stone-100 dark:divide-zinc-800' : 'divide-y divide-stone-100 dark:divide-gray-700' %>">
   <% chapters.each do |chapter| %>
-    <%= render 'fictions/chapter_item', chapter: chapter, reader_drawer: reader_drawer, current_chapter: current_chapter %>
+    <%= render 'fictions/chapter_item',
+               chapter: chapter,
+               reader_drawer: reader_drawer,
+               current_chapter: current_chapter,
+               drawer_progress: local_assigns[:drawer_progress] %>
   <% end %>
 </ul>

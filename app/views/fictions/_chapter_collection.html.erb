@@ -57,7 +57,8 @@ end %>
           <%= render 'fictions/chapter_section_items',
                      chapters: section_chapters.includes(:scanlators),
                      reader_drawer: reader_drawer,
-                     current_chapter: local_assigns[:current_chapter] %>
+                     current_chapter: local_assigns[:current_chapter],
+                     drawer_progress: local_assigns[:drawer_progress] %>
         <% else %>
           <% lazy_params = { chapter_ids: chapter_list_section_ids(section_chapters).join(',') } %>
           <% lazy_params[:reader_drawer] = true if reader_drawer %>

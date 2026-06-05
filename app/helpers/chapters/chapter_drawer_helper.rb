@@ -11,17 +11,27 @@ module Chapters
       section[:title]
     end
 
+    def reader_chapter_drawer_progress(fiction, current_chapter: nil, viewer: current_user)
+      Reading::ChapterDrawerProgress.build(fiction:, viewer:, current_chapter:)
+    end
+
+    def reader_drawer_chapter_status(chapter, drawer_progress:)
+      drawer_progress.status_for(chapter)
+    end
+
     def reader_chapter_drawer_search_index(fiction, order:, current_chapter: nil, viewer: current_user)
       chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: viewer) : ordered_chapters(fiction, viewer: viewer)
-      current_id = current_chapter&.id
+      drawer_progress = reader_chapter_drawer_progress(fiction, current_chapter:, viewer:)
 
       chapters.map do |chapter|
+        status = drawer_progress.status_for(chapter)
         {
           id: chapter.id,
           number: chapter.number,
           title: chapter.display_title_no_volume,
           url: chapter_path(chapter),
-          current: chapter.id == current_id
+          current: status == :current,
+          status: status
         }
       end
     end

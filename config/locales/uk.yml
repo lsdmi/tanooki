@@ -362,6 +362,8 @@ uk:
       search_label: Шукати розділ
       search_placeholder: Шукати назву або розділ
       search_empty: Розділів не знайдено
+      progress_read: Прочитано
+      progress_current: Читаю зараз
       fiction_chapters_count:
         one: "%{count} розділ"
         few: "%{count} розділи"

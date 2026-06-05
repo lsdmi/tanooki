@@ -124,11 +124,21 @@ class FictionsController < ApplicationController
   end
 
   def chapter_section_locals(_order)
-    {
+    reader_drawer = ActiveModel::Type::Boolean.new.cast(params[:reader_drawer])
+    current_chapter = chapter_from_section_params
+    locals = {
       chapters: @section_chapters,
-      reader_drawer: ActiveModel::Type::Boolean.new.cast(params[:reader_drawer]),
-      current_chapter: chapter_from_section_params
+      reader_drawer:,
+      current_chapter:
     }
+    if reader_drawer
+      locals[:drawer_progress] = Reading::ChapterDrawerProgress.build(
+        fiction: @fiction,
+        viewer: current_user,
+        current_chapter:
+      )
+    end
+    locals
   end
 
   def set_genres

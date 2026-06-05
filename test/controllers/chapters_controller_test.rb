@@ -29,6 +29,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'reader-chapter-drawer'
     assert_includes response.body, 'chapter-drawer-search'
     assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.search_placeholder')
+    assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.progress_current')
     assert_includes response.body, 'reader-chapter-list-panel'
     assert_includes response.body, 'data-chapter-drawer-target="panel"'
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
