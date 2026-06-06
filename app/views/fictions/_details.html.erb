@@ -91,9 +91,11 @@
         </div>
       </div>
 
-      <div class="-mb-4">
-        <%= render 'fictions/support', fiction: fiction if show_presenter.support_links? %>
-      </div>
+      <% if fiction_reader_support?(fiction) %>
+        <div class="fiction-support-card -mb-4">
+          <%= render 'chapters/reader_support_card', fiction: fiction %>
+        </div>
+      <% end %>
     </div>
     <!-- Right Column - Sidebar (1/3) -->
     <div class="space-y-6">

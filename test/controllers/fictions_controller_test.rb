@@ -32,6 +32,20 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'show renders translator support card when scanlator has bank url' do
+    @fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
+    Rails.cache.delete("fiction_#{@fiction.id}")
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_includes response.body, 'reader-support-card'
+    assert_includes response.body, 'reader-outlined-btn'
+    assert_includes response.body, I18n.t('chapters.reader_support_card.title')
+    assert_includes response.body, I18n.t('chapters.reader_support_card.support')
+    assert_not_includes response.body, 'hover:-translate-y-1 hover:scale-105'
+  end
+
   test 'should get dashboard' do
     get blogs_path
 

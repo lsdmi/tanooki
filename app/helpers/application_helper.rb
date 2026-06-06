@@ -4,6 +4,7 @@
 module ApplicationHelper
   PRODUCTION_URL = Meta::CanonicalUrlHelper::PRODUCTION_URL
 
+  include Chapters::ReaderBottomHelper
   include Meta::CanonicalUrlHelper
   include Content::AdultContentHelper
   include ExternalUrls::UrlsHelper

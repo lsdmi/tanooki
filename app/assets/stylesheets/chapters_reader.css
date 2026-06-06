@@ -12,81 +12,112 @@
   }
 }
 
-/* Bottom grid: fiction anchor + translator support */
-.immersive-reader .reader-bottom-grid {
+/* Bottom grid: fiction anchor + translator support (chapter reader + fiction show) */
+.reader-bottom-grid {
   align-items: stretch;
 }
 
-.immersive-reader .reader-bottom-grid__cell {
+.reader-bottom-grid__cell {
   display: flex;
   min-width: 0;
   min-height: 0;
 }
 
-.immersive-reader .reader-bottom-grid__cell > .reader-bottom-card {
+.reader-bottom-grid__cell > .reader-bottom-card {
   flex: 1 1 auto;
   width: 100%;
   min-height: 100%;
 }
 
-.immersive-reader .reader-bottom-card,
-.immersive-reader .reader-anchor-card,
-.immersive-reader .reader-support-card {
+.reader-bottom-card,
+.reader-anchor-card,
+.reader-support-card {
   min-height: 0;
 }
 
-.immersive-reader .reader-bottom-card__body {
+.reader-bottom-card__body {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.immersive-reader .reader-bottom-card__visual {
+.reader-bottom-card__visual {
   flex-shrink: 0;
   align-self: stretch;
   width: 3rem;
 }
 
 @media (min-width: 640px) {
-  .immersive-reader .reader-bottom-card__visual {
+  .reader-bottom-card__visual {
     width: 3.75rem;
   }
 }
 
 @media (min-width: 768px) {
-  .immersive-reader .reader-bottom-card__visual {
+  .reader-bottom-card__visual {
     width: 4.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .immersive-reader .reader-bottom-card__visual {
+  .reader-bottom-card__visual {
     width: 5.25rem;
   }
 
-  .immersive-reader .reader-support-card__visual {
+  .reader-support-card__visual {
     align-self: flex-start;
     aspect-ratio: 2 / 3;
   }
 }
 
-.immersive-reader .reader-anchor-card__cover {
+.reader-anchor-card__cover {
   align-self: flex-start;
   aspect-ratio: 2 / 3;
 }
 
-.immersive-reader .reader-support-card__visual {
+.reader-support-card__visual {
   display: flex;
 }
 
-.immersive-reader .reader-bottom-card__action--full .reader-outlined-btn {
+.reader-bottom-card__action--full .reader-outlined-btn {
   width: 100%;
 }
 
-.immersive-reader .reader-support-card__mascot {
+.reader-support-card__mascot {
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Fiction show: match support card to page gray palette in dark mode */
+.dark .fiction-support-card .reader-support-card {
+  border-color: rgb(55 65 81);
+  background-color: rgb(31 41 55);
+}
+
+.dark .fiction-support-card .reader-support-card-title,
+.dark .fiction-support-card #reader-support-card-title {
+  color: rgb(255 255 255);
+}
+
+.dark .fiction-support-card .reader-bottom-card__body > p {
+  color: rgb(156 163 175);
+}
+
+.dark .fiction-support-card .reader-outlined-btn {
+  border-color: rgb(55 65 81);
+  background-color: rgb(31 41 55);
+  color: rgb(209 213 219);
+}
+
+.dark .fiction-support-card .reader-outlined-btn:hover {
+  border-color: rgb(75 85 99);
+  background-color: rgb(55 65 81);
+}
+
+.dark .fiction-support-card .reader-outlined-btn:focus-visible {
+  --tw-ring-color: rgb(107 114 128);
+  --tw-ring-offset-color: rgb(31 41 55);
 }
 
 /* Reader toolbar: slide off on scroll down; reappear instantly on scroll up (see reader_toolbar_controller.js) */

@@ -56,7 +56,11 @@ module Layout
     end
 
     def requires_chapters_reader_styles?
-      chapters_show_page?
+      chapters_show_page? || fiction_show_with_reader_support_card?
+    end
+
+    def fiction_show_with_reader_support_card?
+      controller_name == 'fictions' && action_name == 'show' && @fiction.present? && fiction_reader_support?(@fiction)
     end
 
     def requires_sweetalert_styles?

@@ -4,6 +4,7 @@ require 'test_helper'
 
 class Layout::StylesheetsHelperTest < ActionView::TestCase
   include Devise::Test::IntegrationHelpers
+  include Chapters::ReaderBottomHelper
   include Layout::PageContextHelper
   include Layout::StylesheetsHelper
   include Content::AdultContentHelper
@@ -41,6 +42,14 @@ class Layout::StylesheetsHelperTest < ActionView::TestCase
 
     assert_includes page_stylesheets, 'adult_content_disclaimer'
     assert_not_includes page_stylesheets, 'chapters_reader'
+  end
+
+  test 'fiction show loads reader styles when translator support card is shown' do
+    fiction = fictions(:one)
+    fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
+    assign_controller(:fictions, :show, fiction: fiction)
+
+    assert_includes page_stylesheets, 'chapters_reader'
   end
 
   test 'library index loads pagy styles only' do

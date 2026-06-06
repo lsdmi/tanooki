@@ -84,10 +84,6 @@ class FictionShowPresenter
     monthly_reads_fiction_count.positive?
   end
 
-  def support_links?
-    @fiction.scanlators.any? { |scanlator| scanlator.bank_url.present? }
-  end
-
   def first_chapter
     @first_chapter ||= Library::ChapterCatalog.ordered_chapters(@fiction, viewer: @current_user).first
   end
