@@ -46,8 +46,22 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'data-chapter-drawer-target="panel"'
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
     assert_not_includes response.body, 'reader-ad-slot'
+    assert_includes response.body, 'reader-bottom-grid'
     assert_includes response.body, 'reader-anchor-card'
     assert_includes response.body, I18n.t('chapters.reader_anchor_card.home')
+  end
+
+  test 'show renders translator support card when scanlator has bank url' do
+    @chapter.fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
+
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_includes response.body, 'reader-support-card'
+    assert_includes response.body, I18n.t('chapters.reader_support_card.title')
+    assert_includes response.body, I18n.t('chapters.reader_support_card.support')
+    assert_includes response.body, 'mascot.svg'
+    assert_includes response.body, 'mascot-dark.svg'
   end
 
   test 'guest sees login to download epub banner when epub is available' do

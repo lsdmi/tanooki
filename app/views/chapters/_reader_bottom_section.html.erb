@@ -1,0 +1,12 @@
+<%# locals: chapter:, fiction: %>
+<% show_support = fiction_reader_support?(fiction) %>
+<div class="reader-bottom-grid mt-4 grid w-full min-w-0 grid-cols-1 gap-3 sm:mt-6 sm:gap-4 md:mt-8<%= ' lg:grid-cols-2 lg:items-stretch' if show_support %>">
+  <div class="reader-bottom-grid__cell">
+    <%= render 'chapters/reader_anchor_card', chapter: chapter, fiction: fiction %>
+  </div>
+  <% if show_support %>
+    <div class="reader-bottom-grid__cell">
+      <%= render 'chapters/reader_support_card', fiction: fiction %>
+    </div>
+  <% end %>
+</div>

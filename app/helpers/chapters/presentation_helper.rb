@@ -6,5 +6,6 @@ module Chapters
     include EpubDownloadHelper
     include FormHelper
     include ListSectionsHelper
+    include ReaderBottomHelper
   end
 end

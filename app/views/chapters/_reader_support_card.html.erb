@@ -1,0 +1,44 @@
+<%# locals: fiction: %>
+<% support_button_markup = capture do %>
+  <%= link_to fiction_reader_support_url(fiction),
+              class: reader_outlined_btn_class,
+              target: '_blank',
+              rel: 'noopener noreferrer' do %>
+    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+    </svg>
+    <span class="truncate"><%= t('chapters.reader_support_card.support') %></span>
+  <% end %>
+<% end %>
+
+<section class="reader-bottom-card reader-support-card grid h-full w-full min-w-0 grid-cols-[auto_1fr] items-stretch gap-x-2.5 rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/95 sm:gap-x-3 sm:rounded-xl sm:p-4 md:p-5 lg:flex lg:gap-4"
+         aria-labelledby="reader-support-card-title">
+  <div class="reader-bottom-card__visual reader-support-card__visual col-start-1 row-start-1">
+    <%= image_tag 'mascot.svg',
+                  alt: t('chapters.reader_support_card.mascot_alt'),
+                  class: 'reader-support-card__mascot h-full w-full object-contain object-left dark:hidden',
+                  loading: 'lazy' %>
+    <%= image_tag 'mascot-dark.svg',
+                  alt: '',
+                  aria: { hidden: true },
+                  class: 'reader-support-card__mascot hidden h-full w-full object-contain object-left dark:block',
+                  loading: 'lazy' %>
+  </div>
+
+  <div class="reader-bottom-card__body col-start-2 row-start-1 flex min-h-0 min-w-0 flex-col lg:flex-1">
+    <h2 id="reader-support-card-title" class="text-base font-bold leading-snug text-stone-900 dark:text-zinc-50 sm:text-lg md:text-xl">
+      <%= t('chapters.reader_support_card.title') %>
+    </h2>
+    <p class="mt-1 text-xs leading-relaxed text-stone-600 dark:text-zinc-300 sm:text-sm">
+      <%= t('chapters.reader_support_card.description') %>
+    </p>
+
+    <div class="reader-bottom-card__action reader-bottom-card__action--inline mt-auto hidden pt-3 sm:pt-4 lg:block">
+      <%= support_button_markup %>
+    </div>
+  </div>
+
+  <div class="reader-bottom-card__action reader-bottom-card__action--full col-span-2 row-start-2 pt-3 sm:pt-4 lg:hidden">
+    <%= support_button_markup %>
+  </div>
+</section>

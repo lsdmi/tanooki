@@ -342,7 +342,12 @@ uk:
       login_description: Увійдіть, щоб зберегти розділ та читати офлайн на будь-якому пристрої.
     reader_anchor_card:
       chapter_label: Розділ %{number}
-      home: Повернутися на головну
+      home: Назад на головну
+    reader_support_card:
+      title: Підтримати Команду
+      description: Допоможемо створити та перекласти ще більше захоплюючих історій рідною мовою!
+      support: Підтримка
+      mascot_alt: Бака — маскот платформи
     reader_ad_drawer:
       countdown: Автозакриття через %{seconds} с
       label: Реклама

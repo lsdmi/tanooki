@@ -1,42 +1,46 @@
 <%# locals: chapter:, fiction: %>
-<section class="reader-anchor-card mt-4 rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/95 sm:mt-6 sm:rounded-xl sm:p-4 md:mt-8 md:p-5"
+<% anchor_button_markup = capture do %>
+  <%= link_to root_path,
+              class: reader_outlined_btn_class,
+              title: t('chapters.reader_anchor_card.home'),
+              data: { turbo: false } do %>
+    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+    <span class="truncate"><%= t('chapters.reader_anchor_card.home') %></span>
+  <% end %>
+<% end %>
+
+<section class="reader-bottom-card reader-anchor-card grid h-full w-full min-w-0 grid-cols-[auto_1fr] items-stretch gap-x-2.5 rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/95 sm:gap-x-3 sm:rounded-xl sm:p-4 md:p-5 lg:flex lg:gap-4"
          aria-labelledby="reader-anchor-card-title">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-    <div class="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
-      <% if fiction.cover.attached? %>
-        <%= link_to fiction_path(fiction), class: 'shrink-0 overflow-hidden rounded-md ring-1 ring-stone-200/80 dark:ring-zinc-700 sm:rounded-lg', data: { turbo: false } do %>
-          <%= image_tag cover_thumbnail_url(fiction.cover),
-                        alt: fiction.title,
-                        class: 'h-14 w-10 object-cover sm:h-[4.5rem] sm:w-12 md:h-20 md:w-14',
-                        loading: 'lazy' %>
-        <% end %>
-      <% end %>
-
-      <div class="min-w-0 flex-1">
-        <h2 id="reader-anchor-card-title" class="text-sm font-bold leading-snug text-stone-900 dark:text-zinc-50 sm:text-base md:text-lg">
-          <%= link_to fiction.title, fiction_path(fiction), class: 'line-clamp-2 hover:text-cyan-800 dark:hover:text-rose-300 transition-colors sm:line-clamp-1', data: { turbo: false } %>
-        </h2>
-
-        <p class="mt-0.5 text-xs text-stone-600 dark:text-zinc-400 sm:mt-1 sm:text-sm">
-          <% if title_includes_rozdil?(chapter.title) %>
-            <%= chapter.title.presence || chapter.display_title %>
-          <% else %>
-            <%= t('chapters.reader_anchor_card.chapter_label', number: format_decimal(chapter.number)) %>
-          <% end %>
-        </p>
-      </div>
+  <% if fiction.cover.attached? %>
+    <div class="reader-bottom-card__visual reader-anchor-card__cover col-start-1 row-start-1 overflow-hidden rounded-md ring-1 ring-stone-200/80 dark:ring-zinc-700 sm:rounded-lg">
+      <%= image_tag cover_thumbnail_url(fiction.cover),
+                    alt: fiction.title,
+                    class: 'h-full w-full object-cover',
+                    loading: 'lazy' %>
     </div>
+  <% end %>
 
-    <div class="shrink-0 sm:pl-2">
-      <%= link_to root_path,
-                  class: 'inline-flex w-full items-center justify-center gap-1.5 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-800/80 dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-900 sm:w-auto sm:rounded-lg sm:px-3 sm:py-2 sm:text-sm',
-                  title: t('chapters.reader_anchor_card.home'),
-                  data: { turbo: false } do %>
-        <svg class="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-        <span class="truncate"><%= t('chapters.reader_anchor_card.home') %></span>
+  <div class="reader-bottom-card__body flex min-h-0 min-w-0 flex-col<%= fiction.cover.attached? ? ' col-start-2 row-start-1' : ' col-span-2 row-start-1' %> lg:flex-1">
+    <h2 id="reader-anchor-card-title" class="text-base font-bold leading-snug text-stone-900 dark:text-zinc-50 sm:text-lg md:text-xl">
+      <%= link_to fiction.title, fiction_path(fiction), class: 'line-clamp-2 hover:text-cyan-800 dark:hover:text-rose-300 transition-colors lg:line-clamp-1', data: { turbo: false } %>
+    </h2>
+
+    <p class="mt-0.5 text-xs text-stone-600 dark:text-zinc-300 sm:mt-1 sm:text-sm">
+      <% if title_includes_rozdil?(chapter.title) %>
+        <%= chapter.title.presence || chapter.display_title %>
+      <% else %>
+        <%= t('chapters.reader_anchor_card.chapter_label', number: format_decimal(chapter.number)) %>
       <% end %>
+    </p>
+
+    <div class="reader-bottom-card__action reader-bottom-card__action--inline mt-auto hidden pt-3 sm:pt-4 lg:block">
+      <%= anchor_button_markup %>
     </div>
+  </div>
+
+  <div class="reader-bottom-card__action reader-bottom-card__action--full col-span-2 row-start-2 pt-3 sm:pt-4 lg:hidden">
+    <%= anchor_button_markup %>
   </div>
 </section>
