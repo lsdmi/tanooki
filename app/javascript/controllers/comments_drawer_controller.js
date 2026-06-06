@@ -8,16 +8,6 @@ export default class extends Controller {
     this._onEscape = this._onEscape.bind(this)
     this._onTurboLoad = () => this.close()
     document.addEventListener("turbo:load", this._onTurboLoad)
-    this._openFromQueryParam()
-  }
-
-  _openFromQueryParam() {
-    if (new URLSearchParams(window.location.search).get("open_comments") !== "1") return
-
-    this.open()
-    const url = new URL(window.location.href)
-    url.searchParams.delete("open_comments")
-    window.history.replaceState({}, "", url)
   }
 
   disconnect() {

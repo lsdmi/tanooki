@@ -32,7 +32,12 @@ module Comments
     end
 
     def commentable_title(commentable)
-      commentable.is_a?(Chapter) ? commentable.fiction_title : commentable.title
+      case commentable
+      when Chapter
+        "#{commentable.fiction_title} · #{commentable.display_title_no_volume}"
+      else
+        commentable.title
+      end
     end
 
     def show_comment_status?

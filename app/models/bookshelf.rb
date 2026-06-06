@@ -31,6 +31,10 @@ class Bookshelf < ApplicationRecord
     Sqids.new.encode([id])
   end
 
+  def to_param
+    sqid
+  end
+
   private
 
   def must_have_at_least_one_fiction

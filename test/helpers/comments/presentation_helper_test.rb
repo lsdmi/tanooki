@@ -31,6 +31,12 @@ module Comments
       assert_equal chapter_path(comment.commentable), comment_url(comment)
     end
 
+    test 'commentable_title includes fiction and chapter for Chapter' do
+      chapter = comments(:comment_chapter).commentable
+
+      assert_equal "#{chapter.fiction_title} · #{chapter.display_title_no_volume}", commentable_title(chapter)
+    end
+
     test 'comment_url returns correct URL for YoutubeVideo' do
       comment = comments(:comment_video)
 
