@@ -14,6 +14,8 @@ require 'rails/test_help'
 require 'minitest/autorun'
 require 'view_component/test_helpers'
 
+Rails.root.glob('test/test_helpers/**/*.rb').each { |path| require path }
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers

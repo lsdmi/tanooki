@@ -5,17 +5,7 @@ module Ui
   class TagListComponent < ViewComponent::Base
     def initialize(labels:, variant: :keyword, size: :sm, **options)
       super()
-      @genre_slugs = options.fetch(:genre_slugs, {}).to_h
-      @labels = Array(labels).compact_blank
-      @labels = Genre.sort_labels_adult_first(@labels, slugs: @genre_slugs) if options[:sort_adult_first]
-      @variant = variant
-      @size = size
-      @max = options[:max]
-      @href_builder = options[:href_builder]
-      @current_label = options[:current_label]
-      @counts = options.fetch(:counts, {}).to_h
-      @html = options.fetch(:html, {})
-      @tag_html = options.fetch(:tag_html, {})
+      assign_tag_list_options(labels, variant, size, options)
     end
 
     def render?
@@ -64,6 +54,28 @@ module Ui
     def count_for(label)
       value = counts[label] || counts[label.to_s]
       value.to_i.positive? ? value.to_i : nil
+    end
+
+    def assign_tag_list_options(labels, variant, size, options)
+      assign_tag_list_core(labels, variant, size, options)
+      assign_tag_list_presentation(options)
+    end
+
+    def assign_tag_list_core(labels, variant, size, options)
+      @genre_slugs = options.fetch(:genre_slugs, {}).to_h
+      @labels = Array(labels).compact_blank
+      @labels = Genre.sort_labels_adult_first(@labels, slugs: @genre_slugs) if options[:sort_adult_first]
+      @variant = variant
+      @size = size
+      @max = options[:max]
+    end
+
+    def assign_tag_list_presentation(options)
+      @href_builder = options[:href_builder]
+      @current_label = options[:current_label]
+      @counts = options.fetch(:counts, {}).to_h
+      @html = options.fetch(:html, {})
+      @tag_html = options.fetch(:tag_html, {})
     end
   end
 end

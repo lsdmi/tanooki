@@ -19,6 +19,14 @@ module Attachments
       assert_includes cover_card_url(@fiction.cover), '/rails/active_storage/representations'
     end
 
+    test 'cover_background_url returns a representation url for raster covers when variants are available' do
+      skip 'libvips not installed' unless VariantProcessing.available?
+
+      assert_predicate @fiction.cover.blob, :variable?
+
+      assert_includes cover_background_url(@fiction.cover), '/rails/active_storage/representations'
+    end
+
     test 'cover_card_url falls back to blob url when variant processing is unavailable' do
       VariantProcessing.stub(:available?, false) do
         assert_predicate @fiction.cover.blob, :variable?

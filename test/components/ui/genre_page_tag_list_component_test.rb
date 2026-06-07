@@ -15,7 +15,7 @@ module Ui
       assert_selector 'a', text: 'Фентезі', count: 1
     end
 
-    test 'renders explicit genres as red adult tags before others' do
+    test 'renders explicit genres as red adult tags' do
       render_inline(
         GenrePageTagListComponent.new(
           genres: [
@@ -28,6 +28,18 @@ module Ui
       assert_selector 'a.bg-rose-200', text: 'BL'
       assert_selector 'a.bg-rose-200 svg'
       assert_selector 'a.border-slate-300.bg-white', text: 'Романтика'
+    end
+
+    test 'orders explicit genres before others' do
+      render_inline(
+        GenrePageTagListComponent.new(
+          genres: [
+            { name: 'Романтика', slug: 'romance' },
+            { name: 'BL', slug: 'bl' }
+          ]
+        )
+      )
+
       assert_text(/BL.*Романтика/m)
     end
 

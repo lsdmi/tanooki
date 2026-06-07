@@ -16,7 +16,7 @@ module Chapters
 
     test 'fiction_reader_support? is false without bank url' do
       fiction = fictions(:one)
-      fiction.scanlators.update_all(bank_url: nil)
+      fiction.scanlators.each { |scanlator| scanlator.update!(bank_url: nil) }
 
       assert_not fiction_reader_support?(fiction)
     end

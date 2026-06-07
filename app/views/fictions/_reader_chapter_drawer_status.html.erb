@@ -2,6 +2,7 @@
 <% case status %>
 <% when :read %>
   <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center text-emerald-500 dark:text-emerald-400"
+        role="img"
         aria-label="<%= t('chapters.reader_chapter_drawer.progress_read') %>">
     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
@@ -9,6 +10,7 @@
   </span>
 <% when :current %>
   <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center text-cyan-600 dark:text-rose-400"
+        role="img"
         aria-label="<%= t('chapters.reader_chapter_drawer.progress_current') %>">
     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
       <circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" />

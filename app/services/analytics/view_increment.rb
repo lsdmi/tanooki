@@ -10,13 +10,31 @@ module Analytics
 
     def call
       return unless @object
+      return if already_viewed?
 
-      identifier = @object.respond_to?(:slug) ? @object.slug : @object.sqid
-      return if @session[:viewed]&.include?(identifier)
+      record_view
+      remember_view
+    end
 
-      @object.with_lock { @object.update_column(:views, @object.views + 1) } # rubocop:disable Rails/SkipsModelValidations
-      @session[:viewed] ||= []
-      @session[:viewed] << identifier
+    private
+
+    def already_viewed?
+      @session[:viewed]&.include?(view_identifier)
+    end
+
+    def view_identifier
+      @object.respond_to?(:slug) ? @object.slug : @object.sqid
+    end
+
+    def record_view
+      @object.with_lock do
+        @object.class.increment_counter(:views, @object.id)
+        @object.views += 1
+      end
+    end
+
+    def remember_view
+      @session[:viewed] = Array(@session[:viewed]) << view_identifier
       @session[:viewed] = @session[:viewed].last(10)
     end
   end

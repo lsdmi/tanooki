@@ -1,6 +1,6 @@
 <div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
      data-controller="comments-drawer jump-to-top chapter-drawer reader-settings">
-  <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= url_for(@chapter.fiction.cover) %>');"></div>
+  <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= cover_background_url(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
 
   <%= render 'reader_settings_drawer', chapter: @chapter %>
@@ -21,7 +21,7 @@
     <div class="container mx-auto px-4 py-2">
       <%= render 'fictions/adult_content_disclaimer', reader_gate: true if show_adult_gate %>
 
-      <div class="w-full<%= ' adult-content-gate--locked' if show_adult_gate %>"
+      <div class="w-full py-2 sm:py-4 <%= ' adult-content-gate--locked' if show_adult_gate %>"
            <%= 'data-adult-content-gate-content' if show_adult_gate %>>
         <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
       </div>

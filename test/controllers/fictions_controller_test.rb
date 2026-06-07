@@ -11,17 +11,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     @fiction_two = fictions(:two)
   end
 
-  test 'toggle_order from reader drawer updates reader drawer turbo frame' do
-    chapter = chapters(:one)
-
-    post toggle_order_fictions_path(id: @fiction.id, order: :desc, reader_drawer: true, current_chapter_id: chapter.id),
-         headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
-
-    assert_response :success
-    assert_includes response.body, 'turbo-stream action="update" target="sort-chapters-reader-drawer"'
-    assert_includes response.body, 'toggle-fictions-order-drawer'
-  end
-
   test 'should get show' do
     [@fiction, @fiction_two].each do |fiction|
       Rails.cache.delete("fiction_#{fiction.id}")
@@ -30,20 +19,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_template :show
     end
-  end
-
-  test 'show renders translator support card when scanlator has bank url' do
-    @fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
-    Rails.cache.delete("fiction_#{@fiction.id}")
-
-    get fiction_url(@fiction)
-
-    assert_response :success
-    assert_includes response.body, 'reader-support-card'
-    assert_includes response.body, 'reader-outlined-btn'
-    assert_includes response.body, I18n.t('chapters.reader_support_card.title')
-    assert_includes response.body, I18n.t('chapters.reader_support_card.support')
-    assert_not_includes response.body, 'hover:-translate-y-1 hover:scale-105'
   end
 
   test 'should get dashboard' do

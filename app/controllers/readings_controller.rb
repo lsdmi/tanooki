@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# User reading list: add, remove, and browse tracked fictions.
 class ReadingsController < ApplicationController
   include Library::ReadingStateHelper
 

@@ -26,7 +26,9 @@ module Fictions
       end
 
       fiction.reload
-      remaining_chapters = fiction.chapters.joins(:scanlators).where(chapter_scanlators: { scanlator_id: @scanlator.id })
+      remaining_chapters = fiction.chapters
+                                  .joins(:scanlators)
+                                  .where(chapter_scanlators: { scanlator_id: @scanlator.id })
 
       assert(
         fiction.scanlators.ids == [scanlators(:two).id] && remaining_chapters.none?,

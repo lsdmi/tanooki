@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Chapters
+  # Chapter reader comments drawer labels and copy.
   module CommentsDrawerHelper
     def chapter_comments_drawer_subtitle(count)
       I18n.t('chapters.reader_comments_drawer.count', count: count)

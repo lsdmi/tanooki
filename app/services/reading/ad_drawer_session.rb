@@ -19,7 +19,7 @@ module Reading
       return [@state, false] if @state['last_chapter_id'] == @chapter_id
 
       views = @state.fetch('chapter_views', 0).to_i + 1
-      should_open = (views - 1) % INTERVAL == 0
+      should_open = ((views - 1) % INTERVAL).zero?
 
       @state['chapter_views'] = views
       @state['last_chapter_id'] = @chapter_id

@@ -56,13 +56,20 @@ class GenreTest < ActiveSupport::TestCase
     assert_nil Genre.badge_asset_slug('__no_such_genre_name__')
   end
 
-  test 'explicit_content? by slug and name' do
+  test 'explicit_content? by slug' do
     bl = Genre.create!(name: 'BL', slug: 'bl')
-    drama = Genre.create!(name: 'Драма-test', slug: 'drama-test')
 
     assert_predicate bl, :explicit_content?
     assert Genre.explicit_content?(slug: 'gl')
     assert_not Genre.explicit_content?(slug: 'romance')
+  ensure
+    bl&.destroy
+  end
+
+  test 'explicit_content? by name' do
+    bl = Genre.create!(name: 'BL', slug: 'bl')
+    drama = Genre.create!(name: 'Драма-test', slug: 'drama-test')
+
     assert Genre.explicit_content?(name: 'BL')
     assert_not drama.explicit_content?
   ensure

@@ -325,6 +325,9 @@ uk:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
   fictions:
+    notices:
+      create_success: Твір створено.
+      update_success: Твір оновлено.
     adult_content_disclaimer:
       aria_label: Попередження про контент 18+
       title: Контент 18+

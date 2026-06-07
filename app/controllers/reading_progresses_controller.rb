@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# API for updating and clearing per-fiction reading progress.
 class ReadingProgressesController < ApplicationController
   include Library::ReadingStateHelper
 
@@ -25,21 +26,32 @@ class ReadingProgressesController < ApplicationController
   end
 
   def create_new_reading_progress
-    status = Reading::UpdateStatus.normalize_status(params[:status], default: 'active')
+    status = normalized_create_status
     return invalid_status_outcome unless status
-    return invalid_status_outcome if status == Reading::UpdateStatus::DESTROY_STATUS
 
     first_chapter = ordered_chapters(@fiction, viewer: current_user).first
     return invalid_status_outcome unless first_chapter
 
-    reading_progress = ReadingProgress.create!(
+    Outcomes::OperationOutcome.new(
+      success: true,
+      data: { reading_progress: build_reading_progress(first_chapter, status) }
+    )
+  end
+
+  def build_reading_progress(first_chapter, status)
+    ReadingProgress.create!(
       fiction_id: @fiction.id,
       user_id: current_user.id,
       chapter_id: first_chapter.id,
       status: status
     )
+  end
 
-    Outcomes::OperationOutcome.new(success: true, data: { reading_progress: reading_progress })
+  def normalized_create_status
+    status = Reading::UpdateStatus.normalize_status(params[:status], default: 'active')
+    return if !status || status == Reading::UpdateStatus::DESTROY_STATUS
+
+    status
   end
 
   def update_existing_progress(reading_progress)

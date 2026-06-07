@@ -32,6 +32,7 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     verify_youtube_videos_index_assigns
+
     assert_equal({}, assigns(:video_tag_counts))
   end
 

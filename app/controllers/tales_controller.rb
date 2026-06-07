@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Blog-style publications (tales): list, show, and tag browsing.
 class TalesController < ApplicationController
   before_action :load_advertisement, only: %i[index show]
   before_action :set_tale, :track_visit, only: :show
@@ -15,8 +16,12 @@ class TalesController < ApplicationController
 
   def show
     @more_tales = more_tails
-    @comments = @publication.comments.parents.includes(user: { avatar: :image_attachment },
-                                                       replies: { user: { avatar: :image_attachment } }).order(created_at: :desc)
+    @comments = @publication.comments.parents
+                            .includes(
+                              user: { avatar: :image_attachment },
+                              replies: { user: { avatar: :image_attachment } }
+                            )
+                            .order(created_at: :desc)
     @comment = Comment.new
     @publication_tag_counts = search_tag_counts(Search::TagCounts.labels_from_publications(@publication))
   end
@@ -27,8 +32,8 @@ class TalesController < ApplicationController
     return base_search.excluding(@publication).first(5) if base_search.size > 5
 
     (
-      base_search.to_a + Publication.all.includes([{ cover_attachment: :blob },
-                                                   :rich_text_description]).order(created_at: :desc).first(6)
+      base_search.to_a + Publication.includes([{ cover_attachment: :blob },
+                                               :rich_text_description]).order(created_at: :desc).first(6)
     ).excluding(@publication).uniq.first(5)
   end
 

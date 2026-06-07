@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Personal library: reading history, status updates, and recommendations.
 class LibraryController < ApplicationController
   before_action :authenticate_user!
   before_action :pokemon_appearance, only: [:index]
@@ -18,18 +19,19 @@ class LibraryController < ApplicationController
   def update_status
     reading_progress = current_user.readings.find(params[:id])
     current_section = params[:current_section]&.to_sym || :active
-
     @status_update_result = Reading::UpdateStatus.new(
       reading_progress, params[:status], current_user
     ).call
-
-    library_data = Library::SectionDataBuilder.new(current_user, current_section).call
-    @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
-
+    refresh_library_list(current_section)
     render_library_list(current_section)
   end
 
   private
+
+  def refresh_library_list(section)
+    library_data = Library::SectionDataBuilder.new(current_user, section).call
+    @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
+  end
 
   def related_fictions
     Rails.cache.fetch("user:#{current_user.id}:related_fictions:#{@section}", expires_in: 5.minutes) do
@@ -52,20 +54,17 @@ class LibraryController < ApplicationController
   end
 
   def render_library_list(section)
-    streams = [
-      turbo_stream.update(
-        'library-list',
-        partial: 'library/list',
-        locals: {
-          paginated_readings: @paginated_readings,
-          pagy: @pagy,
-          section: section
-        }
-      )
-    ]
+    streams = [library_list_stream(section)]
     streams << invalid_reading_status_notice if @status_update_result&.failure?
-
     render turbo_stream: streams
+  end
+
+  def library_list_stream(section)
+    turbo_stream.update(
+      'library-list',
+      partial: 'library/list',
+      locals: { paginated_readings: @paginated_readings, pagy: @pagy, section: section }
+    )
   end
 
   def invalid_reading_status_notice

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Translator studio dashboard for managing fictions and chapters.
 class StudioController < ApplicationController
   include FictionQuery
   include StudioTabLoadable
@@ -39,15 +40,9 @@ class StudioController < ApplicationController
 
   def tab_content_locals
     {
-      fictions: @fictions,
-      pagy: @pagy,
-      publications: @publications,
-      pokemon_show: @pokemon_show,
-      avatars: @avatars,
-      comments: @comments,
-      scanlators: @scanlators,
-      bookshelves: @bookshelves,
-      epub_export_requests: @epub_export_requests
+      fictions: @fictions, pagy: @pagy, publications: @publications, pokemon_show: @pokemon_show,
+      avatars: @avatars, comments: @comments, scanlators: @scanlators,
+      bookshelves: @bookshelves, epub_export_requests: @epub_export_requests
     }
   end
 end

@@ -23,15 +23,19 @@ module Layout
     ].freeze
 
     def page_stylesheets
-      [].tap do |sheets|
-        sheets << 'pagy' if requires_pagy_styles?
-        sheets << 'slimselect' if requires_slimselect_styles?
-        sheets << 'actiontext' if requires_actiontext_styles?
-        sheets << 'adult_content_disclaimer' if requires_adult_content_disclaimer_styles?
-        sheets << 'chapters_reader' if requires_chapters_reader_styles?
-        sheets << 'sweetal2' if requires_sweetalert_styles?
-        sheets << 'flatpickr_overrides' if requires_flatpickr_styles?
-      end
+      optional_stylesheets.filter_map { |sheet, required| sheet if required }
+    end
+
+    def optional_stylesheets
+      [
+        ['pagy', requires_pagy_styles?],
+        ['slimselect', requires_slimselect_styles?],
+        ['actiontext', requires_actiontext_styles?],
+        ['adult_content_disclaimer', requires_adult_content_disclaimer_styles?],
+        ['chapters_reader', requires_chapters_reader_styles?],
+        ['sweetal2', requires_sweetalert_styles?],
+        ['flatpickr_overrides', requires_flatpickr_styles?]
+      ]
     end
 
     def requires_pagy_styles?
@@ -51,7 +55,7 @@ module Layout
     end
 
     def requires_adult_content_disclaimer_styles?
-      fiction = @fiction || @chapter&.fiction
+      fiction = stylesheet_context_fiction
       fiction.present? && show_adult_content_disclaimer?(fiction)
     end
 
@@ -60,7 +64,12 @@ module Layout
     end
 
     def fiction_show_with_reader_support_card?
-      controller_name == 'fictions' && action_name == 'show' && @fiction.present? && fiction_reader_support?(@fiction)
+      fiction = stylesheet_context_fiction
+      controller_name == 'fictions' && action_name == 'show' && fiction.present? && fiction_reader_support?(fiction)
+    end
+
+    def stylesheet_context_fiction
+      controller.view_assigns['fiction'] || controller.view_assigns['chapter']&.fiction
     end
 
     def requires_sweetalert_styles?

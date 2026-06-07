@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+# Fiction catalog: browse, create, edit, and manage translator works.
 class FictionsController < ApplicationController
   include FictionQuery
+  include Fictions::ChapterSectionRendering
+  include Fictions::DashboardListing
+  include Fictions::FictionPersistence
+  include Fictions::TurboStreamResponses
   include Library::ReadingStateHelper
 
   AD_EXCLUDED_SLUGS = %w[
@@ -37,34 +42,12 @@ class FictionsController < ApplicationController
 
   def create
     @fiction = Fiction.new
-    form = FictionForm.new(fiction: @fiction, params: fiction_params)
-    if form.save
-      Fictions::SyncAssociations.new(
-        @fiction,
-        genre_ids: fiction_params[:genre_ids],
-        scanlator_ids: fiction_params[:scanlator_ids],
-        user: current_user
-      ).call
-      redirect_to @fiction, notice: 'Твір створено.'
-    else
-      render :new, status: :unprocessable_content
-    end
+    persist_fiction(Fictions::SyncAssociations, :new, t('fictions.notices.create_success'))
   end
 
   def update
     @fiction = Fiction.find(params[:id])
-    form = FictionForm.new(fiction: @fiction, params: fiction_params)
-    if form.save
-      Fictions::SyncAssociationsAndStatus.new(
-        @fiction,
-        genre_ids: fiction_params[:genre_ids],
-        scanlator_ids: fiction_params[:scanlator_ids],
-        user: current_user
-      ).call
-      redirect_to @fiction, notice: 'Твір оновлено.'
-    else
-      render :edit, status: :unprocessable_content
-    end
+    persist_fiction(Fictions::SyncAssociationsAndStatus, :edit, t('fictions.notices.update_success'))
   end
 
   def destroy
@@ -80,17 +63,8 @@ class FictionsController < ApplicationController
 
   def chapter_section
     order = params[:order].presence&.to_sym || :desc
-    @section_chapters = Fictions::ChapterSectionLoader.new(
-      fiction: @fiction,
-      viewer: current_user,
-      section_key: params[:section],
-      order: order,
-      chapter_ids: params[:chapter_ids]
-    ).call
-
-    render partial: 'fictions/chapter_section_items',
-           layout: false,
-           locals: chapter_section_locals(order)
+    @section_chapters = load_chapter_section(order)
+    render_chapter_section_items(order)
   end
 
   def details
@@ -117,43 +91,8 @@ class FictionsController < ApplicationController
     @fiction&.slug.in?(AD_EXCLUDED_SLUGS) || super
   end
 
-  def chapter_from_section_params
-    return nil if params[:current_chapter_id].blank?
-
-    Chapter.find_by(id: params[:current_chapter_id])
-  end
-
-  def chapter_section_locals(_order)
-    reader_drawer = ActiveModel::Type::Boolean.new.cast(params[:reader_drawer])
-    current_chapter = chapter_from_section_params
-    locals = {
-      chapters: @section_chapters,
-      reader_drawer:,
-      current_chapter:
-    }
-    if reader_drawer
-      locals[:drawer_progress] = Reading::ChapterDrawerProgress.build(
-        fiction: @fiction,
-        viewer: current_user,
-        current_chapter:
-      )
-    end
-    locals
-  end
-
   def set_genres
     @genres = Genre.order(:name)
-  end
-
-  def fiction_params
-    params.require(:fiction).permit(
-      :alternative_title, :author, :cover, :description, :english_title, :origin,
-      :status, :title, :total_chapters, :short_description, :banner, :adult_content, genre_ids: [], scanlator_ids: []
-    )
-  end
-
-  def ordered_fiction_list
-    current_user.admin? ? fiction_all_ordered_by_latest_chapter : dashboard_fiction_list
   end
 
   def authorize_fiction
@@ -164,67 +103,5 @@ class FictionsController < ApplicationController
   def authorize_fiction_creation
     policy = Fictions::Authorization.new(current_user, nil)
     redirect_to new_scanlator_path unless policy.create?
-  end
-
-  def paginate_fictions
-    pagy(
-      ordered_fiction_list,
-      limit: 6,
-      request_path: readings_path,
-      page: fiction_page || 1
-    )
-  end
-
-  def fiction_page
-    (params[:page].to_i - 1) if Fiction.count <= (params[:page].to_i * 8) - 8
-  end
-
-  def render_sorted_chapters
-    render turbo_stream: sorted_chapters_turbo_streams
-  end
-
-  def sorted_chapters_turbo_streams
-    locals = @show_presenter.sorted_chapters_locals
-    if reader_drawer_chapter_sort?
-      frame_dom_id = 'sort-chapters-reader-drawer'
-      locals = locals.merge(
-        toggle_order_button_id: 'toggle-fictions-order-drawer',
-        reader_drawer: true,
-        current_chapter: current_chapter_for_reader_drawer_sort
-      )
-    else
-      frame_dom_id = 'sort-chapters'
-    end
-    [turbo_stream.update(frame_dom_id, partial: 'fictions/chapters', locals: locals)]
-  end
-
-  def reader_drawer_chapter_sort?
-    ActiveModel::Type::Boolean.new.cast(params[:reader_drawer])
-  end
-
-  def current_chapter_for_reader_drawer_sort
-    return nil if params[:current_chapter_id].blank?
-
-    Chapter.find_by(id: params[:current_chapter_id])
-  end
-
-  def toggle_order_params
-    params.merge(order: params[:order].to_sym == :desc ? :asc : :desc)
-  end
-
-  def refresh_list
-    turbo_stream.update(
-      'fictions-list',
-      partial: 'users/dashboard/fictions',
-      locals: { fictions: @fictions, pagy: @pagy }
-    )
-  end
-
-  def details_partial
-    if request.referer == alphabetical_fictions_url || request.referer&.include?('/bookshelves/')
-      'fiction_lists/fiction_details'
-    else
-      'fictions/fiction_details'
-    end
   end
 end

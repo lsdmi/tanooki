@@ -44,7 +44,8 @@ module Ui
     ].join(' ').freeze
 
     GENRE_CLASSES = [
-      'inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700',
+      'inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1',
+      'text-xs font-medium text-slate-700',
       'transition-colors hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900',
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
       'focus-visible:ring-offset-white',
@@ -75,7 +76,7 @@ module Ui
       adult: ADULT_CLASSES
     }.freeze
 
-    ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0'.freeze
+    ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0'
 
     ICON_CLASSES = {
       stat_views: 'h-3 w-3 shrink-0 text-white/90',

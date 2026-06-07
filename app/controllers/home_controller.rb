@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Landing page with featured fictions, tales, and advertisements.
 class HomeController < ApplicationController
   before_action :load_advertisement
   before_action :pokemon_appearance, only: [:index]

@@ -34,9 +34,12 @@ module Reading
     def status_for(chapter)
       return :current if chapter.id == @current_chapter_id
       return :read if @finished
-
       return :unread unless @progress_index
 
+      status_from_progress_index(chapter)
+    end
+
+    def status_from_progress_index(chapter)
       index = chapter_index(@unique_chapters, chapter)
       if index < @progress_index
         :read

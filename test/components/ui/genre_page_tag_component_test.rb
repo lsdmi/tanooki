@@ -30,12 +30,14 @@ module Ui
       assert_selector 'span.text-amber-300', text: '4.3'
     end
 
-    test 'renders footer chapters and status tags' do
+    test 'renders footer chapters tag' do
       render_inline(GenrePageTagComponent.new(variant: :chapters, label: '252 Розділи'))
 
       assert_selector 'span.border-slate-400\\/90.bg-slate-100', text: '252 Розділи'
       assert_selector 'span.dark\\:bg-slate-700\\/80.dark\\:text-slate-200', text: '252 Розділи'
+    end
 
+    test 'renders footer status tag' do
       render_inline(GenrePageTagComponent.new(variant: :status, label: 'Покинуто'))
 
       assert_selector 'span.border-slate-300\\/90.bg-slate-50', text: 'Покинуто'

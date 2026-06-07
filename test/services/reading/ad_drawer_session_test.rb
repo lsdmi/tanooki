@@ -4,12 +4,27 @@ require 'test_helper'
 
 module Reading
   class AdDrawerSessionTest < ActiveSupport::TestCase
-    test 'opens on 1st 5th and 9th chapter view in session' do
+    test 'opens drawer on first chapter view' do
       assert_open(1, {})
+    end
+
+    test 'skips drawer on second chapter view' do
       assert_skips(2, after_views(1))
+    end
+
+    test 'skips drawer on third chapter view' do
       assert_skips(3, after_views(2))
+    end
+
+    test 'skips drawer on fourth chapter view' do
       assert_skips(4, after_views(3))
+    end
+
+    test 'opens drawer on fifth chapter view' do
       assert_open(5, after_views(4))
+    end
+
+    test 'opens drawer on ninth chapter view' do
       assert_open(9, after_views(8))
     end
 
@@ -23,8 +38,8 @@ module Reading
 
     private
 
-    def after_views(n)
-      { 'chapter_views' => n, 'last_chapter_id' => n.to_s }
+    def after_views(view_count)
+      { 'chapter_views' => view_count, 'last_chapter_id' => view_count.to_s }
     end
 
     def assert_open(chapter_id, state)

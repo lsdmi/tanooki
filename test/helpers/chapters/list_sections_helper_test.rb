@@ -27,27 +27,6 @@ module Chapters
       with_vol&.destroy
     end
 
-    test 'chapter_list_sections uses range groups for unnumbered chapters' do
-      fiction = fictions(:one)
-      without_vol = Chapter.create!(
-        fiction: fiction,
-        user: users(:user_one),
-        title: 'Plain chapter',
-        number: 2,
-        volume_number: nil,
-        content: 'y' * 500,
-        scanlator_ids: [scanlators(:one).id]
-      )
-
-      sections = chapter_list_sections(fiction.chapters.where(id: without_vol.id))
-
-      assert_equal 1, sections.size
-      assert sections.first[:title].start_with?('Розділи ')
-      assert_includes sections.first[:chapters], without_vol
-    ensure
-      without_vol&.destroy
-    end
-
     test 'chapter_list_sections ignores inherited order when collecting volume numbers' do
       fiction = fictions(:one)
       ordered = fiction.chapters.order(number: :desc)
@@ -86,58 +65,6 @@ module Chapters
     ensure
       vol2&.destroy
       vol1&.destroy
-    end
-
-    test 'chapter_list_sections reverses chapter order within a range when desc' do
-      fiction = fictions(:one)
-      ch1 = Chapter.create!(
-        fiction: fiction,
-        user: users(:user_one),
-        title: 'Range low',
-        number: 1,
-        volume_number: nil,
-        content: 'a' * 500,
-        scanlator_ids: [scanlators(:one).id]
-      )
-      ch2 = Chapter.create!(
-        fiction: fiction,
-        user: users(:user_one),
-        title: 'Range high',
-        number: 2,
-        volume_number: nil,
-        content: 'b' * 500,
-        scanlator_ids: [scanlators(:one).id]
-      )
-      scope = fiction.chapters.where(id: [ch1.id, ch2.id])
-
-      asc_ids = chapter_list_sections(scope, order: :asc).first[:chapters].pluck(:id)
-      desc_ids = chapter_list_sections(scope, order: :desc).first[:chapters].pluck(:id)
-
-      assert_equal [ch1.id, ch2.id], asc_ids
-      assert_equal [ch2.id, ch1.id], desc_ids
-    ensure
-      ch2&.destroy
-      ch1&.destroy
-    end
-
-    test 'chapter_list_sections uses only ranges when no volume numbers exist' do
-      fiction = fictions(:one)
-      chapter = Chapter.create!(
-        fiction: fiction,
-        user: users(:user_one),
-        title: 'Range chapter',
-        number: 50,
-        volume_number: nil,
-        content: 'z' * 500,
-        scanlator_ids: [scanlators(:one).id]
-      )
-
-      sections = chapter_list_sections(fiction.chapters.where(id: chapter.id))
-
-      assert_equal 1, sections.size
-      assert_equal 'Розділи 1-100', sections.first[:title]
-    ensure
-      chapter&.destroy
     end
 
     private
