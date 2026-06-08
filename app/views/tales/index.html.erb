@@ -3,15 +3,15 @@
     <div class="lg:mr-[375px] mx-auto lg:mx-0 w-[96%] lg:w-auto">
       <div class="w-full relative float-left lg:ml-4">
         <div class="relative sm:float-right w-full lg:w-[60%]">
-          <%= render 'main_section', highlights: @highlights[0..4] %>
+          <%= render 'main_section', highlights: @highlights[0..4], publication_tag_counts: @publication_tag_counts %>
         </div>
         <div class="relative sm:float-left w-full lg:w-[21rem] mx-auto lg:mx-0 block md:flex lg:block">
-          <%= render 'side_section', highlights: @highlights[5..7] %>
+          <%= render 'side_section', highlights: @highlights[5..7], publication_tag_counts: @publication_tag_counts %>
         </div>
       </div>
     </div>
     <div class="lg:float-left lg:ml-4 lg:w-[21rem] mx-auto lg:mx-0 w-[96%] block md:flex lg:block">
-      <%= render 'side_section', highlights: @highlights[8..10] %>
+      <%= render 'side_section', highlights: @highlights[8..10], publication_tag_counts: @publication_tag_counts %>
     </div>
   </section>
   <section class="relative float-left w-full mt-2">
@@ -19,7 +19,7 @@
       <%= render 'shared/ads', advertisement: @advertisement %>
     </div>
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 ">
-      <%= render "home/publications", publications: @publications %>
+      <%= render "home/publications", publications: @publications, publication_tag_counts: @publication_tag_counts %>
       <%= render "home/next_page", pagy: @pagy %>
     </div>
   </section>

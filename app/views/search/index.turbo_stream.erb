@@ -1,5 +1,5 @@
 <%= turbo_stream.update "filter-buttons" do %>
-  <%= render 'search/filter_buttons' %>
+  <%= render 'search/filter_buttons', pagy_fictions: @pagy_fictions, pagy_results: @pagy_results, pagy_videos: @pagy_videos %>
 <% end %>
 
 <% if @fictions.any? %>

@@ -20,4 +20,8 @@ class Comment < ApplicationRecord
   def parent_content
     parent&.content
   end
+
+  def chapter_comment?
+    commentable_type == Chapter.name
+  end
 end

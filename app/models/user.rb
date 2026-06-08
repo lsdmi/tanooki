@@ -79,11 +79,6 @@ class User < ApplicationRecord
     logs.first
   end
 
-  def self.find_by_sqid(sqid_string)
-    ids = Sqids.new.decode(sqid_string)
-    find_by(id: ids.first) if ids.any?
-  end
-
   def manages_chapter?(chapter)
     admin? || chapters.exists?(id: chapter.id)
   end

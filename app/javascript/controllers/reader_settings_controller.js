@@ -7,6 +7,7 @@ import {
   setFontId,
   setFontSize
 } from "reader_preferences"
+import { safeLogoSrc } from "safe_logo_src"
 
 /** Reading settings side panel (font, size, theme) on the chapter reader. */
 export default class extends Controller {
@@ -134,8 +135,8 @@ export default class extends Controller {
   updateSiteLogo(isDark) {
     const siteLogo = document.getElementById("site-logo")
     if (!siteLogo) return
-    const defaultLogo = siteLogo.getAttribute("data-default-logo")
-    const darkLogo = siteLogo.getAttribute("data-dark-logo")
+    const defaultLogo = safeLogoSrc(siteLogo.getAttribute("data-default-logo"))
+    const darkLogo = safeLogoSrc(siteLogo.getAttribute("data-dark-logo"))
     if (defaultLogo && darkLogo) siteLogo.src = isDark ? darkLogo : defaultLogo
   }
 

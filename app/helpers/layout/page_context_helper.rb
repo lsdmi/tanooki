@@ -12,11 +12,6 @@ module Layout
       chapters_show_page?
     end
 
-    def requires_font?
-      (controller_name.to_sym == :tales && action_name.to_sym == :show) ||
-        chapters_show_page?
-    end
-
     def requires_legacy_font_toggler?
       controller_name.to_sym == :tales && action_name.to_sym == :show
     end

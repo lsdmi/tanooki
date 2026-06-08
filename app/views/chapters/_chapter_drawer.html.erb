@@ -24,7 +24,7 @@
             <%= link_to fiction.title, fiction_path(fiction), class: 'block truncate hover:text-cyan-700 dark:hover:text-rose-400', data: { turbo: false } %>
           </h2>
           <p class="mt-1 truncate text-sm text-stone-600 dark:text-zinc-400">
-            <% if fiction.author.present? %>
+            <% if fiction.author? %>
               <span><%= fiction.author %></span>
               <span class="mx-1 text-stone-400 dark:text-zinc-600" aria-hidden="true">•</span>
             <% end %>

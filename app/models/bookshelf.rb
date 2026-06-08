@@ -23,10 +23,6 @@ class Bookshelf < ApplicationRecord
     decoded.any? ? where(id: decoded.first) : none
   }
 
-  def self.find_by_sqid(sqid_string)
-    by_sqid(sqid_string).first
-  end
-
   def sqid
     Sqids.new.encode([id])
   end

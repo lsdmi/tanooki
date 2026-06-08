@@ -38,7 +38,7 @@
           <h2 class="text-xl font-extrabold text-gray-700 dark:text-gray-200">Фільтри</h2>
         </div>
         <%= turbo_frame_tag "filter-buttons", id: "filter-buttons" do %>
-          <%= render 'search/filter_buttons' %>
+          <%= render 'search/filter_buttons', pagy_fictions: @pagy_fictions, pagy_results: @pagy_results, pagy_videos: @pagy_videos %>
         <% end %>
       </div>
     </div>

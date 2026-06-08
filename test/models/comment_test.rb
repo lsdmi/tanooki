@@ -39,6 +39,16 @@ class CommentTest < ActiveSupport::TestCase
     assert_not Comment.exists?(child2.id)
   end
 
+  test 'chapter_comment? is true for chapter comments' do
+    comment = comments(:comment_chapter)
+
+    assert_predicate comment, :chapter_comment?
+  end
+
+  test 'chapter_comment? is false for publication comments' do
+    assert_not @publication.comments.build.chapter_comment?
+  end
+
   test 'should return only parent comments in parents scope' do
     parent1 = Comment.create(content: 'Parent 1', commentable: @publication, user: @user)
     child1 = Comment.create(content: 'Child 1', parent: parent1, commentable: @publication, user: @user)

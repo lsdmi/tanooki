@@ -1,7 +1,7 @@
 <%= render Ui::SearchFilterTabsComponent.new(
       current_filter: params[:filter],
       search: params[:search],
-      pagy_fictions: @pagy_fictions,
-      pagy_results: @pagy_results,
-      pagy_videos: @pagy_videos
+      pagy_fictions: pagy_fictions,
+      pagy_results: pagy_results,
+      pagy_videos: pagy_videos
     ) %>
