@@ -4,9 +4,12 @@ module Fictions
   # Cached fiction lists and badge ids for the fictions index.
   class IndexVariablesManager
     def self.popular_novelty
-      Rails.cache.fetch('popular_novelty', expires_in: 24.hours) do
-        popular_novelty_scope.to_a
-      end
+      ids = cached_popular_novelty_ids
+      return Fiction.none if ids.blank?
+
+      Fiction.where(id: ids)
+             .includes(%i[cover_attachment])
+             .in_order_of(:id, ids)
     end
 
     def self.popular_novelty_ids_for_badges
@@ -21,6 +24,13 @@ module Fictions
              .order('COUNT(reading_progresses.fiction_id) DESC')
              .limit(8)
     end
+    def self.cached_popular_novelty_ids
+      Rails.cache.fetch('popular_novelty_ids', expires_in: 24.hours) do
+        popular_novelty_scope.to_a.map(&:id)
+      end
+    end
+    private_class_method :cached_popular_novelty_ids
+
     private_class_method :popular_novelty_scope
 
     def self.recent_fiction_ids
@@ -29,9 +39,12 @@ module Fictions
     private_class_method :recent_fiction_ids
 
     def self.most_reads
-      Rails.cache.fetch('most_reads', expires_in: 24.hours) do
-        most_reads_scope.to_a
-      end
+      ids = cached_most_reads_ids
+      return Fiction.none if ids.blank?
+
+      Fiction.where(id: ids)
+             .includes(%i[cover_attachment genres fiction_ratings])
+             .in_order_of(:id, ids)
     end
 
     def self.most_reads_ids_for_badges
@@ -41,6 +54,13 @@ module Fictions
     def self.most_reads_scope
       Fiction.includes(%i[cover_attachment genres fiction_ratings]).most_reads.limit(6)
     end
+    def self.cached_most_reads_ids
+      Rails.cache.fetch('most_reads_ids', expires_in: 24.hours) do
+        most_reads_scope.to_a.map(&:id)
+      end
+    end
+    private_class_method :cached_most_reads_ids
+
     private_class_method :most_reads_scope
 
     def self.latest_updates_ranked

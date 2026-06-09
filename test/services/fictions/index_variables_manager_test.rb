@@ -11,11 +11,24 @@ module Fictions
       counts.each_value { |v| assert_kind_of Integer, v }
     end
 
-    test 'most_reads returns a materialized array' do
+    test 'most_reads returns a fresh relation ordered by cached ids' do
       result = IndexVariablesManager.most_reads
 
-      assert_kind_of Array, result
-      result.each { |fiction| assert_kind_of Fiction, fiction }
+      assert_kind_of ActiveRecord::Relation, result
+      assert_not_predicate result, :loaded?
+
+      ids = IndexVariablesManager.send(:cached_most_reads_ids)
+      assert_equal ids.first(10), result.limit(10).ids if ids.any?
+    end
+
+    test 'popular_novelty returns a fresh relation ordered by cached ids' do
+      result = IndexVariablesManager.popular_novelty
+
+      assert_kind_of ActiveRecord::Relation, result
+      assert_not_predicate result, :loaded?
+
+      ids = IndexVariablesManager.send(:cached_popular_novelty_ids)
+      assert_equal ids.first(10), result.limit(10).ids if ids.any?
     end
 
     test 'hot_updates returns a fresh relation ordered by cached ids' do
@@ -28,18 +41,45 @@ module Fictions
       assert_equal ids.first(10), result.limit(10).ids if ids.any?
     end
 
-    test 'most_reads uses cache after first fetch' do
+    test 'most_reads uses cached ids after first fetch' do
       original_cache = Rails.cache
       Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
       Rails.cache.clear
 
-      first = IndexVariablesManager.most_reads
+      IndexVariablesManager.most_reads
 
       IndexVariablesManager.stub(:most_reads_scope, -> { raise 'cache miss' }) do
-        second = IndexVariablesManager.most_reads
-
-        assert_equal first.map(&:id), second.map(&:id)
+        assert_nothing_raised { IndexVariablesManager.most_reads.limit(5).load }
       end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'popular_novelty uses cached ids after first fetch' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
+      IndexVariablesManager.popular_novelty
+
+      IndexVariablesManager.stub(:popular_novelty_scope, -> { raise 'cache miss' }) do
+        assert_nothing_raised { IndexVariablesManager.popular_novelty.limit(5).load }
+      end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'popular_novelty omits deleted fictions from cached ids' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
+      fiction = fictions(:one)
+      Rails.cache.write('popular_novelty_ids', [fiction.id, 999_999], expires_in: 1.hour)
+
+      loaded_ids = IndexVariablesManager.popular_novelty.pluck(:id)
+
+      assert_equal [fiction.id], loaded_ids
     ensure
       Rails.cache = original_cache
     end
