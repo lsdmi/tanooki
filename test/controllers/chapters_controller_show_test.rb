@@ -121,4 +121,25 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_includes response.body, 'reader-epub-banner'
   end
+
+  test 'team member who did not author chapter sees edit link in reader settings' do
+    teammate = users(:user_two)
+    ScanlatorUser.create!(user: teammate, scanlator: scanlators(:one))
+    sign_in teammate
+
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_includes response.body, I18n.t('chapters.reader_settings.edit_chapter')
+    assert_includes response.body, edit_chapter_path(@chapter)
+  end
+
+  test 'user outside chapter team does not see edit link in reader settings' do
+    sign_in users(:user_two)
+
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_not_includes response.body, I18n.t('chapters.reader_settings.edit_chapter')
+  end
 end
