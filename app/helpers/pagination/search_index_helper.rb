@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Search
+module Pagination
   # Pagy nav for the search index: keep link params aligned with SearchController and Brakeman-safe.
-  module IndexPaginationHelper
+  module SearchIndexHelper
     VALID_SEARCH_FILTERS = %w[fiction blog video].freeze
 
     def search_index_pagy_custom_params(section)

@@ -7,7 +7,6 @@ class FictionsController < ApplicationController
   include Fictions::DashboardListing
   include Fictions::FictionPersistence
   include Fictions::TurboStreamResponses
-  include Library::ReadingStateHelper
 
   AD_EXCLUDED_SLUGS = %w[
     lehendarnyi-skulptor-misiachnoho-svitla

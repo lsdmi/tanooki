@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module FictionLists
+module Fictions
   # Pagy nav for fiction-list Turbo frames; params sanitized via Fictions::ListFilters.
-  module PaginationHelper
+  module ListPaginationHelper
     def fiction_list_pagy_nav_html(pagy, frame_id: 'fiction-list-page', aria_label: 'Сторінок')
       pagy_nav_buttons(
         pagy,

@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-module FictionLists
-  class PaginationHelperTest < ActionView::TestCase
-    include PaginationHelper
+module Fictions
+  class ListPaginationHelperTest < ActionView::TestCase
+    include ListPaginationHelper
     include Pagination::TurboNavHelper
     include Rails.application.routes.url_helpers
 

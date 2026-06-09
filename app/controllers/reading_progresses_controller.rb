@@ -2,8 +2,6 @@
 
 # API for updating and clearing per-fiction reading progress.
 class ReadingProgressesController < ApplicationController
-  include Library::ReadingStateHelper
-
   before_action :authenticate_user!
   before_action :set_fiction
 
@@ -29,7 +27,7 @@ class ReadingProgressesController < ApplicationController
     status = normalized_create_status
     return invalid_status_outcome unless status
 
-    first_chapter = ordered_chapters(@fiction, viewer: current_user).first
+    first_chapter = Library::ChapterCatalog.ordered_chapters(@fiction, viewer: current_user).first
     return invalid_status_outcome unless first_chapter
 
     Outcomes::OperationOutcome.new(

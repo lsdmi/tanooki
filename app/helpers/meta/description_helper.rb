@@ -96,7 +96,7 @@ module Meta
     end
 
     def publication_description
-      punch(publication.description.to_plain_text)
+      first_sentence(publication.description.to_plain_text)
     end
 
     def scanlator_description

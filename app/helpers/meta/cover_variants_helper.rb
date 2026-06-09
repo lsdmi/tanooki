@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Attachments
+module Meta
   # Resized cover URLs for list, card, and blurred page backgrounds.
   module CoverVariantsHelper
     CARD_TRANSFORMATIONS = { resize_to_limit: [400, 600], format: :webp }.freeze

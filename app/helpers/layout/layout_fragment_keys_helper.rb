@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Caching
+module Layout
   # Cache keys for shared layout fragments (navbar, footer, ads).
   module LayoutFragmentKeysHelper
     def fragment_cache_version_bucket(expires_in = 12.hours)

@@ -20,7 +20,7 @@
               <%= tag.h2 class: 'line-clamp-3 my-2 text-2xl font-bold tracking-tight leading-tight text-white hover:underline hover:text-cyan-200 dark:hover:text-rose-800' do %>
                 <%= link_to top_tale.title, tale_path(top_tale) %>
               <% end %>
-              <%= tag.p punch(top_tale.description.to_plain_text), class: 'line-clamp-3 mb-4 font-light text-gray-200 tracking-tight' %>
+              <%= tag.p top_tale.description.to_plain_text, class: 'line-clamp-3 mb-4 font-light text-gray-200 tracking-tight' %>
             </article>
           <% end %>
         </div>

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module Attachments
+module Meta
   class CoverVariantsHelperTest < ActionView::TestCase
     include CoverVariantsHelper
     include Rails.application.routes.url_helpers
@@ -12,7 +12,7 @@ module Attachments
     end
 
     test 'cover_card_url returns a representation url for raster covers when variants are available' do
-      skip 'libvips not installed' unless VariantProcessing.available?
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
       assert_predicate @fiction.cover.blob, :variable?
 
@@ -20,7 +20,7 @@ module Attachments
     end
 
     test 'cover_background_url returns a representation url for raster covers when variants are available' do
-      skip 'libvips not installed' unless VariantProcessing.available?
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
       assert_predicate @fiction.cover.blob, :variable?
 
@@ -28,7 +28,7 @@ module Attachments
     end
 
     test 'cover_card_url falls back to blob url when variant processing is unavailable' do
-      VariantProcessing.stub(:available?, false) do
+      Attachments::VariantProcessing.stub(:available?, false) do
         assert_predicate @fiction.cover.blob, :variable?
         assert_includes cover_card_url(@fiction.cover), '/rails/active_storage/blobs'
       end

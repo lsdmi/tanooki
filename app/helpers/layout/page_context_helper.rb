@@ -3,9 +3,7 @@
 module Layout
   # Controller/action predicates for layout assets and page-specific UI.
   module PageContextHelper
-    def chapters_show_page?
-      controller_name.to_sym == :chapters && action_name.to_sym == :show
-    end
+    include Routing::PageContextHelper
 
     # Chapter reader: hide site navbar/footer; use reader chrome + minimal copyright.
     def immersive_reader_layout?
@@ -34,10 +32,6 @@ module Layout
 
     def requires_sweetalert?
       controller_name.in?(%w[studio readings])
-    end
-
-    def genre_show_page?
-      controller_path == 'fictions/genres' && action_name == 'show'
     end
   end
 end

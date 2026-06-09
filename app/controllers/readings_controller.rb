@@ -2,8 +2,6 @@
 
 # User reading list: add, remove, and browse tracked fictions.
 class ReadingsController < ApplicationController
-  include Library::ReadingStateHelper
-
   before_action :authenticate_user!
   before_action :set_fiction, only: :show
   before_action :set_chapter, only: :destroy
@@ -12,7 +10,10 @@ class ReadingsController < ApplicationController
   def show
     redirect_to root_path unless current_user.manages_fiction?(@fiction)
 
-    @pagy, @chapters = pagy(ordered_user_chapters_desc(@fiction, current_user), limit: 36)
+    @pagy, @chapters = pagy(
+      Library::ChapterCatalog.ordered_user_chapters_desc(@fiction, current_user),
+      limit: 36
+    )
   end
 
   def destroy
@@ -53,7 +54,7 @@ class ReadingsController < ApplicationController
   def reload_fiction_chapters
     @fiction = @chapter.fiction
     @pagy, @chapters = pagy(
-      ordered_user_chapters_desc(@fiction, current_user),
+      Library::ChapterCatalog.ordered_user_chapters_desc(@fiction, current_user),
       limit: 36,
       request_path: reading_path(@fiction),
       page: params[:page] || 1

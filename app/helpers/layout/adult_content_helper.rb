@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Content
+module Layout
   # Adult-content acknowledgement state and disclaimer visibility for fiction pages.
   module AdultContentHelper
     def adult_content_acknowledged?

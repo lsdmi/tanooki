@@ -50,10 +50,6 @@ module Layout
       chapters_show_page? || tales_show_page?
     end
 
-    def tales_show_page?
-      controller_name == 'tales' && action_name == 'show'
-    end
-
     def requires_adult_content_disclaimer_styles?
       fiction = stylesheet_context_fiction
       fiction.present? && show_adult_content_disclaimer?(fiction)

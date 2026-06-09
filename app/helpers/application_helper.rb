@@ -6,11 +6,10 @@ module ApplicationHelper
 
   include Chapters::ReaderBottomHelper
   include Meta::CanonicalUrlHelper
-  include Content::AdultContentHelper
+  include Layout::AdultContentHelper
   include ExternalUrls::UrlsHelper
   include Layout::PageContextHelper
   include Layout::StylesheetsHelper
-  include Text::ExcerptHelper
   include Search::TagCountsHelper
-  include AdsenseHelper
+  include Adsense::ChapterReaderHelper
 end

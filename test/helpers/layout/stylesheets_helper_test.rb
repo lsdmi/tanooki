@@ -8,7 +8,7 @@ module Layout
     include Chapters::ReaderBottomHelper
     include Layout::PageContextHelper
     include Layout::StylesheetsHelper
-    include Content::AdultContentHelper
+    include Layout::AdultContentHelper
 
     setup do
       @controller = ApplicationController.new

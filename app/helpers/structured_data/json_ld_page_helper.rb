@@ -3,6 +3,8 @@
 module StructuredData
   # Controller/action predicates and URL helpers for JSON-LD meta tags.
   module JsonLdPageHelper
+    include Routing::PageContextHelper
+
     def article_meta?
       tales_show_page?
     end
@@ -44,34 +46,6 @@ module StructuredData
     end
 
     private
-
-    def tales_show_page?
-      controller_name.to_sym == :tales && action_name.to_sym == :show
-    end
-
-    def chapters_show_page?
-      controller_name.to_sym == :chapters && action_name.to_sym == :show
-    end
-
-    def fictions_show_page?
-      controller_name.to_sym == :fictions && action_name.to_sym == :show
-    end
-
-    def pages_about_page?
-      controller_name.to_sym == :pages && action_name.to_sym == :about
-    end
-
-    def scanlators_show_page?
-      controller_name.to_sym == :scanlators && action_name.to_sym == :show
-    end
-
-    def profiles_show_page?
-      controller_name.to_sym == :profiles && action_name.to_sym == :show
-    end
-
-    def youtube_videos_show_page?
-      controller_name.to_sym == :youtube_videos && action_name.to_sym == :show
-    end
 
     def default_public_url_options
       Rails.application.config.action_mailer.default_url_options.symbolize_keys

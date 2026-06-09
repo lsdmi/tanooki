@@ -2,10 +2,9 @@
 
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
-  include AdsenseHelper
+  include Adsense::ChapterReaderHelper
   include ChapterScheduleParams
   include FictionQuery
-  include Library::ReadingStateHelper
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update]
@@ -17,8 +16,12 @@ class ChaptersController < ApplicationController
   def show
     @comments = load_chapter_comments
     @comment = Comment.new
-    @previous_chapter = previous_chapter(@chapter.fiction, @chapter, viewer: current_user)
-    @next_chapter = following_chapter(@chapter.fiction, @chapter, viewer: current_user)
+    @previous_chapter = Library::ChapterNavigation.previous_chapter(
+      @chapter.fiction, @chapter, viewer: current_user
+    )
+    @next_chapter = Library::ChapterNavigation.following_chapter(
+      @chapter.fiction, @chapter, viewer: current_user
+    )
     @fiction_sidebar_presenter = FictionShowPresenter.new(@chapter.fiction, current_user, params)
     assign_reader_ad_drawer_session
   end

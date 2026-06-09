@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Ui
+module Layout
   # Builds a +button_tag+ wired for SweetAlert2 (+data-*+ and CSRF); used with +shared/sweet_alert+
   # and +application.js+.
   module SweetAlertHelper

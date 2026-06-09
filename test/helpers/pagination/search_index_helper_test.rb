@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-module Search
-  class IndexPaginationHelperTest < ActionView::TestCase
-    include IndexPaginationHelper
+module Pagination
+  class SearchIndexHelperTest < ActionView::TestCase
+    include SearchIndexHelper
     include Pagination::TurboNavHelper
     include Rails.application.routes.url_helpers
 
