@@ -80,6 +80,28 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to reading_path(@chapter.fiction)
   end
 
+  test 'update chapter number refreshes fiction status when unique chapters reach total' do
+    fiction = @chapter.fiction
+    fiction.update!(status: :ongoing, total_chapters: 2)
+    duplicate = chapters(:two)
+    duplicate.update!(number: 1)
+
+    assert_predicate fiction.reload, :ongoing?
+
+    patch chapter_url(duplicate), params: {
+      chapter: {
+        content: duplicate.content,
+        fiction_id: fiction.id,
+        number: 2,
+        scanlator_ids: [1],
+        title: duplicate.title
+      }
+    }
+
+    assert_redirected_to reading_path(fiction)
+    assert_predicate fiction.reload, :finished?
+  end
+
   test 'should not update chapter with invalid data' do
     patch chapter_url(@chapter), params: { chapter: { content: '', number: '', title: '' } }
 

@@ -61,6 +61,7 @@ class ChaptersController < ApplicationController
       Chapters::SyncScanlatorAssociations.new(
         chapter_params[:scanlator_ids], @chapter, user: current_user
       ).call
+      update_fiction_status
       redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.update_success')
     else
       render 'chapters/edit', status: :unprocessable_content
@@ -116,8 +117,9 @@ class ChaptersController < ApplicationController
   end
 
   def update_fiction_status
-    new_status = Fictions::DeriveStatusFromChapters.new(@chapter.fiction).call
-    @chapter.fiction.status = new_status
-    @chapter.fiction.save(validate: false)
+    fiction = @chapter.fiction.reload
+    new_status = Fictions::DeriveStatusFromChapters.new(fiction).call
+    fiction.status = new_status
+    fiction.save(validate: false)
   end
 end
