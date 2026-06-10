@@ -16,6 +16,8 @@
       })();
     </script>
 
+    <%= yield :head %>
+
     <%= render 'shared/meta', publication: @publication, chapter: @chapter, fiction: @fiction %>
 
     <%= json_ld_script(site_identity_meta) %>
