@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Routing
-  # Shared controller/action predicates for layout, meta, and JSON-LD helpers.
+  # Include-only mixin: controller/action predicates for layout, meta, and JSON-LD helpers.
+  # Not a public view helper — compose via Layout::AssetRequirementsHelper or StructuredData::JsonLdPageHelper.
   module PageContextHelper
     def chapters_show_page?
       controller_name.to_sym == :chapters && action_name.to_sym == :show

@@ -2,7 +2,7 @@
 
 module Meta
   # Resized cover URLs for list, card, and blurred page backgrounds.
-  module CoverVariantsHelper
+  module CoverUrlsHelper
     CARD_TRANSFORMATIONS = { resize_to_limit: [400, 600], format: :webp }.freeze
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze

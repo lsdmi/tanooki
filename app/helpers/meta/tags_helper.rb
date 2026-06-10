@@ -8,7 +8,7 @@ module Meta
     include Meta::DescriptionHelper
     include Meta::AssignsHelper
     include Meta::TitleHelper
-    include Meta::CoverHelper
+    include Meta::CoverSelectionHelper
     include Meta::ImageHelper
     include Meta::OpenGraphHelper
   end

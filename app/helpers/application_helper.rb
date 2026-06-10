@@ -11,7 +11,7 @@ module ApplicationHelper
   include Fictions::FormattingHelper
   include Layout::Helper
   include Meta::CanonicalUrlHelper
-  include Meta::CoverVariantsHelper
+  include Meta::CoverUrlsHelper
   include Meta::TagsHelper
   include StructuredData::JsonLdHelper
 end

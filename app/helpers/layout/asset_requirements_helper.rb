@@ -47,11 +47,11 @@ module Layout
       form_page?(TINYMCE_FORM_PAGES)
     end
 
-    def requires_sweetalert?
+    def requires_sweetalert_js?
       controller_name.in?(SWEETALERT_JS_CONTROLLER_NAMES)
     end
 
-    def requires_sweetalert_styles?
+    def requires_sweetalert_css?
       controller_name.in?(SWEETALERT_CSS_CONTROLLER_NAMES)
     end
 

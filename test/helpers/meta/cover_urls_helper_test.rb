@@ -3,8 +3,8 @@
 require 'test_helper'
 
 module Meta
-  class CoverVariantsHelperTest < ActionView::TestCase
-    include CoverVariantsHelper
+  class CoverUrlsHelperTest < ActionView::TestCase
+    include CoverUrlsHelper
     include Rails.application.routes.url_helpers
 
     setup do

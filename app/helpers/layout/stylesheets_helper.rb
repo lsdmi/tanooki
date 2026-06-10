@@ -16,7 +16,7 @@ module Layout
         ['actiontext', requires_actiontext_styles?],
         ['adult_content_disclaimer', requires_adult_content_disclaimer_styles?],
         ['chapters_reader', requires_chapters_reader_styles?],
-        ['sweetal2', requires_sweetalert_styles?],
+        ['sweetal2', requires_sweetalert_css?],
         ['flatpickr_overrides', requires_flatpickr_styles?]
       ]
     end

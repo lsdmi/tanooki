@@ -61,7 +61,7 @@
       <%= javascript_include_tag 'tinymce_initializer' %>
     <% end %>
 
-    <% if requires_sweetalert? %>
+    <% if requires_sweetalert_js? %>
       <%= turbo_frame_tag 'sweet-alert' do %>
         <%= render 'shared/sweet_alert' %>
       <% end %>

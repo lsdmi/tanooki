@@ -41,6 +41,8 @@ module Tanooki
   end
 end
 
+Rails.autoloaders.main.collapse(Rails.root.join('app/helpers/concerns'))
+
 Rails.configuration.after_initialize do
   ActionText::RichText.class_eval do
     acts_as_paranoid

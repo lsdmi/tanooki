@@ -2,7 +2,7 @@
 
 module Meta
   # Selects the best page-specific cover candidate for meta tags.
-  module CoverHelper
+  module CoverSelectionHelper
     include Meta::AssignsHelper
 
     def meta_cover

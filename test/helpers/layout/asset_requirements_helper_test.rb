@@ -16,15 +16,15 @@ module Layout
     test 'studio loads sweetalert JS and CSS' do
       assign_controller(:studio, :index)
 
-      assert_predicate self, :requires_sweetalert?
-      assert_predicate self, :requires_sweetalert_styles?
+      assert_predicate self, :requires_sweetalert_js?
+      assert_predicate self, :requires_sweetalert_css?
     end
 
     test 'fiction show loads sweetalert CSS only' do
       assign_controller(:fictions, :show)
 
-      assert_not_predicate self, :requires_sweetalert?
-      assert_predicate self, :requires_sweetalert_styles?
+      assert_not_predicate self, :requires_sweetalert_js?
+      assert_predicate self, :requires_sweetalert_css?
     end
 
     test 'tinymce is required on chapter and publication forms only' do
