@@ -1,77 +1,32 @@
 # frozen_string_literal: true
 
 module Meta
-  # Page <title> resolution for layouts and Open Graph.
+  # View entry point for page titles; delegates to Meta::PageTitle.
   module TitleHelper
     def meta_title
-      meta_title_from_search ||
-        meta_title_from_i18n ||
-        meta_title_from_record ||
-        default_meta_title
+      Meta::PageTitle.new(**page_title_context).resolve
     end
 
     private
 
-    def meta_title_from_search
-      search_meta_title if search_index_path?
+    def page_title_context
+      page_title_assigns.merge(page_title_request_context)
     end
 
-    def meta_title_from_i18n
-      I18n.t("meta.title.#{controller_name}.#{action_name}") if consts_paths?
+    def page_title_assigns
+      %i[publication fiction chapter youtube_video scanlator user bookshelf genre]
+        .index_with { |name| meta_assign(name) }
     end
 
-    def meta_title_from_record
-      meta_title_from_content_record || meta_title_from_genre
-    end
-
-    def meta_title_from_content_record
-      chapter_title if meta_assign_persisted?(:chapter)
-      youtube_video_meta_title if meta_assign_persisted(:youtube_video)
-      scanlator_meta_title if meta_assign_persisted(:scanlator)
-      user_profile_meta_title if meta_assign_persisted(:user)
-      bookshelf_meta_title if meta_assign_persisted?(:bookshelf)
-    end
-
-    def meta_title_from_genre
-      genre_meta_title if genre_show_page? && meta_assign_persisted(:genre)
-    end
-
-    def search_index_path?
-      request.path == search_index_path
-    end
-
-    def search_meta_title
-      "#{params[:search].to_sentence} | Бака"
-    end
-
-    def youtube_video_meta_title
-      meta_assign(:youtube_video).title
-    end
-
-    def scanlator_meta_title
-      "#{meta_assign(:scanlator).title} | Переклади Ранобе | Бака"
-    end
-
-    def user_profile_meta_title
-      "#{meta_assign(:user).name} | Профіль Користувача | Бака"
-    end
-
-    def bookshelf_meta_title
-      "#{meta_assign(:bookshelf).title} | Бака"
-    end
-
-    def genre_meta_title
-      I18n.t('meta.title.genres.show', name: meta_assign(:genre).name)
-    end
-
-    def default_meta_title
-      [meta_assign(:publication), meta_assign(:fiction)].compact.map(&:title).first ||
-        'Бака: про аніме українською'
-    end
-
-    def chapter_title
-      chapter = meta_assign(:chapter)
-      "#{chapter.fiction_title} | #{chapter.display_title}"
+    def page_title_request_context
+      {
+        request_path: request.path,
+        controller_name: controller_name,
+        action_name: action_name,
+        genre_show_page: genre_show_page?,
+        search_index_page: request.path == search_index_path,
+        search_terms: params[:search]
+      }
     end
   end
 end
