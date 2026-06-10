@@ -2,6 +2,9 @@
 
 # Handles authenticated Pokemon catching, training, and opponent refreshes.
 class UserPokemonsController < ApplicationController
+  helper Pokemons::DexHelper,
+         Pokemons::StatsHelper
+
   before_action :authenticate_user!
 
   def create

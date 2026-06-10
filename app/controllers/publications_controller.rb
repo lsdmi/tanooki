@@ -2,6 +2,8 @@
 
 # Handles authenticated creation, editing, and deletion of blog-style publications.
 class PublicationsController < ApplicationController
+  helper Publications::CoverHeaderHelper
+
   before_action :authenticate_user!
   before_action :set_publication, only: %i[edit update destroy]
   before_action :set_tags, only: %i[new create edit update]

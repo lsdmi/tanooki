@@ -2,6 +2,10 @@
 
 # Personal library: reading history, status updates, and recommendations.
 class LibraryController < ApplicationController
+  helper Library::ChapterCatalogHelper,
+         Library::ChapterNavigationHelper,
+         Library::ReadingStateHelper
+
   before_action :authenticate_user!
   before_action :pokemon_appearance, only: [:index]
 

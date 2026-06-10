@@ -2,6 +2,8 @@
 
 # API for updating and clearing per-fiction reading progress.
 class ReadingProgressesController < ApplicationController
+  helper Library::ReadingStateHelper
+
   before_action :authenticate_user!
   before_action :set_fiction
 

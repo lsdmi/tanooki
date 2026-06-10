@@ -5,8 +5,6 @@ require 'test_helper'
 module Layout
   class StylesheetsHelperTest < ActionView::TestCase
     include Devise::Test::IntegrationHelpers
-    include Chapters::ReaderBottomHelper
-    include Layout::PageContextHelper
     include Layout::StylesheetsHelper
     include Layout::AdultContentHelper
 

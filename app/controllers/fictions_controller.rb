@@ -2,6 +2,11 @@
 
 # Fiction catalog: browse, create, edit, and manage translator works.
 class FictionsController < ApplicationController
+  helper Chapters::ChapterDrawerHelper,
+         Chapters::PresentationHelper,
+         Library::ChapterCatalogHelper,
+         Library::ReadingStateHelper,
+         Scanlators::SelectOptionsHelper
   include FictionQuery
   include Fictions::ChapterSectionRendering
   include Fictions::DashboardListing

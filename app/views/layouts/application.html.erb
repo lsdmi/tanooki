@@ -52,7 +52,7 @@
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <% if %i[fictions chapters].include?(controller_name.to_sym) && action_name.to_sym == :show %>
+    <% if requires_accordion_js? %>
       <%= javascript_include_tag 'accordion' %>
     <% end %>
 

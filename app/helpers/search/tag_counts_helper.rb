@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Search
-  # View/controller helper for cached OpenSearch result counts on tag labels.
+  # Controller helper for cached OpenSearch result counts on tag labels (via ApplicationController).
   module TagCountsHelper
     def search_tag_counts(labels, scope: :all)
       TagCounts.call(labels, scope: scope)

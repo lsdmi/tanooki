@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Adsense
-  # Google AdSense units for the chapter reader (in-content slots and drawer overlay).
+  # Google AdSense units for the chapter reader (in-content slots and drawer overlay; via ChaptersController).
   module ChapterReaderHelper
     DRAWER_MAX_SLOTS = 6
 

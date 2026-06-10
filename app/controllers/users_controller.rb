@@ -2,6 +2,9 @@
 
 # Authenticated profile updates and Pokemon detail refreshes in Studio.
 class UsersController < ApplicationController
+  helper Pokemons::DexHelper,
+         Pokemons::StatsHelper
+
   include FictionQuery
   include UserUpdateable
 

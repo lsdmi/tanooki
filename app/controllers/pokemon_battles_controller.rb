@@ -2,6 +2,8 @@
 
 # Starts authenticated Pokemon battles and refreshes related battle UI.
 class PokemonBattlesController < ApplicationController
+  helper Pokemons::DexHelper
+
   before_action :authenticate_user!
 
   def start

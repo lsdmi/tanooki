@@ -3,6 +3,8 @@
 module Admin
   # Manages the Pokemon catalog (dex entries, types, sprites) for privileged users.
   class PokemonsController < ApplicationController
+    helper Pagination::TurboNavHelper
+
     before_action :authenticate_user!, :verify_user_permissions
     before_action :set_pokemon, only: %i[edit update destroy]
     before_action :set_types, only: %i[new create edit update]

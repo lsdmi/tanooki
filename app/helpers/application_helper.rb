@@ -4,12 +4,14 @@
 module ApplicationHelper
   PRODUCTION_URL = Meta::CanonicalUrlHelper::PRODUCTION_URL
 
+  include Chapters::CommentsDrawerHelper
   include Chapters::ReaderBottomHelper
-  include Meta::CanonicalUrlHelper
-  include Layout::AdultContentHelper
+  include Comments::PresentationHelper
   include ExternalUrls::UrlsHelper
-  include Layout::PageContextHelper
-  include Layout::StylesheetsHelper
-  include Search::TagCountsHelper
-  include Adsense::ChapterReaderHelper
+  include Fictions::FormattingHelper
+  include Layout::Helper
+  include Meta::CanonicalUrlHelper
+  include Meta::CoverVariantsHelper
+  include Meta::TagsHelper
+  include StructuredData::JsonLdHelper
 end

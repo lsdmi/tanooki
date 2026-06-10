@@ -2,6 +2,9 @@
 
 # Handles translation team pages and authenticated team management.
 class ScanlatorsController < ApplicationController
+  helper Pagination::TurboNavHelper,
+         Scanlators::SelectOptionsHelper
+
   include FictionQuery
 
   before_action :authenticate_user!, except: :show

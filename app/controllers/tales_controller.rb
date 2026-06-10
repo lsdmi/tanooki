@@ -2,6 +2,8 @@
 
 # Blog-style publications (tales): list, show, and tag browsing.
 class TalesController < ApplicationController
+  helper Publications::CoverHeaderHelper
+
   before_action :load_advertisement, only: %i[index show]
   before_action :set_tale, :track_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]

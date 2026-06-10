@@ -2,6 +2,9 @@
 
 # Site-wide search across fictions, publications, and videos.
 class SearchController < ApplicationController
+  helper Pagination::SearchIndexHelper,
+         Pagination::TurboNavHelper
+
   include Search::IndexQuery
 
   before_action :load_advertisement

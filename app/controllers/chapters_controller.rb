@@ -2,7 +2,8 @@
 
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
-  include Adsense::ChapterReaderHelper
+  include ChapterFictionStatusUpdate
+  include ChaptersViewHelpers
   include ChapterScheduleParams
   include FictionQuery
 
@@ -117,12 +118,5 @@ class ChaptersController < ApplicationController
     return if current_user && current_user.scanlators.ids.intersect?(@chapter.scanlators.ids)
 
     redirect_to fiction_path(@chapter.fiction), alert: t('chapters.alerts.not_yet_public')
-  end
-
-  def update_fiction_status
-    fiction = @chapter.fiction.reload
-    new_status = Fictions::DeriveStatusFromChapters.new(fiction).call
-    fiction.status = new_status
-    fiction.save(validate: false)
   end
 end
