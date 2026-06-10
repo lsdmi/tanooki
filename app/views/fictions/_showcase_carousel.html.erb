@@ -1,41 +1,25 @@
 <%# locals: showcase:, popular_novelty_ids:, top_fiction_ids:, latest_update_ids: %>
 <% carousel_nav_visible = showcase.many? %>
-<% first_showcase_fiction = showcase.first %>
-<% first_hero_url = banner_hero_url(first_showcase_fiction&.banner) %>
-<% eager_first_slide = first_hero_url.present? %>
-<% if eager_first_slide %>
-  <% content_for :head do %>
-    <link rel="preload" as="image" href="<%= first_hero_url %>" fetchpriority="high">
-  <% end %>
-<% end %>
 <section class="relative overflow-hidden mt-8 mb-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
     <div data-controller="custom-carousel" class="relative w-full overflow-hidden h-[calc(16rem+1em)] md:h-[calc(24rem+1em)]">
       <!-- Spinner overlay -->
-      <div data-custom-carousel-target="spinner" class="absolute inset-0 flex items-center justify-center bg-black/80 z-40<%= ' hidden' if eager_first_slide %>">
+      <div data-custom-carousel-target="spinner" class="absolute inset-0 flex items-center justify-center bg-black/80 z-40">
         <svg class="animate-spin h-8 w-8 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       </div>
       <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out w-full h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]" style="transform: translateX(0);">
-        <% showcase.each_with_index do |fiction, idx| %>
-          <% hero_url = banner_hero_url(fiction.banner) %>
+        <% showcase.each do |fiction| %>
           <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-2xl">
-            <% if idx.zero? && hero_url.present? %>
-            <div
-              class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-2xl"
-              id="lazy-bg-<%= fiction.id %>"
-              style="background-image: url('<%= hero_url %>');">
-            <% else %>
             <div
               data-controller="lazy-bg"
               data-lazy-bg-id-value="<%= fiction.id %>"
-              data-lazy-bg-url-value="<%= hero_url %>"
+              data-lazy-bg-url-value="<%= url_for(fiction.banner) %>"
               class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-2xl"
               id="lazy-bg-<%= fiction.id %>"
               style="background-image: none;">
-            <% end %>
               <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80% transition-opacity duration-700 ease-in-out"></div>
               <div class="absolute left-0 top-1/2 z-10 min-w-0 -translate-y-1/2 px-4 md:px-12 w-full max-w-[min(30rem,calc(100%-2rem))] md:max-w-[min(40rem,calc(100%-3rem))] lg:max-w-[min(50rem,calc(100%-3rem))] transition-all duration-700 ease-in-out">
                 <%= render Ui::EditorialTagListComponent.new(

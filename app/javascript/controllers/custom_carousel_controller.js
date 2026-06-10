@@ -57,7 +57,7 @@ export default class extends Controller {
     const activeSlide = this.slidesTarget.children[this.currentIndex];
     const lazyBg = activeSlide.querySelector('[data-controller="lazy-bg"]');
     if (lazyBg) {
-      if (this.currentIndex === 0 && !this.spinnerUsed && this.hasSpinnerTarget) {
+      if (this.currentIndex === 0 && !this.spinnerUsed) {
         this.spinnerTarget.classList.remove("hidden");
         const onLoaded = () => {
           this.spinnerTarget.classList.add("hidden");
@@ -69,8 +69,6 @@ export default class extends Controller {
         lazyBg.addEventListener("lazy-bg:error", onLoaded);
       }
       lazyBg.dispatchEvent(new CustomEvent('lazy-bg:load', { bubbles: true }));
-    } else if (this.currentIndex === 0 && !this.spinnerUsed) {
-      this.spinnerUsed = true;
     }
   }
 }
