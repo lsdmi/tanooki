@@ -1,13 +1,19 @@
 <%# locals: comments:, comment:, commentable: %>
-<% if current_user || comments.any? %>
+<% if comments.any? %>
   <div class="space-y-4">
     <%= turbo_frame_tag "comments" do %>
       <%= render partial: "comments/comment", collection: comments, as: :comment, locals: { commentable: commentable, drawer: true } %>
     <% end %>
   </div>
-<% else %>
-  <div class="py-8 text-center">
-    <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+<% end %>
+
+<% unless current_user %>
+  <div class="<%= comments.any? ? 'mt-6 border-t border-stone-200 pt-6 dark:border-zinc-700' : 'py-8' %> text-center">
+    <% if comments.any? %>
+      <%= tag.p t('chapters.reader_comments_drawer.login_prompt'), class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+    <% else %>
+      <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+    <% end %>
     <%= ui_button(as: :link, href: new_user_session_path, size: :sm, label: t('chapters.reader_comments_drawer.login_to_comment')) %>
   </div>
 <% end %>

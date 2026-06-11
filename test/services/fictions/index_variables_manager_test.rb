@@ -37,7 +37,7 @@ module Fictions
       assert_kind_of ActiveRecord::Relation, result
       assert_not_predicate result, :loaded?
 
-      ids = IndexVariablesManager.send(:cached_hot_updates_ids)
+      ids = IndexHotUpdates.send(:cached_ids)
       assert_equal ids.first(10), result.limit(10).ids if ids.any?
     end
 
@@ -91,7 +91,7 @@ module Fictions
 
       IndexVariablesManager.hot_updates
 
-      IndexVariablesManager.stub(:hot_updates_ranked_scope, -> { raise 'cache miss' }) do
+      IndexHotUpdates.stub(:ranked_scope, -> { raise 'cache miss' }) do
         assert_nothing_raised { IndexVariablesManager.hot_updates.limit(5).load }
       end
     ensure

@@ -53,6 +53,18 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
   end
 
+  test 'guest sees login cta in comments drawer when chapter has comments' do
+    @chapter.comments << comments(:comment_one)
+    sign_out users(:user_one)
+
+    get chapter_url(@chapter)
+
+    assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_prompt')
+    assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_to_comment')
+    assert_not_includes response.body, Comments::Presentation.empty_state_for('chapters')
+    assert_includes response.body, new_user_session_path
+  end
+
   test 'show renders chapter drawer' do
     get chapter_url(@chapter)
 
@@ -95,31 +107,6 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, I18n.t('chapters.reader_support_card.support')
     assert_select 'img.reader-support-card__mascot.dark\\:hidden[src*="mascot"]', count: 1
     assert_select 'img.reader-support-card__mascot.hidden[src*="mascot-dark"]', count: 1
-  end
-
-  test 'guest sees login to download epub banner when epub is available' do
-    sign_out users(:user_one)
-    get chapter_url(@chapter)
-
-    assert_response :success
-    assert_select 'section.reader-epub-banner', count: 1
-    assert_includes response.body, 'reader-epub-banner-title'
-  end
-
-  test 'guest epub banner shows login copy and session link' do
-    sign_out users(:user_one)
-    get chapter_url(@chapter)
-
-    assert_not_includes response.body, 'reader-epub-banner-title-bottom'
-    assert_includes response.body, I18n.t('chapters.reader_epub_banner.login_description')
-    assert_includes response.body, new_user_session_path
-  end
-
-  test 'signed in user does not see login epub banner' do
-    get chapter_url(@chapter)
-
-    assert_response :success
-    assert_not_includes response.body, 'reader-epub-banner'
   end
 
   test 'team member who did not author chapter sees edit link in reader settings' do

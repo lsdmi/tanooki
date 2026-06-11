@@ -4,7 +4,7 @@ module Ui
   # Tailwind class strings for Ui::ButtonComponent variants and sizes.
   module ButtonComponentStyles
     BASE_CLASSES = 'inline-flex items-center justify-center gap-1.5 transition-colors duration-200 ' \
-                   'focus:outline-none disabled:pointer-events-none disabled:opacity-50'.freeze
+                   'focus:outline-none disabled:pointer-events-none disabled:opacity-50'
 
     VARIANT_CLASSES = {
       primary: [

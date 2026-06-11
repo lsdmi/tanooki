@@ -12,20 +12,22 @@ module Chapters
       https_url(url) if url.present?
     end
 
-    def reader_outlined_button(href:, title: nil, **html_options, &block)
-      ui_button(
-        as: :link,
-        href: href,
-        variant: :ghost,
-        full_width: true,
-        html: {
-          title: title,
-          data: { turbo: false },
-          class: ['reader-outlined-btn', 'lg:w-auto', 'lg:max-w-full', html_options[:class]].compact.join(' '),
-          **html_options.except(:class)
-        },
-        &block
-      )
+    def reader_outlined_button(href:, title: nil, **html_options, &)
+      ui_button(as: :link, href: href, variant: :ghost, full_width: true,
+                html: reader_outlined_html(title: title, **html_options), &)
+    end
+
+    def reader_outlined_html(title:, **html_options)
+      {
+        title: title,
+        data: { turbo: false },
+        class: reader_outlined_css_class(html_options[:class]),
+        **html_options.except(:class)
+      }
+    end
+
+    def reader_outlined_css_class(extra_class = nil)
+      ['reader-outlined-btn', 'lg:w-auto', 'lg:max-w-full', extra_class].compact.join(' ')
     end
   end
 end

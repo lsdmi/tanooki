@@ -24,6 +24,7 @@ module Fictions
              .order('COUNT(reading_progresses.fiction_id) DESC')
              .limit(8)
     end
+
     def self.cached_popular_novelty_ids
       Rails.cache.fetch('popular_novelty_ids', expires_in: 24.hours) do
         popular_novelty_scope.to_a.map(&:id)
@@ -54,6 +55,7 @@ module Fictions
     def self.most_reads_scope
       Fiction.includes(%i[cover_attachment genres fiction_ratings]).most_reads.limit(6)
     end
+
     def self.cached_most_reads_ids
       Rails.cache.fetch('most_reads_ids', expires_in: 24.hours) do
         most_reads_scope.to_a.map(&:id)
@@ -93,35 +95,11 @@ module Fictions
     end
 
     def self.hot_updates
-      ids = cached_hot_updates_ids
-      return Fiction.none if ids.blank?
-
-      Fiction.where(id: ids)
-             .includes({ cover_attachment: :blob })
-             .in_order_of(:id, ids)
+      IndexHotUpdates.fictions
     end
-
-    def self.cached_hot_updates_ids
-      Rails.cache.fetch('hot_updates_ids', expires_in: 12.hours) do
-        hot_updates_ranked_scope.to_a.map(&:id)
-      end
-    end
-    private_class_method :cached_hot_updates_ids
-
-    def self.hot_updates_ranked_scope
-      Fiction.joins(:readings)
-             .group(:id)
-             .where(readings: { created_at: 1.month.ago..Time.zone.now })
-             .order(Arel.sql('COUNT(readings.fiction_id) DESC'))
-    end
-    private_class_method :hot_updates_ranked_scope
 
     def self.hot_updates_counts
-      Rails.cache.fetch('hot_updates_counts', expires_in: 12.hours) do
-        ReadingProgress.where(created_at: 1.month.ago..Time.zone.now)
-                       .group(:fiction_id)
-                       .count
-      end
+      IndexHotUpdates.counts
     end
 
     def self.showcase

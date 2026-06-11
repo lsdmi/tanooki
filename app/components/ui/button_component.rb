@@ -9,16 +9,15 @@ module Ui
     SIZES = %i[xs sm md lg xl icon].freeze
     ELEMENT_TYPES = %i[button link submit].freeze
 
-    def initialize(label: nil, variant: :primary, size: :md, as: :button, href: nil, full_width: false,
-                   disabled: false, **options)
+    def initialize(label: nil, variant: :primary, size: :md, as: :button, **options)
       super()
       @label = label
       @variant = variant.to_sym
       @size = size.to_sym
       @as = as.to_sym
-      @href = href
-      @full_width = full_width
-      @disabled = disabled
+      @href = options[:href]
+      @full_width = options.fetch(:full_width, false)
+      @disabled = options.fetch(:disabled, false)
       @html = options.fetch(:html, {})
       validate!
     end
@@ -51,13 +50,24 @@ module Ui
     end
 
     def element_attributes
-      attrs = { class: css_classes }
-      attrs[:disabled] = true if disabled && !link?
-      attrs[:aria] = { disabled: true } if disabled && link?
-      attrs[:tabindex] = -1 if disabled && link?
+      attrs = { class: merged_css_classes }
+      apply_disabled_attributes!(attrs)
       attrs.merge!(html.except(:class))
-      attrs[:class] = [attrs[:class], html[:class]].compact.join(' ')
-      attrs
+    end
+
+    def merged_css_classes
+      [css_classes, html[:class]].compact.join(' ')
+    end
+
+    def apply_disabled_attributes!(attrs)
+      return unless disabled
+
+      if link?
+        attrs[:aria] = { disabled: true }
+        attrs[:tabindex] = -1
+      else
+        attrs[:disabled] = true
+      end
     end
 
     def css_classes

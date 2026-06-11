@@ -40,10 +40,12 @@ module Ui
 
     test 'applies size classes' do
       render_inline(ButtonComponent.new(label: 'Малий', size: :xs))
+
       assert_selector 'button.text-2xs.px-2'
       assert_includes rendered_content, 'py-0.5'
 
       render_inline(ButtonComponent.new(label: 'Великий', size: :lg))
+
       assert_selector 'button.px-6.py-3.font-semibold'
     end
 
