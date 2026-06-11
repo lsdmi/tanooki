@@ -3,14 +3,11 @@
      data-controller="chat-widget"
      class="fixed bottom-4 right-4 z-50">
   <!-- Chat Toggle Button -->
-  <button id="chat-toggle"
-          data-chat-widget-target="toggle"
-          title="Відкрити чат"
-          class="bg-cyan-700 hover:bg-cyan-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <%= ui_button(as: :button, size: :icon, html: { id: 'chat-toggle', title: 'Відкрити чат', data: { chat_widget_target: 'toggle' } }) do %>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
     </svg>
-  </button>
+  <% end %>
 
   <!-- Chat Window -->
   <div id="chat-window"
@@ -57,13 +54,11 @@
                  placeholder="Напишіть повідомлення..."
                  class="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                  maxlength="1000">
-          <button id="chat-send"
-                  data-chat-widget-target="send"
-                  class="px-3 py-2 bg-cyan-700 hover:bg-cyan-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:ring-offset-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <%= ui_button(as: :button, size: :xs, html: { id: 'chat-send', data: { chat_widget_target: 'send' } }) do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
             </svg>
-          </button>
+          <% end %>
         </div>
       <% else %>
         <div class="text-center py-3">

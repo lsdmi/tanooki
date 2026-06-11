@@ -3,16 +3,6 @@
 module Chapters
   # Bottom reader grid: fiction anchor card and translator support card.
   module ReaderBottomHelper
-    READER_OUTLINED_BTN_CLASS = [
-      'reader-outlined-btn inline-flex w-full items-center justify-center gap-1.5 rounded-lg',
-      'border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-700 shadow-sm',
-      'transition-colors hover:border-stone-300 hover:bg-stone-50',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2',
-      'focus-visible:ring-offset-white dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200',
-      'dark:hover:border-zinc-600 dark:hover:bg-zinc-800/80 dark:focus-visible:ring-zinc-500',
-      'dark:focus-visible:ring-offset-zinc-900 lg:w-auto lg:max-w-full'
-    ].join(' ').freeze
-
     def fiction_reader_support?(fiction)
       fiction.scanlators.any? { |scanlator| scanlator.bank_url.present? }
     end
@@ -22,8 +12,20 @@ module Chapters
       https_url(url) if url.present?
     end
 
-    def reader_outlined_btn_class
-      READER_OUTLINED_BTN_CLASS
+    def reader_outlined_button(href:, title: nil, **html_options, &block)
+      ui_button(
+        as: :link,
+        href: href,
+        variant: :ghost,
+        full_width: true,
+        html: {
+          title: title,
+          data: { turbo: false },
+          class: ['reader-outlined-btn', 'lg:w-auto', 'lg:max-w-full', html_options[:class]].compact.join(' '),
+          **html_options.except(:class)
+        },
+        &block
+      )
     end
   end
 end

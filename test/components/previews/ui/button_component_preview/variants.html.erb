@@ -1,0 +1,54 @@
+<% variants = %i[primary secondary ghost] %>
+<% sizes = %i[xs sm md lg xl] %>
+
+<div class="space-y-10">
+  <section>
+    <p class="mb-3 text-sm font-medium text-gray-500">Light</p>
+    <div class="space-y-8 rounded-xl bg-white p-8">
+      <% variants.each do |variant| %>
+        <div>
+          <h2 class="mb-4 text-lg font-semibold capitalize text-stone-800"><%= variant %></h2>
+          <div class="flex flex-wrap items-center gap-3">
+            <% sizes.each do |size| %>
+              <%= render Ui::ButtonComponent.new(label: size.to_s.upcase, variant: variant, size: size) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div>
+        <h2 class="mb-4 text-lg font-semibold text-stone-800">Link &amp; states</h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <%= render Ui::ButtonComponent.new(label: 'Посилання', as: :link, href: '#', variant: :primary) %>
+          <%= render Ui::ButtonComponent.new(label: 'Вимкнено', variant: :primary, disabled: true) %>
+          <%= render Ui::ButtonComponent.new(label: 'На всю ширину', variant: :primary, full_width: true, html: { class: 'max-w-xs' }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark">
+    <p class="mb-3 text-sm font-medium text-gray-400">Dark</p>
+    <div class="space-y-8 rounded-xl bg-gray-950 p-8">
+      <% variants.each do |variant| %>
+        <div>
+          <h2 class="mb-4 text-lg font-semibold capitalize text-gray-100"><%= variant %></h2>
+          <div class="flex flex-wrap items-center gap-3">
+            <% sizes.each do |size| %>
+              <%= render Ui::ButtonComponent.new(label: size.to_s.upcase, variant: variant, size: size) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div>
+        <h2 class="mb-4 text-lg font-semibold text-gray-100">Link &amp; states</h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <%= render Ui::ButtonComponent.new(label: 'Посилання', as: :link, href: '#', variant: :primary) %>
+          <%= render Ui::ButtonComponent.new(label: 'Вимкнено', variant: :primary, disabled: true) %>
+          <%= render Ui::ButtonComponent.new(label: 'На всю ширину', variant: :primary, full_width: true, html: { class: 'max-w-xs' }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

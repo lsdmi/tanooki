@@ -34,20 +34,15 @@
       required: true %>
 
   <div class="mt-3 flex <%= drawer_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
-    <% submit_class = if drawer_form
-      'w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus-visible:ring-rose-500 dark:focus-visible:ring-offset-zinc-900'
-    else
-      'w-full sm:w-auto px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer'
-    end %>
     <% if drawer_form %>
-      <%= button_tag type: 'submit', class: submit_class do %>
+      <%= ui_button(as: :submit, full_width: true, size: :sm, html: { class: 'font-semibold dark:focus-visible:ring-offset-zinc-900' }) do %>
         <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
         </svg>
         <span><%= t('chapters.reader_comments_drawer.submit') %></span>
       <% end %>
     <% else %>
-      <%= f.submit 'Надіслати', class: submit_class %>
+      <%= f.submit 'Надіслати', class: 'w-full sm:w-auto px-6 py-2 bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105 cursor-pointer' %>
     <% end %>
 
     <% cancel_class = if drawer_form

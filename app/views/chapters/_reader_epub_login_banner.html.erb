@@ -27,8 +27,11 @@
       </div>
     </div>
 
-    <%= link_to new_user_session_path,
-                class: 'inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus-visible:ring-rose-500 dark:focus-visible:ring-offset-zinc-900 md:w-auto md:px-5' do %>
+    <%= ui_button(as: :link,
+                  href: new_user_session_path,
+                  full_width: true,
+                  size: :sm,
+                  html: { class: 'font-semibold dark:focus-visible:ring-offset-zinc-900 md:w-auto md:px-5' }) do %>
       <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h12" />

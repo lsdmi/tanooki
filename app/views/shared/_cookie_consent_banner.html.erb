@@ -15,16 +15,8 @@
       </p>
     </div>
     <div class="flex flex-shrink-0 flex-wrap gap-2 sm:justify-end">
-      <button type="button"
-              class="px-4 py-2 text-sm font-medium rounded-lg border border-stone-300 dark:border-gray-600 text-stone-800 dark:text-gray-200 hover:bg-stone-100 dark:hover:bg-gray-800 transition"
-              onclick="window.bakaDeclineCookies()">
-        Без аналітики
-      </button>
-      <button type="button"
-              class="px-4 py-2 text-sm font-medium rounded-lg bg-cyan-700 dark:bg-rose-700 text-white hover:opacity-90 transition"
-              onclick="window.bakaAcceptCookies()">
-        Дозволити аналітику
-      </button>
+      <%= ui_button(as: :button, variant: :ghost, size: :sm, label: 'Без аналітики', html: { onclick: 'window.bakaDeclineCookies()' }) %>
+      <%= ui_button(as: :button, size: :sm, label: 'Дозволити аналітику', html: { onclick: 'window.bakaAcceptCookies()' }) %>
     </div>
   </div>
 </div>

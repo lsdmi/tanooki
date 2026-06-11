@@ -136,8 +136,7 @@
           <div class="bg-stone-100 dark:bg-gray-700 rounded-lg p-6 border border-stone-200 dark:border-gray-600">
             <%= link_to "Правила спільноти", rules_path,
                 class: "inline-flex items-center px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm mr-2 mb-2 sm:mb-0" %>
-            <%= link_to "На головну", root_path,
-                class: "inline-flex items-center px-4 py-2 bg-cyan-700 hover:bg-cyan-800 dark:bg-rose-700 dark:hover:bg-rose-800 text-white font-medium rounded-lg transition-colors duration-200 text-sm" %>
+            <%= ui_button(as: :link, href: root_path, size: :sm, label: 'На головну') %>
           </div>
         </div>
       </div>

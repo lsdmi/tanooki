@@ -83,8 +83,8 @@
                   </p>
                 <% end %>
                 <div class="flex items-center">
-                  <%= link_to fiction_path(@showcase_fiction), class: 'gap-1 inline-flex rounded-lg bg-cyan-700 px-3 py-2 text-sm font-bold text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-300 shadow-md ring-1 ring-cyan-800 transition duration-300 dark:bg-rose-700 dark:hover:bg-rose-800 dark:ring-rose-800 shadow-md hover:shadow-xl transition-shadow duration-300' do %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <%= ui_button(as: :link, href: fiction_path(@showcase_fiction), size: :sm, html: { class: 'font-bold shadow-md ring-1 ring-cyan-800 dark:ring-rose-800 hover:shadow-xl' }) do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                     </svg>
                     Читати
@@ -182,8 +182,7 @@
                       class: "whitespace-pre-line w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
                 </div>
                 <div class="flex justify-end">
-                  <%= f.submit 'Опублікувати Запит',
-                      class: 'bg-cyan-700 hover:bg-cyan-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer' %>
+                  <%= ui_button(as: :submit, label: 'Опублікувати Запит', size: :xl, html: { class: 'font-semibold transform hover:scale-105 cursor-pointer' }) %>
                 </div>
               <% end %>
             </div>
@@ -272,10 +271,7 @@
 
               <!-- Action Buttons -->
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <%= link_to new_user_session_path,
-                    class: 'bg-cyan-700 hover:bg-cyan-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg' do %>
-                  Увійти
-                <% end %>
+                <%= ui_button(as: :link, href: new_user_session_path, size: :xl, label: 'Увійти', html: { class: 'font-semibold transform hover:scale-105' }) %>
                 <%= link_to register_new_path,
                     class: 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold py-3 px-8 rounded-lg transition duration-300 border border-gray-400 dark:border-gray-500' do %>
                   Створити Акаунт
