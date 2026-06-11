@@ -125,7 +125,7 @@ export default class extends Controller {
         this.messagesTarget.innerHTML = `
           <div class="flex items-center justify-center h-full">
             <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-600 dark:border-rose-400"></div>
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-700 dark:border-rose-400"></div>
               <span class="text-sm">Завантаження чату...</span>
             </div>
           </div>

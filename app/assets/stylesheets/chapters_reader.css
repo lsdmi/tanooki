@@ -244,10 +244,10 @@ html:not(.dark) .immersive-reader .note-content {
   }
 }
 
-/* Reader settings drawer */
+/* Reader settings drawer — match site primary buttons (cyan-700) */
 .immersive-reader .reader-settings__font--active {
-  border-color: rgb(21 94 117);
-  background-color: rgb(21 94 117);
+  border-color: rgb(14 116 144);
+  background-color: rgb(14 116 144);
   color: rgb(255 255 255);
 }
 

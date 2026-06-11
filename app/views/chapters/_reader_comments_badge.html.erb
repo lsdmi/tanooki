@@ -1,6 +1,6 @@
 <%# locals: chapter: %>
 <% if chapter.comments_count.positive? %>
-  <span class="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-cyan-600 px-1 text-[10px] font-semibold leading-none text-white dark:bg-rose-600">
+  <span class="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-cyan-700 px-1 text-[10px] font-semibold leading-none text-white dark:bg-rose-600">
     <%= chapter.comments_count > 99 ? '99+' : chapter.comments_count %>
   </span>
 <% end %>

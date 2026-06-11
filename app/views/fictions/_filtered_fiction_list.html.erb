@@ -2,9 +2,9 @@
   <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4">
     <div class="font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">
       <%= link_to sample_genre.name, fiction_genre_fictions_path(sample_genre),
-                  class: 'relative z-10 inline-block text-xl lg:text-2xl text-inherit no-underline hover:text-cyan-600 dark:hover:text-rose-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 rounded-lg' %>
+                  class: 'relative z-10 inline-block text-xl lg:text-2xl text-inherit no-underline hover:text-cyan-700 dark:hover:text-rose-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 rounded-lg' %>
     </div>
-    <%= link_to alphabetical_fictions_path, class: "inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-600 hover:underline dark:hover:text-rose-700" do %>
+    <%= link_to alphabetical_fictions_path, class: "inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-700 hover:underline dark:hover:text-rose-700" do %>
       Всі Твори
       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
@@ -37,7 +37,7 @@
         <% end %>
         <div class="flex justify-center">
           <%= link_to fiction_path(fiction), class: 'group' do %>
-            <h3 class="text-xs md:text-sm lg:text-base font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-600 dark:group-hover:text-rose-700 transition-colors duration-300">
+            <h3 class="text-xs md:text-sm lg:text-base font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300">
               <%= fiction.title %>
             </h3>
           <% end %>

@@ -149,7 +149,7 @@ function updateVoteButtonStyles(requestId, userVoted) {
   if (userVoted) {
     upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 bg-cyan-100 text-cyan-700 dark:bg-rose-900/30 dark:text-rose-400`;
   } else {
-    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 text-gray-500 hover:bg-cyan-50 hover:text-cyan-600 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400`;
+    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 text-gray-500 hover:bg-cyan-50 hover:text-cyan-700 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400`;
   }
 }
 

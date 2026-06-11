@@ -39,7 +39,7 @@ export default class extends Controller {
 
     if (this.hasIndicatorTarget) {
       const inactive = ["h-1.5", "w-3.5", "rounded-lg", "bg-white/35", "hover:bg-white/55"];
-      const active = ["h-1.5", "w-8", "rounded-lg", "bg-cyan-500", "shadow-sm", "dark:bg-rose-500"];
+      const active = ["h-1.5", "w-8", "rounded-lg", "bg-cyan-700", "shadow-sm", "dark:bg-rose-500"];
       this.indicatorTargets.forEach((btn, idx) => {
         const isActive = idx === this.currentIndex;
         if (isActive) {

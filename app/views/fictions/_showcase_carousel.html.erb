@@ -64,7 +64,7 @@
 
                 <div class="flex flex-wrap items-center gap-3">
                   <% first_readable_chapter = ordered_chapters(fiction, viewer: current_user).first %>
-                  <%= link_to (first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction)), class: 'inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white shadow-lg ring-1 ring-cyan-500/30 hover:bg-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-300/40 transition dark:bg-rose-600 dark:hover:bg-rose-500 dark:ring-rose-500/30 dark:focus:ring-rose-300/30 lg:text-lg', data: { turbo: false } do %>
+                  <%= link_to (first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction)), class: 'inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-2 py-1.5 md:px-4 md:py-2.5 text-xs md:text-sm font-bold text-white shadow-lg ring-1 ring-cyan-500/30 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300/40 transition dark:bg-rose-600 dark:hover:bg-rose-500 dark:ring-rose-500/30 dark:focus:ring-rose-300/30 lg:text-lg', data: { turbo: false } do %>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                     </svg>

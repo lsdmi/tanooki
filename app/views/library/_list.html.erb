@@ -10,7 +10,7 @@
               "hover:cursor-pointer",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500",
               status == section ?
-                "bg-cyan-600 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105" :
+                "bg-cyan-700 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105" :
                 "bg-cyan-50 dark:bg-rose-900 text-cyan-800 dark:text-rose-100 ring-cyan-200 dark:ring-rose-900 hover:bg-cyan-100 dark:hover:bg-rose-800 hover:ring-cyan-300 dark:hover:ring-rose-700 hover:scale-105"
             ].join(' '),
             "aria-pressed": status == section %>
@@ -40,7 +40,7 @@
 
         <% (1..pagy.pages).each do |page_num| %>
           <% if page_num == pagy.page %>
-            <span class="px-2 sm:px-3 py-2 text-sm font-medium text-white bg-cyan-600 dark:bg-rose-700 border border-cyan-600 dark:border-rose-700">
+            <span class="px-2 sm:px-3 py-2 text-sm font-medium text-white bg-cyan-700 dark:bg-rose-700 border border-cyan-700 dark:border-rose-700">
               <%= page_num %>
             </span>
           <% else %>

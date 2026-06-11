@@ -19,9 +19,9 @@ export default class extends Controller {
       const starValue = parseInt(star.dataset.starValue)
       if (starValue <= rating) {
         star.classList.remove('text-gray-300', 'dark:text-gray-600')
-        star.classList.add('text-cyan-600', 'dark:text-rose-700')
+        star.classList.add('text-cyan-700', 'dark:text-rose-700')
       } else {
-        star.classList.remove('text-cyan-600', 'dark:text-rose-700')
+        star.classList.remove('text-cyan-700', 'dark:text-rose-700')
         star.classList.add('text-gray-300', 'dark:text-gray-600')
       }
     })
@@ -88,9 +88,9 @@ export default class extends Controller {
           const fishValue = index + 1
           if (fishValue <= roundedRating) {
             fish.classList.remove('text-gray-300', 'dark:text-gray-600')
-            fish.classList.add('text-cyan-600', 'dark:text-rose-700')
+            fish.classList.add('text-cyan-700', 'dark:text-rose-700')
           } else {
-            fish.classList.remove('text-cyan-600', 'dark:text-rose-700')
+            fish.classList.remove('text-cyan-700', 'dark:text-rose-700')
             fish.classList.add('text-gray-300', 'dark:text-gray-600')
           }
         })
@@ -112,7 +112,7 @@ export default class extends Controller {
         // We need to get the current user's rating from the active fish
         let userRating = 0
         interactiveFish.forEach(fish => {
-          if (fish.classList.contains('text-cyan-600') || fish.classList.contains('dark:text-rose-700')) {
+          if (fish.classList.contains('text-cyan-700') || fish.classList.contains('dark:text-rose-700')) {
             userRating = Math.max(userRating, parseInt(fish.dataset.starValue))
           }
         })

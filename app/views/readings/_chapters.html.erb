@@ -5,7 +5,7 @@
     <div class="lg:hidden mb-4">
       <!-- Back Button -->
       <div class="flex items-center mb-3">
-        <%= link_to readings_path, data: { turbo: false }, class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200" do %>
+        <%= link_to readings_path, data: { turbo: false }, class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200" do %>
           <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
@@ -30,11 +30,11 @@
     <div class="hidden lg:block mb-6">
       <!-- Breadcrumb Navigation -->
       <nav class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-        <%= link_to "Головна", root_path, class: "hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
+        <%= link_to "Головна", root_path, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
-        <%= link_to "Майстерня", readings_path, class: "hover:text-cyan-600 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
+        <%= link_to "Майстерня", readings_path, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
@@ -98,7 +98,7 @@
                 <% end %>
 
                 <!-- Edit Fiction Button -->
-                <%= link_to edit_fiction_path(fiction.slug), data: { turbo: false }, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-cyan-600 dark:bg-rose-600 rounded-lg hover:bg-cyan-700 dark:hover:bg-rose-700 transition-colors duration-200" do %>
+                <%= link_to edit_fiction_path(fiction.slug), data: { turbo: false }, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-cyan-700 dark:bg-rose-600 rounded-lg hover:bg-cyan-800 dark:hover:bg-rose-700 transition-colors duration-200" do %>
                   <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
@@ -118,7 +118,7 @@
       <%= render 'shared/decorative_ornament' %>
 
       <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-        <svg class="h-10 w-10 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-10 w-10 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
       </div>
@@ -152,7 +152,7 @@
                 <th scope="row" class="whitespace-nowrap p-4 text-sm font-medium text-gray-900 dark:text-white">
                   <div class="flex items-center space-x-3">
                     <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center">
-                      <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-5 w-5 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
@@ -169,7 +169,7 @@
                 <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
                   <div class="space-y-1">
                     <div class="flex items-center space-x-2">
-                      <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-4 w-4 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
@@ -177,7 +177,7 @@
                       <span class="text-xs">переглядів</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                      <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg class="h-4 w-4 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                       </svg>
                       <span class="font-medium"><%= chapter.comments_count %></span>
@@ -188,7 +188,7 @@
                 <td class="p-4 text-right">
                   <div class="flex items-center space-x-2">
                     <!-- View Button -->
-                    <%= link_to chapter_path(chapter), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
+                    <%= link_to chapter_path(chapter), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-700 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
                       <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
                         <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />
@@ -229,7 +229,7 @@
             <!-- Header with icon and title -->
             <div class="flex items-start space-x-3 mb-3">
               <div class="h-10 w-10 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center flex-shrink-0">
-                <svg class="h-5 w-5 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-5 w-5 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
@@ -246,7 +246,7 @@
             <!-- Statistics -->
             <div class="flex items-center space-x-4 mb-3 text-sm">
               <div class="flex items-center space-x-1">
-                <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-4 w-4 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
@@ -254,7 +254,7 @@
                 <span class="text-xs text-gray-500 dark:text-gray-400">переглядів</span>
               </div>
               <div class="flex items-center space-x-1">
-                <svg class="h-4 w-4 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-4 w-4 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 <span class="font-medium text-gray-900 dark:text-white"><%= chapter.comments_count %></span>
@@ -266,7 +266,7 @@
             <div class="flex items-center justify-end pt-3 border-t border-gray-100 dark:border-gray-700">
               <div class="flex items-center space-x-2">
                 <!-- View Button -->
-                <%= link_to chapter_path(chapter), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
+                <%= link_to chapter_path(chapter), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-cyan-700 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200" do %>
                   <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
                     <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />
@@ -312,7 +312,7 @@
       <%= render 'shared/jellyfish_ornament' %>
 
       <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-        <svg class="h-8 w-8 text-cyan-600 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-8 w-8 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       </div>
