@@ -36,18 +36,6 @@
               <%= fiction.title %>
             </h3>
           <% end %>
-          <% if fiction.genres.any? %>
-            <%= render Ui::TagListComponent.new(
-                  labels: fiction.genres.map(&:name),
-                  variant: :genre,
-                  size: :sm,
-                  max: 2,
-                  href_builder: ->(name) {
-                    fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
-                  },
-                  tag_html: { data: { turbo: false } }
-                ) %>
-          <% end %>
           <p class="text-gray-600 dark:text-gray-400 text-xs line-clamp-2">
             <%= fiction.alternative_title %>
           </p>

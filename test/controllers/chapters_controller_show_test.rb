@@ -37,6 +37,12 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
   end
 
+  test 'reader settings panel is full screen on mobile and side drawer from sm up' do
+    get chapter_url(@chapter)
+
+    assert_select '#reader-settings-panel.reader-settings__panel.fixed.inset-0.sm\\:inset-y-0.sm\\:left-auto.sm\\:right-0.sm\\:max-w-sm', count: 1
+  end
+
   test 'show hides site navigation chrome' do
     get chapter_url(@chapter)
 

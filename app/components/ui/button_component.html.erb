@@ -1,12 +1,6 @@
 <% if link? %>
-  <% if disabled %>
-    <%= content_tag :span, element_attributes.merge(role: 'link') do %>
-      <% if content? %><%= content %><% else %><%= label %><% end %>
-    <% end %>
-  <% else %>
-    <%= link_to href, element_attributes do %>
-      <% if content? %><%= content %><% else %><%= label %><% end %>
-    <% end %>
+  <%= link_to href, element_attributes do %>
+    <% if content? %><%= content %><% else %><%= label %><% end %>
   <% end %>
 <% else %>
   <%= button_tag(type: button_type, **element_attributes) do %>

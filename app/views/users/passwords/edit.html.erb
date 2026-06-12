@@ -49,7 +49,9 @@
           <div class="flex justify-end mt-4">
             <%= link_to 'Перейти до Авторизації', new_user_session_path, class: 'inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-700 hover:underline dark:hover:text-rose-700 transition' %>
           </div>
-          <%= ui_button(as: :submit, label: 'Оновити Пароль', full_width: true, size: :lg, html: { class: 'mt-8 rounded-xl font-bold text-sm sm:text-base ring-1 ring-cyan-800 dark:ring-rose-800 uppercase tracking-tight' }) %>
+          <div class="mt-8">
+            <%= ui_button(as: :submit, label: 'Оновити Пароль', full_width: true, size: :md) %>
+          </div>
         <% end %>
       </div>
     </div>

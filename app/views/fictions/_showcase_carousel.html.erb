@@ -66,14 +66,18 @@
                   <% first_readable_chapter = ordered_chapters(fiction, viewer: current_user).first %>
                   <%= ui_button(as: :link,
                                 href: (first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction)),
-                                size: :xs,
-                                html: { class: 'font-bold shadow-lg ring-1 ring-cyan-500/30 md:px-4 md:py-2.5 md:text-sm dark:ring-rose-500/30 lg:text-lg', data: { turbo: false } }) do %>
+                                size: :md,
+                                html: { data: { turbo: false } }) do %>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                     </svg>
                     Читати зараз
                   <% end %>
-                  <%= link_to fiction_path(fiction), class: 'inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-white bg-white/5 px-2 py-1.5 text-xs font-bold text-white backdrop-blur-sm transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 md:px-4 md:py-2.5 md:text-sm lg:border-white/35 lg:text-lg lg:hover:bg-white/15', aria: { label: 'Детальніше' } do %>
+                  <%= ui_button(as: :link,
+                                href: fiction_path(fiction),
+                                variant: :ghost,
+                                size: :md,
+                                html: { class: 'shrink-0 !border-white/50 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/40 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10', aria: { label: 'Детальніше' } }) do %>
                     <svg class="h-5 w-5 shrink-0 lg:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>

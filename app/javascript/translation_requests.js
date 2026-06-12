@@ -147,9 +147,9 @@ function updateVoteButtonStyles(requestId, userVoted) {
   const upvoteBtn = document.querySelector(`.upvote-btn-${requestId}`);
   
   if (userVoted) {
-    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 bg-cyan-100 text-cyan-700 dark:bg-rose-900/30 dark:text-rose-400`;
+    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-xs transition-colors duration-200 bg-cyan-100 text-cyan-700 dark:bg-rose-900/30 dark:text-rose-400`;
   } else {
-    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs transition-colors duration-200 text-gray-500 hover:bg-cyan-50 hover:text-cyan-700 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400`;
+    upvoteBtn.className = `vote-btn upvote-btn-${requestId} flex items-center gap-1 px-1.5 py-0.5 rounded text-xs transition-colors duration-200 text-gray-500 hover:bg-cyan-50 hover:text-cyan-700 dark:text-gray-400 dark:hover:bg-rose-900/20 dark:hover:text-rose-400`;
   }
 }
 
@@ -244,10 +244,10 @@ function updateAssignmentStatus(requestId, scanlatorTitle, isAssigned) {
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
             </svg>
           </div>
-          <span class="text-2xs font-medium text-green-700 dark:text-green-400 truncate">${scanlatorTitle}</span>
+          <span class="text-xs font-medium text-green-700 dark:text-green-400 truncate">${scanlatorTitle}</span>
         </div>
         <button onclick="unassignRequest(${requestId})" 
-                class="text-2xs bg-red-500 hover:bg-red-600 text-white font-medium px-2 py-0.5 rounded text-center flex-shrink-0 transition-colors duration-200">
+                class="text-xs bg-red-500 hover:bg-red-600 text-white font-medium px-2 py-0.5 rounded text-center flex-shrink-0 transition-colors duration-200">
           ×
         </button>
       </div>
@@ -261,7 +261,7 @@ function updateAssignmentStatus(requestId, scanlatorTitle, isAssigned) {
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <span class="text-2xs text-orange-700 dark:text-orange-400">Вільний</span>
+        <span class="text-xs text-orange-700 dark:text-orange-400">Вільний</span>
       </div>
     `;
   }
@@ -449,7 +449,7 @@ function updateRequestView(requestId, title, author, sourceUrl, notes) {
   }
   
   // Update author
-  const authorElements = document.querySelectorAll(`#view-mode-${requestId} .text-2xs`);
+  const authorElements = document.querySelectorAll(`#view-mode-${requestId} .text-xs`);
   authorElements.forEach(element => {
     if (element.textContent.includes('Автор:')) {
       const authorSpan = element.querySelector('span.font-medium');

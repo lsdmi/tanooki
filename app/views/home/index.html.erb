@@ -38,9 +38,6 @@
     <div class="flex sm:mb-4 md:mb-8 mx-2">
       <%= render 'root/videos', videos: @videos, video_tag_counts: @video_tag_counts %>
     </div>
-    <div class="mb-4 flex text-center justify-center">
-      <%= ui_button(as: :link, href: youtube_videos_path, label: 'Більше відео', html: { class: 'uppercase w-4/5 text-xl sm:text-xl md:text-base lg:text-lg xl:text-xl font-bold rounded-xl ring-1 ring-cyan-800 dark:ring-rose-800' }) %>
-    </div>
     <div class="my-4 w-[95%] mx-auto border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
       <%= render 'shared/ads', advertisement: @pokemon_ad if @pokemon_ad.present? %>
     </div>

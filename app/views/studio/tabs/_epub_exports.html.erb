@@ -39,7 +39,7 @@
                   <% if export_request.downloadable? %>
                     <%= ui_button(as: :link,
                                   href: url_for(controller: :downloads, action: :epub_export_file, token: export_request.token, only_path: true),
-                                  size: :sm,
+                                  size: :md,
                                   label: 'Завантажити',
                                   html: { data: { turbo: false } }) %>
                   <% elsif export_request.failed? %>
@@ -63,7 +63,7 @@
               <% if export_request.downloadable? %>
                 <%= ui_button(as: :link,
                               href: url_for(controller: :downloads, action: :epub_export_file, token: export_request.token, only_path: true),
-                              size: :sm,
+                              size: :md,
                               label: 'Завантажити',
                               html: { data: { turbo: false } }) %>
               <% elsif export_request.failed? %>

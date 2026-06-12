@@ -18,7 +18,7 @@
   <% else %>
     <div class="text-center py-6 sm:py-8">
       <%= tag.p no_comments_prompt, class: 'text-sm sm:text-base text-stone-600 dark:text-gray-400 mb-4' %>
-      <%= link_to 'Увійти, аби лишити коментар!', new_user_session_path, class: 'inline-block px-4 sm:px-6 py-2 text-sm sm:text-base bg-stone-600 dark:bg-gray-700 text-white rounded-full hover:bg-stone-700 dark:hover:bg-gray-600 transition duration-300 transform hover:scale-105' %>
+      <%= ui_button(as: :link, href: new_user_session_path, size: :md, label: 'Увійти, аби лишити коментар!') %>
     </div>
   <% end %>
 </section>

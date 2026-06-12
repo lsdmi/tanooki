@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Ui
-  # Primary / secondary / ghost button or link with shared cyan (light) and rose (dark) tokens.
+  # Primary / ghost button or link with shared cyan (light) and rose (dark) tokens.
   class ButtonComponent < ViewComponent::Base
     include ButtonComponentStyles
 
-    VARIANTS = %i[primary secondary ghost].freeze
-    SIZES = %i[xs sm md lg xl icon].freeze
+    VARIANTS = %i[primary ghost].freeze
+    SIZES = %i[xs md icon responsive].freeze
     ELEMENT_TYPES = %i[button link submit].freeze
 
     def initialize(label: nil, variant: :primary, size: :md, as: :button, **options)
@@ -17,7 +17,6 @@ module Ui
       @as = as.to_sym
       @href = options[:href]
       @full_width = options.fetch(:full_width, false)
-      @disabled = options.fetch(:disabled, false)
       @html = options.fetch(:html, {})
       validate!
     end
@@ -28,7 +27,7 @@ module Ui
 
     private
 
-    attr_reader :label, :variant, :size, :as, :href, :full_width, :disabled, :html
+    attr_reader :label, :variant, :size, :as, :href, :full_width, :html
 
     def validate!
       raise ArgumentError, "unknown variant: #{variant}" unless VARIANTS.include?(variant)
@@ -50,24 +49,11 @@ module Ui
     end
 
     def element_attributes
-      attrs = { class: merged_css_classes }
-      apply_disabled_attributes!(attrs)
-      attrs.merge!(html.except(:class))
+      { class: merged_css_classes }.merge(html.except(:class))
     end
 
     def merged_css_classes
       [css_classes, html[:class]].compact.join(' ')
-    end
-
-    def apply_disabled_attributes!(attrs)
-      return unless disabled
-
-      if link?
-        attrs[:aria] = { disabled: true }
-        attrs[:tabindex] = -1
-      else
-        attrs[:disabled] = true
-      end
     end
 
     def css_classes

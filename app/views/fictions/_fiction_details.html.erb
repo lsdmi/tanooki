@@ -29,7 +29,7 @@
                 labels: fiction.genres.map(&:name),
                 variant: :genre,
                 size: :sm,
-                max: 4,
+                max: 2,
                 href_builder: ->(name) {
                   fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
                 },
@@ -43,9 +43,9 @@
 
     <%= ui_button(as: :link,
                   href: fiction_path(fiction),
-                  size: :xs,
-                  html: { class: 'shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 font-bold rounded-xl sm:py-2 sm:px-6 sm:text-sm', data: { turbo: false } }) do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 sm:block shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  size: :responsive,
+                  html: { data: { turbo: false } }) do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4 sm:block md:h-5 md:w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
       </svg>
       <span>Читати</span>

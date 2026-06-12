@@ -1,5 +1,16 @@
-<%# locals: (name:, url:, wrapper_class: nil, link_class: nil) %>
-<p class="author flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm <%= wrapper_class %>">
+<%# locals: (name:, url:, wrapper_class: nil, link_class: nil, as_tag: false) %>
+<p class="author flex flex-wrap items-center gap-x-2 gap-y-1 text-sm <%= wrapper_class %>">
   <span class="font-bold text-stone-800 dark:text-gray-200">Автор:</span>
-  <%= link_to name, url, rel: 'author', class: link_class, data: { turbo: false } %>
+  <% if as_tag %>
+    <%= render Ui::TagComponent.new(
+          label: name,
+          variant: :keyword,
+          size: :sm,
+          as: :link,
+          href: url,
+          html: { rel: 'author', data: { turbo: false } }
+        ) %>
+  <% else %>
+    <%= link_to name, url, rel: 'author', class: link_class, data: { turbo: false } %>
+  <% end %>
 </p>

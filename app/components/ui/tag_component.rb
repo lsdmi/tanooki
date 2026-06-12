@@ -81,10 +81,7 @@ module Ui
     end
 
     def size_classes
-      base = SIZE_CLASSES.fetch(size)
-      return base unless count?
-
-      base.sub('px-2.5', 'pl-2.5 pr-1').sub('px-3', 'pl-3 pr-1.5')
+      SIZE_CLASSES.fetch(size)
     end
 
     def count_classes

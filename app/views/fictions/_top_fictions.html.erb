@@ -66,7 +66,7 @@
                 labels: fiction.genres.map(&:name),
                 variant: :genre,
                 size: :sm,
-                max: 3,
+                max: 2,
                 href_builder: ->(name) {
                   fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
                 },

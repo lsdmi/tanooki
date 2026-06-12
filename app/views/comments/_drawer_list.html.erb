@@ -14,6 +14,6 @@
     <% else %>
       <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
     <% end %>
-    <%= ui_button(as: :link, href: new_user_session_path, size: :sm, label: t('chapters.reader_comments_drawer.login_to_comment')) %>
+    <%= ui_button(as: :link, href: new_user_session_path, size: :md, label: t('chapters.reader_comments_drawer.login_to_comment')) %>
   </div>
 <% end %>

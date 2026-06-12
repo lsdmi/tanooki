@@ -21,12 +21,19 @@
                        name: fiction.author,
                        url: search_index_path(search: [fiction.author]),
                        wrapper_class: 'mt-4 justify-center lg:justify-start',
-                       link_class: 'inline-block bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105' %>
-            <div class="mt-4 flex items-center gap-2 justify-center lg:justify-start">
-              <span class="font-bold">Перекладач:</span>
+                       as_tag: true %>
+            <div class="mt-4 flex flex-wrap items-center gap-2 justify-center lg:justify-start">
+              <span class="font-bold text-stone-800 dark:text-gray-200">Перекладач:</span>
               <% fiction.scanlators.each do |scanlator| %>
-                <%= link_to fiction.scanlators.size > 1 ? scanlator.title.first(10) : scanlator.title.first(20), scanlator_path(scanlator),
-                    class: 'bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 px-2 sm:px-3 py-1 rounded-full text-xs transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105' %>
+                <% scanlator_label = fiction.scanlators.size > 1 ? scanlator.title.first(10) : scanlator.title.first(20) %>
+                <%= render Ui::TagComponent.new(
+                      label: scanlator_label,
+                      variant: :keyword,
+                      size: :sm,
+                      as: :link,
+                      href: scanlator_path(scanlator),
+                      html: { data: { turbo: false } }
+                    ) %>
               <% end %>
             </div>
           </div>
