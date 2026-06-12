@@ -24,12 +24,14 @@
 
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-3 sm:mt-4">
       <% if ordered_chapters_desc(reading.chapter.fiction, viewer: current_user).first == reading.chapter %>
-        <span class="shadow-sm ring-1 ring-cyan-800 dark:ring-rose-800 inline-flex items-center gap-1 text-xs sm:text-sm bg-cyan-700 dark:bg-rose-700 text-white dark:text-gray-100 font-bold py-1 px-2 sm:px-4 rounded-xl w-fit">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+        <%= ui_button(as: :button,
+                      size: :xs,
+                      html: { class: 'w-fit pointer-events-none cursor-default', tabindex: -1, 'aria-disabled': true }) do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
           </svg>
           <span>Все прочитано</span>
-        </span>
+        <% end %>
       <% else %>
         <%= ui_button(as: :link,
                       href: following_chapter(reading.fiction, reading.chapter, viewer: current_user),

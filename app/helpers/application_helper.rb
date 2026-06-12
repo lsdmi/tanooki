@@ -14,5 +14,5 @@ module ApplicationHelper
   include Meta::CoverUrlsHelper
   include Meta::TagsHelper
   include StructuredData::JsonLdHelper
-  include UiHelper
+  include Ui::ComponentHelper
 end

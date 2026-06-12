@@ -231,36 +231,4 @@
   <% end %>
 </div>
 
-<!-- Pagination -->
-<% if pagy.pages > 1 %>
-  <div class="mt-6 flex justify-center">
-    <div class="pagy-nav flex gap-1">
-      <% if pagy.page > 1 %>
-        <button onclick="loadPage(<%= pagy.page - 1 %>)"
-            class="px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-          ‹
-        </button>
-      <% end %>
-
-      <% (1..pagy.pages).each do |page_num| %>
-        <% if page_num == pagy.page %>
-          <span class="px-3 py-2 text-sm font-medium text-white bg-cyan-700 dark:bg-rose-900 border border-cyan-800 dark:border-rose-900">
-            <%= page_num %>
-          </span>
-        <% else %>
-          <button onclick="loadPage(<%= page_num %>)"
-              class="px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-            <%= page_num %>
-          </button>
-        <% end %>
-      <% end %>
-
-      <% if pagy.page < pagy.pages %>
-        <button onclick="loadPage(<%= pagy.page + 1 %>)"
-            class="px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-          ›
-        </button>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+<%= ui_pagination(pagy, onclick: ->(page) { "loadPage(#{page})" }, html: { class: 'mt-6' }) %>

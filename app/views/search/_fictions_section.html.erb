@@ -44,12 +44,13 @@
     </div>
 
     <!-- Fiction Pagination -->
-    <% if defined?(pagy_fictions) && pagy_fictions && pagy_fictions.pages > 1 %>
-      <div class="mt-8 flex justify-center">
-        <div class="pagy-nav">
-          <%== search_index_pagy_nav_html(pagy_fictions, frame_id: 'fictions-section', section: 'fictions') %>
-        </div>
-      </div>
+    <% if defined?(pagy_fictions) && pagy_fictions %>
+      <%= ui_pagination(
+            pagy_fictions,
+            frame_id: 'fictions-section',
+            custom_params: search_index_pagy_custom_params('fictions'),
+            html: { class: 'mt-8' }
+          ) %>
     <% end %>
     </div>
   </div>

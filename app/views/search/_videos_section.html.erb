@@ -42,12 +42,13 @@
     </div>
 
     <!-- Video Pagination -->
-    <% if defined?(pagy_videos) && pagy_videos && pagy_videos.pages > 1 %>
-      <div class="mt-8 flex justify-center">
-        <div class="pagy-nav">
-          <%== search_index_pagy_nav_html(pagy_videos, frame_id: 'videos-section', section: 'videos') %>
-        </div>
-      </div>
+    <% if defined?(pagy_videos) && pagy_videos %>
+      <%= ui_pagination(
+            pagy_videos,
+            frame_id: 'videos-section',
+            custom_params: search_index_pagy_custom_params('videos'),
+            html: { class: 'mt-8' }
+          ) %>
     <% end %>
     </div>
   </div>

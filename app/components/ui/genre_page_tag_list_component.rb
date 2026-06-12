@@ -26,6 +26,14 @@ module Ui
       adults + regular
     end
 
+    def tag_groups
+      adults, regular = genres.partition { |genre| Genre.adult_tag?(genre[:name], slug: genre[:slug]) }
+      groups = []
+      groups << { type: :adult_cluster, genres: adults } if adults.any?
+      regular.each { |genre| groups << { type: :single, genre: genre } }
+      groups
+    end
+
     def tag_variant_for(genre)
       Genre.tag_variant(name: genre[:name], slug: genre[:slug])
     end

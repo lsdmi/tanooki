@@ -1,16 +1,14 @@
 <div class="<%= wrapper_classes %>">
-  <% visible_labels.each do |label| %>
-    <% tag_href = href_for(label) %>
-    <%= render Ui::TagComponent.new(
-          label: label,
-          variant: variant_for(label),
-          size: size,
-          as: tag_href.present? ? :link : :span,
-          href: tag_href,
-          current: current?(label),
-          count: count_for(label),
-          html: tag_html
-        ) %>
+  <% tag_groups.each do |group| %>
+    <% if group[:type] == :adult_cluster %>
+      <div class="inline-flex flex-nowrap items-center gap-1">
+        <% group[:labels].each do |label| %>
+          <%= render_tag(label) %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render_tag(group[:label]) %>
+    <% end %>
   <% end %>
   <% if overflow_count.positive? %>
     <%= render Ui::TagComponent.new(

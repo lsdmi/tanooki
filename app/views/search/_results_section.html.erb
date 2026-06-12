@@ -59,12 +59,13 @@
     </div>
 
     <!-- Blog Pagination -->
-    <% if defined?(pagy_results) && pagy_results && pagy_results.pages > 1 %>
-      <div class="mt-8 flex justify-center">
-        <div class="pagy-nav">
-          <%== search_index_pagy_nav_html(pagy_results, frame_id: 'results-section', section: 'results') %>
-        </div>
-      </div>
+    <% if defined?(pagy_results) && pagy_results %>
+      <%= ui_pagination(
+            pagy_results,
+            frame_id: 'results-section',
+            custom_params: search_index_pagy_custom_params('results'),
+            html: { class: 'mt-8' }
+          ) %>
     <% end %>
     </div>
   </div>

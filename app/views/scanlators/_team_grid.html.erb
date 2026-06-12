@@ -4,10 +4,10 @@
   <% end %>
 </div>
 
-<% if pagy.pages > 1 %>
-  <div class="pagy-nav p-6">
-    <div class="flex justify-center">
-      <%== pagy_nav_with_turbo_frame(pagy) %>
-    </div>
-  </div>
-<% end %>
+<%= ui_pagination(
+      pagy,
+      frame_id: 'tab-content',
+      form_path: studio_index_path(tab: 'teams'),
+      turbo_stream: true,
+      html: { class: 'p-6' }
+    ) %>

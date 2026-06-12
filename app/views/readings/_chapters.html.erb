@@ -300,13 +300,7 @@
     </div>
 
     <!-- Pagination -->
-    <% if pagy.pages > 1 %>
-      <div class="pagy-nav p-4">
-        <div class="flex justify-center">
-          <%== pagy_nav(pagy) %>
-        </div>
-      </div>
-    <% end %>
+      <%= ui_pagination(pagy, form_path: reading_path(fiction), html: { class: 'p-4' }) %>
   <% else %>
     <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
       <%= render 'shared/jellyfish_ornament' %>

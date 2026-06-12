@@ -31,7 +31,7 @@ module Fictions
       pagy = Pagy.new(count: 50, page: 1, items: 10)
       html = fiction_list_pagy_nav_html(pagy, frame_id: 'fiction-list-page')
 
-      assert_includes html, 'pagy nav'
+      assert_includes html, 'aria-label="Сторінок"'
       assert_includes html, 'fiction-list-page'
     end
   end

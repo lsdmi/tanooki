@@ -43,6 +43,21 @@ module Ui
       assert_text(/BL.*Романтика/m)
     end
 
+    test 'clusters explicit genres side by side' do
+      render_inline(
+        GenrePageTagListComponent.new(
+          genres: [
+            { name: 'Драма', slug: 'drama' },
+            { name: 'BL', slug: 'bl' },
+            { name: 'ЛГБТ', slug: 'lgbt' }
+          ]
+        )
+      )
+
+      assert_selector 'div.inline-flex.flex-nowrap.items-center.gap-1', count: 1
+      assert_selector 'div.inline-flex.flex-nowrap a.bg-rose-200', count: 2
+    end
+
     test 'does not render when genres empty' do
       render_inline(GenrePageTagListComponent.new(genres: []))
 

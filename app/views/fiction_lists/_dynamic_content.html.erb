@@ -21,13 +21,12 @@
         <%# Render the details for the first fiction by default %>
         <% if fictions.any? %>
           <%= render partial: 'fiction_lists/fiction_details', locals: { fiction: fictions.first } %>
-          <% if pagy.pages > 1 %>
-            <div class="pagy-nav pt-4 sm:pt-6">
-              <div class="flex justify-center">
-                <%== fiction_list_pagy_nav_html(pagy, frame_id: 'fiction-list-page') %>
-              </div>
-            </div>
-          <% end %>
+          <%= ui_pagination(
+                pagy,
+                frame_id: 'fiction-list-page',
+                custom_params: fiction_list_pagy_custom_params,
+                html: { class: 'pt-4 sm:pt-6' }
+              ) %>
         <% end %>
       <% end %>
     </div>

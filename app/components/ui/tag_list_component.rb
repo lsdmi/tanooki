@@ -23,16 +23,52 @@ module Ui
       Genre.tag_variant(name: label, slug: genre_slugs[label] || genre_slugs[label.to_s])
     end
 
-    def visible_labels
-      return labels if max.nil? || labels.size <= max
+    def adult_label?(label)
+      variant_for(label) == :adult
+    end
 
-      labels.first(max)
+    def visible_labels
+      return labels if max.nil?
+
+      adults, regular = partitioned_labels
+      remaining = max
+
+      visible_adults = adults.first(remaining)
+      remaining -= visible_adults.size
+
+      visible_adults + regular.first(remaining)
     end
 
     def overflow_count
-      return 0 if max.nil? || labels.size <= max
+      return 0 if max.nil?
 
-      labels.size - max
+      labels.size - visible_labels.size
+    end
+
+    def tag_groups
+      adults, regular = visible_labels.partition { |label| adult_label?(label) }
+      groups = []
+      groups << { type: :adult_cluster, labels: adults } if adults.any?
+      regular.each { |label| groups << { type: :single, label: label } }
+      groups
+    end
+
+    def partitioned_labels
+      labels.partition { |label| adult_label?(label) }
+    end
+
+    def render_tag(label)
+      tag_href = href_for(label)
+      render Ui::TagComponent.new(
+        label: label,
+        variant: variant_for(label),
+        size: size,
+        as: tag_href.present? ? :link : :span,
+        href: tag_href,
+        current: current?(label),
+        count: count_for(label),
+        html: tag_html
+      )
     end
 
     def wrapper_classes

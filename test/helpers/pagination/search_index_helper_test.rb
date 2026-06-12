@@ -38,7 +38,7 @@ module Pagination
       pagy = Pagy.new(count: 50, page: 1, items: 10)
       html = search_index_pagy_nav_html(pagy, frame_id: 'results-section', section: 'results')
 
-      assert_includes html, 'pagy nav'
+      assert_includes html, 'aria-label="Сторінок"'
       assert_includes html, 'results-section'
     end
   end

@@ -15,7 +15,7 @@
     <p class="min-h-[1.25rem] text-sm font-bold leading-tight text-slate-900 dark:text-slate-100">
       <%= link_to card[:title], fiction_path(fiction), class: "block truncate rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 group-hover:text-cyan-700 dark:group-hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800" %>
     </p>
-    <div class="mt-1.5 flex min-w-0 items-center gap-2">
+    <div class="mt-1.5 flex min-w-0 items-center gap-1">
       <%= render Ui::GenrePageTagComponent.new(variant: :chapters, label: "#{card[:chapters]} Розділи") %>
       <%= render Ui::GenrePageTagComponent.new(variant: :status, label: card[:status]) %>
     </div>

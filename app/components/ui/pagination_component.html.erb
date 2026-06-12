@@ -1,0 +1,21 @@
+<%= content_tag :div, wrapper_attributes do %>
+  <nav id="<%= pagy_id %>" class="inline-flex gap-1" aria-label="<%= aria_label %>">
+    <% nav_items.each do |item| %>
+      <% case item[:type] %>
+      <% when :current %>
+        <span class="<%= item[:css_class] %>" aria-current="page"><%= item[:label] %></span>
+      <% when :gap %>
+        <span class="<%= item[:css_class] %>" aria-hidden="true"><%= item[:label] %></span>
+      <% when :button %>
+        <button type="button"
+                class="<%= item[:css_class] %>"
+                onclick="<%= item[:onclick] %>"
+                <% if item[:aria_label].present? %>aria-label="<%= item[:aria_label] %>"<% end %>>
+          <%= item[:label] %>
+        </button>
+      <% when :form %>
+        <%= button_to item[:label], pagination_path, **form_options(item) %>
+      <% end %>
+    <% end %>
+  </nav>
+<% end %>

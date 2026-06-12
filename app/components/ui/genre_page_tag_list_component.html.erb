@@ -1,9 +1,21 @@
 <div class="<%= wrapper_classes %>">
-  <% genres.each do |genre| %>
-    <%= render Ui::GenrePageTagComponent.new(
-          variant: tag_variant_for(genre),
-          label: genre[:name],
-          href: fiction_genre_fictions_path(genre[:slug])
-        ) %>
+  <% tag_groups.each do |group| %>
+    <% if group[:type] == :adult_cluster %>
+      <div class="inline-flex flex-nowrap items-center gap-1">
+        <% group[:genres].each do |genre| %>
+          <%= render Ui::GenrePageTagComponent.new(
+                variant: tag_variant_for(genre),
+                label: genre[:name],
+                href: fiction_genre_fictions_path(genre[:slug])
+              ) %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render Ui::GenrePageTagComponent.new(
+            variant: tag_variant_for(group[:genre]),
+            label: group[:genre][:name],
+            href: fiction_genre_fictions_path(group[:genre][:slug])
+          ) %>
+    <% end %>
   <% end %>
 </div>

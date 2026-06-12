@@ -16,6 +16,8 @@
         labels: genres.map(&:name),
         variant: :genre,
         size: :sm,
+        sort_adult_first: true,
+        genre_slugs: genres.to_h { |genre| [genre.name, genre.slug] },
         current_label: sample_genre.name,
         href_builder: ->(name) { fiction_genre_fictions_path(genres.find { |genre| genre.name == name }) },
         html: { class: 'flex flex-wrap gap-2 mb-4 pb-2 justify-center sm:justify-start' }

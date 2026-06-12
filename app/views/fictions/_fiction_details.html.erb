@@ -30,6 +30,8 @@
                 variant: :genre,
                 size: :sm,
                 max: 2,
+                sort_adult_first: true,
+                genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
                 href_builder: ->(name) {
                   fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
                 },
