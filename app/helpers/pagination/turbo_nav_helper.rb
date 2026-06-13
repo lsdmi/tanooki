@@ -22,7 +22,7 @@ module Pagination
     private
 
     def render_pagination_component(pagy, **options)
-      render_to_string(Ui::PaginationComponent.new(pagy: pagy, **options))
+      Ui::PaginationComponent.new(pagy: pagy, **options).render_in(self)
     end
   end
 end

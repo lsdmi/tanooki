@@ -1,11 +1,11 @@
 one:
   id: 1
-  name: <%= Faker::Book.title %>
+  name: Fantasy
 
 two:
   id: 2
-  name: <%= Faker::Book.title %>
+  name: Adventure
 
 three:
   id: 3
-  name: <%= Faker::Book.title %>
+  name: Romance

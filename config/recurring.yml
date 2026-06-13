@@ -30,6 +30,10 @@ production:
     class: Fictions::RefreshDroppedStatusJob
     schedule: every sunday at 12:00pm
 
+  warm_fiction_index_cache:
+    class: Fictions::WarmIndexCacheJob
+    schedule: every hour at minute 5
+
   youtube_telegram:
     class: Youtube::TelegramJob
     schedule: every sunday at 12:00pm

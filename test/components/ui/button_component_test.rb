@@ -15,7 +15,7 @@ module Ui
       render_inline(ButtonComponent.new(label: 'Детальніше', variant: :ghost))
 
       assert_selector 'button.border-stone-200.bg-transparent.text-stone-700'
-      assert_selector 'button.dark\\:border-zinc-700.dark\\:bg-transparent'
+      assert_selector 'button.dark\\:border-zinc-600.dark\\:bg-transparent'
       assert_no_selector 'button.bg-white, button.dark\\:bg-zinc-900'
     end
 

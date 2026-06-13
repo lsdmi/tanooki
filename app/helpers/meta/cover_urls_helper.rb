@@ -6,6 +6,7 @@ module Meta
     CARD_TRANSFORMATIONS = { resize_to_limit: [400, 600], format: :webp }.freeze
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
+    SHOWCASE_TRANSFORMATIONS = { resize_to_limit: [1600, 540], format: :webp }.freeze
 
     def cover_card_url(attachment)
       variant_image_url(attachment, CARD_TRANSFORMATIONS)
@@ -17,6 +18,10 @@ module Meta
 
     def cover_background_url(attachment)
       variant_image_url(attachment, BACKGROUND_TRANSFORMATIONS)
+    end
+
+    def banner_showcase_url(attachment)
+      variant_image_url(attachment, SHOWCASE_TRANSFORMATIONS)
     end
 
     private

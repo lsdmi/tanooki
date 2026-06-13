@@ -51,6 +51,7 @@
     <% end %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%= yield :head %>
 
     <% if requires_accordion_js? %>
       <%= javascript_include_tag 'accordion' %>

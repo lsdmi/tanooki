@@ -2,14 +2,26 @@
 
 # View-model for the fictions index: hero ad, carousels, and list filter state.
 class FictionIndexPresenter
+  GENRES_CACHE_EXPIRY = 24.hours
+  HERO_AD_CACHE_EXPIRY = 12.hours
+
   def initialize(params)
     @params = params
   end
 
-  def hero_ad
-    return @hero_ad if defined?(@hero_ad)
+  def self.warm_caches!
+    Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
+      Genre.order(:name).distinct.to_a
+    end
+    Rails.cache.fetch('fiction_index/hero_ad', expires_in: HERO_AD_CACHE_EXPIRY) do
+      Advertisement.find_by(slug: 'fictions-index-hero-ad')
+    end
+  end
 
-    @hero_ad = Advertisement.find_by(slug: 'fictions-index-hero-ad')
+  def hero_ad
+    @hero_ad ||= Rails.cache.fetch('fiction_index/hero_ad', expires_in: HERO_AD_CACHE_EXPIRY) do
+      Advertisement.find_by(slug: 'fictions-index-hero-ad')
+    end
   end
 
   def popular_novelty
@@ -49,39 +61,26 @@ class FictionIndexPresenter
   end
 
   def genres
-    @genres ||= Genre.order(:name).distinct
+    @genres ||= Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
+      Genre.order(:name).distinct.to_a
+    end
   end
 
   def sample_genre
-    @sample_genre ||= genres.find_by(id: @params[:genre_id]) || genres.sample
+    @sample_genre ||= begin
+      if @params[:genre_id].present?
+        genres.find { |genre| genre.id == @params[:genre_id].to_i } || genres.sample
+      else
+        genres.sample
+      end
+    end
   end
 
   def other
-    @other ||= filtered_fiction_with_max_created_at_query
+    @other ||= Fictions::IndexVariablesManager.filtered_by_genre(sample_genre)
   end
 
   def showcase
     @showcase ||= Fictions::IndexVariablesManager.showcase
-  end
-
-  private
-
-  def filtered_fiction_with_max_created_at_query
-    fictions_joined_to_latest_released_chapter
-      .where(genres: { id: sample_genre })
-      .select('fictions.*, latest_chapters.max_created_at')
-      .order('latest_chapters.max_created_at DESC')
-      .limit(8)
-  end
-
-  def fictions_joined_to_latest_released_chapter
-    Fiction.joins(:genres)
-           .joins(
-             "INNER JOIN (#{Chapter.released
-               .select('fiction_id, MAX(COALESCE(published_at, created_at)) AS max_created_at')
-               .group(:fiction_id)
-               .to_sql}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id"
-           )
-           .includes(:cover_attachment)
   end
 end

@@ -12,6 +12,10 @@ module Fictions
     end
 
     test 'most_reads returns a fresh relation ordered by cached ids' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
       result = IndexVariablesManager.most_reads
 
       assert_kind_of ActiveRecord::Relation, result
@@ -19,9 +23,15 @@ module Fictions
 
       ids = IndexVariablesManager.send(:cached_most_reads_ids)
       assert_equal ids.first(10), result.limit(10).ids if ids.any?
+    ensure
+      Rails.cache = original_cache
     end
 
     test 'popular_novelty returns a fresh relation ordered by cached ids' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
       result = IndexVariablesManager.popular_novelty
 
       assert_kind_of ActiveRecord::Relation, result
@@ -29,6 +39,8 @@ module Fictions
 
       ids = IndexVariablesManager.send(:cached_popular_novelty_ids)
       assert_equal ids.first(10), result.limit(10).ids if ids.any?
+    ensure
+      Rails.cache = original_cache
     end
 
     test 'hot_updates returns a fresh relation ordered by cached ids' do
@@ -94,6 +106,62 @@ module Fictions
       IndexHotUpdates.stub(:ranked_scope, -> { raise 'cache miss' }) do
         assert_nothing_raised { IndexVariablesManager.hot_updates.limit(5).load }
       end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'latest_updates uses cached ids after first fetch' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
+      IndexVariablesManager.latest_updates
+
+      IndexVariablesManager.stub(:latest_updates_ranked, -> { raise 'cache miss' }) do
+        assert_nothing_raised { IndexVariablesManager.latest_updates.limit(5).load }
+      end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'badge id sets reuse cached list ids' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+      Rails.cache.write('latest_updates_ids', [1, 2, 3], expires_in: 1.hour)
+
+      IndexVariablesManager.stub(:latest_updates_ranked, -> { raise 'cache miss' }) do
+        assert_equal Set.new([1, 2, 3]), IndexVariablesManager.latest_updates_ids_for_badges
+      end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'filtered_by_genre uses cached ids after first fetch' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
+      genre = genres(:one)
+
+      IndexVariablesManager.filtered_by_genre(genre)
+
+      IndexVariablesManager.stub(:filtered_fiction_ids_for_genre, ->(_genre_id) { raise 'cache miss' }) do
+        assert_nothing_raised { IndexVariablesManager.filtered_by_genre(genre).load }
+      end
+    ensure
+      Rails.cache = original_cache
+    end
+
+    test 'warm_index_caches! preloads index cache keys' do
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+      Rails.cache.clear
+
+      assert_nothing_raised { IndexVariablesManager.warm_index_caches! }
+      assert Rails.cache.exist?('popular_novelty_ids')
+      assert Rails.cache.exist?('most_reads_ids')
+      assert Rails.cache.exist?('latest_updates_ids')
     ensure
       Rails.cache = original_cache
     end

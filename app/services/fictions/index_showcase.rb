@@ -4,17 +4,18 @@ module Fictions
   # Homepage / genre carousel: cache sampled fiction ids, then load rows with banner + ratings preloads.
   class IndexShowcase
     CACHE_KEY = 'fiction_showcase_ids'
-    CACHE_EXPIRY = 12.hours
+    INDEX_CACHE_EXPIRY = 1.hour
+    GENRE_CACHE_EXPIRY = 12.hours
 
     def self.for_index
-      ids = Rails.cache.fetch(CACHE_KEY, expires_in: CACHE_EXPIRY) { random_sample_index }
+      ids = Rails.cache.fetch(CACHE_KEY, expires_in: INDEX_CACHE_EXPIRY) { random_sample_index }
       return Fiction.none if ids.blank?
 
       load_fictions(ids)
     end
 
     def self.for_genre(genre)
-      ids = Rails.cache.fetch(['fiction_showcase_genre', genre.id], expires_in: CACHE_EXPIRY) do
+      ids = Rails.cache.fetch(['fiction_showcase_genre', genre.id], expires_in: GENRE_CACHE_EXPIRY) do
         random_sample_for_genre(genre)
       end
       return Fiction.none if ids.blank?

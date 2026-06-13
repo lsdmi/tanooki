@@ -3,22 +3,20 @@
 module Fictions
   # Cached fiction lists and badge ids for the fictions index.
   class IndexVariablesManager
-    def self.popular_novelty
-      ids = cached_popular_novelty_ids
-      return Fiction.none if ids.blank?
+    LIST_CACHE_EXPIRY = 12.hours
+    LATEST_UPDATES_CACHE_EXPIRY = 1.hour
+    FILTERED_CACHE_EXPIRY = 12.hours
 
-      Fiction.where(id: ids)
-             .includes(%i[cover_attachment])
-             .in_order_of(:id, ids)
+    def self.popular_novelty
+      load_fictions_by_cached_ids(cached_popular_novelty_ids, includes: %i[cover_attachment])
     end
 
     def self.popular_novelty_ids_for_badges
-      popular_novelty_scope.pluck(:id).to_set
+      Set.new(cached_popular_novelty_ids)
     end
 
     def self.popular_novelty_scope
       Fiction.joins(:readings)
-             .includes(%i[cover_attachment])
              .group(:id)
              .where(id: recent_fiction_ids)
              .order('COUNT(reading_progresses.fiction_id) DESC')
@@ -26,8 +24,8 @@ module Fictions
     end
 
     def self.cached_popular_novelty_ids
-      Rails.cache.fetch('popular_novelty_ids', expires_in: 24.hours) do
-        popular_novelty_scope.to_a.map(&:id)
+      Rails.cache.fetch('popular_novelty_ids', expires_in: LIST_CACHE_EXPIRY) do
+        popular_novelty_scope.pluck(:id)
       end
     end
     private_class_method :cached_popular_novelty_ids
@@ -40,25 +38,23 @@ module Fictions
     private_class_method :recent_fiction_ids
 
     def self.most_reads
-      ids = cached_most_reads_ids
-      return Fiction.none if ids.blank?
-
-      Fiction.where(id: ids)
-             .includes(%i[cover_attachment genres fiction_ratings])
-             .in_order_of(:id, ids)
+      load_fictions_by_cached_ids(
+        cached_most_reads_ids,
+        includes: %i[cover_attachment genres fiction_ratings]
+      )
     end
 
     def self.most_reads_ids_for_badges
-      most_reads_scope.pluck(:id).to_set
+      Set.new(cached_most_reads_ids)
     end
 
     def self.most_reads_scope
-      Fiction.includes(%i[cover_attachment genres fiction_ratings]).most_reads.limit(6)
+      Fiction.most_reads.limit(6)
     end
 
     def self.cached_most_reads_ids
-      Rails.cache.fetch('most_reads_ids', expires_in: 24.hours) do
-        most_reads_scope.to_a.map(&:id)
+      Rails.cache.fetch('most_reads_ids', expires_in: LIST_CACHE_EXPIRY) do
+        most_reads_scope.pluck(:id)
       end
     end
     private_class_method :cached_most_reads_ids
@@ -76,13 +72,82 @@ module Fictions
     private_class_method :latest_updates_ranked
 
     def self.latest_updates
-      latest_updates_ranked
-        .includes(%i[cover_attachment genres])
-        .select("fictions.*, MAX(#{Chapter::PUBLIC_TIME_SQL}) AS max_created_at")
+      load_fictions_by_cached_ids(
+        cached_latest_updates_ids,
+        includes: %i[cover_attachment genres]
+      )
     end
 
     def self.latest_updates_ids_for_badges
-      latest_updates_ranked.pluck(:id).to_set
+      Set.new(cached_latest_updates_ids)
+    end
+
+    def self.cached_latest_updates_ids
+      Rails.cache.fetch('latest_updates_ids', expires_in: LATEST_UPDATES_CACHE_EXPIRY) do
+        latest_updates_ranked.pluck(:id)
+      end
+    end
+    private_class_method :cached_latest_updates_ids
+
+    def self.filtered_by_genre(genre)
+      return Fiction.none unless genre
+
+      load_fictions_by_cached_ids(
+        cached_filtered_fiction_ids(genre.id),
+        includes: %i[cover_attachment]
+      )
+    end
+
+    def self.cached_filtered_fiction_ids(genre_id)
+      Rails.cache.fetch(['fiction_index/filtered_fiction_ids', genre_id], expires_in: FILTERED_CACHE_EXPIRY) do
+        filtered_fiction_ids_for_genre(genre_id)
+      end
+    end
+    private_class_method :cached_filtered_fiction_ids
+
+    def self.filtered_fiction_ids_for_genre(genre_id)
+      fictions_joined_to_latest_released_chapter
+        .where(genres: { id: genre_id })
+        .order('latest_chapters.max_created_at DESC')
+        .limit(8)
+        .pluck(:id)
+    end
+    private_class_method :filtered_fiction_ids_for_genre
+
+    def self.fictions_joined_to_latest_released_chapter
+      Fiction.joins(:genres)
+             .joins(
+               "INNER JOIN (#{Chapter.released
+                 .select('fiction_id, MAX(COALESCE(published_at, created_at)) AS max_created_at')
+                 .group(:fiction_id)
+                 .to_sql}) AS latest_chapters ON latest_chapters.fiction_id = fictions.id"
+             )
+    end
+    private_class_method :fictions_joined_to_latest_released_chapter
+
+    def self.load_fictions_by_cached_ids(ids, includes:)
+      return Fiction.none if ids.blank?
+
+      Fiction.where(id: ids)
+             .includes(includes)
+             .in_order_of(:id, ids)
+    end
+    private_class_method :load_fictions_by_cached_ids
+
+    def self.warm_index_caches!
+      cached_popular_novelty_ids
+      cached_most_reads_ids
+      cached_latest_updates_ids
+      popular_novelty_ids_for_badges
+      most_reads_ids_for_badges
+      latest_updates_ids_for_badges
+      IndexShowcase.for_index
+      IndexHotUpdates.fictions
+      IndexHotUpdates.counts
+
+      Genre.order(:name).pluck(:id).each do |genre_id|
+        cached_filtered_fiction_ids(genre_id)
+      end
     end
 
     def self.genre_recent_updates_excluding(genre, exclude_ids: [])

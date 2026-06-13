@@ -25,7 +25,9 @@
       <% end %>
     </div>
     <%= turbo_frame_tag "fiction_details" do %>
-      <%= render "fiction_details", fiction: fictions.first %>
+      <% if fictions.any? %>
+        <%= render "fiction_details", fiction: fictions.first, eager_cover: true %>
+      <% end %>
     <% end %>
   </div>
 </div>

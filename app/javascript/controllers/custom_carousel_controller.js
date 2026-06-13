@@ -2,11 +2,16 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["slides", "spinner", "indicator"];
+  static values = { eagerFirstSlide: { type: Boolean, default: false } };
   currentIndex = 0;
   intervalId = null;
   spinnerUsed = false; // Track if spinner was already used
 
   connect() {
+    if (this.eagerFirstSlideValue) {
+      this.spinnerTarget.classList.add("hidden");
+      this.spinnerUsed = true;
+    }
     setTimeout(() => this.update(), 0);
     this.startAutoAdvance();
   }

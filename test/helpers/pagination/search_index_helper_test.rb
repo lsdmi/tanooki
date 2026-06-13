@@ -35,7 +35,7 @@ module Pagination
     end
 
     test 'search_index_pagy_nav_html returns pagy nav markup' do
-      pagy = Pagy.new(count: 50, page: 1, items: 10)
+      pagy = Pagy.new(count: 50, page: 1, limit: 10)
       html = search_index_pagy_nav_html(pagy, frame_id: 'results-section', section: 'results')
 
       assert_includes html, 'aria-label="Сторінок"'

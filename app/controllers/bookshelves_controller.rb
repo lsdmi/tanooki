@@ -2,6 +2,9 @@
 
 # User-curated fiction lists (bookshelves) for browsing and managing collections.
 class BookshelvesController < ApplicationController
+  helper Fictions::ListPaginationHelper,
+         Pagination::TurboNavHelper
+
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
   before_action :load_selected_fictions, only: %i[new create edit update]
