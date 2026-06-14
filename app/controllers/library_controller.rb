@@ -43,7 +43,7 @@ class LibraryController < ApplicationController
         @history_presenter.section(:active),
         5,
         exclude_ids: @history.to_set(&:fiction_id)
-      ).collect
+      ).call
     end
   end
 

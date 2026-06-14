@@ -11,7 +11,7 @@ module Library
       @exclude_ids = exclude_ids
     end
 
-    def collect
+    def call
       @readings.each do |reading|
         process_reading(reading)
         break if reached_limit?

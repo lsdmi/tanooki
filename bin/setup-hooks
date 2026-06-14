@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'fileutils'
+
+APP_ROOT = File.expand_path('..', __dir__)
+HOOKS_DIR = File.join(APP_ROOT, '.githooks')
+
+FileUtils.chdir(APP_ROOT) do
+  Dir.glob(File.join(HOOKS_DIR, '*')).each do |hook|
+    next if File.directory?(hook)
+
+    FileUtils.chmod(0o755, hook)
+  end
+
+  system('git', 'config', 'core.hooksPath', '.githooks', exception: true)
+  puts 'Installed git hooks from .githooks (pre-commit and pre-push gate main/master).'
+end

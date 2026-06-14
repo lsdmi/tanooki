@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'fileutils'
+
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*)
+  system(*, exception: true)
+end
+
+FileUtils.chdir(APP_ROOT) do
+  puts '== RuboCop =='
+  system! 'bin/rubocop'
+
+  puts '== Brakeman =='
+  system! 'bundle', 'exec', 'brakeman', '-q', '-w2'
+
+  puts '== Bundler Audit =='
+  system! 'bundle', 'exec', 'bundler-audit', 'check'
+
+  puts '== ERB Lint =='
+  system! 'bundle', 'exec', 'erb_lint', '.'
+end

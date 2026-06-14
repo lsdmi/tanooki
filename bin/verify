@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'fileutils'
+
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*)
+  system(*, exception: true)
+end
+
+FileUtils.chdir(APP_ROOT) do
+  system! 'bin/quality'
+
+  puts '== Tests =='
+  system! 'bin/rails', 'test'
+end

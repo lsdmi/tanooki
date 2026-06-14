@@ -20,7 +20,7 @@ module Pokemons
         @loser_id = loser_id
       end
 
-      def refresh
+      def call
         winner = User.find(winner_id)
         loser = User.find(loser_id)
 

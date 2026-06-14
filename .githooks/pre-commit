@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+
+case "$branch" in
+  main|master)
+    echo "Running quality checks and tests before committing to ${branch}..."
+    exec bin/verify
+    ;;
+  *)
+    exit 0
+    ;;
+esac

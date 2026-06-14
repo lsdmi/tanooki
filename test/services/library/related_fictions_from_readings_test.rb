@@ -11,37 +11,37 @@ module Library
       clear_related_fictions_cache(@fiction_one, @fiction_two)
     end
 
-    test 'collect returns related fictions from reading progress' do
-      results = RelatedFictionsFromReadings.new([@reading]).collect
+    test 'call returns related fictions from reading progress' do
+      results = RelatedFictionsFromReadings.new([@reading]).call
 
       assert_includes results.map(&:id), @fiction_two.id
       assert_not_includes results.map(&:id), @fiction_one.id
     end
 
-    test 'collect returns empty array when readings are empty' do
-      assert_empty RelatedFictionsFromReadings.new([]).collect
+    test 'call returns empty array when readings are empty' do
+      assert_empty RelatedFictionsFromReadings.new([]).call
     end
 
-    test 'collect respects exclude_ids' do
+    test 'call respects exclude_ids' do
       results = RelatedFictionsFromReadings.new(
         [@reading],
         exclude_ids: Set[@fiction_two.id]
-      ).collect
+      ).call
 
       assert_empty results
     end
 
-    test 'collect respects limit' do
+    test 'call respects limit' do
       results = RelatedFictionsFromReadings.new(
         [reading_progresses(:one), reading_progresses(:two)],
         1
-      ).collect
+      ).call
 
       assert_equal 1, results.size
     end
 
-    test 'collect does not duplicate the same related fiction' do
-      results = RelatedFictionsFromReadings.new([@reading, @reading]).collect
+    test 'call does not duplicate the same related fiction' do
+      results = RelatedFictionsFromReadings.new([@reading, @reading]).call
 
       assert_equal 1, results.size
       assert_equal @fiction_two.id, results.first.id

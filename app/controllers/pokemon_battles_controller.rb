@@ -42,7 +42,7 @@ class PokemonBattlesController < ApplicationController
 
     rating_updater = Pokemons::Battle::RatingUpdater.new(winner_id: battle_service.winner_id,
                                                          loser_id: battle_service.loser_id)
-    rating_updater.refresh
+    rating_updater.call
   end
 
   def defender

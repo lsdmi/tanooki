@@ -3,7 +3,6 @@
 # Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
-  include Search::TagCountsHelper
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from StandardError, with: :handle_error if Rails.env.production?
@@ -33,8 +32,12 @@ class ApplicationController < ActionController::Base
 
   def latest_comments
     Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 10.minutes) do
-      Comments::InboxCollector.new(current_user).collect
+      Comments::InboxCollector.new(current_user).call
     end
+  end
+
+  def search_tag_counts(labels, scope: :all)
+    Search::TagCounts.call(labels, scope: scope)
   end
 
   def trending_tags

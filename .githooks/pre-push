@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+protected=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      protected=1
+      ;;
+  esac
+done
+
+if [ "$protected" -eq 1 ]; then
+  echo 'Running quality checks and tests before pushing to main/master...'
+  exec bin/verify
+fi
+
+exit 0

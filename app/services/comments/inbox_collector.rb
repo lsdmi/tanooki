@@ -9,7 +9,7 @@ module Comments
       @user = user
     end
 
-    def collect
+    def call
       (blog_comments + chapter_comments + fiction_comments + threads).sort_by(&:id).reverse.uniq
     end
 
