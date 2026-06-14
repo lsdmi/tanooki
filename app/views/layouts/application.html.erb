@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="uk">
   <head>
-    <script>
+    <script nonce="<%= content_security_policy_nonce %>">
       (function() {
         var isDark =
           localStorage.getItem('color-theme') === 'dark' ||

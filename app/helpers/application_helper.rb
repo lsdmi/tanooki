@@ -4,6 +4,7 @@
 module ApplicationHelper
   PRODUCTION_URL = Meta::CanonicalUrlHelper::PRODUCTION_URL
 
+  include Pagination::PagyHelper
   include Chapters::CommentsDrawerHelper
   include Chapters::ReaderBottomHelper
   include Comments::PresentationHelper

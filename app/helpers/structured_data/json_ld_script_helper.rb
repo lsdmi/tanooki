@@ -5,7 +5,7 @@ module StructuredData
   module JsonLdScriptHelper
     def json_ld_script(json_payload)
       content = json_payload.to_s.gsub('</', '<\\/')
-      tag.script(content, type: 'application/ld+json', escape: false)
+      tag.script(content, type: 'application/ld+json', escape: false, nonce: content_security_policy_nonce)
     end
   end
 end

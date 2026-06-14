@@ -2,7 +2,7 @@
   <%= turbo_frame_tag(
         "publications-page-#{pagy.next}",
         loading: :defer,
-        src: pagy_url_for(pagy, pagy.next),
+        src: pagy_next_page_src(pagy),
         target: "_top"
       ) %>
 <% end %>
