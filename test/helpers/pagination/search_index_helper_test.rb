@@ -5,7 +5,6 @@ require 'test_helper'
 module Pagination
   class SearchIndexHelperTest < ActionView::TestCase
     include SearchIndexHelper
-    include Pagination::TurboNavHelper
     include Rails.application.routes.url_helpers
 
     setup do
@@ -32,14 +31,6 @@ module Pagination
       controller.params[:search] = ['x']
 
       assert_equal({ search: ['x'], section: 'results' }, search_index_pagy_custom_params('results'))
-    end
-
-    test 'search_index_pagy_nav_html returns pagy nav markup' do
-      pagy = Pagy.new(count: 50, page: 1, limit: 10)
-      html = search_index_pagy_nav_html(pagy, frame_id: 'results-section', section: 'results')
-
-      assert_includes html, 'aria-label="Сторінок"'
-      assert_includes html, 'results-section'
     end
   end
 end

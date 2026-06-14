@@ -2,8 +2,7 @@
 
 # Handles translation team pages and authenticated team management.
 class ScanlatorsController < ApplicationController
-  helper Pagination::TurboNavHelper,
-         Scanlators::SelectOptionsHelper
+  helper Scanlators::SelectOptionsHelper
 
   include FictionQuery
 

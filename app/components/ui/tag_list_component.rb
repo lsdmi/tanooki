@@ -58,17 +58,13 @@ module Ui
     end
 
     def render_tag(label)
+      render Ui::TagComponent.new(**tag_component_options(label))
+    end
+
+    def tag_component_options(label)
       tag_href = href_for(label)
-      render Ui::TagComponent.new(
-        label: label,
-        variant: variant_for(label),
-        size: size,
-        as: tag_href.present? ? :link : :span,
-        href: tag_href,
-        current: current?(label),
-        count: count_for(label),
-        html: tag_html
-      )
+      { label: label, variant: variant_for(label), size: size, as: tag_href.present? ? :link : :span, href: tag_href,
+        current: current?(label), count: count_for(label), html: tag_html }
     end
 
     def wrapper_classes

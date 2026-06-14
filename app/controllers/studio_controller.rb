@@ -2,8 +2,7 @@
 
 # Translator studio dashboard for managing fictions and chapters.
 class StudioController < ApplicationController
-  helper Pagination::TurboNavHelper,
-         Pokemons::DexHelper,
+  helper Pokemons::DexHelper,
          Pokemons::StatsHelper,
          Studio::MenuHelper
 

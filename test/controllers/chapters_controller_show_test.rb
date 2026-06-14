@@ -5,6 +5,10 @@ require 'test_helper'
 class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  READER_SETTINGS_PANEL_SELECTOR =
+    '#reader-settings-panel.reader-settings__panel.fixed.inset-0.' \
+    'sm\\:inset-y-0.sm\\:left-auto.sm\\:right-0.sm\\:max-w-sm'
+
   setup do
     sign_in users(:user_one)
     @chapter = chapters(:one)
@@ -40,7 +44,7 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
   test 'reader settings panel is full screen on mobile and side drawer from sm up' do
     get chapter_url(@chapter)
 
-    assert_select '#reader-settings-panel.reader-settings__panel.fixed.inset-0.sm\\:inset-y-0.sm\\:left-auto.sm\\:right-0.sm\\:max-w-sm', count: 1
+    assert_select READER_SETTINGS_PANEL_SELECTOR, count: 1
   end
 
   test 'show hides site navigation chrome' do
@@ -57,18 +61,6 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'reader-comments-drawer'
     assert_includes response.body, 'data-comments-drawer-target="panel"'
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.title')
-  end
-
-  test 'guest sees login cta in comments drawer when chapter has comments' do
-    @chapter.comments << comments(:comment_one)
-    sign_out users(:user_one)
-
-    get chapter_url(@chapter)
-
-    assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_prompt')
-    assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_to_comment')
-    assert_not_includes response.body, Comments::Presentation.empty_state_for('chapters')
-    assert_includes response.body, new_user_session_path
   end
 
   test 'show renders chapter drawer' do

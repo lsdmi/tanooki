@@ -5,6 +5,7 @@ require 'test_helper'
 module Ui
   class PaginationComponentTest < ViewComponentTestCase
     include Rails.application.routes.url_helpers
+
     test 'renders nothing when only one page' do
       pagy = Pagy.new(count: 5, page: 1, limit: 10)
 
@@ -13,13 +14,27 @@ module Ui
       assert_no_selector 'nav'
     end
 
-    test 'renders translate-style pagination with current page highlighted' do
+    test 'renders translate-style pagination nav' do
       pagy = Pagy.new(count: 50, page: 2, limit: 10)
 
       render_inline(PaginationComponent.new(pagy: pagy, onclick: ->(page) { "loadPage(#{page})" }))
 
       assert_selector 'nav[aria-label="Сторінок"]'
+    end
+
+    test 'highlights current page in translate-style pagination' do
+      pagy = Pagy.new(count: 50, page: 2, limit: 10)
+
+      render_inline(PaginationComponent.new(pagy: pagy, onclick: ->(page) { "loadPage(#{page})" }))
+
       assert_selector 'span.bg-cyan-700', text: '2'
+    end
+
+    test 'renders onclick prev and next buttons' do
+      pagy = Pagy.new(count: 50, page: 2, limit: 10)
+
+      render_inline(PaginationComponent.new(pagy: pagy, onclick: ->(page) { "loadPage(#{page})" }))
+
       assert_selector 'button[onclick="loadPage(1)"]', text: '‹'
       assert_selector 'button[onclick="loadPage(3)"]', text: '›'
     end
@@ -41,7 +56,7 @@ module Ui
       assert_selector 'span.bg-cyan-700', text: '1'
     end
 
-    test 'uses explicit form_path instead of request.path' do
+    test 'uses explicit form_path for prev button' do
       pagy = Pagy.new(count: 30, page: 2, limit: 10)
 
       with_request_url(alphabetical_fictions_path) do
@@ -55,9 +70,39 @@ module Ui
       end
 
       assert_selector "form[action=\"#{library_path}\"]", text: '‹'
+    end
+
+    test 'uses explicit form_path for hidden page params' do
+      pagy = Pagy.new(count: 30, page: 2, limit: 10)
+
+      with_request_url(alphabetical_fictions_path) do
+        render_inline(
+          PaginationComponent.new(
+            pagy: pagy,
+            form_path: library_path,
+            custom_params: { section: 'active' }
+          )
+        )
+      end
+
       assert_selector "form[action=\"#{library_path}\"] input[name=\"page\"][value=\"1\"]", visible: :hidden
-      assert_selector "form[action=\"#{library_path}\"] input[name=\"section\"][value=\"active\"]", visible: :hidden
       assert_selector "form[action=\"#{library_path}\"] input[name=\"page\"][value=\"3\"]", visible: :hidden
+    end
+
+    test 'uses explicit form_path for hidden custom params' do
+      pagy = Pagy.new(count: 30, page: 2, limit: 10)
+
+      with_request_url(alphabetical_fictions_path) do
+        render_inline(
+          PaginationComponent.new(
+            pagy: pagy,
+            form_path: library_path,
+            custom_params: { section: 'active' }
+          )
+        )
+      end
+
+      assert_selector "form[action=\"#{library_path}\"] input[name=\"section\"][value=\"active\"]", visible: :hidden
     end
   end
 end

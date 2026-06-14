@@ -2,8 +2,7 @@
 
 # Paginated fiction browse lists (alphabetical index with filters and Turbo updates).
 class FictionListsController < ApplicationController
-  helper Fictions::ListPaginationHelper,
-         Pagination::TurboNavHelper
+  helper Fictions::ListPaginationHelper
 
   before_action :load_advertisement
   before_action :pokemon_appearance, only: [:alphabetical]

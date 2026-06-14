@@ -19,6 +19,6 @@ module Ui
       'cursor-default pointer-events-none'
     ].join(' ').freeze
 
-    GAP_CLASSES = 'px-3 py-2 text-sm font-medium text-gray-400 dark:text-gray-400 cursor-default'.freeze
+    GAP_CLASSES = 'px-3 py-2 text-sm font-medium text-gray-400 dark:text-gray-400 cursor-default'
   end
 end

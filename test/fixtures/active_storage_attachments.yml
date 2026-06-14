@@ -144,3 +144,10 @@ attachment_twenty_one:
   record_id: 1
   blob_id: 21
   created_at: <%= Time.now %>
+
+attachment_twenty_two:
+  name: banner
+  record_type: Fiction
+  record_id: 1
+  blob_id: 6
+  created_at: <%= Time.now %>

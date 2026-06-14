@@ -2,8 +2,6 @@
 
 # YouTube video index and watch pages with curated highlights and related videos.
 class YoutubeVideosController < ApplicationController
-  helper Pagination::TurboNavHelper
-
   before_action :load_advertisement
   before_action :set_video, :track_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]

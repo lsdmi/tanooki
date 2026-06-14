@@ -27,7 +27,7 @@ class FictionsController < ApplicationController
   before_action :pokemon_appearance, only: %i[index show]
 
   def index
-    @index_presenter = FictionIndexPresenter.new(params)
+    @index_presenter = FictionIndexPresenter.new
   end
 
   def show

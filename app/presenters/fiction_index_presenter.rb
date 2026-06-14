@@ -5,10 +5,6 @@ class FictionIndexPresenter
   GENRES_CACHE_EXPIRY = 24.hours
   HERO_AD_CACHE_EXPIRY = 12.hours
 
-  def initialize(params)
-    @params = params
-  end
-
   def self.warm_caches!
     Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
       Genre.order(:name).distinct.to_a
@@ -67,13 +63,7 @@ class FictionIndexPresenter
   end
 
   def sample_genre
-    @sample_genre ||= begin
-      if @params[:genre_id].present?
-        genres.find { |genre| genre.id == @params[:genre_id].to_i } || genres.sample
-      else
-        genres.sample
-      end
-    end
+    @sample_genre ||= genres.sample
   end
 
   def other

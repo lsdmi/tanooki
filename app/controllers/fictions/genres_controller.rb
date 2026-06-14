@@ -3,15 +3,14 @@
 module Fictions
   # Per-genre hub: hero, showcase carousel, new releases, and paginated “recommended” list.
   class GenresController < ApplicationController
-    helper Library::ChapterCatalogHelper,
-           Pagination::TurboNavHelper
+    helper Library::ChapterCatalogHelper
 
     before_action :set_genre
     before_action :pokemon_appearance, only: [:show]
 
     def show
       @skeleton = FictionGenrePageSkeleton.new(@genre)
-      @index_presenter = FictionIndexPresenter.new({})
+      @index_presenter = FictionIndexPresenter.new
       assign_genre_showcase_carousel
       assign_genre_recent_releases
       render_genre_recent_releases_frame? && return

@@ -2,8 +2,6 @@
 
 # User reading list: add, remove, and browse tracked fictions.
 class ReadingsController < ApplicationController
-  helper Pagination::TurboNavHelper
-
   before_action :authenticate_user!
   before_action :set_fiction, only: :show
   before_action :set_chapter, only: :destroy
