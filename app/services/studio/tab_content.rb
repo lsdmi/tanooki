@@ -89,7 +89,7 @@ module Studio
 
     def latest_comments
       Rails.cache.fetch("latest_comments_for_#{user.id}", expires_in: 10.minutes) do
-        CommentsFetcher.new(user).collect
+        Comments::InboxCollector.new(user).collect
       end
     end
 

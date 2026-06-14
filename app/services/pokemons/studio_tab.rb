@@ -31,7 +31,7 @@ module Pokemons
       Rails.cache.fetch("opponent_for_user:#{user.id}", expires_in: 5.minutes) do
         index = dex_overall.index(user)
         size = dex_overall.size
-        DexLeaderboard.new(index, size).call.then { |idx| dex_overall[idx] }
+        Pokemons::DexRankSampler.new(index, size).call.then { |idx| dex_overall[idx] }
       end
     end
 

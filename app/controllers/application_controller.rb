@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 
   def latest_comments
     Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 10.minutes) do
-      CommentsFetcher.new(current_user).collect
+      Comments::InboxCollector.new(current_user).collect
     end
   end
 

@@ -11,7 +11,7 @@
 <section class="relative overflow-hidden mt-8 mb-4 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
   <div class="mx-auto max-w-screen-2xl">
     <div data-controller="custom-carousel"
-         <% if eager_first_slide %>data-custom-carousel-eager-first-slide-value="true"<% end %>
+         <% if eager_first_slide %> data-custom-carousel-eager-first-slide-value="true" <% end %>
          class="relative w-full overflow-hidden h-[calc(16rem+1em)] md:h-[calc(24rem+1em)]">
       <!-- Spinner overlay -->
       <div data-custom-carousel-target="spinner" class="absolute inset-0 flex items-center justify-center bg-black/80 z-40<%= ' hidden' if eager_first_slide %>">

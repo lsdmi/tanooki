@@ -10,7 +10,7 @@
         <button type="button"
                 class="<%= item[:css_class] %>"
                 onclick="<%= item[:onclick] %>"
-                <% if item[:aria_label].present? %>aria-label="<%= item[:aria_label] %>"<% end %>>
+                <% if item[:aria_label].present? %> aria-label="<%= item[:aria_label] %>" <% end %>>
           <%= item[:label] %>
         </button>
       <% when :form %>

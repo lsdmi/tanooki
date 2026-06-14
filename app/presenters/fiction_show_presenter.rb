@@ -32,7 +32,7 @@ class FictionShowPresenter
 
   def bookmark_stats
     Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do
-      BookmarksAccounter.new(fiction: @fiction).call
+      Fictions::ReadingStatusCounts.new(fiction: @fiction).call
     end
   end
 

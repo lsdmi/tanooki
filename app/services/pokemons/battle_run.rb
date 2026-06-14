@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Runs one trainer-vs-trainer battle: team build, +BattleEngine+ rounds, log lines, winner/loser ids.
+  # Runs one trainer-vs-trainer battle: team build, +Pokemons::Battle::Engine+ rounds, log lines, winner/loser ids.
   class BattleRun
     attr_reader :attacker_pokemons, :defender_pokemons, :attacker_id, :defender_id, :battle_log, :winner_id, :loser_id,
                 :outcome_blocks
@@ -43,13 +43,13 @@ module Pokemons
     end
 
     def start_battle
-      logger = BattleLogger.new(attacker_id, defender_id, self)
+      logger = Battle::LogRenderer.new(attacker_id, defender_id, self)
       append_log(logger.start, :start)
 
       attacker_team = initialize_team(@attacker_pokemons)
       defender_team = initialize_team(@defender_pokemons)
 
-      battle_engine = BattleEngine.new(attacker_team, defender_team, logger)
+      battle_engine = Battle::Engine.new(attacker_team, defender_team, logger)
 
       battle_engine.execute_round while battle_engine.battle_continues?
 

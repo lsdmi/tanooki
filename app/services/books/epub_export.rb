@@ -23,7 +23,7 @@ module Books
     private
 
     def build_book
-      BookBuilder.new(@chapters, @volume_title).build
+      Books::EpubBuilder.new(@chapters, @volume_title).build
     end
 
     def set_filename

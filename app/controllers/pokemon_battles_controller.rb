@@ -56,7 +56,7 @@ class PokemonBattlesController < ApplicationController
   def opponent
     dex_overall = User.dex_leaders
 
-    DexLeaderboard.new(
+    Pokemons::DexRankSampler.new(
       dex_overall.index(current_user),
       dex_overall.size
     ).call.then { |idx| dex_overall[idx] }
