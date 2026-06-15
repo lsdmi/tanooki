@@ -18,6 +18,8 @@
 
     <%= render 'shared/meta', publication: @publication, chapter: @chapter, fiction: @fiction %>
 
+    <%= yield :head %>
+
     <%= json_ld_script(site_identity_meta) %>
 
     <%= json_ld_script(article_meta(@publication)) if article_meta? %>
@@ -45,13 +47,11 @@
     <% page_stylesheets.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
     <% end %>
-    <%= stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400&display=swap", "data-turbolinks-track": "reload" %>
     <% if chapters_show_page? %>
       <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, "data-turbo-track": "reload" %>
     <% end %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
-    <%= yield :head %>
 
     <% if requires_accordion_js? %>
       <%= javascript_include_tag 'accordion' %>
@@ -69,8 +69,6 @@
     <% end %>
 
     <%= javascript_include_tag 'font_toggler' if requires_legacy_font_toggler? %>
-    <%= javascript_import_module_tag 'mode_toggler' %>
-    <%= javascript_include_tag 'note_handler' %>
 
     <% if controller_name.to_sym == :translation_requests %>
       <%= javascript_import_module_tag 'translation_requests' %>
@@ -97,7 +95,9 @@
     </main>
     <%= render "shared/footer" unless immersive_reader_layout? %>
     <%= render "shared/cookie_consent_banner" %>
-    <%= javascript_include_tag 'cookie_consent' %>
+    <%= javascript_include_tag 'cookie_consent', defer: true %>
+    <%= javascript_include_tag 'note_handler', defer: true if requires_note_handler? %>
+    <%= javascript_import_module_tag 'mode_toggler' %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>
   </body>
 </html>

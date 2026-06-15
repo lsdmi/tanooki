@@ -27,6 +27,19 @@ module Layout
       assert_predicate self, :requires_sweetalert_css?
     end
 
+    test 'fiction index skips sweetalert CSS and note handler' do
+      assign_controller(:fictions, :index)
+
+      assert_not_predicate self, :requires_sweetalert_css?
+      assert_not_predicate self, :requires_note_handler?
+    end
+
+    test 'chapter show loads note handler' do
+      assign_controller(:chapters, :show)
+
+      assert_predicate self, :requires_note_handler?
+    end
+
     test 'tinymce is required on chapter and publication forms only' do
       assign_controller(:chapters, :new)
 

@@ -14,5 +14,5 @@ FileUtils.chdir(APP_ROOT) do
   end
 
   system('git', 'config', 'core.hooksPath', '.githooks', exception: true)
-  puts 'Installed git hooks from .githooks (pre-commit and pre-push gate main/master).'
+  puts 'Installed git hooks from .githooks (pre-commit gates main/master).'
 end

@@ -33,9 +33,7 @@ module Layout
 
     # SweetAlert JS (turbo frame + initializer) vs CSS (sweetal2 bundle) intentionally differ.
     SWEETALERT_JS_CONTROLLER_NAMES = %w[studio readings].freeze
-    SWEETALERT_CSS_CONTROLLER_NAMES = %w[
-      studio readings fictions bookshelves scanlators publications
-    ].freeze
+    SWEETALERT_CSS_SHOW_CONTROLLERS = %w[fictions bookshelves scanlators publications].freeze
 
     ACCORDION_SHOW_CONTROLLERS = %w[fictions chapters].freeze
 
@@ -52,7 +50,13 @@ module Layout
     end
 
     def requires_sweetalert_css?
-      controller_name.in?(SWEETALERT_CSS_CONTROLLER_NAMES)
+      return true if controller_name.in?(%w[studio readings])
+
+      controller_name.in?(SWEETALERT_CSS_SHOW_CONTROLLERS) && action_name == 'show'
+    end
+
+    def requires_note_handler?
+      chapters_show_page? || tales_show_page?
     end
 
     def requires_legacy_font_toggler?

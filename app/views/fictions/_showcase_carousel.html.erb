@@ -22,7 +22,7 @@
       </div>
       <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out w-full h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]" style="transform: translateX(0);">
         <% showcase.each_with_index do |fiction, index| %>
-          <% banner_url = banner_showcase_url(fiction.banner) %>
+          <% banner_url = index.zero? ? first_banner_url : banner_showcase_url(fiction.banner) %>
           <% eager_slide = index.zero? && banner_url.present? %>
           <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-2xl">
             <% if eager_slide %>
@@ -30,6 +30,7 @@
                     alt: "",
                     aria: { hidden: true },
                     fetchpriority: "high",
+                    loading: "eager",
                     decoding: "async",
                     width: 1600,
                     height: 540,
