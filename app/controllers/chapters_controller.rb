@@ -3,12 +3,15 @@
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
   include ChapterFictionStatusUpdate
+  include Chapters::CreationAuthorization
   include ChaptersViewHelpers
   include ChapterScheduleParams
   include FictionQuery
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update]
+  before_action :set_fiction_for_chapter_create, only: %i[new create]
+  before_action :authorize_chapter_creation, only: %i[new create]
   before_action :redirect_if_chapter_not_yet_public, only: :show
   before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
@@ -35,6 +38,7 @@ class ChaptersController < ApplicationController
 
   def create
     @chapter = Chapter.new(chapter_params)
+    @chapter.user = current_user
     return render_new_with_schedule_error if published_at_schedule_invalid?
 
     persist_new_chapter
@@ -50,9 +54,7 @@ class ChaptersController < ApplicationController
 
   def persist_new_chapter
     if @chapter.save
-      Chapters::SyncScanlatorAssociations.new(
-        chapter_params[:scanlator_ids], @chapter, user: current_user
-      ).call
+      sync_chapter_scanlator_links
       update_fiction_status
       redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
     else
@@ -62,9 +64,7 @@ class ChaptersController < ApplicationController
 
   def persist_chapter_update
     if @chapter.update(chapter_params)
-      Chapters::SyncScanlatorAssociations.new(
-        chapter_params[:scanlator_ids], @chapter, user: current_user
-      ).call
+      sync_chapter_scanlator_links
       update_fiction_status
       redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.update_success')
     else
@@ -85,7 +85,7 @@ class ChaptersController < ApplicationController
 
   def chapter_params
     permitted = params.expect(
-      chapter: [:content, :fiction_id, :number, :title, :user_id, :volume_number,
+      chapter: [:content, :fiction_id, :number, :title, :volume_number,
                 :published_at_date, :published_at_time,
                 { scanlator_ids: [] }]
     )

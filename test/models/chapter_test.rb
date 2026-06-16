@@ -82,4 +82,16 @@ class ChapterTest < ActiveSupport::TestCase
     assert_not_predicate @chapter, :valid?
     assert_includes @chapter.errors[:published_at], 'не може бути в минулому'
   end
+
+  test 'link_fiction_to_scanlators links persisted chapter teams only' do
+    chapter = chapters(:one)
+    fiction = chapter.fiction
+    other_team = scanlators(:two)
+    fiction.fiction_scanlators.where(scanlator: other_team).destroy_all
+    ChapterScanlator.create!(chapter:, scanlator: other_team)
+
+    chapter.link_fiction_to_scanlators!
+
+    assert FictionScanlator.exists?(fiction_id: fiction.id, scanlator_id: other_team.id)
+  end
 end

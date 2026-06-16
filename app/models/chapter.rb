@@ -8,8 +8,6 @@ class Chapter < ApplicationRecord
 
   attr_accessor :scanlator_ids
 
-  after_create_commit :manage_users
-
   belongs_to :fiction
   belongs_to :user
   has_rich_text :content
@@ -68,9 +66,9 @@ class Chapter < ApplicationRecord
 
   delegate :description, :title, :slug, to: :fiction, prefix: true
 
-  def manage_users
-    scanlator_ids.each do |scanlator_id|
-      FictionScanlator.find_or_create_by(fiction_id:, scanlator_id:)
+  def link_fiction_to_scanlators!
+    scanlators.ids.each do |scanlator_id|
+      FictionScanlator.find_or_create_by!(fiction_id:, scanlator_id:)
     end
   end
 

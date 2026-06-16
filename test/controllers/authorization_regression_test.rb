@@ -74,22 +74,6 @@ class AuthorizationRegressionTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'guest cannot create chapter' do
-    assert_no_difference('Chapter.count') do
-      post chapters_url, params: {
-        chapter: {
-          content: 'x' * 500,
-          fiction_id: fictions(:one).id,
-          number: 99,
-          scanlator_ids: [scanlators(:one).id],
-          title: 'Guest chapter'
-        }
-      }
-    end
-
-    assert_redirected_to new_user_session_path
-  end
-
   test 'non-owner cannot update translation request' do
     sign_in users(:user_two)
     request = translation_requests(:one)

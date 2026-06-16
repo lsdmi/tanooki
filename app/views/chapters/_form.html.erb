@@ -1,5 +1,4 @@
 <%= f.input :fiction_id, as: :hidden, input_html: { value: chapter.fiction&.id || Fiction.find_by(slug: params[:fiction])&.id } %>
-<%= f.input :user_id, as: :hidden, input_html: { value: chapter.user&.id || current_user.id } %>
 
 <div class="mx-auto">
   <!-- Top row: details | team -->

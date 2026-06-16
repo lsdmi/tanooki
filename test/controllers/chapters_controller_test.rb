@@ -43,13 +43,13 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
           fiction_id: @chapter.fiction_id,
           number: @chapter.number,
           scanlator_ids: [1],
-          title: @chapter.title,
-          user_id: @chapter.user_id
+          title: @chapter.title
         }
       }
     end
 
     assert_redirected_to reading_path(@chapter.fiction)
+    assert_equal users(:user_one).id, Chapter.order(:id).last.user_id
   end
 
   test 'should not create chapter with invalid data' do
@@ -57,7 +57,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
       post chapters_url, params: { chapter: { content: '', fiction_id: '', number: '', title: '' } }
     end
 
-    assert_response :unprocessable_content
+    assert_redirected_to root_path
   end
 
   test 'should get edit' do
