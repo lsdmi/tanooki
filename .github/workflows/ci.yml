@@ -50,6 +50,16 @@ jobs:
           bundler-cache: true
       - run: bundle exec erb_lint .
 
+  rails_best_practices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.9
+          bundler-cache: true
+      - run: bundle exec rails_best_practices
+
   test:
     runs-on: ubuntu-latest
     env:

@@ -4,6 +4,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_comment, only: %i[edit update destroy cancel_edit cancel_reply]
+  before_action :set_commentable, only: %i[edit destroy cancel_reply]
   before_action :authorize_comment_owner!, only: %i[edit update destroy cancel_edit]
 
   def new
@@ -11,9 +12,7 @@ class CommentsController < ApplicationController
     @commentable = @comment.commentable
   end
 
-  def edit
-    @commentable = @comment.commentable
-  end
+  def edit; end
 
   def create
     comment_params = create_comment_params
@@ -32,7 +31,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @commentable = @comment.commentable
     @comment.destroy
   end
 
@@ -40,14 +38,16 @@ class CommentsController < ApplicationController
     render 'complete_update'
   end
 
-  def cancel_reply
-    @commentable = @comment.commentable
-  end
+  def cancel_reply; end
 
   private
 
   def set_comment
     @comment = Comment.find(params[:id] || params[:comment_id])
+  end
+
+  def set_commentable
+    @commentable = @comment.commentable
   end
 
   def authorize_comment_owner!
