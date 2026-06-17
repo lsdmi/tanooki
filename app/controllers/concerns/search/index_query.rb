@@ -50,7 +50,7 @@ module Search
       Fiction.pagy_searchkick(
         params[:search],
         fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
-      )
+      ).includes(cover_attachment: :blob)
     end
 
     def publication_search

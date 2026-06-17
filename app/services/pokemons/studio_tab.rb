@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-# Namespace is +Pokemons+ (plural) to avoid clashing with the +Pokemon+ model.
 module Pokemons
   # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history.
   class StudioTab
-    attr_reader :user, :pokemons, :selected_pokemon, :descendant, :dex_overall,
+    attr_reader :user, :pokemons, :selected_pokemon, :descendant, :dex_leaderboard,
                 :opponent, :battle_history
 
     def initialize(user)
@@ -22,16 +21,14 @@ module Pokemons
     def assign_pokemon_details
       @selected_pokemon = @pokemons.first
       @descendant = @selected_pokemon.pokemon.descendant
-      @dex_overall = dex_leaders
+      @dex_leaderboard = Pokemons::DexLeaderboard.new
       @opponent = find_opponent
       @battle_history = fetch_battle_history
     end
 
     def find_opponent
       Rails.cache.fetch("opponent_for_user:#{user.id}", expires_in: 5.minutes) do
-        index = dex_overall.index(user)
-        size = dex_overall.size
-        Pokemons::DexRankSampler.new(index, size).call.then { |idx| dex_overall[idx] }
+        dex_leaderboard.opponent_for(user)
       end
     end
 
@@ -44,12 +41,6 @@ module Pokemons
     def pokemons_cache
       Rails.cache.fetch("user:#{user.id}:pokemons", expires_in: 5.minutes) do
         UserPokemonListQuery.new(user).call
-      end
-    end
-
-    def dex_leaders
-      Rails.cache.fetch('dex_leaders', expires_in: 5.minutes) do
-        User.dex_leaders
       end
     end
   end

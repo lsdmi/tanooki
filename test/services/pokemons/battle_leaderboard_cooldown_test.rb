@@ -9,5 +9,21 @@ module Pokemons
 
       assert_includes [true, false], result
     end
+
+    test 'call is true after a new battle even when battle_logs were already loaded' do
+      user = users(:user_one)
+      defender = users(:user_two)
+
+      user.attacker_battle_logs.to_a
+      user.defender_battle_logs.to_a
+
+      PokemonBattleLog.create!(
+        attacker: user,
+        defender:,
+        winner: user
+      )
+
+      assert BattleLeaderboardCooldown.call(user)
+    end
   end
 end

@@ -50,6 +50,6 @@ module UserProfile
   end
 
   def dex_leader_rank
-    self.class.dex_leaders.index(self) + 1
+    Pokemons::DexLeaderboard.new.rank_for(self)
   end
 end

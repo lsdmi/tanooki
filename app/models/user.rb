@@ -38,13 +38,6 @@ class User < ApplicationRecord
 
   scope :avatarless, -> { where(avatar_id: nil) }
 
-  scope :dex_leaders, lambda {
-    joins(:user_pokemons)
-      .includes(avatar: :image_attachment)
-      .group(:user_id)
-      .order(battle_win_rate: :desc)
-  }
-
   def send_devise_notification(notification, *)
     devise_mailer.send(notification, self, *).deliver_later
   end
@@ -67,8 +60,11 @@ class User < ApplicationRecord
     )
   end
 
-  def battle_logs
-    attacker_battle_logs + defender_battle_logs
+  def last_battle_at
+    PokemonBattleLog
+      .where(attacker_id: id)
+      .or(PokemonBattleLog.where(defender_id: id))
+      .maximum(:updated_at)
   end
 
   def latest_battle_log

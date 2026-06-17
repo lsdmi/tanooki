@@ -12,7 +12,7 @@ module Pokemons
     end
 
     def call
-      (user.battle_logs.maximum(:updated_at) || 1.year.ago) > 4.hours.ago
+      (user.last_battle_at || 1.year.ago) > 4.hours.ago
     end
 
     private

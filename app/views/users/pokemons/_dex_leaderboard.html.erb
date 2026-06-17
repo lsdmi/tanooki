@@ -21,9 +21,9 @@
     </div>
 
     <% if cooldown %>
-      <%= render 'users/pokemons/cooldown', dex_overall: %>
+      <%= render 'users/pokemons/cooldown', dex_leaderboard: %>
     <% else %>
-      <%= render 'users/pokemons/leaderboard_record', dex_overall:, opponent: %>
+      <%= render 'users/pokemons/leaderboard_record', dex_leaderboard:, opponent: %>
     <% end %>
   </div>
 </div>

@@ -31,7 +31,7 @@ module Pokemons
       user = User.find(101) # users fixture user_101: no user_pokemons rows
       tab = StudioTab.new(user)
 
-      assert_nil tab.dex_overall
+      assert_nil tab.dex_leaderboard
       assert_nil tab.opponent
       assert_nil tab.battle_history
     end
@@ -53,11 +53,12 @@ module Pokemons
       assert_same user.latest_battle_log, tab.battle_history
     end
 
-    test 'with pokemons exposes dex leaderboard scope' do
+    test 'with pokemons exposes dex leaderboard' do
       user = users(:user_one)
       tab = StudioTab.new(user)
 
-      assert_equal User.dex_leaders.to_a, tab.dex_overall.to_a
+      assert_instance_of DexLeaderboard, tab.dex_leaderboard
+      assert_equal 1, tab.dex_leaderboard.rank_for(user)
     end
   end
 end

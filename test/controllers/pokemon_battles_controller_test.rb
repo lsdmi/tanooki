@@ -20,6 +20,14 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, PokemonBattleLog.count
   end
 
+  test 'starting a battle refreshes leaderboard to cooldown via turbo stream' do
+    post battle_start_path(format: :turbo_stream), params: { defender: @defender.id }
+
+    assert_response :success
+    assert_includes @response.body, 'Перерва в'
+    assert_includes @response.body, 'pokemon-leaderboard-screen'
+  end
+
   test 'guest should not start a battle' do
     sign_out @attacker
 

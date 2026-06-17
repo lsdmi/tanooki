@@ -12,8 +12,7 @@ module Pokemons
     end
 
     def reason_for_cooldown(current_user)
-      user_fight = current_user.battle_logs.maximum(:updated_at) || 1.year.ago
-      cooldown_message_for(user_fight)
+      cooldown_message_for(current_user.last_battle_at || 1.year.ago)
     end
 
     def dex_title(rate)

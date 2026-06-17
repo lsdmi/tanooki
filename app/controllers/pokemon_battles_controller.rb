@@ -12,7 +12,7 @@ class PokemonBattlesController < ApplicationController
     else
       battle_service.start_battle
       create_battle_log
-      Rails.cache.delete("user:#{current_user.id}:battle_history")
+      finish_battle
       render turbo_stream: [refresh_leaders, refresh_history, remove_call]
     end
   end
@@ -54,12 +54,8 @@ class PokemonBattlesController < ApplicationController
   end
 
   def opponent
-    dex_overall = User.dex_leaders
-
-    Pokemons::DexRankSampler.new(
-      dex_overall.index(current_user),
-      dex_overall.size
-    ).call.then { |idx| dex_overall[idx] }
+    dex_leaderboard = Pokemons::DexLeaderboard.new
+    dex_leaderboard.opponent_for(current_user)
   end
 
   def pokemons
@@ -70,11 +66,17 @@ class PokemonBattlesController < ApplicationController
     self_fight || user_last_battle > 4.hours.ago
   end
 
+  def finish_battle
+    current_user.reload
+    Rails.cache.delete("user:#{current_user.id}:battle_history")
+    Rails.cache.delete("opponent_for_user:#{current_user.id}")
+  end
+
   def refresh_leaders
     turbo_stream.update(
       'pokemon-leaderboard-screen',
       partial: 'users/pokemons/dex_leaderboard',
-      locals: { dex_overall: User.dex_leaders, opponent:,
+      locals: { dex_leaderboard: Pokemons::DexLeaderboard.new, opponent:,
                 cooldown: Pokemons::BattleLeaderboardCooldown.call(current_user) }
     )
   end
@@ -108,6 +110,6 @@ class PokemonBattlesController < ApplicationController
   end
 
   def user_last_battle
-    current_user.battle_logs.maximum(:updated_at) || 1.year.ago
+    current_user.last_battle_at || 1.year.ago
   end
 end
