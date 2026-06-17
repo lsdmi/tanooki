@@ -37,6 +37,7 @@
     <%= json_ld_script(video_meta(@youtube_video)) if video_meta?(@youtube_video) %>
 
     <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>

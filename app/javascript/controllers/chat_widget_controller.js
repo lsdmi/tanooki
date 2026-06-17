@@ -78,15 +78,18 @@ export default class extends Controller {
   async initializeChat() {
     try {
       if (this.initialized || this.isLoading) return
-      
+
       this.isLoading = true
       this.showLoadingState()
+      this.setupFullEventListeners()
 
-      // Initialize Action Cable subscription (guests can still receive messages)
+      // History loads over HTTP so the widget works even when WebSocket is down.
+      await this.loadRecentMessages()
+
+      // Real-time updates are optional; guests can still read history.
       this.subscription = consumer.subscriptions.create("ChatChannel", {
         connected: () => {
           console.log("Connected to chat channel from widget")
-          this.loadRecentMessages()
         },
 
         disconnected: () => {
@@ -94,9 +97,7 @@ export default class extends Controller {
         },
 
         rejected: () => {
-          console.log("Connection rejected - loading messages without real-time updates")
-          // Still load recent messages even if WebSocket connection fails
-          this.loadRecentMessages()
+          console.log("Chat subscription rejected — showing history without live updates")
         },
 
         received: (data) => {
@@ -104,18 +105,12 @@ export default class extends Controller {
         }
       })
 
-      // Set up full event listeners for signed-in users
-      this.setupFullEventListeners()
-      
       this.initialized = true
-      this.isLoading = false
-      this.hideLoadingState()
     } catch (error) {
       console.error("Error initializing chat:", error)
+      this.showLoadError()
+    } finally {
       this.isLoading = false
-      this.hideLoadingState()
-      // Fallback: still try to load recent messages
-      this.loadRecentMessages()
     }
   }
 
@@ -136,8 +131,20 @@ export default class extends Controller {
     }
   }
 
-  hideLoadingState() {
-    // Loading state will be replaced by actual messages
+  showLoadError() {
+    try {
+      if (!this.hasMessagesTarget || !this.messagesTarget) return
+
+      this.messagesTarget.innerHTML = `
+        <div class="flex items-center justify-center h-full px-4 text-center">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Не вдалося завантажити чат. Спробуйте оновити сторінку.
+          </p>
+        </div>
+      `
+    } catch (error) {
+      console.error("Error showing load error:", error)
+    }
   }
 
   setupFullEventListeners() {
@@ -210,29 +217,21 @@ export default class extends Controller {
     }
   }
 
-  loadRecentMessages() {
-    try {
-      // Load recent messages via AJAX (works for both guests and signed-in users)
-      fetch('/chat/recent_messages')
-        .then(response => response.json())
-        .then(data => {
-          if (data.messages && Array.isArray(data.messages)) {
-            // Clear the messages container first to remove loading state
-            if (this.hasMessagesTarget && this.messagesTarget) {
-              this.messagesTarget.innerHTML = ''
-            }
-            data.messages.forEach(message => {
-              this.addMessage(message)
-            })
-            this.scrollToBottom()
-          }
-        })
-        .catch(error => {
-          console.error('Error loading recent messages:', error)
-        })
-    } catch (error) {
-      console.error("Error in loadRecentMessages:", error)
+  async loadRecentMessages() {
+    const response = await fetch('/chat/recent_messages')
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+
+    const data = await response.json()
+    if (!data.messages || !Array.isArray(data.messages)) return
+
+    if (this.hasMessagesTarget && this.messagesTarget) {
+      this.messagesTarget.innerHTML = ''
     }
+
+    data.messages.forEach(message => {
+      this.addMessage(message)
+    })
+    this.scrollToBottom()
   }
 
   addMessage(data) {
