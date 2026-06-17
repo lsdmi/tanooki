@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_17_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -109,6 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
     t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
     t.index ["published_at"], name: "index_chapters_on_published_at"
     t.index ["slug"], name: "index_chapters_on_slug", unique: true
@@ -207,6 +208,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.datetime "deleted_at"
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
+    t.index ["status", "deleted_at", "created_at"], name: "index_fictions_on_status_deleted_created"
     t.index ["status"], name: "index_fictions_on_status"
     t.index ["views"], name: "index_fictions_on_views"
   end
@@ -328,6 +330,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.integer "members_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_scanlators_on_slug", unique: true
   end
 
   create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
