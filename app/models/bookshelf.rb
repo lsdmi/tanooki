@@ -14,8 +14,6 @@ class Bookshelf < ApplicationRecord
   validates :description, presence: true, length: { minimum: 10, maximum: 500, allow_blank: true }
   validate :must_have_at_least_one_fiction
 
-  after_save :assign_fictions
-
   scope :ordered, -> { order(:created_at) }
   scope :most_viewed, -> { order(views: :desc) }
   scope :by_sqid, lambda { |sqid_string|
@@ -37,15 +35,5 @@ class Bookshelf < ApplicationRecord
     return unless fiction_ids.blank? || fiction_ids.compact_blank.empty?
 
     errors.add(:fiction_ids, 'Оберіть принаймні один твір')
-  end
-
-  def assign_fictions
-    return if fiction_ids.blank?
-
-    bookshelf_fictions.destroy_all
-
-    fiction_ids.compact_blank.each do |fiction_id|
-      bookshelf_fictions.create!(fiction_id: fiction_id)
-    end
   end
 end

@@ -69,12 +69,6 @@ class Chapter < ApplicationRecord
 
   delegate :description, :title, :slug, to: :fiction, prefix: true
 
-  def link_fiction_to_scanlators!
-    scanlators.ids.each do |scanlator_id|
-      FictionScanlator.find_or_create_by!(fiction_id:, scanlator_id:)
-    end
-  end
-
   # Not yet visible to the general public (published_at is still in the future).
   def scheduled?
     published_at.present? && published_at > Time.current

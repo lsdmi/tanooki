@@ -40,6 +40,7 @@ class BookshelvesController < ApplicationController
     @bookshelf = current_user.bookshelves.build(bookshelf_params)
 
     if @bookshelf.save
+      sync_bookshelf_fictions
       redirect_to studio_index_path(tab: 'bookshelves'), notice: t('bookshelves.notices.create_success')
     else
       render :new, status: :unprocessable_content
@@ -48,6 +49,7 @@ class BookshelvesController < ApplicationController
 
   def update
     if @bookshelf.update(bookshelf_params)
+      sync_bookshelf_fictions
       redirect_to studio_index_path(tab: 'bookshelves'), notice: t('bookshelves.notices.update_success')
     else
       render :edit, status: :unprocessable_content
@@ -72,6 +74,19 @@ class BookshelvesController < ApplicationController
 
   def bookshelf_params
     params.expect(bookshelf: [:title, :description, { fiction_ids: [] }])
+  end
+
+  def sync_bookshelf_fictions
+    Bookshelves::SyncFictions.call(
+      bookshelf: @bookshelf,
+      fiction_ids: submitted_fiction_ids
+    )
+  end
+
+  def submitted_fiction_ids
+    return [] unless params[:bookshelf]&.key?(:fiction_ids)
+
+    Array(params.dig(:bookshelf, :fiction_ids)).compact_blank
   end
 
   def load_selected_fictions

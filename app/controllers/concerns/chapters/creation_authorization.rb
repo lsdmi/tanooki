@@ -39,7 +39,7 @@ module Chapters
       Chapters::SyncScanlatorAssociations.new(
         chapter_params[:scanlator_ids], @chapter, user: current_user
       ).call
-      @chapter.link_fiction_to_scanlators!
+      Chapters::LinkFictionScanlators.call(chapter: @chapter)
     end
   end
 end
