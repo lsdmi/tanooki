@@ -23,23 +23,7 @@ class ChatChannel < ApplicationCable::Channel
   private
 
   def broadcast_message(message)
-    ActionCable.server.broadcast 'chat_room', message_data(message)
-  end
-
-  def message_data(message)
-    {
-      id: message.id,
-      content: message.content,
-      user_id: message.user.id,
-      user_name: message.user.name,
-      user_avatar: user_avatar_url(message.user),
-      formatted_time: message.formatted_time,
-      created_at: message.created_at
-    }
-  end
-
-  def user_avatar_url(user)
     ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?
-    user.avatar&.image&.attached? ? user.avatar.image.url : nil
+    ActionCable.server.broadcast 'chat_room', Chat::PublicMessageSerializer.call(message)
   end
 end

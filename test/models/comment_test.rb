@@ -27,6 +27,18 @@ class CommentTest < ActiveSupport::TestCase
     assert_predicate comment, :valid?, 'Comment is invalid with required attributes'
   end
 
+  test 'rejects non-whitelisted commentable_type' do
+    comment = Comment.new(
+      content: 'valid comment',
+      commentable_type: 'User',
+      commentable_id: @user.id,
+      user: @user
+    )
+
+    assert_not_predicate comment, :valid?
+    assert comment.errors.of_kind?(:commentable_type, :inclusion)
+  end
+
   test 'should destroy child comments when parent is destroyed' do
     parent = Comment.create(content: 'Parent comment', commentable: @publication, user: @user)
     child1 = Comment.create(content: 'Child 1', parent:, commentable: @publication, user: @user)

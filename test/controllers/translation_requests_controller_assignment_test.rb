@@ -47,6 +47,36 @@ class TranslationRequestsControllerAssignmentTest < ActionDispatch::IntegrationT
     verify_translation_request_unassigned
   end
 
+  test 'assigned scanlator member can unassign another users request' do
+    sign_in @user
+    request = translation_requests(:two)
+
+    delete unassign_translation_request_path(request)
+
+    assert_response :success
+    assert_nil request.reload.scanlator_id
+  end
+
+  test 'request owner can unassign without belonging to assigned team' do
+    sign_in users(:user_two)
+    request = translation_requests(:two)
+
+    delete unassign_translation_request_path(request)
+
+    assert_response :success
+    assert_nil request.reload.scanlator_id
+  end
+
+  test 'third party cannot unassign translation request' do
+    sign_in users(:user_two)
+    @translation_request.update!(scanlator: @scanlator)
+
+    delete unassign_translation_request_path(@translation_request)
+
+    assert_response :forbidden
+    assert_equal @scanlator.id, @translation_request.reload.scanlator_id
+  end
+
   test 'should handle assign with non-existent scanlator' do
     sign_in @user
 

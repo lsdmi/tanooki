@@ -16,21 +16,47 @@ class ChatControllerTest < ActionDispatch::IntegrationTest
         content_type: 'image/svg+xml'
       )
     end
+
+    ActionController::Base.cache_store.clear
   end
 
-  test 'should get recent_messages' do
-    user = users(:user_one)
+  test 'guest can get recent_messages without authentication' do
+    get chat_recent_messages_url
+
+    assert_response :success
+  end
+
+  test 'should get recent_messages with public user fields' do
     message = chat_messages(:one)
 
     get chat_recent_messages_url
 
     assert_response :success
-    json = response.parsed_body
+    first = response.parsed_body['messages'].first
 
-    assert_kind_of Array, json['messages']
+    assert_equal message.content, first['content']
+    assert_equal message.user.name, first['user_name']
+  end
 
-    first = json['messages'].first
+  test 'recent_messages payload excludes sensitive user fields' do
+    get chat_recent_messages_url
 
-    assert_equal [message.content, user.id], [first['content'], first['user_id']]
+    first = response.parsed_body['messages'].first
+    public_keys = Chat::PublicMessageSerializer::PUBLIC_KEYS.map(&:to_s)
+
+    assert_equal public_keys.sort, first.keys.sort
+    assert_empty first.keys - public_keys
+  end
+
+  test 'rate limits recent_messages per ip' do
+    30.times do
+      get chat_recent_messages_url, env: { 'REMOTE_ADDR' => '203.0.113.10' }
+
+      assert_response :success
+    end
+
+    get chat_recent_messages_url, env: { 'REMOTE_ADDR' => '203.0.113.10' }
+
+    assert_response :too_many_requests
   end
 end

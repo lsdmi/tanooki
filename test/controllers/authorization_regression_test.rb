@@ -85,6 +85,30 @@ class AuthorizationRegressionTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
+  test 'third party cannot unassign translation request' do
+    sign_in users(:user_two)
+    request = translation_requests(:one)
+    request.update!(scanlator: scanlators(:one))
+
+    delete unassign_translation_request_path(request)
+
+    assert_response :forbidden
+    assert_equal scanlators(:one).id, request.reload.scanlator_id
+  end
+
+  test 'rejects comment with non-whitelisted commentable_type' do
+    sign_in users(:user_one)
+    publication = publications(:tale_approved_one)
+
+    assert_no_difference('Comment.count') do
+      post comments_url(format: :turbo), params: {
+        comment: { content: 'Hack', commentable_id: publication.id, commentable_type: 'User' }
+      }
+    end
+
+    assert_response :unprocessable_content
+  end
+
   test 'guest cannot download epub export' do
     rich_text = ActionText::RichText.find_by(record: chapters(:one), name: 'content')
 

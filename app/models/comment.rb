@@ -12,6 +12,7 @@ class Comment < ApplicationRecord
   scope :parents, -> { where(parent_id: nil) }
 
   validates :content, presence: true, length: { maximum: 2200 }
+  validate :commentable_type_must_be_allowed
 
   def username
     user.name
@@ -23,5 +24,14 @@ class Comment < ApplicationRecord
 
   def chapter_comment?
     commentable_type == Chapter.name
+  end
+
+  private
+
+  def commentable_type_must_be_allowed
+    return if commentable_type.blank?
+    return if Comments::CommentableWhitelist.allowed?(commentable_type)
+
+    errors.add(:commentable_type, :inclusion)
   end
 end

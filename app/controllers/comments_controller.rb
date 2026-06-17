@@ -3,6 +3,7 @@
 # Handles authenticated comment creation, replies, editing, and deletion.
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :reject_disallowed_commentable_type!, only: %i[new create]
   before_action :set_comment, only: %i[edit update destroy cancel_edit cancel_reply]
   before_action :set_commentable, only: %i[edit destroy cancel_reply]
   before_action :authorize_comment_owner!, only: %i[edit update destroy cancel_edit]
@@ -17,7 +18,9 @@ class CommentsController < ApplicationController
   def create
     comment_params = create_comment_params
     @created_comment = current_user.comments.create(comment_params)
-    @commentable = @created_comment.commentable
+    @commentable = @created_comment.commentable || commentable_from_params(comment_params)
+
+    return head :unprocessable_content if @created_comment.invalid? && @commentable.nil?
 
     update_parent(comment_params[:parent_id])
 
@@ -76,5 +79,19 @@ class CommentsController < ApplicationController
     return if @reply_parent&.parent_id.blank?
 
     @created_comment.update(parent_id: @reply_parent.parent_id)
+  end
+
+  def reject_disallowed_commentable_type!
+    type = params.dig(:comment, :commentable_type)
+    return if type.blank? || Comments::CommentableWhitelist.allowed?(type)
+
+    head :unprocessable_content
+  end
+
+  def commentable_from_params(comment_params)
+    type = comment_params[:commentable_type]
+    return unless Comments::CommentableWhitelist.allowed?(type)
+
+    type.constantize.find_by(id: comment_params[:commentable_id])
   end
 end

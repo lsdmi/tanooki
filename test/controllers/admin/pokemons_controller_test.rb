@@ -40,6 +40,27 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_pokemons_path
   end
 
+  test 'ignores spoofed type_ids when creating pokemon' do
+    assert_difference('Pokemon.count') do
+      post admin_pokemons_url, params: {
+        pokemon: @pokemon_params.merge(type_ids: [pokemon_types(:one).id, 999_999])
+      }
+    end
+
+    pokemon = Pokemon.order(:id).last
+
+    assert_equal [pokemon_types(:one).id], pokemon.types.ids
+  end
+
+  test 'ignores spoofed type_ids when updating pokemon' do
+    patch admin_pokemon_url(@pokemon), params: {
+      pokemon: @pokemon_params.merge(type_ids: [pokemon_types(:one).id, 999_999])
+    }
+
+    assert_redirected_to admin_pokemons_path
+    assert_equal [pokemon_types(:one).id], @pokemon.reload.types.ids
+  end
+
   test 'should destroy pokemon' do
     assert_difference('Pokemon.count', -1) do
       delete admin_pokemon_url(@pokemon)

@@ -8,6 +8,7 @@ class TranslationRequestsController < ApplicationController
   before_action :load_advertisement
   before_action :set_translation_request, only: %i[update assign unassign destroy]
   before_action :authorize_translation_request_owner!, only: %i[update destroy]
+  before_action :authorize_translation_request_unassign!, only: :unassign
 
   def index
     load_index_data
@@ -79,8 +80,24 @@ class TranslationRequestsController < ApplicationController
   end
 
   def authorize_translation_request_owner!
-    return if current_user.admin? || current_user.translation_requests.exists?(id: @translation_request.id)
+    return if translation_request_admin_or_owner?
 
     head :forbidden
+  end
+
+  def authorize_translation_request_unassign!
+    return if translation_request_admin_or_owner?
+    return if assigned_scanlator_member?
+
+    head :forbidden
+  end
+
+  def translation_request_admin_or_owner?
+    current_user.admin? || current_user.translation_requests.exists?(id: @translation_request.id)
+  end
+
+  def assigned_scanlator_member?
+    @translation_request.scanlator_id.present? &&
+      current_user.scanlators.exists?(id: @translation_request.scanlator_id)
   end
 end

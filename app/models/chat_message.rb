@@ -15,14 +15,6 @@ class ChatMessage < ApplicationRecord
   end
 
   def as_recent_api_json
-    {
-      id: id,
-      content: content,
-      user_id: user.id,
-      user_name: user.name,
-      user_avatar: user.chat_avatar_url,
-      formatted_time: formatted_time,
-      created_at: created_at
-    }
+    Chat::PublicMessageSerializer.call(self)
   end
 end

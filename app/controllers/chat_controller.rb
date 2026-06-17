@@ -2,6 +2,8 @@
 
 # JSON API for recent messages in the site-wide chat room.
 class ChatController < ApplicationController
+  rate_limit to: 30, within: 1.minute, only: :recent_messages
+
   def recent_messages
     ActiveStorage::Current.url_options = { host: 'localhost:3000' } if Rails.env.test?
     messages = ChatMessage.includes(:user, user: :avatar)

@@ -18,10 +18,10 @@ module Admin
     def edit; end
 
     def create
-      @pokemon = Pokemon.new(pokemon_params)
+      @pokemon = Pokemon.new(pokemon_attributes)
 
       if @pokemon.save
-        manage_types if params[:pokemon][:type_ids]
+        sync_types if type_ids_submitted?
         redirect_to admin_pokemons_path, notice: t('admin.pokemons.notices.create_success')
       else
         render 'admin/pokemons/new', status: :unprocessable_content
@@ -29,8 +29,8 @@ module Admin
     end
 
     def update
-      if @pokemon.update(pokemon_params)
-        manage_types if params[:pokemon][:type_ids]
+      if @pokemon.update(pokemon_attributes)
+        sync_types if type_ids_submitted?
         redirect_to admin_pokemons_path, notice: t('admin.pokemons.notices.update_success')
       else
         render 'admin/pokemons/edit', status: :unprocessable_content
@@ -51,17 +51,25 @@ module Admin
 
     private
 
-    def manage_types
+    def sync_types
       existing_type_ids = @pokemon.types.ids
 
-      (pokemon_types_ids - existing_type_ids)
+      (permitted_type_ids - existing_type_ids)
         .each { |pokemon_type_id| @pokemon.pokemon_type_relations.create(pokemon_type_id:) }
-      (existing_type_ids - pokemon_types_ids)
+      (existing_type_ids - permitted_type_ids)
         .each { |pokemon_type_id| @pokemon.pokemon_type_relations.find_by(pokemon_type_id:).destroy }
     end
 
-    def pokemon_types_ids
-      @pokemon_types_ids ||= params[:pokemon][:type_ids].compact_blank.map(&:to_i)
+    def permitted_type_ids
+      @permitted_type_ids ||= Pokemons::PermittedTypeIds.filter(pokemon_params[:type_ids])
+    end
+
+    def type_ids_submitted?
+      pokemon_params.key?(:type_ids)
+    end
+
+    def pokemon_attributes
+      pokemon_params.except(:type_ids)
     end
 
     def set_types
@@ -70,7 +78,10 @@ module Admin
 
     def pokemon_params
       params.expect(
-        pokemon: %i[ancestor_id descendant_id descendant_level dex_id name power_level rarity sprite]
+        pokemon: [
+          :ancestor_id, :descendant_id, :descendant_level, :dex_id, :name, :power_level, :rarity, :sprite,
+          { type_ids: [] }
+        ]
       )
     end
 

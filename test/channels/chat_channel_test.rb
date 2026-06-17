@@ -45,6 +45,18 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     end
   end
 
+  test 'speak broadcasts only public message fields' do
+    stub_connection(current_user: @user)
+    subscribe
+
+    perform :speak, message: @message_content
+
+    payload = JSON.parse(ActionCable.server.pubsub.broadcasts('chat_room').last)
+
+    assert_equal Chat::PublicMessageSerializer::PUBLIC_KEYS.map(&:to_s).sort, payload.keys.sort
+    assert_not payload.key?('user_id')
+  end
+
   test 'speak does nothing when user is not authenticated' do
     stub_connection(current_user: nil)
     subscribe
