@@ -17,6 +17,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def show
+    @scanlator_stats = Scanlators::ShowPresenter.new(@scanlator)
     @fictions = @scanlator.fictions.most_reads.includes(%i[cover_attachment genres])
   end
 

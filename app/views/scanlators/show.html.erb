@@ -21,19 +21,19 @@
             <div class="flex items-center justify-center lg:justify-end space-x-2 sm:space-x-4 mb-4 lg:mb-0">
               <!-- Chapters -->
               <div class="text-center bg-stone-800/50 rounded-lg p-2 sm:p-3 shadow-lg">
-                <%= tag.p format_view_count(@scanlator.chapters.size), class: 'text-xl sm:text-2xl md:text-3xl font-bold anime-text text-stone-100' %>
+                <%= tag.p format_view_count(@scanlator_stats.chapters_count), class: 'text-xl sm:text-2xl md:text-3xl font-bold anime-text text-stone-100' %>
                 <p class="text-xs sm:text-sm md:text-base text-stone-300">Розділів</p>
               </div>
 
               <!-- Readings -->
               <div class="text-center bg-stone-800/50 rounded-lg p-2 sm:p-3 shadow-lg">
-                <%= tag.p format_view_count(@scanlator.chapters.sum(:views)), class: "text-xl sm:text-2xl md:text-3xl font-bold anime-text text-stone-100" %>
+                <%= tag.p format_view_count(@scanlator_stats.total_views), class: "text-xl sm:text-2xl md:text-3xl font-bold anime-text text-stone-100" %>
                 <p class="text-xs sm:text-sm md:text-base text-stone-300">Прочитань</p>
               </div>
 
               <!-- Status -->
               <div class="text-center bg-stone-800/50 rounded-lg p-2 sm:p-3 shadow-lg">
-                <% if @scanlator.active_this_month? %>
+                <% if @scanlator_stats.active_recently? %>
                   <%= tag.p "Актив.", class: "text-base sm:text-lg md:text-xl font-bold anime-text text-green-400" %>
                 <% else %>
                   <%= tag.p "Неакт.", class: "text-base sm:text-lg md:text-xl font-bold anime-text text-red-400" %>
@@ -44,7 +44,7 @@
               <!-- Rating -->
               <div class="text-center bg-stone-800/50 rounded-lg p-2 sm:p-3 shadow-lg">
                 <div class="flex items-center justify-center mb-1">
-                  <% rating = @scanlator.average_rating %>
+                  <% rating = @scanlator_stats.average_rating %>
                   <% (1..5).each do |star| %>
                     <% if rating >= star %>
                       <svg class="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -68,7 +68,7 @@
                 </div>
                 <% if rating > 0 %>
                   <%= tag.p number_with_precision(rating, precision: 1), class: "text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-100" %>
-                  <p class="text-xs sm:text-sm md:text-base text-stone-300">Рейтинг (<%= @scanlator.total_rating_count %>)</p>
+                  <p class="text-xs sm:text-sm md:text-base text-stone-300">Рейтинг (<%= @scanlator_stats.total_rating_count %>)</p>
                 <% else %>
                   <%= tag.p "—", class: "text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-400" %>
                   <p class="text-xs sm:text-sm md:text-base text-stone-300">Рейтинг</p>

@@ -6,7 +6,7 @@ class Chapter < ApplicationRecord
   acts_as_paranoid
   friendly_id :slug_candidates
 
-  attr_accessor :scanlator_ids
+  attr_accessor :scanlator_ids, :scanlator_ids_for_stats_cache
 
   belongs_to :fiction
   belongs_to :user
@@ -48,6 +48,9 @@ class Chapter < ApplicationRecord
   }
 
   delegate :author, :cover, to: :fiction
+
+  before_destroy :capture_scanlator_ids_for_stats_cache
+  after_commit :invalidate_scanlator_stats_cache, on: %i[create update destroy]
 
   def display_title
     header = ''
@@ -105,5 +108,14 @@ class Chapter < ApplicationRecord
       else
         scanlator_ids&.compact_blank
       end
+  end
+
+  def capture_scanlator_ids_for_stats_cache
+    self.scanlator_ids_for_stats_cache = scanlator_ids
+  end
+
+  def invalidate_scanlator_stats_cache
+    ids = scanlator_ids_for_stats_cache.presence || scanlator_ids
+    Scanlators::StatsCacheInvalidation.for_scanlator_ids(ids)
   end
 end

@@ -4,4 +4,12 @@
 class FictionScanlator < ApplicationRecord
   belongs_to :fiction
   belongs_to :scanlator, counter_cache: :fictions_count
+
+  after_commit :invalidate_scanlator_stats_cache, on: %i[create destroy]
+
+  private
+
+  def invalidate_scanlator_stats_cache
+    Scanlators::StatsCacheInvalidation.for_scanlator_ids(scanlator_id)
+  end
 end

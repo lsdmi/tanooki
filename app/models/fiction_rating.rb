@@ -7,4 +7,12 @@ class FictionRating < ApplicationRecord
 
   validates :rating, presence: true, inclusion: { in: 1..5 }
   validates :user_id, uniqueness: { scope: :fiction_id }
+
+  after_commit :invalidate_scanlator_stats_cache, on: %i[create update destroy]
+
+  private
+
+  def invalidate_scanlator_stats_cache
+    Scanlators::StatsCacheInvalidation.for_fiction(fiction)
+  end
 end

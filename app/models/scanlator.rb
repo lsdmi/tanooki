@@ -51,25 +51,16 @@ class Scanlator < ApplicationRecord
     ]
   end
 
-  def active_this_month?
-    chapters.exists?(["#{Chapter::PUBLIC_TIME_SQL} BETWEEN ? AND ?", 60.days.ago, Time.current])
+  def active_recently?
+    Stats.compute(self).active_recently?
   end
 
   def average_rating
-    return 0.0 if fictions.empty?
-
-    # Calculate average rating across all fictions
-    total_ratings = FictionRating.where(fiction_id: fiction_ids)
-    return 0.0 if total_ratings.empty?
-
-    total_ratings.average(:rating).round(1)
+    Stats.compute(self).average_rating
   end
 
   def total_rating_count
-    return 0 if fictions.empty?
-
-    fiction_ids = fictions.pluck(:id)
-    FictionRating.where(fiction_id: fiction_ids).count
+    Stats.compute(self).total_rating_count
   end
 
   private

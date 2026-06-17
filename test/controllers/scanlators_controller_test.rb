@@ -83,6 +83,14 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_not_nil assigns(:fictions)
+    assert_kind_of Scanlators::ShowPresenter, assigns(:scanlator_stats)
+  end
+
+  test 'should show scanlator stats on profile page' do
+    get scanlator_path(scanlators(:one))
+
+    assert_includes response.body, 'Розділів'
+    assert_includes response.body, '4.5'
   end
 
   test 'should destroy scanlator' do
