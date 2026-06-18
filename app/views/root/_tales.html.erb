@@ -11,10 +11,10 @@
         <div>
           <% top_tales.each do |top_tale| %>
             <article class="mb-8">
-              <%= link_to tale_path(top_tale) do %>
-                <div class="relative mb-5 rounded-md shadow-md border border-gray-200 dark:border-gray-700">
-                  <%= image_tag cover_card_url(top_tale.cover), alt: top_tale.cover.blob.filename.to_s, class: "rounded-lg object-cover" %>
-                  <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
+              <%= link_to tale_path(top_tale), class: "group block" do %>
+                <div class="relative mb-5 w-full overflow-hidden rounded-md shadow-md border border-gray-200 dark:border-gray-700 aspect-video">
+                  <%= image_tag cover_card_url(top_tale.cover), alt: top_tale.cover.blob.filename.to_s, class: "block h-full w-full object-cover rounded-lg" %>
+                  <div class="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
                 </div>
               <% end %>
               <%= tag.h2 class: 'line-clamp-3 my-2 text-2xl font-bold tracking-tight leading-tight text-white hover:underline hover:text-cyan-200 dark:hover:text-rose-800' do %>

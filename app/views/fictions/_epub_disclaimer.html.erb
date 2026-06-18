@@ -5,11 +5,11 @@
     <% workshop_href = fiction.scanlators.size == 1 ? edit_scanlator_path(fiction.scanlators.first) : scanlators_path %>
     <%= epub_notice_paragraph safe_join([
       if user_teams_on_fiction.any? && user_teams_on_fiction.all?(&:convertable?)
-        'Ваша команда підтримує завантаження в форматі EPUB. Ви можете змінити налаштування'
+        'Ваша команда підтримує завантаження в форматі EPUB. Ви можете змінити налаштування '
       elsif user_teams_on_fiction.any? && user_teams_on_fiction.none?(&:convertable?)
-        'Ваша команда не підтримує завантаження в форматі EPUB. Ви можете змінити налаштування'
+        'Ваша команда не підтримує завантаження в форматі EPUB. Ви можете змінити налаштування '
       else
-        'Серед ваших команд на цьому творі різні правила щодо EPUB. Ви можете змінити налаштування'
+        'Серед ваших команд на цьому творі різні правила щодо EPUB. Ви можете змінити налаштування '
       end,
       link_to('в майстерні', workshop_href, class: 'text-stone-800 dark:text-gray-100 font-semibold hover:text-stone-600 dark:hover:text-gray-300 transition duration-300'),
       '.'

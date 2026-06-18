@@ -1,29 +1,25 @@
-<div class="relative float-left w-full lg:mt-8">
+<div class="relative w-full lg:mt-8">
   <% highlights.first(3).each do |highlight| %>
-    <article class="mt-2 lg:mt-0 float-left relative w-full lg:mx-0 mb-1 md:mb-2 lg:mb-0 md:flex lg:block justify-center">
-      <div class="rounded-md float-left relative w-full md:w-4/5 lg:w-full overflow-hidden h-72 md:h-48 mb-2 md:mb-1 lg:mb-2">
-        <%= link_to tale_path(highlight) do %>
-          <div class="float-left relative mb-2 w-full">
-            <%= image_tag cover_card_url(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "rounded-lg h-72 md:h-48 w-full object-cover" %>
-            <div class="z-10 rounded-xl absolute top-0 right-0 bottom-0 left-0 w-full h-auto overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
-          </div>
+    <article class="mt-2 lg:mt-0 mb-1 md:mb-2 lg:mb-0 flex flex-col md:flex-row lg:flex-col md:gap-4 md:items-start">
+      <div class="relative w-full md:w-2/5 lg:w-full shrink-0 overflow-hidden rounded-md h-48 md:h-48 mb-2 lg:mb-2">
+        <%= link_to tale_path(highlight), class: "block h-full w-full" do %>
+          <%= image_tag cover_card_url(highlight.cover), alt: highlight.cover.blob.filename.to_s, class: "h-full w-full object-cover rounded-lg" %>
+          <div class="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition duration-300 ease-in-out" style="background-color: rgba(255, 255, 255, 0.2)"></div>
         <% end %>
       </div>
-      <div class="grid grid-cols-6 lg:grid-cols-5 gap-1 w-full float-left flex items-center md:ml-4 lg:ml-0">
-        <div class="col-span-6 lg:col-span-5">
-          <%= render Ui::TagListComponent.new(
-                labels: highlight.tags.map(&:name),
-                variant: :keyword,
-                size: :sm,
-                max: 3,
-                href_builder: ->(name) { search_index_path(search: [name]) },
-                counts: publication_tag_counts
-              ) %>
-          <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline">
-            <%= link_to highlight.title, tale_path(highlight) %>
-          </h2>
-          <%= tag.p highlight.description.to_plain_text, class: 'mb-4 mt-2 font-light text-base lg:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 md:line-clamp-3 lg:line-clamp-2' %>
-        </div>
+      <div class="w-full md:flex-1 md:min-w-0">
+        <%= render Ui::TagListComponent.new(
+              labels: highlight.tags.map(&:name),
+              variant: :keyword,
+              size: :sm,
+              max: 3,
+              href_builder: ->(name) { search_index_path(search: [name]) },
+              counts: publication_tag_counts
+            ) %>
+        <h2 class="my-2 text-2xl lg:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:underline">
+          <%= link_to highlight.title, tale_path(highlight) %>
+        </h2>
+        <%= tag.p highlight.description.to_plain_text, class: 'mb-4 mt-2 font-light text-base lg:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 md:line-clamp-3 lg:line-clamp-2' %>
       </div>
     </article>
   <% end if highlights&.any? %>

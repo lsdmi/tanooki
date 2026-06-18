@@ -19,8 +19,8 @@ pin 'channels/consumer', preload: true
 pin 'channels/chat_channel', preload: true
 pin 'channels/index', preload: true
 
-# Translation requests functionality
-pin 'translation_requests', preload: true
+# Translation request Stimulus helpers
+pin_all_from 'app/javascript/translation_requests', under: 'translation_requests'
 pin 'reader_preferences', preload: false
 pin 'safe_logo_src', preload: false
 pin 'mode_toggler', preload: false

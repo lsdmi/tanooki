@@ -1,0 +1,16 @@
+<div class="flex items-center space-x-2">
+  <%= link_to chapter_path(chapter), data: { turbo: false }, class: Readings::ChapterRowComponentStyles::VIEW_ACTION_CLASSES, title: 'Переглянути' do %>
+    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />
+    </svg>
+  <% end %>
+
+  <%= link_to edit_chapter_path(chapter.slug), data: { turbo: false }, class: Readings::ChapterRowComponentStyles::EDIT_ACTION_CLASSES, title: 'Редагувати' do %>
+    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  <% end %>
+
+  <%= delete_button %>
+</div>

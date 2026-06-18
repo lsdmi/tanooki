@@ -309,13 +309,16 @@
         </svg>
       </div>
 
-      <div class="relative z-10">
-        <div id="requests-container">
+      <div class="relative z-10"
+           data-controller="translation-requests-page"
+           data-translation-requests-page-current-page-value="<%= @pagy.page %>"
+           data-action="click@window->translation-requests-page#closeDropdowns translation-request-card:deleted@window->translation-requests-page#handleDeleted">
+        <%= turbo_frame_tag 'requests-container' do %>
           <%= render 'translation_requests/requests_list',
               translation_requests: @translation_requests,
               pagy: @pagy,
               total_requests_count: @total_requests_count %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

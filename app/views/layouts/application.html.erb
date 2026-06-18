@@ -69,10 +69,8 @@
       <% end %>
     <% end %>
 
-    <%= javascript_include_tag 'font_toggler' if requires_legacy_font_toggler? %>
-
-    <% if controller_name.to_sym == :translation_requests %>
-      <%= javascript_import_module_tag 'translation_requests' %>
+    <% if requires_legacy_font_toggler? %>
+      <%= javascript_include_tag 'font_toggler' %>
     <% end %>
   </head>
 
