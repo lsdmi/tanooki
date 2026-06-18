@@ -1,0 +1,35 @@
+<div class="flex items-center justify-center mb-1">
+  <% star_states.each do |state| %>
+    <% if state == :full %>
+      <svg class="<%= Ui::StarRatingComponentStyles::FULL_STAR_CLASSES %>" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="<%= Ui::StarRatingComponentStyles::STAR_PATH %>" />
+      </svg>
+    <% elsif state == :half %>
+      <div class="relative">
+        <svg class="<%= Ui::StarRatingComponentStyles::EMPTY_STAR_CLASSES %>" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="<%= Ui::StarRatingComponentStyles::STAR_PATH %>" />
+        </svg>
+        <svg class="<%= Ui::StarRatingComponentStyles::HALF_STAR_OVERLAY_CLASSES %>"
+             style="<%= Ui::StarRatingComponentStyles::HALF_STAR_CLIP_STYLE %>"
+             viewBox="0 0 20 20"
+             aria-hidden="true">
+          <path d="<%= Ui::StarRatingComponentStyles::STAR_PATH %>" />
+        </svg>
+      </div>
+    <% else %>
+      <svg class="<%= Ui::StarRatingComponentStyles::EMPTY_STAR_CLASSES %>" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="<%= Ui::StarRatingComponentStyles::STAR_PATH %>" />
+      </svg>
+    <% end %>
+  <% end %>
+</div>
+
+<% if show_summary? %>
+  <% if rated? %>
+    <%= tag.p formatted_rating, class: Ui::StarRatingComponentStyles::VALUE_CLASSES %>
+    <p class="<%= Ui::StarRatingComponentStyles::LABEL_CLASSES %>"><%= rating_label %></p>
+  <% else %>
+    <%= tag.p '—', class: Ui::StarRatingComponentStyles::EMPTY_VALUE_CLASSES %>
+    <p class="<%= Ui::StarRatingComponentStyles::LABEL_CLASSES %>"><%= rating_label %></p>
+  <% end %>
+<% end %>

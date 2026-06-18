@@ -1,0 +1,23 @@
+<div class="space-y-10">
+  <section>
+    <p class="mb-3 text-sm font-medium text-gray-500">Stars only</p>
+    <div class="flex flex-wrap items-center gap-8 rounded-xl bg-stone-800 p-8">
+      <%= render Ui::StarRatingComponent.new(rating: 5) %>
+      <%= render Ui::StarRatingComponent.new(rating: 4.5) %>
+      <%= render Ui::StarRatingComponent.new(rating: 2.5) %>
+      <%= render Ui::StarRatingComponent.new(rating: 0) %>
+    </div>
+  </section>
+
+  <section>
+    <p class="mb-3 text-sm font-medium text-gray-500">Scanlator summary</p>
+    <div class="flex flex-wrap gap-6 rounded-xl bg-stone-800 p-8">
+      <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
+        <%= render Ui::StarRatingComponent.new(rating: 4.5, rating_count: 128, show_summary: true) %>
+      </div>
+      <div class="text-center bg-stone-800/50 rounded-lg p-3 shadow-lg">
+        <%= render Ui::StarRatingComponent.new(rating: 0, show_summary: true) %>
+      </div>
+    </div>
+  </section>
+</div>
