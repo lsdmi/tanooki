@@ -59,10 +59,6 @@
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
-    <% if requires_accordion_js? %>
-      <%= javascript_include_tag 'accordion' %>
-    <% end %>
-
     <% if requires_tinymce? %>
       <%= tinymce_script_tags %>
       <%= javascript_include_tag 'tinymce_initializer' %>
@@ -108,7 +104,6 @@
     <% end %>
     <%= render "shared/cookie_consent_banner" %>
     <%= javascript_include_tag 'cookie_consent', defer: true %>
-    <%= javascript_include_tag 'note_handler', defer: true if requires_note_handler? %>
     <%= javascript_import_module_tag 'mode_toggler' %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>
   </body>

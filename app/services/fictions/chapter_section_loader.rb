@@ -64,12 +64,22 @@ module Fictions
     end
 
     def range_chapters(scope, range_label)
-      unnumbered = scope.where(volume_number: nil)
-      grouped = Library::ChapterCatalog.group_by_number_range(unnumbered)
-      records = grouped[range_label]
-      return Chapter.none if records.blank?
+      start_num, end_num = parse_range_bounds(range_label)
+      return Chapter.none unless start_num && end_num
 
-      Chapter.where(id: records.map(&:id))
+      base = scope.where(volume_number: nil)
+      if start_num == 1
+        base.where('FLOOR(number) = 0 OR FLOOR(number) BETWEEN ? AND ?', start_num, end_num)
+      else
+        base.where('FLOOR(number) BETWEEN ? AND ?', start_num, end_num)
+      end
+    end
+
+    def parse_range_bounds(range_label)
+      parts = range_label.to_s.split('-', 2).map(&:to_i)
+      return nil unless parts.size == 2 && parts.all?(&:positive?)
+
+      parts
     end
   end
 end

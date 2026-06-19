@@ -7,14 +7,14 @@
             <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
               <!-- Spinner SVG or content here -->
             </div>
-            <%= image_tag url_for(video.thumbnail),
+            <%= image_tag video_thumbnail_url(video.thumbnail),
               alt: video.title,
               id: "image-#{video.id}",
               width: 185,
               height: 103,
               class: "w-full h-full object-cover rounded-md shadow-sm transition duration-300 transform hover:scale-105 opacity-0",
               loading: "lazy",
-              data: { url: url_for(video.thumbnail) } %>
+              data: { url: video_thumbnail_url(video.thumbnail) } %>
           </div>
         <% end %>
         <div class="py-2">

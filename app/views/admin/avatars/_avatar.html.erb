@@ -8,6 +8,6 @@
     <% end %>
   </div>
   <div class="flex flex-col items-center pb-3">
-    <%= image_tag url_for(avatar.image), alt: avatar.image.blob.filename.to_s, class: "w-28 h-28 rounded-full mx-auto block shadow-lg mb-3" %>
+    <%= image_tag avatar_image_url(avatar.image), alt: avatar.image.blob.filename.to_s, class: "w-28 h-28 rounded-full mx-auto block shadow-lg mb-3" %>
   </div>
 <% end %>

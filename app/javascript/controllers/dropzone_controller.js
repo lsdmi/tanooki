@@ -4,8 +4,6 @@ export default class DropzoneController extends Controller {
   static targets = ["output"];
 
   connect() {
-    console.log("DropzoneController connected");
-
     const targetIds = [
       "advertisement_cover",
       "advertisement_poster",

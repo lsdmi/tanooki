@@ -18,7 +18,7 @@ end %>
 else
   'rounded-b border border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900'
 end %>
-<div class="<%= reader_drawer ? 'my-0' : 'my-6 space-y-4' %>" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if reader_drawer %>>
+<div class="<%= reader_drawer ? 'my-0' : 'my-6 space-y-4' %>" data-controller="chapters-accordion" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if reader_drawer %>>
   <% chapter_list_sections(chapters, order: list_order).each_with_index do |section, section_index| %>
     <% section_chapters = section[:chapters] %>
     <% accordion_open = reader_drawer && !drawer_accordion_opened && (chapter_list_section_current?(section, current_chapter_id) || (current_chapter_id.nil? && section_index.zero?)) %>
@@ -26,7 +26,11 @@ end %>
     <% preload_section = accordion_open %>
     <% section_path = fiction_chapter_section_path(fiction, section[:section_key], order: list_order) %>
     <div class="accordion overflow-hidden <%= accordion_shell %>">
-      <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>">
+      <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>"
+           role="button"
+           tabindex="0"
+           aria-expanded="<%= accordion_open ? 'true' : 'false' %>"
+           data-action="click->chapters-accordion#toggle keydown.enter->chapters-accordion#toggle keydown.space->chapters-accordion#toggle">
         <h3 class="min-w-0 flex-1 truncate text-left text-sm font-medium text-stone-800 dark:text-zinc-100">
           <%= reader_drawer ? reader_drawer_section_title(section) : section[:title] %>
         </h3>
@@ -45,11 +49,11 @@ end %>
               </button>
             </div>
           <% end %>
-          <button type="button" class="accordion-icon transition-transform duration-200 <%= accordion_open ? 'rotate-180 ' : '' %><%= reader_drawer ? 'text-stone-500 dark:text-zinc-400' : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
+          <span class="accordion-icon transition-transform duration-200 <%= accordion_open ? 'rotate-180 ' : '' %><%= reader_drawer ? 'text-stone-500 dark:text-zinc-400' : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" class="<%= reader_drawer ? 'h-5 w-5' : 'h-6 w-6' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </span>
         </div>
       </div>
       <div class="accordion-content <%= accordion_open ? '' : 'hidden' %> <%= reader_drawer ? '' : 'max-h-96 overflow-y-auto' %> <%= accordion_body %>">
@@ -60,7 +64,7 @@ end %>
                      current_chapter: local_assigns[:current_chapter],
                      drawer_progress: local_assigns[:drawer_progress] %>
         <% else %>
-          <% lazy_params = { chapter_ids: chapter_list_section_ids(section_chapters).join(',') } %>
+          <% lazy_params = {} %>
           <% lazy_params[:reader_drawer] = true if reader_drawer %>
           <% lazy_params[:current_chapter_id] = current_chapter_id if current_chapter_id.present? %>
           <div data-chapter-section-url="<%= section_path %>"
@@ -72,5 +76,3 @@ end %>
     </div>
   <% end %>
 </div>
-
-<script nonce="<%= content_security_policy_nonce %>">initializeAccordion()</script>

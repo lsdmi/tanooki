@@ -10,12 +10,12 @@
       </div>
     <% end %>
     <%= link_to fiction_path(fiction), data: { turbo: false } do %>
-      <%= image_tag (eager_cover ? cover_card_url(fiction.cover) : url_for(fiction.cover)),
+      <%= image_tag cover_card_url(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,
         id: "image-#{fiction.id}",
         class: "w-full h-full object-cover rounded-md shadow-sm#{' opacity-0' unless eager_cover}",
         loading: (eager_cover ? "eager" : "lazy"),
-        data: (eager_cover ? {} : { url: url_for(fiction.cover) }) %>
+        data: (eager_cover ? {} : { url: cover_card_url(fiction.cover) }) %>
     <% end %>
   </div>
 

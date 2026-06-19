@@ -10,6 +10,14 @@ export default class extends Controller {
     this.isDownloading = false
   }
 
+  disconnect() {
+    if (this._resetTimeout) {
+      clearTimeout(this._resetTimeout)
+      this._resetTimeout = null
+    }
+    this.isDownloading = false
+  }
+
   async download(event) {
     event.preventDefault()
 
@@ -33,10 +41,11 @@ export default class extends Controller {
       this.showErrorState()
     } finally {
       // Re-enable button after a short delay
-      setTimeout(() => {
+      this._resetTimeout = setTimeout(() => {
         this.enableButton()
         this.resetButtonState()
         this.isDownloading = false
+        this._resetTimeout = null
       }, 2000)
     }
   }

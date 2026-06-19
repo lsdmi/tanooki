@@ -40,32 +40,34 @@ function removeItem(itemId){
   item.remove();
 }
 
-function initializeAlert() {
-  const buttons = document.querySelectorAll('.sweet-alert-button');
+async function handleSweetAlertClick(event) {
+  const button = event.currentTarget
+  const result = await sweetAlertBtn(
+    button.getAttribute('data-message'),
+    button.getAttribute('data-description')
+  )
 
-  buttons.forEach(button => {
-    button.addEventListener('click', async function () {
-      const result = await sweetAlertBtn(
-        button.getAttribute('data-message'),
-        button.getAttribute('data-description')
-      );
+  if (result.isConfirmed) {
+    if (button.hasAttribute('data-url')) {
+      const res = await makeCall(
+        button.getAttribute('data-url'),
+        button.getAttribute('data-token'),
+        button.hasAttribute('data-tag-id')
+      )
 
-      if (result.isConfirmed) {
-        if (button.hasAttribute('data-url')) {
-          const res = await makeCall(
-            button.getAttribute('data-url'),
-            button.getAttribute('data-token'),
-            button.hasAttribute('data-tag-id')
-          );
-
-          if (button.hasAttribute('data-tag-id') && res.ok) {
-            removeItem(button.getAttribute('data-tag-id'));
-          }
-        }
+      if (button.hasAttribute('data-tag-id') && res.ok) {
+        removeItem(button.getAttribute('data-tag-id'))
       }
-    });
-  });
+    }
+  }
 }
 
-document.addEventListener('turbo:load', initializeAlert);
-document.addEventListener('turbo:frame-load', initializeAlert);
+function initializeAlert() {
+  document.querySelectorAll('.sweet-alert-button:not([data-swal-bound])').forEach((button) => {
+    button.dataset.swalBound = 'true'
+    button.addEventListener('click', handleSweetAlertClick)
+  })
+}
+
+document.addEventListener('turbo:load', initializeAlert)
+document.addEventListener('turbo:frame-load', initializeAlert)

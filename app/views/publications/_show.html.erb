@@ -1,5 +1,5 @@
 <main class="bg-gradient-to-r from-white to-pink-50 dark:from-gray-800 dark:to-gray-900">
-  <header class="w-full <%= cover_header_height_class(publication.title.size) %> xl:h-96 bg-no-repeat bg-cover bg-center relative" style="background-image: url(<%= url_for(publication.cover) %>);">
+  <header class="w-full <%= cover_header_height_class(publication.title.size) %> xl:h-96 bg-no-repeat bg-cover bg-center relative" style="background-image: url(<%= publication_cover_header_url(publication.cover) %>);">
     <div class="absolute top-0 left-0 w-full h-full bg-black/50 z-10"></div>
     <div class="absolute top-20 left-1/2 w-full max-w-screen-xl -translate-x-1/2 xl:top-1/2 xl:-translate-y-1/2 z-20 px-4 mx-auto xl:px-0">
       <%= tag.h1 publication.title, class: 'mb-4 text-4xl font-extrabold leading-none text-white sm:text-5xl lg:text-6xl  lg:-skew-x-12 ml-4 xl:ml-2' %>
@@ -32,7 +32,7 @@
             </div>
           </aside>
       </div>
-      <div id="user-content" class="leading-6 w-full relative pr-2 md:pr-0 lead text-gray-700 dark:text-gray-400 leading-7 font-georgia text-lg">
+      <div id="user-content" class="leading-6 w-full relative pr-2 md:pr-0 lead text-gray-700 dark:text-gray-400 leading-7 font-georgia text-lg" data-controller="note-reference" data-action="click->note-reference#toggle">
         <%= publication.description %>
       </div>
       <div class="mt-4">

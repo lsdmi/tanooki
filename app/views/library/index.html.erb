@@ -86,15 +86,10 @@
             <% @favourite_translators.each do |translator| %>
               <div class="hover:scale-[1.015] transition-all duration-300 py-3 lg:py-4 flex flex-col items-center text-white dark:text-gray-300 rounded-md">
                 <%= link_to scanlator_path(translator), data: { turbo: false }, class: '' do %>
-                  <%= image_tag translator.avatar.present? ? url_for(translator.avatar) : asset_path('scanlator_avatar.webp'),
+                  <%= image_tag scanlator_avatar_url(translator.avatar),
                     alt: 'translator avatar',
                     class: "w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
-                    loading: "lazy",
-                    data: {
-                      controller: "lazy-image",
-                      lazy_image_target: "image",
-                      lazy_image_url_value: translator.avatar.present? ? url_for(translator.avatar) : asset_path('scanlator_avatar.webp')
-                    } %>
+                    loading: "lazy" %>
                 <% end %>
                 <%= link_to translator.title, scanlator_path(translator), data: { turbo: false }, class: 'leading-tight text-xs lg:text-sm font-semibold text-stone-900 dark:text-gray-100 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight text-center' %>
                 <% if translator.telegram_id? %>

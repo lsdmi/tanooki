@@ -4,7 +4,7 @@ import SlimSelect from 'slim-select'
 // Connects to data-controller="slim"
 export default class extends Controller {
   connect() {
-    new SlimSelect({
+    this.select = new SlimSelect({
       select: this.element,
       settings: {
         closeOnSelect: false,
@@ -13,5 +13,10 @@ export default class extends Controller {
         searchText: 'Нічого не знайдено',
       }
     })
+  }
+
+  disconnect() {
+    this.select?.destroy()
+    this.select = null
   }
 }

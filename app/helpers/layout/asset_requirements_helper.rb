@@ -19,8 +19,6 @@ module Layout
     SWEETALERT_JS_CONTROLLER_NAMES = %w[studio readings].freeze
     SWEETALERT_CSS_SHOW_CONTROLLERS = %w[fictions bookshelves scanlators publications].freeze
 
-    ACCORDION_SHOW_CONTROLLERS = %w[fictions chapters].freeze
-
     FLATPICKR_STYLESHEET_URL = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css'
 
     FONT_TOGGLER_PAGES = {
@@ -41,16 +39,8 @@ module Layout
       controller_name.in?(SWEETALERT_CSS_SHOW_CONTROLLERS) && action_name == 'show'
     end
 
-    def requires_note_handler?
-      chapters_show_page? || tales_show_page?
-    end
-
     def requires_legacy_font_toggler?
       form_page?(FONT_TOGGLER_PAGES)
-    end
-
-    def requires_accordion_js?
-      ACCORDION_SHOW_CONTROLLERS.include?(controller_name) && action_name == 'show'
     end
 
     def requires_adult_content_disclaimer_styles?

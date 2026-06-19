@@ -1,7 +1,7 @@
 <div class="<%= comment.parent_id.present? ? 'ml-6 sm:ml-12 border-l-2 border-stone-200 dark:border-gray-700 pl-3 sm:pl-4' : '' %> bg-white dark:bg-gray-800 shadow-sm border border-stone-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 my-3 sm:my-4 transition duration-300 hover:shadow-md">
   <div class="flex items-start space-x-2 sm:space-x-4">
     <!-- Avatar -->
-    <%= image_tag url_for(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm flex-shrink-0', height: '40', width: '40' %>
+    <%= image_tag avatar_image_url(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm flex-shrink-0', height: '40', width: '40' %>
 
     <div class="flex-grow min-w-0">
       <div class="flex items-start sm:items-center justify-between mb-2 gap-2">

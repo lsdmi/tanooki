@@ -42,6 +42,23 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, I18n.t('chapters.reader_support_card.support')
   end
 
+  test 'show uses resized cover in details when variants are available' do
+    skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select '.fiction-details img[src*="representations"]'
+  end
+
+  test 'show includes chapters accordion with toggle actions' do
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select '[data-controller="chapters-accordion"]'
+    assert_select '.accordion-header[data-action*="chapters-accordion#toggle"]'
+  end
+
   test 'show support card does not use legacy hover animation classes' do
     @fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
     Rails.cache.delete("fiction_#{@fiction.id}")

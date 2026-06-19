@@ -19,7 +19,7 @@
             <div class="relative rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm flex flex-row items-center gap-3 sm:gap-4">
               <!-- Avatar -->
               <div class="hidden sm:flex flex-shrink-0 relative mb-2 sm:mb-0">
-                <%= image_tag url_for(notification.user.avatar.image), alt: notification.user.avatar.blob.filename.to_s, class: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full', height: '48', width: '48' %>
+                <%= image_tag avatar_image_url(notification.user.avatar.image), alt: notification.user.avatar.blob.filename.to_s, class: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full', height: '48', width: '48' %>
               </div>
               <!-- Content -->
               <div class="flex-1 min-w-0">

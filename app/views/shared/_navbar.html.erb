@@ -278,7 +278,7 @@
         <div class="grid grid-cols-2 gap-4">
           <% popular_videos.each do |video| %>
             <%= link_to youtube_video_path(video), class: 'block rounded-lg p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 group space-y-2' do %>
-              <%= image_tag url_for(video.thumbnail), alt: video.title, class: "h-40 w-full rounded-md", loading: 'eager' %>
+              <%= image_tag video_thumbnail_url(video.thumbnail), alt: video.title, class: "h-40 w-full rounded-md", loading: 'eager' %>
               <%= tag.h2 video.title, class: 'group-hover:underline text-sm font-medium dark:text-white text-gray-900' %>
             <% end %>
           <% end %>

@@ -1,12 +1,12 @@
 <div class="bg-stone-100 dark:bg-stone-900">
   <div class="relative w-full">
     <!-- Anime-style Header Section -->
-    <div class="bg-stone-800 bg-blend-overlay bg-no-repeat bg-cover bg-center relative overflow-hidden" style="background-image: url('<%= @scanlator.banner.present? ? url_for(@scanlator.banner) : asset_path('scanlator_banner.webp') %>');">
+    <div class="bg-stone-800 bg-blend-overlay bg-no-repeat bg-cover bg-center relative overflow-hidden" style="background-image: url('<%= scanlator_banner_url(@scanlator.banner) %>');">
       <div class="absolute inset-0 bg-gradient-to-r from-stone-900 via-transparent to-stone-900 opacity-70"></div>
       <div class="container mx-auto px-4 py-8 relative z-10">
         <div class="flex flex-col lg:flex-row items-center justify-between">
           <div class="flex items-center mb-4 md:mb-0">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-no-repeat bg-cover bg-center border-4 border-stone-300 shadow-lg transform hover:scale-110 transition-transform duration-300" style="background-image: url('<%= @scanlator.avatar.present? ? url_for(@scanlator.avatar) : asset_path('scanlator_avatar.webp') %>');"></div>
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-no-repeat bg-cover bg-center border-4 border-stone-300 shadow-lg transform hover:scale-110 transition-transform duration-300" style="background-image: url('<%= scanlator_avatar_url(@scanlator.avatar) %>');"></div>
             <div class="ml-4">
               <%= tag.h1 @scanlator.title, class: "text-3xl md:text-4xl text-stone-100 font-bold mb-2 text-shadow-lg anime-text" %>
               <%= link_to "https://t.me/#{@scanlator.telegram_id}", target: '_blank', rel: 'noopener noreferrer', class: 'text-lg text-stone-300 hover:text-stone-100 transition-colors duration-300 hover:underline anime-text' do %>

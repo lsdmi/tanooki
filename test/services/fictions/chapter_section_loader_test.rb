@@ -33,6 +33,30 @@ module Fictions
       chapter&.destroy
     end
 
+    test 'loads chapters for a numeric range section without chapter_ids' do
+      fiction = fictions(:one)
+      chapter = Chapter.create!(
+        fiction: fiction,
+        user: users(:user_one),
+        title: 'In range',
+        number: 205,
+        volume_number: nil,
+        content: 'x' * 500,
+        scanlator_ids: [scanlators(:one).id]
+      )
+
+      loaded = ChapterSectionLoader.new(
+        fiction: fiction,
+        viewer: users(:user_one),
+        section_key: 'r-201-300',
+        order: :asc
+      ).call
+
+      assert_includes loaded, chapter
+    ensure
+      chapter&.destroy
+    end
+
     test 'loads chapters by chapter_ids when provided' do
       fiction = fictions(:one)
       chapter_ids = fiction.chapters.pluck(:id)

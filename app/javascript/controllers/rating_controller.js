@@ -3,6 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["star"]
 
+  disconnect() {
+    if (this._revertTimeout) {
+      clearTimeout(this._revertTimeout)
+      this._revertTimeout = null
+    }
+  }
+
   setRating(event) {
     const rating = parseInt(event.currentTarget.dataset.starValue)
     const fictionId = event.currentTarget.dataset.fictionId
@@ -127,12 +134,17 @@ export default class extends Controller {
   revertStarDisplay() {
     // Revert to original state - this would need the original rating
     // For now, we'll just show a brief error state
+    if (this._revertTimeout) clearTimeout(this._revertTimeout)
+
     this.starTargets.forEach(star => {
       star.classList.add('text-red-400')
-      setTimeout(() => {
-        star.classList.remove('text-red-400')
-        // Note: In a real implementation, you'd want to restore the original state
-      }, 1000)
     })
+
+    this._revertTimeout = setTimeout(() => {
+      this.starTargets.forEach(star => {
+        star.classList.remove('text-red-400')
+      })
+      this._revertTimeout = null
+    }, 1000)
   }
 }

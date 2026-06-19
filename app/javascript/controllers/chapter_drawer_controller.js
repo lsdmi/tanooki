@@ -33,8 +33,10 @@ export default class extends Controller {
     document.body.classList.add("overflow-hidden")
     document.addEventListener("keydown", this._onEscape)
 
-    if (typeof window.initializeAccordion === "function") {
-      window.requestAnimationFrame(() => window.initializeAccordion())
+    const accordionRoot = this.panelTarget.querySelector('[data-controller*="chapters-accordion"]')
+    if (accordionRoot) {
+      const accordion = this.application.getControllerForElementAndIdentifier(accordionRoot, "chapters-accordion")
+      window.requestAnimationFrame(() => accordion?.initializeSections())
     }
   }
 

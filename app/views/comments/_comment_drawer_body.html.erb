@@ -1,7 +1,7 @@
 <%# locals: comment:, commentable: %>
 <article class="reader-comments-drawer__card rounded-lg border border-stone-200 bg-stone-50/80 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
   <div class="flex items-start gap-3">
-    <%= image_tag url_for(comment.user.avatar.image),
+    <%= image_tag avatar_image_url(comment.user.avatar.image),
                   alt: comment.user.avatar.blob.filename.to_s,
                   class: 'h-9 w-9 shrink-0 rounded-full object-cover sm:h-10 sm:w-10',
                   height: '40',

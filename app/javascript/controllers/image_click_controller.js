@@ -3,10 +3,6 @@ import { Controller } from "@hotwired/stimulus";
 export default class ImageClickController extends Controller {
   static targets = [ "output" ]
 
-  connect() {
-    console.log("ImageClickController connected")
-  }
-
   addSelected(event) {
     const allImgs = document.querySelectorAll("img");
 

@@ -33,6 +33,10 @@ export default class extends Controller {
     this.showList()
   }
 
+  disconnect() {
+    this.clear()
+  }
+
   chapterMatches(chapter, normalized, digits) {
     const title = chapter.title.toLowerCase()
     if (title.includes(normalized)) return true

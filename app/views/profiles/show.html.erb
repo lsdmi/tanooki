@@ -9,7 +9,7 @@
         <%= render 'shared/ornament' %>
         <div class="text-center relative">
           <div class="relative inline-block">
-            <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg" %>
+            <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg" %>
           </div>
           <h1 class="text-2xl font-semibold text-cyan-700 dark:text-rose-700 mt-2" style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;"><%= @user.name %></h1>
           <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Учасник з <%= @user.created_at.year %>-го</p>
@@ -66,7 +66,7 @@
             <% @user_scanlators.each do |scanlator| %>
               <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <% if scanlator.avatar.attached? %>
-                  <%= image_tag url_for(scanlator.avatar),
+                  <%= image_tag scanlator_avatar_url(scanlator.avatar),
                       alt: scanlator.title,
                       class: "w-10 h-10 rounded-lg flex items-center justify-center" %>
                 <% else %>
@@ -192,7 +192,7 @@
             <% @recent_comments.each do |comment| %>
               <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div class="flex items-start space-x-3">
-                  <%= image_tag url_for(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-700 dark:text-cyan-400" %>
+                  <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-700 dark:text-cyan-400" %>
                   <div class="flex-1">
                     <div class="flex items-center space-x-2 mb-1">
                       <span class="text-sm font-medium text-gray-900 dark:text-white"><%= comment.username %></span>

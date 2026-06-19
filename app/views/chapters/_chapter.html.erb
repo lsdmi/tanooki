@@ -3,7 +3,7 @@
   <%= render "shared/adsense_chapter_reader_slot", placement: :top %>
   <div class="absolute top-0 left-0 w-full h-2 bg-cyan-700 dark:bg-rose-600"></div>
 
-  <div id="user-content" class="prose dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed text-stone-800 dark:text-zinc-200">
+  <div id="user-content" class="prose dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed text-stone-800 dark:text-zinc-200" data-controller="note-reference" data-action="click->note-reference#toggle">
     <%= chapter.content %>
   </div>
 

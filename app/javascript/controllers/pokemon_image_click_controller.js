@@ -3,10 +3,6 @@ import { Controller } from "@hotwired/stimulus";
 export default class PokemonImageClickController extends Controller {
   static targets = [ "output" ]
 
-  connect() {
-    console.log("PokemonImageClickController connected")
-  }
-
   addSelected(event) {
     const allImgs = document.querySelectorAll("img");
     const clickedImg = event.target;

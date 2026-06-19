@@ -36,6 +36,18 @@ module Meta
       assert_includes banner_showcase_url(@fiction.banner), '/rails/active_storage/representations'
     end
 
+    test 'avatar_image_url returns a representation url when variants are available' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      assert_includes avatar_image_url(@fiction.cover), '/rails/active_storage/representations'
+    end
+
+    test 'publication_cover_header_url returns a representation url when variants are available' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      assert_includes publication_cover_header_url(@fiction.cover), '/rails/active_storage/representations'
+    end
+
     test 'cover_card_url falls back to blob url when variant processing is unavailable' do
       Attachments::VariantProcessing.stub(:available?, false) do
         assert_predicate @fiction.cover.blob, :variable?

@@ -25,3 +25,23 @@ document.addEventListener('turbo:before-prefetch', (event) => {
   const slow = ['slow-2g', '2g', '3g'].includes(conn.effectiveType)
   if (slow) event.preventDefault()
 })
+
+function cleanupBeforeTurboCache() {
+  document.querySelectorAll('.flatpickr-calendar').forEach((el) => el.remove())
+  document.querySelectorAll('.note-content').forEach((el) => el.remove())
+  document.body.classList.remove('overflow-hidden')
+  document.documentElement.classList.remove('overflow-hidden')
+
+  if (window.Swal?.isVisible?.()) window.Swal.close()
+
+  if (typeof tinymce !== 'undefined') {
+    tinymce.remove()
+    document.querySelectorAll('.tox-tinymce').forEach((el) => el.remove())
+  }
+
+  document.querySelectorAll('[data-mode-toggler-bound="true"]').forEach((btn) => {
+    delete btn.dataset.modeTogglerBound
+  })
+}
+
+document.addEventListener('turbo:before-cache', cleanupBeforeTurboCache)

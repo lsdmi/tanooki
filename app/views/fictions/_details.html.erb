@@ -7,9 +7,13 @@
       <div class="flex flex-col sm:flex-row gap-4 items-start justify-center lg:justify-start">
         <!-- Book Cover Image -->
         <div class="flex-shrink-0 border border-stone-200 dark:border-gray-700 mx-auto lg:mx-0 relative">
-          <%= image_tag url_for(fiction.cover),
-                      class: 'w-32 h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 shadow-md flex items-center justify-center',
-                      alt: fiction.cover.blob.filename %>
+          <%= image_tag cover_card_url(fiction.cover),
+                      class: 'w-32 h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 shadow-md flex items-center justify-center object-cover',
+                      alt: fiction.cover.blob.filename,
+                      width: 400,
+                      height: 600,
+                      loading: 'eager',
+                      decoding: 'async' %>
         </div>
         <!-- Book Info -->
         <div class="mx-auto lg:mx-0 mt-1">
@@ -108,7 +112,7 @@
     <div class="min-w-0 space-y-6">
       <!-- Start Reading Button -->
       <% if show_presenter.first_chapter %>
-        <%= link_to show_presenter.first_chapter, turbo_drive_visit_data(preload: true).merge(class: 'w-full bg-white dark:bg-gray-800 text-stone-800 dark:text-gray-200 font-semibold py-3 px-4 rounded-lg border border-stone-200 dark:border-gray-700 shadow-sm hover:bg-stone-100 dark:hover:bg-gray-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center space-x-2') do %>
+        <%= link_to show_presenter.first_chapter, turbo_drive_visit_data.merge(class: 'w-full bg-white dark:bg-gray-800 text-stone-800 dark:text-gray-200 font-semibold py-3 px-4 rounded-lg border border-stone-200 dark:border-gray-700 shadow-sm hover:bg-stone-100 dark:hover:bg-gray-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center space-x-2') do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
           </svg>

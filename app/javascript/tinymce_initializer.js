@@ -830,3 +830,10 @@ const initializeTinymce = () => {
 
 document.addEventListener('turbo:load', initializeTinymce);
 document.addEventListener('turbo:render', initializeTinymce);
+
+document.addEventListener('turbo:before-cache', () => {
+  if (typeof tinymce === 'undefined') return
+
+  tinymce.remove()
+  document.querySelectorAll('.tox-tinymce').forEach((el) => el.remove())
+});

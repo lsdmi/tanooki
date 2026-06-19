@@ -3,7 +3,7 @@
             border border-stone-200 rounded-lg m-2 bg-white dark:bg-gray-800 shadow-xl">
   <div class="flex items-center gap-4">
     <div class="h-12 w-12 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center shadow">
-      <%= image_tag scanlator.avatar.present? ? url_for(scanlator.avatar) : asset_path('scanlator_avatar.webp'), class: "h-12 w-12 rounded-full object-cover" %>
+      <%= image_tag scanlator_avatar_url(scanlator.avatar), class: "h-12 w-12 rounded-full object-cover" %>
     </div>
     <div>
       <div class="font-semibold text-gray-900 dark:text-white">

@@ -28,7 +28,7 @@
               <div class="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-4 justify-items-center">
                 <% avatars.each do |avatar| %>
                   <div class="flex-shrink-0">
-                    <%= image_tag url_for(avatar.image),
+                    <%= image_tag avatar_image_url(avatar.image),
                         alt: avatar.image.blob.filename.to_s,
                         id: "avatar-image-#{avatar.id}",
                         data: {

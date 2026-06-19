@@ -26,6 +26,12 @@ export default class extends Controller {
     voted: Boolean
   }
 
+  disconnect() {
+    if (this.hasAssignmentDropdownTarget) {
+      this.assignmentDropdownTarget.classList.add('hidden')
+    }
+  }
+
   vote() {
     this.voteButtonTarget.disabled = true
 
