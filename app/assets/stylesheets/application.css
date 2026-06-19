@@ -1,6 +1,8 @@
 /*
- * Global base styles only. Feature CSS (pagy, slimselect, reader, etc.) is loaded per page
- * via Layout::StylesheetsHelper — see app/helpers/layout/stylesheets_helper.rb.
+ * Site-wide base styles. Global feature CSS (pagy, slimselect, actiontext, chapters_reader)
+ * is linked from the layout via Layout::StylesheetsHelper#global_stylesheets — Propshaft does
+ * not bundle @import, so separate stylesheet_link_tags are required for reliable loading.
+ * Page-specific CSS (sweetal2, flatpickr overrides, adult disclaimer) via #page_stylesheets.
  */
 
 @layer base {
@@ -87,4 +89,62 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* --- Turbo Drive transitions (Phase 2) --- */
+
+/* Premium progress bar — fades in only when visit exceeds Turbo.setProgressBarDelay */
+.turbo-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgb(8 145 178) 0%,
+    rgb(244 63 94) 50%,
+    rgb(8 145 178) 100%
+  );
+  background-size: 200% 100%;
+  animation: turbo-progress-shimmer 0.9s ease-in-out infinite;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.turbo-progress-bar[style*="width"] {
+  opacity: 1;
+}
+
+@keyframes turbo-progress-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.turbo-progress-bar--hidden {
+  display: none !important;
+}
+
+/* Cross-fade on full body swap (skipped when morph handles the visit) */
+html.turbo-transitioning body {
+  opacity: 0.92;
+  transition: opacity 0.12s ease-out;
+}
+
+html:not(.turbo-transitioning) body {
+  opacity: 1;
+  transition: opacity 0.18s ease-in;
+}
+
+/* Navbar wrapper must stack above page shells (e.g. fictions/show z-10) and not clip dropdowns */
+#site-navbar {
+  overflow: visible;
+}
+
+/* View Transitions API — page content only (avoid view-transition-name on navbar; it breaks Flowbite dropdowns) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
 }

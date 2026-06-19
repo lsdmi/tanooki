@@ -9,6 +9,24 @@ import {
 } from "reader_preferences"
 import { safeLogoSrc } from "safe_logo_src"
 
+const FONT_ACTIVE_CLASSES = [
+  "!border-cyan-700",
+  "!bg-cyan-700",
+  "!text-white",
+  "dark:!border-rose-600",
+  "dark:!bg-rose-600",
+  "dark:!text-white"
+]
+
+const FONT_INACTIVE_CLASSES = [
+  "border-stone-200",
+  "bg-white",
+  "text-stone-700",
+  "dark:border-zinc-600",
+  "dark:bg-zinc-900",
+  "dark:text-zinc-200"
+]
+
 /** Reading settings side panel (font, size, theme) on the chapter reader. */
 export default class extends Controller {
   static targets = [
@@ -24,7 +42,15 @@ export default class extends Controller {
   connect() {
     this._onEscape = this._onEscape.bind(this)
     this._onTurboLoad = () => this.close()
+    this._onTurboRender = () => {
+      requestAnimationFrame(() => {
+        this.syncFontUi()
+        this.syncFontSizeUi()
+        this.syncThemeUi()
+      })
+    }
     document.addEventListener("turbo:load", this._onTurboLoad)
+    document.addEventListener("turbo:render", this._onTurboRender)
 
     bindContentObserver()
     this.syncFontUi()
@@ -34,6 +60,7 @@ export default class extends Controller {
 
   disconnect() {
     document.removeEventListener("turbo:load", this._onTurboLoad)
+    document.removeEventListener("turbo:render", this._onTurboRender)
     document.removeEventListener("keydown", this._onEscape)
     this.close()
   }
@@ -108,7 +135,8 @@ export default class extends Controller {
     this.fontOptionTargets.forEach((button) => {
       const selected = button.dataset.fontId === activeId
       button.setAttribute("aria-pressed", selected ? "true" : "false")
-      button.classList.toggle("reader-settings__font--active", selected)
+      FONT_ACTIVE_CLASSES.forEach((cls) => button.classList.toggle(cls, selected))
+      FONT_INACTIVE_CLASSES.forEach((cls) => button.classList.toggle(cls, !selected))
     })
   }
 

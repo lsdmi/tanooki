@@ -16,6 +16,6 @@ class FictionsChapterSectionControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'ul li'
-    assert_no_match(/turbo-frame/, response.body)
+    assert_select 'a[data-turbo-frame="_top"][data-turbo-preload="true"]'
   end
 end

@@ -21,14 +21,12 @@ module Layout
 
     attr_reader :session
 
-    test 'chapter show loads reader and actiontext styles' do
+    test 'chapter show loads only page-specific stylesheets' do
       chapter = chapters(:one)
       chapter.fiction.update!(adult_content: true)
       assign_controller(:chapters, :show, chapter: chapter, fiction: chapter.fiction)
 
-      assert_includes page_stylesheets, 'chapters_reader'
-      assert_includes page_stylesheets, 'actiontext'
-      assert_not_includes page_stylesheets, 'pagy'
+      assert_equal %w[adult_content_disclaimer], page_stylesheets
     end
 
     test 'chapter show loads adult disclaimer styles for gated fiction' do
@@ -39,33 +37,36 @@ module Layout
       assert_includes page_stylesheets, 'adult_content_disclaimer'
     end
 
-    test 'fiction show loads adult disclaimer styles only when gate is active' do
+    test 'fiction show loads adult disclaimer only when gate is active' do
       fiction = fictions(:one)
       fiction.update!(adult_content: true)
       assign_controller(:fictions, :show, fiction: fiction)
 
-      assert_includes page_stylesheets, 'adult_content_disclaimer'
-      assert_not_includes page_stylesheets, 'chapters_reader'
+      assert_equal %w[adult_content_disclaimer sweetal2], page_stylesheets
     end
 
-    test 'fiction show loads reader styles when translator support card is shown' do
+    test 'global_stylesheets includes reader and shared bundles' do
+      assert_equal %w[pagy slimselect actiontext chapters_reader], global_stylesheets
+    end
+
+    test 'fiction show with reader support card does not load chapters_reader separately' do
       fiction = fictions(:one)
       fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
       assign_controller(:fictions, :show, fiction: fiction)
 
-      assert_includes page_stylesheets, 'chapters_reader'
+      assert_not_includes page_stylesheets, 'chapters_reader'
     end
 
-    test 'library index loads pagy styles only' do
+    test 'library index has no global-duplicated optional stylesheets' do
       assign_controller(:library, :index)
 
-      assert_equal ['pagy'], page_stylesheets
+      assert_empty page_stylesheets
     end
 
-    test 'chapter form loads slimselect and flatpickr overrides' do
+    test 'chapter form loads flatpickr overrides only' do
       assign_controller(:chapters, :new)
 
-      assert_equal %w[slimselect flatpickr_overrides], page_stylesheets
+      assert_equal %w[flatpickr_overrides], page_stylesheets
     end
 
     private

@@ -88,4 +88,16 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
       assert_not_includes @controller.send(:more_tails), @tale
     end
   end
+
+  test '#more_tails falls back when OpenSearch is unavailable' do
+    @controller.instance_variable_set(:@publication, @tale)
+
+    ssl_error = 'SSL_CTX_load_verify_file: no certificate or crl found'
+    Publication.stub :search, ->(*) { raise Faraday::SSLError, ssl_error } do
+      more = @controller.send(:more_tails)
+
+      assert_predicate more.size, :positive?
+      assert_not_includes more, @tale
+    end
+  end
 end

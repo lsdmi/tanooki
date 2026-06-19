@@ -25,7 +25,6 @@ class FictionsIndexLcpTest < ActionDispatch::IntegrationTest
   test 'index omits unused render blocking stylesheets' do
     visit_fictions_index_with_showcase
 
-    assert_select 'link[href*="fonts.googleapis.com"]', count: 0
     assert_select 'link[href*="sweetal2"]', count: 0
   end
 

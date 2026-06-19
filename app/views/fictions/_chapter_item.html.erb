@@ -16,7 +16,7 @@
         <%= render 'fictions/reader_chapter_drawer_status', status: status %>
       </div>
     <% else %>
-      <%= link_to chapter_path(chapter), data: { turbo: false }, class: 'flex items-center gap-3 px-4 py-3 transition-colors hover:bg-stone-50 dark:hover:bg-zinc-800/60' do %>
+      <%= link_to chapter_path(chapter), turbo_drive_visit_data(preload: true).merge(class: 'flex items-center gap-3 px-4 py-3 transition-colors hover:bg-stone-50 dark:hover:bg-zinc-800/60') do %>
         <span class="min-w-0 flex-1 truncate <%= title_class %>">
           <%= chapter.display_title_no_volume %>
         </span>
@@ -25,7 +25,7 @@
     <% end %>
   <% else %>
     <div class="p-3 transition duration-150 ease-in-out hover:bg-stone-50 dark:hover:bg-gray-700">
-      <%= link_to chapter_path(chapter), data: { turbo: false }, class: "block" do %>
+      <%= link_to chapter_path(chapter), turbo_drive_visit_data(preload: true).merge(class: "block") do %>
         <div class="flex items-center justify-between gap-4">
           <div class="flex min-w-0 flex-1 items-center gap-3">
             <span class="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-200 text-xs font-medium text-stone-600 dark:bg-gray-600 dark:text-gray-300">

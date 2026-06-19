@@ -74,16 +74,6 @@ module Layout
       assert_not_predicate self, :requires_legacy_font_toggler?
     end
 
-    test 'pagy styles follow controller path list' do
-      assign_controller(:library, :index, path: 'library')
-
-      assert_predicate self, :requires_pagy_styles?
-
-      assign_controller(:home, :index, path: 'home')
-
-      assert_not_predicate self, :requires_pagy_styles?
-    end
-
     private
 
     def assign_controller(name, action, path: nil)

@@ -39,18 +39,23 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= csp_meta_tag %>
+    <meta name="turbo-cache-control" content="no-preview">
+    <meta name="view-transition" content="same-origin">
+    <meta name="turbo-refresh-method" content="morph">
+    <meta name="turbo-refresh-scroll" content="preserve">
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <% global_stylesheets.each do |stylesheet| %>
+      <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
+    <% end %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
     <% if requires_flatpickr_styles? %>
-      <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css', media: 'all', 'data-turbo-track': 'reload' %>
+      <%= stylesheet_link_tag flatpickr_stylesheet_url, media: 'all' %>
     <% end %>
     <% page_stylesheets.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
     <% end %>
-    <% if chapters_show_page? %>
-      <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, "data-turbo-track": "reload" %>
-    <% end %>
+    <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, media: 'all' %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
@@ -75,11 +80,15 @@
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen" data-load-google-scripts="<%= Rails.env.production? %>" data-load-adsense="<%= adsense_allowed? %>">
-    <div class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
+    <div id="page-background" class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
     </div>
-    <%= render "shared/navbar" unless immersive_reader_layout? %>
+    <% unless immersive_reader_layout? %>
+      <div id="site-navbar" class="relative z-50">
+        <%= render "shared/navbar" %>
+      </div>
+    <% end %>
     <%= turbo_frame_tag 'application-notice' do %>
       <%= render "shared/notice" if notice %>
     <% end %>
@@ -92,7 +101,11 @@
         <%= render 'shared/pokemon', pokemon: @wild_pokemon %>
       <% end if @wild_pokemon %>
     </main>
-    <%= render "shared/footer" unless immersive_reader_layout? %>
+    <% unless immersive_reader_layout? %>
+      <div id="site-footer">
+        <%= render "shared/footer" %>
+      </div>
+    <% end %>
     <%= render "shared/cookie_consent_banner" %>
     <%= javascript_include_tag 'cookie_consent', defer: true %>
     <%= javascript_include_tag 'note_handler', defer: true if requires_note_handler? %>

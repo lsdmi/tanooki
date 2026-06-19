@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from StandardError, with: :handle_error if Rails.env.production?
 
+  # Layout helpers (trending_tags, recent_ranobe, etc.) are fragment-cached in navbar/footer;
+  # avoid adding uncached per-request queries to ApplicationController without a similar cache.
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
                 :adsense_allowed?
 

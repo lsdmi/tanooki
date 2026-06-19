@@ -46,7 +46,7 @@
                           </svg>
                         </div>
                         <div>
-                          <a href="<%= fiction_path(fiction) %>" class="hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium" data-turbo="false">
+                          <a href="<%= fiction_path(fiction) %>" data-turbo-frame="_top" class="hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium">
                             <%= fiction.title %>
                           </a>
                           <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -130,7 +130,7 @@
                     </svg>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <a href="<%= fiction_path(fiction) %>" class="block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white" data-turbo="false">
+                    <a href="<%= fiction_path(fiction) %>" data-turbo-frame="_top" class="block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white">
                       <%= fiction.title %>
                     </a>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">

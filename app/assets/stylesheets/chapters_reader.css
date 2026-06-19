@@ -89,7 +89,11 @@
   -webkit-user-select: none;
 }
 
-/* Fiction show: match support card to page gray palette in dark mode */
+/* Fiction show: no stretched reader-grid height; match page gray palette in dark mode */
+.fiction-support-card .reader-support-card {
+  height: auto;
+}
+
 .dark .fiction-support-card .reader-support-card {
   border-color: rgb(55 65 81);
   background-color: rgb(31 41 55);

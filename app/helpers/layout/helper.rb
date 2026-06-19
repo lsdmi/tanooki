@@ -9,5 +9,6 @@ module Layout
     include SweetAlertHelper
     include TinymceAssetsHelper
     include LayoutFragmentKeysHelper
+    include TurboDriveHelper
   end
 end

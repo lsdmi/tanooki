@@ -4,6 +4,13 @@
 class TalesController < ApplicationController
   HIGHLIGHTS_LIMIT = 10
   PUBLICATIONS_PER_PAGE = 16
+  OPENSEARCH_CONNECTION_ERRORS = [
+    Faraday::Error,
+    Errno::ECONNREFUSED,
+    SocketError,
+    Timeout::Error,
+    OpenSearch::Transport::Transport::Error
+  ].freeze
   helper Publications::CoverHeaderHelper
 
   before_action :load_advertisement, only: %i[index show]
@@ -48,6 +55,9 @@ class TalesController < ApplicationController
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
       operator: 'or'
     ).includes([{ cover_attachment: :blob }, :rich_text_description])
+  rescue *OPENSEARCH_CONNECTION_ERRORS => e
+    Rails.logger.warn("[tales] OpenSearch unavailable for more_tails: #{e.class}: #{e.message}")
+    Publication.none
   end
 
   def set_tale

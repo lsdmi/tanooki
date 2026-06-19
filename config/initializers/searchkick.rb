@@ -16,9 +16,12 @@ if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].pre
     headers: { 'Authorization' => "Basic #{Base64.strict_encode64(credentials)}" }
   }
 
-  ca_file = Rails.root.join('tmp/opensearch-ca.crt')
-  File.write(ca_file, ENV.fetch('OPENSEARCH_CA_CERT').gsub('\\n', "\n"))
-  transport_options[:ssl] = { ca_file: ca_file.to_s }
+  ca_cert = ENV['OPENSEARCH_CA_CERT'].presence
+  if ca_cert
+    ca_file = Rails.root.join('tmp/opensearch-ca.crt')
+    File.write(ca_file, ca_cert.gsub('\\n', "\n"))
+    transport_options[:ssl] = { ca_file: ca_file.to_s }
+  end
 
   opensearch_url = ENV.fetch('OPENSEARCH_URL')
 
