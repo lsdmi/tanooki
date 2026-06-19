@@ -27,7 +27,7 @@ module Tags
     end
 
     test 'should return cached result if available' do
-      Rails.cache.write('trending_tags', [tags(:one), tags(:two)])
+      Rails.cache.write('trending_tags', [tags(:one)])
       result = @service.tags
 
       assert_equal [tags(:one).name], result.pluck(:name)

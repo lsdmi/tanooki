@@ -66,10 +66,12 @@ group :test do
   gem 'simplecov'
 end
 
+# Durable cache and job queue (MySQL-backed; same stack as production).
+gem 'solid_cache'
+gem 'solid_queue'
+
 group :production do
   gem 'aws-sdk-s3'
-  gem 'solid_cache'
-  gem 'solid_queue'
 end
 
 gem 'bcrypt_pbkdf'

@@ -1,4 +1,5 @@
 default: &default
+  database: primary
   store_options:
     # Cap age of oldest cache entry to fulfill retention policies
     # max_age: <%= 60.days.to_i %>
@@ -10,7 +11,9 @@ development:
 
 test:
   <<: *default
+  store_options:
+    max_size: <%= 256.megabytes %>
+    namespace: <%= ["test", ENV["TEST_ENV_NUMBER"]].compact.join(":") %>
 
 production:
-  database: primary
   <<: *default

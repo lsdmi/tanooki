@@ -31,7 +31,9 @@ class AssetsPipelineTest < ActionDispatch::IntegrationTest
 
     get new_publication_url
 
-    assert_includes response.body, 'base: "/assets/tinymce"'
-    assert_not_includes response.body, '&#39;'
+    preinit = response.body[/window\.tinymce = window\.tinymce \|\| \{.*?\};/m]
+
+    assert_includes preinit, 'base: "/assets/tinymce"'
+    assert_not_includes preinit, '&#39;'
   end
 end

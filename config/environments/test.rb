@@ -22,8 +22,10 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
-  config.cache_store = :null_store
-  config.action_controller.cache_store = :memory_store
+  config.cache_store = :solid_cache_store
+  config.action_controller.cache_store = :solid_cache_store
+
+  config.active_job.queue_adapter = :solid_queue
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable
