@@ -12,6 +12,9 @@ end
 FileUtils.chdir(APP_ROOT) do
   system! 'bin/quality'
 
+  puts '== Tailwind CSS =='
+  system! 'bin/rails', 'tailwindcss:build'
+
   puts '== Tests =='
   system! 'bin/rails', 'test'
 end
