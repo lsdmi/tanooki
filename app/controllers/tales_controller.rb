@@ -2,6 +2,8 @@
 
 # Blog-style publications (tales): list, show, and tag browsing.
 class TalesController < ApplicationController
+  HIGHLIGHTS_LIMIT = 10
+  PUBLICATIONS_PER_PAGE = 16
   helper Publications::CoverHeaderHelper
 
   before_action :load_advertisement, only: %i[index show]
@@ -10,7 +12,7 @@ class TalesController < ApplicationController
 
   def index
     @highlights = highlights
-    @pagy, @publications = pagy_countless(publications, limit: 17)
+    @pagy, @publications = pagy_countless(publications, limit: PUBLICATIONS_PER_PAGE)
     @publication_tag_counts = search_tag_counts(publication_search_tags)
 
     render 'home/scrollable_list' if params[:page]
@@ -65,7 +67,7 @@ class TalesController < ApplicationController
   end
 
   def publications
-    cached_ids = Rails.cache.fetch('publications', expires_in: 4.hours) do
+    cached_ids = Rails.cache.fetch("publications_excluding_#{HIGHLIGHTS_LIMIT}", expires_in: 4.hours) do
       all_publications.where.not(id: highlight_ids).map(&:id)
     end
     Publication.includes(%i[cover_attachment rich_text_description
@@ -73,8 +75,8 @@ class TalesController < ApplicationController
   end
 
   def highlight_ids
-    Rails.cache.fetch('highlights', expires_in: 4.hours) do
-      all_publications.first(11).map(&:id)
+    Rails.cache.fetch("highlights_#{HIGHLIGHTS_LIMIT}", expires_in: 4.hours) do
+      all_publications.first(HIGHLIGHTS_LIMIT).map(&:id)
     end
   end
 

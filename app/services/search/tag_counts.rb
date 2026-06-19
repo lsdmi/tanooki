@@ -42,6 +42,8 @@ module Search
     end
 
     def call
+      return publication_counts if scope == :publications
+
       tags.index_with { |tag| count_for(tag) }
     end
 
@@ -62,11 +64,23 @@ module Search
       "search/tag_counts/#{scope}/#{tag.to_s.parameterize}"
     end
 
+    def publication_counts
+      Rails.cache.fetch(publication_batch_cache_key, expires_in: CACHE_TTL) do
+        grouped = Tag.joins(:publications).where(name: tags).group(:name).count
+        tags.index_with { |tag| grouped.fetch(tag, 0) }
+      end
+    end
+
+    def publication_batch_cache_key
+      digest = Digest::SHA256.hexdigest(tags.map { |tag| tag.to_s.parameterize }.sort.join('|'))
+      "search/tag_counts/publications/batch/#{digest}"
+    end
+
     def fetch_count(tag)
       case scope
       when :all then count_all(tag)
       when :videos then count_search(YoutubeVideo, tag, video_fields)
-      when :publications then count_search(Publication, tag, publication_fields)
+      when :publications then publication_count_for(tag)
       when :fictions then count_search(Fiction, tag, fiction_fields)
       end
     end
@@ -75,6 +89,10 @@ module Search
       count_search(Fiction, tag, fiction_fields) +
         count_search(Publication, tag, publication_fields) +
         count_search(YoutubeVideo, tag, video_fields)
+    end
+
+    def publication_count_for(tag)
+      Tag.joins(:publications).where(name: tag).count
     end
 
     def count_search(model, tag, fields)

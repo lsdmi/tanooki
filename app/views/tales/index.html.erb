@@ -1,26 +1,20 @@
-<div class="m-auto xl:w-[1300px] m-2 sm:m-4 md:m-8 lg:my-0 lg:mx-auto">
-  <section class="w-full relative float-left  mb-2 z-10 lg:ml-0">
-    <div class="lg:mr-[375px] mx-auto lg:mx-0 w-[96%] lg:w-auto">
-      <div class="w-full relative float-left lg:ml-4">
-        <div class="relative sm:float-right w-full lg:w-[60%]">
-          <%= render 'main_section', highlights: @highlights[0..4], publication_tag_counts: @publication_tag_counts %>
-        </div>
-        <div class="relative sm:float-left w-full lg:w-[21rem] mx-auto lg:mx-0 block md:flex lg:block">
-          <%= render 'side_section', highlights: @highlights[5..7], publication_tag_counts: @publication_tag_counts %>
-        </div>
-      </div>
-    </div>
-    <div class="lg:float-left lg:ml-4 lg:w-[21rem] mx-auto lg:mx-0 w-[96%] block md:flex lg:block">
-      <%= render 'side_section', highlights: @highlights[8..10], publication_tag_counts: @publication_tag_counts %>
-    </div>
-  </section>
-  <section class="relative float-left w-full mt-2">
-    <div class="w-[95%] mx-auto">
+<div class="mx-auto w-full max-w-screen-xl px-4 py-6 2xl:px-0">
+  <header class="mb-6">
+    <h1 class="text-xl font-semibold uppercase tracking-tight text-gray-900 dark:text-gray-100 sm:text-2xl">
+      Новини та <span class="text-cyan-700 dark:text-rose-700">блоги</span>
+    </h1>
+  </header>
+
+  <%= render 'publication_tiles', publications: @highlights, publication_tag_counts: @publication_tag_counts %>
+
+  <% if @advertisement.present? %>
+    <div class="py-6">
       <%= render 'shared/ads', advertisement: @advertisement %>
     </div>
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 ">
-      <%= render "home/publications", publications: @publications, publication_tag_counts: @publication_tag_counts %>
-      <%= render "home/next_page", pagy: @pagy %>
-    </div>
+  <% end %>
+
+  <section class="<%= 'border-t border-stone-200/70 dark:border-gray-700/50 pt-1' if @highlights.any? %>">
+    <%= render 'publication_tiles', publications: @publications, publication_tag_counts: @publication_tag_counts %>
+    <%= render 'home/next_page', pagy: @pagy %>
   </section>
 </div>

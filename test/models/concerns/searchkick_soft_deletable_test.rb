@@ -8,7 +8,9 @@ class SearchkickSoftDeletableTest < ActiveSupport::TestCase
 
     assert_predicate fiction, :should_index?
 
-    fiction.destroy
+    Fiction.searchkick_index.stub(:remove, true) do
+      fiction.destroy
+    end
 
     assert_not fiction.should_index?
   end
@@ -19,5 +21,16 @@ class SearchkickSoftDeletableTest < ActiveSupport::TestCase
 
   test 'searchkick_active_where filters indexed active documents' do
     assert_equal({ active: true }, Fiction.searchkick_active_where)
+  end
+
+  test 'hard destroy removes record from search index' do
+    fiction = fictions(:one)
+    removed = false
+
+    Fiction.searchkick_index.stub(:remove, ->(_) { removed = true }) do
+      fiction.really_destroy!
+    end
+
+    assert removed
   end
 end

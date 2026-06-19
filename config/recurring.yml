@@ -43,6 +43,10 @@ production:
     class: Fictions::WarmIndexCacheJob
     schedule: every hour at minute 5
 
+  searchkick_sync_soft_deletable:
+    class: Searchkick::SyncSoftDeletableJob
+    schedule: every sunday at 5:00am
+
   youtube_telegram:
     class: Youtube::TelegramJob
     schedule: every sunday at 12:00pm

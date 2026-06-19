@@ -1,0 +1,8 @@
+<%# locals: (publications:, publication_tag_counts: nil) %>
+<div class="grid grid-cols-1 gap-x-8 lg:grid-cols-2">
+  <% Array(publications).each do |publication| %>
+    <div class="border-b border-stone-200/70 dark:border-gray-700/50">
+      <%= render 'publication_tile', publication:, publication_tag_counts: %>
+    </div>
+  <% end %>
+</div>

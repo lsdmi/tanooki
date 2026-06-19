@@ -4,11 +4,11 @@
 class Fiction < ApplicationRecord
   include FictionPresentation
   include FictionRatings
-  include SearchkickSoftDeletable
   include Pagy::Backend
   extend FriendlyId
 
   acts_as_paranoid
+  include SearchkickSoftDeletable
   friendly_id :slug_candidates
   searchkick callbacks: :async
   extend Pagy::Searchkick

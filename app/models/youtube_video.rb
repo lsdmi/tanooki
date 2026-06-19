@@ -2,10 +2,9 @@
 
 # YouTube video entry displayed on the site.
 class YoutubeVideo < ApplicationRecord
-  include SearchkickSoftDeletable
-
   extend FriendlyId
   acts_as_paranoid
+  include SearchkickSoftDeletable
   friendly_id :slug_candidates
   searchkick callbacks: :async
   extend Pagy::Searchkick

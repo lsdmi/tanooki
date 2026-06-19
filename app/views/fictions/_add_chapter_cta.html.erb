@@ -1,9 +1,8 @@
 <% if current_user.nil? %>
-  <section class="bg-gradient-to-br from-white dark:from-gray-900 to-stone-100 dark:to-gray-800 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-stone-200 dark:bg-gray-700 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-stone-800 dark:text-stone-200 mb-4 relative z-10">Приєднайтеся до спільноти!</h3>
-    <p class="text-stone-600 dark:text-stone-400 mb-6 relative z-10">Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.</p>
-    <div class="flex justify-start relative z-10">
+  <% content = capture do %>
+    <%= tag.p 'Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.',
+              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300 mb-6' %>
+    <div class="flex justify-start">
       <%= ui_button(as: :link, href: register_path, variant: :ghost, size: :md) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -11,19 +10,19 @@
         Зареєструватися
       <% end %>
     </div>
-  </section>
+  <% end %>
+  <%= render 'shared/info_card', title: 'Приєднайтеся до спільноти!', content: content %>
 <% elsif fiction.finished_and_complete? %>
-  <section class="bg-gradient-to-br from-green-50 dark:from-green-900 to-green-100 dark:to-green-800 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 dark:bg-green-700 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-green-800 dark:text-green-200 mb-4 relative z-10">Ранобе завершено!</h3>
-    <p class="text-green-700 dark:text-green-300 relative z-10">Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!</p>
-  </section>
+  <% content = capture do %>
+    <%= tag.p 'Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!',
+              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' %>
+  <% end %>
+  <%= render 'shared/info_card', title: 'Ранобе завершено!', content: content %>
 <% else %>
-  <section class="bg-gradient-to-br from-yellow-50 dark:from-yellow-900 to-yellow-100 dark:to-yellow-800 rounded-lg shadow-md p-8 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-200 dark:bg-yellow-700 rounded-full transform translate-x-16 -translate-y-16"></div>
-    <h3 class="text-xl font-bold text-yellow-800 dark:text-yellow-200 mb-4 relative z-10">Додайте нові розділи!</h3>
-    <p class="text-yellow-700 dark:text-yellow-300 mb-6 relative z-10">Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!</p>
-    <div class="flex justify-start relative z-10">
+  <% content = capture do %>
+    <%= tag.p 'Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!',
+              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300 mb-6' %>
+    <div class="flex justify-start">
       <%= ui_button(as: :link, href: new_chapter_path(fiction:), variant: :ghost, size: :md) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 010-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -31,5 +30,6 @@
         Додати розділ
       <% end %>
     </div>
-  </section>
+  <% end %>
+  <%= render 'shared/info_card', title: 'Додайте нові розділи!', content: content %>
 <% end %>

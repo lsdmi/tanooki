@@ -54,6 +54,13 @@ module Search
       assert_includes TagCounts.labels_from_publications(publication), tags(:one).name
     end
 
+    test 'returns publication counts from database for :publications scope' do
+      tag = tags(:one)
+      expected = Tag.joins(:publications).where(name: tag.name).count
+
+      assert_equal({ tag.name => expected }, TagCounts.call([tag.name], scope: :publications))
+    end
+
     private
 
     def with_stubbed_counts(fiction:, publication:, video:, &)
