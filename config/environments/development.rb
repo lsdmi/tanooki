@@ -82,4 +82,8 @@ Rails.application.configure do
   config.hotwire_livereload.listen_paths << Rails.root.join('app/assets/builds')
   config.hotwire_livereload.force_reload_paths << Rails.root.join('app/assets/builds')
   config.hotwire_livereload.force_reload_paths << Rails.root.join('app/assets/stylesheets')
+
+  # After assets:precompile, public/assets/.manifest.json makes Propshaft resolve only from that
+  # manifest (dev-only gems like hotwire-livereload are omitted). Use a dev-only manifest path.
+  config.assets.manifest_path = Rails.root.join('tmp/propshaft-dev-manifest.json')
 end

@@ -24,4 +24,14 @@ class AssetsPipelineTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'tinymce/tinymce'
     assert_not_includes response.body, '//= require tinymce/tinymce.js'
   end
+
+  test 'tinymce preinit script is valid javascript' do
+    user = users(:user_one)
+    sign_in user
+
+    get new_publication_url
+
+    assert_includes response.body, 'base: "/assets/tinymce"'
+    assert_not_includes response.body, '&#39;'
+  end
 end

@@ -20,14 +20,9 @@ module Layout
     private
 
     def tinymce_preinit_script
-      javascript_tag(nonce: true) do
-        <<~JS
-          window.tinymce = window.tinymce || {
-            base: '#{j TinyMCE::Rails::Engine.base}',
-            suffix: ''
-          };
-        JS
-      end
+      # Pass a string (not a block): javascript_tag block content is HTML-escaped (&#39; breaks JS).
+      script = "window.tinymce = window.tinymce || { base: #{TinyMCE::Rails::Engine.base.to_json}, suffix: '' };"
+      javascript_tag(script, nonce: true)
     end
   end
 end

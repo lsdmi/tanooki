@@ -68,6 +68,7 @@ const initializeTinymce = () => {
     'Please select some text first': 'Спершу виділіть текст для примітки'
   });
   tinymce.init({
+    license_key: 'gpl',
     language: 'uk',
     selector: 'textarea',
     height: 500,
