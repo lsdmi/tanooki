@@ -8,8 +8,8 @@ ruby '3.4.9'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 8.0.0'
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem 'sprockets-rails'
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem 'propshaft'
 
 gem 'mysql2'
 
@@ -43,6 +43,7 @@ group :development do
   gem 'bullet'
   gem 'bundler-audit'
   gem 'erb_lint', require: false
+  gem 'hotwire-livereload'
   gem 'letter_opener'
   gem 'lookbook'
   gem 'rails_best_practices'

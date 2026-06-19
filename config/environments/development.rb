@@ -76,4 +76,10 @@ Rails.application.configure do
   config.secret_key_base = Rails.application.credentials.secret_key_base
 
   config.view_component.previews.default_layout = 'component_preview'
+
+  # Tailwind rebuilds app/assets/builds after view changes; debounce avoids reloading before CSS is ready.
+  config.hotwire_livereload.debounce_delay_ms = 300
+  config.hotwire_livereload.listen_paths << Rails.root.join('app/assets/builds')
+  config.hotwire_livereload.force_reload_paths << Rails.root.join('app/assets/builds')
+  config.hotwire_livereload.force_reload_paths << Rails.root.join('app/assets/stylesheets')
 end

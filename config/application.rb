@@ -34,6 +34,9 @@ module Tanooki
     config.active_job.queue_name_prefix = Rails.env
     # config.eager_load_paths << Rails.root.join('extras')
 
+    # Propshaft digests assets; TinyMCE loads plugins/skins by logical path at runtime.
+    config.tinymce.install = :copy
+
     config.active_storage.variant_processor = :vips
     config.autoload_paths += %W[#{config.root}/app/services]
     config.autoload_paths += %W[#{config.root}/app/query]

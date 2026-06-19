@@ -7,6 +7,7 @@ module Layout
     include StylesheetsHelper
     include AdultContentHelper
     include SweetAlertHelper
+    include TinymceAssetsHelper
     include LayoutFragmentKeysHelper
   end
 end

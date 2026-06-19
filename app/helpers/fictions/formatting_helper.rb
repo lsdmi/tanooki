@@ -14,6 +14,12 @@ module Fictions
       Genre.badge_asset_slug(genre_name)
     end
 
+    def badge_asset_available?(badge_slug)
+      return false if badge_slug.blank?
+
+      Rails.application.assets.load_path.find("badges/#{badge_slug}.webp").present?
+    end
+
     def format_view_count(count)
       if count >= 1000
         formatted = (count / 1000.0).round(1)

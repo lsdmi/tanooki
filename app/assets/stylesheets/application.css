@@ -1,8 +1,6 @@
 /*
  * Global base styles only. Feature CSS (pagy, slimselect, reader, etc.) is loaded per page
  * via Layout::StylesheetsHelper — see app/helpers/layout/stylesheets_helper.rb.
- *
- *= require_self
  */
 
 @layer base {
