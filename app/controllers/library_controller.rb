@@ -59,7 +59,7 @@ class LibraryController < ApplicationController
 
   def render_library_list(section)
     streams = [library_list_stream(section)]
-    streams << invalid_reading_status_notice if @status_update_result&.failure?
+    streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?
     render turbo_stream: streams
   end
 
@@ -72,10 +72,6 @@ class LibraryController < ApplicationController
   end
 
   def invalid_reading_status_notice
-    turbo_stream.update(
-      'application-notice',
-      partial: 'shared/notice',
-      locals: { notice: t('reading_progress.alerts.invalid_status') }
-    )
+    turbo_stream_notice(t('reading_progress.alerts.invalid_status'))
   end
 end

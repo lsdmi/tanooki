@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     result = Users::ProfileUpdate.new(current_user, user_params).call
 
     if result.success?
-      render turbo_stream: [update_notice, update_navbar]
+      render turbo_stream: [*update_notice, update_navbar]
     else
       render turbo_stream: [update_avatars_screen(result.data[:avatars])]
     end
@@ -28,11 +28,7 @@ class UsersController < ApplicationController
   private
 
   def update_notice
-    turbo_stream.update(
-      'application-notice',
-      partial: 'shared/notice',
-      locals: { notice: 'Профіль оновлено.' }
-    )
+    turbo_stream_notice('Профіль оновлено.')
   end
 
   def update_navbar

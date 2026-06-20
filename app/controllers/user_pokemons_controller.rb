@@ -14,9 +14,9 @@ class UserPokemonsController < ApplicationController
         pokemon_id: user_pokemon_params[:pokemon_id],
         user_id: current_user.id
       ).trap
-      render turbo_stream: [remove_pokemon, update_notice(UserPokemon::SUCCESS_MESSSAGE)]
+      render turbo_stream: [remove_pokemon, *update_notice(UserPokemon::SUCCESS_MESSSAGE)]
     else
-      render turbo_stream: [remove_pokemon, update_notice(UserPokemon::FAILURE_MESSSAGE)]
+      render turbo_stream: [remove_pokemon, *update_notice(UserPokemon::FAILURE_MESSSAGE)]
     end
   end
 
@@ -26,7 +26,7 @@ class UserPokemonsController < ApplicationController
     else
       train_pokemon
       current_user.update(pokemon_last_training: Time.current)
-      render turbo_stream: [refresh_screen, update_notice(@alert)]
+      render turbo_stream: [refresh_screen, *update_notice(@alert)]
     end
   end
 
@@ -52,11 +52,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def refresh_error_screen
-    turbo_stream.update(
-      'application-alert',
-      partial: 'shared/alert',
-      locals: { alert: UserPokemon::TRAINING_FRAUD_ALERT }
-    )
+    turbo_stream_alert(UserPokemon::TRAINING_FRAUD_ALERT)
   end
 
   def refresh_screen
@@ -78,11 +74,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def update_notice(message)
-    turbo_stream.update(
-      'application-notice',
-      partial: 'shared/notice',
-      locals: { notice: message }
-    )
+    turbo_stream_notice(message)
   end
 
   def user_pokemon_params

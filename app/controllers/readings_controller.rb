@@ -23,7 +23,7 @@ class ReadingsController < ApplicationController
     handle_scanlators_destruction(stack_size)
 
     reload_fiction_chapters
-    render turbo_stream: [refresh_list, refresh_sweetalert]
+    render turbo_stream: refresh_list
   end
 
   private

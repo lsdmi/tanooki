@@ -94,11 +94,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def refresh_error_screen
-    turbo_stream.update(
-      'application-alert',
-      partial: 'shared/alert',
-      locals: { alert: PokemonBattleLog::POTENTIAL_FRAUD_ALERT }
-    )
+    turbo_stream_alert(PokemonBattleLog::POTENTIAL_FRAUD_ALERT)
   end
 
   def selected_pokemon

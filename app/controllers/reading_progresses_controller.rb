@@ -71,17 +71,13 @@ class ReadingProgressesController < ApplicationController
         locals: { fiction: @fiction, show_presenter: @show_presenter }
       )
     ]
-    streams << invalid_reading_status_notice if @status_update_result&.failure?
+    streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?
 
     render turbo_stream: streams
   end
 
   def invalid_reading_status_notice
-    turbo_stream.update(
-      'application-notice',
-      partial: 'shared/notice',
-      locals: { notice: t('reading_progress.alerts.invalid_status') }
-    )
+    turbo_stream_notice(t('reading_progress.alerts.invalid_status'))
   end
 
   def set_fiction

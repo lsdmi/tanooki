@@ -3,6 +3,7 @@
 # Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  include TurboFlashStream
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from StandardError, with: :handle_error if Rails.env.production?
@@ -26,10 +27,6 @@ class ApplicationController < ActionController::Base
     return if params[:page].present?
 
     @wild_pokemon = Pokemons::WildCatch.new(user: current_user, session:).call
-  end
-
-  def refresh_sweetalert
-    turbo_stream.replace('sweet-alert', partial: 'shared/sweet_alert')
   end
 
   def latest_comments

@@ -12,8 +12,16 @@
   background-color: #ffffff;
   max-width: 20rem !important;
   width: 90% !important;
+  font-family: Montserrat, ui-sans-serif, system-ui, sans-serif !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
   backdrop-filter: blur(10px) !important;
+}
+
+.swal2-title.title {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  line-height: 1.6 !important;
+  color: #111827 !important;
 }
 
 .swal2-confirm {

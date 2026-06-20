@@ -57,7 +57,7 @@ class FictionsController < ApplicationController
   def destroy
     Fictions::DestroyOrUnlink.new(@fiction, current_user).call
     @pagy, @fictions = paginate_fictions
-    render turbo_stream: [refresh_list, refresh_sweetalert]
+    render turbo_stream: refresh_list
   end
 
   def toggle_order

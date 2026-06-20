@@ -22,7 +22,7 @@ module Readings
       render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 2))
 
       assert_selector "a[href='#{edit_chapter_path(@chapter.slug)}']"
-      assert_selector "button.sweet-alert-button[data-url='#{reading_path(@chapter, page: 2)}']"
+      assert_selector "button.sweet-alert-button[data-sweet-alert-url-value='#{reading_path(@chapter, page: 2)}']"
     end
 
     test 'renders card variant' do
@@ -30,7 +30,7 @@ module Readings
 
       assert_no_selector 'tr'
       assert_selector '.rounded-lg.border', text: @chapter.display_title
-      assert_selector "button.sweet-alert-button[data-url='#{reading_path(@chapter, page: 1)}']"
+      assert_selector "button.sweet-alert-button[data-sweet-alert-url-value='#{reading_path(@chapter, page: 1)}']"
     end
 
     test 'rejects unknown variant' do

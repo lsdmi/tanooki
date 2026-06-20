@@ -43,6 +43,7 @@
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-refresh-method" content="morph">
     <meta name="turbo-refresh-scroll" content="preserve">
+    <%# data-turbo-track="reload" — digested Propshaft assets only; CDN URLs (flatpickr, Google Fonts) omit track %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <% global_stylesheets.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
@@ -64,19 +65,13 @@
       <%= javascript_include_tag 'tinymce_initializer' %>
     <% end %>
 
-    <% if requires_sweetalert_js? %>
-      <%= turbo_frame_tag 'sweet-alert' do %>
-        <%= render 'shared/sweet_alert' %>
-      <% end %>
-    <% end %>
-
     <% if requires_legacy_font_toggler? %>
-      <%= javascript_include_tag 'font_toggler' %>
+      <%= javascript_import_module_tag 'font_toggler' %>
     <% end %>
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen" data-load-google-scripts="<%= Rails.env.production? %>" data-load-adsense="<%= adsense_allowed? %>">
-    <div id="page-background" class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= controller_name.to_sym == :scanlators && action_name.to_sym == :show ? asset_path('modal-bg.webp') : asset_path('bg.webp') %>);">
+    <div id="page-background" class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
     </div>
@@ -103,7 +98,6 @@
       </div>
     <% end %>
     <%= render "shared/cookie_consent_banner" %>
-    <%= javascript_include_tag 'cookie_consent', defer: true %>
     <%= javascript_import_module_tag 'mode_toggler' %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>
   </body>

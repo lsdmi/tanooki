@@ -15,8 +15,7 @@ module Layout
       'chapters' => %w[new edit create update]
     }.freeze
 
-    # SweetAlert JS (turbo frame + initializer) vs CSS (sweetal2 bundle) intentionally differ.
-    SWEETALERT_JS_CONTROLLER_NAMES = %w[studio readings].freeze
+    # SweetAlert JS loads globally via importmap (application.js); CSS bundle is page-conditional.
     SWEETALERT_CSS_SHOW_CONTROLLERS = %w[fictions bookshelves scanlators publications].freeze
 
     FLATPICKR_STYLESHEET_URL = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css'
@@ -27,10 +26,6 @@ module Layout
 
     def requires_tinymce?
       form_page?(TINYMCE_FORM_PAGES)
-    end
-
-    def requires_sweetalert_js?
-      controller_name.in?(SWEETALERT_JS_CONTROLLER_NAMES)
     end
 
     def requires_sweetalert_css?

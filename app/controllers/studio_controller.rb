@@ -37,8 +37,7 @@ class StudioController < ApplicationController
         'tab-content',
         partial: Studio::TabCatalog.partial_for(@active_tab),
         locals: tab_content_locals
-      ),
-      turbo_stream.update('sweet-alert', partial: 'shared/sweet_alert')
+      )
     ]
   end
 
