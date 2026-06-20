@@ -27,7 +27,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
       <% videos.each do |video| %>
         <article class="group">
-          <%= link_to youtube_video_path(video), class: 'block', data: { turbo: false } do %>
+          <%= link_to youtube_video_path(video), turbo_drive_visit_data.merge(class: 'block') do %>
             <div class="relative w-full overflow-hidden rounded-lg aspect-video mb-3">
               <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}",
                 class: 'absolute inset-0 h-full w-full rounded-lg',

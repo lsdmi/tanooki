@@ -7,7 +7,7 @@
     </div>
     <div>
       <div class="font-semibold text-gray-900 dark:text-white">
-        <%= link_to scanlator.title, scanlator_path(scanlator), data: { turbo: false }, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200" %>
+        <%= link_to scanlator.title, scanlator_path(scanlator), turbo_drive_visit_data.merge(class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200") %>
       </div>
       <div class="flex gap-2 mt-1">
         <span class="inline-flex items-center px-2 py-1 rounded border border-cyan-700 dark:border-rose-900 bg-cyan-100 dark:bg-rose-900 text-cyan-700 dark:text-rose-200 text-xs font-medium">

@@ -13,8 +13,7 @@
           <div class="min-w-0">
             <%= link_to comment.username,
                         profile_path(comment.user.sqid),
-                        class: 'block truncate text-sm font-semibold text-stone-900 hover:text-cyan-700 dark:text-zinc-100 dark:hover:text-rose-400',
-                        data: { turbo: false } %>
+                        turbo_drive_visit_data.merge(class: 'block truncate text-sm font-semibold text-stone-900 hover:text-cyan-700 dark:text-zinc-100 dark:hover:text-rose-400') %>
             <p class="mt-0.5 text-xs text-stone-500 dark:text-zinc-400">
               <%= comment_posted_ago(comment) %>
             </p>

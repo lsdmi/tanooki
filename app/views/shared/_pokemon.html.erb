@@ -4,7 +4,7 @@
       <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'cursor-pointer' %>
     <% end %>
   <% else %>
-    <%= link_to register_path(pokenotice: true), data: { turbo: false } do %>
+    <%= link_to register_path(pokenotice: true) do %>
       <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'cursor-pointer' %>
     <% end %>
   <% end %>

@@ -5,6 +5,7 @@ module Readings
   class ChapterRowComponent < ViewComponent::Base
     include ChapterRowComponentStyles
     include Layout::SweetAlertHelper
+    include Layout::TurboDriveHelper
 
     VARIANTS = %i[table_row card].freeze
 

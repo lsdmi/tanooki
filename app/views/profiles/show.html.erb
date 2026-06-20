@@ -40,7 +40,7 @@
                         } %>
                 <div class="ml-3 flex-1">
                   <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                    <%= link_to publication.title, tale_path(publication), class: "hover:underline", data: { turbo: false } %>
+                    <%= link_to publication.title, tale_path(publication), class: "hover:underline" %>
                   </h4>
                   <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
                     <%= publication.description.to_plain_text %>
@@ -78,7 +78,7 @@
                 <% end %>
                 <div class="ml-3 flex-1">
                   <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                    <%= link_to scanlator.title, scanlator_path(scanlator), class: "hover:underline", data: { turbo: false } %>
+                    <%= link_to scanlator.title, scanlator_path(scanlator), class: "hover:underline" %>
                   </h3>
                   <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"><%= scanlator.description %></p>
                 </div>
@@ -128,7 +128,7 @@
                     <div class="mt-3 flex -space-x-2 overflow-x-auto scrollbar-hide pb-2">
                       <% bookshelf.fictions.each do |fiction| %>
                         <div class="relative flex-shrink-0">
-                        <%= link_to fiction_path(fiction), data: { turbo: false }, class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
+                        <%= link_to fiction_path(fiction), class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
                           <%= image_tag cover_card_url(fiction.cover),
                               alt: fiction.title,
                               class: "w-full h-full object-cover",
@@ -202,7 +202,7 @@
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                       Коментар до:
                       <span class="text-cyan-700 dark:text-rose-400 hover:underline cursor-pointer">
-                        <%= link_to commentable_title(comment.commentable), comment_url(comment), class: 'hover:underline', data: { turbo: false } %>
+                        <%= link_to commentable_title(comment.commentable), comment_url(comment), class: 'hover:underline' %>
                       </span>
                     </div>
                   </div>
@@ -226,7 +226,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <% @recent_readings.joins(:chapter).each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
+                <%= link_to fiction_path(reading.fiction), class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
                   <%= image_tag cover_card_url(reading.fiction.cover),
                     alt: reading.fiction.cover.blob.filename.to_s,
                     class: "w-full h-full object-cover",
@@ -240,7 +240,7 @@
 
                 <div class="flex-1">
                   <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                    <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: "hover:underline" %>
+                    <%= link_to reading.fiction.title, fiction_path(reading.fiction), class: "hover:underline" %>
                   </h3>
                   <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
                     <%= reading.chapter.display_title_no_volume %>

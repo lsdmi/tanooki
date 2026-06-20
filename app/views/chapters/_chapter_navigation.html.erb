@@ -5,7 +5,7 @@
        aria-label="<%= placement == :top ? 'Навігація розділів (зверху)' : 'Навігація розділів (знизу)' %>">
     <div class="flex flex-row items-stretch justify-between gap-1.5 sm:gap-3">
       <% if previous_chapter.present? %>
-        <%= link_to chapter_path(previous_chapter), class: "#{nav_btn_class} sm:justify-start", data: { turbo: false } do %>
+        <%= link_to chapter_path(previous_chapter), turbo_drive_visit_data(preload: true).merge(class: "#{nav_btn_class} sm:justify-start") do %>
           <svg class="h-3 w-3 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
@@ -16,7 +16,7 @@
       <% end %>
 
       <% if next_chapter.present? %>
-        <%= link_to chapter_path(next_chapter), class: "#{nav_btn_class} sm:justify-end", data: { turbo: false } do %>
+        <%= link_to chapter_path(next_chapter), turbo_drive_visit_data(preload: true).merge(class: "#{nav_btn_class} sm:justify-end") do %>
           <span class="truncate">Наступний розділ</span>
           <svg class="h-3 w-3 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

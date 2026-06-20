@@ -1,6 +1,6 @@
 <%# locals: (publication:, publication_tag_counts: nil) %>
 <article class="group flex gap-3 py-3.5">
-  <%= link_to tale_path(publication), class: 'relative h-24 w-24 shrink-0 overflow-hidden rounded bg-stone-100 dark:bg-gray-800' do %>
+  <%= link_to tale_path(publication), turbo_drive_visit_data.merge(class: 'relative h-24 w-24 shrink-0 overflow-hidden rounded bg-stone-100 dark:bg-gray-800') do %>
     <%= image_tag cover_card_url(publication.cover),
           alt: publication.cover.blob.filename.to_s,
           class: 'h-full w-full object-cover',
@@ -17,12 +17,13 @@
             size: :sm,
             max: 3,
             href_builder: ->(name) { search_index_path(search: [name]) },
-            counts: publication_tag_counts || {}
+            counts: publication_tag_counts || {},
+            tag_html: turbo_drive_visit_data
           ) %>
     </div>
 
     <h2 class="overflow-hidden text-sm font-medium leading-tight text-gray-900 dark:text-gray-100 line-clamp-1 sm:text-[15px]">
-      <%= link_to publication.title, tale_path(publication), class: 'hover:text-cyan-700 dark:hover:text-rose-700 transition-colors' %>
+      <%= link_to publication.title, tale_path(publication), turbo_drive_visit_data.merge(class: 'hover:text-cyan-700 dark:hover:text-rose-700 transition-colors') %>
     </h2>
 
     <%= tag.p publication.description.to_plain_text,

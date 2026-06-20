@@ -10,8 +10,9 @@
         <div>
           <%= link_to chapter.display_title,
                       chapter_path(chapter),
-                      class: 'hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium',
-                      data: { turbo: false } %>
+                      turbo_drive_visit_data.merge(
+                        class: 'hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium'
+                      ) %>
           <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Опубліковано: <%= published_at_label %>
           </p>
@@ -52,8 +53,9 @@
       <div class="flex-1 min-w-0">
         <%= link_to chapter.display_title,
                     chapter_path(chapter),
-                    class: 'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white',
-                    data: { turbo: false } %>
+                    turbo_drive_visit_data.merge(
+                      class: 'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white'
+                    ) %>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
           Опубліковано: <%= published_at_label %>
         </p>

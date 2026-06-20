@@ -6,7 +6,7 @@
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
-    <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+    <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
       <%= image_tag cover_card_url(fiction.cover),
         alt: fiction.cover.blob.filename.to_s,
         id: "image-#{fiction.id}",
@@ -17,7 +17,7 @@
   </div>
   <div class="flex-1 my-1 lg:col-span-2">
     <div>
-      <%= link_to fiction_path(fiction), data: { turbo: false }, class: 'group' do %>
+      <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'group') do %>
         <h3 class="text-xl sm:text-2xl line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none">
           <%= fiction.title %>
         </h3>
@@ -32,7 +32,7 @@
     <%= ui_button(as: :link,
                   href: fiction_path(fiction),
                   size: :responsive,
-                  html: { data: { turbo: false } }) do %>
+                  html: turbo_drive_visit_data) do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
       </svg>

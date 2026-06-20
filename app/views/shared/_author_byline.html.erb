@@ -8,9 +8,9 @@
           size: :sm,
           as: :link,
           href: url,
-          html: { rel: 'author', data: { turbo: false } }
+          html: { rel: 'author' }
         ) %>
   <% else %>
-    <%= link_to name, url, rel: 'author', class: link_class, data: { turbo: false } %>
+    <%= link_to name, url, rel: 'author', class: link_class %>
   <% end %>
 </p>

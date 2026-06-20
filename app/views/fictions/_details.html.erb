@@ -36,7 +36,7 @@
                       size: :sm,
                       as: :link,
                       href: scanlator_path(scanlator),
-                      html: { data: { turbo: false } }
+                      html: turbo_drive_visit_data
                     ) %>
               <% end %>
             </div>
@@ -87,8 +87,7 @@
 
                   genre = fiction.genres.find { |g| g.name == name }
                   fiction_genre_fictions_path(genre) if genre
-                },
-                tag_html: { data: { turbo: false } }
+                }
               ) %>
         </div>
       <% end %>

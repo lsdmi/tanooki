@@ -72,8 +72,7 @@
                 href_builder: ->(name) {
                   fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
                 },
-                html: { class: 'hidden lg:flex lg:flex-wrap lg:gap-2' },
-                tag_html: { data: { turbo: false } }
+                html: { class: 'hidden lg:flex lg:flex-wrap lg:gap-2' }
               ) %>
         <% end %>
           </div>

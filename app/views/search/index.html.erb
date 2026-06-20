@@ -100,8 +100,7 @@
                   variant: :keyword,
                   size: :sm,
                   href_builder: ->(name) { search_index_path(search: [name]) },
-                  counts: @trending_tag_counts,
-                  tag_html: { data: { turbo: false } }
+                  counts: @trending_tag_counts
                 ) %>
           </div>
         </div>

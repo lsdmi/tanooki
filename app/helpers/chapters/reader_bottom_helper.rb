@@ -20,7 +20,6 @@ module Chapters
     def reader_outlined_html(title:, **html_options)
       {
         title: title,
-        data: { turbo: false },
         class: reader_outlined_css_class(html_options[:class]),
         **html_options.except(:class)
       }

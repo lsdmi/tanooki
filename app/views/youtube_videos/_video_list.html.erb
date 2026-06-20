@@ -2,7 +2,7 @@
   <div class="grid sm:grid-cols-2 gap-4">
     <% other_youtube_videos.each do |video| %>
       <div class="overflow-hidden">
-        <%= link_to youtube_video_path(video), data: { turbo: false }, class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
+        <%= link_to youtube_video_path(video), turbo_drive_visit_data.merge(class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm') do %>
           <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative">
             <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
               <!-- Spinner SVG or content here -->
@@ -18,7 +18,7 @@
           </div>
         <% end %>
         <div class="py-2">
-          <%= link_to video.title, youtube_video_path(video), data: { turbo: false }, class: 'drop-shadow lg:leading-tight text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
+          <%= link_to video.title, youtube_video_path(video), turbo_drive_visit_data.merge(class: 'drop-shadow lg:leading-tight text-sm font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1') %>
         </div>
       </div>
     <% end %>

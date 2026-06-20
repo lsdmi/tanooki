@@ -7,7 +7,7 @@
       <div class="flex items-start sm:items-center justify-between mb-2 gap-2">
         <div class="min-w-0 flex-1">
           <!-- Username and timestamp -->
-          <%= link_to comment.username, profile_path(comment.user.sqid), class: "text-stone-800 dark:text-gray-200 font-semibold text-sm sm:text-base hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200 block truncate", data: { turbo: false } %>
+          <%= link_to comment.username, profile_path(comment.user.sqid), turbo_drive_visit_data.merge(class: "text-stone-800 dark:text-gray-200 font-semibold text-sm sm:text-base hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200 block truncate") %>
           <%= tag.p l(comment.created_at, format: :short).downcase, class: "text-stone-400 dark:text-gray-500 text-xs mt-1" %>
         </div>
 

@@ -1,5 +1,5 @@
 <li id="reading-progress-<%= reading.id %>" class="flex items-start sm:items-center pb-4 hover:scale-[1.015] transition-all duration-300 gap-3 sm:gap-4">
-  <%= link_to fiction_path(reading.fiction), data: { turbo: false }, class: 'flex-shrink-0 relative block' do %>
+  <%= link_to fiction_path(reading.fiction), turbo_drive_visit_data.merge(class: 'flex-shrink-0 relative block') do %>
     <%= image_tag cover_card_url(reading.fiction.cover),
       alt: reading.fiction.cover.blob.filename.to_s,
       class: "w-16 h-20 sm:w-20 sm:h-24 lg:w-24 lg:h-32 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
@@ -14,7 +14,7 @@
   <!-- Main Content -->
   <div class="flex-1 tracking-tight min-w-0">
     <div class="flex justify-between gap-2 sm:gap-3">
-      <%= link_to reading.fiction.title, fiction_path(reading.fiction), data: { turbo: false }, class: 'leading-tight text-sm sm:text-base lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+      <%= link_to reading.fiction.title, fiction_path(reading.fiction), turbo_drive_visit_data.merge(class: 'leading-tight text-sm sm:text-base lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight') %>
     </div>
     <div class="text-xs sm:text-sm text-stone-800 dark:text-gray-200 flex gap-1 mt-2 font-light">
       <span class="">Прочитано:</span>

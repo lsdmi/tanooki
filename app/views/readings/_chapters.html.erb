@@ -5,7 +5,7 @@
     <div class="lg:hidden mb-4">
       <!-- Back Button -->
       <div class="flex items-center mb-3">
-        <%= link_to readings_path, data: { turbo: false }, class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200" do %>
+        <%= link_to readings_path, turbo_drive_visit_data.merge(class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200") do %>
           <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
@@ -30,11 +30,11 @@
     <div class="hidden lg:block mb-6">
       <!-- Breadcrumb Navigation -->
       <nav class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-        <%= link_to "Головна", root_path, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
+        <%= link_to "Головна", root_path, turbo_drive_visit_data.merge(class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200") %>
         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
-        <%= link_to "Майстерня", readings_path, class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200", data: { turbo: false } %>
+        <%= link_to "Майстерня", readings_path, turbo_drive_visit_data.merge(class: "hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200") %>
         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
@@ -46,7 +46,7 @@
         <div class="flex items-start space-x-4">
           <!-- Fiction Cover -->
           <div class="flex-shrink-0">
-            <%= link_to fiction_path(fiction), data: { turbo: false } do %>
+            <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
               <%= image_tag cover_card_url(fiction.cover),
                   alt: fiction.title,
                   class: "w-20 h-24 rounded-lg object-cover shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow duration-200" %>
@@ -57,7 +57,7 @@
           <div class="flex-1 min-w-0">
             <div class="flex items-start justify-between">
               <div class="flex-1 min-w-0">
-                <%= link_to fiction_path(fiction), data: { turbo: false }, class: "block" do %>
+                <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: "block") do %>
                   <h1 class="text-2xl font-bold text-gray-900 dark:text-white hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 mb-2 line-clamp-2">
                     <%= fiction.title %>
                   </h1>
@@ -89,7 +89,7 @@
               <!-- Quick Actions -->
               <div class="flex items-center space-x-2">
                 <!-- View Fiction Button -->
-                <%= link_to fiction_path(fiction), data: { turbo: false }, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" do %>
+                <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: "inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200") do %>
                   <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
                     <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />
@@ -98,7 +98,7 @@
                 <% end %>
 
                 <!-- Edit Fiction Button -->
-                <%= ui_button(as: :link, href: edit_fiction_path(fiction.slug), size: :md, html: { data: { turbo: false } }) do %>
+                <%= ui_button(as: :link, href: edit_fiction_path(fiction.slug), size: :md, html: turbo_drive_visit_data) do %>
                   <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>

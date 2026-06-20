@@ -1,5 +1,5 @@
 <div class="flex items-center space-x-2">
-  <%= link_to chapter_path(chapter), data: { turbo: false }, class: Readings::ChapterRowComponentStyles::VIEW_ACTION_CLASSES, title: 'Переглянути' do %>
+  <%= link_to chapter_path(chapter), turbo_drive_visit_data.merge(class: Readings::ChapterRowComponentStyles::VIEW_ACTION_CLASSES, title: 'Переглянути') do %>
     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
       <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />

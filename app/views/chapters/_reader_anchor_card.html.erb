@@ -21,7 +21,7 @@
 
   <div class="reader-bottom-card__body flex min-h-0 min-w-0 flex-col<%= fiction.cover.attached? ? ' col-start-2 row-start-1' : ' col-span-2 row-start-1' %> lg:flex-1">
     <h2 id="reader-anchor-card-title" class="text-base font-bold leading-snug text-stone-900 dark:text-zinc-50 sm:text-lg md:text-xl">
-      <%= link_to fiction.title, fiction_path(fiction), class: 'line-clamp-2 hover:text-cyan-800 dark:hover:text-rose-300 transition-colors lg:line-clamp-1', data: { turbo: false } %>
+      <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: 'line-clamp-2 hover:text-cyan-800 dark:hover:text-rose-300 transition-colors lg:line-clamp-1') %>
     </h2>
 
     <p class="mt-0.5 text-xs text-stone-600 dark:text-zinc-300 sm:mt-1 sm:text-sm">

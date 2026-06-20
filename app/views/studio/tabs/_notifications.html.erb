@@ -1,6 +1,6 @@
 <% if comments.any? %>
   <div class="flex justify-center sm:justify-end">
-    <%= link_to calendar_fictions_path(subscriptions: true), data: { turbo: false }, class: "inline-flex items-center gap-1.5 text-sm font-medium text-cyan-700 dark:text-rose-400 hover:underline" do %>
+    <%= link_to calendar_fictions_path(subscriptions: true), turbo_drive_visit_data.merge(class: "inline-flex items-center gap-1.5 text-sm font-medium text-cyan-700 dark:text-rose-400 hover:underline") do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
@@ -24,9 +24,9 @@
               <!-- Content -->
               <div class="flex-1 min-w-0">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 mb-1">
-                  <span class="font-semibold text-base sm:text-sm text-stone-900 dark:text-gray-100"><%= link_to notification.user.name, profile_path(notification.user.sqid), class: 'hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200', data: { turbo: false } %></span>
+                  <span class="font-semibold text-base sm:text-sm text-stone-900 dark:text-gray-100"><%= link_to notification.user.name, profile_path(notification.user.sqid), turbo_drive_visit_data.merge(class: 'hover:text-cyan-700 dark:hover:text-rose-700 hover:underline transition-all duration-200') %></span>
                   <span class="text-xs px-2 py-0.5 rounded bg-cyan-100 dark:bg-rose-900/20 text-cyan-700 dark:text-rose-400">
-                    <%= link_to commentable_title(notification.commentable), comment_url(notification), class: 'hover:underline', data: { turbo: false } %>
+                    <%= link_to commentable_title(notification.commentable), comment_url(notification), turbo_drive_visit_data.merge(class: 'hover:underline') %>
                   </span>
                 </div>
                 <div class="text-stone-800 dark:text-gray-200 font-light tracking-tight text-sm sm:text-base break-words">
@@ -59,13 +59,13 @@
     <p class="mb-2 text-gray-500 dark:text-gray-400 relative z-10 text-sm sm:text-base">Щойно з'явиться щось важливе — ми одразу повідомимо вас!</p>
   </div>
   <div class="mt-8 mb-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3">
-    <%= ui_button(as: :link, href: fictions_path, html: { data: { turbo: false }, class: 'relative z-10' }) do %>
+    <%= ui_button(as: :link, href: fictions_path, html: turbo_drive_visit_data.merge(class: 'relative z-10')) do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
       </svg>
       Читати ранобе
     <% end %>
-    <%= ui_button(as: :link, href: calendar_fictions_path(subscriptions: true), variant: :ghost, html: { data: { turbo: false }, class: 'relative z-10' }) do %>
+    <%= ui_button(as: :link, href: calendar_fictions_path(subscriptions: true), variant: :ghost, html: turbo_drive_visit_data.merge(class: 'relative z-10')) do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>

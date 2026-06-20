@@ -27,7 +27,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
       <% fictions.each do |fiction| %>
         <div class="group">
-          <%= link_to fiction_path(fiction), class: 'block', data: { turbo: false } do %>
+          <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'block') do %>
             <div class="relative overflow-hidden rounded-lg mb-2">
               <%= image_tag cover_card_url(fiction.cover), alt: fiction.title, class: "w-full h-36 object-cover transition duration-300 group-hover:scale-105" %>
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300"></div>
