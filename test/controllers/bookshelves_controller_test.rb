@@ -135,5 +135,6 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
+    assert_turbo_stream_flash_notice(I18n.t('bookshelves.notices.destroy_success'))
   end
 end

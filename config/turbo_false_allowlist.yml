@@ -1,0 +1,35 @@
+# Intentional data-turbo=false (Category D/E/F + admin forms).
+# Every match in app/views, app/helpers, app/components must appear here.
+# Verified: 2026-06-20 — 26 occurrences across 15 files.
+allowed:
+  # Category D — TinyMCE / forms / new-* / edit actions
+  - app/views/fictions/edit.html.erb:3
+  - app/views/fictions/new.html.erb:3
+  - app/views/readings/_chapters.html.erb:127
+  - app/views/readings/_chapters.html.erb:180
+  - app/views/readings/chapter_row_component/_actions.html.erb:9
+  - app/views/scanlators/_team_card.html.erb:29
+  - app/views/studio/tabs/_blogs.html.erb:13
+  - app/views/studio/tabs/_bookshelves.html.erb:15
+  - app/views/studio/tabs/_bookshelves.html.erb:97
+  - app/views/studio/tabs/_bookshelves.html.erb:181
+  - app/views/studio/tabs/_teams.html.erb:15
+  - app/views/users/dashboard/_fictions.html.erb:14
+  - app/views/users/dashboard/_fictions.html.erb:81
+  - app/views/users/dashboard/_fictions.html.erb:166
+  - app/views/users/dashboard/_no_scanlators_screen.html.erb:74
+  - app/views/users/dashboard/_publications.html.erb:64
+  - app/views/users/dashboard/_publications.html.erb:140
+  - app/views/admin/pokemons/_list.html.erb:28
+  - app/views/admin/pokemons/_list.html.erb:37
+
+  # Category E — Devise auth
+  - app/views/users/passwords/edit.html.erb:12
+  - app/views/users/passwords/new.html.erb:12
+  - app/views/users/registrations/new.html.erb:13
+  - app/views/users/sessions/_omniauth.html.erb:7
+  - app/views/users/sessions/new.html.erb:13
+
+  # Category F — EPUB / special
+  - app/views/studio/tabs/_epub_exports.html.erb:44
+  - app/views/studio/tabs/_epub_exports.html.erb:68

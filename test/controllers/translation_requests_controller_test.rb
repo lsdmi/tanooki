@@ -22,6 +22,8 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     get translation_requests_url(format: :turbo_stream)
 
     assert_response :success
+    assert_select 'turbo-stream[target="application-notice"]'
+    assert_select 'turbo-stream[action="update"][target="requests-container"]'
   end
 
   test 'should create translation request when authenticated' do

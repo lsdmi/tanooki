@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 export default class extends Controller {
   static targets = ["frame", "image"]
@@ -42,12 +43,7 @@ export default class extends Controller {
     })
     .then(response => response.text())
     .then(html => {
-      const tempDiv = document.createElement('div')
-      tempDiv.innerHTML = html
-      const newContent = tempDiv.querySelector('turbo-stream')
-      if (newContent) {
-        Turbo.renderStreamMessage(newContent.outerHTML)
-      }
+      Turbo.renderStreamMessage(html)
       frame.removeAttribute('data-transitioning')
     })
   }

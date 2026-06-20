@@ -80,14 +80,22 @@ module TranslationRequestsResponses
   end
 
   def render_requests_list
-    render turbo_stream: turbo_stream.update(
+    render turbo_stream: turbo_stream_list_refresh(requests_list_stream)
+  end
+
+  def requests_list_stream
+    turbo_stream.update(
       'requests-container',
       partial: 'translation_requests/requests_list',
-      locals: {
-        translation_requests: @translation_requests,
-        pagy: @pagy,
-        total_requests_count: @total_requests_count
-      }
+      locals: requests_list_locals
     )
+  end
+
+  def requests_list_locals
+    {
+      translation_requests: @translation_requests,
+      pagy: @pagy,
+      total_requests_count: @total_requests_count
+    }
   end
 end

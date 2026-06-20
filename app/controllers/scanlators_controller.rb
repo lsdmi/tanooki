@@ -59,7 +59,7 @@ class ScanlatorsController < ApplicationController
       page: params[:page] || 1
     )
 
-    render turbo_stream: refresh_list
+    render turbo_stream: turbo_stream_destroy_success(refresh_list, t('scanlators.notices.destroy_success'))
   end
 
   private

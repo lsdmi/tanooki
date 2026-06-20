@@ -1,3 +1,5 @@
+import { Turbo } from "@hotwired/turbo-rails"
+
 export function csrfToken() {
   return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 }
@@ -35,20 +37,15 @@ export async function fetchTurboStream(url) {
 export function applyTurboStream(html, targetId = 'requests-container') {
   const parser = new DOMParser()
   const doc = parser.parseFromString(html, 'text/html')
-  const turboStreamElement = doc.querySelector('turbo-stream')
+  const hasTargetUpdate = [...doc.querySelectorAll('turbo-stream')].some(
+    (element) =>
+      element.getAttribute('action') === 'update' &&
+      element.getAttribute('target') === targetId
+  )
 
-  if (!turboStreamElement) return false
+  if (!hasTargetUpdate) return false
 
-  const action = turboStreamElement.getAttribute('action')
-  const target = turboStreamElement.getAttribute('target')
-  const template = turboStreamElement.querySelector('template')
-
-  if (action !== 'update' || target !== targetId || !template) return false
-
-  const container = document.getElementById(targetId)
-  if (!container) return false
-
-  container.innerHTML = template.innerHTML
+  Turbo.renderStreamMessage(html)
   return true
 }
 

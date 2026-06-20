@@ -58,7 +58,7 @@ class LibraryController < ApplicationController
   end
 
   def render_library_list(section)
-    streams = [library_list_stream(section)]
+    streams = turbo_stream_list_refresh(library_list_stream(section))
     streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?
     render turbo_stream: streams
   end

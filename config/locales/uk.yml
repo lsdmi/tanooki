@@ -325,10 +325,12 @@ uk:
     notices:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
+      destroy_success: Полицю видалено.
   fictions:
     notices:
       create_success: Твір створено.
       update_success: Твір оновлено.
+      destroy_success: Твір видалено.
     adult_content_disclaimer:
       aria_label: Попередження про контент 18+
       title: Контент 18+
@@ -339,6 +341,7 @@ uk:
     notices:
       create_success: Розділ додано.
       update_success: Розділ оновлено.
+      destroy_success: Розділ видалено.
     alerts:
       not_yet_public: Цей розділ ще недоступний для читання.
     reader_epub_banner:
@@ -431,10 +434,12 @@ uk:
     notices:
       create_success: Допис створено.
       update_success: Допис оновлено.
+      destroy_success: Допис видалено.
   scanlators:
     notices:
       create_success: Команду додано, час додати ваші твори.
       update_success: Команду оновлено.
+      destroy_success: Команду видалено.
   translation_requests:
     alerts:
       already_assigned: Цей запит вже призначено іншій команді перекладачів

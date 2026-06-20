@@ -108,8 +108,10 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy fiction' do
-    assert_difference('Fiction.count', -1) { delete fiction_url(@fiction) }
+    assert_difference('Fiction.count', -1) { delete fiction_url(@fiction), as: :turbo_stream }
+
     assert_response :success
+    assert_turbo_stream_flash_notice(I18n.t('fictions.notices.destroy_success'))
   end
 
   test 'should update fiction with genres' do

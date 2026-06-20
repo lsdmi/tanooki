@@ -23,7 +23,7 @@ module Search
       target, partial, locals = search_turbo_stream_section(section)
       return unless target
 
-      render turbo_stream: search_section_stream(target, partial, locals)
+      render turbo_stream: turbo_stream_list_refresh(search_section_stream(target, partial, locals))
     end
 
     def search_turbo_stream_section(section)

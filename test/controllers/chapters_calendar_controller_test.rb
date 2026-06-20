@@ -46,5 +46,7 @@ class ChaptersCalendarControllerTest < ActionDispatch::IntegrationTest
   def assert_calendar_turbo_stream_body
     assert_includes response.body, 'turbo-stream'
     assert_includes response.body, 'chapters_calendar_updates'
+    assert_select 'turbo-stream[target="application-notice"]'
+    assert_select 'turbo-stream[target="application-alert"]'
   end
 end

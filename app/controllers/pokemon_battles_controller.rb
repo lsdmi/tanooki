@@ -13,7 +13,7 @@ class PokemonBattlesController < ApplicationController
       battle_service.start_battle
       create_battle_log
       finish_battle
-      render turbo_stream: [refresh_leaders, refresh_history, remove_call]
+      render turbo_stream: turbo_stream_with_cleared_flash(refresh_leaders, refresh_history, remove_call)
     end
   end
 

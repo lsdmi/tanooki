@@ -31,14 +31,14 @@ class StudioController < ApplicationController
   private
 
   def turbo_stream_updates
-    [
+    turbo_stream_with_cleared_flash(
       turbo_stream.update('tabs', partial: 'studio/tab_list', locals: { active_tab: @active_tab }),
       turbo_stream.update(
         'tab-content',
         partial: Studio::TabCatalog.partial_for(@active_tab),
         locals: tab_content_locals
       )
-    ]
+    )
   end
 
   def tab_content_locals

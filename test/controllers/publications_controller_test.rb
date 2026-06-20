@@ -53,11 +53,10 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should destroy publication' do
     assert_difference('Publication.count', -1) do
-      delete publication_url(@publication)
+      delete publication_url(@publication), as: :turbo_stream
     end
 
-    assert_response :success
-    assert_publication_destroy_templates
+    assert_publication_destroy_with_flash(I18n.t('publications.notices.destroy_success'))
   end
 
   test 'should update publication with tags' do
@@ -120,5 +119,11 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
   def assert_publication_destroy_templates
     assert_template 'users/dashboard/_publications'
     assert_template '_publications'
+  end
+
+  def assert_publication_destroy_with_flash(message)
+    assert_response :success
+    assert_publication_destroy_templates
+    assert_turbo_stream_flash_notice(message)
   end
 end

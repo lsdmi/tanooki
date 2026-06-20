@@ -28,7 +28,7 @@ module Admin
     def destroy
       tag = Tag.find(params[:id])
       tag.destroy
-      render turbo_stream: refresh_list
+      render turbo_stream: turbo_stream_list_refresh(refresh_list)
     end
 
     private

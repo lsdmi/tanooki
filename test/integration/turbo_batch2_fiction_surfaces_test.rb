@@ -33,6 +33,16 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
     assert_select '.fiction-details a[data-turbo-frame="_top"][href*="/scanlators/"]'
   end
 
+  test 'fiction details turbo stream replaces details without flash frame streams' do
+    fiction = fictions(:two)
+
+    get details_fiction_url(fiction, format: :turbo_stream)
+
+    assert_response :success
+    assert_select 'turbo-stream[action="replace"][target="fiction_details"]', count: 1
+    assert_no_match(/target="application-notice"/, response.body)
+  end
+
   private
 
   def extract_fiction_details_frame_html

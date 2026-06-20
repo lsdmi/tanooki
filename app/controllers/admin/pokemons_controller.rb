@@ -46,7 +46,7 @@ module Admin
         page: params[:page] || 1
       )
 
-      render turbo_stream: refresh_list
+      render turbo_stream: turbo_stream_list_refresh(refresh_list)
     end
 
     private

@@ -13,7 +13,7 @@ class ChaptersCalendarController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream { render turbo_stream: refresh_list }
+      format.turbo_stream { render turbo_stream: turbo_stream_list_refresh(refresh_list) }
     end
   end
 

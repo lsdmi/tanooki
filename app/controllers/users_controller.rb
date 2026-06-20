@@ -16,13 +16,13 @@ class UsersController < ApplicationController
     if result.success?
       render turbo_stream: [*update_notice, update_navbar]
     else
-      render turbo_stream: [update_avatars_screen(result.data[:avatars])]
+      render turbo_stream: turbo_stream_with_cleared_flash(update_avatars_screen(result.data[:avatars]))
     end
   end
 
   def pokemon_details
     result = Pokemons::UserPokemonDetails.new(params[:pokemon_id]).call
-    render turbo_stream: update_pokemon_details(result.data)
+    render turbo_stream: turbo_stream_list_refresh(update_pokemon_details(result.data))
   end
 
   private

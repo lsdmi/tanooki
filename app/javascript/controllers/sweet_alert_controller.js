@@ -10,6 +10,10 @@ export default class extends Controller {
     tagId: String
   }
 
+  disconnect() {
+    this.abortDelete()
+  }
+
   async confirm(event) {
     event.preventDefault()
     event.stopPropagation()
@@ -39,24 +43,42 @@ export default class extends Controller {
 
     if (!result.isConfirmed || !this.hasUrlValue) return
 
-    const response = await fetch(this.urlValue, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': this.tagDeleteUsesJson() ? 'application/json' : 'application/turbo_stream',
-        'X-CSRF-Token': this.csrfToken(),
-      },
-      credentials: 'include',
-    })
+    this.abortDelete()
+    this.deleteAbortController = new AbortController()
 
-    if (this.tagDeleteUsesJson()) {
-      if (response.ok && this.hasTagIdValue) {
-        document.getElementById(this.tagIdValue)?.remove()
+    try {
+      const response = await fetch(this.urlValue, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': this.tagDeleteUsesJson() ? 'application/json' : 'application/turbo_stream',
+          'X-CSRF-Token': this.csrfToken(),
+        },
+        credentials: 'include',
+        signal: this.deleteAbortController.signal,
+      })
+
+      if (this.tagDeleteUsesJson()) {
+        if (response.ok && this.hasTagIdValue) {
+          document.getElementById(this.tagIdValue)?.remove()
+        }
+        return
       }
-      return
-    }
 
-    const turboStream = await response.text()
-    Turbo.renderStreamMessage(turboStream)
+      const turboStream = await response.text()
+      Turbo.renderStreamMessage(turboStream)
+    } catch (error) {
+      if (error.name === 'AbortError') return
+      throw error
+    } finally {
+      this.deleteAbortController = null
+    }
+  }
+
+  abortDelete() {
+    if (!this.deleteAbortController) return
+
+    this.deleteAbortController.abort()
+    this.deleteAbortController = null
   }
 
   tagDeleteUsesJson() {

@@ -13,7 +13,9 @@ module Fictions
 
     def sorted_chapters_turbo_streams
       locals = sorted_chapters_frame_locals
-      [turbo_stream.update(sorted_chapters_frame_dom_id, partial: 'fictions/chapters', locals: locals)]
+      turbo_stream_with_cleared_flash(
+        turbo_stream.update(sorted_chapters_frame_dom_id, partial: 'fictions/chapters', locals: locals)
+      )
     end
 
     def sorted_chapters_frame_locals

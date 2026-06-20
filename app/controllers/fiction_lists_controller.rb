@@ -36,13 +36,15 @@ class FictionListsController < ApplicationController
   end
 
   def render_fictions_list
-    render turbo_stream: turbo_stream.update(
-      'fiction-list-page',
-      partial: 'fiction_lists/dynamic_content',
-      locals: {
-        fictions: @fictions,
-        pagy: @pagy
-      }
+    render turbo_stream: turbo_stream_list_refresh(
+      turbo_stream.update(
+        'fiction-list-page',
+        partial: 'fiction_lists/dynamic_content',
+        locals: {
+          fictions: @fictions,
+          pagy: @pagy
+        }
+      )
     )
   end
 end

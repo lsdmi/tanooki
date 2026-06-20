@@ -27,6 +27,7 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
       delete reading_url(@chapter), as: :turbo_stream
     end
     assert_response :success
+    assert_turbo_stream_flash_notice(I18n.t('chapters.notices.destroy_success'))
   end
 
   test 'should remove user scanlator link after destroying last team chapter from shared fiction' do

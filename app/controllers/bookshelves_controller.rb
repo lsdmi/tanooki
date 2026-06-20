@@ -59,7 +59,7 @@ class BookshelvesController < ApplicationController
   def destroy
     @bookshelf.destroy
     @bookshelves = current_user.bookshelves.ordered
-    render turbo_stream: refresh_list
+    render turbo_stream: turbo_stream_destroy_success(refresh_list, t('bookshelves.notices.destroy_success'))
   end
 
   private

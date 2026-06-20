@@ -4,15 +4,12 @@ import { Turbo } from "@hotwired/turbo-rails"
 import "turbo_transitions"
 import "controllers"
 import 'flowbite'
-import Swal from "sweetalert2"
 import "channels"
 import "cookie_consent"
 
 // SPA-like navigation — Turbo 8 Drive + prefetch (morph when <head> matches)
 Turbo.session.drive = true
 Turbo.setProgressBarDelay(120)
-
-window.Swal = Swal
 
 // Flatpickr portals the calendar to <body>. On failed submits Turbo often updates the page without a full reload,
 // so `before-cache` alone misses — clean up on every relevant Turbo phase.

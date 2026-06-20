@@ -26,4 +26,16 @@ module TurboFlashStream
       turbo_stream.update('application-alert', html: '')
     ]
   end
+
+  def turbo_stream_list_refresh(list_stream)
+    [*turbo_stream_clear_flash_frames, list_stream]
+  end
+
+  def turbo_stream_with_cleared_flash(*streams)
+    [*turbo_stream_clear_flash_frames, *streams]
+  end
+
+  def turbo_stream_destroy_success(list_stream, message)
+    turbo_stream_list_refresh(list_stream) + turbo_stream_notice(message)
+  end
 end

@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2'
+
 // Turbo Drive UX: cross-fade on full body swaps (not morph), prefetch guards on slow/save-data networks.
 
 document.addEventListener('turbo:before-visit', () => {
@@ -32,7 +34,7 @@ function cleanupBeforeTurboCache() {
   document.body.classList.remove('overflow-hidden')
   document.documentElement.classList.remove('overflow-hidden')
 
-  if (window.Swal?.isVisible?.()) window.Swal.close()
+  if (Swal.isVisible?.()) Swal.close()
 
   if (typeof tinymce !== 'undefined') {
     tinymce.remove()

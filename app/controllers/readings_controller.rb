@@ -23,7 +23,7 @@ class ReadingsController < ApplicationController
     handle_scanlators_destruction(stack_size)
 
     reload_fiction_chapters
-    render turbo_stream: refresh_list
+    render turbo_stream: turbo_stream_destroy_success(refresh_list, t('chapters.notices.destroy_success'))
   end
 
   private

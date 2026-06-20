@@ -98,8 +98,11 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     scanlator = scanlators(:two)
 
     assert_difference('Scanlator.count', -1) do
-      delete scanlator_path(scanlator, format: :turbo)
+      delete scanlator_path(scanlator, format: :turbo_stream)
     end
+
+    assert_response :success
+    assert_turbo_stream_flash_notice(I18n.t('scanlators.notices.destroy_success'))
   end
 
   private

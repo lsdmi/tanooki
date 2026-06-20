@@ -64,13 +64,13 @@ class ReadingProgressesController < ApplicationController
 
   def render_status_update
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
-    streams = [
+    streams = turbo_stream_list_refresh(
       turbo_stream.update(
         'fiction-reading-status',
         partial: 'fictions/reading_status_controls',
         locals: { fiction: @fiction, show_presenter: @show_presenter }
       )
-    ]
+    )
     streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?
 
     render turbo_stream: streams
