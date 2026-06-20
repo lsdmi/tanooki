@@ -6,6 +6,11 @@ export default class extends Controller {
     this.openDefaultSections()
   }
 
+  disconnect() {
+    this.abortPendingSectionFetch()
+    this.resetChapterSectionLoadedState()
+  }
+
   /** Re-run after chapter drawer injects accordion HTML (legacy hook). */
   initializeSections() {
     this.openDefaultSections()
@@ -73,10 +78,14 @@ export default class extends Controller {
       placeholder.textContent = "Завантаження…"
     }
 
+    this.abortPendingSectionFetch()
+    this.sectionAbortController = new AbortController()
+
     try {
       const response = await fetch(url, {
         headers: { Accept: "text/html", "X-Requested-With": "XMLHttpRequest" },
         credentials: "same-origin",
+        signal: this.sectionAbortController.signal,
       })
       if (!response.ok) {
         container.dataset.chapterSectionLoaded = "false"
@@ -94,12 +103,29 @@ export default class extends Controller {
         return
       }
       container.innerHTML = html
-    } catch {
+    } catch (error) {
+      if (error.name === "AbortError") return
+
       container.dataset.chapterSectionLoaded = "false"
       if (placeholder) {
         placeholder.textContent = "Не вдалося завантажити розділи. Спробуйте ще раз."
       }
+    } finally {
+      this.sectionAbortController = null
     }
+  }
+
+  abortPendingSectionFetch() {
+    if (!this.sectionAbortController) return
+
+    this.sectionAbortController.abort()
+    this.sectionAbortController = null
+  }
+
+  resetChapterSectionLoadedState() {
+    this.element.querySelectorAll("[data-chapter-section-loaded]").forEach((container) => {
+      delete container.dataset.chapterSectionLoaded
+    })
   }
 
   buildChapterSectionUrl(baseUrl, extraParams) {

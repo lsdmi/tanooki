@@ -5,21 +5,22 @@ export default class extends Controller {
   static targets = ["frame", "image"]
 
   connect() {
-    // Highlight the first image by default
     if (this.imageTargets.length > 0) {
       this.highlightImage(this.imageTargets[0])
     }
   }
 
+  disconnect() {
+    this.abortDetailsFetch()
+  }
+
   selectFiction(event) {
     const fictionId = event.currentTarget.dataset.fictionPickerIdParam
 
-    // Remove highlight from all images
-    this.imageTargets.forEach(img => {
-      img.classList.remove('ring-2', 'ring-cyan-700', 'dark:ring-rose-800')
+    this.imageTargets.forEach((img) => {
+      img.classList.remove("ring-2", "ring-cyan-700", "dark:ring-rose-800")
     })
 
-    // Add highlight to the clicked image
     this.highlightImage(event.currentTarget)
 
     if (!document.startViewTransition) {
@@ -34,21 +35,40 @@ export default class extends Controller {
 
   updateFrame(fictionId) {
     const frame = document.getElementById("fiction_details")
-    frame.setAttribute('data-transitioning', 'true')
+    if (!frame) return
+
+    frame.setAttribute("data-transitioning", "true")
+    this.abortDetailsFetch()
+    this.detailsAbortController = new AbortController()
 
     fetch(`/fictions/${fictionId}/details`, {
       headers: {
-        "Accept": "text/vnd.turbo-stream.html"
-      }
+        Accept: "text/vnd.turbo-stream.html",
+      },
+      signal: this.detailsAbortController.signal,
     })
-    .then(response => response.text())
-    .then(html => {
-      Turbo.renderStreamMessage(html)
-      frame.removeAttribute('data-transitioning')
-    })
+      .then((response) => response.text())
+      .then((html) => {
+        Turbo.renderStreamMessage(html)
+      })
+      .catch((error) => {
+        if (error.name === "AbortError") return
+        throw error
+      })
+      .finally(() => {
+        frame.removeAttribute("data-transitioning")
+        this.detailsAbortController = null
+      })
+  }
+
+  abortDetailsFetch() {
+    if (!this.detailsAbortController) return
+
+    this.detailsAbortController.abort()
+    this.detailsAbortController = null
   }
 
   highlightImage(image) {
-    image.classList.add('ring-2', 'ring-cyan-700', 'dark:ring-rose-800')
+    image.classList.add("ring-2", "ring-cyan-700", "dark:ring-rose-800")
   }
 }

@@ -5,12 +5,9 @@ namespace :assets do
   task refresh_dev_manifest: :environment do
     abort 'assets:refresh_dev_manifest is for development only' unless Rails.env.development?
 
-    manifest_path = Rails.application.config.assets.manifest_path
-    load_path = Rails.application.assets.load_path
-    manifest_path.dirname.mkpath
-    File.write(manifest_path, load_path.manifest.to_json)
+    path = PropshaftDevManifest.refresh!
 
-    puts "Updated #{manifest_path}"
+    puts "Updated #{path}"
     puts 'Restart bin/dev / rails server if importmap still lists missing controllers.'
   end
 end

@@ -1,6 +1,6 @@
 /** Persists 18+ acknowledgement in the Rails session (see AdultContentAcknowledgementsController). */
-export function acknowledgeAdultContent() {
-  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+export function acknowledgeAdultContent({ signal } = {}) {
+  const token = document.querySelector('meta[name="csrf-token"]')?.content
 
   return fetch("/adult_content_acknowledge", {
     method: "POST",
@@ -9,5 +9,6 @@ export function acknowledgeAdultContent() {
       "X-Requested-With": "XMLHttpRequest",
     },
     credentials: "same-origin",
-  });
+    signal,
+  })
 }

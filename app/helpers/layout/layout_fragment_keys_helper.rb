@@ -35,5 +35,17 @@ module Layout
         advertisement.poster.blob&.id
       ]
     end
+
+    def advertisement_banner_ready?(advertisement)
+      return false unless advertisement&.resource?
+
+      advertisement.cover.attached? &&
+        advertisement.poster.attached? &&
+        advertisement.cover.blob.present?
+    end
+
+    def advertisement_cover_label(advertisement)
+      advertisement.cover.blob&.filename&.to_s.presence || 'Реклама'
+    end
   end
 end

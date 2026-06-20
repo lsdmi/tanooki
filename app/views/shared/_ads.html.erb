@@ -1,5 +1,6 @@
+<% if advertisement_banner_ready?(advertisement) %>
 <% cache advertisement_fragment_cache_key(advertisement) do %>
-<%= link_to advertisement.resource, class: "relative block w-full max-w-full", aria: { label: advertisement.cover.blob.filename } do %>
+<%= link_to advertisement.resource, class: "relative block w-full max-w-full", aria: { label: advertisement_cover_label(advertisement) } do %>
   <div class="relative w-full max-w-full overflow-hidden rounded-2xl shadow-lg h-52 lg:h-auto lg:aspect-[3/1]">
     <div class="relative w-full h-full">
       <!-- Loading placeholder with same aspect ratio -->
@@ -11,7 +12,7 @@
         </div>
       </div>
       <%= video_tag url_for(advertisement.cover),
-                    alt: advertisement.cover.blob.filename.to_s,
+                    alt: advertisement_cover_label(advertisement),
                     autoplay: true,
                     class: 'absolute object-cover inset-0 w-full h-full transition duration-300 transform hover:scale-105',
                     loop: true,
@@ -21,5 +22,6 @@
                     poster: advertisement_poster_url(advertisement.poster) %>
     </div>
   </div>
+<% end %>
 <% end %>
 <% end %>

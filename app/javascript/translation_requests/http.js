@@ -20,13 +20,14 @@ export function safeHttpUrl(url) {
   return null
 }
 
-export async function fetchTurboStream(url) {
+export async function fetchTurboStream(url, { signal } = {}) {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
       Accept: 'text/vnd.turbo-stream.html',
       'X-CSRF-Token': csrfToken()
-    }
+    },
+    signal
   })
 
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
