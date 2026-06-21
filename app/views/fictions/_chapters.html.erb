@@ -22,7 +22,12 @@
     <div class="flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6">
       <h3 class="text-xl sm:text-2xl font-bold text-stone-800 dark:text-gray-200">Розділи</h3>
       <%= button_to toggle_order_fictions_path(id: fiction, order: order),
-                    data: { turbo_stream: '', 'turbo-method': :post },
+                    data: {
+                      turbo_stream: '',
+                      'turbo-method': :post,
+                      controller: 'fictions-order-toggle',
+                      action: 'click->fictions-order-toggle#spin'
+                    },
                     id: toggle_btn_id,
                     class: 'fictions-order-toggle bg-stone-100 dark:bg-gray-800 hover:bg-stone-200 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0' do %>
         <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>

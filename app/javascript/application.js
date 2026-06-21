@@ -10,26 +10,3 @@ import "cookie_consent"
 // SPA-like navigation — Turbo 8 Drive + prefetch (morph when <head> matches)
 Turbo.session.drive = true
 Turbo.setProgressBarDelay(120)
-
-// Flatpickr portals the calendar to <body>. On failed submits Turbo often updates the page without a full reload,
-// so `before-cache` alone misses — clean up on every relevant Turbo phase.
-function removeFlatpickrCalendarsFromDom() {
-  document.querySelectorAll('.flatpickr-calendar').forEach((el) => el.remove())
-}
-
-;['turbo:before-cache', 'turbo:before-render', 'turbo:before-stream-render'].forEach((name) => {
-  document.addEventListener(name, removeFlatpickrCalendarsFromDom)
-})
-
-function bindFictionsOrderToggleSpin() {
-  document.querySelectorAll('.fictions-order-toggle:not([data-order-spin-bound])').forEach((btn) => {
-    btn.dataset.orderSpinBound = 'true'
-    btn.addEventListener('click', () => {
-      btn.classList.add('animate-spin')
-      window.setTimeout(() => btn.classList.remove('animate-spin'), 500)
-    })
-  })
-}
-
-document.addEventListener('turbo:load', bindFictionsOrderToggleSpin)
-document.addEventListener('turbo:frame-load', bindFictionsOrderToggleSpin)

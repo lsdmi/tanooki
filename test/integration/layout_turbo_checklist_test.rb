@@ -13,6 +13,12 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
     assert_select 'meta[name="view-transition"][content="same-origin"]'
   end
 
+  test 'static page layout omits theme document.write bootstrap' do
+    get privacy_path
+
+    assert_no_match(/document\.write/, response.body)
+  end
+
   test 'static page layout keeps cookie banner and background persistent' do
     get privacy_path
 
@@ -45,5 +51,22 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'link[href*="cdn.jsdelivr.net/npm/flatpickr"]'
     assert_select 'link[href*="cdn.jsdelivr.net/npm/flatpickr"][data-turbo-track]', count: 0
+  end
+
+  test 'chapter reader skips mode toggler script tag' do
+    sign_in users(:user_one)
+    chapter = chapters(:one)
+
+    get chapter_url(chapter)
+
+    assert_response :success
+    assert_no_match(/import "mode_toggler"/, response.body)
+  end
+
+  test 'static page loads mode toggler script tag' do
+    get privacy_path
+
+    assert_response :success
+    assert_match(/import "mode_toggler"/, response.body)
   end
 end

@@ -1,4 +1,6 @@
 /** Cyrillic-first fonts for long-form reading (Google Fonts). */
+import { turboCacheHooks } from 'turbo_cache_hooks'
+
 const FONT_OPTIONS = [
   {
     id: 'golos-text',
@@ -181,7 +183,10 @@ export const bindContentObserver = () => {
   applyToContent(content)
 }
 
-document.addEventListener('turbo:before-cache', () => {
+/** Disconnect font observer before Turbo caches the page (via turbo_transitions before-cache). */
+export const disconnectReaderPreferencesForCache = () => {
   disconnectFontObserver()
   observedContent = null
-})
+}
+
+turboCacheHooks.readerPreferences = disconnectReaderPreferencesForCache

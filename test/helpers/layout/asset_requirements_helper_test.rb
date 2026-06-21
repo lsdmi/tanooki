@@ -55,6 +55,16 @@ module Layout
       assert_not_predicate self, :requires_legacy_font_toggler?
     end
 
+    test 'mode toggler skips immersive chapter reader only' do
+      assign_controller(:chapters, :show)
+
+      assert_not_predicate self, :requires_mode_toggler?
+
+      assign_controller(:fictions, :show)
+
+      assert_predicate self, :requires_mode_toggler?
+    end
+
     private
 
     def assign_controller(name, action, path: nil)

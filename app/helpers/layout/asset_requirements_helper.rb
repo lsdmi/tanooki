@@ -38,6 +38,10 @@ module Layout
       form_page?(FONT_TOGGLER_PAGES)
     end
 
+    def requires_mode_toggler?
+      !chapters_show_page?
+    end
+
     def requires_adult_content_disclaimer_styles?
       fiction = stylesheet_context_fiction
       fiction.present? && show_adult_content_disclaimer?(fiction)

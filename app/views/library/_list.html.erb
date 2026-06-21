@@ -26,8 +26,8 @@
   </svg>
   <% if paginated_readings.any? %>
     <ul class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-      <% paginated_readings.each do |reading| %>
-        <%= render 'reading_progresses/reading_progress', reading: reading, section: section %>
+      <% paginated_readings.each_with_index do |reading, index| %>
+        <%= render 'reading_progresses/reading_progress', reading: reading, section: section, preload_continue: index.zero? %>
       <% end %>
     </ul>
     <%= ui_pagination(

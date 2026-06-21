@@ -23,6 +23,18 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
     assert_library_history_preloaded(assigns(:history))
   end
 
+  test 'library prefetches only the first continue reading CTA' do
+    sign_in users(:user_one)
+    reading_progresses(:one).update!(status: :active, chapter: chapters(:one))
+    reading_progresses(:two).update!(status: :postponed)
+
+    get library_url(section: :active)
+
+    assert_response :success
+    assert_select 'a[data-turbo-preload="true"][href*="/chapters/"]', count: 1
+    assert_select 'span', text: 'Читати далі'
+  end
+
   test 'should not change status for invalid status param' do
     sign_in users(:user_one)
     reading_progress = reading_progresses(:one)

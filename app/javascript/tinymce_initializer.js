@@ -199,6 +199,11 @@ const initializeTinymce = () => {
       });
 
       editor.on('init', function() {
+        const form = editor.getElement()?.form;
+        if (form) {
+          form.addEventListener('submit', () => editor.save(), { capture: true });
+        }
+
         // Apply custom styles to the content area
         const iframe = editor.getContainer().querySelector('iframe');
         if (iframe && iframe.contentDocument) {
@@ -831,9 +836,13 @@ const initializeTinymce = () => {
 document.addEventListener('turbo:load', initializeTinymce);
 document.addEventListener('turbo:render', initializeTinymce);
 
-document.addEventListener('turbo:before-cache', () => {
-  if (typeof tinymce === 'undefined') return
+function syncTinymceBeforeTurboSubmit(event) {
+  if (typeof tinymce === 'undefined') return;
 
-  tinymce.remove()
-  document.querySelectorAll('.tox-tinymce').forEach((el) => el.remove())
-});
+  const form = event.detail?.formSubmission?.formElement;
+  if (!form?.querySelector?.('textarea.tinymce')) return;
+
+  tinymce.triggerSave();
+}
+
+document.addEventListener('turbo:submit-start', syncTinymceBeforeTurboSubmit);

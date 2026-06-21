@@ -28,6 +28,12 @@ class FictionsIndexLcpTest < ActionDispatch::IntegrationTest
     assert_select 'link[href*="sweetal2"]', count: 0
   end
 
+  test 'index showcase prefetches only the visible hero chapter CTA' do
+    visit_fictions_index_with_showcase
+
+    assert_select 'a[data-turbo-preload="true"][href*="/chapters/"]', count: 1
+  end
+
   private
 
   def visit_fictions_index_with_showcase

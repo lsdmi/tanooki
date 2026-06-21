@@ -36,4 +36,20 @@ class AssetsPipelineTest < ActionDispatch::IntegrationTest
     assert_includes preinit, 'base: "/assets/tinymce"'
     assert_not_includes preinit, '&#39;'
   end
+
+  test 'chapter edit form loads tinymce initializer' do
+    sign_in users(:user_one)
+
+    get edit_chapter_url(chapters(:one))
+
+    assert_response :success
+    assert_includes response.body, 'tinymce_initializer'
+  end
+
+  test 'tinymce initializer syncs editor content before turbo submit' do
+    source = Rails.root.join('app/javascript/tinymce_initializer.js').read
+
+    assert_includes source, 'turbo:submit-start'
+    assert_includes source, 'editor.save()'
+  end
 end

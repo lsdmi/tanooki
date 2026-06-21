@@ -128,10 +128,6 @@
     hideBanner()
   }
 
+  // turbo:load fires on the initial page load — no DOMContentLoaded / sync init (avoids double run).
   document.addEventListener('turbo:load', initConsentUi)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initConsentUi)
-  } else {
-    initConsentUi()
-  }
 })()

@@ -6,13 +6,7 @@
         var isDark =
           localStorage.getItem('color-theme') === 'dark' ||
           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-          document.write('<style>#theme-toggle-dark-icon{display:none;}#theme-toggle-light-icon{display:inline;}</style>');
-        } else {
-          document.documentElement.classList.remove('dark');
-          document.write('<style>#theme-toggle-dark-icon{display:inline;}#theme-toggle-light-icon{display:none;}</style>');
-        }
+        document.documentElement.classList.toggle('dark', isDark);
       })();
     </script>
 
@@ -98,7 +92,9 @@
       </div>
     <% end %>
     <%= render "shared/cookie_consent_banner" %>
-    <%= javascript_import_module_tag 'mode_toggler' %>
+    <% if requires_mode_toggler? %>
+      <%= javascript_import_module_tag 'mode_toggler' %>
+    <% end %>
     <%= render "shared/chat_widget" unless chapters_show_page? %>
   </body>
 </html>
