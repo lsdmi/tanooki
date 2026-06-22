@@ -10,7 +10,7 @@
         <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-semibold text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
       </p>
       <div class="bg-emerald-50 dark:bg-gray-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-gray-200 dark:border-gray-700">
-        <%= simple_form_for(resource, as: resource_name, url: register_path, data: { turbo: false }) do |f| %>
+        <%= simple_form_for(resource, as: resource_name, url: register_path) do |f| %>
           <%= f.input :avatar_id, as: :hidden, input_html: { value: Avatar.all.sample.id } %>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>

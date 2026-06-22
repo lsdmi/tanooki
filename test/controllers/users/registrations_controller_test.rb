@@ -38,7 +38,7 @@ module Users
       @user_params[:user][:name] = ''
       post register_path, params: @user_params
 
-      assert_response :success
+      assert_response :unprocessable_entity
       assert_template :new
       assert_equal 'Перевірте та виправте форму реєстрації:', flash[:alert]
     end

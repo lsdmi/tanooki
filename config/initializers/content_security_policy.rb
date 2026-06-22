@@ -12,7 +12,6 @@ if Rails.env.production?
       policy.img_src     :self, :https, :data, :blob
       policy.object_src  :none
       policy.script_src  :self, :https, :unsafe_inline,
-                         'https://cdn.jsdelivr.net',
                          'https://cdnjs.cloudflare.com',
                          'https://ga.jspm.io',
                          'https://pagead2.googlesyndication.com'

@@ -303,6 +303,10 @@ Devise.setup do |config|
   #   include Turbolinks::Controller
   # end
 
+  # Hotwire/Turbo Drive — 422 on validation errors, 303 on redirects (login/logout/sign-up success).
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
+
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is

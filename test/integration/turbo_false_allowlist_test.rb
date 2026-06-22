@@ -22,9 +22,9 @@ class TurboFalseAllowlistTest < ActiveSupport::TestCase
                  "Stale allowlist entries (remove from #{ALLOWLIST_PATH}):\n#{stale.join("\n")}"
   end
 
-  test 'allowlist count stays within Phase 1 intentional ceiling' do
-    assert_operator turbo_false_occurrences.size, :<=, 26,
-                    'Re-audit allowlist if intentional turbo:false grows beyond Phase 1 ceiling'
+  test 'allowlist count stays within intentional ceiling' do
+    assert_operator turbo_false_occurrences.size, :<=, 22,
+                    'Re-audit allowlist if intentional turbo:false grows beyond ceiling'
   end
 
   private

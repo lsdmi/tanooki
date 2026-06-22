@@ -9,7 +9,8 @@ pin 'adult_content_disclaimer'
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
 pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true
 pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
-pin 'flowbite', to: 'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.turbo.min.js', preload: true
+# Flowbite 3.1.2 Turbo build — vendor/javascript/flowbite.turbo.min.js
+pin 'flowbite', to: 'flowbite.turbo.min.js', preload: true
 pin_all_from 'app/javascript/controllers', under: 'controllers', preload: false
 pin 'controllers/chapters_accordion_controller', preload: false
 pin 'controllers/note_reference_controller', preload: false

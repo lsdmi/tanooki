@@ -9,7 +9,7 @@
         Для зміни введіть та підтвердіть новий пароль!
       </p>
       <div class="bg-cyan-50 dark:bg-gray-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-gray-200 dark:border-gray-700">
-        <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
+        <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
           <%= f.input :reset_password_token, as: :hidden %>
           <%= f.full_error :reset_password_token %>
 
