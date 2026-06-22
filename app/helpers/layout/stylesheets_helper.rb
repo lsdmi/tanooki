@@ -5,7 +5,7 @@ module Layout
   module StylesheetsHelper
     include AssetRequirementsHelper
 
-    GLOBAL_STYLESHEETS = %w[pagy slimselect actiontext chapters_reader].freeze
+    GLOBAL_STYLESHEETS = %w[pagy slimselect actiontext chapters_reader sweetal2].freeze
 
     def global_stylesheets
       GLOBAL_STYLESHEETS
@@ -18,7 +18,6 @@ module Layout
     def optional_stylesheets
       [
         ['adult_content_disclaimer', requires_adult_content_disclaimer_styles?],
-        ['sweetal2', requires_sweetalert_css?],
         ['flatpickr_overrides', requires_flatpickr_styles?]
       ]
     end

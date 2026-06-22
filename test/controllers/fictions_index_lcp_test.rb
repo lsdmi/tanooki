@@ -22,10 +22,10 @@ class FictionsIndexLcpTest < ActionDispatch::IntegrationTest
     assert_operator response.body.index('rel="preload"'), :<, response.body.index('tailwind')
   end
 
-  test 'index omits unused render blocking stylesheets' do
+  test 'index loads sweetalert CSS globally for morph parity' do
     visit_fictions_index_with_showcase
 
-    assert_select 'link[href*="sweetal2"]', count: 0
+    assert_select 'link[href*="sweetal2"][data-turbo-track="reload"]'
   end
 
   test 'index showcase prefetches only the visible hero chapter CTA' do

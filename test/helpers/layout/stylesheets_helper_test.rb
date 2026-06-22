@@ -42,11 +42,15 @@ module Layout
       fiction.update!(adult_content: true)
       assign_controller(:fictions, :show, fiction: fiction)
 
-      assert_equal %w[adult_content_disclaimer sweetal2], page_stylesheets
+      assert_equal %w[adult_content_disclaimer], page_stylesheets
+    end
+
+    test 'global_stylesheets includes sweetalert for studio show morph parity' do
+      assert_includes global_stylesheets, 'sweetal2'
     end
 
     test 'global_stylesheets includes reader and shared bundles' do
-      assert_equal %w[pagy slimselect actiontext chapters_reader], global_stylesheets
+      assert_equal %w[pagy slimselect actiontext chapters_reader sweetal2], global_stylesheets
     end
 
     test 'fiction show with reader support card does not load chapters_reader separately' do

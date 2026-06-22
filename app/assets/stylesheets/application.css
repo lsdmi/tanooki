@@ -2,7 +2,7 @@
  * Site-wide base styles. Global feature CSS (pagy, slimselect, actiontext, chapters_reader)
  * is linked from the layout via Layout::StylesheetsHelper#global_stylesheets — Propshaft does
  * not bundle @import, so separate stylesheet_link_tags are required for reliable loading.
- * Page-specific CSS (sweetal2, flatpickr overrides, adult disclaimer) via #page_stylesheets.
+ * Page-specific CSS (flatpickr overrides, adult disclaimer) via #page_stylesheets.
  */
 
 @layer base {

@@ -1,0 +1,74 @@
+<%# locals: shell_id:, signed_in: %>
+<% suffix = shell_id.delete_prefix('chat-widget-') %>
+<div id="<%= shell_id %>"
+     data-turbo-permanent
+     data-controller="chat-widget"
+     class="fixed bottom-4 right-4 z-50">
+  <%= ui_button(as: :button, size: :icon, html: { id: "chat-toggle-#{suffix}", title: 'Відкрити чат', data: { chat_widget_target: 'toggle' } }) do %>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+    </svg>
+  <% end %>
+
+  <div id="chat-window-<%= suffix %>"
+       data-chat-widget-target="window"
+       class="hidden absolute bottom-16 right-0 w-80 h-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
+    <div class="bg-cyan-50 dark:bg-rose-900/20 text-gray-900 dark:text-white p-4 rounded-t-lg flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center space-x-2">
+        <div class="w-2 h-2 bg-cyan-700 dark:bg-rose-400 rounded-full animate-pulse"></div>
+        <span class="font-semibold text-sm">Бакачат Онлайн</span>
+      </div>
+      <button id="chat-close-<%= suffix %>"
+              type="button"
+              data-chat-widget-target="close"
+              class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div id="chat-messages-<%= suffix %>"
+         data-chat-widget-target="messages"
+         class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 dark:bg-gray-700">
+      <div class="flex items-center justify-center h-full">
+        <div class="text-center text-gray-500 dark:text-gray-400">
+          <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
+          <p class="text-sm">Натисніть щоб відкрити чат</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-b-lg">
+      <% if signed_in %>
+        <div class="flex space-x-2">
+          <input type="text"
+                 autocomplete="off"
+                 id="chat-input-<%= suffix %>"
+                 data-chat-widget-target="input"
+                 placeholder="Напишіть повідомлення..."
+                 class="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-rose-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                 maxlength="1000">
+          <%= ui_button(as: :button, size: :xs, html: { id: "chat-send-#{suffix}", data: { chat_widget_target: 'send' } }) do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-3">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            🔒 <%= link_to "Увійдіть", new_user_session_path, class: "text-cyan-700 hover:text-cyan-700 dark:text-rose-400 dark:hover:text-rose-300 font-medium underline" %>, щоб відправити повідомлення
+          </p>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="chat-resize-handle-tl-<%= suffix %>"
+         data-chat-widget-target="resizeHandleTopLeft"
+         class="absolute top-0 left-0 w-4 h-4 bg-transparent cursor-nwse-resize z-10 flex items-start justify-start"
+         aria-hidden="true"></div>
+  </div>
+</div>

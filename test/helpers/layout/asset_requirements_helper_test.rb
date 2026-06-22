@@ -13,24 +13,6 @@ module Layout
       @controller.request = @request
     end
 
-    test 'studio loads sweetalert CSS' do
-      assign_controller(:studio, :index)
-
-      assert_predicate self, :requires_sweetalert_css?
-    end
-
-    test 'fiction show loads sweetalert CSS' do
-      assign_controller(:fictions, :show)
-
-      assert_predicate self, :requires_sweetalert_css?
-    end
-
-    test 'fiction index skips sweetalert CSS' do
-      assign_controller(:fictions, :index)
-
-      assert_not_predicate self, :requires_sweetalert_css?
-    end
-
     test 'tinymce is required on chapter and publication forms only' do
       assign_controller(:chapters, :new)
 

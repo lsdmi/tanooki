@@ -9,13 +9,16 @@ module Layout
 
     def navbar_fragment_cache_key
       [
-        'navbar/v1',
+        'navbar/v2/guest',
         I18n.locale,
         cookies[:color_theme].presence || 'light',
-        current_user&.id || 'guest',
-        current_user&.admin? == true,
         fragment_cache_version_bucket(1.hour)
       ]
+    end
+
+    # Auth UI (login vs dropdown) must stay fresh for signed-in Drive/morph navigations.
+    def navbar_fragment_cacheable?
+      current_user.nil?
     end
 
     def footer_fragment_cache_key

@@ -1,4 +1,4 @@
-<% cache navbar_fragment_cache_key, expires_in: 1.hour do %>
+<% cache_if navbar_fragment_cacheable?, navbar_fragment_cache_key, expires_in: 1.hour do %>
 <nav class="py-4 bg-white dark:bg-gray-900 antialiased relative z-50 shadow-md border-b border-gray-200 dark:border-gray-700">
   <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
     <div class="flex flex-wrap items-center justify-between gap-4 md:flex-nowrap">

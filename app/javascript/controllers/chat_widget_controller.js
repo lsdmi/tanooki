@@ -3,34 +3,83 @@ import consumer from "channels/consumer"
 
 export default class extends Controller {
   static targets = ["toggle", "window", "close", "messages", "input", "send", "resizeHandleTopLeft"]
+  static turboNavigationPending = false
+  static turboNavigationBound = false
 
   connect() {
-    console.log("Chat widget controller connected")
-    // Check if user is signed in
-    this.isSignedIn = this.element.querySelector('[data-chat-widget-target="input"]') !== null
-    console.log("User signed in:", this.isSignedIn)
+    this.bindTurboNavigationTracking()
 
-    // Don't initialize immediately - wait for first click
-    this.initialized = false
+    this.isSignedIn = this.element.querySelector('[data-chat-widget-target="input"]') !== null
+
+    this.restoreNavigationState()
+    if (!this.initialized) {
+      this.initialized = this.hasExistingMessages()
+    }
     this.isLoading = false
 
-    // Set up basic toggle functionality without full initialization
+    if (this.initialized) {
+      this.setupFullEventListeners()
+      this.connectSubscription()
+    }
+
     this.setupBasicEventListeners()
 
-    // Add resize listeners for top-left handle
     if (this.hasResizeHandleTopLeftTarget && this.hasWindowTarget) {
       this.resizeHandleTopLeftTarget.addEventListener('mousedown', this.startResizeTopLeft)
     }
   }
 
   disconnect() {
-    console.log("Chat widget controller disconnected")
-    this.cleanup()
-    // Remove resize listeners for top-left handle
+    if (this.constructor.turboNavigationPending) {
+      this.preserveNavigationState()
+      if (this.subscription) {
+        this.subscription.unsubscribe()
+        this.subscription = null
+      }
+    } else {
+      this.cleanup()
+    }
+
+    this.removeBasicEventListeners()
+    this.removeFullEventListeners()
+
     if (this.hasResizeHandleTopLeftTarget) {
       this.resizeHandleTopLeftTarget.removeEventListener('mousedown', this.startResizeTopLeft)
     }
     this.removeResizeListeners()
+  }
+
+  static bindTurboNavigationTracking() {
+    if (this.turboNavigationBound) return
+    this.turboNavigationBound = true
+
+    document.addEventListener("turbo:before-visit", () => {
+      this.turboNavigationPending = true
+    })
+
+    document.addEventListener("turbo:load", () => {
+      this.turboNavigationPending = false
+    })
+  }
+
+  bindTurboNavigationTracking() {
+    this.constructor.bindTurboNavigationTracking()
+  }
+
+  preserveNavigationState() {
+    this.element._chatWidgetState = { initialized: this.initialized }
+  }
+
+  restoreNavigationState() {
+    const preserved = this.element._chatWidgetState
+    if (!preserved) return
+
+    this.initialized = preserved.initialized
+    delete this.element._chatWidgetState
+  }
+
+  hasExistingMessages() {
+    return this.hasMessagesTarget && this.messagesTarget.querySelector("[data-message-id]") !== null
   }
 
   cleanup() {
@@ -47,28 +96,37 @@ export default class extends Controller {
 
   setupBasicEventListeners() {
     try {
-      // Toggle button - will initialize chat on first click
+      this.boundHandleToggleClick = this.boundHandleToggleClick || (() => this.handleToggleClick())
+      this.boundCloseChat = this.boundCloseChat || (() => this.closeChat())
+
       if (this.hasToggleTarget && this.toggleTarget) {
-        this.toggleTarget.addEventListener('click', () => this.handleToggleClick())
+        this.toggleTarget.addEventListener('click', this.boundHandleToggleClick)
       }
 
-      // Close chat window
       if (this.hasCloseTarget && this.closeTarget) {
-        this.closeTarget.addEventListener('click', () => this.closeChat())
+        this.closeTarget.addEventListener('click', this.boundCloseChat)
       }
     } catch (error) {
       console.error("Error setting up basic event listeners:", error)
     }
   }
 
+  removeBasicEventListeners() {
+    if (this.hasToggleTarget && this.toggleTarget && this.boundHandleToggleClick) {
+      this.toggleTarget.removeEventListener('click', this.boundHandleToggleClick)
+    }
+
+    if (this.hasCloseTarget && this.closeTarget && this.boundCloseChat) {
+      this.closeTarget.removeEventListener('click', this.boundCloseChat)
+    }
+  }
+
   async handleToggleClick() {
     try {
-      // If not initialized, initialize first
       if (!this.initialized && !this.isLoading) {
         await this.initializeChat()
       }
-      
-      // Then toggle the chat window
+
       this.toggleChat()
     } catch (error) {
       console.error("Error handling toggle click:", error)
@@ -83,28 +141,9 @@ export default class extends Controller {
       this.showLoadingState()
       this.setupFullEventListeners()
 
-      // History loads over HTTP so the widget works even when WebSocket is down.
       await this.loadRecentMessages()
 
-      // Real-time updates are optional; guests can still read history.
-      this.subscription = consumer.subscriptions.create("ChatChannel", {
-        connected: () => {
-          console.log("Connected to chat channel from widget")
-        },
-
-        disconnected: () => {
-          console.log("Disconnected from chat channel")
-        },
-
-        rejected: () => {
-          console.log("Chat subscription rejected — showing history without live updates")
-        },
-
-        received: (data) => {
-          this.addMessage(data)
-        }
-      })
-
+      this.connectSubscription()
       this.initialized = true
     } catch (error) {
       console.error("Error initializing chat:", error)
@@ -112,6 +151,16 @@ export default class extends Controller {
     } finally {
       this.isLoading = false
     }
+  }
+
+  connectSubscription() {
+    if (this.subscription) return
+
+    this.subscription = consumer.subscriptions.create("ChatChannel", {
+      received: (data) => {
+        this.addMessage(data)
+      }
+    })
   }
 
   showLoadingState() {
@@ -149,25 +198,35 @@ export default class extends Controller {
 
   setupFullEventListeners() {
     try {
-      // Send message and input events only for signed-in users
-      if (this.isSignedIn) {
-        // Send message
-        if (this.hasSendTarget && this.sendTarget) {
-          this.sendTarget.addEventListener('click', () => this.sendMessage())
-        }
+      if (!this.isSignedIn) return
 
-        // Enter key to send
-        if (this.hasInputTarget && this.inputTarget) {
-          this.inputTarget.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-              this.sendMessage()
-            }
-          })
+      this.boundSendMessage = this.boundSendMessage || (() => this.sendMessage())
+      this.boundInputKeypress = this.boundInputKeypress || ((e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault()
+          this.sendMessage()
         }
+      })
+
+      if (this.hasSendTarget && this.sendTarget) {
+        this.sendTarget.addEventListener('click', this.boundSendMessage)
+      }
+
+      if (this.hasInputTarget && this.inputTarget) {
+        this.inputTarget.addEventListener('keypress', this.boundInputKeypress)
       }
     } catch (error) {
       console.error("Error setting up full event listeners:", error)
+    }
+  }
+
+  removeFullEventListeners() {
+    if (this.hasSendTarget && this.sendTarget && this.boundSendMessage) {
+      this.sendTarget.removeEventListener('click', this.boundSendMessage)
+    }
+
+    if (this.hasInputTarget && this.inputTarget && this.boundInputKeypress) {
+      this.inputTarget.removeEventListener('keypress', this.boundInputKeypress)
     }
   }
 
@@ -199,11 +258,7 @@ export default class extends Controller {
 
   sendMessage() {
     try {
-      // Only allow sending if user is signed in
-      if (!this.isSignedIn) {
-        console.log("Guest users cannot send messages")
-        return
-      }
+      if (!this.isSignedIn) return
 
       if (this.hasInputTarget && this.inputTarget) {
         const message = this.inputTarget.value.trim()
@@ -238,7 +293,6 @@ export default class extends Controller {
     try {
       if (!this.hasMessagesTarget || !this.messagesTarget || !data) return
 
-      // Default avatar as a simple colored circle with initials (matching your color scheme)
       const defaultAvatar = `data:image/svg+xml;base64,${this.safeBtoa(`
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
           <circle cx="16" cy="16" r="16" fill="#0891b2"/>
@@ -247,7 +301,7 @@ export default class extends Controller {
           </text>
         </svg>
       `)}`
-      
+
       const avatarUrl = data.user_avatar || defaultAvatar
       const messageHtml = `
         <div class="flex items-start space-x-3" data-message-id="${data.id || Date.now()}">
@@ -273,7 +327,9 @@ export default class extends Controller {
       `
 
       this.messagesTarget.insertAdjacentHTML('beforeend', messageHtml)
-      this.scrollToBottom()
+      if (this.isNearBottom()) {
+        this.scrollToBottom()
+      }
     } catch (error) {
       console.error("Error adding message:", error)
     }
@@ -289,6 +345,13 @@ export default class extends Controller {
     }
   }
 
+  isNearBottom() {
+    if (!this.hasMessagesTarget || !this.messagesTarget) return true
+
+    const { scrollTop, scrollHeight, clientHeight } = this.messagesTarget
+    return scrollHeight - scrollTop - clientHeight < 48
+  }
+
   escapeHtml(text) {
     try {
       if (!text) return ''
@@ -301,13 +364,11 @@ export default class extends Controller {
     }
   }
 
-  // Safe base64 encoding for Unicode characters
   safeBtoa(str) {
     try {
       return btoa(unescape(encodeURIComponent(str)))
     } catch (error) {
       console.error("Error encoding to base64:", error)
-      // Fallback to a simple default avatar
       return btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
           <circle cx="16" cy="16" r="16" fill="#0891b2"/>
@@ -317,7 +378,6 @@ export default class extends Controller {
     }
   }
 
-  // --- Resize logic for top-left ---
   startResizeTopLeft = (e) => {
     e.preventDefault()
     this._startX = e.clientX
@@ -341,7 +401,6 @@ export default class extends Controller {
     newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight))
     this.windowTarget.style.width = newWidth + 'px'
     this.windowTarget.style.height = newHeight + 'px'
-    // Do NOT set left, top, or position
   }
 
   stopResizeTopLeft = () => {

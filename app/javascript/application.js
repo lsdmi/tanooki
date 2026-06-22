@@ -9,4 +9,5 @@ import "cookie_consent"
 
 // SPA-like navigation — Turbo 8 Drive + prefetch (morph when <head> matches)
 Turbo.session.drive = true
-Turbo.setProgressBarDelay(120)
+// Prefetch + morph often finish under 300ms; bar appears only on slower full swaps.
+Turbo.setProgressBarDelay(300)

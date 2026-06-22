@@ -15,9 +15,6 @@ module Layout
       'chapters' => %w[new edit create update]
     }.freeze
 
-    # SweetAlert JS loads globally via importmap (application.js); CSS bundle is page-conditional.
-    SWEETALERT_CSS_SHOW_CONTROLLERS = %w[fictions bookshelves scanlators publications].freeze
-
     FLATPICKR_STYLESHEET_URL = 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css'
 
     FONT_TOGGLER_PAGES = {
@@ -26,12 +23,6 @@ module Layout
 
     def requires_tinymce?
       form_page?(TINYMCE_FORM_PAGES)
-    end
-
-    def requires_sweetalert_css?
-      return true if controller_name.in?(%w[studio readings])
-
-      controller_name.in?(SWEETALERT_CSS_SHOW_CONTROLLERS) && action_name == 'show'
     end
 
     def requires_legacy_font_toggler?

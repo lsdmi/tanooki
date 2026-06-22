@@ -3,16 +3,36 @@ import { turboCacheHooks } from 'turbo_cache_hooks'
 
 // Turbo Drive UX: cross-fade on full body swaps (not morph), prefetch guards on slow/save-data networks.
 
+function progressBarElement() {
+  return document.querySelector('.turbo-progress-bar')
+}
+
+function setProgressBarHidden(hidden) {
+  progressBarElement()?.classList.toggle('turbo-progress-bar--hidden', hidden)
+}
+
 document.addEventListener('turbo:before-visit', () => {
   document.documentElement.classList.add('turbo-transitioning')
+  setProgressBarHidden(false)
+})
+
+document.addEventListener('turbo:before-render', (event) => {
+  if (event.detail?.renderMethod === 'morph') {
+    setProgressBarHidden(true)
+  }
+})
+
+document.addEventListener('turbo:morph', () => {
+  setProgressBarHidden(true)
+})
+
+document.addEventListener('turbo:load', () => {
+  setProgressBarHidden(false)
+  document.documentElement.classList.remove('turbo-transitioning')
 })
 
 document.addEventListener('turbo:render', (event) => {
   if (event.detail?.renderMethod === 'morph') return
-  document.documentElement.classList.remove('turbo-transitioning')
-})
-
-document.addEventListener('turbo:load', () => {
   document.documentElement.classList.remove('turbo-transitioning')
 })
 
