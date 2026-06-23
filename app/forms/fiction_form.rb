@@ -12,10 +12,10 @@ class FictionForm
     fiction.assign_attributes(params.except(:genre_ids, :scanlator_ids))
     assign_association_ids_from_params
     if valid? && fiction.save
-      true
+      fiction
     else
       copy_errors_to_fiction
-      false
+      nil
     end
   end
 

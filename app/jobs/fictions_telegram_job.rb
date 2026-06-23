@@ -19,7 +19,7 @@ class FictionsTelegramJob < ApplicationJob
   private
 
   def formatted_genres(genre)
-    genre.name.downcase.gsub(/[\s,!\-]+/, '_').gsub(/_$/, '')
+    genre.name.downcase.gsub(/[\s,!-]+/, '_').gsub(/_$/, '')
   end
 
   def index_path

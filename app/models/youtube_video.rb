@@ -9,6 +9,7 @@ class YoutubeVideo < ApplicationRecord
 
   normalizes_squished :title
   include SearchkickSoftDeletable
+
   friendly_id :slug_candidates
   searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick

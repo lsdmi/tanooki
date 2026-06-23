@@ -63,7 +63,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def possible_fraud?
-    self_fight || user_last_battle > 4.hours.ago
+    self_fight? || user_last_battle > 4.hours.ago
   end
 
   def finish_battle
@@ -101,7 +101,7 @@ class PokemonBattlesController < ApplicationController
     pokemons.first
   end
 
-  def self_fight
+  def self_fight?
     current_user.id == defender.id
   end
 

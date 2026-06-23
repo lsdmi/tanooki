@@ -19,7 +19,7 @@ module SoftDeletable
       soft_delete || raise(ActiveRecord::RecordNotDestroyed.new('Failed to destroy the record', self))
     end
     define_method(:delete) do
-      soft_delete_attributes_update
+      soft_delete_attributes_update?
       self
     end
   end
@@ -68,7 +68,7 @@ module SoftDeletable
   def soft_delete
     with_transaction_returning_status do
       result = run_callbacks(:destroy) do
-        result = soft_delete_attributes_update
+        result = soft_delete_attributes_update?
         @_trigger_destroy_callback = true
         result
       end
@@ -78,7 +78,7 @@ module SoftDeletable
     end
   end
 
-  def soft_delete_attributes_update
+  def soft_delete_attributes_update?
     raise ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
 
     if persisted?

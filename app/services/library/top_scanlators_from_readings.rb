@@ -8,9 +8,7 @@ module Library
     end
 
     def call
-      scanlator_counts = scanlators_from_readings.each_with_object(Hash.new(0)) do |scanlator, counts|
-        counts[scanlator] += 1
-      end
+      scanlator_counts = scanlators_from_readings.tally
 
       scanlator_counts.sort_by { |_, count| -count }.first(2).map(&:first)
     end

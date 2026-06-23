@@ -19,7 +19,7 @@ module Fictions
     private
 
     def render_genre_recent_releases_frame?
-      return false unless turbo_frame_request_id == 'genre-recent-fictions-page' && @pagy_genre_recent.count.positive?
+      return false unless turbo_frame_request_id == 'genre-recent-fictions-page' && @genre_recent_fictions.any?
 
       render partial: 'fictions/genres/genre_recent_fictions_frame',
              locals: {

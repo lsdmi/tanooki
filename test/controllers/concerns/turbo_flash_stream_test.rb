@@ -48,7 +48,7 @@ class TurboFlashStreamTest < ActiveSupport::TestCase
   private
 
   def assert_stream_bundle(streams, size:, targets:, message: nil)
-    rendered = streams.map(&:to_s).join
+    rendered = streams.join
 
     assert_equal size, streams.size
     targets.each { |target| assert_includes rendered, "target=\"#{target}\"" }

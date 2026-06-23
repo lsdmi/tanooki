@@ -12,6 +12,7 @@ class Fiction < ApplicationRecord
 
   include SoftDeletable
   include SearchkickSoftDeletable
+
   friendly_id :slug_candidates
   searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick

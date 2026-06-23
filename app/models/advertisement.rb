@@ -3,6 +3,7 @@
 # Site advertisement banner configuration.
 class Advertisement < ApplicationRecord
   extend FriendlyId
+
   friendly_id :slug_candidates
 
   has_one_attached :cover

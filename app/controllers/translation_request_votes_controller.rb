@@ -6,13 +6,13 @@ class TranslationRequestVotesController < ApplicationController
   before_action :set_translation_request
 
   def create
-    user_voted = toggle_user_vote
+    user_voted = toggle_user_vote?
     render_vote_response(user_voted)
   end
 
   private
 
-  def toggle_user_vote
+  def toggle_user_vote?
     existing_vote = find_existing_vote
 
     if existing_vote

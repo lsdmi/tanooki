@@ -19,7 +19,7 @@ module TurboFlashStreamResponse
   def append_session_flash_to_turbo_stream
     return if response.body.include?('target="application-notice"')
 
-    self.response_body = session_flash_streams.map(&:to_s).join + response.body
+    self.response_body = session_flash_streams.join + response.body
   end
 
   def session_flash_streams
