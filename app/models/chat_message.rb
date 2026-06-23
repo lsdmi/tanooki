@@ -2,6 +2,10 @@
 
 # Message posted in the site chat.
 class ChatMessage < ApplicationRecord
+  include NormalizesWhitespace
+
+  normalizes_stripped :content, :room
+
   belongs_to :user
 
   validates :content, presence: true, length: { maximum: 1000 }

@@ -21,7 +21,4 @@ FileUtils.chdir(APP_ROOT) do
 
   puts '== ERB Lint =='
   system! 'bundle', 'exec', 'erb_lint', '.'
-
-  puts '== Rails Best Practices =='
-  system! 'bundle', 'exec', 'rails_best_practices'
 end

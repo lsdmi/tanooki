@@ -4,11 +4,15 @@ require_relative '../../config/initializers/telegram_bot'
 
 # Blog-style article or news post.
 class Publication < ApplicationRecord
+  include NormalizesWhitespace
+
   extend FriendlyId
-  acts_as_paranoid
+  include SoftDeletable
+
+  normalizes_squished :title
   include SearchkickSoftDeletable
   friendly_id :slug_candidates
-  searchkick callbacks: :async
+  searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick
 
   attr_accessor :tag_ids

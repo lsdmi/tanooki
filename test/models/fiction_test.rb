@@ -16,6 +16,16 @@ class FictionTest < ActiveSupport::TestCase
     assert_predicate @fiction, :valid?
   end
 
+  test 'normalizes text fields by squishing whitespace' do
+    @fiction.title = '  Test   Fiction  '
+    @fiction.author = '  Test  Author  '
+    @fiction.description = '  Lorem ipsum dolor sit amet, consectetur adipiscing elit.  '
+
+    assert_equal 'Test Fiction', @fiction.title
+    assert_equal 'Test Author', @fiction.author
+    assert_equal 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', @fiction.description
+  end
+
   test 'title should not be too short' do
     @fiction.title = 'a' * 2
 

@@ -2,6 +2,8 @@
 
 # Site-wide search across fictions, publications, and videos.
 class SearchController < ApplicationController
+  rate_limit to: 30, within: 1.minute, only: :index
+
   helper Pagination::SearchIndexHelper
 
   include Search::IndexQuery

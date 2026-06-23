@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# Async callbacks need a Solid Queue worker (`bin/jobs start` / `bin/dev`). In local dev with
+# OpenSearch configured, index inline so new records appear in search without a worker.
+module SearchkickCallbacks
+  def self.mode
+    return false unless Rails.env.production? || ENV['OPENSEARCH_URL'].present?
+
+    Rails.env.development? ? :inline : :async
+  end
+end
+
 if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].present?)
   require 'opensearch-ruby'
 

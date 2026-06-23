@@ -2,6 +2,11 @@
 
 # Community request for a new translation project.
 class TranslationRequest < ApplicationRecord
+  include NormalizesWhitespace
+
+  normalizes_squished :title, :author, :notes
+  normalizes_stripped :source_url
+
   belongs_to :user
   belongs_to :scanlator, optional: true
   has_many :translation_request_votes, dependent: :destroy

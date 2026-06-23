@@ -16,6 +16,7 @@ module Users
           password_confirmation: 'password'
         }
       }
+      ActionController::Base.cache_store.clear
     end
 
     test 'should show confirmation page' do
@@ -41,6 +42,21 @@ module Users
       assert_response :unprocessable_entity
       assert_template :new
       assert_equal 'Перевірте та виправте форму реєстрації:', flash[:alert]
+    end
+
+    test 'rate limits sign up attempts per ip' do
+      invalid_params = @user_params.deep_dup
+      invalid_params[:user][:name] = ''
+
+      5.times do
+        post register_path, params: invalid_params, env: { 'REMOTE_ADDR' => '203.0.113.11' }
+
+        assert_response :unprocessable_entity
+      end
+
+      post register_path, params: invalid_params, env: { 'REMOTE_ADDR' => '203.0.113.11' }
+
+      assert_response :too_many_requests
     end
 
     private

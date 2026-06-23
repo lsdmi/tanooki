@@ -2,11 +2,15 @@
 
 # YouTube video entry displayed on the site.
 class YoutubeVideo < ApplicationRecord
+  include NormalizesWhitespace
+
   extend FriendlyId
-  acts_as_paranoid
+  include SoftDeletable
+
+  normalizes_squished :title
   include SearchkickSoftDeletable
   friendly_id :slug_candidates
-  searchkick callbacks: :async
+  searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick
 
   belongs_to :youtube_channel, inverse_of: :videos

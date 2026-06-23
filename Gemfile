@@ -46,7 +46,6 @@ group :development do
   gem 'hotwire-livereload'
   gem 'letter_opener'
   gem 'lookbook'
-  gem 'rails_best_practices'
   gem 'rubocop'
   gem 'rubocop-capybara', require: false
   gem 'rubocop-minitest', require: false
@@ -74,10 +73,8 @@ group :production do
   gem 'aws-sdk-s3'
 end
 
-gem 'bcrypt_pbkdf'
 gem 'devise'
 gem 'dotenv-rails'
-gem 'ed25519'
 gem 'fastimage'
 gem 'friendly_id'
 gem 'gepub'
@@ -86,7 +83,6 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem 'opensearch-ruby'
 gem 'pagy'
-gem 'paranoia'
 gem 'rails-i18n'
 gem 'searchkick'
 gem 'simple_form'

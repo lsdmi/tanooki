@@ -18,7 +18,8 @@ if Rails.env.production?
       policy.style_src   :self, :https, :unsafe_inline,
                          'https://fonts.googleapis.com',
                          'https://cdn.jsdelivr.net'
-      policy.connect_src :self, :https, 'wss://baka.in.ua'
+      # AdSense / gtag occasionally fetch data: URLs (see [CSP] connect-src reports).
+      policy.connect_src :self, :https, :data, 'wss://baka.in.ua'
       policy.frame_src   :self, :https, 'https://googleads.g.doubleclick.net', 'https://tpc.googlesyndication.com'
       policy.worker_src  :self, :blob
       policy.report_uri  '/csp-violation-report'

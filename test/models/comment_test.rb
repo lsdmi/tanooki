@@ -27,6 +27,12 @@ class CommentTest < ActiveSupport::TestCase
     assert_predicate comment, :valid?, 'Comment is invalid with required attributes'
   end
 
+  test 'normalizes content by stripping outer whitespace' do
+    comment = Comment.new(content: "  hello\n\nworld  ", commentable: @publication, user: @user)
+
+    assert_equal "hello\n\nworld", comment.content
+  end
+
   test 'rejects non-whitelisted commentable_type' do
     comment = Comment.new(
       content: 'valid comment',

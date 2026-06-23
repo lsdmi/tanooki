@@ -2,7 +2,11 @@
 
 # Registered site member (reader, author, or admin).
 class User < ApplicationRecord
+  include NormalizesWhitespace
   include UserProfile
+
+  normalizes :email, with: ->(email) { email.strip.downcase }
+  normalizes_squished :name
 
   devise :database_authenticatable, :registerable,
          :recoverable, :validatable, :confirmable

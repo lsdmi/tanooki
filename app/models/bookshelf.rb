@@ -2,6 +2,10 @@
 
 # User-curated list of fictions.
 class Bookshelf < ApplicationRecord
+  include NormalizesWhitespace
+
+  normalizes_squished :title, :description
+
   belongs_to :user
   has_many :bookshelf_fictions, dependent: :destroy
   has_many :fictions, through: :bookshelf_fictions

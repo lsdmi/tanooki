@@ -2,6 +2,8 @@
 
 # Handles authenticated comment creation, replies, editing, and deletion.
 class CommentsController < ApplicationController
+  rate_limit to: 20, within: 1.minute, only: :create
+
   before_action :authenticate_user!
   before_action :reject_disallowed_commentable_type!, only: %i[new create]
   before_action :set_comment, only: %i[edit update destroy cancel_edit cancel_reply]

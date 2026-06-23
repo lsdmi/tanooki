@@ -7,6 +7,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     advertisements(:advertisement_one)
+    ActionController::Base.cache_store.clear
   end
 
   test 'should get index with search' do
@@ -34,6 +35,22 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_index_url
 
     assert_redirected_to root_path
+  end
+
+  test 'rate limits search requests per ip' do
+    with_stubbed_tag_counts do
+      with_stubbed_search(Fiction, Publication, YoutubeVideo) do
+        30.times do
+          get search_index_url, params: { search: ['test'] }, env: { 'REMOTE_ADDR' => '203.0.113.13' }
+
+          assert_response :success
+        end
+
+        get search_index_url, params: { search: ['test'] }, env: { 'REMOTE_ADDR' => '203.0.113.13' }
+
+        assert_response :too_many_requests
+      end
+    end
   end
 
   test 'fiction search passes page and per_page to Searchkick' do

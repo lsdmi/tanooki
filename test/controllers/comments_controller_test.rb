@@ -10,6 +10,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     @comment = comments(:comment_one)
     @user = users(:user_one)
     sign_in @user
+    ActionController::Base.cache_store.clear
   end
 
   test 'should create comment' do
@@ -20,6 +21,32 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal @user, Comment.order(:id).last.user
+  end
+
+  test 'rate limits comment creation per ip' do
+    20.times do |index|
+      post comments_url(format: :turbo),
+           params: {
+             comment: {
+               content: "Comment #{index}",
+               commentable_id: @publication.id,
+               commentable_type: 'Tale'
+             }
+           },
+           env: { 'REMOTE_ADDR' => '203.0.113.12' }
+    end
+
+    post comments_url(format: :turbo),
+         params: {
+           comment: {
+             content: 'One too many',
+             commentable_id: @publication.id,
+             commentable_type: 'Tale'
+           }
+         },
+         env: { 'REMOTE_ADDR' => '203.0.113.12' }
+
+    assert_response :too_many_requests
   end
 
   test 'should ignore spoofed user id when creating comment' do

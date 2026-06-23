@@ -3,6 +3,8 @@
 module Users
   # Devise sign-up with avatar/name params and guest Pokemon assignment.
   class RegistrationsController < Devise::RegistrationsController
+    rate_limit to: 5, within: 15.minutes, only: :create
+
     before_action :configure_sign_up_params, only: [:create]
 
     # GET /resource/sign_up

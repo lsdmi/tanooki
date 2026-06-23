@@ -98,7 +98,6 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.22)
-    bcrypt_pbkdf (1.1.1)
     benchmark (0.5.0)
     better_html (2.2.0)
       actionview (>= 7.0)
@@ -131,8 +130,6 @@ GEM
       xpath (~> 3.2)
     childprocess (5.1.0)
       logger (~> 1.5)
-    code_analyzer (0.5.5)
-      sexp_processor
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
     crass (1.0.6)
@@ -175,7 +172,6 @@ GEM
       dry-inflector (~> 1.0)
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
-    ed25519 (1.3.0)
     erb (6.0.4)
     erb_lint (0.9.0)
       activesupport
@@ -185,7 +181,6 @@ GEM
       rubocop (>= 1)
       smart_properties
     erubi (1.13.1)
-    erubis (2.7.0)
     et-orbi (1.4.0)
       tzinfo
     faker (3.3.1)
@@ -356,8 +351,6 @@ GEM
     os (1.1.4)
     pagy (9.3.1)
     parallel (1.27.0)
-    paranoia (3.0.0)
-      activerecord (>= 6, < 8.1)
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
@@ -417,14 +410,6 @@ GEM
     rails-i18n (8.0.1)
       i18n (>= 0.7, < 2)
       railties (>= 8.0.0, < 9)
-    rails_best_practices (1.23.2)
-      activesupport
-      code_analyzer (~> 0.5.5)
-      erubis
-      i18n
-      json
-      require_all (~> 3.0)
-      ruby-progressbar
     railties (8.0.5)
       actionpack (= 8.0.5)
       activesupport (= 8.0.5)
@@ -451,7 +436,6 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    require_all (3.0.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -501,7 +485,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sexp_processor (4.17.3)
     signet (0.21.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -595,7 +578,6 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-s3
-  bcrypt_pbkdf
   bootsnap
   brakeman
   bullet
@@ -604,7 +586,6 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
-  ed25519
   erb_lint
   faker
   fastimage
@@ -622,13 +603,11 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   opensearch-ruby
   pagy
-  paranoia
   propshaft
   puma (~> 7.2)
   rails (~> 8.0.0)
   rails-controller-testing
   rails-i18n
-  rails_best_practices
   rubocop
   rubocop-capybara
   rubocop-minitest

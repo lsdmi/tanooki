@@ -2,6 +2,10 @@
 
 # YouTube channel synced for the video section.
 class YoutubeChannel < ApplicationRecord
+  include NormalizesWhitespace
+
+  normalizes_squished :title
+
   has_many :videos, class_name: 'YoutubeVideo', inverse_of: :youtube_channel, dependent: :destroy
   has_rich_text :description
 

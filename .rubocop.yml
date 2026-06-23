@@ -30,3 +30,4 @@ Metrics/BlockLength:
 Rails/SkipsModelValidations:
   Exclude:
     - 'app/services/analytics/view_increment.rb'
+    - 'app/models/concerns/soft_deletable.rb'

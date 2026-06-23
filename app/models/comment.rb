@@ -2,6 +2,10 @@
 
 # User comment on a commentable resource (fiction, chapter, publication, etc.).
 class Comment < ApplicationRecord
+  include NormalizesWhitespace
+
+  normalizes_stripped :content
+
   belongs_to :commentable, polymorphic: true, counter_cache: true
   belongs_to :parent, class_name: 'Comment', inverse_of: :replies, optional: true
   belongs_to :user

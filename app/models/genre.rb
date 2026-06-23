@@ -2,7 +2,11 @@
 
 # Fiction genre taxonomy entry.
 class Genre < ApplicationRecord
+  include NormalizesWhitespace
+
   extend FriendlyId
+
+  normalizes_squished :name, :description
 
   # Slugs for genres treated as mature / explicit in tag UI (see SLUG_BY_DISPLAY_NAME migration).
   EXPLICIT_CONTENT_SLUGS = %w[bl gl lgbt harem omegaverse].freeze

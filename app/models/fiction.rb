@@ -4,13 +4,16 @@
 class Fiction < ApplicationRecord
   include FictionPresentation
   include FictionRatings
+  include NormalizesWhitespace
+
+  normalizes_squished :title, :alternative_title, :english_title, :author, :description, :short_description
   include Pagy::Backend
   extend FriendlyId
 
-  acts_as_paranoid
+  include SoftDeletable
   include SearchkickSoftDeletable
   friendly_id :slug_candidates
-  searchkick callbacks: :async
+  searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick
 
   attr_accessor :genre_ids, :scanlator_ids, :user_id

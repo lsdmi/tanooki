@@ -2,8 +2,12 @@
 
 # A single installment of a {Fiction} work.
 class Chapter < ApplicationRecord
+  include NormalizesWhitespace
+
   extend FriendlyId
-  acts_as_paranoid
+  include SoftDeletable
+
+  normalizes_squished :title
   friendly_id :slug_candidates
 
   attr_accessor :scanlator_ids, :scanlator_ids_for_stats_cache

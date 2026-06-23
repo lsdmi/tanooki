@@ -15,6 +15,15 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should be valid' do
     assert_predicate @user, :valid?
+    assert_not @user.ads_free?
+  end
+
+  test 'normalizes name and email whitespace' do
+    @user.name = '  John   Three  '
+    @user.email = '  USER@Example.COM  '
+
+    assert_equal 'John Three', @user.name
+    assert_equal 'user@example.com', @user.email
   end
 
   test 'name should not be too short' do
@@ -117,10 +126,6 @@ class UserTest < ActiveSupport::TestCase
       User.from_omniauth(access_token)
     end
 
-    assert_equal 'Test User Test User ', User.last.name
-  end
-
-  test 'ads_free is false until premium tier is implemented' do
-    assert_not @user.ads_free?
+    assert_equal 'Test User Test User', User.last.name
   end
 end

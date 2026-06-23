@@ -16,6 +16,12 @@ class ChapterTest < ActiveSupport::TestCase
     )
   end
 
+  test 'normalizes title by squishing whitespace' do
+    @chapter.title = '  Test   Chapter  '
+
+    assert_equal 'Test Chapter', @chapter.title
+  end
+
   test 'should destroy associated comments' do
     chapter = chapters(:one)
     chapter.comments << comments(:comment_one)

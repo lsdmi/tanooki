@@ -263,6 +263,7 @@ export default class extends Controller {
       if (this.hasInputTarget && this.inputTarget) {
         const message = this.inputTarget.value.trim()
         if (message && this.subscription) {
+          this.stickToBottom = true
           this.subscription.perform('speak', { message: message })
           this.inputTarget.value = ''
         }
@@ -327,19 +328,32 @@ export default class extends Controller {
       `
 
       this.messagesTarget.insertAdjacentHTML('beforeend', messageHtml)
-      if (this.isNearBottom()) {
-        this.scrollToBottom()
+
+      if (this.stickToBottom || this.isNearBottom()) {
+        this.scrollToBottom(this.messagesTarget)
+        this.stickToBottom = false
       }
     } catch (error) {
       console.error("Error adding message:", error)
     }
   }
 
-  scrollToBottom() {
+  scrollToBottom(container = this.messagesTarget) {
     try {
-      if (this.hasMessagesTarget && this.messagesTarget) {
-        this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+      if (!container) return
+
+      const scroll = () => {
+        container.scrollTop = container.scrollHeight
       }
+
+      scroll()
+      requestAnimationFrame(scroll)
+
+      const lastMessage = container.lastElementChild
+      lastMessage?.querySelectorAll('img').forEach((img) => {
+        if (img.complete) return
+        img.addEventListener('load', scroll, { once: true })
+      })
     } catch (error) {
       console.error("Error scrolling to bottom:", error)
     }
