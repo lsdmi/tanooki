@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'manifest' => 'rails/pwa#manifest', defaults: { format: :json }, as: :pwa_manifest
+  get 'service-worker' => 'rails/pwa#service_worker', defaults: { format: :js }, as: :pwa_service_worker
+
   root 'home#index'
   post '/' => 'home#index'
   get '/sitemap.xml', to: 'sitemaps#show', defaults: { format: :xml }

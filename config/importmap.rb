@@ -3,6 +3,7 @@
 # Pin npm packages by running ./bin/importmap
 
 pin 'application', preload: true
+pin 'pwa', preload: true
 pin 'turbo_transitions', preload: true
 pin 'turbo_cache_hooks', preload: true
 pin 'adult_content_disclaimer'

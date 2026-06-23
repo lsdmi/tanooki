@@ -33,6 +33,9 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= csp_meta_tag %>
+    <%= tag.link rel: 'manifest', href: pwa_manifest_path(format: :json) %>
+    <%= tag.meta name: 'theme-color', content: '#78716c' %>
+    <%= tag.link rel: 'apple-touch-icon', href: '/icon-192.png' %>
     <meta name="turbo-cache-control" content="no-preview">
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-refresh-method" content="morph">
@@ -53,6 +56,8 @@
     <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, media: 'all' %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%= tag.link rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' %>
+    <%= tag.link rel: 'icon', type: 'image/png', sizes: '512x512', href: '/icon-512.png' %>
 
     <% if requires_tinymce? %>
       <%= tinymce_script_tags %>

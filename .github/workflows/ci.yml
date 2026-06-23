@@ -13,7 +13,7 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.9
@@ -23,7 +23,7 @@ jobs:
   brakeman:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.9
@@ -33,7 +33,7 @@ jobs:
   bundler_audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.9
@@ -43,7 +43,7 @@ jobs:
   erb_lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.9
@@ -69,7 +69,7 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.9

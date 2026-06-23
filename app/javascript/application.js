@@ -6,6 +6,7 @@ import "controllers"
 import 'flowbite'
 import "channels"
 import "cookie_consent"
+import "pwa"
 
 // SPA-like navigation — Turbo 8 Drive + prefetch (morph when <head> matches)
 Turbo.session.drive = true
