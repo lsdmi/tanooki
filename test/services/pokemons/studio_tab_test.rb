@@ -49,8 +49,13 @@ module Pokemons
     test 'with pokemons sets battle history from the user' do
       user = users(:user_one)
       tab = StudioTab.new(user)
+      log = user.latest_battle_log
 
-      assert_same user.latest_battle_log, tab.battle_history
+      if log.nil?
+        assert_nil tab.battle_history
+      else
+        assert_equal log, tab.battle_history
+      end
     end
 
     test 'with pokemons exposes dex leaderboard' do

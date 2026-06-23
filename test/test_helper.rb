@@ -12,6 +12,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 require 'minitest/autorun'
+require 'minitest/mock'
 require 'view_component/test_helpers'
 
 Rails.root.glob('test/test_helpers/**/*.rb').each { |path| require path }
