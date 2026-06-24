@@ -8,6 +8,13 @@ module SearchkickCallbacks
 
     Rails.env.development? ? :inline : :async
   end
+
+  def self.opensearch_ca_file_path(pem)
+    normalized = pem.gsub('\\n', "\n")
+    ca_file = Rails.root.join('tmp/opensearch-ca.crt')
+    File.write(ca_file, normalized)
+    ca_file.to_s
+  end
 end
 
 if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].present?)
@@ -27,13 +34,7 @@ if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].pre
   }
 
   ca_cert = ENV['OPENSEARCH_CA_CERT'].presence
-  if ca_cert
-    store = OpenSSL::X509::Store.new
-    ca_cert.gsub('\\n', "\n").scan(/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m).each do |cert_pem|
-      store.add_cert(OpenSSL::X509::Certificate.new(cert_pem))
-    end
-    transport_options[:ssl] = { cert_store: store }
-  end
+  transport_options[:ssl] = { ca_file: SearchkickCallbacks.opensearch_ca_file_path(ca_cert) } if ca_cert
 
   opensearch_url = ENV.fetch('OPENSEARCH_URL')
 
