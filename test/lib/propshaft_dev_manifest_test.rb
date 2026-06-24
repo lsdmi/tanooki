@@ -26,11 +26,12 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
     PropshaftDevManifest.refresh!(@manifest_path)
 
-    tailwind_path.open('a') { |file| file.write(' ') }
+    # Linux CI uses 1s mtime resolution; bump past manifest so stale? sees the change.
+    future_mtime = @manifest_path.mtime + 1
+    File.utime(future_mtime, future_mtime, tailwind_path)
 
     assert PropshaftDevManifest.stale?(@manifest_path)
   ensure
-    tailwind_path.open('a') { |file| file.write("\b") if file.size.positive? }
     PropshaftDevManifest.refresh!(@manifest_path)
   end
 end
