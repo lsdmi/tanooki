@@ -1,19 +1,29 @@
-<%# locals: placement: (:top|:bottom) %>
+<%# locals: (placement:, advertisement: nil) %>
 <% return unless chapter_reader_ad_live?(placement) %>
 
-<% wrapper_classes = [
-  'reader-ad-slot reader-ad-slot--compact reader-ad-slot--loading relative overflow-hidden rounded-md sm:rounded-lg',
-  (placement == :bottom ? 'reader-ad-slot--bottom my-2 sm:my-4 md:my-6' : 'reader-ad-slot--top my-2 sm:my-4 md:my-6')
-].join(' ') %>
+<% advertisement ||= @advertisement %>
+<% has_house_ad = advertisement_banner_ready?(advertisement) %>
+<% placement_class = placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top' %>
 
-<div class="<%= wrapper_classes %>"
+<div class="reader-ad-slot reader-ad-slot--compact <%= placement_class %> relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6"
      data-controller="adsense-unit"
      data-adsense-unit-live-value="true"
-     data-adsense-unit-placement-value="<%= placement %>">
-  <ins class="adsbygoogle block w-full"
-       style="display:block"
-       data-ad-client="<%= adsense_client_id %>"
-       data-ad-slot="<%= chapter_reader_ad_slot(placement) %>"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+     data-adsense-unit-placement-value="<%= placement %>"
+     data-adsense-unit-fallback-value="<%= has_house_ad %>">
+  <div class="reader-ad-slot__frame">
+    <% fallback_classes = "reader-ad-slot__fallback#{' reader-ad-slot__fallback--placeholder' unless has_house_ad}" %>
+    <%= tag.div class: fallback_classes,
+                data: { adsense_unit_target: 'fallback' },
+                aria: (has_house_ad ? {} : { hidden: 'true' }) do %>
+      <% if has_house_ad %>
+        <%= render "shared/reader_house_ad", advertisement: advertisement %>
+      <% end %>
+    <% end %>
+    <ins class="adsbygoogle reader-ad-slot__adsense block h-full w-full"
+         style="display:block"
+         data-ad-client="<%= adsense_client_id %>"
+         data-ad-slot="<%= chapter_reader_ad_slot(placement) %>"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
 </div>

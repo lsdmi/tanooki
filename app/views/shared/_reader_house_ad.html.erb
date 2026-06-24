@@ -1,0 +1,14 @@
+<%# locals: (advertisement:) %>
+<% return unless advertisement_banner_ready?(advertisement) %>
+
+<% cache advertisement_fragment_cache_key(advertisement) do %>
+  <%= link_to advertisement.resource,
+              class: "reader-house-ad block h-full w-full",
+              aria: { label: advertisement_cover_label(advertisement) } do %>
+    <%= image_tag advertisement.poster,
+                  alt: advertisement_cover_label(advertisement),
+                  class: "h-full w-full object-cover",
+                  decoding: "async",
+                  loading: "eager" %>
+  <% end %>
+<% end %>

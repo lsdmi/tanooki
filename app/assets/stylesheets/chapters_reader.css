@@ -199,32 +199,49 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(228 228 231);
 }
 
-/* In-flow chapter ads: zero layout footprint until filled; hidden when unfilled/blocked */
-.immersive-reader .reader-ad-slot--loading {
-  max-height: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+/* In-flow chapter ads: fixed frame; house promo by default, AdSense layered on fill */
+.immersive-reader .reader-ad-slot__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  min-height: 100px;
   overflow: hidden;
+}
+
+.immersive-reader .reader-ad-slot__fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.immersive-reader .reader-ad-slot__fallback--placeholder {
+  background-color: rgb(231 229 228);
+}
+
+.dark .immersive-reader .reader-ad-slot__fallback--placeholder {
+  background-color: rgb(39 39 42);
+}
+
+.immersive-reader .reader-ad-slot__adsense {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   opacity: 0;
   pointer-events: none;
 }
 
-.immersive-reader .reader-ad-slot--loading ins.adsbygoogle {
-  display: block;
-  min-height: 1px;
-  height: 1px;
+.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Collapse unfilled manual AdSense units (Google data-ad-status) */
+.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__fallback {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .immersive-reader .reader-ad-slot ins.adsbygoogle[data-ad-status='unfilled'] {
-  display: none !important;
-}
-
-.immersive-reader .reader-ad-slot--collapsed {
-  display: none !important;
-  height: 0 !important;
-  margin: 0 !important;
-  overflow: hidden !important;
+  opacity: 0 !important;
 }
 
 /* Reader ad drawer: panel sits below sticky reader toolbar (top-12); grid fits in remaining viewport */

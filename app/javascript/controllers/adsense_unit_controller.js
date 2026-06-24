@@ -5,11 +5,10 @@ const FILL_TIMEOUT_MS = { top: 3000, bottom: 5000 }
 const SCRIPT_RETRY_MS = 300
 const MAX_SCRIPT_RETRIES = 20
 
-// Chapter reader slots start with zero layout footprint (loading). AdSense still needs a
-// renderable <ins> (not display:none) to request a fill. Expand only on confirmed fill;
-// remove from layout when unfilled, timed out, or ads are blocked/unavailable.
+// Reserved-size chapter ad slot: house promo visible from first paint; swap to AdSense when filled.
 export default class extends Controller {
-  static values = { live: Boolean, placement: { type: String, default: "top" } }
+  static targets = ["fallback"]
+  static values = { live: Boolean, placement: { type: String, default: "top" }, fallback: Boolean }
 
   connect() {
     this.scriptRetries = 0
@@ -18,8 +17,10 @@ export default class extends Controller {
     document.addEventListener("baka:adsense-ready", this.boundReady)
     document.addEventListener("turbo:load", this.boundTurboLoad)
 
-    if (this.liveValue && isAdblockLikely()) {
-      this.collapseSlot()
+    if (!this.liveValue) return
+
+    if (isAdblockLikely()) {
+      this.showFallback()
       return
     }
 
@@ -34,7 +35,7 @@ export default class extends Controller {
   }
 
   onReady() {
-    if (!this.liveValue || this.element.classList.contains("reader-ad-slot--collapsed")) return
+    if (!this.liveValue) return
     this.tryPush()
   }
 
@@ -45,7 +46,7 @@ export default class extends Controller {
     if (!window.adsbygoogle) {
       this.scriptRetries += 1
       if (this.scriptRetries >= MAX_SCRIPT_RETRIES) {
-        this.collapseSlot()
+        this.showFallback()
         return
       }
       this.scheduleRetry()
@@ -62,7 +63,7 @@ export default class extends Controller {
       ins.dataset.adsensePushed = "true"
       this.watchFill(ins)
     } catch (_error) {
-      this.collapseSlot()
+      this.showFallback()
     }
   }
 
@@ -91,11 +92,11 @@ export default class extends Controller {
 
     const resolved = () => {
       if (this.isFilled(ins)) {
-        this.expandSlot()
+        this.showAdsenseFilled()
         return true
       }
       if (this.isUnfilled(ins)) {
-        this.collapseSlot()
+        this.showFallback()
         return true
       }
       return false
@@ -115,7 +116,7 @@ export default class extends Controller {
 
     this.fillTimeout = window.setTimeout(() => {
       this.stopWatching()
-      if (!this.isFilled(ins)) this.collapseSlot()
+      if (!this.isFilled(ins)) this.showFallback()
     }, this.fillTimeoutMs())
   }
 
@@ -135,15 +136,14 @@ export default class extends Controller {
     return this.element.querySelector("ins.adsbygoogle")
   }
 
-  expandSlot() {
-    this.element.classList.remove("reader-ad-slot--loading", "reader-ad-slot--collapsed")
+  showAdsenseFilled() {
+    this.element.classList.add("reader-ad-slot--adsense-filled")
   }
 
-  collapseSlot() {
+  showFallback() {
     this.clearRetry()
     this.stopWatching()
-    this.element.classList.remove("reader-ad-slot--loading")
-    this.element.classList.add("reader-ad-slot--collapsed")
+    this.element.classList.remove("reader-ad-slot--adsense-filled")
   }
 
   stopWatching() {

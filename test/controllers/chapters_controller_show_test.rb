@@ -41,6 +41,13 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
   end
 
+  test 'show loads advertisement for reader promo fallback' do
+    get chapter_url(@chapter)
+
+    assert_response :success
+    assert_not_nil assigns(:advertisement)
+  end
+
   test 'reader settings panel is full screen on mobile and side drawer from sm up' do
     get chapter_url(@chapter)
 
