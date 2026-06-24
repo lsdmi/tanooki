@@ -2,13 +2,14 @@
 <% return unless chapter_reader_ad_live?(placement) %>
 
 <% wrapper_classes = [
-  'reader-ad-slot reader-ad-slot--compact relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6',
-  (placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top')
+  'reader-ad-slot reader-ad-slot--compact reader-ad-slot--loading relative overflow-hidden rounded-md sm:rounded-lg',
+  (placement == :bottom ? 'reader-ad-slot--bottom my-2 sm:my-4 md:my-6' : 'reader-ad-slot--top my-2 sm:my-4 md:my-6')
 ].join(' ') %>
 
 <div class="<%= wrapper_classes %>"
      data-controller="adsense-unit"
-     data-adsense-unit-live-value="true">
+     data-adsense-unit-live-value="true"
+     data-adsense-unit-placement-value="<%= placement %>">
   <ins class="adsbygoogle block w-full"
        style="display:block"
        data-ad-client="<%= adsense_client_id %>"

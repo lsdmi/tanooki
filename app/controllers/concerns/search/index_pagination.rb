@@ -19,7 +19,7 @@ module Search
     end
 
     def publication_per_page
-      return 1 if params[:filter].in?(%w[fiction video])
+      return 1 if %w[fiction video].include?(params[:filter])
 
       7
     end

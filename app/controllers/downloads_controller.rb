@@ -52,7 +52,7 @@ class DownloadsController < ApplicationController
   end
 
   def set_epub_export_request
-    @epub_export_request = EpubExportRequest.find_by!(token: params[:token])
+    @epub_export_request = EpubExportRequest.find_by!(token: params.expect(:token))
   end
 
   def authorize_epub_export_owner!

@@ -38,7 +38,7 @@ module Admin
     private
 
     def set_advertisement
-      @advertisement = Advertisement.find(params[:id])
+      @advertisement = Advertisement.find(params.expect(:id))
     end
 
     def advertisement_params

@@ -11,7 +11,7 @@ module Admin
     end
 
     def edit
-      @genre = Genre.find(params[:id])
+      @genre = Genre.find(params.expect(:id))
       render turbo_stream: edit_genre
     end
 
@@ -21,12 +21,12 @@ module Admin
     end
 
     def update
-      @genre = Genre.find(params[:id])
+      @genre = Genre.find(params.expect(:id))
       render turbo_stream: (@genre.update(genre_params) ? refresh_list : edit_genre)
     end
 
     def destroy
-      genre = Genre.find(params[:id])
+      genre = Genre.find(params.expect(:id))
       genre.destroy
       render turbo_stream: turbo_stream_list_refresh(refresh_list)
     end

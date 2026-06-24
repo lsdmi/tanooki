@@ -94,7 +94,7 @@ module Admin
     end
 
     def set_pokemon
-      @pokemon = Pokemon.find(params[:id])
+      @pokemon = Pokemon.find(params.expect(:id))
     end
   end
 end

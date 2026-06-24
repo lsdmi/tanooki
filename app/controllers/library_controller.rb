@@ -21,7 +21,7 @@ class LibraryController < ApplicationController
   end
 
   def update_status
-    reading_progress = current_user.readings.find(params[:id])
+    reading_progress = current_user.readings.find(params.expect(:id))
     current_section = params[:current_section]&.to_sym || :active
     @status_update_result = Reading::UpdateStatus.new(
       reading_progress, params[:status], current_user

@@ -50,7 +50,7 @@ class FictionsController < ApplicationController
   end
 
   def update
-    @fiction = Fiction.find(params[:id])
+    @fiction = Fiction.find(params.expect(:id))
     persist_fiction(Fictions::SyncAssociationsAndStatus, :edit, t('fictions.notices.update_success'))
   end
 
@@ -72,7 +72,7 @@ class FictionsController < ApplicationController
   end
 
   def details
-    @fiction = Fiction.find(params[:id])
+    @fiction = Fiction.find(params.expect(:id))
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
@@ -87,7 +87,7 @@ class FictionsController < ApplicationController
   private
 
   def set_fiction
-    @fiction = @commentable = Fiction.includes(:genres, :scanlators, cover_attachment: :blob).find(params[:id])
+    @fiction = @commentable = Fiction.includes(:genres, :scanlators, cover_attachment: :blob).find(params.expect(:id))
     @commentable = @fiction
   end
 

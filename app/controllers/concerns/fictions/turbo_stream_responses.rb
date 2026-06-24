@@ -44,7 +44,7 @@ module Fictions
     end
 
     def toggle_order_params
-      params.merge(order: params[:order].to_sym == :desc ? :asc : :desc)
+      params.merge(order: params.expect(:order).to_sym == :desc ? :asc : :desc)
     end
 
     def refresh_list

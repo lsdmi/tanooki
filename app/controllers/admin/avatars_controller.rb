@@ -21,7 +21,7 @@ module Admin
     end
 
     def destroy
-      avatar = Avatar.find(params[:id])
+      avatar = Avatar.find(params.expect(:id))
       avatar.destroy
 
       respond_to do |format|

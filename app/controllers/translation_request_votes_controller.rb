@@ -40,6 +40,6 @@ class TranslationRequestVotesController < ApplicationController
   end
 
   def set_translation_request
-    @translation_request = TranslationRequest.find(params[:translation_request_id])
+    @translation_request = TranslationRequest.find(params.expect(:translation_request_id))
   end
 end

@@ -1,17 +1,28 @@
 import { Controller } from "@hotwired/stimulus"
+import { isAdblockLikely } from "adblock_detect"
 
-const FILL_TIMEOUT_MS = 10000
+const FILL_TIMEOUT_MS = { top: 3000, bottom: 5000 }
+const SCRIPT_RETRY_MS = 300
+const MAX_SCRIPT_RETRIES = 20
 
-// Pushes AdSense for one unit. Slot must stay visible until the request runs (hidden = no fill).
-// Collapses the wrapper only when Google marks the unit unfilled or nothing fills in time.
+// Chapter reader slots start with zero layout footprint (loading). AdSense still needs a
+// renderable <ins> (not display:none) to request a fill. Expand only on confirmed fill;
+// remove from layout when unfilled, timed out, or ads are blocked/unavailable.
 export default class extends Controller {
-  static values = { live: Boolean }
+  static values = { live: Boolean, placement: { type: String, default: "top" } }
 
   connect() {
+    this.scriptRetries = 0
     this.boundReady = this.onReady.bind(this)
     this.boundTurboLoad = this.onReady.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
     document.addEventListener("turbo:load", this.boundTurboLoad)
+
+    if (this.liveValue && isAdblockLikely()) {
+      this.collapseSlot()
+      return
+    }
+
     this.onReady()
   }
 
@@ -23,17 +34,24 @@ export default class extends Controller {
   }
 
   onReady() {
-    if (!this.liveValue) return
+    if (!this.liveValue || this.element.classList.contains("reader-ad-slot--collapsed")) return
     this.tryPush()
   }
 
   tryPush() {
     const ins = this.adElement()
     if (!ins || ins.dataset.adsensePushed === "true") return
+
     if (!window.adsbygoogle) {
+      this.scriptRetries += 1
+      if (this.scriptRetries >= MAX_SCRIPT_RETRIES) {
+        this.collapseSlot()
+        return
+      }
       this.scheduleRetry()
       return
     }
+
     if (!this.slotIsRenderable(ins)) {
       this.scheduleRetry()
       return
@@ -58,7 +76,7 @@ export default class extends Controller {
     this.retryTimeout = window.setTimeout(() => {
       this.retryTimeout = null
       this.tryPush()
-    }, 300)
+    }, SCRIPT_RETRY_MS)
   }
 
   clearRetry() {
@@ -98,7 +116,11 @@ export default class extends Controller {
     this.fillTimeout = window.setTimeout(() => {
       this.stopWatching()
       if (!this.isFilled(ins)) this.collapseSlot()
-    }, FILL_TIMEOUT_MS)
+    }, this.fillTimeoutMs())
+  }
+
+  fillTimeoutMs() {
+    return FILL_TIMEOUT_MS[this.placementValue] || FILL_TIMEOUT_MS.top
   }
 
   isFilled(ins) {
@@ -114,10 +136,13 @@ export default class extends Controller {
   }
 
   expandSlot() {
-    this.element.classList.remove("reader-ad-slot--collapsed")
+    this.element.classList.remove("reader-ad-slot--loading", "reader-ad-slot--collapsed")
   }
 
   collapseSlot() {
+    this.clearRetry()
+    this.stopWatching()
+    this.element.classList.remove("reader-ad-slot--loading")
     this.element.classList.add("reader-ad-slot--collapsed")
   }
 

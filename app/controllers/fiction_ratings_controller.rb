@@ -19,7 +19,7 @@ class FictionRatingsController < ApplicationController
   private
 
   def set_fiction
-    @fiction = Fiction.find(params[:fiction_id])
+    @fiction = Fiction.find(params.expect(:fiction_id))
   end
 
   def requested_rating

@@ -90,7 +90,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def set_scanlator
-    @scanlator = Scanlator.find(params[:id])
+    @scanlator = Scanlator.find(params.expect(:id))
   end
 
   def verify_permissions

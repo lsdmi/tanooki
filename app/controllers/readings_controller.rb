@@ -29,12 +29,12 @@ class ReadingsController < ApplicationController
   private
 
   def set_fiction
-    @fiction = Fiction.friendly.find(params[:id])
+    @fiction = Fiction.friendly.find(params.expect(:id))
   end
 
   def set_chapter
     scope = current_user.admin? ? Chapter : current_user.chapters
-    @chapter = scope.friendly.find(params[:id])
+    @chapter = scope.friendly.find(params.expect(:id))
   end
 
   def authorize_chapter_deletion

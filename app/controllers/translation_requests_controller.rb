@@ -39,7 +39,7 @@ class TranslationRequestsController < ApplicationController
   end
 
   def assign
-    scanlator = current_user.scanlators.find(params[:scanlator_id])
+    scanlator = current_user.scanlators.find(params.expect(:scanlator_id))
 
     return render_already_assigned_error if @translation_request.scanlator_id.present?
 
@@ -76,7 +76,7 @@ class TranslationRequestsController < ApplicationController
   end
 
   def set_translation_request
-    @translation_request = TranslationRequest.find(params[:id])
+    @translation_request = TranslationRequest.find(params.expect(:id))
   end
 
   def authorize_translation_request_owner!

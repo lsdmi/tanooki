@@ -29,7 +29,7 @@ module Chapters
 
     def fiction_for_chapter_create
       if params[:fiction].present?
-        Fiction.friendly.find(params[:fiction])
+        Fiction.friendly.find(params.expect(:fiction))
       elsif params.dig(:chapter, :fiction_id).present?
         Fiction.find_by(id: params[:chapter][:fiction_id])
       end

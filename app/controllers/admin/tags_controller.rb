@@ -11,7 +11,7 @@ module Admin
     end
 
     def edit
-      @tag = Tag.find(params[:id])
+      @tag = Tag.find(params.expect(:id))
       render turbo_stream: edit_tag
     end
 
@@ -21,12 +21,12 @@ module Admin
     end
 
     def update
-      @tag = Tag.find(params[:id])
+      @tag = Tag.find(params.expect(:id))
       render turbo_stream: (@tag.update(tag_params) ? refresh_list : edit_tag)
     end
 
     def destroy
-      tag = Tag.find(params[:id])
+      tag = Tag.find(params.expect(:id))
       tag.destroy
       render turbo_stream: turbo_stream_list_refresh(refresh_list)
     end

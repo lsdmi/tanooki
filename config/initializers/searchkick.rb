@@ -28,9 +28,11 @@ if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].pre
 
   ca_cert = ENV['OPENSEARCH_CA_CERT'].presence
   if ca_cert
-    ca_file = Rails.root.join('tmp/opensearch-ca.crt')
-    File.write(ca_file, ca_cert.gsub('\\n', "\n"))
-    transport_options[:ssl] = { ca_file: ca_file.to_s }
+    store = OpenSSL::X509::Store.new
+    ca_cert.gsub('\\n', "\n").scan(/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m).each do |cert_pem|
+      store.add_cert(OpenSSL::X509::Certificate.new(cert_pem))
+    end
+    transport_options[:ssl] = { cert_store: store }
   end
 
   opensearch_url = ENV.fetch('OPENSEARCH_URL')

@@ -46,7 +46,7 @@ class PokemonBattlesController < ApplicationController
   end
 
   def defender
-    User.find(params[:defender])
+    User.find(params.expect(:defender))
   end
 
   def descendant
