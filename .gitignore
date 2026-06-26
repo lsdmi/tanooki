@@ -27,6 +27,10 @@
 
 /public/assets
 
+# Tailwind build output (rebuilt by tailwindcss:build / tailwindcss:watch)
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
 .env
 coverage/*
 

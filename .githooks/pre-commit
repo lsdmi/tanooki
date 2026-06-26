@@ -7,7 +7,6 @@ case "$branch" in
   main|master)
     echo "Building Tailwind CSS..."
     bin/rails tailwindcss:build
-    git add app/assets/builds/tailwind.css
 
     echo "Running quality checks and tests before committing to ${branch}..."
     exec bin/verify
