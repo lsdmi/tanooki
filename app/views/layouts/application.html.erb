@@ -53,7 +53,7 @@
     <% page_stylesheets.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
     <% end %>
-    <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, media: 'all' %>
+    <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, media: 'all' if requires_reader_google_fonts? %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <%= tag.link rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' %>

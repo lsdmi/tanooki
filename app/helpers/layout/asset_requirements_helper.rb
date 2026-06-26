@@ -33,6 +33,10 @@ module Layout
       !chapters_show_page?
     end
 
+    def requires_reader_google_fonts?
+      chapters_show_page?
+    end
+
     def requires_adult_content_disclaimer_styles?
       fiction = stylesheet_context_fiction
       fiction.present? && show_adult_content_disclaimer?(fiction)

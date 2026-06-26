@@ -47,6 +47,16 @@ module Layout
       assert_predicate self, :requires_mode_toggler?
     end
 
+    test 'reader google fonts load on chapter reader only' do
+      assign_controller(:chapters, :show)
+
+      assert_predicate self, :requires_reader_google_fonts?
+
+      assign_controller(:fictions, :show)
+
+      assert_not_predicate self, :requires_reader_google_fonts?
+    end
+
     private
 
     def assign_controller(name, action, path: nil)

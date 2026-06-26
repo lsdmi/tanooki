@@ -65,6 +65,23 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select '.fiction-details img[src*="representations"]'
+    assert_select '.fiction-details img[fetchpriority="high"][loading="eager"]'
+  end
+
+  test 'show preloads cover background with fetchpriority high' do
+    skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select 'link[rel="preload"][as="image"][fetchpriority="high"][href*="representations"]'
+  end
+
+  test 'show does not load reader-only google fonts' do
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_not_includes response.body, 'fonts.googleapis.com'
   end
 
   test 'show includes chapters accordion with toggle actions' do
