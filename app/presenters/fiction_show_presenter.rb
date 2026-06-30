@@ -85,10 +85,22 @@ class FictionShowPresenter
   end
 
   def first_chapter
-    @first_chapter ||= Library::ChapterCatalog.ordered_chapters(@fiction, viewer: @current_user).first
+    @first_chapter ||= ordered_chapters.first
   end
 
   private
+
+  def chapters_list_scope
+    @chapters_list_scope ||= Library::ChapterCatalog.chapters_scope_for_list(@fiction, @current_user)
+  end
+
+  def ordered_chapters
+    @ordered_chapters ||= chapters_list_scope.order(Library::ChapterCatalog.order_clause)
+  end
+
+  def ordered_chapters_desc
+    @ordered_chapters_desc ||= chapters_list_scope.order(Library::ChapterCatalog.order_clause_desc)
+  end
 
   def find_or_fix_reading_progress
     progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @current_user&.id)
@@ -102,9 +114,7 @@ class FictionShowPresenter
   end
 
   def handle_missing_chapter(progress)
-    if Library::ChapterCatalog.chapters_scope_for_list(@fiction, @current_user).empty?
-      return clear_reading_progress(progress)
-    end
+    return clear_reading_progress(progress) if chapters_list_scope.none?
 
     advance_reading_progress_to_last_available(progress)
   end
@@ -115,7 +125,7 @@ class FictionShowPresenter
   end
 
   def advance_reading_progress_to_last_available(progress)
-    last = Library::ChapterCatalog.ordered_chapters_desc(@fiction, viewer: @current_user).first
+    last = last_chapter
     return clear_reading_progress(progress) unless last
 
     progress.update(chapter: last)
@@ -123,6 +133,6 @@ class FictionShowPresenter
   end
 
   def last_chapter
-    @last_chapter ||= Library::ChapterCatalog.ordered_chapters_desc(@fiction, viewer: @current_user).first
+    @last_chapter ||= ordered_chapters_desc.first
   end
 end

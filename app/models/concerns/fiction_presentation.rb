@@ -19,19 +19,28 @@ module FictionPresentation
   end
 
   def related_fictions
+    scanlator_ids = scanlators.ids
+    return Fiction.none if scanlator_ids.empty?
+
     Rails.cache.fetch("related-to-#{slug}", expires_in: 24.hours) do
-      Fiction.joins(:scanlators)
-             .includes(:genres)
-             .where(scanlators: { id: scanlators.pluck(:id) })
-             .includes(:cover_attachment)
-             .where.not(id: id)
-             .order(views: :desc)
-             .distinct
+      related_fictions_scope(scanlator_ids)
     end
   end
 
   def finished_and_complete?
     unique_chapters = chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
     unique_chapters.size >= total_chapters && status.to_sym == :finished
+  end
+
+  private
+
+  def related_fictions_scope(scanlator_ids)
+    Fiction.joins(:scanlators)
+           .includes(:genres)
+           .where(scanlators: { id: scanlator_ids })
+           .includes(:cover_attachment)
+           .where.not(id: id)
+           .order(views: :desc)
+           .distinct
   end
 end

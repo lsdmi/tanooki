@@ -17,14 +17,14 @@ class FictionsController < ApplicationController
     lehendarnyi-skulptor-misiachnoho-svitla
   ].freeze
 
-  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section]
-  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section]
+  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section comments]
+  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section comments]
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, only: :show
   before_action :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
   before_action :authorize_fiction_creation, only: %i[new create]
-  before_action :pokemon_appearance, only: %i[index show]
+  before_action :pokemon_appearance, only: :index
 
   def index
     @index_presenter = FictionIndexPresenter.new
@@ -71,6 +71,11 @@ class FictionsController < ApplicationController
     render_chapter_section_items(order)
   end
 
+  def comments
+    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
+    render layout: false
+  end
+
   def details
     @fiction = Fiction.find(params.expect(:id))
     respond_to do |format|
@@ -87,7 +92,9 @@ class FictionsController < ApplicationController
   private
 
   def set_fiction
-    @fiction = @commentable = Fiction.includes(:genres, :scanlators, cover_attachment: :blob).find(params.expect(:id))
+    @fiction = @commentable = Fiction.includes(
+      :genres, :scanlators, :fiction_ratings, cover_attachment: :blob
+    ).find(params.expect(:id))
     @commentable = @fiction
   end
 

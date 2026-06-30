@@ -40,9 +40,11 @@
         <%= render 'shared/ads', advertisement: @advertisement %>
       </div>
 
-      <!-- Comments Section -->
+      <!-- Comments Section (lazy-loaded) -->
       <section class="lg:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-8 border border-stone-200 dark:border-gray-700">
-        <%= render 'comments/index', comments: @show_presenter.comments, comment: @show_presenter.new_comment, commentable: @commentable %>
+        <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy do %>
+          <p class="py-6 text-center text-sm text-stone-500 dark:text-gray-400">Завантаження коментарів…</p>
+        <% end %>
       </section>
     </div>
   </main>

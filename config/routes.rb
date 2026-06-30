@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   end
   resources :fictions, only: [] do
     member do
+      get :comments
       get :details
       get :chapter_section
     end

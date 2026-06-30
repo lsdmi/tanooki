@@ -1,0 +1,6 @@
+<%= turbo_frame_tag 'fiction_comments' do %>
+  <%= render 'comments/index',
+             comments: @show_presenter.comments,
+             comment: @show_presenter.new_comment,
+             commentable: @commentable %>
+<% end %>
