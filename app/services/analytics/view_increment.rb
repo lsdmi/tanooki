@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Analytics
-  # Increments AR +views+ once per content identifier in the current session (rolling last 10).
+  # Records a view once per content identifier in the current session (rolling last 10).
+  # Session dedup runs synchronously; the DB increment is enqueued to avoid blocking HTML TTFB.
   class ViewIncrement
     def initialize(object, session)
       @object = object
@@ -12,8 +13,8 @@ module Analytics
       return unless @object
       return if already_viewed?
 
-      record_view
       remember_view
+      ViewIncrementJob.perform_later(@object.class.name, @object.id)
     end
 
     private
@@ -24,13 +25,6 @@ module Analytics
 
     def view_identifier
       @object.respond_to?(:slug) ? @object.slug : @object.sqid
-    end
-
-    def record_view
-      @object.with_lock do
-        @object.class.increment_counter(:views, @object.id)
-        @object.views += 1
-      end
     end
 
     def remember_view
