@@ -19,7 +19,7 @@ export default class extends Controller {
   openDefaultSections() {
     if (!this.element.hasAttribute("data-chapters-accordion-default-open")) return
 
-    this.element.querySelectorAll(".accordion-content.hidden").forEach((content) => {
+    this.element.querySelectorAll(".accordion-content:not(.hidden)").forEach((content) => {
       this.loadLazyChapterSection(content)
     })
   }
@@ -63,7 +63,9 @@ export default class extends Controller {
     const baseUrl = container.dataset.chapterSectionUrl
     if (!baseUrl) return
 
-    container.dataset.chapterSectionLoaded = "true"
+    if (container.dataset.chapterSectionLoading === "true") return
+
+    container.dataset.chapterSectionLoading = "true"
 
     let extraParams = {}
     try {
@@ -88,7 +90,6 @@ export default class extends Controller {
         signal: this.sectionAbortController.signal,
       })
       if (!response.ok) {
-        container.dataset.chapterSectionLoaded = "false"
         if (placeholder) {
           placeholder.textContent = "Не вдалося завантажити розділи. Спробуйте ще раз."
         }
@@ -96,21 +97,21 @@ export default class extends Controller {
       }
       const html = await response.text()
       if (!html.includes("<li")) {
-        container.dataset.chapterSectionLoaded = "false"
         if (placeholder) {
           placeholder.textContent = "Розділів не знайдено."
         }
         return
       }
       container.innerHTML = html
+      container.dataset.chapterSectionLoaded = "true"
     } catch (error) {
       if (error.name === "AbortError") return
 
-      container.dataset.chapterSectionLoaded = "false"
       if (placeholder) {
         placeholder.textContent = "Не вдалося завантажити розділи. Спробуйте ще раз."
       }
     } finally {
+      delete container.dataset.chapterSectionLoading
       this.sectionAbortController = null
     }
   }
@@ -123,8 +124,9 @@ export default class extends Controller {
   }
 
   resetChapterSectionLoadedState() {
-    this.element.querySelectorAll("[data-chapter-section-loaded]").forEach((container) => {
+    this.element.querySelectorAll("[data-chapter-section-loaded], [data-chapter-section-loading]").forEach((container) => {
       delete container.dataset.chapterSectionLoaded
+      delete container.dataset.chapterSectionLoading
     })
   }
 

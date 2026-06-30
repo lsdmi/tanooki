@@ -1,12 +1,10 @@
 <%# locals: fiction:, order:, reader_drawer: false (optional), current_chapter: nil (optional) %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% drawer_progress = reader_drawer ? reader_chapter_drawer_progress(fiction, current_chapter: local_assigns[:current_chapter]) : nil %>
-<% chapters = order.to_sym == :desc ? ordered_chapters_desc(fiction, viewer: current_user) : ordered_chapters(fiction, viewer: current_user) %>
 <div class="<%= reader_drawer ? '' : 'rounded-lg' %>">
   <div id="chapters-list" class="<%= reader_drawer ? '' : 'space-y-6' %>">
     <%= render 'fictions/chapter_collection',
                fiction: fiction,
-               chapters: chapters,
                order: order,
                reader_drawer: reader_drawer,
                current_chapter: local_assigns[:current_chapter],

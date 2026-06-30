@@ -1,7 +1,8 @@
-<%# locals: fiction:, chapters:, order: :asc, reader_drawer: false (optional), current_chapter: nil (optional) %>
+<%# locals: fiction:, order: :asc, reader_drawer: false (optional), current_chapter: nil (optional) %>
 <% list_order = local_assigns.fetch(:order, :asc) %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% current_chapter_id = local_assigns[:current_chapter]&.id %>
+<% sections = chapter_list_section_index(fiction, order: list_order, viewer: current_user) %>
 <% drawer_accordion_opened = false %>
 <% accordion_shell = if reader_drawer
   'border-b border-stone-200 last:border-b-0 dark:border-zinc-700'
@@ -19,26 +20,26 @@ else
   'rounded-b border border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900'
 end %>
 <div class="<%= reader_drawer ? 'my-0' : 'my-6 space-y-4' %>" data-controller="chapters-accordion" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if reader_drawer %>>
-  <% chapter_list_sections(chapters, order: list_order).each_with_index do |section, section_index| %>
-    <% section_chapters = section[:chapters] %>
+  <% sections.each_with_index do |section, section_index| %>
     <% accordion_open = reader_drawer && !drawer_accordion_opened && (chapter_list_section_current?(section, current_chapter_id) || (current_chapter_id.nil? && section_index.zero?)) %>
     <% drawer_accordion_opened = true if accordion_open %>
-    <% preload_section = accordion_open %>
+    <% preload_section = accordion_open || (!reader_drawer && section_index.zero?) %>
     <% section_path = fiction_chapter_section_path(fiction, section[:section_key], order: list_order) %>
+    <% section_chapter_ids = chapter_list_section_ids(section) %>
     <div class="accordion overflow-hidden <%= accordion_shell %>">
       <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>"
            role="button"
            tabindex="0"
-           aria-expanded="<%= accordion_open ? 'true' : 'false' %>"
+           aria-expanded="<%= preload_section || accordion_open ? 'true' : 'false' %>"
            data-action="click->chapters-accordion#toggle keydown.enter->chapters-accordion#toggle keydown.space->chapters-accordion#toggle">
         <h3 class="min-w-0 flex-1 truncate text-left text-sm font-medium text-stone-800 dark:text-zinc-100">
           <%= reader_drawer ? reader_drawer_section_title(section) : section[:title] %>
         </h3>
         <div class="flex shrink-0 items-center gap-1">
-          <% if !reader_drawer && epub_download_available?(section_chapters) %>
+          <% if !reader_drawer && epub_download_available_for_section?(section_chapter_ids) %>
             <div data-controller="epub-download"
                  data-epub-download-url-value="<%= epub_multiple_downloads_path %>"
-                 data-epub-download-params-value="<%= { chapter_ids: chapter_list_section_ids(section_chapters), volume_title: section[:epub_title] }.to_json %>">
+                 data-epub-download-params-value="<%= { chapter_ids: section_chapter_ids, volume_title: section[:epub_title] }.to_json %>">
               <button data-epub-download-target="button"
                       data-action="click->epub-download#download"
                       class="text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded"
@@ -49,17 +50,17 @@ end %>
               </button>
             </div>
           <% end %>
-          <span class="accordion-icon transition-transform duration-200 <%= accordion_open ? 'rotate-180 ' : '' %><%= reader_drawer ? 'text-stone-500 dark:text-zinc-400' : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
+          <span class="accordion-icon transition-transform duration-200 <%= (preload_section || accordion_open) ? 'rotate-180 ' : '' %><%= reader_drawer ? 'text-stone-500 dark:text-zinc-400' : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" class="<%= reader_drawer ? 'h-5 w-5' : 'h-6 w-6' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </span>
         </div>
       </div>
-      <div class="accordion-content <%= accordion_open ? '' : 'hidden' %> <%= reader_drawer ? '' : 'max-h-96 overflow-y-auto' %> <%= accordion_body %>">
+      <div class="accordion-content <%= preload_section ? '' : 'hidden' %> <%= reader_drawer ? '' : 'max-h-96 overflow-y-auto' %> <%= accordion_body %>">
         <% if preload_section %>
           <%= render 'fictions/chapter_section_items',
-                     chapters: section_chapters.includes(:scanlators),
+                     chapters: fiction_section_chapters(fiction, section[:section_key], order: list_order),
                      reader_drawer: reader_drawer,
                      current_chapter: local_assigns[:current_chapter],
                      drawer_progress: local_assigns[:drawer_progress] %>
