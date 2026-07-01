@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'fiction_similar' do %>
+  <% if @show_presenter.related_fictions.any? %>
+    <%= render 'similar_fictions_list', show_presenter: @show_presenter %>
+  <% end %>
+<% end %>

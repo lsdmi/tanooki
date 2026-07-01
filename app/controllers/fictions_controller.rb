@@ -10,6 +10,7 @@ class FictionsController < ApplicationController
   include FictionQuery
   include Fictions::ChapterSectionRendering
   include Fictions::DashboardListing
+  include Fictions::FictionControllerSetup
   include Fictions::FictionPersistence
   include Fictions::TurboStreamResponses
 
@@ -17,8 +18,10 @@ class FictionsController < ApplicationController
     lehendarnyi-skulptor-misiachnoho-svitla
   ].freeze
 
-  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section comments]
-  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section comments]
+  GUEST_SHOW_ACTIONS = %i[comments sidebar_stats similar_fictions].freeze
+
+  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section] + GUEST_SHOW_ACTIONS
+  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section] + GUEST_SHOW_ACTIONS
   before_action :set_genres, only: %i[new create edit update]
   before_action :load_advertisement, only: :show
   before_action :track_visit, only: :show
@@ -71,10 +74,11 @@ class FictionsController < ApplicationController
     render_chapter_section_items(order)
   end
 
-  def comments
-    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
-    render layout: false
-  end
+  def comments = render_fiction_show_fragment
+
+  def sidebar_stats = render_fiction_show_fragment
+
+  def similar_fictions = render_fiction_show_fragment
 
   def details
     @fiction = Fiction.find(params.expect(:id))
@@ -87,32 +91,5 @@ class FictionsController < ApplicationController
         )
       end
     end
-  end
-
-  private
-
-  def set_fiction
-    @fiction = @commentable = Fiction.includes(
-      :genres, :scanlators, :fiction_ratings, cover_attachment: :blob
-    ).find(params.expect(:id))
-    @commentable = @fiction
-  end
-
-  def ads_disabled_for_current_page?
-    @fiction&.slug.in?(AD_EXCLUDED_SLUGS) || super
-  end
-
-  def set_genres
-    @genres = Genre.order(:name)
-  end
-
-  def authorize_fiction
-    policy = Fictions::Authorization.new(current_user, @fiction)
-    redirect_to root_path unless policy.edit?
-  end
-
-  def authorize_fiction_creation
-    policy = Fictions::Authorization.new(current_user, nil)
-    redirect_to new_scanlator_path unless policy.create?
   end
 end

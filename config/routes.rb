@@ -69,6 +69,8 @@ Rails.application.routes.draw do
       get :comments
       get :details
       get :chapter_section
+      get :sidebar_stats
+      get :similar_fictions
     end
   end
   resources :fictions do

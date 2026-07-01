@@ -1,0 +1,27 @@
+<%# locals: show_presenter: %>
+<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
+  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Також може сподобатися</h3>
+  <div class="space-y-3">
+    <% show_presenter.related_fictions.each do |similar_fiction| %>
+      <div class="flex items-center gap-3">
+        <%= link_to fiction_path(similar_fiction), class: '' do %>
+          <%= image_tag cover_thumbnail_url(similar_fiction.cover),
+                        alt: similar_fiction.title,
+                        class: 'object-cover w-12 h-16 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded flex items-center justify-center text-lg' %>
+        <% end %>
+        <div class="flex-1 min-w-0">
+          <%= link_to similar_fiction.title, fiction_path(similar_fiction), class: 'font-medium text-sm text-gray-900 dark:text-white truncate line-clamp-1' %>
+          <div class="text-xs text-gray-600 dark:text-gray-300 min-w-0 line-clamp-1">
+            <%= safe_join(
+                  similar_fiction.genres.sample(2).map { |genre|
+                    link_to genre.name, fiction_genre_fictions_path(genre),
+                            class: 'text-inherit hover:text-cyan-700 dark:hover:text-rose-400 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:focus-visible:ring-gray-500 rounded-sm'
+                  },
+                  ', '
+                ) %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
