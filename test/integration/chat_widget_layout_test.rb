@@ -46,4 +46,31 @@ class ChatWidgetLayoutTest < ActionDispatch::IntegrationTest
     assert_select '#chat-widget-guest', count: 0
     assert_select '#chat-widget-auth', count: 0
   end
+
+  test 'chat shell does not embed recent messages on first paint' do
+    sign_in users(:user_one)
+
+    get fictions_path
+
+    assert_response :success
+    assert_select '#chat-widget-auth [data-message-id]', count: 0
+  end
+
+  test 'chat shell shows open prompt instead of prefetching messages' do
+    sign_in users(:user_one)
+
+    get fictions_path
+
+    assert_includes response.body, 'Натисніть щоб відкрити чат'
+    assert_not_includes response.body, '/chat/recent_messages'
+  end
+
+  test 'fiction show chat shell defers recent messages until opened' do
+    sign_in users(:user_one)
+
+    get fiction_path(fictions(:one))
+
+    assert_response :success
+    assert_select '#chat-widget-auth [data-message-id]', count: 0
+  end
 end

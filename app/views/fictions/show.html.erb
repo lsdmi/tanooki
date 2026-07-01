@@ -5,6 +5,9 @@
   <% end %>
 <% end %>
 
+<% cache_if guest_fiction_show_fragment_cacheable?,
+            guest_fiction_show_fragment_cache_key(@fiction, @show_presenter, @advertisement),
+            expires_in: guest_fiction_show_fragment_expires_in do %>
 <div class="bg-stone-50 dark:bg-gray-800 min-h-screen z-10 relative" style="background-image: url('<%= cover_background %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
   <div class="absolute inset-0 bg-stone-50/95 dark:bg-gray-800"></div>
   <main class="container mx-auto px-4 py-8 relative z-10">
@@ -49,3 +52,4 @@
     </div>
   </main>
 </div>
+<% end %>

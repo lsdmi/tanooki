@@ -43,4 +43,23 @@ class LayoutFragmentCacheTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'nav #user-dropdown'
   end
+
+  test 'signed in navbar renders shared menus and uncached auth dropdown' do
+    sign_in users(:user_one)
+
+    get fictions_path
+
+    assert_response :success
+    assert_select 'nav #user-dropdown'
+    assert_select 'nav #categoriesDropdownButton1'
+  end
+
+  test 'navbar keeps toolbar before nav links in dom order' do
+    get fictions_path
+
+    assert_response :success
+    assert_operator response.body.index('eCommerceSearchModalButton'),
+                    :<,
+                    response.body.index('categoriesDropdownButton1')
+  end
 end

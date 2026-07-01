@@ -4,6 +4,7 @@
 class FictionsController < ApplicationController
   helper Chapters::ChapterDrawerHelper,
          Chapters::PresentationHelper,
+         Fictions::ShowCacheHelper,
          Library::ChapterCatalogHelper,
          Library::ReadingStateHelper,
          Scanlators::SelectOptionsHelper
@@ -12,6 +13,7 @@ class FictionsController < ApplicationController
   include Fictions::DashboardListing
   include Fictions::FictionControllerSetup
   include Fictions::FictionPersistence
+  include Fictions::GuestShowCaching
   include Fictions::TurboStreamResponses
 
   AD_EXCLUDED_SLUGS = %w[

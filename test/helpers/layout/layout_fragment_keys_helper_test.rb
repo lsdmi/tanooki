@@ -18,23 +18,17 @@ module Layout
       assert_equal 'Реклама', advertisement_cover_label(advertisement)
     end
 
-    test 'navbar_fragment_cacheable? is true for guests only' do
-      guest = Object.new.extend(LayoutFragmentKeysHelper)
-      guest.define_singleton_method(:current_user) { nil }
+    test 'navbar_fragment_cache_key uses shared namespace' do
+      define_singleton_method(:cookies) { {} }
 
-      signed_in = Object.new.extend(LayoutFragmentKeysHelper)
-      signed_in.define_singleton_method(:current_user) { User.new(id: 1) }
-
-      assert_predicate guest, :navbar_fragment_cacheable?
-      assert_not signed_in.navbar_fragment_cacheable?
+      assert_equal 'navbar/v3/shared', navbar_fragment_cache_key(:brand).first
     end
 
-    test 'navbar_fragment_cache_key is guest scoped' do
-      helper = Object.new.extend(LayoutFragmentKeysHelper)
-      helper.define_singleton_method(:current_user) { nil }
-      helper.define_singleton_method(:cookies) { {} }
+    test 'navbar_fragment_cache_key includes section name' do
+      define_singleton_method(:cookies) { {} }
 
-      assert_equal 'navbar/v2/guest', helper.navbar_fragment_cache_key.first
+      assert_equal 'brand', navbar_fragment_cache_key(:brand).second
+      assert_equal 'nav_links', navbar_fragment_cache_key(:nav_links).second
     end
   end
 end
