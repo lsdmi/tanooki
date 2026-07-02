@@ -31,6 +31,10 @@ module Ui
       responsive: [
         'rounded px-2.5 py-0.5 text-xs font-medium',
         'md:rounded-lg md:px-5 md:py-2.5 md:text-sm'
+      ].join(' ').freeze,
+      responsive_banner: [
+        'rounded-md px-4 py-1.5 text-xs font-medium',
+        'md:rounded-lg md:px-5 md:py-2.5 md:text-sm'
       ].join(' ').freeze
     }.freeze
   end

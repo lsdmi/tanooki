@@ -51,6 +51,14 @@ module Ui
       assert_no_selector 'button.sm\\:px-2\\.5'
     end
 
+    test 'applies responsive_banner size between xs and md below md breakpoint' do
+      render_inline(ButtonComponent.new(label: 'До оповідей', size: :responsive_banner))
+
+      assert_selector 'button.rounded-md.px-4.py-1\\.5.text-xs'
+      assert_selector 'button.md\\:rounded-lg.md\\:px-5.md\\:py-2\\.5.md\\:text-sm'
+      assert_no_selector 'button.px-2\\.5'
+    end
+
     test 'applies full width class' do
       render_inline(ButtonComponent.new(label: 'На всю ширину', full_width: true))
 

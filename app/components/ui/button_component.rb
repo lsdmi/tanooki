@@ -6,7 +6,7 @@ module Ui
     include ButtonComponentStyles
 
     VARIANTS = %i[primary ghost].freeze
-    SIZES = %i[xs md icon responsive].freeze
+    SIZES = %i[xs md icon responsive responsive_banner].freeze
     ELEMENT_TYPES = %i[button link submit].freeze
 
     def initialize(label: nil, variant: :primary, size: :md, as: :button, **options)

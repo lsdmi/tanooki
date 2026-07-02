@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   before_action :pokemon_appearance, only: [:index]
 
   def index
+    @hero_banner = Root::HeroBanner.current(preview_key: params[:banner])
     @top_fictions = top_fictions
     @videos = videos
     @video_tag_counts = search_tag_counts(
