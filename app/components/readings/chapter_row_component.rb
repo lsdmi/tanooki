@@ -42,7 +42,8 @@ module Readings
     end
 
     def render_actions
-      render partial: 'readings/chapter_row_component/actions', locals: { chapter:, delete_button: }
+      render partial: 'readings/chapter_row_component/actions',
+             locals: { chapter:, delete_button:, visit_data: turbo_drive_visit_data }
     end
 
     def delete_button

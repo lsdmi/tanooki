@@ -1,0 +1,15 @@
+<%# locals: slide:, frame_class: %>
+<% frame_class = local_assigns.fetch(:frame_class, 'h-[calc(16rem+1em)] max-w-sm') %>
+<div class="relative overflow-hidden rounded-2xl border border-gray-200 shadow-xl <%= frame_class %> w-full">
+  <%= image_tag 'banner/banner_desktop_orv_1.webp',
+                alt: '',
+                aria: { hidden: true },
+                class: 'absolute inset-0 h-full w-full object-cover object-center' %>
+  <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80%"></div>
+  <%= render slide %>
+  <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2" aria-hidden="true">
+    <span class="h-1.5 w-8 rounded-lg bg-cyan-700 shadow-sm dark:bg-rose-500"></span>
+    <span class="h-1.5 w-3.5 rounded-lg bg-white/35"></span>
+    <span class="h-1.5 w-3.5 rounded-lg bg-white/35"></span>
+  </div>
+</div>

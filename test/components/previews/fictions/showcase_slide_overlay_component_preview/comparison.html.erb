@@ -1,0 +1,23 @@
+<%# locals: mobile_slide:, full_slide: %>
+<div class="space-y-8">
+  <div>
+    <h2 class="mb-1 text-lg font-semibold text-gray-900">Bonus UX — genre page showcase (mobile)</h2>
+    <p class="mb-6 max-w-3xl text-sm text-gray-600">
+      Below sm, hide buttons and metadata so the slide stays readable over artwork. Carousel height stays the same; only inner content changes.
+    </p>
+  </div>
+
+  <div class="grid gap-8 lg:grid-cols-2">
+    <section>
+      <p class="mb-3 text-sm font-medium text-cyan-700">Recommended — mobile minimal</p>
+      <%= render 'fictions/showcase_slide_overlay_component_preview/slide_frame', slide: mobile_slide %>
+    </section>
+
+    <section>
+      <p class="mb-3 text-sm font-medium text-gray-500">Current — full overlay (sm+)</p>
+      <%= render 'fictions/showcase_slide_overlay_component_preview/slide_frame',
+                 slide: full_slide,
+                 frame_class: 'h-[calc(24rem+1em)]' %>
+    </section>
+  </div>
+</div>
