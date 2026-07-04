@@ -38,4 +38,4 @@ coverage/*
 /docs/
 
 # Editor settings (machine-specific paths, e.g. mise Ruby/RuboCop)
-.vscode/settings.json
+.vscode/

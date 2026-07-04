@@ -8,7 +8,7 @@
     <%= link_to fiction.title, fiction_href, class: "hover:text-cyan-200 dark:hover:text-rose-200 transition-colors" %>
   <% end %>
 
-  <div class="<%= mobile_minimal? ? 'space-y-0' : 'mb-4 md:mb-8 flex flex-col gap-4' %>">
+  <div class="<%= body_wrapper_classes %>">
     <%= tag.p fiction.description, class: description_classes %>
 
     <% unless mobile_minimal? %>

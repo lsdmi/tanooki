@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# Interactive debugging for Ruby AND ERB breakpoints.
+#
+# Terminal breakpoints (add either form, then reload the page):
+#   Ruby:  debugger          or  binding.break
+#   ERB:   <% debugger %>    or  <% binding.break %>
+#
+# Do NOT use bin/dev while debugging — Foreman has no TTY and you get
+# "wait for debugger connection..." instead of an (rdbg) prompt.
+#
+# IDE breakpoints (click gutter in .rb or .html.erb):
+#   Run → "Rails server (breakpoints in .rb + .erb)" in launch.json
+#
+# If already stuck on "wait for debugger connection":
+#   kill -9 $(lsof -ti:3000)   then restart with this script
+cd "$(dirname "$0")/.."
+
+export PORT="${PORT:-3000}"
+export WEB_CONCURRENCY=0
+export RAILS_MAX_THREADS=1
+
+# rdbg drives the session; plain RUBY_DEBUG_OPEN conflicts and falls back to socket-wait.
+unset RUBY_DEBUG_OPEN
+unset RUBY_DEBUG_LAZY
+
+exec bundle exec rdbg -n -c -- bin/rails server -p "$PORT"

@@ -46,12 +46,25 @@ module Fictions
       assert_text '4,9'
     end
 
-    test 'responsive layout uses mobile hiding utilities' do
+    test 'responsive layout hides buttons and metadata below sm' do
       render_inline(component(layout: :responsive))
 
       assert_selector '[class*="max-sm:hidden"]', text: 'Читати зараз'
       assert_selector 'h2.line-clamp-1'
+    end
+
+    test 'responsive layout spans full banner width below sm' do
+      rendered = render_inline(component(layout: :responsive))
+
+      assert_includes rendered.to_html, 'sm:max-w-[min(30rem,calc(100%-2rem))]'
+      assert_no_match(/(?<![:\w])max-w-\[min\(30rem/, rendered.to_html)
+    end
+
+    test 'responsive layout uses mobile padding and tight body stack below sm' do
+      render_inline(component(layout: :responsive))
+
       assert_selector '.max-sm\\:pl-4.max-sm\\:pr-8'
+      assert_selector '[class*="max-sm:mb-0"][class*="max-sm:space-y-0"]'
     end
 
     private
