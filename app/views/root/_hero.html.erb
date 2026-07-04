@@ -5,10 +5,12 @@
 <% end %>
 
 <% hero_ghost_button_classes = '!border-white/60 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/50 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10' %>
-<% hero_title_classes = 'mb-2 text-[1.625rem] font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-sm sm:mb-2.5 sm:text-3xl sm:leading-tight md:mb-3 md:text-[2rem] lg:mb-4 lg:text-4xl lg:leading-tight xl:mb-5 xl:text-5xl 2xl:text-[3.25rem]' %>
-<% hero_body_classes = 'mb-4 text-sm font-light leading-relaxed text-white/90 drop-shadow-sm sm:mb-5 sm:text-[0.9375rem] sm:leading-relaxed md:mb-6 md:text-base lg:mb-7 xl:mb-8 xl:text-lg 2xl:mb-9' %>
+<% hero_title_classes = 'mb-2 text-xl font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-sm sm:mb-2.5 sm:text-3xl sm:leading-tight md:mb-3 md:text-[2rem] lg:mb-4 lg:text-4xl lg:leading-tight xl:mb-5 xl:text-5xl 2xl:text-[3.25rem]' %>
+<% hero_body_classes = 'mb-3 text-xs font-light leading-relaxed text-white/90 drop-shadow-sm sm:mb-5 sm:text-[0.9375rem] sm:leading-relaxed md:mb-6 md:text-base lg:mb-7 xl:mb-8 xl:text-lg 2xl:mb-9' %>
+<% hero_copy = Root::HeroCopy.for(signed_in: user_signed_in?) %>
+<% hero_content_width_classes = 'w-full max-w-[13.75rem] sm:max-w-[min(28rem,100%)] md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl' %>
 
-<section class="relative isolate overflow-hidden rounded-xl lg:rounded-2xl min-h-[clamp(16rem,min(calc((100vw-3rem)*0.68),22rem),22rem)] sm:min-h-[clamp(17rem,min(calc((100vw-4rem)*0.72),24rem),24rem)] md:min-h-[clamp(15rem,calc((100vw-4rem)*936/1474),26rem)] lg:min-h-[clamp(17rem,22vw,24rem)] xl:min-h-[clamp(18rem,20vw,26rem)]">
+<section class="relative isolate overflow-hidden rounded-xl lg:rounded-2xl min-h-[clamp(17rem,min(calc((100vw-3rem)*0.72),23rem),23rem)] sm:min-h-[clamp(17rem,min(calc((100vw-4rem)*0.72),24rem),24rem)] md:min-h-[clamp(15rem,calc((100vw-4rem)*936/1474),26rem)] lg:min-h-[clamp(17rem,22vw,24rem)] xl:min-h-[clamp(18rem,20vw,26rem)]">
   <picture class="absolute inset-0">
     <source media="(min-width: 1024px)" srcset="<%= asset_path(@hero_banner[:desktop]) %>">
     <source media="(min-width: 768px)" srcset="<%= asset_path(@hero_banner[:mobile_wide]) %>">
@@ -20,34 +22,31 @@
                   decoding: 'async',
                   width: Root::HeroBanner::MOBILE_WIDTH,
                   height: Root::HeroBanner::MOBILE_HEIGHT,
-                  class: 'h-full w-full object-cover object-center' %>
+                  class: 'h-full w-full object-cover object-center max-md:object-[center_28%]' %>
   </picture>
 
-  <div class="absolute inset-0 bg-gradient-to-r from-black/90 from-0% via-black/65 via-[35%] via-black/30 via-[55%] to-transparent to-[85%] lg:via-black/70 lg:via-[38%] lg:to-[88%]" aria-hidden="true"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/10 md:hidden" aria-hidden="true"></div>
+  <div class="absolute inset-0 hidden bg-gradient-to-r from-black/90 from-0% via-black/65 via-[35%] via-black/30 via-[55%] to-transparent to-[85%] md:block lg:via-black/70 lg:via-[38%] lg:to-[88%]" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 via-45% to-transparent to-70% md:hidden" aria-hidden="true"></div>
 
-  <div class="relative z-10 flex min-h-[inherit] flex-col justify-end px-4 pt-0 pb-5 sm:px-5 sm:pb-6 md:justify-center md:px-8 md:py-10 lg:justify-start lg:px-10 lg:py-12 xl:px-12 xl:py-14 2xl:px-14 2xl:py-16">
-    <div class="w-full max-w-[min(28rem,100%)] md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+  <div class="relative z-10 flex min-h-[inherit] flex-col justify-end px-4 pt-0 pb-4 sm:px-5 sm:pb-6 md:justify-center md:px-8 md:py-10 lg:justify-start lg:px-10 lg:py-12 xl:px-12 xl:py-14 2xl:px-14 2xl:py-16">
+    <div class="<%= hero_content_width_classes %>">
       <% if user_signed_in? %>
         <h1 class="<%= hero_title_classes %>">
-          Ласкаво просимо<br>
-          до нашої <span class="text-cyan-400 dark:text-rose-500">Бібліярні</span>
+          Ласкаво просимо до нашої <span class="text-cyan-400 dark:text-rose-500">Бібліярні</span>
         </h1>
-        <p class="<%= hero_body_classes %>">
-          Скарбниця огорнулася новими оповідями — озирнися, чи не чатують на тебе давні друзі? Гортай сторінки улюблених витворів або ж відшукай нові — бодай цей вечір стане сповненим дивом!
-        </p>
+        <p class="<%= hero_body_classes %> sm:hidden"><%= hero_copy[:body_compact] %></p>
+        <p class="<%= hero_body_classes %> hidden sm:block"><%= hero_copy[:body] %></p>
       <% else %>
         <h1 class="<%= hero_title_classes %>">
           Найбільша скарбниця <span class="text-cyan-400 dark:text-rose-500">ранобе в Україні</span>
         </h1>
-        <p class="<%= hero_body_classes %>">
-          Сотні історій рідним словом — не осягнути й за цілий вік.
-          Читайте, відкривайте нове, станьте частиною братерства, для котрого оповідь — єство життя!
-        </p>
+        <p class="<%= hero_body_classes %> sm:hidden"><%= hero_copy[:body_compact] %></p>
+        <p class="<%= hero_body_classes %> hidden sm:block"><%= hero_copy[:body] %></p>
       <% end %>
+    </div>
 
-      <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
-        <%= ui_button(as: :link, href: fictions_path, size: :responsive_banner, html: turbo_drive_visit_data) do %>
+    <div class="flex flex-nowrap items-center gap-1.5 sm:gap-2.5 md:gap-3">
+        <%= ui_button(as: :link, href: fictions_path, size: :responsive_banner, html: turbo_drive_visit_data.merge(class: 'shrink-0')) do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
           </svg>
@@ -59,7 +58,7 @@
                         href: library_path,
                         variant: :ghost,
                         size: :responsive_banner,
-                        html: turbo_drive_visit_data.merge(class: hero_ghost_button_classes)) do %>
+                        html: turbo_drive_visit_data.merge(class: "#{hero_ghost_button_classes} shrink-0")) do %>
             Збережені
           <% end %>
         <% else %>
@@ -67,11 +66,10 @@
                         href: new_user_session_path,
                         variant: :ghost,
                         size: :responsive_banner,
-                        html: turbo_drive_visit_data.merge(class: hero_ghost_button_classes)) do %>
+                        html: turbo_drive_visit_data.merge(class: "#{hero_ghost_button_classes} shrink-0")) do %>
             Увійти
           <% end %>
         <% end %>
-      </div>
     </div>
   </div>
 </section>
