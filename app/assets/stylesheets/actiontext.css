@@ -1,3 +1,15 @@
+#user-content {
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+}
+
+#user-content :where(p, li, blockquote, div, span) {
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+}
+
 #user-content a {
   color: #3598DB !important;
   text-decoration: underline;
