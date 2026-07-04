@@ -2,7 +2,7 @@
 
 module Root
   # Picks one hero banner pair for everyone and rotates it daily via Rails.cache.
-  # Preview any variant with ?banner=husky_1 (also husky_2, mstv) on the home page.
+  # Preview any variant with ?banner=husky_1 (also husky_2, mstv, orv_1, rof) on the home page.
   class HeroBanner
     MOBILE_WIDTH = 1474
     MOBILE_HEIGHT = 1407
@@ -29,6 +29,16 @@ module Root
         key: 'mstv',
         desktop: 'banner/banner_desktop_mstv.webp',
         mobile: 'banner/banner_mobile_tall_mstv.webp'
+      },
+      {
+        key: 'orv_1',
+        desktop: 'banner/banner_desktop_orv_1.webp',
+        mobile: 'banner/banner_mobile_tall_orv_1.webp'
+      },
+      {
+        key: 'rof',
+        desktop: 'banner/banner_desktop_rof.webp',
+        mobile: 'banner/banner_mobile_tall_rof.webp'
       }
     ].freeze
 

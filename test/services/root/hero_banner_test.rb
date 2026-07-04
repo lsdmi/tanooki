@@ -61,6 +61,14 @@ module Root
       assert_equal 'banner/banner_mobile_wide_mstv.webp', HeroBanner.current(preview_key: 'mstv')[:mobile_wide]
     end
 
+    test 'resolves mobile_wide path for orv_1' do
+      assert_equal 'banner/banner_mobile_wide_orv_1.webp', HeroBanner.current(preview_key: 'orv_1')[:mobile_wide]
+    end
+
+    test 'resolves mobile_wide path for rof' do
+      assert_equal 'banner/banner_mobile_wide_rof.webp', HeroBanner.current(preview_key: 'rof')[:mobile_wide]
+    end
+
     test 'preview returns husky_2 assets' do
       banner = HeroBanner.current(preview_key: 'husky_2')
 
@@ -73,6 +81,20 @@ module Root
 
       assert_equal 'banner/banner_desktop_mstv.webp', banner[:desktop]
       assert_equal 'banner/banner_mobile_tall_mstv.webp', banner[:mobile]
+    end
+
+    test 'preview returns orv_1 assets' do
+      banner = HeroBanner.current(preview_key: 'orv_1')
+
+      assert_equal 'banner/banner_desktop_orv_1.webp', banner[:desktop]
+      assert_equal 'banner/banner_mobile_tall_orv_1.webp', banner[:mobile]
+    end
+
+    test 'preview returns rof assets' do
+      banner = HeroBanner.current(preview_key: 'rof')
+
+      assert_equal 'banner/banner_desktop_rof.webp', banner[:desktop]
+      assert_equal 'banner/banner_mobile_tall_rof.webp', banner[:mobile]
     end
   end
 end

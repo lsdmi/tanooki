@@ -73,6 +73,24 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'banner_desktop_mstv'
   end
 
+  test 'banner preview supports orv_1' do
+    Search::TagCounts.stub(:call, {}) do
+      get root_url(banner: 'orv_1')
+    end
+
+    assert_includes response.body, 'banner_mobile_tall_orv_1'
+    assert_includes response.body, 'banner_desktop_orv_1'
+  end
+
+  test 'banner preview supports rof' do
+    Search::TagCounts.stub(:call, {}) do
+      get root_url(banner: 'rof')
+    end
+
+    assert_includes response.body, 'banner_mobile_tall_rof'
+    assert_includes response.body, 'banner_desktop_rof'
+  end
+
   test 'hero shows personalized retention copy for signed in users' do
     visit_signed_in_hero
 
