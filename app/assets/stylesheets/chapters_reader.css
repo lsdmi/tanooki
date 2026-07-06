@@ -214,7 +214,7 @@ html:not(.dark) .immersive-reader .note-content {
   height: 100%;
 }
 
-.immersive-reader .reader-ad-slot[hidden] {
+.immersive-reader .reader-ad-slot--collapsed {
   display: none !important;
 }
 

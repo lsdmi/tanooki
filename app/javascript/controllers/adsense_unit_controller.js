@@ -4,8 +4,10 @@ import { isAdblockLikely } from "adblock_detect"
 const FILL_TIMEOUT_MS = { top: 3000, bottom: 5000 }
 const SCRIPT_RETRY_MS = 300
 const MAX_SCRIPT_RETRIES = 20
+const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
+const FILLED_CLASS = "reader-ad-slot--adsense-filled"
 
-// In-chapter AdSense slot: hidden until filled; removed from layout when unfilled or blocked.
+// In-chapter AdSense slot: collapsed until filled; removed from layout when unfilled or blocked.
 export default class extends Controller {
   static values = { live: Boolean, placement: { type: String, default: "top" } }
 
@@ -67,7 +69,7 @@ export default class extends Controller {
   }
 
   slotIsRenderable(ins) {
-    return ins.offsetParent !== null
+    return ins.isConnected
   }
 
   scheduleRetry() {
@@ -124,11 +126,17 @@ export default class extends Controller {
   }
 
   isFilled(ins) {
-    return ins.dataset.adStatus === "filled" || ins.querySelector("iframe") !== null
+    const status = ins.dataset.adStatus
+    if (status === "filled") return true
+    if (ins.querySelector("iframe")) return true
+    return false
   }
 
   isUnfilled(ins) {
-    return ins.dataset.adStatus === "unfilled"
+    const status = ins.dataset.adStatus
+    if (status === "unfilled") return true
+    if (status === "unfilled-optimized" && !ins.querySelector("iframe")) return true
+    return false
   }
 
   adElement() {
@@ -136,15 +144,16 @@ export default class extends Controller {
   }
 
   showSlot() {
-    this.element.hidden = false
-    this.element.classList.add("reader-ad-slot--adsense-filled")
+    this.element.classList.remove(COLLAPSED_CLASS)
+    this.element.classList.add(FILLED_CLASS)
+    this.element.removeAttribute("hidden")
   }
 
   hideSlot() {
     this.clearRetry()
     this.stopWatching()
-    this.element.hidden = true
-    this.element.classList.remove("reader-ad-slot--adsense-filled")
+    this.element.classList.add(COLLAPSED_CLASS)
+    this.element.classList.remove(FILLED_CLASS)
   }
 
   stopWatching() {
