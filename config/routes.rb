@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post '/' => 'home#index'
   get '/sitemap.xml', to: 'sitemaps#show', defaults: { format: :xml }
   post '/csp-violation-report', to: 'csp_violation_reports#create'
+  get '/session/status', to: 'session_status#show'
+  post '/session/diagnostics', to: 'session_diagnostics#create'
 
   devise_for :users,
              skip: %i[registrations],
