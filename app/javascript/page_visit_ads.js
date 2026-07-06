@@ -1,4 +1,4 @@
-// Notify ad controllers after Turbo navigation settles (not the initial full-page load).
+// Notify native video banner controllers after Turbo navigation (not the initial full-page load).
 ;(function () {
   "use strict"
 
@@ -12,21 +12,15 @@
     })
   }
 
-  function notifyVisit() {
-    scheduleAfterPaint("baka:banner-visit")
-
-    if (document.body?.dataset.loadAdsense === "true") {
-      scheduleAfterPaint("baka:adsense-visit")
-    }
-  }
-
   document.addEventListener("turbo:load", function () {
     if (initialTurboLoad) {
       initialTurboLoad = false
       return
     }
-    notifyVisit()
+    scheduleAfterPaint("baka:banner-visit")
   })
 
-  document.addEventListener("turbo:morph", notifyVisit)
+  document.addEventListener("turbo:morph", function () {
+    scheduleAfterPaint("baka:banner-visit")
+  })
 })()

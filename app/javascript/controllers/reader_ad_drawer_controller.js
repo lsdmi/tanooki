@@ -15,7 +15,9 @@ export default class extends Controller {
 
   connect() {
     this.boundReady = this.onAdsenseReady.bind(this)
+    this.boundVisit = this.onAdsenseVisit.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
+    document.addEventListener("baka:adsense-visit", this.boundVisit)
     this._onEscape = this._onEscape.bind(this)
     this._onTurboLoad = this._onTurboLoad.bind(this)
 
@@ -26,6 +28,7 @@ export default class extends Controller {
 
   disconnect() {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
+    document.removeEventListener("baka:adsense-visit", this.boundVisit)
     document.removeEventListener("turbo:load", this._onTurboLoad)
     document.removeEventListener("keydown", this._onEscape)
     this.clearAdsenseWait()
@@ -34,6 +37,11 @@ export default class extends Controller {
 
   _onTurboLoad() {
     if (!this.shouldOpenValue) this.close()
+  }
+
+  onAdsenseVisit() {
+    this.replaceAdElements()
+    if (this.isOpen()) this.pushAds()
   }
 
   onAdsenseReady() {
@@ -119,6 +127,24 @@ export default class extends Controller {
       } catch (_error) {
         /* ignore fill errors */
       }
+    })
+  }
+
+  replaceAdElements() {
+    if (!this.hasPanelTarget) return
+
+    this.panelTarget.querySelectorAll("ins.adsbygoogle").forEach((ins) => {
+      const fresh = document.createElement("ins")
+      fresh.className = ins.className
+      fresh.style.cssText = ins.style.cssText
+      fresh.setAttribute("data-ad-client", ins.dataset.adClient)
+      fresh.setAttribute("data-ad-slot", ins.dataset.adSlot)
+      fresh.setAttribute("data-ad-format", ins.getAttribute("data-ad-format") || "auto")
+      fresh.setAttribute("data-full-width-responsive", ins.getAttribute("data-full-width-responsive") || "true")
+      if (ins.dataset.readerAdDrawerSlot) {
+        fresh.setAttribute("data-reader-ad-drawer-slot", ins.dataset.readerAdDrawerSlot)
+      }
+      ins.replaceWith(fresh)
     })
   }
 

@@ -32,6 +32,7 @@ pin 'reader_preferences', preload: false
 pin 'safe_logo_src', preload: false
 pin 'mode_toggler', preload: false
 pin 'cookie_consent', preload: true
+pin 'adsense_turbo', preload: true
 pin 'page_visit_ads', preload: true
 pin 'font_toggler', preload: false
 pin 'adblock_detect', preload: false

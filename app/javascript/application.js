@@ -6,6 +6,7 @@ import "controllers"
 import 'flowbite'
 import "channels"
 import "cookie_consent"
+import "adsense_turbo"
 import "page_visit_ads"
 import "pwa"
 

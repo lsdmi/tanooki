@@ -128,7 +128,6 @@
     hideBanner()
   }
 
-  // turbo:load / turbo:morph fire on the initial page load — schedule ready after Stimulus connects.
+  // Script inject + first paint ready; turbo navigation refresh lives in adsense_turbo.js.
   document.addEventListener('turbo:load', initConsentUi)
-  document.addEventListener('turbo:morph', scheduleAdsenseReadyForUnits)
 })()
