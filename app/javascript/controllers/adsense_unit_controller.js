@@ -1,20 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 import { isAdblockLikely } from "adblock_detect"
 
-const FILL_TIMEOUT_MS = { top: 3000, bottom: 5000 }
+const FILL_TIMEOUT_MS = { top: 8000, bottom: 12000 }
 const SCRIPT_RETRY_MS = 300
 const MAX_SCRIPT_RETRIES = 20
+const PENDING_CLASS = "reader-ad-slot--pending"
 const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
 const FILLED_CLASS = "reader-ad-slot--adsense-filled"
 
-// In-chapter AdSense slot: collapsed until filled; removed from layout when unfilled or blocked.
+// In-chapter AdSense slot: layout-visible while pending; collapse only when unfilled or blocked.
 export default class extends Controller {
-  static values = { live: Boolean, placement: { type: String, default: "top" } }
+  static values = {
+    live: Boolean,
+    placement: { type: String, default: "top" },
+    navigationKey: { type: String, default: "" }
+  }
 
   connect() {
     this.scriptRetries = 0
+    this.seenTurboLoad = false
+    this.previousNavigationKey = undefined
     this.boundReady = this.onReady.bind(this)
-    this.boundTurboLoad = this.onReady.bind(this)
+    this.boundTurboLoad = this.onTurboLoad.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
     document.addEventListener("turbo:load", this.boundTurboLoad)
 
@@ -25,6 +32,7 @@ export default class extends Controller {
       return
     }
 
+    this.prepareForFill()
     this.onReady()
   }
 
@@ -33,6 +41,63 @@ export default class extends Controller {
     document.removeEventListener("turbo:load", this.boundTurboLoad)
     this.clearRetry()
     this.stopWatching()
+  }
+
+  navigationKeyValueChanged() {
+    if (!this.liveValue) return
+
+    if (this.previousNavigationKey === undefined) {
+      this.previousNavigationKey = this.navigationKeyValue
+      return
+    }
+
+    if (this.previousNavigationKey === this.navigationKeyValue) return
+
+    this.previousNavigationKey = this.navigationKeyValue
+    this.resetForNavigation()
+    if (isAdblockLikely()) {
+      this.hideSlot()
+      return
+    }
+    this.onReady()
+  }
+
+  onTurboLoad() {
+    if (!this.liveValue) return
+
+    if (!this.seenTurboLoad) {
+      this.seenTurboLoad = true
+      this.onReady()
+      return
+    }
+
+    this.resetForNavigation()
+    if (isAdblockLikely()) {
+      this.hideSlot()
+      return
+    }
+    this.onReady()
+  }
+
+  resetForNavigation() {
+    this.clearRetry()
+    this.stopWatching()
+    this.scriptRetries = 0
+
+    const ins = this.adElement()
+    if (ins) {
+      ins.querySelectorAll("iframe").forEach((node) => node.remove())
+      delete ins.dataset.adsensePushed
+      ins.removeAttribute("data-ad-status")
+    }
+
+    this.prepareForFill()
+  }
+
+  prepareForFill() {
+    this.element.classList.remove(COLLAPSED_CLASS, FILLED_CLASS)
+    this.element.classList.add(PENDING_CLASS)
+    this.element.removeAttribute("hidden")
   }
 
   onReady() {
@@ -54,6 +119,8 @@ export default class extends Controller {
       return
     }
 
+    this.prepareForFill()
+
     if (!this.slotIsRenderable(ins)) {
       this.scheduleRetry()
       return
@@ -69,7 +136,7 @@ export default class extends Controller {
   }
 
   slotIsRenderable(ins) {
-    return ins.isConnected
+    return ins.isConnected && ins.offsetParent !== null
   }
 
   scheduleRetry() {
@@ -144,7 +211,7 @@ export default class extends Controller {
   }
 
   showSlot() {
-    this.element.classList.remove(COLLAPSED_CLASS)
+    this.element.classList.remove(COLLAPSED_CLASS, PENDING_CLASS)
     this.element.classList.add(FILLED_CLASS)
     this.element.removeAttribute("hidden")
   }
@@ -152,8 +219,8 @@ export default class extends Controller {
   hideSlot() {
     this.clearRetry()
     this.stopWatching()
+    this.element.classList.remove(PENDING_CLASS, FILLED_CLASS)
     this.element.classList.add(COLLAPSED_CLASS)
-    this.element.classList.remove(FILLED_CLASS)
   }
 
   stopWatching() {

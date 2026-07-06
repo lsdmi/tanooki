@@ -128,6 +128,7 @@
     hideBanner()
   }
 
-  // turbo:load fires on the initial page load — no DOMContentLoaded / sync init (avoids double run).
+  // turbo:load / turbo:morph fire on the initial page load — schedule ready after Stimulus connects.
   document.addEventListener('turbo:load', initConsentUi)
+  document.addEventListener('turbo:morph', scheduleAdsenseReadyForUnits)
 })()

@@ -1,12 +1,13 @@
-<%# locals: (placement:) %>
+<%# locals: (placement:, navigation_key: "") %>
 <% return unless chapter_reader_ad_live?(placement) %>
 
 <% placement_class = placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top' %>
 
-<div class="reader-ad-slot reader-ad-slot--compact reader-ad-slot--collapsed <%= placement_class %> relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6"
+<div class="reader-ad-slot reader-ad-slot--compact reader-ad-slot--pending <%= placement_class %> relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6"
      data-controller="adsense-unit"
      data-adsense-unit-live-value="true"
-     data-adsense-unit-placement-value="<%= placement %>">
+     data-adsense-unit-placement-value="<%= placement %>"
+     data-adsense-unit-navigation-key-value="<%= navigation_key %>">
   <div class="reader-ad-slot__frame">
     <ins class="adsbygoogle reader-ad-slot__adsense block h-full w-full"
          style="display:block"
