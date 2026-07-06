@@ -14,6 +14,7 @@ module ApplicationHelper
   include Meta::CanonicalUrlHelper
   include Meta::CoverUrlsHelper
   include Meta::TagsHelper
+  include Root::PopularFictionsHelper
   include StructuredData::JsonLdHelper
   include Ui::ComponentHelper
 end

@@ -24,7 +24,7 @@ class HomeController < ApplicationController
   end
 
   def top_fictions
-    Fictions::IndexVariablesManager.hot_updates
+    Fictions::IndexVariablesManager.hot_updates.includes(:genres, :fiction_ratings)
   end
 
   def top_tales

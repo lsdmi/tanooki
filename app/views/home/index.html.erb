@@ -1,30 +1,25 @@
-<% page_gutter = 'mx-4 sm:mx-5 md:mx-6 lg:mx-8 xl:mx-0' %>
+<% page_gutter = 'mx-5 md:mx-6 lg:mx-8 xl:mx-0' %>
 
 <section class="relative z-10 mx-auto xl:w-[1300px]">
-  <div class="<%= page_gutter %> my-6 overflow-hidden rounded-xl border border-gray-200 shadow-md sm:my-8 md:my-10 lg:my-12 lg:rounded-2xl dark:border-gray-700">
+  <div class="<%= page_gutter %> mt-8 overflow-hidden rounded-xl border border-gray-200 shadow-md lg:mt-10 lg:rounded-2xl dark:border-gray-700">
     <%= render 'root/hero' %>
   </div>
 
   <div class="<%= page_gutter %>">
-    <div class="mb-4">
-      <p class="uppercase leading-5 text-stone-900 dark:text-gray-100 text-2xl sm:text-4xl font-extrabold tracking-tight">
-        Популярне <span class="text-cyan-700 dark:text-rose-700">ранобе</span>
-      </p>
-    </div>
+    <div class="mb-8 mt-8 lg:mb-14 lg:mt-14">
+      <header class="mb-8 flex items-stretch gap-3 sm:gap-4">
+        <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
+        <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
+          <h2 class="text-2xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100">
+            Популярне <span class="text-cyan-700 dark:text-rose-400">ранобе</span>
+          </h2>
+          <%= link_to fictions_path, class: 'inline-flex shrink-0 items-baseline gap-0.5 text-md font-medium leading-snug text-cyan-700 transition duration-300 hover:underline dark:text-rose-400' do %>
+            <span class="hidden sm:inline">Більше</span>
+            <span aria-hidden="true">&rsaquo;</span>
+          <% end %>
+        </div>
+      </header>
 
-    <div class="mb-4 flex max-sm:flex-col max-sm:items-start max-sm:gap-2 sm:items-center">
-      <p class="leading-5 text-stone-800 dark:text-gray-200 text-base font-light tracking-tight flex-1 max-sm:text-sm">
-        Цього місяця читачі обирають такі тайтли:
-      </p>
-      <%= link_to fictions_path, class: 'inline-flex text-stone-700 dark:text-gray-300 text-sm lg:text-base hover:text-cyan-700 hover:underline dark:hover:text-rose-700 transition duration-300' do %>
-        Усі ранобе
-        <svg class="w-4 h-4 mt-2 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1" />
-        </svg>
-      <% end %>
-    </div>
-
-    <div class="mb-4">
       <%= render 'root/fictions', fictions: @top_fictions.limit(10) %>
     </div>
 

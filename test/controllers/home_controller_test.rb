@@ -107,6 +107,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{register_path}']", count: 0
   end
 
+  test 'popular ranobe section shows redesigned cards' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_response :success
+    assert_select 'h2', text: /Популярне/
+    assert_select '[aria-label="Популярне ранобе"] article .aspect-\\[2\\/3\\]', minimum: 1
+  end
+
   private
 
   def visit_guest_hero
