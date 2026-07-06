@@ -13,7 +13,7 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
   test 'toggle_order from reader drawer updates reader drawer turbo frame' do
     chapter = chapters(:one)
 
-    post toggle_order_fictions_path(id: @fiction.id, order: :desc, reader_drawer: true, current_chapter_id: chapter.id),
+    post toggle_order_fiction_path(@fiction, order: :desc, reader_drawer: true, current_chapter_id: chapter.id),
          headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
 
     assert_response :success

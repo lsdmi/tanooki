@@ -30,6 +30,14 @@ class FictionsChapterListTest < ActionDispatch::IntegrationTest
     vol1&.destroy
   end
 
+  test 'legacy toggle_order collection URL no longer collides with fiction show' do
+    chapter = chapters(:one)
+
+    get "/fictions/toggle_order?current_chapter_id=#{chapter.id}&id=#{@fiction.slug}&order=desc&reader_drawer=true"
+
+    assert_response :not_found
+  end
+
   test 'toggle_order reverses section headers' do
     vol1, vol2 = create_volume_pair_chapters(@fiction)
 
@@ -37,7 +45,7 @@ class FictionsChapterListTest < ActionDispatch::IntegrationTest
 
     assert_operator response.body.index('Том 2'), :<, response.body.index('Том 1')
 
-    post toggle_order_fictions_path(id: @fiction, order: :desc),
+    post toggle_order_fiction_path(@fiction, order: :desc),
          headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
 
     assert_response :success

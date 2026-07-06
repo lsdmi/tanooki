@@ -16,9 +16,9 @@
            data-action="input->chapter-drawer-search#filter search->chapter-drawer-search#filter">
   </label>
 
-  <% toggle_order_params = { id: fiction, order: order, reader_drawer: true } %>
+  <% toggle_order_params = { order: order, reader_drawer: true } %>
   <% toggle_order_params[:current_chapter_id] = current_chapter.id if current_chapter %>
-  <%= button_to toggle_order_fictions_path(toggle_order_params),
+  <%= button_to toggle_order_fiction_path(fiction, toggle_order_params),
                 data: {
                   turbo_stream: '',
                   'turbo-method': :post,

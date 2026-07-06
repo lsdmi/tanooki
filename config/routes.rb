@@ -54,7 +54,6 @@ Rails.application.routes.draw do
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'
       get :calendar, to: 'chapters_calendar#index'
-      post :toggle_order
     end
   end
   resources :fictions, only: [] do
@@ -71,6 +70,7 @@ Rails.application.routes.draw do
       get :chapter_section
       get :sidebar_stats
       get :similar_fictions
+      post :toggle_order
     end
   end
   resources :fictions do
