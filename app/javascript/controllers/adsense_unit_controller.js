@@ -9,6 +9,7 @@ const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
 const FILLED_CLASS = "reader-ad-slot--adsense-filled"
 
 // In-chapter AdSense slot: layout-visible while pending; collapse only when unfilled or blocked.
+// Google allows one push() per <ins> — replace the node on each Turbo visit before re-pushing.
 export default class extends Controller {
   static values = {
     live: Boolean,
@@ -18,12 +19,12 @@ export default class extends Controller {
 
   connect() {
     this.scriptRetries = 0
-    this.seenTurboLoad = false
+    this.visitGeneration = 0
     this.previousNavigationKey = undefined
     this.boundReady = this.onReady.bind(this)
-    this.boundTurboLoad = this.onTurboLoad.bind(this)
+    this.boundVisit = this.onVisit.bind(this)
     document.addEventListener("baka:adsense-ready", this.boundReady)
-    document.addEventListener("turbo:load", this.boundTurboLoad)
+    document.addEventListener("baka:adsense-visit", this.boundVisit)
 
     if (!this.liveValue) return
 
@@ -33,12 +34,11 @@ export default class extends Controller {
     }
 
     this.prepareForFill()
-    this.onReady()
   }
 
   disconnect() {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
-    document.removeEventListener("turbo:load", this.boundTurboLoad)
+    document.removeEventListener("baka:adsense-visit", this.boundVisit)
     this.clearRetry()
     this.stopWatching()
   }
@@ -54,44 +54,47 @@ export default class extends Controller {
     if (this.previousNavigationKey === this.navigationKeyValue) return
 
     this.previousNavigationKey = this.navigationKeyValue
-    this.resetForNavigation()
-    if (isAdblockLikely()) {
-      this.hideSlot()
-      return
-    }
-    this.onReady()
+    this.beginFillAttempt()
   }
 
-  onTurboLoad() {
+  onVisit() {
     if (!this.liveValue) return
+    this.beginFillAttempt()
+  }
 
-    if (!this.seenTurboLoad) {
-      this.seenTurboLoad = true
-      this.onReady()
-      return
-    }
-
-    this.resetForNavigation()
+  beginFillAttempt() {
     if (isAdblockLikely()) {
       this.hideSlot()
       return
     }
+
+    this.resetForNavigation()
     this.onReady()
   }
 
   resetForNavigation() {
+    this.visitGeneration += 1
     this.clearRetry()
     this.stopWatching()
     this.scriptRetries = 0
-
-    const ins = this.adElement()
-    if (ins) {
-      ins.querySelectorAll("iframe").forEach((node) => node.remove())
-      delete ins.dataset.adsensePushed
-      ins.removeAttribute("data-ad-status")
-    }
-
+    this.replaceAdElement()
     this.prepareForFill()
+  }
+
+  replaceAdElement() {
+    const frame = this.element.querySelector(".reader-ad-slot__frame")
+    const ins = this.adElement()
+    if (!frame || !ins) return null
+
+    const fresh = document.createElement("ins")
+    fresh.className = "adsbygoogle reader-ad-slot__adsense"
+    fresh.style.display = "block"
+    fresh.setAttribute("data-ad-client", ins.dataset.adClient)
+    fresh.setAttribute("data-ad-slot", ins.dataset.adSlot)
+    fresh.setAttribute("data-ad-format", ins.getAttribute("data-ad-format") || "auto")
+    fresh.setAttribute("data-full-width-responsive", ins.getAttribute("data-full-width-responsive") || "true")
+    ins.replaceWith(fresh)
+    return fresh
   }
 
   prepareForFill() {
@@ -106,6 +109,7 @@ export default class extends Controller {
   }
 
   tryPush() {
+    const generation = this.visitGeneration
     const ins = this.adElement()
     if (!ins || ins.dataset.adsensePushed === "true") return
 
@@ -115,35 +119,38 @@ export default class extends Controller {
         this.hideSlot()
         return
       }
-      this.scheduleRetry()
+      this.scheduleRetry(generation)
       return
     }
 
     this.prepareForFill()
 
     if (!this.slotIsRenderable(ins)) {
-      this.scheduleRetry()
+      this.scheduleRetry(generation)
       return
     }
 
     try {
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
       ins.dataset.adsensePushed = "true"
-      this.watchFill(ins)
+      this.watchFill(ins, generation)
     } catch (_error) {
       this.hideSlot()
     }
   }
 
   slotIsRenderable(ins) {
-    return ins.isConnected && ins.offsetParent !== null
+    const frame = ins.closest(".reader-ad-slot__frame")
+    const target = frame || ins
+    return target.isConnected && target.offsetParent !== null
   }
 
-  scheduleRetry() {
+  scheduleRetry(generation) {
     if (this.retryTimeout) return
 
     this.retryTimeout = window.setTimeout(() => {
       this.retryTimeout = null
+      if (generation !== this.visitGeneration) return
       this.tryPush()
     }, SCRIPT_RETRY_MS)
   }
@@ -155,10 +162,12 @@ export default class extends Controller {
     }
   }
 
-  watchFill(ins) {
+  watchFill(ins, generation) {
     this.stopWatching()
 
     const resolved = () => {
+      if (generation !== this.visitGeneration) return true
+
       if (this.isFilled(ins)) {
         this.showSlot()
         return true
@@ -184,6 +193,7 @@ export default class extends Controller {
 
     this.fillTimeout = window.setTimeout(() => {
       this.stopWatching()
+      if (generation !== this.visitGeneration) return
       if (!this.isFilled(ins)) this.hideSlot()
     }, this.fillTimeoutMs())
   }

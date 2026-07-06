@@ -1,9 +1,13 @@
 <% if advertisement_banner_ready?(advertisement) %>
 <% cache advertisement_fragment_cache_key(advertisement) do %>
 <%= link_to advertisement.resource,
+            id: "advertisement-banner-#{advertisement.id}",
             class: "relative block w-full max-w-full",
             aria: { label: advertisement_cover_label(advertisement) },
-            data: { controller: "advertisement-banner" } do %>
+            data: {
+              controller: "advertisement-banner",
+              advertisement_banner_key_value: advertisement.id
+            } do %>
   <div class="relative w-full max-w-full overflow-hidden rounded-2xl shadow-lg h-52 lg:h-auto lg:aspect-[3/1]">
     <div class="relative w-full h-full">
       <!-- Loading placeholder with same aspect ratio -->

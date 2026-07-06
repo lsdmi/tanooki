@@ -203,12 +203,12 @@ html:not(.dark) .immersive-reader .note-content {
 .immersive-reader .reader-ad-slot__frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 1;
-  min-height: 100px;
   overflow: hidden;
 }
 
 .immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
+  aspect-ratio: 3 / 1;
+  min-height: 100px;
   background-color: rgb(231 229 228);
 }
 
@@ -216,7 +216,7 @@ html:not(.dark) .immersive-reader .note-content {
   background-color: rgb(39 39 42);
 }
 
-.immersive-reader .reader-ad-slot__adsense {
+.immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -227,7 +227,15 @@ html:not(.dark) .immersive-reader .note-content {
   pointer-events: none;
 }
 
+.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+  min-height: 0;
+}
+
 .immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
   opacity: 1;
   pointer-events: auto;
 }
