@@ -5,7 +5,7 @@
 <% slot_dom_id = navigation_key.present? ? "reader-ad-slot-#{placement}-#{navigation_key}" : "reader-ad-slot-#{placement}" %>
 
 <div id="<%= slot_dom_id %>"
-     class="reader-ad-slot reader-ad-slot--compact <%= placement_class %> relative my-2 overflow-hidden rounded-md sm:my-4 sm:rounded-lg md:my-6"
+     class="reader-ad-slot reader-ad-slot--compact <%= placement_class %> relative overflow-hidden rounded-md sm:rounded-lg"
      data-controller="adsense-unit"
      data-adsense-unit-live-value="true"
      data-adsense-unit-placement-value="<%= placement %>"

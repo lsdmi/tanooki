@@ -199,8 +199,10 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(228 228 231);
 }
 
-/* In-flow chapter ads: zero layout until push; reserve height only while measuring for AdSense */
+/* In-flow chapter ads: zero footprint until filled; avoid display:none collapse scroll jumps */
 .immersive-reader .reader-ad-slot {
+  margin: 0;
+  padding: 0;
   overflow-anchor: none;
 }
 
@@ -211,8 +213,35 @@ html:not(.dark) .immersive-reader .note-content {
   min-height: 0;
 }
 
-html.adblock-likely .immersive-reader .reader-ad-slot {
-  display: none !important;
+html.adblock-likely .immersive-reader .reader-ad-slot,
+.immersive-reader .reader-ad-slot--collapsed {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.immersive-reader .reader-ad-slot--adsense-filled {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .immersive-reader .reader-ad-slot--adsense-filled {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .immersive-reader .reader-ad-slot--adsense-filled {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .immersive-reader .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
@@ -242,10 +271,6 @@ html.adblock-likely .immersive-reader .reader-ad-slot {
   min-height: 0;
   opacity: 1;
   pointer-events: auto;
-}
-
-.immersive-reader .reader-ad-slot--collapsed {
-  display: none !important;
 }
 
 /* Reader ad drawer: panel sits below sticky reader toolbar (top-12); grid fits in remaining viewport */

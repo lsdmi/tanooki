@@ -111,7 +111,14 @@ export default class extends Controller {
   }
 
   clearMeasuring() {
-    this.element.classList.remove(PENDING_CLASS, MEASURING_CLASS)
+    if (!this.element.classList.contains(MEASURING_CLASS)) {
+      this.element.classList.remove(PENDING_CLASS, MEASURING_CLASS)
+      return
+    }
+
+    this.preserveScroll(() => {
+      this.element.classList.remove(PENDING_CLASS, MEASURING_CLASS)
+    })
   }
 
   onReady() {
@@ -123,6 +130,11 @@ export default class extends Controller {
     const generation = this.visitGeneration
     const ins = this.adElement()
     if (!ins || ins.dataset.adsensePushed === "true") return
+
+    if (isAdblockLikely()) {
+      this.hideSlot()
+      return
+    }
 
     if (!window.adsbygoogle) {
       this.scriptRetries += 1
@@ -238,11 +250,22 @@ export default class extends Controller {
   }
 
   hideSlot() {
-    this.clearRetry()
-    this.stopWatching()
-    this.clearMeasuring()
-    this.element.classList.remove(FILLED_CLASS)
-    this.element.classList.add(COLLAPSED_CLASS)
+    this.preserveScroll(() => {
+      this.clearRetry()
+      this.stopWatching()
+      this.clearMeasuring()
+      this.element.classList.remove(FILLED_CLASS)
+      this.element.classList.add(COLLAPSED_CLASS)
+    })
+  }
+
+  preserveScroll(callback) {
+    const scrollX = window.scrollX
+    const scrollY = window.scrollY
+    callback()
+    requestAnimationFrame(() => {
+      window.scrollTo(scrollX, scrollY)
+    })
   }
 
   stopWatching() {
