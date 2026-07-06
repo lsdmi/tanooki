@@ -13,7 +13,6 @@ class BookshelvesController < ApplicationController
 
   def show
     @pagy, @fictions = pagy(@bookshelf.fictions.includes(:cover_attachment, :genres), limit: 20)
-    @advertisement = Advertisement.enabled.includes(:cover_attachment, :poster_attachment).sample
 
     return unless turbo_frame_request_id == 'fiction-list-page'
 

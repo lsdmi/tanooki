@@ -41,13 +41,6 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
   end
 
-  test 'show loads advertisement for reader promo fallback' do
-    get chapter_url(@chapter)
-
-    assert_response :success
-    assert_not_nil assigns(:advertisement)
-  end
-
   test 'show loads reader google fonts stylesheet' do
     get chapter_url(@chapter)
 

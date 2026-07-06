@@ -5,10 +5,9 @@ const FILL_TIMEOUT_MS = { top: 3000, bottom: 5000 }
 const SCRIPT_RETRY_MS = 300
 const MAX_SCRIPT_RETRIES = 20
 
-// Reserved-size chapter ad slot: house promo visible from first paint; swap to AdSense when filled.
+// In-chapter AdSense slot: hidden until filled; removed from layout when unfilled or blocked.
 export default class extends Controller {
-  static targets = ["fallback"]
-  static values = { live: Boolean, placement: { type: String, default: "top" }, fallback: Boolean }
+  static values = { live: Boolean, placement: { type: String, default: "top" } }
 
   connect() {
     this.scriptRetries = 0
@@ -20,7 +19,7 @@ export default class extends Controller {
     if (!this.liveValue) return
 
     if (isAdblockLikely()) {
-      this.showFallback()
+      this.hideSlot()
       return
     }
 
@@ -46,7 +45,7 @@ export default class extends Controller {
     if (!window.adsbygoogle) {
       this.scriptRetries += 1
       if (this.scriptRetries >= MAX_SCRIPT_RETRIES) {
-        this.showFallback()
+        this.hideSlot()
         return
       }
       this.scheduleRetry()
@@ -63,7 +62,7 @@ export default class extends Controller {
       ins.dataset.adsensePushed = "true"
       this.watchFill(ins)
     } catch (_error) {
-      this.showFallback()
+      this.hideSlot()
     }
   }
 
@@ -92,11 +91,11 @@ export default class extends Controller {
 
     const resolved = () => {
       if (this.isFilled(ins)) {
-        this.showAdsenseFilled()
+        this.showSlot()
         return true
       }
       if (this.isUnfilled(ins)) {
-        this.showFallback()
+        this.hideSlot()
         return true
       }
       return false
@@ -116,7 +115,7 @@ export default class extends Controller {
 
     this.fillTimeout = window.setTimeout(() => {
       this.stopWatching()
-      if (!this.isFilled(ins)) this.showFallback()
+      if (!this.isFilled(ins)) this.hideSlot()
     }, this.fillTimeoutMs())
   }
 
@@ -136,13 +135,15 @@ export default class extends Controller {
     return this.element.querySelector("ins.adsbygoogle")
   }
 
-  showAdsenseFilled() {
+  showSlot() {
+    this.element.hidden = false
     this.element.classList.add("reader-ad-slot--adsense-filled")
   }
 
-  showFallback() {
+  hideSlot() {
     this.clearRetry()
     this.stopWatching()
+    this.element.hidden = true
     this.element.classList.remove("reader-ad-slot--adsense-filled")
   }
 

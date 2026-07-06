@@ -199,7 +199,7 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(228 228 231);
 }
 
-/* In-flow chapter ads: fixed frame; house promo by default, AdSense layered on fill */
+/* In-flow chapter ads: hidden until AdSense fills the slot */
 .immersive-reader .reader-ad-slot__frame {
   position: relative;
   width: 100%;
@@ -208,40 +208,14 @@ html:not(.dark) .immersive-reader .note-content {
   overflow: hidden;
 }
 
-.immersive-reader .reader-ad-slot__fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.immersive-reader .reader-ad-slot__fallback--placeholder {
-  background-color: rgb(231 229 228);
-}
-
-.dark .immersive-reader .reader-ad-slot__fallback--placeholder {
-  background-color: rgb(39 39 42);
-}
-
 .immersive-reader .reader-ad-slot__adsense {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  opacity: 0;
-  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__fallback {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.immersive-reader .reader-ad-slot ins.adsbygoogle[data-ad-status='unfilled'] {
-  opacity: 0 !important;
+.immersive-reader .reader-ad-slot[hidden] {
+  display: none !important;
 }
 
 /* Reader ad drawer: panel sits below sticky reader toolbar (top-12); grid fits in remaining viewport */

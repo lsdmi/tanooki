@@ -4,7 +4,6 @@
 class FictionListsController < ApplicationController
   helper Fictions::ListPaginationHelper
 
-  before_action :load_advertisement
   before_action :pokemon_appearance, only: [:alphabetical]
 
   def alphabetical
