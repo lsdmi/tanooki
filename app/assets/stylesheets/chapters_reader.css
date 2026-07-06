@@ -207,13 +207,8 @@ html:not(.dark) .immersive-reader .note-content {
 }
 
 .immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
-  aspect-ratio: 3 / 1;
-  min-height: 100px;
-  background-color: rgb(231 229 228);
-}
-
-.dark .immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
-  background-color: rgb(39 39 42);
+  min-height: 90px;
+  max-height: 120px;
 }
 
 .immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {

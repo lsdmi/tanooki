@@ -1,9 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 import { isAdblockLikely } from "adblock_detect"
 
-const FILL_TIMEOUT_MS = { top: 8000, bottom: 12000 }
-const SCRIPT_RETRY_MS = 300
-const MAX_SCRIPT_RETRIES = 20
+const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000 }
+const SCRIPT_RETRY_MS = 250
+const MAX_SCRIPT_RETRIES = 10
 const PENDING_CLASS = "reader-ad-slot--pending"
 const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
 const FILLED_CLASS = "reader-ad-slot--adsense-filled"
@@ -34,6 +34,13 @@ export default class extends Controller {
     }
 
     this.prepareForFill()
+    this.scheduleInitialPush()
+  }
+
+  scheduleInitialPush() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.onReady())
+    })
   }
 
   disconnect() {
