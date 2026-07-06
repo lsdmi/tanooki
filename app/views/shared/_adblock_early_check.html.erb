@@ -1,0 +1,26 @@
+<%# Synchronous adblock bait — runs before reader slots paint to avoid placeholder flash. %>
+<% if adsense_allowed? %>
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+  if (document.documentElement.classList.contains('adblock-likely')) return
+
+  var bait = document.createElement('div')
+  bait.setAttribute('aria-hidden', 'true')
+  bait.className = 'adsbox'
+  bait.style.cssText =
+    'position:absolute!important;top:-1px!important;left:-1px!important;width:1px!important;height:1px!important;pointer-events:none!important;'
+  bait.textContent = '\u00a0'
+  document.body.appendChild(bait)
+
+  var style = window.getComputedStyle(bait)
+  var blocked =
+    style.display === 'none' ||
+    style.visibility === 'hidden' ||
+    bait.offsetHeight === 0 ||
+    bait.offsetWidth === 0
+
+  bait.remove()
+  if (blocked) document.documentElement.classList.add('adblock-likely')
+})()
+</script>
+<% end %>

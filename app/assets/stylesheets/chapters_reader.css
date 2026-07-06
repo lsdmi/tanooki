@@ -199,19 +199,28 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(228 228 231);
 }
 
-/* In-flow chapter ads: layout-visible while pending so AdSense can measure; collapse only when unfilled */
+/* In-flow chapter ads: zero layout until push; reserve height only while measuring for AdSense */
+.immersive-reader .reader-ad-slot {
+  overflow-anchor: none;
+}
+
 .immersive-reader .reader-ad-slot__frame {
   position: relative;
   width: 100%;
   overflow: hidden;
+  min-height: 0;
 }
 
-.immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
+html.adblock-likely .immersive-reader .reader-ad-slot {
+  display: none !important;
+}
+
+.immersive-reader .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
   min-height: 90px;
   max-height: 120px;
 }
 
-.immersive-reader .reader-ad-slot--pending:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
+.immersive-reader .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
   position: absolute;
   inset: 0;
   z-index: 1;

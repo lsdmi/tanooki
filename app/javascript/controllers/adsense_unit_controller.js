@@ -5,10 +5,11 @@ const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000 }
 const SCRIPT_RETRY_MS = 250
 const MAX_SCRIPT_RETRIES = 10
 const PENDING_CLASS = "reader-ad-slot--pending"
+const MEASURING_CLASS = "reader-ad-slot--measuring"
 const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
 const FILLED_CLASS = "reader-ad-slot--adsense-filled"
 
-// In-chapter AdSense slot: layout-visible while pending; collapse only when unfilled or blocked.
+// In-chapter AdSense: no layout until push; collapse without scroll jump when unfilled or blocked.
 // Google allows one push() per <ins> — replace the node on each Turbo visit before re-pushing.
 export default class extends Controller {
   static values = {
@@ -33,7 +34,6 @@ export default class extends Controller {
       return
     }
 
-    this.prepareForFill()
     this.scheduleInitialPush()
   }
 
@@ -84,8 +84,8 @@ export default class extends Controller {
     this.clearRetry()
     this.stopWatching()
     this.scriptRetries = 0
+    this.clearMeasuring()
     this.replaceAdElement()
-    this.prepareForFill()
   }
 
   replaceAdElement() {
@@ -104,10 +104,14 @@ export default class extends Controller {
     return fresh
   }
 
-  prepareForFill() {
+  beginMeasuring() {
     this.element.classList.remove(COLLAPSED_CLASS, FILLED_CLASS)
-    this.element.classList.add(PENDING_CLASS)
+    this.element.classList.add(PENDING_CLASS, MEASURING_CLASS)
     this.element.removeAttribute("hidden")
+  }
+
+  clearMeasuring() {
+    this.element.classList.remove(PENDING_CLASS, MEASURING_CLASS)
   }
 
   onReady() {
@@ -130,7 +134,7 @@ export default class extends Controller {
       return
     }
 
-    this.prepareForFill()
+    this.beginMeasuring()
 
     if (!this.slotIsRenderable(ins)) {
       this.scheduleRetry(generation)
@@ -228,7 +232,7 @@ export default class extends Controller {
   }
 
   showSlot() {
-    this.element.classList.remove(COLLAPSED_CLASS, PENDING_CLASS)
+    this.element.classList.remove(COLLAPSED_CLASS, PENDING_CLASS, MEASURING_CLASS)
     this.element.classList.add(FILLED_CLASS)
     this.element.removeAttribute("hidden")
   }
@@ -236,7 +240,8 @@ export default class extends Controller {
   hideSlot() {
     this.clearRetry()
     this.stopWatching()
-    this.element.classList.remove(PENDING_CLASS, FILLED_CLASS)
+    this.clearMeasuring()
+    this.element.classList.remove(FILLED_CLASS)
     this.element.classList.add(COLLAPSED_CLASS)
   }
 

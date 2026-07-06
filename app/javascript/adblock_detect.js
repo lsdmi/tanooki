@@ -1,9 +1,21 @@
-// Lightweight bait check for the reader ad drawer only (does not touch AdSense units).
+// Adblock bait check — used by in-chapter AdSense slots and the reader ad drawer.
+
+export function syncAdblockDocumentClass() {
+  if (document.body?.dataset.loadAdsense !== "true") {
+    document.documentElement.classList.remove("adblock-likely")
+    return false
+  }
+
+  const blocked = baitElementBlocked()
+  document.documentElement.classList.toggle("adblock-likely", blocked)
+  return blocked
+}
 
 export function isAdblockLikely() {
   if (document.body?.dataset.loadAdsense !== "true") return false
+  if (document.documentElement.classList.contains("adblock-likely")) return true
 
-  return baitElementBlocked()
+  return syncAdblockDocumentClass()
 }
 
 function baitElementBlocked() {

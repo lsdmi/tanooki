@@ -70,6 +70,7 @@
   </head>
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen" data-load-google-scripts="<%= Rails.env.production? %>" data-load-adsense="<%= adsense_allowed? %>">
+    <%= render "shared/adblock_early_check" %>
     <% if user_signed_in? %>
       <div class="hidden" aria-hidden="true" <%= tag.attributes(data: session_watchdog_stimulus_data) %>></div>
     <% end %>
