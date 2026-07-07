@@ -71,9 +71,6 @@
 
   <body class="min-w-[375px] lg:min-w-[1250px] relative flex flex-col min-h-screen" data-load-google-scripts="<%= Rails.env.production? %>" data-load-adsense="<%= adsense_allowed? %>">
     <%= render "shared/adblock_early_check" %>
-    <% if user_signed_in? %>
-      <div class="hidden" aria-hidden="true" <%= tag.attributes(data: session_watchdog_stimulus_data) %>></div>
-    <% end %>
     <div id="page-background" class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
       <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
