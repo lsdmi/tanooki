@@ -5,6 +5,13 @@
     <p class="text-stone-800 dark:text-gray-200 text-sm sm:text-lg lg:text-2xl font-light">Усі ранобе, веб-новели та художня проза!</p>
   </div>
 
+  <%# One unit below the H1 — fiction list stays in <main> for SEO; adblock hidden via html.adblock-likely before paint. %>
+  <div class="mb-6 lg:mb-8 lg:max-w-sm">
+    <%= render "shared/adsense_slot",
+               placement: :fiction_alphabetical,
+               navigation_key: "fiction-alphabetical" %>
+  </div>
+
   <!-- Filters: Top (mobile/tablet only) -->
   <div class="block lg:hidden w-full mb-6">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-md border border-gray-200">

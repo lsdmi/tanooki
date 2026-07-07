@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
                 :adsense_allowed?
 
+  helper Adsense::PlacementsHelper
+
   def handle_error
     render :error, status: :internal_server_error
   end

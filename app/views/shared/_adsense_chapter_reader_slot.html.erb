@@ -1,21 +1,6 @@
 <%# locals: (placement:, navigation_key: "") %>
-<% return unless chapter_reader_ad_live?(placement) %>
-
-<% placement_class = placement == :bottom ? 'reader-ad-slot--bottom' : 'reader-ad-slot--top' %>
-<% slot_dom_id = navigation_key.present? ? "reader-ad-slot-#{placement}-#{navigation_key}" : "reader-ad-slot-#{placement}" %>
-
-<div id="<%= slot_dom_id %>"
-     class="reader-ad-slot reader-ad-slot--compact <%= placement_class %> relative overflow-hidden rounded-md sm:rounded-lg"
-     data-controller="adsense-unit"
-     data-adsense-unit-live-value="true"
-     data-adsense-unit-placement-value="<%= placement %>"
-     data-adsense-unit-navigation-key-value="<%= navigation_key %>">
-  <div class="reader-ad-slot__frame">
-    <ins class="adsbygoogle reader-ad-slot__adsense"
-         style="display:block"
-         data-ad-client="<%= adsense_client_id %>"
-         data-ad-slot="<%= chapter_reader_ad_slot(placement) %>"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-  </div>
-</div>
+<% slot_key = placement.to_sym == :bottom ? :chapter_reader_bottom : :chapter_reader_top %>
+<%= render "shared/adsense_slot",
+           placement: slot_key,
+           navigation_key: navigation_key,
+           measure_as: placement %>

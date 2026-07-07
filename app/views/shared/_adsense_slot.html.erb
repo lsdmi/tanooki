@@ -1,0 +1,21 @@
+<%# locals: (placement:, navigation_key: "", measure_as: "top") %>
+<% return unless adsense_slot_live?(placement) %>
+
+<% slot_dom_id = navigation_key.present? ? "adsense-slot-#{placement}-#{navigation_key}" : "adsense-slot-#{placement}" %>
+<% position_class = measure_as.to_s == "bottom" ? "reader-ad-slot--bottom" : "reader-ad-slot--top" %>
+
+<div id="<%= slot_dom_id %>"
+     class="reader-ad-slot reader-ad-slot--compact <%= position_class %> relative overflow-hidden rounded-md sm:rounded-lg"
+     data-controller="adsense-unit"
+     data-adsense-unit-live-value="true"
+     data-adsense-unit-placement-value="<%= measure_as %>"
+     data-adsense-unit-navigation-key-value="<%= navigation_key %>">
+  <div class="reader-ad-slot__frame">
+    <ins class="adsbygoogle reader-ad-slot__adsense"
+         style="display:block"
+         data-ad-client="<%= adsense_client_id %>"
+         data-ad-slot="<%= adsense_slot_id(placement) %>"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+</div>

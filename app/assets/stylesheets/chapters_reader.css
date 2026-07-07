@@ -199,22 +199,22 @@ html:not(.dark) .immersive-reader .note-content {
   color: rgb(228 228 231);
 }
 
-/* In-flow chapter ads: zero footprint until filled; avoid display:none collapse scroll jumps */
-.immersive-reader .reader-ad-slot {
+/* In-flow AdSense slots (chapter reader + browse): zero footprint until filled */
+.reader-ad-slot {
   margin: 0;
   padding: 0;
   overflow-anchor: none;
 }
 
-.immersive-reader .reader-ad-slot__frame {
+.reader-ad-slot__frame {
   position: relative;
   width: 100%;
   overflow: hidden;
   min-height: 0;
 }
 
-html.adblock-likely .immersive-reader .reader-ad-slot,
-.immersive-reader .reader-ad-slot--collapsed {
+html.adblock-likely .reader-ad-slot,
+.reader-ad-slot--collapsed {
   height: 0 !important;
   min-height: 0 !important;
   max-height: 0 !important;
@@ -225,31 +225,31 @@ html.adblock-likely .immersive-reader .reader-ad-slot,
   pointer-events: none !important;
 }
 
-.immersive-reader .reader-ad-slot--adsense-filled {
+.reader-ad-slot--adsense-filled {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 @media (min-width: 640px) {
-  .immersive-reader .reader-ad-slot--adsense-filled {
+  .reader-ad-slot--adsense-filled {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 }
 
 @media (min-width: 768px) {
-  .immersive-reader .reader-ad-slot--adsense-filled {
+  .reader-ad-slot--adsense-filled {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
   }
 }
 
-.immersive-reader .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
+.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
   min-height: 90px;
   max-height: 120px;
 }
 
-.immersive-reader .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
+.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -260,11 +260,11 @@ html.adblock-likely .immersive-reader .reader-ad-slot,
   pointer-events: none;
 }
 
-.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+.reader-ad-slot--adsense-filled .reader-ad-slot__frame {
   min-height: 0;
 }
 
-.immersive-reader .reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
+.reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
   display: block;
   width: 100%;
   height: auto;
