@@ -1,4 +1,4 @@
-<% page_gutter = 'mx-5 md:mx-6 lg:mx-8 xl:mx-0' %>
+<% page_gutter = 'mx-5 md:mx-6 lg:mx-4' %>
 
 <section class="relative z-10 mx-auto xl:w-[1300px]">
   <div class="<%= page_gutter %> mt-8 overflow-hidden rounded-xl border border-gray-200 shadow-md lg:mt-10 lg:rounded-2xl dark:border-gray-700">
@@ -10,11 +10,11 @@
       <header class="mb-8 flex items-stretch gap-3 sm:gap-4">
         <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
         <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
-          <h2 class="text-2xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100">
+          <h2 class="text-xl lg:text-2xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100">
             Популярне <span class="text-cyan-700 dark:text-rose-400">ранобе</span>
           </h2>
           <%= link_to fictions_path, class: 'inline-flex shrink-0 items-baseline gap-0.5 text-md font-medium leading-snug text-cyan-700 transition duration-300 hover:underline dark:text-rose-400' do %>
-            <span class="hidden sm:inline">Більше</span>
+            <span class="hidden sm:inline text-sm lg:text-base">Більше</span>
             <span aria-hidden="true">&rsaquo;</span>
           <% end %>
         </div>

@@ -115,6 +115,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select '[aria-label="Популярне ранобе"] article .aspect-\\[2\\/3\\]', minimum: 1
   end
 
+  test 'popular ranobe section uses responsive carousel layout' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_select '[aria-label="Популярне ранобе"][class*="-mr-4"]'
+    assert_select '[aria-label="Популярне ранобе"] .text-sm.font-semibold', minimum: 1
+    assert_select '[aria-label="Популярне ранобе"] .text-\\[10px\\]', minimum: 1
+  end
+
   private
 
   def visit_guest_hero
