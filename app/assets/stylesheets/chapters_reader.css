@@ -225,6 +225,11 @@ html.adblock-likely .reader-ad-slot,
   pointer-events: none !important;
 }
 
+html.adblock-likely .bookshelf-show__ad,
+.bookshelf-show__ad:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
 .reader-ad-slot--adsense-filled {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -337,7 +342,20 @@ html.adblock-likely .reader-ad-slot,
   font-family: ui-monospace, monospace;
 }
 
-/* Bookshelf show: right column sets row height; sidebar + ad fill the left cell */
+/* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */
+.bookshelf-show__ad .reader-ad-slot__adsense iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .bookshelf-show__ad .reader-ad-slot--preview,
+  .bookshelf-show__ad .reader-ad-slot--adsense-filled {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 @media (min-width: 1024px) {
   .bookshelf-show__sidebar {
     height: 100%;
@@ -348,7 +366,7 @@ html.adblock-likely .reader-ad-slot,
     min-height: 0;
   }
 
-  .bookshelf-show__ad .reader-ad-slot--sidebar {
+  .bookshelf-show__ad .reader-ad-slot {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
@@ -358,35 +376,27 @@ html.adblock-likely .reader-ad-slot,
     overflow: visible;
   }
 
-  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--preview,
-  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--adsense-filled {
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview,
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled {
     margin: 0;
   }
 
-  .bookshelf-show__ad .reader-ad-slot--sidebar .reader-ad-slot__frame {
+  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__frame {
     flex: 1 1 auto;
     min-height: 0;
     max-height: none;
     overflow: visible;
   }
 
-  .bookshelf-show__ad .reader-ad-slot--sidebar .reader-ad-slot__preview {
+  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__preview {
     box-sizing: border-box;
     height: 100%;
     min-height: 0;
   }
-}
 
-/* Sidebar ad unit (mobile / non-bookshelf) */
-.reader-ad-slot--sidebar.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
-.reader-ad-slot--sidebar.reader-ad-slot--preview .reader-ad-slot__frame {
-  min-height: 16rem;
-}
-
-@media (min-width: 1024px) {
-  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
-  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--preview .reader-ad-slot__frame {
-    min-height: 0;
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview .reader-ad-slot__frame {
+    min-height: 16rem;
   }
 }
 

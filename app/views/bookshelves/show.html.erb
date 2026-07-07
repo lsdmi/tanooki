@@ -31,11 +31,10 @@
         </div>
       </div>
 
-      <div class="bookshelf-show__ad flex flex-col min-h-[16rem] lg:min-h-0">
+      <div class="bookshelf-show__ad flex w-full flex-col lg:min-h-0 lg:flex-1">
         <%= render "shared/adsense_slot",
                    placement: :bookshelf,
-                   navigation_key: @bookshelf.sqid,
-                   variant: :sidebar %>
+                   navigation_key: @bookshelf.sqid %>
       </div>
     </aside>
 

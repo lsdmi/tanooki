@@ -36,5 +36,15 @@ module Adsense
         assert_not adsense_slot_renderable?(:bookshelf)
       end
     end
+
+    test 'adsense_adblock_check? is true in development for preview slots' do
+      if Rails.env.development?
+        assert_predicate self, :adsense_adblock_check?
+      else
+        define_singleton_method(:adsense_allowed?) { false }
+
+        assert_not adsense_adblock_check?
+      end
+    end
   end
 end

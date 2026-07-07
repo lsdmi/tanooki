@@ -22,5 +22,9 @@ module Adsense
     def adsense_slot_renderable?(placement)
       adsense_slot_live?(placement) || adsense_slot_development_preview?
     end
+
+    def adsense_adblock_check?
+      adsense_allowed? || adsense_slot_development_preview?
+    end
   end
 end

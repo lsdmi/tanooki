@@ -1,5 +1,5 @@
 <%# Synchronous adblock bait — runs before reader slots paint to avoid placeholder flash. %>
-<% if adsense_allowed? %>
+<% if adsense_adblock_check? %>
 <script nonce="<%= content_security_policy_nonce %>">
 (function () {
   if (document.documentElement.classList.contains('adblock-likely')) return

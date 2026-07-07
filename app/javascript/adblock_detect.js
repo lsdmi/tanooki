@@ -1,7 +1,14 @@
 // Adblock bait check — used by in-chapter AdSense slots and the reader ad drawer.
 
+function adblockCheckEnabled() {
+  const body = document.body
+  if (!body) return false
+
+  return body.dataset.loadAdsense === "true" || body.dataset.adblockCheck === "true"
+}
+
 export function syncAdblockDocumentClass() {
-  if (document.body?.dataset.loadAdsense !== "true") {
+  if (!adblockCheckEnabled()) {
     document.documentElement.classList.remove("adblock-likely")
     return false
   }
@@ -12,7 +19,7 @@ export function syncAdblockDocumentClass() {
 }
 
 export function isAdblockLikely() {
-  if (document.body?.dataset.loadAdsense !== "true") return false
+  if (!adblockCheckEnabled()) return false
   if (document.documentElement.classList.contains("adblock-likely")) return true
 
   return syncAdblockDocumentClass()
