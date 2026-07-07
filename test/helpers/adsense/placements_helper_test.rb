@@ -13,10 +13,28 @@ module Adsense
       assert_nil adsense_slot_id(:fiction_alphabetical)
     end
 
+    test 'bookshelf slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:bookshelf)
+      assert_nil adsense_slot_id(:bookshelf)
+    end
+
     test 'adsense_slot_live? is false when adsense is disabled' do
       define_singleton_method(:adsense_allowed?) { false }
 
       assert_not adsense_slot_live?(:chapter_reader_top)
+    end
+
+    test 'adsense_slot_renderable? is true in development without a live slot' do
+      define_singleton_method(:adsense_allowed?) { false }
+
+      if Rails.env.development?
+        assert adsense_slot_renderable?(:bookshelf)
+        assert_predicate self, :adsense_slot_development_preview?
+      else
+        assert_not adsense_slot_renderable?(:bookshelf)
+      end
     end
   end
 end

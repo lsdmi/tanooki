@@ -273,6 +273,123 @@ html.adblock-likely .reader-ad-slot,
   pointer-events: auto;
 }
 
+/* Development-only layout preview (no AdSense script in local env) */
+.reader-ad-slot--preview {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .reader-ad-slot--preview {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .reader-ad-slot--preview {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.reader-ad-slot--preview .reader-ad-slot__frame {
+  min-height: 90px;
+}
+
+@media (min-width: 640px) {
+  .reader-ad-slot--preview .reader-ad-slot__frame {
+    min-height: 120px;
+  }
+}
+
+.reader-ad-slot__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-height: inherit;
+  border: 2px dashed rgb(168 162 158); /* stone-400 */
+  border-radius: inherit;
+  background: rgb(245 245 244); /* stone-100 */
+  color: rgb(120 113 108); /* stone-500 */
+  text-align: center;
+  padding: 0.75rem;
+}
+
+.dark .reader-ad-slot__preview {
+  border-color: rgb(75 85 99); /* gray-600 */
+  background: rgb(31 41 55); /* gray-800 */
+  color: rgb(156 163 175); /* gray-400 */
+}
+
+.reader-ad-slot__preview-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reader-ad-slot__preview-placement {
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+}
+
+/* Bookshelf show: right column sets row height; sidebar + ad fill the left cell */
+@media (min-width: 1024px) {
+  .bookshelf-show__sidebar {
+    height: 100%;
+  }
+
+  .bookshelf-show__ad {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot--sidebar {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--preview,
+  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--adsense-filled {
+    margin: 0;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot--sidebar .reader-ad-slot__frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot--sidebar .reader-ad-slot__preview {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+/* Sidebar ad unit (mobile / non-bookshelf) */
+.reader-ad-slot--sidebar.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.reader-ad-slot--sidebar.reader-ad-slot--preview .reader-ad-slot__frame {
+  min-height: 16rem;
+}
+
+@media (min-width: 1024px) {
+  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+  .bookshelf-show__ad .reader-ad-slot--sidebar.reader-ad-slot--preview .reader-ad-slot__frame {
+    min-height: 0;
+  }
+}
+
 /* Reader ad drawer: panel sits below sticky reader toolbar (top-12); grid fits in remaining viewport */
 .immersive-reader .reader-ad-drawer__body {
   background: rgb(12 10 9 / 0.92); /* stone-950 */

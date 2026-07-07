@@ -1,21 +1,33 @@
-<%# locals: (placement:, navigation_key: "", measure_as: "top") %>
-<% return unless adsense_slot_live?(placement) %>
+<%# locals: (placement:, navigation_key: "", measure_as: "top", variant: "banner") %>
+<% return unless adsense_slot_renderable?(placement) %>
 
 <% slot_dom_id = navigation_key.present? ? "adsense-slot-#{placement}-#{navigation_key}" : "adsense-slot-#{placement}" %>
 <% position_class = measure_as.to_s == "bottom" ? "reader-ad-slot--bottom" : "reader-ad-slot--top" %>
+<% variant_class = variant.to_s == "sidebar" ? "reader-ad-slot--sidebar" : "reader-ad-slot--compact" %>
+<% slot_overflow_class = variant.to_s == "sidebar" ? "overflow-visible" : "overflow-hidden" %>
+<% live = adsense_slot_live?(placement) %>
 
 <div id="<%= slot_dom_id %>"
-     class="reader-ad-slot reader-ad-slot--compact <%= position_class %> relative overflow-hidden rounded-md sm:rounded-lg"
+     class="reader-ad-slot <%= variant_class %> <%= position_class %> relative <%= slot_overflow_class %> rounded-md sm:rounded-lg<%= " reader-ad-slot--preview" unless live %>"
+     <% if live %>
      data-controller="adsense-unit"
      data-adsense-unit-live-value="true"
      data-adsense-unit-placement-value="<%= measure_as %>"
-     data-adsense-unit-navigation-key-value="<%= navigation_key %>">
+     data-adsense-unit-navigation-key-value="<%= navigation_key %>"
+     <% end %>>
   <div class="reader-ad-slot__frame">
-    <ins class="adsbygoogle reader-ad-slot__adsense"
-         style="display:block"
-         data-ad-client="<%= adsense_client_id %>"
-         data-ad-slot="<%= adsense_slot_id(placement) %>"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <% if live %>
+      <ins class="adsbygoogle reader-ad-slot__adsense"
+           style="display:block"
+           data-ad-client="<%= adsense_client_id %>"
+           data-ad-slot="<%= adsense_slot_id(placement) %>"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    <% else %>
+      <div class="reader-ad-slot__preview" aria-hidden="true">
+        <span class="reader-ad-slot__preview-label">AdSense</span>
+        <span class="reader-ad-slot__preview-placement"><%= placement %></span>
+      </div>
+    <% end %>
   </div>
 </div>

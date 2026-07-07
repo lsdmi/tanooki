@@ -14,5 +14,13 @@ module Adsense
     def adsense_slot_live?(placement)
       adsense_allowed? && adsense_slot_id(placement).present?
     end
+
+    def adsense_slot_development_preview?
+      Rails.env.development?
+    end
+
+    def adsense_slot_renderable?(placement)
+      adsense_slot_live?(placement) || adsense_slot_development_preview?
+    end
   end
 end
