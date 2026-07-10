@@ -52,10 +52,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
           title: 'New Fiction',
           author: 'New Author',
           description: 'a' * 50,
-          cover: Rack::Test::UploadedFile.new(
-            Rails.root.join('app/assets/images/logo-default.svg'),
-            'image/svg'
-          ),
+          cover: valid_cover_upload,
           scanlator_ids: [1],
           status: :announced,
           user_id: @fiction.user_id
@@ -85,8 +82,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   test 'should update fiction' do
     patch fiction_url(@fiction), params: {
       fiction: {
-        cover: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
-                                            'image/svg'),
         scanlator_ids: [1],
         title: 'Updated Title'
       }

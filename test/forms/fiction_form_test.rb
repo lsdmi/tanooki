@@ -24,4 +24,59 @@ class FictionFormTest < ActiveSupport::TestCase
     assert_equal submitted_scanlator_ids, fiction.scanlator_ids.map(&:to_s)
     assert_equal submitted_genre_ids.map(&:to_s), fiction.genre_ids.map(&:to_s)
   end
+
+  test 'rejects invalid cover upload' do
+    fiction = fictions(:one)
+    form = FictionForm.new(
+      fiction: fiction,
+      params: {
+        title: fiction.title,
+        author: fiction.author,
+        description: fiction.description,
+        total_chapters: fiction.total_chapters,
+        scanlator_ids: [1],
+        cover: Rack::Test::UploadedFile.new(
+          Rails.root.join('app/assets/images/logo-default.svg'),
+          'image/svg'
+        )
+      }
+    )
+
+    assert_not form.save
+    assert_includes fiction.errors[:cover], 'Обкладинка має бути у форматі WebP або AVIF.'
+  end
+
+  test 'accepts valid cover upload' do
+    fiction = fictions(:one)
+    form = FictionForm.new(
+      fiction: fiction,
+      params: {
+        title: fiction.title,
+        author: fiction.author,
+        description: fiction.description,
+        total_chapters: fiction.total_chapters,
+        scanlator_ids: [1],
+        cover: valid_cover_upload
+      }
+    )
+
+    assert form.save
+  end
+
+  test 'allows update without cover param for legacy attachment' do
+    fiction = fictions(:one)
+    form = FictionForm.new(
+      fiction: fiction,
+      params: {
+        title: 'Legacy Cover Still Fine',
+        author: fiction.author,
+        description: fiction.description,
+        total_chapters: fiction.total_chapters,
+        scanlator_ids: [1]
+      }
+    )
+
+    assert form.save
+    assert_equal 'Legacy Cover Still Fine', fiction.reload.title
+  end
 end

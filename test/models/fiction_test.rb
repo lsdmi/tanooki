@@ -8,8 +8,7 @@ class FictionTest < ActiveSupport::TestCase
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                            total_chapters: 5, user_id: @user.id)
-    @fiction.cover.attach(Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
-                                                       'image/svg'))
+    @fiction.cover.attach(valid_cover_upload)
   end
 
   test 'should be valid' do
@@ -110,7 +109,7 @@ class FictionTest < ActiveSupport::TestCase
     assert_not @fiction.valid?
   end
 
-  test 'cover should be in the correct format' do
+  test 'cover rejects disallowed format on new upload' do
     invalid_image = Rack::Test::UploadedFile.new(
       Rails.root.join('app/assets/stylesheets/actiontext.css')
     )
@@ -118,5 +117,14 @@ class FictionTest < ActiveSupport::TestCase
     @fiction.cover.attach(invalid_image)
 
     assert_not @fiction.valid?
+    assert_includes @fiction.errors[:cover], 'має бути WebP або AVIF'
+  end
+
+  test 'cover allows legacy attachment on save without re-upload' do
+    fiction = fictions(:one)
+
+    fiction.title = 'Updated Without New Cover'
+
+    assert_predicate fiction, :valid?
   end
 end

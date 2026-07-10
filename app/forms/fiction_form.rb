@@ -7,6 +7,7 @@ class FictionForm
   attr_accessor :fiction, :params
 
   validate :banner_is_valid
+  validate :cover_is_valid
 
   def save
     fiction.assign_attributes(params.except(:genre_ids, :scanlator_ids))
@@ -34,6 +35,16 @@ class FictionForm
     return if validator.valid?
 
     validator.errors.each { |msg| errors.add(:banner, msg) }
+  end
+
+  def cover_is_valid
+    cover_file = params[:cover]
+    return if cover_file.blank?
+
+    validator = CoverImageValidator.new(cover_file)
+    return if validator.valid?
+
+    validator.errors.each { |msg| errors.add(:cover, msg) }
   end
 
   def copy_errors_to_fiction

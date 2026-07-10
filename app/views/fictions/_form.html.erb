@@ -90,16 +90,48 @@
         <%= tag.p fiction.errors[:description].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:description].any? %>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-4" data-controller="fiction-cover-preview"
+           data-fiction-cover-preview-min-width-value="<%= CoverImageValidator::MIN_WIDTH %>"
+           data-fiction-cover-preview-min-height-value="<%= CoverImageValidator::MIN_HEIGHT %>"
+           data-fiction-cover-preview-ideal-aspect-value="<%= CoverImageValidator::IDEAL_ASPECT %>"
+           data-fiction-cover-preview-aspect-tolerance-value="<%= CoverImageValidator::ASPECT_TOLERANCE %>"
+           data-fiction-cover-preview-max-megabytes-value="<%= CoverImageValidator::MAX_BYTE_SIZE / 1.megabyte %>"
+           data-fiction-cover-preview-allowed-types-value="<%= CoverImageValidator::ALLOWED_CONTENT_TYPES.to_json %>">
         <%= f.label :cover, 'Обкладинка', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
         <div class="relative group">
           <%= f.label :cover, for: 'fictions_cover', class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
             <svg class="w-12 h-12 text-stone-600 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-            <span class="text-stone-600 dark:text-gray-400">SVG, PNG, JPEG чи WebP</span>
-            <%= f.file_field :cover, id: 'fictions_cover', class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
+            <span class="text-stone-600 dark:text-gray-400">WebP або AVIF, 3:4, мін. 600×800px, до 2 МБ</span>
+            <%= f.file_field :cover,
+                             id: 'fictions_cover',
+                             class: 'hidden',
+                             label: false,
+                             accept: 'image/webp,image/avif',
+                             data: {
+                               fiction_cover_preview_target: 'input',
+                               action: 'change->dropzone#update change->fiction-cover-preview#preview'
+                             } %>
             <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
           <% end %>
           <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:cover].any? %>
+        </div>
+
+        <div data-fiction-cover-preview-target="panel" class="mt-4 hidden rounded-lg border border-stone-200 bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+          <p class="mb-3 text-sm font-semibold text-stone-800 dark:text-gray-200">Попередній перегляд</p>
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <div class="relative aspect-[2/3] w-36 shrink-0 overflow-hidden border border-stone-200 bg-stone-100 shadow-md dark:border-gray-700 dark:bg-gray-900">
+              <img data-fiction-cover-preview-target="previewImage"
+                   alt=""
+                   class="absolute inset-0 h-full w-full object-cover object-center">
+            </div>
+            <div class="min-w-0 flex-1 text-sm">
+              <p data-fiction-cover-preview-target="success" class="hidden rounded-md bg-emerald-50 px-3 py-2 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
+                Обкладинка відповідає вимогам якості.
+              </p>
+              <ul data-fiction-cover-preview-target="warnings"
+                  class="hidden list-disc space-y-1 pl-5 text-amber-800 dark:text-amber-300"></ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

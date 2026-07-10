@@ -56,11 +56,12 @@ module Meta
     end
 
     test 'cover_card_url falls back to blob url for svg covers' do
-      @fiction.cover.attach(
+      blob = ActiveStorage::Blob.create_and_upload!(
         io: Rails.root.join('app/assets/images/logo-default.svg').open,
         filename: 'logo-default.svg',
         content_type: 'image/svg+xml'
       )
+      @fiction.cover.attach(blob)
 
       assert_not_predicate @fiction.cover.blob, :variable?
       assert_includes cover_card_url(@fiction.cover), '/rails/active_storage/blobs'

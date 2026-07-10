@@ -19,7 +19,8 @@ Rails.root.glob('test/test_helpers/**/*.rb').each { |path| require path }
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
+    include CoverUploadHelper
+
     parallelize(workers: :number_of_processors)
 
     parallelize_setup do |worker|
@@ -43,4 +44,10 @@ end
 
 class ViewComponentTestCase < ViewComponent::TestCase
   include Devise::Test::IntegrationHelpers if defined?(Devise)
+end
+
+module ActionDispatch
+  class IntegrationTest
+    include CoverUploadHelper
+  end
 end

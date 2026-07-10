@@ -112,7 +112,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'h2', text: /Популярне/
-    assert_select '[aria-label="Популярне ранобе"] article .aspect-\\[2\\/3\\]', minimum: 1
+    assert_select '[aria-label="Популярне ранобе"] article .aspect-\\[2\\/3\\] img.object-cover.object-center',
+                  minimum: 1
   end
 
   test 'popular ranobe section uses responsive carousel layout' do

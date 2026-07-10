@@ -98,8 +98,9 @@ class Fiction < ApplicationRecord
 
   def cover_format
     return unless cover.attached?
+    return if attachment_changes['cover'].blank?
 
-    return if cover.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])
+    return if cover.content_type.in?(CoverImageValidator::ALLOWED_CONTENT_TYPES)
 
     errors.add(:cover, :invalid_format)
   end

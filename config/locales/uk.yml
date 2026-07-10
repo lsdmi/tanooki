@@ -102,7 +102,7 @@ uk:
             scanlator_ids:
               blank: має бути принаймні одна команда
             cover:
-              invalid_format: має бути JPEG, PNG, SVG, або WebP
+              invalid_format: має бути WebP або AVIF
         fiction_rating:
           attributes:
             user:
