@@ -1,0 +1,5 @@
+<% return if flag.blank? %>
+
+<div class="mt-2 rounded-md border px-3 py-2 text-xs leading-snug <%= flag.fail? ? 'border-red-200 bg-red-50 text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200' : 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800/80 dark:bg-amber-900/25 dark:text-amber-100' %>">
+  <p><%= flag.reasons.join(' ') %></p>
+</div>

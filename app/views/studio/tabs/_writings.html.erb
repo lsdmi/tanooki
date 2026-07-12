@@ -1,5 +1,8 @@
 <div class="space-y-6">
   <%= turbo_frame_tag 'fictions-list' do %>
-    <%= render 'users/dashboard/fictions', fictions: fictions, pagy: pagy %>
+    <%= render 'users/dashboard/fictions',
+               fictions: fictions,
+               pagy: pagy,
+               cover_quality_flags: cover_quality_flags %>
   <% end %>
 </div>

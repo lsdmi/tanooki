@@ -45,7 +45,8 @@ class StudioController < ApplicationController
     {
       fictions: @fictions, pagy: @pagy, publications: @publications, pokemon_show: @pokemon_show,
       avatars: @avatars, comments: @comments, scanlators: @scanlators,
-      bookshelves: @bookshelves, epub_export_requests: @epub_export_requests
+      bookshelves: @bookshelves, epub_export_requests: @epub_export_requests,
+      cover_quality_flags: @cover_quality_flags
     }
   end
 end

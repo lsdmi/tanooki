@@ -1,4 +1,5 @@
 <div class="space-y-6">
+  <% cover_quality_flags ||= {} %>
   <% if current_user.scanlators.any? || current_user.admin? %>
     <!-- CTA Card -->
     <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
@@ -52,6 +53,7 @@
                           <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                             Створено: <%= l(fiction.created_at, format: :short).downcase %>
                           </p>
+                          <%= render 'users/dashboard/cover_quality_flag', flag: cover_quality_flags[fiction.id] %>
                         </div>
                       </div>
                     </th>
@@ -136,6 +138,7 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       Створено: <%= l(fiction.created_at, format: :short).downcase %>
                     </p>
+                    <%= render 'users/dashboard/cover_quality_flag', flag: cover_quality_flags[fiction.id] %>
                   </div>
                 </div>
 
