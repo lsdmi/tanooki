@@ -7,12 +7,12 @@
       </svg>
     </div>
     <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
-      <%= image_tag cover_card_url(fiction.cover),
+      <%= cover_card_picture_tag(fiction.cover,
         alt: fiction.cover.blob.filename.to_s,
         id: "image-#{fiction.id}",
         class: "w-32 sm:w-48 lg:w-full h-full object-cover rounded-md shadow-sm opacity-0",
         loading: "lazy",
-        data: { url: cover_card_url(fiction.cover) } %>
+        lazy: true) %>
     <% end %>
   </div>
   <div class="flex-1 my-1 lg:col-span-2">

@@ -19,13 +19,24 @@ module Fictions
     test 'returns ok for modern format at minimum dimensions' do
       fiction = fictions(:one)
       fiction.cover.attach(valid_cover_upload)
+      fiction.cover.blob.update!(metadata: { 'width' => 600, 'height' => 800, 'analyzed' => true })
 
-      FastImage.stub(:size, [600, 800]) do
+      result = CoverQuality.call(fiction)
+
+      assert_predicate result, :ok?
+      assert_empty result.reasons
+      assert_equal [600, 800], result.metadata.values_at(:width, :height)
+    end
+
+    test 'reads dimensions from blob metadata without fast image' do
+      fiction = fictions(:one)
+      fiction.cover.attach(valid_cover_upload)
+      fiction.cover.blob.update!(metadata: { 'width' => 600, 'height' => 800, 'analyzed' => true })
+
+      FastImage.stub(:size, ->(*) { raise 'FastImage should not be called' }) do
         result = CoverQuality.call(fiction)
 
         assert_predicate result, :ok?
-        assert_empty result.reasons
-        assert_equal [600, 800], result.metadata.values_at(:width, :height)
       end
     end
 

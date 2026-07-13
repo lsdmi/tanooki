@@ -3,7 +3,12 @@
 module Meta
   # Resized cover URLs for list, card, and blurred page backgrounds.
   module CoverUrlsHelper
-    CARD_TRANSFORMATIONS = { resize_to_limit: [400, 600], format: :webp }.freeze
+    include CoverCardPictureHelper
+
+    CARD_SIZE = [400, 600].freeze
+    CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :webp }.freeze
+    CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :avif }.freeze
+    CARD_TRANSFORMATIONS = CARD_WEBP_TRANSFORMATIONS
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
     SHOWCASE_TRANSFORMATIONS = { resize_to_limit: [1600, 540], format: :webp }.freeze
@@ -14,7 +19,12 @@ module Meta
     VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp }.freeze
 
     def cover_card_url(attachment)
-      variant_image_url(attachment, CARD_TRANSFORMATIONS)
+      urls = cover_card_variant_urls(attachment)
+      urls[:webp] || urls[:fallback]
+    end
+
+    def cover_card_avif_url(attachment)
+      cover_card_variant_urls(attachment)[:avif]
     end
 
     def cover_thumbnail_url(attachment)
@@ -60,6 +70,22 @@ module Meta
     end
 
     private
+
+    def cover_card_variant_urls(attachment)
+      return {} unless attachment&.attached?
+      return { fallback: url_for(attachment) } unless variable_cover?(attachment)
+
+      {
+        avif: url_for(attachment.variant(CARD_AVIF_TRANSFORMATIONS)),
+        webp: url_for(attachment.variant(CARD_WEBP_TRANSFORMATIONS))
+      }
+    rescue ActiveStorage::Error
+      { fallback: url_for(attachment) }
+    end
+
+    def variable_cover?(attachment)
+      attachment.blob.variable? && Attachments::VariantProcessing.available?
+    end
 
     def variant_image_url(attachment, transformations)
       return unless attachment&.attached?

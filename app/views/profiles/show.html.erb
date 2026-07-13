@@ -29,7 +29,7 @@
           <div class="space-y-3">
             <% @recent_publications.each do |publication| %>
               <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <%= image_tag cover_card_url(publication.cover),
+                <%= cover_card_picture_tag(publication.cover,
                         alt: publication.cover.blob.filename.to_s,
                         class: "w-10 h-10 rounded-lg flex items-center justify-center object-cover",
                         loading: "lazy",
@@ -37,7 +37,7 @@
                           controller: "lazy-image",
                           lazy_image_target: "image",
                           lazy_image_url_value: cover_card_url(publication.cover)
-                        } %>
+                        } ) %>
                 <div class="ml-3 flex-1">
                   <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
                     <%= link_to publication.title, tale_path(publication), class: "hover:underline" %>
@@ -129,7 +129,7 @@
                       <% bookshelf.fictions.each do |fiction| %>
                         <div class="relative flex-shrink-0">
                         <%= link_to fiction_path(fiction), class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
-                          <%= image_tag cover_card_url(fiction.cover),
+                          <%= cover_card_picture_tag(fiction.cover,
                               alt: fiction.title,
                               class: "w-full h-full object-cover",
                               loading: "lazy",
@@ -137,7 +137,7 @@
                                 controller: "lazy-image",
                                 lazy_image_target: "image",
                                 lazy_image_url_value: cover_card_url(fiction.cover)
-                              } %>
+                              } ) %>
                         <% end %>
                       </div>
                     <% end %>
@@ -227,7 +227,7 @@
             <% @recent_readings.joins(:chapter).each do |reading| %>
               <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <%= link_to fiction_path(reading.fiction), class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
-                  <%= image_tag cover_card_url(reading.fiction.cover),
+                  <%= cover_card_picture_tag(reading.fiction.cover,
                     alt: reading.fiction.cover.blob.filename.to_s,
                     class: "w-full h-full object-cover",
                     loading: "lazy",
@@ -235,7 +235,7 @@
                       controller: "lazy-image",
                       lazy_image_target: "image",
                       lazy_image_url_value: cover_card_url(reading.fiction.cover)
-                    } %>
+                    } ) %>
                 <% end %>
 
                 <div class="flex-1">

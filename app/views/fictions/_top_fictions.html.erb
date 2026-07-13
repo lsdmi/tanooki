@@ -15,7 +15,7 @@
           <span class="hidden lg:flex lg:items-center lg:col-span-1 text-sm font-bold text-stone-600 dark:text-gray-400"><%= index+1 %></span>
 
           <%= link_to fiction_path(fiction), class: 'relative block lg:col-span-3 transition duration-300 transform hover:scale-105' do %>
-            <%= image_tag cover_card_url(fiction.cover),
+            <%= cover_card_picture_tag(fiction.cover,
               alt: fiction.cover.blob.filename.to_s,
               class: "w-full h-48 lg:h-32 object-cover rounded-2xl shadow-sm",
               loading: "lazy",
@@ -23,7 +23,7 @@
                 controller: "lazy-image",
                 lazy_image_target: "image",
                 lazy_image_url_value: cover_card_url(fiction.cover)
-              } %>
+              } ) %>
           <% end %>
 
           <div class="mt-2 lg:col-span-8 lg:pl-0 flex flex-col space-y-2 text-center lg:text-left">

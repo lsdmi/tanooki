@@ -64,8 +64,8 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select '.fiction-details img[src*="representations"]'
-    assert_select '.fiction-details img[fetchpriority="high"][loading="eager"]'
+    assert_select '.fiction-details picture source[type="image/avif"]'
+    assert_select '.fiction-details picture img[src*="representations"][fetchpriority="high"][loading="eager"]'
   end
 
   test 'show preloads cover background with fetchpriority high' do

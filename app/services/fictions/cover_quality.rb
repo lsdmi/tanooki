@@ -77,9 +77,7 @@ module Fictions
     end
 
     def extract_dimensions(blob)
-      blob.open { |file| FastImage.size(file.path) }
-    rescue StandardError
-      nil
+      Attachments::ImageDimensions.from_blob(blob)
     end
 
     def fail_result(reasons)

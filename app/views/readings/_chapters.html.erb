@@ -47,9 +47,9 @@
           <!-- Fiction Cover -->
           <div class="flex-shrink-0">
             <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
-              <%= image_tag cover_card_url(fiction.cover),
+              <%= cover_card_picture_tag(fiction.cover,
                   alt: fiction.title,
-                  class: "w-20 h-24 rounded-lg object-cover shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow duration-200" %>
+                  class: "w-20 h-24 rounded-lg object-cover shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow duration-200" ) %>
             <% end %>
           </div>
 

@@ -13,12 +13,12 @@ export default class extends Controller {
       const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
           observer.disconnect()
-          image.src = image.dataset.url
+          this.loadImage(image)
         }
       })
       observer.observe(image)
     } else {
-      image.src = image.dataset.url
+      this.loadImage(image)
     }
 
     image.onload = () => {
@@ -30,5 +30,18 @@ export default class extends Controller {
     image.onerror = () => {
       console.error("Image failed to load")
     }
+  }
+
+  loadImage(image) {
+    const picture = image.closest("picture")
+
+    if (picture) {
+      picture.querySelectorAll("source[data-srcset]").forEach((source) => {
+        source.srcset = source.dataset.srcset
+        source.removeAttribute("data-srcset")
+      })
+    }
+
+    image.src = image.dataset.url
   }
 }

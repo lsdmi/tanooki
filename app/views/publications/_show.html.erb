@@ -58,7 +58,7 @@
           <% more_tales.each do |tale| %>
             <div class="mb-6 flex items-center">
               <%= link_to tale_path(tale), class: 'shrink-0' do %>
-                <%= image_tag cover_card_url(tale.cover), alt: tale.cover.blob.filename.to_s, class: "mr-4 max-w-full w-40 xl:w-48 2xl:w-56 h-20 xl:h-24 2xl:h-28 rounded-lg object-cover" %>
+                <%= cover_card_picture_tag(tale.cover, alt: tale.cover.blob.filename.to_s, class: "mr-4 max-w-full w-40 xl:w-48 2xl:w-56 h-20 xl:h-24 2xl:h-28 rounded-lg object-cover" ) %>
               <% end %>
               <div>
                 <%= link_to tale.title, tale_path(tale), class: 'text-base xl:text-lg xl:leading-tight font-bold dark:text-white text-gray-900  hover:underline line-clamp-2' %>

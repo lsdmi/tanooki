@@ -29,7 +29,7 @@
         <div class="group">
           <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'block') do %>
             <div class="relative overflow-hidden rounded-lg mb-2">
-              <%= image_tag cover_card_url(fiction.cover), alt: fiction.title, class: "w-full h-36 object-cover transition duration-300 group-hover:scale-105" %>
+              <%= cover_card_picture_tag(fiction.cover, alt: fiction.title, class: "w-full h-36 object-cover transition duration-300 group-hover:scale-105" ) %>
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300"></div>
             </div>
             <h3 class="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition duration-300">

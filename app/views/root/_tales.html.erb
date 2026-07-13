@@ -13,7 +13,7 @@
             <article class="mb-8">
               <%= link_to tale_path(top_tale), class: "group block" do %>
                 <div class="relative mb-5 w-full overflow-hidden rounded-md shadow-md border border-gray-200 dark:border-gray-700 aspect-video">
-                  <%= image_tag cover_card_url(top_tale.cover), alt: top_tale.cover.blob.filename.to_s, class: "block h-full w-full object-cover rounded-lg" %>
+                  <%= cover_card_picture_tag(top_tale.cover, alt: top_tale.cover.blob.filename.to_s, class: "block h-full w-full object-cover rounded-lg" ) %>
                   <div class="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out bg-[rgba(255,255,255,0.2)] dark:bg-[rgba(30,41,59,0.6)]"></div>
                 </div>
               <% end %>

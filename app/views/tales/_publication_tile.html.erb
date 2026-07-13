@@ -1,12 +1,12 @@
 <%# locals: (publication:, publication_tag_counts: nil) %>
 <article class="group flex gap-3 py-3.5">
   <%= link_to tale_path(publication), turbo_drive_visit_data.merge(class: 'relative h-24 w-24 shrink-0 overflow-hidden rounded bg-stone-100 dark:bg-gray-800') do %>
-    <%= image_tag cover_card_url(publication.cover),
+    <%= cover_card_picture_tag(publication.cover,
           alt: publication.cover.blob.filename.to_s,
           class: 'h-full w-full object-cover',
           loading: 'lazy',
           width: 192,
-          height: 192 %>
+          height: 192 ) %>
   <% end %>
 
   <div class="flex min-h-24 min-w-0 flex-1 flex-col justify-center">

@@ -19,6 +19,28 @@ module Meta
       assert_includes cover_card_url(@fiction.cover), '/rails/active_storage/representations'
     end
 
+    test 'cover_card_avif_url returns an avif representation when variants are available' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      assert_includes cover_card_avif_url(@fiction.cover), '/rails/active_storage/representations'
+    end
+
+    test 'cover_card_picture_tag renders avif and webp sources when variants are available' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      html = cover_card_picture_tag(@fiction.cover, alt: 'Cover', class: 'cover-card')
+
+      assert_match %r{<picture>.*type="image/avif".*type="image/webp".*class="cover-card"}m, html
+    end
+
+    test 'cover_card_picture_tag defers sources when lazy' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      html = cover_card_picture_tag(@fiction.cover, alt: 'Cover', lazy: true, id: 'cover-image')
+
+      assert html.include?('data-srcset=') && html.include?('data-url=') && html.include?('id="cover-image"')
+    end
+
     test 'cover_background_url returns a representation url for raster covers when variants are available' do
       skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
