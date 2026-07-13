@@ -23,6 +23,12 @@
       <%= render 'root/fictions', fictions: @top_fictions.limit(10) %>
     </div>
 
+    <% if @recently_updated_fictions.any? %>
+      <%= render 'root/recently_updated',
+                 fictions: @recently_updated_fictions,
+                 latest_chapters_by_fiction: @recently_updated_chapters %>
+    <% end %>
+
     <div class="my-4 border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
       <%= render 'shared/ads', advertisement: @advertisement %>
     </div>

@@ -8,6 +8,7 @@ class HomeController < ApplicationController
   def index
     @hero_banner = Root::HeroBanner.current(preview_key: params[:banner])
     @top_fictions = top_fictions
+    assign_recently_updated
     @videos = videos
     @video_tag_counts = search_tag_counts(
       Search::TagCounts.labels_from_youtube_videos(@videos, limit: Search::TagCounts::HOME_YOUTUBE_TAG_LIMIT)
@@ -25,6 +26,15 @@ class HomeController < ApplicationController
 
   def top_fictions
     Fictions::IndexVariablesManager.hot_updates.includes(:genres, :fiction_ratings)
+  end
+
+  def assign_recently_updated
+    @recently_updated_fictions = Fictions::IndexVariablesManager.latest_updates_for_homepage
+    return if @recently_updated_fictions.blank?
+
+    @recently_updated_chapters = Fictions::LatestReleasedChapters.for_fiction_ids(
+      @recently_updated_fictions.map(&:id)
+    )
   end
 
   def top_tales

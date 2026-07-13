@@ -7,7 +7,9 @@ module Fictions
     include IndexGenreLists
 
     LIST_CACHE_EXPIRY = 12.hours
-    LATEST_UPDATES_CACHE_EXPIRY = 1.hour
+    LATEST_UPDATES_CACHE_EXPIRY = 30.minutes
+    LATEST_UPDATES_INDEX_LIMIT = 9
+    LATEST_UPDATES_HOME_LIMIT = 8
     FILTERED_CACHE_EXPIRY = 12.hours
 
     def self.warm_index_caches!

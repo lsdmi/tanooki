@@ -55,6 +55,23 @@ module Fictions
       end
     end
 
+    test 'latest_updates_for_homepage loads only eight cached ids' do
+      with_memory_cache do
+        ids = (1..12).to_a
+        Rails.cache.write('latest_updates_ids', ids, expires_in: 30.minutes)
+        loaded_ids = nil
+
+        IndexVariablesManager.stub(:load_fictions_by_cached_ids, lambda { |cached_ids, **|
+          loaded_ids = cached_ids
+          Fiction.none
+        }) do
+          IndexVariablesManager.latest_updates_for_homepage
+        end
+
+        assert_equal ids.first(8), loaded_ids
+      end
+    end
+
     test 'badge id sets reuse cached list ids' do
       with_memory_cache do
         Rails.cache.write('latest_updates_ids', [1, 2, 3], expires_in: 1.hour)
