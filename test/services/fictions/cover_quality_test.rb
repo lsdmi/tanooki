@@ -29,15 +29,15 @@ module Fictions
       end
     end
 
-    test 'returns warn for legacy format with acceptable dimensions' do
+    test 'returns ok for legacy format with acceptable dimensions' do
       fiction = fictions(:one)
       attach_legacy_cover(fiction)
 
       FastImage.stub(:size, [600, 800]) do
         result = CoverQuality.call(fiction)
 
-        assert_predicate result, :warn?
-        assert_includes result.reasons, 'Обкладинка не у форматі WebP або AVIF.'
+        assert_predicate result, :ok?
+        assert_empty result.reasons
       end
     end
 
@@ -51,6 +51,18 @@ module Fictions
         assert_predicate result, :fail?
         assert_includes result.reasons, 'Ширина обкладинки має бути не менше 600px.'
         assert_includes result.reasons, 'Висота обкладинки має бути не менше 800px.'
+      end
+    end
+
+    test 'returns warn when aspect ratio is outside tolerance' do
+      fiction = fictions(:one)
+      fiction.cover.attach(valid_cover_upload)
+
+      FastImage.stub(:size, [800, 800]) do
+        result = CoverQuality.call(fiction)
+
+        assert_predicate result, :warn?
+        assert_includes result.reasons, 'Співвідношення сторін обкладинки має бути близько 3:4.'
       end
     end
 

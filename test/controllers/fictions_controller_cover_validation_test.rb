@@ -4,6 +4,7 @@ require 'test_helper'
 
 class FictionsControllerCoverValidationTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include CoverUploadHelper
 
   setup do
     sign_in users(:user_one)
@@ -29,7 +30,7 @@ class FictionsControllerCoverValidationTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_content
-    assert_includes response.body, 'Обкладинка має бути у форматі WebP або AVIF.'
+    assert_includes response.body, 'Обкладинка має бути WebP, AVIF, JPEG або PNG.'
   end
 
   test 'should update fiction with valid cover' do
@@ -45,6 +46,24 @@ class FictionsControllerCoverValidationTest < ActionDispatch::IntegrationTest
     @fiction.reload
 
     assert_equal 'Updated With Cover', @fiction.title
+    assert_equal 'image/webp', @fiction.cover.blob.content_type
+  end
+
+  test 'should update fiction with png cover stored as webp' do
+    skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+    patch fiction_url(@fiction), params: {
+      fiction: {
+        cover: valid_png_cover_upload,
+        scanlator_ids: [1],
+        title: 'Updated With PNG Cover'
+      }
+    }
+
+    assert_redirected_to fiction_path(@fiction)
+    @fiction.reload
+
+    assert_equal 'Updated With PNG Cover', @fiction.title
     assert_equal 'image/webp', @fiction.cover.blob.content_type
   end
 

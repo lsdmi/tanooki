@@ -23,7 +23,7 @@ class FictionsCoverPreviewTest < ActionDispatch::IntegrationTest
 
     assert_select '[data-fiction-cover-preview-target="previewImage"].object-cover.object-center'
     assert_select '[data-fiction-cover-preview-target="warnings"]'
-    assert_select '#fictions_cover[accept="image/webp,image/avif"]'
+    assert_select '#fictions_cover[accept="image/webp,image/avif,image/jpeg,image/png"]'
   end
 
   test 'edit fiction form wires cover preview stimulus controller' do

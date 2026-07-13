@@ -10,6 +10,8 @@ class FictionForm
   validate :cover_is_valid
 
   def save
+    return false unless normalize_cover_upload
+
     fiction.assign_attributes(params.except(:genre_ids, :scanlator_ids))
     assign_association_ids_from_params
     if valid? && fiction.save
@@ -45,6 +47,17 @@ class FictionForm
     return if validator.valid?
 
     validator.errors.each { |msg| errors.add(:cover, msg) }
+  end
+
+  def normalize_cover_upload
+    cover_file = params[:cover]
+    return true if cover_file.blank?
+
+    params[:cover] = Fictions::CoverUploadNormalizer.call(cover_file)
+    true
+  rescue Fictions::CoverUploadNormalizer::Error => e
+    errors.add(:cover, e.message)
+    false
   end
 
   def copy_errors_to_fiction

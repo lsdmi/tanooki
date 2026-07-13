@@ -48,6 +48,6 @@ class BannerImageValidator
     aspect = width.to_f / height
     return if (aspect - IDEAL_ASPECT).abs <= ASPECT_MARGIN
 
-    errors << "Співвідношення сторін має бути близько #{IDEAL_ASPECT}:1."
+    errors << "Співвідношення сторін банера має бути близько #{IDEAL_ASPECT}:1."
   end
 end

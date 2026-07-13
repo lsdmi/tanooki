@@ -43,7 +43,7 @@ class CoverImageValidatorTest < ActiveSupport::TestCase
         validator = CoverImageValidator.new(file)
 
         assert_not validator.valid?
-        assert_includes validator.errors, 'Обкладинка має бути у форматі WebP або AVIF.'
+        assert_includes validator.errors, 'Обкладинка має бути WebP, AVIF, JPEG або PNG.'
       end
     end
   end
@@ -79,7 +79,7 @@ class CoverImageValidatorTest < ActiveSupport::TestCase
         validator = CoverImageValidator.new(file)
 
         assert_not validator.valid?
-        assert_includes validator.errors, 'Співвідношення сторін має бути близько 3:4.'
+        assert_includes validator.errors, 'Співвідношення сторін обкладинки має бути близько 3:4.'
       end
     end
   end

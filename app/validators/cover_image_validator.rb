@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# Validates uploaded fiction covers: WebP/AVIF type, 3:4 aspect, min dimensions, and max file size.
+# Validates uploaded fiction covers: WebP/AVIF (or convertible JPEG/PNG), 3:4 aspect, min dimensions, and max file size.
 class CoverImageValidator
   ALLOWED_CONTENT_TYPES = %w[image/webp image/avif].freeze
+  CONVERTIBLE_CONTENT_TYPES = %w[image/jpeg image/jpg image/png].freeze
+  ACCEPTED_UPLOAD_CONTENT_TYPES = (ALLOWED_CONTENT_TYPES + CONVERTIBLE_CONTENT_TYPES).freeze
   MIN_WIDTH = 600
   MIN_HEIGHT = 800
   IDEAL_ASPECT = 0.75
@@ -37,7 +39,7 @@ class CoverImageValidator
   def validate_format
     return if file.content_type.in?(ALLOWED_CONTENT_TYPES)
 
-    errors << 'Обкладинка має бути у форматі WebP або AVIF.'
+    errors << 'Обкладинка має бути WebP, AVIF, JPEG або PNG.'
   end
 
   def validate_byte_size
@@ -65,7 +67,7 @@ class CoverImageValidator
     aspect = width.to_f / height
     return if (aspect - IDEAL_ASPECT).abs <= ASPECT_TOLERANCE
 
-    errors << 'Співвідношення сторін має бути близько 3:4.'
+    errors << 'Співвідношення сторін обкладинки має бути близько 3:4.'
   end
 
   def byte_size

@@ -41,9 +41,9 @@ module Fictions
       Result.new(status: status, reasons: reasons, metadata: metadata)
     end
 
-    def collect_reasons(blob, width, height)
+    def collect_reasons(_blob, width, height)
       fail_reasons = dimension_failures(width, height)
-      warn_reasons = soft_issues(blob, width, height)
+      warn_reasons = soft_issues(width, height)
 
       [fail_reasons, warn_reasons]
     end
@@ -58,14 +58,9 @@ module Fictions
       failures
     end
 
-    def soft_issues(blob, width, height)
+    def soft_issues(width, height)
       issues = []
-      issues << 'Обкладинка не у форматі WebP або AVIF.' unless modern_format?(blob)
-      if oversized?(blob)
-        max_mb = CoverImageValidator::MAX_BYTE_SIZE / 1.megabyte
-        issues << "Розмір файлу обкладинки не може перевищувати #{max_mb} МБ."
-      end
-      issues << 'Співвідношення сторін має бути близько 3:4.' unless aspect_ok?(width, height)
+      issues << 'Співвідношення сторін обкладинки має бути близько 3:4.' unless aspect_ok?(width, height)
       issues
     end
 
@@ -74,14 +69,6 @@ module Fictions
       return :warn if warn_reasons.any?
 
       :ok
-    end
-
-    def modern_format?(blob)
-      blob.content_type.in?(CoverImageValidator::ALLOWED_CONTENT_TYPES)
-    end
-
-    def oversized?(blob)
-      blob.byte_size > CoverImageValidator::MAX_BYTE_SIZE
     end
 
     def aspect_ok?(width, height)

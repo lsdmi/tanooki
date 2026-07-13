@@ -7,8 +7,7 @@ export default class FictionCoverPreviewController extends Controller {
     minHeight: { type: Number, default: 800 },
     idealAspect: { type: Number, default: 0.75 },
     aspectTolerance: { type: Number, default: 0.1 },
-    maxMegabytes: { type: Number, default: 2 },
-    allowedTypes: Array
+    maxMegabytes: { type: Number, default: 2 }
   };
 
   connect() {
@@ -63,10 +62,6 @@ export default class FictionCoverPreviewController extends Controller {
   collectWarnings(file, width, height) {
     const warnings = [];
 
-    if (!this.allowedTypesValue.includes(file.type)) {
-      warnings.push("Обкладинка має бути у форматі WebP або AVIF.");
-    }
-
     if (file.size > this.maxBytesValue) {
       warnings.push(`Розмір файлу обкладинки не може перевищувати ${this.maxMegabytesValue} МБ.`);
     }
@@ -81,7 +76,7 @@ export default class FictionCoverPreviewController extends Controller {
 
     const aspect = width / height;
     if (Math.abs(aspect - this.idealAspectValue) > this.aspectToleranceValue) {
-      warnings.push("Співвідношення сторін має бути близько 3:4.");
+      warnings.push("Співвідношення сторін обкладинки має бути близько 3:4.");
     }
 
     return warnings;

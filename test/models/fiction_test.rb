@@ -117,7 +117,7 @@ class FictionTest < ActiveSupport::TestCase
     @fiction.cover.attach(invalid_image)
 
     assert_not @fiction.valid?
-    assert_includes @fiction.errors[:cover], 'має бути WebP або AVIF'
+    assert_includes @fiction.errors[:cover], 'має бути WebP або AVIF (JPEG/PNG конвертуються автоматично)'
   end
 
   test 'cover allows legacy attachment on save without re-upload' do

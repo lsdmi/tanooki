@@ -43,7 +43,7 @@ class FictionFormTest < ActiveSupport::TestCase
     )
 
     assert_not form.save
-    assert_includes fiction.errors[:cover], 'Обкладинка має бути у форматі WebP або AVIF.'
+    assert_includes fiction.errors[:cover], 'Обкладинка має бути WebP, AVIF, JPEG або PNG.'
   end
 
   test 'accepts valid cover upload' do
@@ -61,6 +61,26 @@ class FictionFormTest < ActiveSupport::TestCase
     )
 
     assert form.save
+  end
+
+  test 'converts png upload to webp before save' do
+    skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+    fiction = fictions(:one)
+    form = FictionForm.new(
+      fiction: fiction,
+      params: {
+        title: fiction.title,
+        author: fiction.author,
+        description: fiction.description,
+        total_chapters: fiction.total_chapters,
+        scanlator_ids: [1],
+        cover: valid_png_cover_upload
+      }
+    )
+
+    assert form.save
+    assert_equal 'image/webp', fiction.cover.blob.content_type
   end
 
   test 'allows update without cover param for legacy attachment' do

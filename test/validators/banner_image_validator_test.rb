@@ -55,7 +55,7 @@ class BannerImageValidatorTest < ActiveSupport::TestCase
         validator = BannerImageValidator.new(file)
 
         assert_not validator.valid?
-        assert_includes validator.errors, 'Співвідношення сторін має бути близько 3.0:1.'
+        assert_includes validator.errors, 'Співвідношення сторін банера має бути близько 3.0:1.'
       end
     end
   end
