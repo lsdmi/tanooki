@@ -2,7 +2,22 @@
 
 require 'uri'
 
+# External link builders and URL helpers for views.
 module ExternalUrls
+  TELEGRAM_PROFILE_BASE = 'https://telegram.me/'
+  TELEGRAM_SITE_HANDLE = 'bakaInUa'
+
+  def self.profile_url(telegram_id)
+    handle = telegram_id.to_s.delete_prefix('@')
+    return if handle.blank?
+
+    "#{TELEGRAM_PROFILE_BASE}#{handle}"
+  end
+
+  def self.site_url
+    profile_url(TELEGRAM_SITE_HANDLE)
+  end
+
   # Normalizes external URLs and linkifies http(s) substrings in plain text.
   module UrlsHelper
     DEFAULT_LINKIFY_LINK_CLASS =
@@ -15,6 +30,14 @@ module ExternalUrls
       return s if s.blank?
 
       s.start_with?('http') ? s : "https://#{s}"
+    end
+
+    def telegram_profile_url(telegram_id)
+      ExternalUrls.profile_url(telegram_id)
+    end
+
+    def telegram_site_url
+      ExternalUrls.site_url
     end
 
     # Plain text with http(s) URLs turned into external links. HTML in the source is escaped.

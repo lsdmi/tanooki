@@ -20,6 +20,17 @@ module ExternalUrls
       assert_equal '', view.https_url('')
     end
 
+    test 'telegram_profile_url builds telegram.me profile links' do
+      assert_equal 'https://telegram.me/bakaInUa', view.telegram_site_url
+      assert_equal 'https://telegram.me/scanlator_one', view.telegram_profile_url('scanlator_one')
+      assert_equal 'https://telegram.me/scanlator_one', view.telegram_profile_url('@scanlator_one')
+    end
+
+    test 'telegram_profile_url returns nil for blank handles' do
+      assert_nil view.telegram_profile_url(nil)
+      assert_nil view.telegram_profile_url('')
+    end
+
     test 'linkify_urls returns nil for blank input' do
       assert_nil view.linkify_urls(nil)
       assert_nil view.linkify_urls('')

@@ -19,7 +19,7 @@ module Chapters
     end
 
     def render
-      self.class.normalize(@chapter.content.to_s)
+      ActiveSupport::SafeBuffer.new(self.class.normalize(@chapter.content.to_s))
     end
   end
 end

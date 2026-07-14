@@ -8,10 +8,14 @@ module Fictions
       fiction = fictions(:one)
       older = chapters(:one)
       newer = chapters(:two)
-      # rubocop:disable Rails/SkipsModelValidations -- ranking depends on historical publish timestamps
-      older.update_columns(published_at: 2.days.ago, created_at: 2.days.ago)
-      newer.update_columns(published_at: 1.hour.ago, created_at: 1.hour.ago, fiction_id: fiction.id)
-      # rubocop:enable Rails/SkipsModelValidations
+
+      travel_to Time.zone.parse('2026-07-10 12:00') do
+        older.update!(published_at: Time.current, scanlator_ids: older.scanlators.ids)
+      end
+
+      travel_to Time.zone.parse('2026-07-13 12:00') do
+        newer.update!(published_at: Time.current, scanlator_ids: newer.scanlators.ids)
+      end
 
       result = LatestReleasedChapters.for_fiction_ids([fiction.id])
 

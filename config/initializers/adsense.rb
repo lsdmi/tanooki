@@ -8,7 +8,9 @@ module Adsense
     chapter_reader_top: ENV['ADSENSE_CHAPTER_READER_TOP_SLOT'].presence,
     chapter_reader_bottom: ENV['ADSENSE_CHAPTER_READER_BOTTOM_SLOT'].presence,
     fiction_alphabetical: ENV['ADSENSE_FICTION_ALPHABETICAL_SLOT'].presence,
-    bookshelf: ENV['ADSENSE_BOOKSHELF_SLOT'].presence
+    bookshelf: ENV['ADSENSE_BOOKSHELF_SLOT'].presence,
+    home_banner_left: ENV['ADSENSE_HOME_BANNER_LEFT_SLOT'].presence,
+    home_banner_right: ENV['ADSENSE_HOME_BANNER_RIGHT_SLOT'].presence
   }.freeze
 
   CHAPTER_READER_SLOTS = {

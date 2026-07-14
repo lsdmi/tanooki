@@ -72,7 +72,7 @@ module StructuredData
         identifier: scanlator.slug,
         image: scanlator.avatar.present? ? url_for(scanlator.avatar) : 'scanlator_avatar.webp',
         name: scanlator.title,
-        sameAs: ["https://t.me/#{scanlator.telegram_id}"]
+        sameAs: [telegram_profile_url(scanlator.telegram_id)]
       }
     end
 

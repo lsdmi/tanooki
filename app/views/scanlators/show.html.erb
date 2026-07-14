@@ -9,7 +9,7 @@
             <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-no-repeat bg-cover bg-center border-4 border-stone-300 shadow-lg transform hover:scale-110 transition-transform duration-300" style="background-image: url('<%= scanlator_avatar_url(@scanlator.avatar) %>');"></div>
             <div class="ml-4">
               <%= tag.h1 @scanlator.title, class: "text-3xl md:text-4xl text-stone-100 font-bold mb-2 text-shadow-lg anime-text" %>
-              <%= link_to "https://t.me/#{@scanlator.telegram_id}", target: '_blank', rel: 'noopener noreferrer', class: 'text-lg text-stone-300 hover:text-stone-100 transition-colors duration-300 hover:underline anime-text' do %>
+              <%= link_to telegram_profile_url(@scanlator.telegram_id), target: '_blank', rel: 'noopener noreferrer', class: 'text-lg text-stone-300 hover:text-stone-100 transition-colors duration-300 hover:underline anime-text' do %>
                 @<%= @scanlator.telegram_id %>
               <% end if @scanlator.telegram_id? %>
             </div>

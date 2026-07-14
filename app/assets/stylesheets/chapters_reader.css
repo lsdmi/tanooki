@@ -485,3 +485,102 @@ html.adblock-likely .bookshelf-show__ad,
   outline: none;
   box-shadow: 0 0 0 2px rgb(244 63 94 / 0.2);
 }
+
+/* Homepage mid-page dual banners (626×166 design, stacked mobile / side-by-side desktop) */
+.home-banners {
+  margin-bottom: 2.5rem; /* 40px mobile */
+}
+
+@media (min-width: 640px) {
+  .home-banners {
+    margin-bottom: 3.5rem; /* 56px sm+ */
+  }
+}
+
+.home-banners__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem; /* 12px */
+}
+
+@media (min-width: 640px) {
+  .home-banners__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem; /* 28px */
+  }
+}
+
+.home-banner-slot {
+  overflow: hidden;
+  border-radius: 0.5rem; /* 8px mobile */
+}
+
+@media (min-width: 640px) {
+  .home-banner-slot {
+    border-radius: 0.75rem; /* 12px */
+  }
+}
+
+.home-banner-slot--preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 626 / 166;
+  border: 2px dashed rgb(168 162 158); /* stone-400 */
+  background: rgb(245 245 244); /* stone-100 */
+  color: rgb(120 113 108); /* stone-500 */
+  text-align: center;
+}
+
+.dark .home-banner-slot--preview {
+  border-color: rgb(75 85 99); /* gray-600 */
+  background: rgb(31 41 55); /* gray-800 */
+  color: rgb(156 163 175); /* gray-400 */
+}
+
+.home-banner-slot__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-banner-slot__placement {
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+}
+
+.home-banner-slot.reader-ad-slot--adsense-filled {
+  margin: 0;
+}
+
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  display: flex;
+  aspect-ratio: 626 / 166;
+  min-height: 0;
+  max-height: none;
+}
+
+.home-banners:not(:has(.home-banner-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
+  display: none;
+  margin: 0;
+}
+
+html.adblock-likely .home-banner-slot.reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.home-banners__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}

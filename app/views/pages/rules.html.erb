@@ -175,8 +175,8 @@
             Звернення та скарги
           </h2>
           <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
-            <p>Якщо ви вважаєте, що ваше порушення було помилковим, звертайтеся до адміністрації через <a href="https://t.me/bakaInUa" class="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener">Telegram</a>.</p>
-            <p>Для скарг на інших користувачів або повідомлення про порушення правил, також звертайтеся до нас через <a href="https://t.me/bakaInUa" class="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener">Telegram</a>.</p>
+            <p>Якщо ви вважаєте, що ваше порушення було помилковим, звертайтеся до адміністрації через <a href="<%= telegram_site_url %>" class="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener">Telegram</a>.</p>
+            <p>Для скарг на інших користувачів або повідомлення про порушення правил, також звертайтеся до нас через <a href="<%= telegram_site_url %>" class="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener">Telegram</a>.</p>
           </div>
         </section>
       </div>
@@ -197,7 +197,7 @@
               <%= link_to "Приєднатися до спільноти", register_path,
                   class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm" %>
             <% else %>
-              <a href="https://t.me/bakaInUa" target="_blank" rel="noopener"
+              <a href="<%= telegram_site_url %>" target="_blank" rel="noopener"
                  class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm">
                 Наш Telegram
               </a>

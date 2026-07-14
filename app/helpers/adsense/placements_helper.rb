@@ -26,5 +26,9 @@ module Adsense
     def adsense_adblock_check?
       adsense_allowed? || adsense_slot_development_preview?
     end
+
+    def adsense_home_banners_renderable?
+      adsense_slot_renderable?(:home_banner_left) || adsense_slot_renderable?(:home_banner_right)
+    end
   end
 end

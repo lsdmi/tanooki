@@ -20,29 +20,31 @@ module Scanlators
 
     test 'reports inactive when no recent chapter releases' do
       scanlator = scanlators(:one)
-      stale_time = 90.days.ago
-      scanlator.chapters.find_each do |chapter|
-        # rubocop:disable Rails/SkipsModelValidations -- activity window depends on historical timestamps
-        chapter.update_columns(published_at: stale_time, created_at: stale_time)
-        # rubocop:enable Rails/SkipsModelValidations
-      end
+      backdate_scanlator_chapters!(scanlator, 90.days.ago)
 
       assert_not Stats.compute(scanlator).active_recently?
     end
 
     test 'reports active when a chapter was released within the activity window' do
       scanlator = scanlators(:one)
-      stale_time = 90.days.ago
-      scanlator.chapters.find_each do |chapter|
-        # rubocop:disable Rails/SkipsModelValidations -- activity window depends on historical timestamps
-        chapter.update_columns(published_at: stale_time, created_at: stale_time)
-        # rubocop:enable Rails/SkipsModelValidations
-      end
-      # rubocop:disable Rails/SkipsModelValidations -- activity window depends on historical timestamps
-      scanlator.chapters.first.update_columns(published_at: 1.day.ago, created_at: 1.day.ago)
-      # rubocop:enable Rails/SkipsModelValidations
+      backdate_scanlator_chapters!(scanlator, 90.days.ago)
+      release_chapter_at!(scanlator.chapters.first, 1.day.ago)
 
       assert_predicate Stats.compute(scanlator), :active_recently?
+    end
+
+    private
+
+    def backdate_scanlator_chapters!(scanlator, time)
+      scanlator.chapters.find_each do |chapter|
+        release_chapter_at!(chapter, time)
+      end
+    end
+
+    def release_chapter_at!(chapter, time)
+      travel_to time do
+        chapter.update!(published_at: Time.current, scanlator_ids: chapter.scanlators.ids)
+      end
     end
   end
 end

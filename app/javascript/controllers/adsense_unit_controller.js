@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { isAdblockLikely } from "adblock_detect"
 
-const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000 }
+const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000, home_banner: 4000 }
 const SCRIPT_RETRY_MS = 250
 const MAX_SCRIPT_RETRIES = 10
 const PENDING_CLASS = "reader-ad-slot--pending"

@@ -6,7 +6,7 @@ module StructuredData
     NAME = 'Бака'
     FOUNDING_YEAR = '2023'
     DESCRIPTION = 'Бака — де ранобе читають українською: переклади, блоги, відео й спільнота, яка тримає все це живим.'
-    SOCIAL_URLS = ['https://t.me/bakaInUa'].freeze
+    SOCIAL_URLS = [ExternalUrls.site_url].freeze
     EXPERTISE_TOPICS = [
       'українські переклади ранобе',
       'лайт-новели',

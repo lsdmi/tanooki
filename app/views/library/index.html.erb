@@ -93,7 +93,7 @@
                 <% end %>
                 <%= link_to translator.title, scanlator_path(translator), class: 'leading-tight text-xs lg:text-sm font-semibold text-stone-900 dark:text-gray-100 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight text-center' %>
                 <% if translator.telegram_id? %>
-                  <%= link_to "@#{translator.telegram_id}", "https://t.me/#{translator.telegram_id}", target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+                  <%= link_to "@#{translator.telegram_id}", telegram_profile_url(translator.telegram_id), target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
                 <% else %>
                   <div class="text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center"><%= translator.description %></div>
                 <% end %>

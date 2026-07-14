@@ -56,7 +56,7 @@ module Chapters
       fiction = fictions(:one)
       vol1, vol2 = create_volume_pair_chapters(fiction)
       scope = fiction.chapters.where(id: [vol1.id, vol2.id])
-      titles = ListSectionIndex.new(scope, order: :desc).call.map { |section| section[:title] } # rubocop:disable Rails/Pluck
+      titles = ListSectionIndex.new(scope, order: :desc).call.pluck(:title)
 
       assert_equal ['Том 2', 'Том 1'], titles
     ensure
@@ -75,7 +75,7 @@ module Chapters
     end
 
     def section_keys(sections)
-      sections.map { |section| section[:section_key] } # rubocop:disable Rails/Pluck
+      sections.pluck(:section_key)
     end
 
     def assert_matching_chapter_ids(full_sections, index_sections)

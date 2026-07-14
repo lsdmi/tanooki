@@ -1,0 +1,17 @@
+<%# Dual homepage banner row: stacked on mobile, side-by-side on sm+. %>
+<% return unless adsense_home_banners_renderable? %>
+
+<section class="home-banners" aria-label="Реклама">
+  <div class="home-banners__grid">
+    <div class="home-banners__slot">
+      <%= render 'shared/home_banner_adsense_slot',
+                 placement: :home_banner_left,
+                 navigation_key: 'home-mid-left' %>
+    </div>
+    <div class="home-banners__slot">
+      <%= render 'shared/home_banner_adsense_slot',
+                 placement: :home_banner_right,
+                 navigation_key: 'home-mid-right' %>
+    </div>
+  </div>
+</section>

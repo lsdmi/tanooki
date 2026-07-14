@@ -20,6 +20,30 @@ module Adsense
       assert_nil adsense_slot_id(:bookshelf)
     end
 
+    test 'home banner left slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:home_banner_left)
+      assert_nil adsense_slot_id(:home_banner_left)
+    end
+
+    test 'home banner right slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:home_banner_right)
+      assert_nil adsense_slot_id(:home_banner_right)
+    end
+
+    test 'adsense_home_banners_renderable? is true in development without live slots' do
+      define_singleton_method(:adsense_allowed?) { false }
+
+      if Rails.env.development?
+        assert_predicate self, :adsense_home_banners_renderable?
+      else
+        assert_not adsense_home_banners_renderable?
+      end
+    end
+
     test 'adsense_slot_live? is false when adsense is disabled' do
       define_singleton_method(:adsense_allowed?) { false }
 

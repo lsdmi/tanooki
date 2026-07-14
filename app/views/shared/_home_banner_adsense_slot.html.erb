@@ -1,0 +1,30 @@
+<%# locals: (placement:, navigation_key:) %>
+<% return unless adsense_slot_renderable?(placement) %>
+
+<% slot_dom_id = "adsense-slot-#{placement}-#{navigation_key}" %>
+<% live = adsense_slot_live?(placement) %>
+
+<% if live %>
+  <div id="<%= slot_dom_id %>"
+       class="home-banner-slot reader-ad-slot reader-ad-slot--top relative overflow-hidden"
+       data-controller="adsense-unit"
+       data-adsense-unit-live-value="true"
+       data-adsense-unit-placement-value="home_banner"
+       data-adsense-unit-navigation-key-value="<%= navigation_key %>">
+    <div class="home-banner-slot__frame reader-ad-slot__frame">
+      <ins class="adsbygoogle reader-ad-slot__adsense"
+           style="display:block"
+           data-ad-client="<%= adsense_client_id %>"
+           data-ad-slot="<%= adsense_slot_id(placement) %>"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+  </div>
+<% else %>
+  <div id="<%= slot_dom_id %>"
+       class="home-banner-slot home-banner-slot--preview"
+       aria-hidden="true">
+    <span class="home-banner-slot__label">AdSense</span>
+    <span class="home-banner-slot__placement"><%= placement %></span>
+  </div>
+<% end %>
