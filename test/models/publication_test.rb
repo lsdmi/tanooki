@@ -43,8 +43,8 @@ class PublicationTest < ActiveSupport::TestCase
     assert_includes Publication.highlights, @publication
   end
 
-  test 'should have last_month scope' do
-    assert_includes Publication.last_month, @publication
+  test 'should have weekly scope' do
+    assert_includes Publication.weekly, @publication
   end
 
   test 'should have many publication tags' do

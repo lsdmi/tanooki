@@ -91,7 +91,7 @@ class ApplicationController < ActionController::Base
 
   def popular_blogs
     Rails.cache.fetch('popular_blogs', expires_in: 1.hour) do
-      Publication.highlights.last_month.order(views: :desc).limit(2)
+      Publication.highlights.weekly.order(views: :desc).limit(2)
     end
   end
 

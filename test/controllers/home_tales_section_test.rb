@@ -4,7 +4,7 @@ require 'test_helper'
 
 class HomeTalesSectionTest < ActionDispatch::IntegrationTest
   def setup
-    Rails.cache.delete('top_tales')
+    Rails.cache.delete('top_tale/v1')
   end
 
   test 'news and blogs section renders full-width editorial shell' do

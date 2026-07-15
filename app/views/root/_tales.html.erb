@@ -1,5 +1,5 @@
-<%# locals: (tales:, top_tales:) %>
-<% editorial = home_tales_editorial_cards(top_tales, tales) %>
+<%# locals: (tales:, top_tale:) %>
+<% editorial = home_tales_editorial_cards(top_tale, tales) %>
 <% return if editorial[:hero].blank? %>
 
 <section class="mb-10 mt-10 w-full lg:mb-14 lg:mt-14" aria-labelledby="home-tales">

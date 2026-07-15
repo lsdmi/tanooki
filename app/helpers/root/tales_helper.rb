@@ -15,14 +15,11 @@ module Root
     COVER_IMAGE_CLASS =
       'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-[1.03]'
 
-    def home_tales_editorial_cards(top_tales, tales)
-      ordered = top_tales.to_a + tales.to_a
-      return { hero: nil, left: [], right: [], side: [] } if ordered.empty?
+    def home_tales_editorial_cards(top_tale, tales)
+      return home_tales_empty_editorial if top_tale.blank? && tales.blank?
 
-      hero, *rest = ordered
-      left = rest.shift(EDITORIAL_SIDE_COUNT) || []
-      right = rest.shift(EDITORIAL_SIDE_COUNT) || []
-      { hero: hero, left: left, right: right, side: left + right }
+      hero = top_tale || tales.first
+      { hero: hero, **home_tales_editorial_columns(home_tales_side_tales(tales, hero)) }
     end
 
     def home_tales_title_link_class
@@ -42,6 +39,25 @@ module Root
 
     def tale_published_date(publication)
       l(publication.created_at, format: :short).downcase
+    end
+
+    def home_tales_empty_editorial
+      { hero: nil, left: [], right: [], side: [] }
+    end
+
+    def home_tales_side_tales(tales, hero)
+      tales.to_a
+           .reject { |tale| tale == hero }
+           .uniq
+           .sort_by(&:created_at)
+           .reverse
+           .first(EDITORIAL_TALE_LIMIT)
+    end
+
+    def home_tales_editorial_columns(side)
+      left = side.first(EDITORIAL_SIDE_COUNT) || []
+      right = side.drop(EDITORIAL_SIDE_COUNT).first(EDITORIAL_SIDE_COUNT) || []
+      { left: left, right: right, side: left + right }
     end
   end
 end

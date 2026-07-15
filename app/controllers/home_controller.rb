@@ -12,7 +12,7 @@ class HomeController < ApplicationController
     @video_tag_counts = search_tag_counts(
       Search::TagCounts.labels_from_youtube_videos(@videos, limit: Search::TagCounts::HOME_YOUTUBE_TAG_LIMIT)
     )
-    @top_tales = top_tales
+    @top_tale = top_tale
     @tales = tales
     @pokemon_ad = Advertisement.find_by(slug: 'pokemon')
   end
@@ -20,11 +20,11 @@ class HomeController < ApplicationController
   private
 
   def tales
-    Publication
-      .includes(:rich_text_description, cover_attachment: :blob)
-      .order(created_at: :desc)
-      .excluding(@top_tales)
-      .limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
+    scope = Publication
+            .includes(:rich_text_description, cover_attachment: :blob)
+            .order(created_at: :desc)
+    scope = scope.where.not(id: @top_tale.id) if @top_tale
+    scope.limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
   end
 
   def top_fictions
@@ -40,14 +40,13 @@ class HomeController < ApplicationController
     )
   end
 
-  def top_tales
-    Rails.cache.fetch('top_tales', expires_in: 12.hours) do
-      Publication.highlights
-                 .includes({ cover_attachment: :blob }, :rich_text_description)
-                 .last_month
-                 .order(views: :desc)
-                 .limit(1)
+  def top_tale
+    publication_id = Rails.cache.fetch('top_tale/v1', expires_in: 12.hours) do
+      Publication.weekly.order(views: :desc).limit(1).pick(:id)
     end
+    return Publication.last if publication_id.blank?
+
+    Publication.includes({ cover_attachment: :blob }, :rich_text_description).find_by(id: publication_id)
   end
 
   def videos
