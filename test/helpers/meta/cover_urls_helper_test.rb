@@ -25,6 +25,22 @@ module Meta
       assert_includes cover_card_avif_url(@fiction.cover), '/rails/active_storage/representations'
     end
 
+    test 'cover_card_picture_tag accepts a featured preset for larger editorial tiles' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      html = cover_card_picture_tag(@fiction.cover, preset: :featured, alt: 'Cover', class: 'cover-card')
+
+      assert_match %r{<picture>.*type="image/avif".*type="image/webp".*class="cover-card"}m, html
+    end
+
+    test 'cover_card_picture_tag accepts a wide preset for 16:9 tiles' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      html = cover_card_picture_tag(@fiction.cover, preset: :wide, alt: 'Cover', class: 'cover-card')
+
+      assert_match %r{<picture>.*type="image/avif".*type="image/webp"}m, html
+    end
+
     test 'cover_card_picture_tag renders avif and webp sources when variants are available' do
       skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 

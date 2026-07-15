@@ -488,13 +488,7 @@ html.adblock-likely .bookshelf-show__ad,
 
 /* Homepage mid-page dual banners (626×166 design, stacked mobile / side-by-side desktop) */
 .home-banners {
-  margin-bottom: 2.5rem; /* 40px mobile */
-}
-
-@media (min-width: 640px) {
-  .home-banners {
-    margin-bottom: 3.5rem; /* 56px sm+ */
-  }
+  margin-bottom: 0;
 }
 
 .home-banners__grid {
@@ -521,6 +515,11 @@ html.adblock-likely .bookshelf-show__ad,
   }
 }
 
+.home-banner-slot--preview,
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  aspect-ratio: 626 / 166;
+}
+
 .home-banner-slot--preview {
   display: flex;
   flex-direction: column;
@@ -529,7 +528,6 @@ html.adblock-likely .bookshelf-show__ad,
   gap: 0.25rem;
   box-sizing: border-box;
   width: 100%;
-  aspect-ratio: 626 / 166;
   border: 2px dashed rgb(168 162 158); /* stone-400 */
   background: rgb(245 245 244); /* stone-100 */
   color: rgb(120 113 108); /* stone-500 */
@@ -560,7 +558,6 @@ html.adblock-likely .bookshelf-show__ad,
 
 .home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
   display: flex;
-  aspect-ratio: 626 / 166;
   min-height: 0;
   max-height: none;
 }

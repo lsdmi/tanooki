@@ -16,6 +16,7 @@ module ApplicationHelper
   include Meta::TagsHelper
   include Root::PopularFictionsHelper
   include Root::RecentlyUpdatedHelper
+  include Root::TalesHelper
   include StructuredData::JsonLdHelper
   include Ui::ComponentHelper
 end

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { isAdblockLikely } from "adblock_detect"
 
-const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000, home_banner: 4000 }
+const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000 }
 const SCRIPT_RETRY_MS = 250
 const MAX_SCRIPT_RETRIES = 10
 const PENDING_CLASS = "reader-ad-slot--pending"
@@ -222,7 +222,8 @@ export default class extends Controller {
   }
 
   fillTimeoutMs() {
-    return FILL_TIMEOUT_MS[this.placementValue] || FILL_TIMEOUT_MS.top
+    const placement = this.placementValue === "home_banner" ? "bottom" : this.placementValue
+    return FILL_TIMEOUT_MS[placement] || FILL_TIMEOUT_MS.top
   }
 
   isFilled(ins) {

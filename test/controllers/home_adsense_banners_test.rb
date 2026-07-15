@@ -4,7 +4,7 @@ require 'test_helper'
 
 class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
   test 'homepage renders dual adsense banner row in development preview' do
-    skip 'Homepage AdSense previews are development-only' unless Rails.env.development?
+    skip 'Homepage AdSense previews require Rails.env.development?' unless Rails.env.development?
 
     Search::TagCounts.stub(:call, {}) { get root_url }
 

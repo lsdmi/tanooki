@@ -28,7 +28,7 @@ module Adsense
     end
 
     def adsense_home_banners_renderable?
-      adsense_slot_renderable?(:home_banner_left) || adsense_slot_renderable?(:home_banner_right)
+      Adsense::HOME_BANNER_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
     end
   end
 end

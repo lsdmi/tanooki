@@ -3,10 +3,10 @@
 module Meta
   # Renders fiction cover cards as <picture> with AVIF/WebP sources.
   module CoverCardPictureHelper
-    def cover_card_picture_tag(attachment, **)
+    def cover_card_picture_tag(attachment, preset: :card, **)
       return unless attachment&.attached?
 
-      urls = cover_card_variant_urls(attachment)
+      urls = cover_card_variant_urls(attachment, preset:)
       return image_tag(urls[:fallback], **) unless urls[:webp]
 
       cover_card_picture(urls, **)

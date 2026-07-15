@@ -1,0 +1,28 @@
+<%# locals: (publication:, variant:) %>
+<% featured = variant.to_sym == :featured %>
+<article class="flex h-full flex-col overflow-hidden">
+  <%= link_to tale_path(publication),
+              turbo_drive_visit_data.merge(
+                class: [
+                  'group/cover relative block shrink-0 overflow-hidden bg-gray-800',
+                  featured ? 'aspect-[4/3] rounded-xl lg:aspect-auto lg:min-h-0 lg:flex-1' : 'aspect-video rounded-lg'
+                ].join(' ')
+              ) do %>
+    <%= home_tales_cover_picture(publication, preset: featured ? :featured : :wide) %>
+  <% end %>
+
+  <div class="<%= featured ? 'flex shrink-0 flex-col pt-3' : 'flex min-h-0 flex-1 flex-col pt-2' %>"
+       data-controller="tale-card-text">
+    <h3 class="<%= featured ? 'line-clamp-2 text-base font-bold leading-snug sm:text-lg' : 'line-clamp-2 text-sm font-bold leading-snug sm:text-[15px]' %>"
+        data-tale-card-text-target="title">
+      <%= link_to publication.title, tale_path(publication), turbo_drive_visit_data.merge(class: home_tales_title_link_class) %>
+    </h3>
+    <p class="<%= featured ? 'mt-2 line-clamp-2 text-sm' : 'mt-1 line-clamp-2 text-xs' %> leading-relaxed text-gray-300"
+       data-tale-card-text-target="description">
+      <%= publication.description.to_plain_text %>
+    </p>
+    <p class="<%= featured ? 'mt-3 text-sm' : 'mt-2 text-xs sm:text-sm' %> text-cyan-300 dark:text-rose-300">
+      <%= tale_published_date(publication) %>
+    </p>
+  </div>
+</article>

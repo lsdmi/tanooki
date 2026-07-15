@@ -20,26 +20,23 @@ module Adsense
       assert_nil adsense_slot_id(:bookshelf)
     end
 
-    test 'home banner left slot is not live without env slot id' do
+    test 'home banner slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 
-      assert_not adsense_slot_live?(:home_banner_left)
-      assert_nil adsense_slot_id(:home_banner_left)
+      Adsense::HOME_BANNER_PLACEMENTS.each_key do |placement|
+        assert_not adsense_slot_live?(placement)
+        assert_nil adsense_slot_id(placement)
+      end
     end
 
-    test 'home banner right slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:home_banner_right)
-      assert_nil adsense_slot_id(:home_banner_right)
-    end
-
-    test 'adsense_home_banners_renderable? is true in development without live slots' do
+    test 'adsense_home_banners_renderable? follows development preview rules' do
       define_singleton_method(:adsense_allowed?) { false }
 
-      if Rails.env.development?
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
         assert_predicate self, :adsense_home_banners_renderable?
-      else
+      end
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         assert_not adsense_home_banners_renderable?
       end
     end
@@ -53,20 +50,24 @@ module Adsense
     test 'adsense_slot_renderable? is true in development without a live slot' do
       define_singleton_method(:adsense_allowed?) { false }
 
-      if Rails.env.development?
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
         assert adsense_slot_renderable?(:bookshelf)
         assert_predicate self, :adsense_slot_development_preview?
-      else
+      end
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         assert_not adsense_slot_renderable?(:bookshelf)
       end
     end
 
     test 'adsense_adblock_check? is true in development for preview slots' do
-      if Rails.env.development?
-        assert_predicate self, :adsense_adblock_check?
-      else
-        define_singleton_method(:adsense_allowed?) { false }
+      define_singleton_method(:adsense_allowed?) { false }
 
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+        assert_predicate self, :adsense_adblock_check?
+      end
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         assert_not adsense_adblock_check?
       end
     end

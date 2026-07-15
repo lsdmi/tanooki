@@ -8,14 +8,20 @@ module Meta
     CARD_SIZE = [400, 600].freeze
     CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :webp }.freeze
     CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :avif }.freeze
+    FEATURED_CARD_SIZE = [1280, 960].freeze
+    FEATURED_CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :webp }.freeze
+    FEATURED_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :avif }.freeze
+    PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp }.freeze
+    AD_POSTER_TRANSFORMATIONS = { resize_to_limit: [1280, 720], format: :webp }.freeze
+    WIDE_CARD_SIZE = AD_POSTER_TRANSFORMATIONS[:resize_to_limit]
+    WIDE_CARD_WEBP_TRANSFORMATIONS = AD_POSTER_TRANSFORMATIONS
+    WIDE_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: WIDE_CARD_SIZE, format: :avif }.freeze
     CARD_TRANSFORMATIONS = CARD_WEBP_TRANSFORMATIONS
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
     SHOWCASE_TRANSFORMATIONS = { resize_to_limit: [1600, 540], format: :webp }.freeze
     AVATAR_TRANSFORMATIONS = { resize_to_limit: [128, 128], format: :webp }.freeze
     SCANLATOR_AVATAR_TRANSFORMATIONS = { resize_to_limit: [256, 256], format: :webp }.freeze
-    PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp }.freeze
-    AD_POSTER_TRANSFORMATIONS = { resize_to_limit: [1280, 720], format: :webp }.freeze
     VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp }.freeze
 
     def cover_card_url(attachment)
@@ -71,16 +77,29 @@ module Meta
 
     private
 
-    def cover_card_variant_urls(attachment)
+    def cover_card_variant_urls(attachment, preset: :card)
       return {} unless attachment&.attached?
       return { fallback: url_for(attachment) } unless variable_cover?(attachment)
 
+      avif_transform, webp_transform = cover_preset_transformations(preset)
+
       {
-        avif: url_for(attachment.variant(CARD_AVIF_TRANSFORMATIONS)),
-        webp: url_for(attachment.variant(CARD_WEBP_TRANSFORMATIONS))
+        avif: url_for(attachment.variant(avif_transform)),
+        webp: url_for(attachment.variant(webp_transform))
       }
     rescue ActiveStorage::Error
       { fallback: url_for(attachment) }
+    end
+
+    def cover_preset_transformations(preset)
+      case preset.to_sym
+      when :featured
+        [FEATURED_CARD_AVIF_TRANSFORMATIONS, FEATURED_CARD_WEBP_TRANSFORMATIONS]
+      when :wide
+        [WIDE_CARD_AVIF_TRANSFORMATIONS, WIDE_CARD_WEBP_TRANSFORMATIONS]
+      else
+        [CARD_AVIF_TRANSFORMATIONS, CARD_WEBP_TRANSFORMATIONS]
+      end
     end
 
     def variable_cover?(attachment)

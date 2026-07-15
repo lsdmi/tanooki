@@ -13,6 +13,11 @@ module Adsense
     home_banner_right: ENV['ADSENSE_HOME_BANNER_RIGHT_SLOT'].presence
   }.freeze
 
+  HOME_BANNER_PLACEMENTS = {
+    home_banner_left: 'home-mid-left',
+    home_banner_right: 'home-mid-right'
+  }.freeze
+
   CHAPTER_READER_SLOTS = {
     top: SLOTS[:chapter_reader_top],
     bottom: SLOTS[:chapter_reader_bottom]

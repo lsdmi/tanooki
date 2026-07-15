@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Landing page with featured fictions, tales, and advertisements.
+# Landing page with featured fictions, tales, videos, and promotional content.
 class HomeController < ApplicationController
   before_action :pokemon_appearance, only: [:index]
 
@@ -20,7 +20,11 @@ class HomeController < ApplicationController
   private
 
   def tales
-    Publication.includes(:rich_text_description).order(created_at: :desc).excluding(@top_tales).limit(10)
+    Publication
+      .includes(:rich_text_description, cover_attachment: :blob)
+      .order(created_at: :desc)
+      .excluding(@top_tales)
+      .limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
   end
 
   def top_fictions
@@ -38,8 +42,11 @@ class HomeController < ApplicationController
 
   def top_tales
     Rails.cache.fetch('top_tales', expires_in: 12.hours) do
-      Publication.highlights.includes({ cover_attachment: :blob },
-                                      :rich_text_description).last_month.order(views: :desc).limit(2)
+      Publication.highlights
+                 .includes({ cover_attachment: :blob }, :rich_text_description)
+                 .last_month
+                 .order(views: :desc)
+                 .limit(1)
     end
   end
 

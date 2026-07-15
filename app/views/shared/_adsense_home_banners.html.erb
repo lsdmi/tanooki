@@ -3,15 +3,10 @@
 
 <section class="home-banners" aria-label="Реклама">
   <div class="home-banners__grid">
-    <div class="home-banners__slot">
-      <%= render 'shared/home_banner_adsense_slot',
-                 placement: :home_banner_left,
-                 navigation_key: 'home-mid-left' %>
-    </div>
-    <div class="home-banners__slot">
-      <%= render 'shared/home_banner_adsense_slot',
-                 placement: :home_banner_right,
-                 navigation_key: 'home-mid-right' %>
-    </div>
+    <% Adsense::HOME_BANNER_PLACEMENTS.each do |placement, navigation_key| %>
+      <div class="home-banners__slot">
+        <%= render 'shared/home_banner_adsense_slot', placement:, navigation_key: %>
+      </div>
+    <% end %>
   </div>
 </section>
