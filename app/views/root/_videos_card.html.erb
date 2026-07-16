@@ -1,0 +1,47 @@
+<%# locals: (video:, video_tag_counts:, variant: :compact) %>
+<% mobile = variant.to_sym == :mobile %>
+<article class="<%= mobile ? 'flex min-h-0 min-w-0 flex-col gap-2' : 'flex min-h-0 min-w-0 w-full gap-3' %>">
+  <%= link_to youtube_video_path(video),
+              turbo_drive_visit_data.merge(
+                class: [
+                  'group/cover relative block shrink-0 overflow-hidden rounded-xl bg-gray-800',
+                  mobile ? 'aspect-video w-full' : 'aspect-video w-[38%] max-w-[249px] lg:w-[249px] lg:max-w-none'
+                ].join(' ')
+              ) do %>
+    <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative h-full w-full">
+      <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700" aria-hidden="true"></div>
+      <%= image_tag video_thumbnail_url(video.thumbnail),
+                    alt: video.title,
+                    id: "image-#{video.id}",
+                    width: 249,
+                    height: 148,
+                    class: 'h-full w-full object-cover object-center opacity-0 transition duration-300 group-hover/cover:scale-[1.03]',
+                    loading: 'lazy',
+                    data: { url: video_thumbnail_url(video.thumbnail) } %>
+    </div>
+  <% end %>
+
+  <div class="<%= mobile ? 'min-w-0' : 'flex min-h-0 min-w-0 flex-1 flex-col justify-center' %>">
+    <h3 class="<%= mobile ? 'text-xs font-semibold leading-snug' : 'text-sm font-semibold leading-snug sm:text-base' %>">
+      <%= link_to video.title,
+                  youtube_video_path(video),
+                  turbo_drive_visit_data.merge(
+                    class: 'line-clamp-2 rounded-lg text-stone-900 transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:text-gray-100 dark:hover:text-rose-400'
+                  ) %>
+    </h3>
+
+    <% unless mobile %>
+      <% if video.tags? %>
+        <%= render Ui::TagListComponent.new(
+              labels: home_video_tag_labels(video),
+              variant: :keyword,
+              size: :sm,
+              max: Root::VideosHelper::COMPACT_TAG_LIMIT,
+              href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
+              counts: video_tag_counts,
+              html: { class: 'mt-3' }
+            ) %>
+      <% end %>
+    <% end %>
+  </div>
+</article>

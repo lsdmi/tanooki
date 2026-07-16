@@ -6,6 +6,46 @@ one:
   title: <%= Faker::Book.title %>
   thumbnail: <%= Faker::Internet.url %>
   tags: one
+  views: 400
   published_at: <%= Time.zone.now %>
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
+
+two:
+  id: 2
+  slug: two
+  youtube_channel_id: 1
+  video_id: two
+  title: <%= Faker::Book.title %>
+  thumbnail: <%= Faker::Internet.url %>
+  tags: two
+  views: 300
+  published_at: <%= 2.weeks.ago %>
+  created_at: <%= 2.weeks.ago %>
+  updated_at: <%= 2.weeks.ago %>
+
+three:
+  id: 3
+  slug: three
+  youtube_channel_id: 1
+  video_id: three
+  title: <%= Faker::Book.title %>
+  thumbnail: <%= Faker::Internet.url %>
+  tags: three
+  views: 200
+  published_at: <%= 2.weeks.ago %>
+  created_at: <%= 2.weeks.ago %>
+  updated_at: <%= 2.weeks.ago %>
+
+four:
+  id: 4
+  slug: four
+  youtube_channel_id: 1
+  video_id: four
+  title: <%= Faker::Book.title %>
+  thumbnail: <%= Faker::Internet.url %>
+  tags: four
+  views: 100
+  published_at: <%= 2.weeks.ago %>
+  created_at: <%= 2.weeks.ago %>
+  updated_at: <%= 2.weeks.ago %>

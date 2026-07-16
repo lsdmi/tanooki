@@ -2,10 +2,10 @@
 <% editorial = home_tales_editorial_cards(top_tale, tales) %>
 <% return if editorial[:hero].blank? %>
 
-<section class="mb-10 mt-10 w-full lg:mb-14 lg:mt-14" aria-labelledby="home-tales">
+<section class="mt-10 w-full lg:mb-14 lg:mt-14" aria-labelledby="home-tales">
   <div class="home-tales w-full bg-gray-700 bg-cover bg-center bg-no-repeat bg-blend-multiply pt-8 pb-10 lg:pt-14 lg:pb-14 dark:bg-gray-900"
        style="background-image: url(<%= asset_path('writer.webp') %>);">
-    <div class="mx-auto w-full max-w-[1300px] px-5 md:px-6 lg:px-20">
+    <div class="mx-auto w-full max-w-[1300px] px-5 md:px-6 lg:px-4">
       <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
         <div class="w-1.5 shrink-0 rounded-lg bg-cyan-500 dark:bg-rose-500" aria-hidden="true"></div>
         <div class="flex min-w-0 flex-1 items-center justify-between gap-4">

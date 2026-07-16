@@ -14,7 +14,6 @@ class HomeController < ApplicationController
     )
     @top_tale = top_tale
     @tales = tales
-    @pokemon_ad = Advertisement.find_by(slug: 'pokemon')
   end
 
   private
@@ -50,8 +49,11 @@ class HomeController < ApplicationController
   end
 
   def videos
-    Rails.cache.fetch('top_videos', expires_in: 12.hours) do
-      YoutubeVideo.includes(:youtube_channel).last_month.order(views: :desc).limit(2)
+    cached_ids = Rails.cache.fetch('home_videos/v1', expires_in: 12.hours) do
+      YoutubeVideo.last_month.order(views: :desc).limit(Root::VideosHelper::HOME_VIDEO_LIMIT).pluck(:id)
     end
+    return YoutubeVideo.order(published_at: :desc).first(4) if cached_ids.blank?
+
+    YoutubeVideo.where(id: cached_ids).order(views: :desc)
   end
 end

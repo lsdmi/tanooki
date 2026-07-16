@@ -3,8 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     const imageId = this.element.dataset.lazyImageImageId
-    const spinner = document.getElementById(`spinner-${imageId}`)
-    const image = document.getElementById(`image-${imageId}`)
+    const spinner = this.element.querySelector(`#spinner-${imageId}`)
+    const image = this.element.querySelector(`#image-${imageId}`)
 
     if (!image || !spinner) return
 

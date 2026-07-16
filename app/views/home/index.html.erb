@@ -38,26 +38,7 @@
 
   <section class="mx-auto xl:w-[1300px]">
     <div class="<%= page_gutter %>">
-      <div class="mb-4 flex">
-        <div class="mr-2 shrink-0 hidden sm:flex flex-col justify-center">
-          <%= image_tag 'youtube.webp', class: 'h-20 inline-block transform transition duration-500 hover:scale-110', alt: 'youtube icon', width: '80', height: '80' %>
-        </div>
-        <div class="flex flex-col justify-center sm:ml-0">
-          <p class="uppercase leading-5 text-stone-900 dark:text-gray-100 text-2xl sm:text-4xl font-extrabold tracking-tight">
-            Краще на <span class="text-cyan-700 dark:text-rose-700">YouTube</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="mb-4 sm:mb-6 md:mb-8">
-        <%= render 'root/videos', videos: @videos, video_tag_counts: @video_tag_counts %>
-      </div>
-
-      <% if @pokemon_ad.present? %>
-        <div class="my-4 border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
-          <%= render 'shared/ads', advertisement: @pokemon_ad %>
-        </div>
-      <% end %>
+      <%= render 'root/videos', videos: @videos, video_tag_counts: @video_tag_counts %>
     </div>
   </section>
 </div>

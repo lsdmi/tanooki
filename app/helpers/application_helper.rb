@@ -17,6 +17,7 @@ module ApplicationHelper
   include Root::PopularFictionsHelper
   include Root::RecentlyUpdatedHelper
   include Root::TalesHelper
+  include Root::VideosHelper
   include StructuredData::JsonLdHelper
   include Ui::ComponentHelper
 end
