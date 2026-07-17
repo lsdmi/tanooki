@@ -581,3 +581,35 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
 .home-banners__slot:has(.reader-ad-slot--collapsed) {
   display: none;
 }
+
+/* Homepage «Популярні Відео» 2×2 banner grid */
+.home-videos-ads {
+  margin-top: 0.75rem; /* 12px mobile */
+}
+
+@media (min-width: 1024px) {
+  .home-videos-ads {
+    margin-top: 1rem; /* 16px desktop */
+  }
+}
+
+.home-videos-ads__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem; /* 12px */
+}
+
+@media (min-width: 640px) {
+  .home-videos-ads__grid {
+    gap: 1.75rem; /* 28px */
+  }
+}
+
+.home-videos-ads:not(:has(.home-banner-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
+  display: none;
+  margin: 0;
+}
+
+.home-videos-ads__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}

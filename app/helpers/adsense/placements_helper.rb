@@ -30,5 +30,9 @@ module Adsense
     def adsense_home_banners_renderable?
       Adsense::HOME_BANNER_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
     end
+
+    def adsense_home_videos_grid_renderable?
+      Adsense::HOME_VIDEOS_GRID_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
+    end
   end
 end

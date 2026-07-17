@@ -1,0 +1,12 @@
+<%# 2×2 AdSense grid below homepage «Популярні Відео». %>
+<% return unless adsense_home_videos_grid_renderable? %>
+
+<section class="home-videos-ads" aria-label="Реклама">
+  <div class="home-videos-ads__grid">
+    <% Adsense::HOME_VIDEOS_GRID_PLACEMENTS.each do |placement, navigation_key| %>
+      <div class="home-videos-ads__slot">
+        <%= render 'shared/home_banner_adsense_slot', placement:, navigation_key: %>
+      </div>
+    <% end %>
+  </div>
+</section>

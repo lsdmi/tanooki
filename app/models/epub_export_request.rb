@@ -4,7 +4,10 @@ require 'digest'
 
 # Persistent async EPUB export request with an attached generated file.
 class EpubExportRequest < ApplicationRecord
+  include EpubExportRequestJobStatusSync
+
   DOWNLOAD_TTL = 24.hours
+  STALE_PROCESSING_AFTER = 30.minutes
   STATUS_LABELS = {
     'queued' => 'У черзі',
     'processing' => 'Готується',
@@ -35,15 +38,27 @@ class EpubExportRequest < ApplicationRecord
                  .where(content_fingerprint: fingerprint, status: %i[queued processing ready])
                  .order(created_at: :desc)
                  .first
-    return nil unless export&.reusable_for_serve?
+    return nil unless export
 
-    export
+    refreshed_for_reuse(export)
+  end
+
+  def self.refreshed_for_reuse(export)
+    export.fail_if_stale_processing!
+    export.sync_with_job_status!
+    export if export.reusable_for_serve?
   end
 
   def self.content_fingerprint(rich_text_ids, volume_title = nil)
     ids = Array(rich_text_ids).map(&:to_i).sort.uniq.join(',')
     title = volume_title.to_s.presence || ''
     Digest::SHA256.hexdigest("#{ids}|#{title}")
+  end
+
+  def self.reject_if_too_large!(rich_text_ids)
+    return unless Books::EpubExportLimits.too_large?(rich_text_ids)
+
+    raise ArgumentError, I18n.t('downloads.epub_export.too_large')
   end
 
   def downloadable?
@@ -62,6 +77,19 @@ class EpubExportRequest < ApplicationRecord
     return false if failed? || expired?
 
     queued? || processing? || downloadable?
+  end
+
+  def stale_processing?
+    processing? && updated_at < STALE_PROCESSING_AFTER.ago
+  end
+
+  def fail_if_stale_processing!
+    return unless stale_processing?
+
+    update!(
+      status: :failed,
+      error_message: I18n.t('downloads.epub_export.generation_interrupted')
+    )
   end
 
   private

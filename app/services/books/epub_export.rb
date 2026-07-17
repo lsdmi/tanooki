@@ -6,15 +6,16 @@ module Books
     attr_reader :file_path, :filename
 
     def initialize(rich_text_ids, volume_title = nil, export_request_id: nil)
-      @rich_texts = ActionText::RichText.where(id: Array(rich_text_ids))
+      @rich_text_ids = Array(rich_text_ids).map(&:to_i)
       @volume_title = volume_title
-      @chapters = @rich_texts.map(&:record)
+      @export_request_id = export_request_id
       suffix = export_request_id || SecureRandom.hex(8)
       @file_path = Rails.root.join('tmp', "epub_export_#{suffix}.epub").to_s
     end
 
     def generate
-      book = build_book
+      book = Books::EpubBuilder.new(@rich_text_ids, @volume_title, export_request_id: @export_request_id).build
+      record_progress('packaging')
       book.generate_epub(@file_path)
       set_filename
       self
@@ -22,16 +23,21 @@ module Books
 
     private
 
-    def build_book
-      Books::EpubBuilder.new(@chapters, @volume_title).build
+    def set_filename
+      chapters = chapters_scope.load
+      @filename = if chapters.size == 1
+                    "#{chapters.first.fiction_title}. #{Books::EpubChapterHtml.title(chapters.first)}.epub"
+                  else
+                    "#{chapters.first.fiction_title} #{@volume_title}.epub"
+                  end
     end
 
-    def set_filename
-      @filename = if @chapters.size == 1
-                    "#{@chapters.first.fiction_title}. #{Books::EpubChapterHtml.title(@chapters.first)}.epub"
-                  else
-                    "#{@chapters.first.fiction_title} #{@volume_title}.epub"
-                  end
+    def chapters_scope
+      Books::EpubBuilder.chapters_scope(@rich_text_ids)
+    end
+
+    def record_progress(step)
+      EpubExportProgress.update!(@export_request_id, step)
     end
   end
 end

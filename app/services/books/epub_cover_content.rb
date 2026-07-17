@@ -3,9 +3,10 @@
 module Books
   # Builds inner HTML for an EPUB cover page.
   class EpubCoverContent
-    def initialize(chapter, volume_title: nil)
+    def initialize(chapter, volume_title: nil, cover_href: nil)
       @chapter = chapter
       @volume_title = volume_title
+      @cover_href = cover_href
     end
 
     def build
@@ -23,22 +24,10 @@ module Books
     private
 
     def cover_image_tag
-      cover = @chapter.fiction.cover
-      alt = ERB::Util.html_escape(cover.blob.filename.to_s)
-      src = cover_image_data_uri(cover)
-      return '' if src.blank?
+      return '' if @cover_href.blank?
 
-      %(<img src="#{src}" alt="#{alt}" class="cover-image"/>)
-    rescue ActiveStorage::FileNotFoundError, ActiveStorage::IntegrityError
-      ''
-    end
-
-    def cover_image_data_uri(cover)
-      data = cover.download
-      encoded = Base64.strict_encode64(data)
-      "data:#{cover.blob.content_type};base64,#{encoded}"
-    rescue StandardError
-      nil
+      alt = ERB::Util.html_escape(@chapter.fiction_title)
+      %(<img src="#{@cover_href}" alt="#{alt}" class="cover-image"/>)
     end
 
     def chapter_title

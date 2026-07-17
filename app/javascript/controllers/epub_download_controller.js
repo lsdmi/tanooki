@@ -90,7 +90,7 @@ export default class extends Controller {
   }
 
   async waitForDownloadUrl(statusUrl) {
-    for (let attempt = 0; attempt < 60; attempt++) {
+    for (let attempt = 0; attempt < 300; attempt++) {
       const response = await fetch(statusUrl, { headers: { 'Accept': 'application/json' } })
       if (!response.ok) throw new Error(`Status request failed with status ${response.status}`)
 

@@ -6,12 +6,10 @@ module Analytics
     queue_as :default
 
     def perform(class_name, record_id)
-      record = class_name.constantize.find_by(id: record_id)
-      return unless record
+      klass = class_name.constantize
+      return unless klass.exists?(id: record_id)
 
-      record.with_lock do
-        record.update!(views: record.views + 1)
-      end
+      klass.where(id: record_id).update_all('views = COALESCE(views, 0) + 1') # rubocop:disable Rails/SkipsModelValidations
     end
   end
 end

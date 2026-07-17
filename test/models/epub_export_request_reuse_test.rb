@@ -55,6 +55,22 @@ class EpubExportRequestReuseTest < ActiveSupport::TestCase
     assert_nil EpubExportRequest.find_reusable_for(user: @user, rich_text_ids: @rich_text_ids)
   end
 
+  test 'find_reusable_for does not return stale processing export' do
+    export = EpubExportRequest.create!(
+      user: @user,
+      rich_text_ids: @rich_text_ids,
+      status: :processing
+    )
+    export.update_column(:updated_at, 31.minutes.ago) # rubocop:disable Rails/SkipsModelValidations
+
+    assert_nil EpubExportRequest.find_reusable_for(user: @user, rich_text_ids: @rich_text_ids)
+
+    export.reload
+
+    assert_predicate export, :failed?
+    assert_equal I18n.t('downloads.epub_export.generation_interrupted'), export.error_message
+  end
+
   private
 
   def create_ready_export(**attrs)

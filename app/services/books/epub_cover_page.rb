@@ -3,13 +3,14 @@
 module Books
   # Renders a complete EPUB cover XHTML document for a chapter.
   class EpubCoverPage
-    def self.generate(chapter, volume_title = nil)
-      new(chapter, volume_title).generate
+    def self.generate(chapter, volume_title = nil, cover_href: nil)
+      new(chapter, volume_title, cover_href:).generate
     end
 
-    def initialize(chapter, volume_title = nil)
+    def initialize(chapter, volume_title = nil, cover_href: nil)
       @chapter = chapter
       @volume_title = volume_title
+      @cover_href = cover_href
     end
 
     def generate
@@ -48,7 +49,7 @@ module Books
     end
 
     def cover_content
-      EpubCoverContent.new(chapter, volume_title:).build
+      EpubCoverContent.new(chapter, volume_title:, cover_href: @cover_href).build
     end
   end
 end

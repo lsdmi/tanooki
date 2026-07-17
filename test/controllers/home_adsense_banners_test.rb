@@ -12,4 +12,14 @@ class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
     assert_select 'section.home-banners[aria-label="Реклама"]', count: 1
     assert_select '.home-banner-slot--preview', count: 2
   end
+
+  test 'homepage renders videos section 2x2 adsense grid in development preview' do
+    skip 'Homepage AdSense previews require Rails.env.development?' unless Rails.env.development?
+
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_response :success
+    assert_select 'section.home-videos-ads[aria-label="Реклама"]', count: 1
+    assert_select 'section.home-videos-ads .home-banner-slot--preview', count: 4
+  end
 end

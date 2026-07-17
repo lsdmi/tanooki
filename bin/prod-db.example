@@ -1,0 +1,74 @@
+#!/usr/bin/env sh
+# Query production MySQL locally. Copy to bin/prod-db (gitignored) and configure.
+#
+#   cp bin/prod-db.example bin/prod-db
+#   cp .env.production.local.example .env.production.local   # fill in credentials
+#
+# Usage:
+#   bin/prod-db                         # interactive mysql console
+#   bin/prod-db -e "SELECT COUNT(*) FROM youtube_videos"
+#   bin/prod-db runner "YoutubeVideo.count"
+#
+set -eu
+
+cd "$(dirname "$0")/.."
+
+ENV_FILE=".env.production.local"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Missing $ENV_FILE — copy .env.production.local.example and fill in prod DB credentials." >&2
+  exit 1
+fi
+
+# shellcheck disable=SC1090
+set -a
+. "./$ENV_FILE"
+set +a
+
+for var in DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT; do
+  eval "value=\${$var-}"
+  if [ -z "$value" ]; then
+    echo "Missing $var in $ENV_FILE" >&2
+    exit 1
+  fi
+done
+
+export RAILS_ENV=production
+
+mysql_exec() {
+  MYSQL_PWD="$DB_PASSWORD" mysql \
+    --host="$DB_HOST" \
+    --port="$DB_PORT" \
+    --user="$DB_USER" \
+    --database="$DB_NAME" \
+    --default-character-set=utf8mb4 \
+    "$@"
+}
+
+assert_read_only_sql() {
+  query="$1"
+  if printf '%s' "$query" | grep -qiE '(^|[^a-z_])(insert|update|delete|drop|alter|truncate|create|replace)([^a-z_]|$)'; then
+    echo "Only read-only SQL is allowed via bin/prod-db -e" >&2
+    exit 1
+  fi
+}
+
+if [ "${1-}" = "runner" ]; then
+  shift
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: bin/prod-db runner \"YoutubeVideo.count\"" >&2
+    exit 1
+  fi
+  exec bundle exec rails runner "$@"
+fi
+
+if [ "$#" -eq 0 ]; then
+  mysql_exec
+  exit $?
+fi
+
+if [ "$1" = "-e" ] && [ "$#" -ge 2 ]; then
+  assert_read_only_sql "$2"
+fi
+
+mysql_exec "$@"

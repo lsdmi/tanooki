@@ -38,6 +38,9 @@ if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].pre
   }
 
   ca_cert = ENV['OPENSEARCH_CA_CERT'].presence
+  if Rails.env.production? && ca_cert.blank?
+    Rails.logger.warn('[Searchkick] OPENSEARCH_CA_CERT is not set; OpenSearch TLS verification may fail')
+  end
   transport_options[:ssl] = { cert_store: SearchkickCallbacks.opensearch_cert_store(ca_cert) } if ca_cert
 
   opensearch_url = ENV.fetch('OPENSEARCH_URL')

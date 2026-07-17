@@ -41,6 +41,18 @@ module Adsense
       end
     end
 
+    test 'adsense_home_videos_grid_renderable? follows development preview rules' do
+      define_singleton_method(:adsense_allowed?) { false }
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+        assert_predicate self, :adsense_home_videos_grid_renderable?
+      end
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+        assert_not adsense_home_videos_grid_renderable?
+      end
+    end
+
     test 'adsense_slot_live? is false when adsense is disabled' do
       define_singleton_method(:adsense_allowed?) { false }
 

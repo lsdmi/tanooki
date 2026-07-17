@@ -24,6 +24,7 @@ class DownloadsController < ApplicationController
   end
 
   def epub_export_status
+    @epub_export_request.sync_with_job_status!
     render json: epub_export_status_payload(@epub_export_request)
   end
 
@@ -79,6 +80,8 @@ class DownloadsController < ApplicationController
   end
 
   def create_epub_export(rich_text_ids, volume_title)
+    EpubExportRequest.reject_if_too_large!(rich_text_ids)
+
     export_request = EpubExportRequest.create!(
       user: current_user, rich_text_ids:, volume_title:
     )

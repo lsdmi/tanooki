@@ -6,6 +6,11 @@ module Books
   class EpubChapterHtmlTest < ActiveSupport::TestCase
     ChapterContent = Struct.new(:body, keyword_init: true)
     Chapter = Struct.new(:display_title_no_volume, :title, :content, keyword_init: true)
+    HtmlBody = Struct.new(:html) do
+      def to_html
+        html
+      end
+    end
 
     SAMPLE_FRAGMENT = <<~HTML
       <p>Hi</p>
@@ -38,15 +43,34 @@ module Books
       assert_not_includes html, '</img>'
     end
 
+    test 'uses raw html body without action view render' do
+      chapter = chapters(:one)
+      EpubChapterBodies.stub(:raw_html, '<p>Hi</p>') do
+        html = EpubChapterHtml.html(chapter)
+
+        assert_includes html, '<p>Hi</p>'
+      end
+    end
+
+    test 'skips regexp normalization for very large chapter bodies' do
+      large_body = "#{'x' * (Books::EpubChapterHtml::LARGE_CONTENT_BYTES + 1)}<hr>"
+      html = epub_html_for_body(large_body)
+
+      assert_includes html, large_body
+      assert_not_includes html, '<hr />'
+    end
+
     private
 
-    def epub_html_for_body(body)
+    def epub_html_for_body(body_html)
       chapter = Chapter.new(
         display_title_no_volume: 'Test',
         title: nil,
-        content: ChapterContent.new(body: body)
+        content: ChapterContent.new(body: HtmlBody.new(body_html))
       )
-      EpubChapterHtml.html(chapter)
+      EpubChapterBodies.stub(:raw_html, body_html) do
+        EpubChapterHtml.html(chapter)
+      end
     end
   end
 end

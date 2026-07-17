@@ -71,6 +71,7 @@ module Studio
     end
 
     def epub_exports_content_loader
+      EpubExportRequest.sync_processing_for(user)
       @epub_export_requests = user.epub_export_requests.with_attached_file.order(created_at: :desc).limit(50)
     end
 

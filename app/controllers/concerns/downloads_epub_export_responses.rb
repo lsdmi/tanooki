@@ -20,7 +20,8 @@ module DownloadsEpubExportResponses
       status: epub_export_status_value(export_request),
       status_url: epub_export_status_path_for(export_request),
       download_url: epub_export_download_url(export_request),
-      error_message: epub_export_error_message(export_request)
+      error_message: epub_export_error_message(export_request),
+      processing_step: export_request.processing? ? export_request.processing_step : nil
     }.compact
   end
 

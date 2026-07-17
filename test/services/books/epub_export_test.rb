@@ -11,7 +11,7 @@ module Books
     end
 
     test 'should initialize with correct attributes' do
-      assert_equal @rich_text_ids, @epub_export.instance_variable_get(:@rich_texts).pluck(:id)
+      assert_equal @rich_text_ids, @epub_export.instance_variable_get(:@rich_text_ids)
       assert_equal @volume_title, @epub_export.instance_variable_get(:@volume_title)
       assert_match(%r{\A.*tmp/epub_export_.*\.epub\z}, @epub_export.file_path)
     end
@@ -19,7 +19,21 @@ module Books
     test 'uses export request id in temp path when provided' do
       export = EpubExport.new(@rich_text_ids, @volume_title, export_request_id: 42)
 
+      assert_equal 42, export.instance_variable_get(:@export_request_id)
       assert_includes export.file_path, 'epub_export_42.epub'
+    end
+
+    test 'forwards export request id to builder progress updates' do
+      export = EpubExport.new(@rich_text_ids, @volume_title, export_request_id: 42)
+      progress_steps = []
+      EpubExportProgress.stub(:update!, ->(id, step) { progress_steps << [id, step] if id == 42 }) do
+        export.generate
+      end
+
+      assert_includes progress_steps, [42, 'cover']
+      assert(progress_steps.any? { |(_id, step)| step.start_with?('chapter') })
+    ensure
+      FileUtils.rm_f(export.file_path)
     end
 
     test 'should generate epub file' do

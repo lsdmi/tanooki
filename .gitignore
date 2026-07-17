@@ -32,6 +32,8 @@
 !/app/assets/builds/.keep
 
 .env
+.env.production.local
+bin/prod-db
 coverage/*
 
 # Local performance audit notes (not for version control)

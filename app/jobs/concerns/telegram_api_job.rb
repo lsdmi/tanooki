@@ -9,5 +9,6 @@ module TelegramApiJob
 
   included do
     retry_on Telegram::Bot::Exceptions::ResponseError, wait: :polynomially_longer, attempts: 5
+    discard_on SolidQueue::Processes::ProcessPrunedError
   end
 end
