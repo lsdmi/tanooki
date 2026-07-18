@@ -25,7 +25,6 @@ class Chapter < ApplicationRecord
 
   validates :scanlator_ids, presence: true
   validates :content, length: { minimum: 500 }
-  validate :content_within_size_limits
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
@@ -98,14 +97,6 @@ class Chapter < ApplicationRecord
     return if persisted? && !published_at_changed?
 
     errors.add(:published_at, :in_the_past)
-  end
-
-  def content_within_size_limits
-    return if content.blank?
-
-    Chapters::ContentLimits.errors_for(content).each do |error, options|
-      errors.add(:content, error, **options)
-    end
   end
 
   def cleanup_scanlator_ids

@@ -104,22 +104,4 @@ class ChapterValidationTest < ActiveSupport::TestCase
     assert_not_predicate @chapter, :valid?
     assert_not_nil @chapter.errors[:title]
   end
-
-  test 'invalid with oversized inline image' do
-    encoded = Base64.strict_encode64('x' * 350.kilobytes)
-    @chapter.content = "<p>#{'word ' * 200}<img src=\"data:image/png;base64,#{encoded}\"></p>"
-
-    assert_not_predicate @chapter, :valid?
-    assert_includes @chapter.errors[:content],
-                    I18n.t('activerecord.errors.models.chapter.attributes.content.inline_image_too_large',
-                           max_kb: 400)
-  end
-
-  test 'invalid with oversized body' do
-    @chapter.content = 'x' * (Chapters::ContentLimits::MAX_BODY_BYTES + 1)
-
-    assert_not_predicate @chapter, :valid?
-    assert_includes @chapter.errors[:content],
-                    I18n.t('activerecord.errors.models.chapter.attributes.content.body_too_large', max_mb: 2)
-  end
 end

@@ -54,3 +54,7 @@ production:
   youtube_telegram:
     class: Youtube::TelegramJob
     schedule: every sunday at 12:00pm
+
+  compress_recent_chapter_inline_images:
+    class: Chapters::CompressRecentInlineImagesJob
+    schedule: every day at 3:30am

@@ -93,9 +93,6 @@ uk:
               too_short: "занадто коротка (мінімум %{count} знаки)"
         chapter:
           attributes:
-            content:
-              body_too_large: "занадто великий зміст (максимум %{max_mb} МБ)"
-              inline_image_too_large: "вставлене зображення занадто велике (максимум %{max_kb} КБ). Завантажте файл через редактор замість вставки з Word"
             scanlator_ids:
               blank: мусить бути принаймні одна команда
             published_at:

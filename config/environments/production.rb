@@ -104,6 +104,9 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [:id]
 
+  # Prefer platform env (Render/DO); fall back to credentials for local `bin/prod-db runner`.
+  config.secret_key_base = ENV['SECRET_KEY_BASE'].presence || Rails.application.credentials.secret_key_base
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com

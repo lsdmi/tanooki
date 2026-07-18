@@ -19,29 +19,29 @@ module Books
       [nil, nil]
     end
 
-    def optimize_file(path, content_type)
+    def optimize_file(path, content_type, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
       media_type = content_type.to_s.downcase
       decoded_size = File.size(path)
       return [nil, nil] unless optimizable?(media_type)
       return raw_fallback(path, media_type, decoded_size) unless Attachments::VariantProcessing.available?
 
-      shrink_or_fallback(path, media_type, decoded_size)
+      shrink_or_fallback(path, media_type, decoded_size, max_edge:, jpeg_quality:)
     end
 
-    def optimize_data_uri(data_uri)
+    def optimize_data_uri(data_uri, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
       tempfile, media_type = decode_data_uri_to_tempfile(data_uri)
       return [nil, nil] unless tempfile
 
-      optimize_tempfile(tempfile, media_type)
+      optimize_tempfile(tempfile, media_type, max_edge:, jpeg_quality:)
     ensure
       tempfile&.close!
     end
 
-    def optimize_data_uri_in_html(html, value_start, value_end)
+    def optimize_data_uri_in_html(html, value_start, value_end, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
       media_type, encoded_start = media_type_and_payload_start(html, value_start, value_end)
       return [nil, nil] unless media_type
 
-      decode_and_optimize(html, encoded_start, value_end, media_type)
+      decode_and_optimize(html, encoded_start, value_end, media_type, max_edge:, jpeg_quality:)
     end
 
     def media_type_and_payload_start(html, value_start, value_end)
@@ -53,13 +53,13 @@ module Books
       [media_type, comma_idx + 1]
     end
 
-    def decode_and_optimize(source, encoded_start, encoded_end, media_type)
+    def decode_and_optimize(source, encoded_start, encoded_end, media_type, **)
       tf = Tempfile.new(['epub_src', tempfile_extension(media_type)])
       tf.binmode
       EpubDataUriBase64Io.write_range(source, encoded_start, encoded_end, tf)
       tf.close
 
-      optimize_tempfile(tf, media_type)
+      optimize_tempfile(tf, media_type, **)
     ensure
       tf&.close!
     end
@@ -76,31 +76,31 @@ module Books
       [tf, media_type]
     end
 
-    def optimize_tempfile(tempfile, media_type)
+    def optimize_tempfile(tempfile, media_type, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
       decoded_size = File.size(tempfile.path)
       return [nil, nil] unless optimizable?(media_type)
       return raw_fallback(tempfile.path, media_type, decoded_size) unless Attachments::VariantProcessing.available?
 
-      shrink_or_fallback(tempfile.path, media_type, decoded_size)
+      shrink_or_fallback(tempfile.path, media_type, decoded_size, max_edge:, jpeg_quality:)
     rescue StandardError => e
       Rails.logger.warn("[EPUB] image shrink failed: #{e.class}: #{e.message}")
       raw_fallback(tempfile.path, media_type, File.size(tempfile.path))
     end
 
-    def shrink_or_fallback(path, media_type, decoded_size)
-      jpeg = compress_file(path)
+    def shrink_or_fallback(path, media_type, decoded_size, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
+      jpeg = compress_file(path, max_edge:, jpeg_quality:)
       return [jpeg, 'jpg'] if jpeg.present?
 
       raw_fallback(path, media_type, decoded_size)
     end
 
-    def compress_file(path)
+    def compress_file(path, max_edge: MAX_EDGE, jpeg_quality: JPEG_QUALITY)
       require 'vips'
 
       Vips.cache_set_max(0)
       Vips::Image
-        .thumbnail(path, MAX_EDGE, height: MAX_EDGE, size: :down)
-        .jpegsave_buffer(Q: JPEG_QUALITY, strip: true, interlace: true)
+        .thumbnail(path, max_edge, height: max_edge, size: :down)
+        .jpegsave_buffer(Q: jpeg_quality, strip: true, interlace: true)
     end
 
     def raw_fallback(path, media_type, decoded_size)

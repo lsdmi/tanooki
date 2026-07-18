@@ -59,6 +59,22 @@ if [ "${1-}" = "runner" ]; then
     echo "Usage: bin/prod-db runner \"YoutubeVideo.count\"" >&2
     exit 1
   fi
+  # Rails boot needs a non-empty secret; empty SECRET_KEY_BASE in .env is ignored.
+  if [ -z "${SECRET_KEY_BASE-}" ]; then
+    SECRET_KEY_BASE=$(
+      bundle exec ruby -e '
+        require "active_support/encrypted_configuration"
+        config = ActiveSupport::EncryptedConfiguration.new(
+          config_path: "config/credentials.yml.enc",
+          key_path: "config/master.key",
+          env_key: "RAILS_MASTER_KEY",
+          raise_if_missing_key: true
+        )
+        print config.secret_key_base
+      '
+    )
+    export SECRET_KEY_BASE
+  fi
   exec bundle exec rails runner "$@"
 fi
 
