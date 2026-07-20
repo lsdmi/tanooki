@@ -6,6 +6,7 @@ require 'uri'
 module ExternalUrls
   TELEGRAM_PROFILE_BASE = 'https://telegram.me/'
   TELEGRAM_SITE_HANDLE = 'bakaInUa'
+  BUYMECOFFEE_URL = 'https://www.buymeacoffee.com/bakaInUa'
 
   def self.profile_url(telegram_id)
     handle = telegram_id.to_s.delete_prefix('@')
@@ -38,6 +39,10 @@ module ExternalUrls
 
     def telegram_site_url
       ExternalUrls.site_url
+    end
+
+    def buymeacoffee_site_url
+      ExternalUrls::BUYMECOFFEE_URL
     end
 
     # Plain text with http(s) URLs turned into external links. HTML in the source is escaped.

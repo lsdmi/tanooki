@@ -26,6 +26,10 @@ module ExternalUrls
       assert_equal 'https://telegram.me/scanlator_one', view.telegram_profile_url('@scanlator_one')
     end
 
+    test 'buymeacoffee_site_url returns project support link' do
+      assert_equal 'https://www.buymeacoffee.com/bakaInUa', view.buymeacoffee_site_url
+    end
+
     test 'telegram_profile_url returns nil for blank handles' do
       assert_nil view.telegram_profile_url(nil)
       assert_nil view.telegram_profile_url('')

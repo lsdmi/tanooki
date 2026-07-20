@@ -10,6 +10,10 @@ end
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+require 'propshaft_dev_manifest'
+
+PropshaftDevManifest.refresh!(Rails.application.config.assets.manifest_path) if Rails.env.test?
+
 require 'rails/test_help'
 require 'minitest/autorun'
 require 'minitest/mock'

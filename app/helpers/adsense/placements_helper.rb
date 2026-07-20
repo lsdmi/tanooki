@@ -3,6 +3,14 @@
 module Adsense
   # Shared AdSense placement helpers for browse pages and the chapter reader.
   module PlacementsHelper
+    # 2×2 homepage grid below «Популярні Відео»: two AdSense cells + two promo cards.
+    HOME_VIDEOS_GRID_CELLS = [
+      { kind: :ad, placement: :home_videos_grid_top_left, navigation_key: 'home-videos-tl' },
+      { kind: :ad, placement: :home_videos_grid_top_right, navigation_key: 'home-videos-tr' },
+      { kind: :promo, promo: :community },
+      { kind: :promo, promo: :buymeacoffee }
+    ].freeze
+
     def adsense_client_id
       Adsense::CLIENT
     end
@@ -32,7 +40,17 @@ module Adsense
     end
 
     def adsense_home_videos_grid_renderable?
-      Adsense::HOME_VIDEOS_GRID_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
+      adsense_home_videos_grid_ad_placements.keys.any? { |placement| adsense_slot_renderable?(placement) }
+    end
+
+    def adsense_home_videos_grid_cells
+      HOME_VIDEOS_GRID_CELLS
+    end
+
+    def adsense_home_videos_grid_ad_placements
+      HOME_VIDEOS_GRID_CELLS
+        .select { |cell| cell[:kind] == :ad }
+        .to_h { |cell| [cell[:placement], cell[:navigation_key]] }
     end
   end
 end

@@ -23,7 +23,10 @@ production:
       threads: 1
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
-    - queues: production_default,production_searchkick,production_solid_queue_recurring
+    - queues:
+        - production_default
+        - production_searchkick
+        - production_solid_queue_recurring
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1

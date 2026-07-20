@@ -53,6 +53,20 @@ module Adsense
       end
     end
 
+    test 'home_videos_grid_cells include community and buymeacoffee promo cards' do
+      promo_cells = adsense_home_videos_grid_cells.last(2).map { |cell| cell.slice(:kind, :promo) }
+
+      assert_equal [
+        { kind: :promo, promo: :community },
+        { kind: :promo, promo: :buymeacoffee }
+      ], promo_cells
+    end
+
+    test 'home_videos_grid_ad_placements only include top row ad slots' do
+      assert_equal %i[home_videos_grid_top_left home_videos_grid_top_right],
+                   adsense_home_videos_grid_ad_placements.keys.sort
+    end
+
     test 'adsense_slot_live? is false when adsense is disabled' do
       define_singleton_method(:adsense_allowed?) { false }
 

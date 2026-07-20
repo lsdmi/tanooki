@@ -1,0 +1,29 @@
+<%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil) %>
+<% has_visual = visual.present? %>
+<div class="<%= banner_class %> relative flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:items-center md:justify-normal md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= 'md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-3' if has_visual %>"
+     style="background-image: url(<%= asset_path(background_image) %>)">
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/80 to-slate-900/55 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/35"
+       aria-hidden="true"></div>
+
+  <% ghost_on_dark_button_classes = '!border-white/60 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/50 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10 mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0 lg:px-5 lg:py-2 lg:text-sm xl:px-6 xl:py-2.5 xl:text-base' %>
+  <div class="relative z-10 min-w-0 max-w-[16rem] md:max-w-[14rem] lg:max-w-[16rem] xl:max-w-[18rem]">
+    <h3 class="text-base font-extrabold leading-tight text-white sm:text-lg md:text-base lg:text-lg lg:leading-snug xl:text-xl"><%= title %></h3>
+    <p class="mt-3 text-xs leading-snug text-slate-200/90 sm:text-[0.8125rem] md:text-xs lg:text-sm lg:leading-snug xl:text-[0.9375rem]">
+      <%= description %>
+    </p>
+    <%= ui_button(as: :link,
+                  href:,
+                  variant: :ghost,
+                  size: :md,
+                  html: { target: '_blank', rel: 'noopener noreferrer', class: ghost_on_dark_button_classes }) do %>
+      <%= render button_icon %>
+      <%= button_label %>
+    <% end %>
+  </div>
+
+  <% if has_visual %>
+    <div class="relative z-10 hidden w-[5.5rem] shrink-0 self-center md:block" aria-hidden="true">
+      <%= render visual %>
+    </div>
+  <% end %>
+</div>

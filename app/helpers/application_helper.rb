@@ -14,6 +14,7 @@ module ApplicationHelper
   include Meta::CanonicalUrlHelper
   include Meta::CoverUrlsHelper
   include Meta::TagsHelper
+  include Root::PrefooterHelper
   include Root::PopularFictionsHelper
   include Root::RecentlyUpdatedHelper
   include Root::TalesHelper

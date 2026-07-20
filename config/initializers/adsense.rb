@@ -12,21 +12,12 @@ module Adsense
     home_banner_left: ENV['ADSENSE_HOME_BANNER_LEFT_SLOT'].presence,
     home_banner_right: ENV['ADSENSE_HOME_BANNER_RIGHT_SLOT'].presence,
     home_videos_grid_top_left: ENV['ADSENSE_HOME_VIDEOS_GRID_TOP_LEFT_SLOT'].presence,
-    home_videos_grid_top_right: ENV['ADSENSE_HOME_VIDEOS_GRID_TOP_RIGHT_SLOT'].presence,
-    home_videos_grid_bottom_left: ENV['ADSENSE_HOME_VIDEOS_GRID_BOTTOM_LEFT_SLOT'].presence,
-    home_videos_grid_bottom_right: ENV['ADSENSE_HOME_VIDEOS_GRID_BOTTOM_RIGHT_SLOT'].presence
+    home_videos_grid_top_right: ENV['ADSENSE_HOME_VIDEOS_GRID_TOP_RIGHT_SLOT'].presence
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {
     home_banner_left: 'home-mid-left',
     home_banner_right: 'home-mid-right'
-  }.freeze
-
-  HOME_VIDEOS_GRID_PLACEMENTS = {
-    home_videos_grid_top_left: 'home-videos-tl',
-    home_videos_grid_top_right: 'home-videos-tr',
-    home_videos_grid_bottom_left: 'home-videos-bl',
-    home_videos_grid_bottom_right: 'home-videos-br'
   }.freeze
 
   CHAPTER_READER_SLOTS = {

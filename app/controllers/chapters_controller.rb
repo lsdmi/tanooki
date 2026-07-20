@@ -15,7 +15,6 @@ class ChaptersController < ApplicationController
   before_action :redirect_if_chapter_not_yet_public, only: :show
   before_action :track_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show]
-  before_action :pokemon_appearance, only: [:show]
 
   def show
     @comments = load_chapter_comments

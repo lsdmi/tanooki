@@ -37,6 +37,7 @@ module PropshaftDevManifest
     manifest_mtime = manifest_path.mtime
     stale_tree?(Rails.root.join('app/javascript/controllers'), manifest_mtime) ||
       stale_tree?(Rails.root.join('app/assets/builds'), manifest_mtime) ||
+      stale_tree?(Rails.root.join('app/assets/images'), manifest_mtime) ||
       stale_tree?(Rails.root.join('vendor/javascript'), manifest_mtime)
   end
 
