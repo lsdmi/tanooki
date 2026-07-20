@@ -22,6 +22,27 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     PropshaftDevManifest.refresh!(@manifest_path)
   end
 
+  test 'stale? is true when a new image is not in the manifest' do
+    manifest = JSON.parse(@manifest_path.read)
+    manifest.delete('baka-telegram-mockup.webp')
+    @manifest_path.write(manifest.to_json)
+
+    assert PropshaftDevManifest.stale?(@manifest_path)
+  ensure
+    PropshaftDevManifest.refresh!(@manifest_path)
+  end
+
+  test 'refresh! exposes homepage telegram promo image' do
+    helper = Class.new do
+      include ActionView::Helpers::AssetUrlHelper
+      include Propshaft::Helper
+    end.new
+
+    PropshaftDevManifest.refresh!(@manifest_path)
+
+    assert_includes helper.asset_path('baka-telegram-mockup.webp'), 'baka-telegram-mockup'
+  end
+
   test 'stale? is true when tailwind build is newer than manifest' do
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
     PropshaftDevManifest.refresh!(@manifest_path)

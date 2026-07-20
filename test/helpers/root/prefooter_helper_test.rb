@@ -24,13 +24,13 @@ module Root
       card = home_videos_grid_promo_card(:buymeacoffee)
       expected = {
         banner_class: 'buymeacoffee-banner',
-        title: 'Підтримайте Baka',
+        title: 'Підтримайте Баку',
         button_label: 'Buy Me a Coffee',
-        href: buymeacoffee_site_url,
-        visual: 'root/prefooter/promo/buymeacoffee_visual'
+        href: buymeacoffee_site_url
       }
 
       assert_equal expected, card.slice(*expected.keys)
+      assert_not card.key?(:visual)
     end
   end
 end

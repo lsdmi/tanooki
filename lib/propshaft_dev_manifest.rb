@@ -33,12 +33,31 @@ module PropshaftDevManifest
 
   def stale?(manifest_path)
     return true unless manifest_path.exist?
+    return true if manifest_missing_assets?(manifest_path)
 
     manifest_mtime = manifest_path.mtime
     stale_tree?(Rails.root.join('app/javascript/controllers'), manifest_mtime) ||
       stale_tree?(Rails.root.join('app/assets/builds'), manifest_mtime) ||
       stale_tree?(Rails.root.join('app/assets/images'), manifest_mtime) ||
       stale_tree?(Rails.root.join('vendor/javascript'), manifest_mtime)
+  end
+
+  def manifest_missing_assets?(manifest_path)
+    manifest = JSON.parse(manifest_path.read)
+    missing_assets_in_tree?(Rails.root.join('app/assets/images'), manifest)
+  rescue JSON::ParserError
+    true
+  end
+
+  def missing_assets_in_tree?(root, manifest)
+    return false unless root.directory?
+
+    root.glob('**/*').any? do |path|
+      next unless path.file?
+
+      logical_path = path.relative_path_from(root).to_s
+      !manifest.key?(logical_path)
+    end
   end
 
   def stale_tree?(root, manifest_mtime)

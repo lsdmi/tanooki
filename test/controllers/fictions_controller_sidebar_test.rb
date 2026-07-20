@@ -51,6 +51,12 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
     assert_includes response.body, fiction_path(fictions(:two))
   end
 
+  test 'similar_fictions frame links escape turbo frame for full-page navigation' do
+    get similar_fictions_fiction_url(@fiction)
+
+    assert_select 'turbo-frame#fiction_similar a[data-turbo-frame="_top"][href*="/fictions/"]', minimum: 1
+  end
+
   test 'similar_fictions frame is omitted on show when fiction has no scanlators' do
     fiction = fictions(:one)
     fiction.scanlators.destroy_all

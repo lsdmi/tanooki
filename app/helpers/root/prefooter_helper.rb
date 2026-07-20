@@ -17,12 +17,11 @@ module Root
       },
       buymeacoffee: {
         banner_class: 'buymeacoffee-banner',
-        title: 'Підтримайте Baka',
-        description: 'Допоможіть нам тримати сервери та продовжувати переклади улюблених ранобе.',
+        title: 'Підтримайте Баку',
+        description: 'Поміч на утримання серверів, розвиток сайту, конкурси та донати на ЗСУ.',
         button_label: 'Buy Me a Coffee',
         background_image: 'modal-bg.webp',
-        button_icon: 'root/prefooter/promo/buymeacoffee_button_icon',
-        visual: 'root/prefooter/promo/buymeacoffee_visual'
+        button_icon: 'root/prefooter/promo/buymeacoffee_button_icon'
       }
     }.freeze
 

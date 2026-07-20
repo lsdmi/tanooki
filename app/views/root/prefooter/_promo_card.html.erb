@@ -1,6 +1,12 @@
 <%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil) %>
 <% has_visual = visual.present? %>
-<div class="<%= banner_class %> relative flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:items-center md:justify-normal md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= 'md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-3' if has_visual %>"
+<% card_layout_classes = if has_visual
+     'md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-3 md:items-center md:justify-normal'
+   else
+     'md:flex md:flex-col md:justify-center md:items-start'
+   end %>
+<% visual_column_classes = has_visual ? 'hidden md:block' : 'hidden' %>
+<div class="<%= banner_class %> relative flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= card_layout_classes %>"
      style="background-image: url(<%= asset_path(background_image) %>)">
   <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/80 to-slate-900/55 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/35"
        aria-hidden="true"></div>
@@ -21,9 +27,7 @@
     <% end %>
   </div>
 
-  <% if has_visual %>
-    <div class="relative z-10 hidden w-[5.5rem] shrink-0 self-center md:block" aria-hidden="true">
-      <%= render visual %>
-    </div>
-  <% end %>
+  <div class="relative z-10 w-[5.5rem] shrink-0 self-center <%= visual_column_classes %>" aria-hidden="true">
+    <%= render visual if has_visual %>
+  </div>
 </div>
