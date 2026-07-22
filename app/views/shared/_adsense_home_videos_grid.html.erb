@@ -1,7 +1,7 @@
 <%# 2×2 grid below homepage «Популярні Відео»: two AdSense slots + Telegram + Buy Me a Coffee. %>
 <% mobile_slot_margins = ['', 'mt-3', 'mt-8', 'mt-3'] %>
 
-<section class="home-videos-ads -mr-3 mt-8 mb-14 sm:mr-0 md:mt-14 sm:mb-0" aria-label="Реклама та підтримка">
+<section class="home-videos-ads mt-8 mb-14 md:mt-14 sm:mb-0" aria-label="Реклама та підтримка">
   <div class="flex flex-col sm:grid sm:grid-cols-2 sm:items-stretch sm:gap-x-[28px] sm:gap-y-8">
     <% adsense_home_videos_grid_cells.each_with_index do |cell, index| %>
       <div class="home-videos-ads__slot flex h-full <%= mobile_slot_margins[index] %> sm:mt-0">

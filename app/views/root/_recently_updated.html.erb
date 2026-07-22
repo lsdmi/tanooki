@@ -17,7 +17,7 @@
 
   <div
     class="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] -mr-5 sm:hidden"
-    role="list"
+    role="group"
     aria-label="Нові Релізи">
     <% cards.each_slice(4) do |column_cards| %>
       <%# One column + peek of the next; gap-3 = 12px between columns. Slider only below sm. %>
@@ -29,12 +29,13 @@
     <% end %>
   </div>
 
-  <div
-    class="hidden gap-x-4 gap-y-8 sm:grid sm:grid-cols-2 lg:grid-cols-4"
-    role="list"
+  <ul
+    class="hidden list-none gap-x-4 gap-y-8 sm:grid sm:grid-cols-2 lg:grid-cols-4"
     aria-label="Нові Релізи">
     <% cards.each do |card| %>
-      <%= render 'root/recently_updated_card', fiction: card[:fiction], chapter: card[:chapter] %>
+      <li>
+        <%= render 'root/recently_updated_card', fiction: card[:fiction], chapter: card[:chapter] %>
+      </li>
     <% end %>
-  </div>
+  </ul>
 </section>

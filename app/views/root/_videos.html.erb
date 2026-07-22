@@ -20,15 +20,17 @@
     <%= render 'root/videos_featured_player', video: editorial[:featured] %>
     <%= render 'root/videos_featured_meta', video: editorial[:featured], video_tag_counts: %>
 
-    <div class="grid grid-cols-3 gap-2" role="list" aria-label="Популярні Відео">
+    <ul class="grid list-none grid-cols-3 gap-2" aria-label="Популярні Відео">
       <% editorial[:supporting].each do |video| %>
-        <%= render 'root/videos_card', video:, video_tag_counts:, variant: :mobile %>
+        <li>
+          <%= render 'root/videos_card', video:, video_tag_counts:, variant: :mobile %>
+        </li>
       <% end %>
-    </div>
+    </ul>
   </div>
 
   <div class="hidden lg:grid lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] lg:grid-rows-[auto_auto] lg:items-stretch lg:gap-x-4 lg:gap-y-3"
-       role="list"
+       role="group"
        aria-label="Популярні Відео">
     <%= render 'root/videos_featured_player', video: editorial[:featured] %>
 

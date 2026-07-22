@@ -4,6 +4,7 @@ module Meta
   # Resized cover URLs for list, card, and blurred page backgrounds.
   module CoverUrlsHelper
     include CoverCardPictureHelper
+    include CoverCardDimensionsHelper
 
     CARD_SIZE = [400, 600].freeze
     CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :webp }.freeze

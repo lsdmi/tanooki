@@ -3,13 +3,14 @@
 module Meta
   # Renders fiction cover cards as <picture> with AVIF/WebP sources.
   module CoverCardPictureHelper
-    def cover_card_picture_tag(attachment, preset: :card, **)
+    def cover_card_picture_tag(attachment, preset: :card, **options)
       return unless attachment&.attached?
 
+      options = cover_card_img_dimension_options(attachment, preset:, **options)
       urls = cover_card_variant_urls(attachment, preset:)
-      return image_tag(urls[:fallback], **) unless urls[:webp]
+      return image_tag(urls[:fallback], **options) unless urls[:webp]
 
-      cover_card_picture(urls, **)
+      cover_card_picture(urls, **options)
     end
 
     private
@@ -30,6 +31,15 @@ module Meta
         cover_card_source_tag(urls[:webp], type: 'image/webp', lazy: lazy),
         tag.img(**img_options)
       ].compact
+    end
+
+    def cover_card_img_dimension_options(attachment, preset:, **options)
+      return options if options.key?(:width) && options.key?(:height)
+
+      dimensions = cover_card_display_dimensions(attachment, preset:)
+      return options unless dimensions
+
+      options.merge(width: dimensions[0], height: dimensions[1])
     end
 
     def cover_card_img_options(webp_url, lazy:, **options)

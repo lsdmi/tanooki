@@ -49,6 +49,26 @@ module Meta
       assert_match %r{<picture>.*type="image/avif".*type="image/webp".*class="cover-card"}m, html
     end
 
+    test 'cover_card_picture_tag includes width and height matching the card variant' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      Attachments::ImageDimensions.stub(:from_blob, [600, 800]) do
+        html = cover_card_picture_tag(@fiction.cover, alt: 'Cover', class: 'cover-card')
+
+        assert_match(/width="400"/, html)
+        assert_match(/height="533"/, html)
+      end
+    end
+
+    test 'cover_card_picture_tag preserves explicit width and height overrides' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+
+      html = cover_card_picture_tag(@fiction.cover, alt: 'Cover', width: 120, height: 180)
+
+      assert_match(/width="120"/, html)
+      assert_match(/height="180"/, html)
+    end
+
     test 'cover_card_picture_tag defers sources when lazy' do
       skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 

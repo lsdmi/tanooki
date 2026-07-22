@@ -44,7 +44,7 @@ class HomeVideosSectionTest < ActionDispatch::IntegrationTest
   test 'popular videos mobile layout uses three column supporting grid without compact tags' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 
-    assert_select 'section[aria-labelledby="home-videos"] .grid.grid-cols-3.gap-2', count: 1
+    assert_select 'section[aria-labelledby="home-videos"] ul.grid.grid-cols-3.gap-2', count: 1
     assert_select 'section[aria-labelledby="home-videos"] .grid.grid-cols-3 .flex-nowrap', count: 0
   end
 

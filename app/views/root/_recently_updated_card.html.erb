@@ -1,6 +1,6 @@
 <%# locals: fiction:, chapter: %>
 <% text_link_class = 'rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900' %>
-<article role="listitem" class="flex gap-3">
+<article class="flex gap-3">
   <%= link_to chapter_path(chapter),
               turbo_drive_visit_data.merge(class: 'group/cover h-22 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-200 shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:bg-slate-800 dark:focus-visible:ring-violet-400 lg:h-28 sm:w-[4.5rem]') do %>
     <%= cover_card_picture_tag(fiction.cover,
