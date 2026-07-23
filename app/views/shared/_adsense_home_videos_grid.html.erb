@@ -1,15 +1,11 @@
-<%# 2×2 grid below homepage «Популярні Відео»: two AdSense slots + Telegram + Buy Me a Coffee. %>
-<% mobile_slot_margins = ['', 'mt-3', 'mt-8', 'mt-3'] %>
+<%# Dual promo row below homepage «Популярні Відео»: Telegram + Buy Me a Coffee. %>
+<% mobile_slot_margins = ['', 'mt-3'] %>
 
-<section class="home-videos-ads mt-8 mb-14 md:mt-14 sm:mb-0" aria-label="Реклама та підтримка">
+<section class="home-videos-ads mt-8 mb-14 md:mt-14 sm:mb-0" aria-label="Підтримка">
   <div class="flex flex-col sm:grid sm:grid-cols-2 sm:items-stretch sm:gap-x-[28px] sm:gap-y-8">
-    <% adsense_home_videos_grid_cells.each_with_index do |cell, index| %>
+    <% home_videos_grid_promos.each_with_index do |promo, index| %>
       <div class="home-videos-ads__slot flex h-full <%= mobile_slot_margins[index] %> sm:mt-0">
-        <% if cell[:kind] == :promo %>
-          <%= render 'root/prefooter/promo_card', **home_videos_grid_promo_card(cell[:promo]) %>
-        <% else %>
-          <%= render 'shared/home_banner_adsense_slot', placement: cell[:placement], navigation_key: cell[:navigation_key] %>
-        <% end %>
+        <%= render 'root/prefooter/promo_card', **home_videos_grid_promo_card(promo) %>
       </div>
     <% end %>
   </div>

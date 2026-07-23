@@ -20,6 +20,13 @@ module Adsense
       assert_nil adsense_slot_id(:bookshelf)
     end
 
+    test 'youtube video slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:youtube_video)
+      assert_nil adsense_slot_id(:youtube_video)
+    end
+
     test 'home banner slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 
@@ -39,32 +46,6 @@ module Adsense
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         assert_not adsense_home_banners_renderable?
       end
-    end
-
-    test 'adsense_home_videos_grid_renderable? follows development preview rules' do
-      define_singleton_method(:adsense_allowed?) { false }
-
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-        assert_predicate self, :adsense_home_videos_grid_renderable?
-      end
-
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        assert_not adsense_home_videos_grid_renderable?
-      end
-    end
-
-    test 'home_videos_grid_cells include community and buymeacoffee promo cards' do
-      promo_cells = adsense_home_videos_grid_cells.last(2).map { |cell| cell.slice(:kind, :promo) }
-
-      assert_equal [
-        { kind: :promo, promo: :community },
-        { kind: :promo, promo: :buymeacoffee }
-      ], promo_cells
-    end
-
-    test 'home_videos_grid_ad_placements only include top row ad slots' do
-      assert_equal %i[home_videos_grid_top_left home_videos_grid_top_right],
-                   adsense_home_videos_grid_ad_placements.keys.sort
     end
 
     test 'adsense_slot_live? is false when adsense is disabled' do

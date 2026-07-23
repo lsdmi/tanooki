@@ -6,9 +6,11 @@
      'md:flex md:flex-col md:justify-center md:items-start'
    end %>
 <% visual_column_classes = has_visual ? 'hidden md:block' : 'hidden' %>
-<div class="<%= banner_class %> relative flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= card_layout_classes %>"
-     style="background-image: url(<%= asset_path(background_image) %>)">
-  <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/80 to-slate-900/55 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/35"
+<div class="<%= banner_class %> relative isolate flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= card_layout_classes %>">
+  <div class="pointer-events-none absolute inset-0 rounded-[inherit] bg-cover bg-center bg-no-repeat scale-[1.04]"
+       style="background-image: url(<%= asset_path(background_image) %>)"
+       aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-t from-slate-900/95 via-slate-900/55 to-slate-900/15 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/25"
        aria-hidden="true"></div>
 
   <% ghost_on_dark_button_classes = '!border-white/60 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/50 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10 mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0 lg:px-5 lg:py-2 lg:text-sm xl:px-6 xl:py-2.5 xl:text-base' %>

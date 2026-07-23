@@ -5,6 +5,8 @@ module Root
   module PrefooterHelper
     include ExternalUrls::UrlsHelper
 
+    HOME_VIDEOS_GRID_PROMOS = %i[community buymeacoffee].freeze
+
     HOME_VIDEOS_GRID_PROMO_CARDS = {
       community: {
         banner_class: 'community-banner',
@@ -24,6 +26,10 @@ module Root
         button_icon: 'root/prefooter/promo/buymeacoffee_button_icon'
       }
     }.freeze
+
+    def home_videos_grid_promos
+      HOME_VIDEOS_GRID_PROMOS
+    end
 
     def home_videos_grid_promo_card(promo)
       config = HOME_VIDEOS_GRID_PROMO_CARDS.fetch(promo)

@@ -7,6 +7,10 @@ module Root
     include ExternalUrls::UrlsHelper
     include PrefooterHelper
 
+    test 'home_videos_grid_promos include community and buymeacoffee cards' do
+      assert_equal %i[community buymeacoffee], home_videos_grid_promos
+    end
+
     test 'home_videos_grid_promo_card returns telegram card locals' do
       card = home_videos_grid_promo_card(:community)
       expected = {
