@@ -29,16 +29,38 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_select '.youtube-show__ad', count: 1
   end
 
-  test 'show renders adsense slot preview in development' do
-    skip 'YouTube AdSense preview requires Rails.env.development?' unless Rails.env.development?
-
+  test 'show loads up to three related videos from the same channel' do
     Search::TagCounts.stub(:call, {}) do
       get youtube_video_path(@youtube_video)
     end
 
     assert_response :success
-    assert_select '.youtube-show__ad #adsense-slot-youtube_video-' \
-                  "#{@youtube_video.id} .reader-ad-slot--preview", count: 1
+    assert_equal 3, assigns(:more_videos).size
+    assert_select '.youtube-show__related-item', count: 3
+  end
+
+  test 'show loads two related videos in development' do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+      Search::TagCounts.stub(:call, {}) do
+        get youtube_video_path(@youtube_video)
+      end
+
+      assert_response :success
+      assert_equal 2, assigns(:more_videos).size
+      assert_select '.youtube-show__related-item', count: 2
+    end
+  end
+
+  test 'show renders adsense slot preview in development' do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+      Search::TagCounts.stub(:call, {}) do
+        get youtube_video_path(@youtube_video)
+      end
+
+      assert_response :success
+      assert_select '.youtube-show__ad ' \
+                    "#adsense-slot-youtube_video-#{@youtube_video.id}.reader-ad-slot--preview", count: 1
+    end
   end
 
   test 'show returns not found for missing video' do

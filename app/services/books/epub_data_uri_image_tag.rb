@@ -5,8 +5,16 @@ module Books
   class EpubDataUriImageTag
     TransformContext = Data.define(:html, :tag_start, :tag_end, :book, :chapter_key, :index, :export_request_id)
 
-    def self.transform_range(html, tag_start, tag_end, book:, chapter_key:, index:, export_request_id: nil) # rubocop:disable Metrics/ParameterLists
-      context = TransformContext.new(html, tag_start, tag_end, book, chapter_key, index, export_request_id)
+    def self.transform_range(html, tag_start, tag_end, **options)
+      context = TransformContext.new(
+        html,
+        tag_start,
+        tag_end,
+        options.fetch(:book),
+        options.fetch(:chapter_key),
+        options.fetch(:index),
+        options[:export_request_id]
+      )
       new(context).transform_range
     end
 

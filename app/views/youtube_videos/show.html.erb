@@ -72,7 +72,9 @@
 
           <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-3 lg:grid-cols-1 lg:gap-y-4">
             <% @more_videos.each do |video| %>
-              <%= render 'single_video', video: %>
+              <div class="youtube-show__related-item">
+                <%= render 'single_video', video: %>
+              </div>
             <% end %>
           </div>
         </section>

@@ -1,2 +1,8 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
+
+@layer components {
+  .youtube-show__sidebar:has(.youtube-show__ad:not(.hidden) .reader-ad-slot) .youtube-show__related-item:nth-child(3) {
+    @apply hidden;
+  }
+}

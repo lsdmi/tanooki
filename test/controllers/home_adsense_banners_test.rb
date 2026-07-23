@@ -4,13 +4,13 @@ require 'test_helper'
 
 class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
   test 'homepage renders dual adsense banner row in development preview' do
-    skip 'Homepage AdSense previews require Rails.env.development?' unless Rails.env.development?
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+      Search::TagCounts.stub(:call, {}) { get root_url }
 
-    Search::TagCounts.stub(:call, {}) { get root_url }
-
-    assert_response :success
-    assert_select 'section.home-banners[aria-label="Реклама"]', count: 1
-    assert_select '.home-banner-slot--preview', count: 2
+      assert_response :success
+      assert_select 'section.home-banners[aria-label="Реклама"]', count: 1
+      assert_select '.home-banner-slot--preview', count: 2
+    end
   end
 
   test 'homepage renders videos grid with two promo slots' do
