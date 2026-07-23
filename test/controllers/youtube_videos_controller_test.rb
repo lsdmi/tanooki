@@ -26,6 +26,7 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select '[id^="advertisement-banner-"]', count: 0
+    assert_select '.youtube-show__ad', count: 1
   end
 
   test 'show renders adsense slot preview in development' do
@@ -36,7 +37,8 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select "#adsense-slot-youtube_video-#{@youtube_video.id} .reader-ad-slot--preview", count: 1
+    assert_select '.youtube-show__ad #adsense-slot-youtube_video-' \
+                  "#{@youtube_video.id} .reader-ad-slot--preview", count: 1
   end
 
   test 'show returns not found for missing video' do

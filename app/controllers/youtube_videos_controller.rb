@@ -60,7 +60,7 @@ class YoutubeVideosController < ApplicationController
   def video_tags_for_sidebar
     return [] unless @youtube_video.tags?
 
-    @youtube_video.tags.split(', ').sample(9)
+    @youtube_video.tags.split(', ')
   end
 
   def index_video_search_tags

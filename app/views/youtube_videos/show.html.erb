@@ -1,81 +1,82 @@
-<div class="">
-  <div class="max-w-7xl mx-auto px-4 z-10 relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 z-10 relative pb-8 pt-4 sm:pt-6 lg:py-12">
+  <section class="youtube-show flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-x-10 lg:gap-y-0">
+    <div class="youtube-show__main flex min-w-0 flex-col gap-5">
+      <%= link_to youtube_videos_path,
+                  class: 'youtube-show__back inline-flex w-fit items-center gap-1 text-xs font-medium text-stone-600 transition duration-300 hover:text-cyan-700 sm:text-sm dark:text-gray-400 dark:hover:text-rose-400' do %>
+        <svg class="h-4 w-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+        </svg>
+        Всі відео
+      <% end %>
 
-    <div class="mx-auto pt-12 lg:py-12 px-6">
-      <!-- Video Title with subtle gradient text -->
-      <div class="flex flex-row justify-between items-start sm:mb-2 lg:mb-4 gap-4">
-        <div class="flex-1 min-w-0">
-          <h1 class="line-clamp-3 sm:line-clamp-0 lg:leading-tight text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-stone-800 dark:text-gray-200 transition-colors duration-300 drop-shadow mb-2 md:mb-0 break-words">
-            <%= @youtube_video.title %>
-          </h1>
-        </div>
-        <div class="flex-shrink-0">
-          <%= link_to youtube_videos_path,
-            class: 'inline-flex items-center gap-1 text-xs sm:text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-700 hover:underline dark:hover:text-rose-700 font-bold py-2 px-4 rounded-xl transition duration-300 whitespace-nowrap' do %>
-            Всі Відео
-            <svg class="w-5 h-5 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-            </svg>
-          <% end %>
+      <div class="youtube-show__player">
+        <div class="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-800 shadow-xl">
+          <%= tag.iframe src: "https://www.youtube.com/embed/#{@youtube_video.video_id}",
+                         width: '1280',
+                         height: '720',
+                         frameborder: 0,
+                         class: 'absolute inset-0 h-full w-full rounded-xl',
+                         allowfullscreen: true,
+                         title: @youtube_video.title %>
         </div>
       </div>
 
-      <!-- Author and Date -->
-      <div class="flex items-center space-x-3 mb-4">
-        <p class="text-stone-700 dark:text-gray-300 mb-2 drop-shadow text-xs md:text-base">
-            <%= link_to @youtube_video.youtube_channel_title, search_index_path(search: [@youtube_video.youtube_channel_title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300' %>
-            <span>•</span>
-            <%= tag.span l(@youtube_video.published_at, format: :short).downcase, class: 'inline' %>
+      <div class="youtube-show__title">
+        <h1 class="break-words text-lg font-semibold leading-snug text-stone-800 drop-shadow transition-colors duration-300 sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight dark:text-gray-200">
+          <%= @youtube_video.title %>
+        </h1>
+      </div>
+
+      <div class="youtube-show__meta flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-stone-700 drop-shadow md:text-base dark:text-gray-300">
+        <%= link_to @youtube_video.youtube_channel_title,
+                    search_index_path(search: [@youtube_video.youtube_channel_title]),
+                    class: 'inline text-stone-800 line-clamp-1 transition-colors duration-300 hover:text-cyan-700 dark:text-gray-200 dark:hover:text-rose-700' %>
+        <span aria-hidden="true">•</span>
+        <%= tag.span l(@youtube_video.published_at, format: :short).downcase, class: 'inline' %>
+        <% if @youtube_video.views.positive? %>
+          <span aria-hidden="true">•</span>
+          <span><%= format_view_count(@youtube_video.views) %> переглядів</span>
+        <% end %>
+      </div>
+
+      <% if @video_tags.any? %>
+        <section class="youtube-show__tags">
+          <p class="mb-3 text-sm font-extrabold uppercase tracking-wide text-gray-900 drop-shadow sm:text-base dark:text-gray-100">
+            Теґи <span class="text-cyan-700 dark:text-rose-700">Відео</span>
           </p>
-      </div>
 
-      <div class="flex flex-col lg:flex-row gap-12">
-        <!-- Video Player Section -->
-        <div class="flex-1 overflow-hidden flex flex-col">
-          <%= tag.iframe src: "https://www.youtube.com/embed/#{@youtube_video.video_id}", width: '1280', height: '720', frameborder: 0, class: 'shadow-xl rounded-xl w-full h-52 sm:h-96 lg:h-full rounded-lg w-full aspect-video object-cover', allowfullscreen: true, title: @youtube_video.title %>
-          <div class="mt-8 lg:my-8">
-            <%= render 'shared/adsense_slot',
-                       placement: :youtube_video,
-                       navigation_key: @youtube_video.id %>
-          </div>
-        </div>
-
-        <!-- Sidebar: Tags, Ad, More Videos -->
-        <aside class="w-full lg:w-80 flex flex-col space-y-8">
-          <!-- Tags -->
-          <% if @video_tags.any? %>
-            <section class="justify-center">
-              <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
-                Теґи <span class="text-cyan-700 dark:text-rose-700">Відео</span>
-              </p>
-
-              <%= render Ui::TagListComponent.new(
-                    labels: @video_tags,
-                    variant: :keyword,
-                    size: :sm,
-                    href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
-                    counts: @video_tag_counts
-                  ) %>
-            </section>
-          <% end %>
-
-          <!-- More Videos -->
-          <% if @more_videos.any? %>
-            <section>
-              <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
-                Від <span class="text-cyan-700 dark:text-rose-700">Автора</span>
-              </p>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-0 gap-y-4 lg:gap-y-0 mb-4 lg:mb-0">
-                <% @more_videos.each do |video| %>
-                  <%= render 'single_video', video: %>
-                <% end %>
-              </div>
-            </section>
-          <% end %>
-        </aside>
-      </div>
+          <%= render Ui::TagListComponent.new(
+                labels: @video_tags,
+                variant: :keyword,
+                size: :sm,
+                href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
+                counts: @video_tag_counts
+              ) %>
+        </section>
+      <% end %>
     </div>
 
-  </div>
+    <aside class="youtube-show__sidebar flex min-w-0 flex-col gap-6 lg:min-h-full">
+      <div class="youtube-show__ad shrink-0 has-[.reader-ad-slot--collapsed]:hidden [&_.reader-ad-slot__adsense_iframe]:!w-full [&_.reader-ad-slot__adsense_iframe]:!max-w-full max-lg:[&_.reader-ad-slot--preview]:mx-0 max-lg:[&_.reader-ad-slot--adsense-filled]:mx-0 lg:[&_.reader-ad-slot--preview]:m-0 lg:[&_.reader-ad-slot--adsense-filled]:m-0">
+        <%= render 'shared/adsense_slot',
+                   placement: :youtube_video,
+                   navigation_key: @youtube_video.id,
+                   measure_as: 'bottom' %>
+      </div>
+
+      <% if @more_videos.any? %>
+        <section class="youtube-show__related flex flex-col lg:min-h-0 lg:flex-1">
+          <p class="mb-4 text-lg font-extrabold uppercase leading-5 text-gray-900 drop-shadow sm:text-xl lg:text-2xl dark:text-gray-100">
+            Від <span class="text-cyan-700 dark:text-rose-700">Автора</span>
+          </p>
+
+          <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-3 lg:grid-cols-1 lg:gap-y-4">
+            <% @more_videos.each do |video| %>
+              <%= render 'single_video', video: %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </aside>
+  </section>
 </div>
