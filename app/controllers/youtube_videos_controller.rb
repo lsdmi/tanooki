@@ -48,11 +48,7 @@ class YoutubeVideosController < ApplicationController
   def more_videos
     YoutubeVideo
       .where(youtube_channel_id: @youtube_video.youtube_channel_id)
-      .excluding(@youtube_video).order(published_at: :desc).first(more_videos_limit)
-  end
-
-  def more_videos_limit
-    Rails.env.development? ? 2 : 3
+      .excluding(@youtube_video).order(published_at: :desc).first(3)
   end
 
   def set_video

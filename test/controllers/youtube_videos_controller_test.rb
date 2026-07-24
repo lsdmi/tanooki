@@ -39,15 +39,29 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_select '.youtube-show__related-item', count: 3
   end
 
-  test 'show loads two related videos in development' do
+  test 'show renders related videos before ad slot' do
+    Search::TagCounts.stub(:call, {}) do
+      get youtube_video_path(@youtube_video)
+    end
+
+    sidebar_html = css_select('.youtube-show__sidebar').first.to_html
+    related_pos = sidebar_html.index('youtube-show__related')
+    ad_pos = sidebar_html.index('youtube-show__ad')
+
+    assert related_pos, 'expected related section'
+    assert ad_pos, 'expected ad slot wrapper'
+    assert_operator related_pos, :<, ad_pos, 'related videos should appear before the ad slot'
+  end
+
+  test 'show loads three related videos in development preview' do
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
       Search::TagCounts.stub(:call, {}) do
         get youtube_video_path(@youtube_video)
       end
 
       assert_response :success
-      assert_equal 2, assigns(:more_videos).size
-      assert_select '.youtube-show__related-item', count: 2
+      assert_equal 3, assigns(:more_videos).size
+      assert_select '.youtube-show__related-item', count: 3
     end
   end
 

@@ -57,13 +57,6 @@
     </div>
 
     <aside class="youtube-show__sidebar flex min-w-0 flex-col gap-6 lg:min-h-full">
-      <div class="youtube-show__ad shrink-0 has-[.reader-ad-slot--collapsed]:hidden [&_.reader-ad-slot__adsense_iframe]:!w-full [&_.reader-ad-slot__adsense_iframe]:!max-w-full max-lg:[&_.reader-ad-slot--preview]:mx-0 max-lg:[&_.reader-ad-slot--adsense-filled]:mx-0 lg:[&_.reader-ad-slot--preview]:m-0 lg:[&_.reader-ad-slot--adsense-filled]:m-0">
-        <%= render 'shared/adsense_slot',
-                   placement: :youtube_video,
-                   navigation_key: @youtube_video.id,
-                   measure_as: 'bottom' %>
-      </div>
-
       <% if @more_videos.any? %>
         <section class="youtube-show__related flex flex-col lg:min-h-0 lg:flex-1">
           <p class="mb-4 text-lg font-extrabold uppercase leading-5 text-gray-900 drop-shadow sm:text-xl lg:text-2xl dark:text-gray-100">
@@ -79,6 +72,13 @@
           </div>
         </section>
       <% end %>
+
+      <div class="youtube-show__ad mt-auto shrink-0 has-[.reader-ad-slot--collapsed]:hidden [&_.reader-ad-slot__adsense_iframe]:!w-full [&_.reader-ad-slot__adsense_iframe]:!max-w-full max-lg:[&_.reader-ad-slot--preview]:mx-0 max-lg:[&_.reader-ad-slot--adsense-filled]:mx-0 lg:[&_.reader-ad-slot--preview]:m-0 lg:[&_.reader-ad-slot--adsense-filled]:m-0">
+        <%= render 'shared/adsense_slot',
+                   placement: :youtube_video,
+                   navigation_key: @youtube_video.id,
+                   measure_as: 'bottom' %>
+      </div>
     </aside>
   </section>
 </div>
