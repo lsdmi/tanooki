@@ -2,7 +2,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer components {
-  .youtube-show__sidebar:has(.youtube-show__ad:not(.hidden) .reader-ad-slot) .youtube-show__related-item:nth-child(3) {
+  .youtube-show__sidebar:has(.reader-ad-slot--preview) .youtube-show__related-item:nth-child(3),
+  .youtube-show__sidebar:has(.reader-ad-slot--pending) .youtube-show__related-item:nth-child(3),
+  .youtube-show__sidebar:has(.reader-ad-slot--measuring) .youtube-show__related-item:nth-child(3),
+  .youtube-show__sidebar:has(.reader-ad-slot--adsense-filled) .youtube-show__related-item:nth-child(3) {
     @apply hidden;
   }
 }
