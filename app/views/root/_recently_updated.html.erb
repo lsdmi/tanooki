@@ -8,10 +8,9 @@
       <h2 id="home-recently-updated" class="text-xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100 lg:text-2xl">
         Нові Релізи
       </h2>
-      <%= link_to calendar_fictions_path, class: 'inline-flex shrink-0 items-baseline gap-0.5 text-md font-medium leading-snug text-cyan-700 transition duration-300 hover:underline dark:text-rose-400' do %>
-        <span class="hidden text-sm sm:inline lg:text-base">Більше</span>
-        <span aria-hidden="true">&rsaquo;</span>
-      <% end %>
+      <%= render 'root/section_more_link',
+                 path: calendar_fictions_path,
+                 link_class: 'text-cyan-700 dark:text-rose-400' %>
     </div>
   </header>
 

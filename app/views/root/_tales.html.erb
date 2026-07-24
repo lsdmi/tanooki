@@ -12,10 +12,9 @@
           <h2 id="home-tales" class="text-xl font-bold leading-snug tracking-tight text-white lg:text-2xl">
             Новини та <span class="text-cyan-400 dark:text-rose-400">Блоги</span>
           </h2>
-          <%= link_to tales_path, class: 'inline-flex shrink-0 items-baseline gap-0.5 text-md font-medium leading-snug text-white transition duration-300 hover:text-cyan-300 hover:underline dark:hover:text-rose-300' do %>
-            <span class="hidden text-sm sm:inline lg:text-base">Більше</span>
-            <span aria-hidden="true">&rsaquo;</span>
-          <% end %>
+          <%= render 'root/section_more_link',
+                     path: tales_path,
+                     link_class: 'text-white hover:text-cyan-300 dark:hover:text-rose-300' %>
         </div>
       </header>
 

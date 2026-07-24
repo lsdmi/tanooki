@@ -1,0 +1,19 @@
+<%# locals: (path:, link_class: nil) %>
+<%= link_to path,
+            class: [
+              'inline-flex shrink-0 items-center justify-center rounded-md p-2 -my-2 -mr-2',
+              'min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 sm:justify-start',
+              'text-md font-medium leading-snug transition duration-300 hover:underline',
+              link_class
+            ].compact.join(' ') do %>
+  <span class="hidden text-sm sm:inline lg:text-base">Більше</span>
+  <svg class="h-6 w-6 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+       xmlns="http://www.w3.org/2000/svg"
+       fill="none"
+       viewBox="0 0 24 24"
+       stroke="currentColor"
+       stroke-width="2"
+       aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+  </svg>
+<% end %>

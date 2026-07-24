@@ -6,8 +6,10 @@
     @apply hidden;
   }
 
-  .youtube-show__sidebar:has(.reader-ad-slot--collapsed) .youtube-show__related-item:nth-child(3),
-  .youtube-show__sidebar:not(:has(.reader-ad-slot)) .youtube-show__related-item:nth-child(3) {
-    @apply block;
+  @media (width >= 1024px) {
+    .youtube-show__sidebar:has(.reader-ad-slot--collapsed) .youtube-show__related-item:nth-child(3),
+    .youtube-show__sidebar:not(:has(.reader-ad-slot)) .youtube-show__related-item:nth-child(3) {
+      @apply block;
+    }
   }
 }
