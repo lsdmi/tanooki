@@ -5,6 +5,9 @@ module Tags
   class Trending
     include Rails.application.routes.url_helpers
 
+    TAG_LIMIT = 16
+    FOOTER_DESKTOP_TAG_LIMIT = 12
+
     def tags
       Rails.cache.fetch('trending_tags', expires_in: 12.hours) do
         tags = Tag.where(name: trending_tag_names)
@@ -25,7 +28,7 @@ module Tags
          .where(publications: { created_at: 21.days.ago.. })
          .group('tags.id')
          .order('SUM(publications.views) DESC')
-         .limit(16)
+         .limit(TAG_LIMIT)
          .pluck(:name)
     end
   end

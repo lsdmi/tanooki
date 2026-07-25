@@ -18,15 +18,15 @@ module Ui
     ].join(' ').freeze
 
     STAT_VIEWS_CLASSES = [
-      'inline-flex min-w-0 max-w-[58%] items-center gap-1 rounded-lg bg-black/40 px-2 py-0.5',
+      'inline-flex h-4 min-w-0 max-w-[58%] items-center gap-1 rounded-lg bg-black/40 px-2',
       'text-[10px] font-medium leading-none text-white backdrop-blur-[2px] ring-1 ring-white/15',
       'transition-opacity duration-300 group-hover:opacity-95',
       'dark:bg-black/50 dark:ring-white/20'
     ].join(' ').freeze
 
     STAT_RATING_CLASSES = [
-      'inline-flex shrink-0 items-center gap-0.5 rounded-lg bg-black/40 px-2 py-0.5',
-      'text-[10px] font-semibold text-amber-300 backdrop-blur-[2px] ring-1 ring-white/15',
+      'inline-flex h-4 shrink-0 items-center gap-0.5 rounded-lg bg-black/40 px-2',
+      'text-[9px] font-medium leading-none text-amber-300 backdrop-blur-[2px] ring-1 ring-white/15',
       'transition-opacity duration-300 group-hover:opacity-95',
       'dark:bg-black/50 dark:text-amber-200 dark:ring-white/20'
     ].join(' ').freeze
@@ -80,7 +80,7 @@ module Ui
 
     ICON_CLASSES = {
       stat_views: 'h-3 w-3 shrink-0 text-white/90',
-      stat_rating: 'h-3 w-3 text-amber-300 dark:text-amber-200'
+      stat_rating: 'h-2.5 w-2.5 shrink-0 text-amber-300 dark:text-amber-200'
     }.freeze
   end
 end

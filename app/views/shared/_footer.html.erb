@@ -8,18 +8,34 @@
         </a>
         <p class="my-4 font-light text-gray-400">baka.in.ua - українська аніме-платформа, де зібрано сотні блогів, статей, ранобе та веб-новел, а також відео вітчизняних ютуберів!</p>
       </div>
-      <% trending_tags.in_groups_of(4).each_with_index do |group, index| %>
-        <div class="lg:mx-auto">
-          <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
-          <ul class="text-gray-400">
-            <% group.each do |trending_tag| %>
-              <li class="mb-4">
-                <%= link_to trending_tag[:name], trending_tag[:link], class: "hover:underline" if trending_tag.present? %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+      <div class="col-span-2 grid grid-cols-2 gap-4 lg:hidden">
+        <% trending_tags.first(::Tags::Trending::TAG_LIMIT).in_groups_of(4).each_with_index do |group, index| %>
+          <div class="min-w-0">
+            <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
+            <ul class="text-gray-400">
+              <% group.each do |trending_tag| %>
+                <li class="mb-4">
+                  <%= link_to trending_tag[:name], trending_tag[:link], class: "hover:underline" if trending_tag.present? %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-span-4 hidden min-w-0 gap-3 lg:grid lg:grid-cols-3">
+        <% trending_tags.first(::Tags::Trending::FOOTER_DESKTOP_TAG_LIMIT).in_groups_of(4).each_with_index do |group, index| %>
+          <div class="min-w-0">
+            <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
+            <ul class="text-gray-400">
+              <% group.each do |trending_tag| %>
+                <li class="mb-4">
+                  <%= link_to trending_tag[:name], trending_tag[:link], class: "hover:underline" if trending_tag.present? %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
     </div>
     <hr class="my-6 sm:mx-auto border-gray-700 lg:my-8">
     <div class="flex flex-col items-center gap-6 text-sm text-gray-400 lg:flex-row lg:items-start lg:justify-between">

@@ -14,10 +14,10 @@ module Tags
       assert_instance_of Hash, result.first
     end
 
-    test 'should return at most 5 trending tags' do
+    test 'should return at most 16 trending tags' do
       result = @service.tags
 
-      assert_operator result.size, :<=, 5
+      assert_operator result.size, :<=, Tags::Trending::TAG_LIMIT
     end
 
     test 'should return trending tags ordered by name' do

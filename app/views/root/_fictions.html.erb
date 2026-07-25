@@ -2,18 +2,18 @@
 <%# Card widths show a sliver of the next item so horizontal scroll is obvious (lg: 4 full + 80% of 5th). %>
 <%# Break out of the page gutter on the right so the trailing card bleeds off the screen edge. %>
 <div
-  class="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] lg:snap-proximity -mr-4 md:-mr-6 lg:mr-0"
+  class="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] md:gap-4 lg:snap-proximity -mr-4 md:-mr-6 lg:mr-0"
   role="region"
   aria-label="Популярне ранобе">
   <% fictions.each do |fiction| %>
     <% card = popular_fiction_card_stats(fiction) %>
-    <article class="group w-[calc((100%-32px)/2.5)] shrink-0 snap-start sm:w-[calc((100%-16px)/2.15)] md:w-[calc((100%-48px)/3.2)] lg:w-[calc((100%-64px)/4.8)]">
+    <article class="group w-[calc((100%-24px)/2.5)] shrink-0 snap-start sm:w-[calc((100%-12px)/2.15)] md:w-[calc((100%-48px)/3.2)] lg:w-[calc((100%-64px)/4.8)]">
       <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'relative block aspect-[2/3] overflow-hidden rounded-xl bg-stone-200 transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 group-hover:brightness-105 dark:bg-slate-800 dark:focus-visible:ring-violet-400') do %>
         <%= cover_card_picture_tag(fiction.cover,
                       alt: fiction.title,
                       class: 'absolute inset-0 h-full w-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03]',
                       loading: 'lazy' ) %>
-        <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-3 pb-3 pt-10">
+        <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10 md:px-3 md:pb-3">
           <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: card[:views]) %>
           <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: card[:rating]) %>
         </div>
