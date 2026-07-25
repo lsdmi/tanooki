@@ -19,7 +19,7 @@
     <%= render 'root/videos_featured_player', video: editorial[:featured] %>
     <%= render 'root/videos_featured_meta', video: editorial[:featured], video_tag_counts: %>
 
-    <ul class="grid list-none grid-cols-3 gap-2" aria-label="Популярні Відео">
+    <ul class="grid list-none grid-cols-3 items-start gap-2" aria-label="Популярні Відео">
       <% editorial[:supporting].each do |video| %>
         <li>
           <%= render 'root/videos_card', video:, video_tag_counts:, variant: :mobile %>

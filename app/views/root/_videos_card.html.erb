@@ -1,6 +1,6 @@
 <%# locals: (video:, video_tag_counts:, variant: :compact) %>
 <% mobile = variant.to_sym == :mobile %>
-<article class="<%= mobile ? 'flex min-h-0 min-w-0 flex-col gap-2' : 'flex min-h-0 min-w-0 w-full gap-3' %>">
+<article class="<%= mobile ? 'flex min-h-0 min-w-0 flex-col justify-start gap-2' : 'flex min-h-0 min-w-0 w-full items-start gap-3' %>">
   <%= link_to youtube_video_path(video),
               turbo_drive_visit_data.merge(
                 class: [
@@ -21,7 +21,7 @@
     </div>
   <% end %>
 
-  <div class="<%= mobile ? 'min-w-0' : 'flex min-h-0 min-w-0 flex-1 flex-col justify-center' %>">
+  <div class="<%= mobile ? 'min-w-0' : 'flex min-h-0 min-w-0 flex-1 flex-col justify-start' %>">
     <h3 class="<%= mobile ? 'text-xs font-semibold leading-snug' : 'text-sm font-semibold leading-snug sm:text-base' %>">
       <%= link_to video.title,
                   youtube_video_path(video),
