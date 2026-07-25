@@ -4,6 +4,8 @@
 class PagesController < ApplicationController
   def about; end
 
+  def friends; end
+
   def rules; end
 
   def privacy; end

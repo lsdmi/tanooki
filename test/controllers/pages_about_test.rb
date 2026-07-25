@@ -3,6 +3,12 @@
 require 'test_helper'
 
 class PagesAboutTest < ActionDispatch::IntegrationTest
+  test 'about page links to friends page' do
+    get about_url
+
+    assert_select 'a[href=?]', friends_path, text: 'Друзі Баки'
+  end
+
   test 'about page renders credentials copy' do
     get about_url
 

@@ -146,6 +146,7 @@ Rails.application.routes.draw do
   patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
   get :about, to: 'pages#about'
+  get :friends, to: 'pages#friends'
   get :rules, to: 'pages#rules'
   get :privacy, to: 'pages#privacy'
   get '/privacy-policy', to: redirect('/privacy', status: 301)

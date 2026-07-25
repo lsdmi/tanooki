@@ -14,6 +14,7 @@ module Meta
       calendar_fictions_path
       tales_path
       rules_path
+      friends_path
       privacy_path
       translation_requests_path
     ].freeze

@@ -97,7 +97,7 @@ class MetaHelperTest < ActionView::TestCase
   end
 
   test 'meta_type returns website for static informational pages' do
-    [about_path, rules_path, privacy_path].each do |path|
+    [about_path, rules_path, privacy_path, friends_path].each do |path|
       request.path = path
 
       assert_equal 'website', meta_type, "expected website for #{path}"

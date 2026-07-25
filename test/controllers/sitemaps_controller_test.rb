@@ -17,4 +17,10 @@ class SitemapsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'http://example.com/'
     assert_includes response.body, 'http://example.com/fictions'
   end
+
+  test 'GET sitemap.xml includes friends URL' do
+    get '/sitemap.xml'
+
+    assert_includes response.body, 'http://example.com/friends'
+  end
 end

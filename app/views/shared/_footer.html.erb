@@ -48,13 +48,16 @@
         <%= link_to about_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Про Баку — baka.in.ua' do %>
           Про Бака
         <% end %>
+        <%= link_to friends_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Друзі Баки — baka.in.ua' do %>
+          Друзі
+        <% end %>
         <%= link_to privacy_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Політика конфіденційності — baka.in.ua' do %>
           Конфіденційність
         <% end %>
         <%= link_to privacy_path(anchor: 'cookies'), class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Політика cookies — baka.in.ua' do %>
           Cookies
         <% end %>
-        <%= link_to rules_path, class: 'col-start-2 hover:underline underline-offset-2 block whitespace-nowrap lg:col-start-auto', title: 'Правила спільноти — baka.in.ua' do %>
+        <%= link_to rules_path, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Правила спільноти — baka.in.ua' do %>
           Правила
         <% end %>
         <%= link_to telegram_site_url, class: 'hover:underline underline-offset-2 block whitespace-nowrap', title: 'Контакти (Telegram) — baka.in.ua', rel: 'noopener noreferrer', target: '_blank' do %>
