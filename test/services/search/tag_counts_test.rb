@@ -24,6 +24,22 @@ module Search
       end
     end
 
+    test 'returns nil when search index is missing' do
+      YoutubeVideo.stub(:search, ->(*) { raise Searchkick::MissingIndexError, 'Index missing' }) do
+        assert_nil TagCounts.call(['аніме'], scope: :videos)['аніме']
+      end
+    end
+
+    test 'returns nil for :all scope when one model index is missing' do
+      Fiction.stub(:search, search_result(2)) do
+        Publication.stub(:search, search_result(3)) do
+          YoutubeVideo.stub(:search, ->(*) { raise Searchkick::MissingIndexError, 'Index missing' }) do
+            assert_nil TagCounts.call(['аніме'], scope: :all)['аніме']
+          end
+        end
+      end
+    end
+
     test 'rejects unknown scope' do
       assert_raises(ArgumentError) do
         TagCounts.new(['аніме'], scope: :unknown)

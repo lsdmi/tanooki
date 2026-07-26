@@ -1,10 +1,13 @@
-<div class="min-h-screen">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pb-8 pt-4 z-10 relative">
-    <section class="my-10">
+<% page_gutter = 'mx-5 md:mx-6 lg:mx-4' %>
+
+<div class="relative z-10">
+  <section class="mx-auto xl:w-[1300px]">
+    <div class="<%= page_gutter %> pb-8 pt-4">
+      <section class="my-10">
       <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
         Останні <span class="text-cyan-800 dark:text-rose-700">Оновлення</span>
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8 p-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8 py-2">
         <% @latest.each_with_index do |video, idx| %>
           <div class="<%= idx >= 2 ? 'hidden md:block' : '' %> overflow-hidden">
             <%= link_to youtube_video_path(video), class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
@@ -45,51 +48,45 @@
           </div>
         <% end %>
       </div>
-    </section>
+      </section>
 
-    <!-- Main Section (Featured Video) -->
-    <section class="mb-10 flex flex-col lg:flex-row gap-8">
-      <div class="lg:w-2/3 w-full rounded-lg overflow-hidden">
-        <div class="aspect-[16/9] w-full overflow-hidden">
-          <%= link_to youtube_video_path(@highlight), class: 'block w-full h-full' do %>
-            <span class="sr-only">
-              Watch <%= @highlight.title %> on YouTube
-            </span>
-            <%= tag.iframe src: "https://www.youtube.com/embed/#{@highlight.video_id}", class: 'w-full h-full object-cover rounded-md shadow-sm', allowfullscreen: true, title: @highlight.title %>
-          <% end %>
-        </div>
-        <div class="p-4">
-          <%= link_to @highlight.title, youtube_video_path(@highlight), class: 'lg:leading-tight text-sm sm:text-2xl font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-2 line-clamp-1 drop-shadow' %>
-          <p class="text-stone-700 dark:text-gray-300 mb-2 drop-shadow text-xs lg:text-base">
-            <%= link_to @highlight.youtube_channel.title, search_index_path(search: [@highlight.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300' %> •
-            <%= tag.span l(@highlight.published_at, format: :short).downcase, class: 'inline' %>
-          </p>
-          <% if @highlight.tags? %>
-            <%= render Ui::TagListComponent.new(
-                  labels: Search::TagCounts.labels_from_youtube_video(
-                    @highlight,
-                    limit: Search::TagCounts::INDEX_HIGHLIGHT_YOUTUBE_TAG_LIMIT
-                  ),
-                  variant: :keyword,
-                  size: :md,
-                  max: 3,
-                  href_builder: ->(video_tag) { search_index_path(search: [video_tag]) },
-                  counts: @video_tag_counts,
-                  html: { class: 'flex flex-wrap gap-2' }
-                ) %>
-          <% end %>
-        </div>
-      </div>
-      <!-- Ad Section -->
-      <div class="lg:w-1/3 w-full flex flex-col gap-6">
-        <!-- Ad Box -->
-        <%= render 'shared/ads', advertisement: @advertisement %>
-        <%= render 'video_list', other_youtube_videos: @other_youtube_videos, pagy: @pagy %>
-      </div>
-    </section>
+      <section class="youtube-index__hero mb-10">
+      <div class="flex flex-col gap-3 lg:hidden">
+        <%= render 'root/videos_featured_player', video: @highlight %>
+        <%= render 'root/videos_featured_meta', video: @highlight, video_tag_counts: @video_tag_counts %>
 
-    <!-- Popular Section -->
-    <section>
+        <%= render 'video_list_mobile',
+                   other_youtube_videos: @other_youtube_videos,
+                   pagy: @pagy,
+                   video_tag_counts: @video_tag_counts %>
+      </div>
+
+      <div class="hidden lg:grid lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] lg:grid-rows-[auto_auto] lg:items-stretch lg:gap-x-4 lg:gap-y-3"
+           role="group"
+           aria-label="Обране відео">
+        <%= render 'root/videos_featured_player', video: @highlight %>
+
+        <div class="min-w-0 lg:col-start-1 lg:row-start-2">
+          <%= render 'root/videos_featured_meta', video: @highlight, video_tag_counts: @video_tag_counts %>
+        </div>
+
+        <%= render 'video_list',
+                   other_youtube_videos: @other_youtube_videos,
+                   pagy: @pagy,
+                   video_tag_counts: @video_tag_counts %>
+      </div>
+      </section>
+
+      <% if adsense_slot_renderable?(:youtube_index) %>
+        <section class="youtube-index__ad mb-10 mx-auto w-full max-w-3xl empty:hidden has-[.reader-ad-slot--collapsed]:hidden">
+        <%= render 'shared/adsense_slot',
+                   placement: :youtube_index,
+                   navigation_key: 'index',
+                   measure_as: 'bottom' %>
+        </section>
+      <% end %>
+
+      <section>
       <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4">
         Популярні <span class="text-cyan-700 dark:text-rose-700">Відео</span>
       </p>
@@ -98,6 +95,7 @@
           <%= render 'single_video', video: %>
         <% end %>
       </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </section>
 </div>

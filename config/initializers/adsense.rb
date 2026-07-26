@@ -11,7 +11,8 @@ module Adsense
     bookshelf: ENV['ADSENSE_BOOKSHELF_SLOT'].presence,
     home_banner_left: ENV['ADSENSE_HOME_BANNER_LEFT_SLOT'].presence,
     home_banner_right: ENV['ADSENSE_HOME_BANNER_RIGHT_SLOT'].presence,
-    youtube_video: ENV['ADSENSE_YOUTUBE_VIDEO_SLOT'].presence
+    youtube_video: ENV['ADSENSE_YOUTUBE_VIDEO_SLOT'].presence,
+    youtube_index: ENV['ADSENSE_YOUTUBE_INDEX_SLOT'].presence
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {

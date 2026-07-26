@@ -27,6 +27,13 @@ module Adsense
       assert_nil adsense_slot_id(:youtube_video)
     end
 
+    test 'youtube index slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:youtube_index)
+      assert_nil adsense_slot_id(:youtube_index)
+    end
+
     test 'home banner slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 

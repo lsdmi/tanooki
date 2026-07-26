@@ -586,3 +586,8 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
 .home-videos-ads__slot:has(.reader-ad-slot--collapsed) {
   display: none;
 }
+
+.youtube-index__ad:has(.reader-ad-slot--collapsed) {
+  display: none;
+  margin: 0;
+}

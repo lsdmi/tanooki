@@ -23,6 +23,16 @@ class YoutubeVideo < ApplicationRecord
 
   scope :last_week, -> { where(published_at: 1.week.ago..) }
   scope :last_month, -> { where(published_at: 1.month.ago..) }
+  scope :excluding_video, lambda { |*records|
+    video_ids = records.flatten.compact.filter_map do |record|
+      record.is_a?(YoutubeVideo) ? record.video_id : record
+    end.uniq
+
+    video_ids.empty? ? all : where.not(video_id: video_ids)
+  }
+  scope :one_per_video, lambda {
+    where(id: select('MAX(youtube_videos.id)').group(:video_id))
+  }
 
   delegate :title, to: :youtube_channel, prefix: true
 

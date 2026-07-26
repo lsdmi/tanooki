@@ -17,6 +17,10 @@ module Search
       Timeout::Error
     ].freeze
 
+    OPENSEARCH_UNAVAILABLE_ERRORS = (
+      OPENSEARCH_CONNECTION_ERRORS + [Searchkick::MissingIndexError, Searchkick::ImportError]
+    ).freeze
+
     def self.call(tags, scope: :all)
       new(tags, scope: scope).call
     end
@@ -55,7 +59,7 @@ module Search
       Rails.cache.fetch(cache_key(tag), expires_in: CACHE_TTL) do
         fetch_count(tag)
       end
-    rescue *OPENSEARCH_CONNECTION_ERRORS => e
+    rescue *OPENSEARCH_UNAVAILABLE_ERRORS => e
       Rails.logger.warn("[search/tag_counts] OpenSearch unavailable for #{tag}: #{e.class}")
       nil
     end

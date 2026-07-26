@@ -1,0 +1,14 @@
+<%# locals: (other_youtube_videos:, pagy:, video_tag_counts:) %>
+<%= turbo_frame_tag 'video-list-mobile' do %>
+  <ul class="grid list-none grid-cols-3 items-start gap-2" aria-label="Інші відео">
+    <% other_youtube_videos.each do |video| %>
+      <li>
+        <%= render 'root/videos_card', video:, video_tag_counts:, variant: :mobile %>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="youtube-index__pagination mt-4">
+    <%= ui_pagination(pagy, frame_id: 'video-list-mobile', html: { class: 'mt-0' }) %>
+  </div>
+<% end %>

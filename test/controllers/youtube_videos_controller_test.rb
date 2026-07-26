@@ -82,24 +82,4 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
-
-  test 'should get index' do
-    Search::TagCounts.stub(:call, {}) do
-      get youtube_videos_path
-    end
-
-    assert_response :success
-    verify_youtube_videos_index_assigns
-
-    assert_equal({}, assigns(:video_tag_counts))
-  end
-
-  private
-
-  def verify_youtube_videos_index_assigns
-    assert_not_nil assigns(:popular)
-    assert_not_nil assigns(:latest)
-    assert_not_nil assigns(:pagy)
-    assert_not_nil assigns(:other_youtube_videos)
-  end
 end

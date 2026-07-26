@@ -14,11 +14,13 @@ module Searchkick
         soft_deleted_scope = Object.new
         soft_deleted_scope.define_singleton_method(:find_each) { |&block| block.call(record) }
 
-        model.searchkick_index.stub(:remove, ->(removed_record) { removed << [model.name, removed_record] }) do
-          model.stub(:reindex, -> { reindexed << model.name }) do
-            model.stub(:only_deleted, soft_deleted_scope) do
-              SyncSoftDeletable.new.send(:remove_soft_deleted, model)
-              SyncSoftDeletable.new.send(:reindex, model)
+        model.search_index.stub(:exists?, true) do
+          model.searchkick_index.stub(:remove, ->(removed_record) { removed << [model.name, removed_record] }) do
+            model.stub(:reindex, -> { reindexed << model.name }) do
+              model.stub(:only_deleted, soft_deleted_scope) do
+                SyncSoftDeletable.new.send(:remove_soft_deleted, model)
+                SyncSoftDeletable.new.send(:reindex, model)
+              end
             end
           end
         end
@@ -39,6 +41,38 @@ module Searchkick
       end
 
       assert_equal SyncSoftDeletable::MODELS.size * 2, calls
+    end
+
+    test 'remove_soft_deleted skips cleanup when index is missing' do
+      model = YoutubeVideo
+      record = model.new(id: 1)
+      soft_deleted_scope = Object.new
+      soft_deleted_scope.define_singleton_method(:find_each) { |&block| block.call(record) }
+      removed = false
+
+      model.search_index.stub(:exists?, false) do
+        model.searchkick_index.stub(:remove, ->(*) { removed = true }) do
+          model.stub(:only_deleted, soft_deleted_scope) do
+            SyncSoftDeletable.new.send(:remove_soft_deleted, model)
+          end
+        end
+      end
+
+      assert_not removed
+    end
+
+    test 'remove_soft_deleted still reindexes when index is missing' do
+      service = SyncSoftDeletable.new
+      reindexed = []
+
+      YoutubeVideo.search_index.stub(:exists?, false) do
+        YoutubeVideo.stub(:reindex, -> { reindexed << YoutubeVideo.name }) do
+          service.send(:remove_soft_deleted, YoutubeVideo)
+          service.send(:reindex, YoutubeVideo)
+        end
+      end
+
+      assert_equal [YoutubeVideo.name], reindexed
     end
   end
 end
