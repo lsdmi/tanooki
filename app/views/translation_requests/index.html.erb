@@ -20,7 +20,6 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
       <!-- First Column: Newest Request + Ad (1/3 width) -->
       <div class="lg:col-span-1 space-y-6">
-        <!-- Newest Request -->
         <% if @newest_request %>
           <div>
             <div class="flex items-center mb-4">
@@ -59,49 +58,18 @@
           </div>
         <% end %>
 
-        <!-- Ad under newest request -->
-        <div class="border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
-          <%= render 'shared/ads', advertisement: @advertisement %>
-        </div>
-
-        <!-- Fiction Showcase Banner -->
-        <% if @showcase_fiction %>
-          <div class="relative overflow-hidden rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-500">
-            <div class="relative h-48">
-              <%= image_tag @showcase_fiction.banner,
-                  alt: @showcase_fiction.title,
-                  class: "absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover rounded-xl" %>
-              <!-- Overlay for better contrast -->
-              <div class="absolute inset-0 bg-black/80 transition-opacity duration-700 ease-in-out"></div>
-              <div class="absolute top-1/2 z-10 w-full max-w-[95%] mx-auto -translate-y-1/2 px-4 transition-all duration-700 ease-in-out">
-                <%= link_to fiction_path(@showcase_fiction), class: "block" do %>
-                  <h2 class="mb-2 text-xl font-extrabold tracking-tight leading-none text-white drop-shadow-lg line-clamp-2 dark:text-white">
-                    <%= @showcase_fiction.title %>
-                  </h2>
-                  <p class="text-sm mb-3 font-semibold text-gray-100 drop-shadow-md tracking-tight line-clamp-2 dark:text-gray-200">
-                    <%= @showcase_fiction.short_description %>
-                  </p>
-                <% end %>
-                <div class="flex items-center">
-                  <%= ui_button(as: :link, href: fiction_path(@showcase_fiction), size: :md) do %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-                    </svg>
-                    Читати
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render "shared/adsense_collapse_safe",
+                   placement: :translation_requests_sidebar,
+                   navigation_key: "sidebar",
+                   measure_as: "bottom" %>
       </div>
 
       <!-- Second Column: Ad + Form (2/3 width) -->
       <div class="lg:col-span-2 space-y-6">
-        <!-- Ad Banner -->
-        <div class="border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
-          <%= render 'shared/ads', advertisement: @second_advertisement %>
-        </div>
+        <%= render "shared/adsense_collapse_safe",
+                   placement: :translation_requests_top,
+                   navigation_key: "top",
+                   measure_as: "bottom" %>
 
         <!-- Request Form Section -->
         <% if user_signed_in? %>

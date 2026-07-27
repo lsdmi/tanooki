@@ -78,7 +78,7 @@
       </section>
 
       <% if adsense_slot_renderable?(:youtube_index) %>
-        <section class="youtube-index__ad mb-10 mx-auto w-full max-w-3xl empty:hidden has-[.reader-ad-slot--collapsed]:hidden">
+        <section class="youtube-index__ad mx-auto m-0 w-full max-w-3xl empty:hidden has-[.reader-ad-slot--adsense-filled]:mb-10 has-[.reader-ad-slot--preview]:mb-10 has-[.reader-ad-slot--collapsed]:hidden [&:not(:has(.reader-ad-slot--preview))]:not(:has(.reader-ad-slot--adsense-filled))]:not(:has(.reader-ad-slot--measuring))]:not(:has(.reader-ad-slot--pending))]:hidden [&_.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled)_.reader-ad-slot__frame]:min-h-0 [&_.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled)_.reader-ad-slot__frame]:max-h-none">
         <%= render 'shared/adsense_slot',
                    placement: :youtube_index,
                    navigation_key: 'index',

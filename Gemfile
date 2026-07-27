@@ -33,6 +33,7 @@ gem 'bootsnap', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing'
+gem 'ruby-vips'
 
 group :development, :test do
   gem 'debug'

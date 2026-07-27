@@ -5,7 +5,6 @@ class TranslationRequestsController < ApplicationController
   include TranslationRequestsResponses
 
   before_action :authenticate_user!, only: %i[create update assign unassign destroy]
-  before_action :load_advertisement
   before_action :set_translation_request, only: %i[update assign unassign destroy]
   before_action :authorize_translation_request_owner!, only: %i[update destroy]
   before_action :authorize_translation_request_unassign!, only: :unassign

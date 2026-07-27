@@ -62,8 +62,6 @@ module TranslationRequestsResponses
     @newest_request = newest_translation_request
     @pagy, @translation_requests = pagy(remaining_translation_requests, limit: 5)
     @total_requests_count = TranslationRequest.count
-    @second_advertisement = second_advertisement
-    @showcase_fiction = Fictions::IndexVariablesManager.showcase.sample
   end
 
   def newest_translation_request
@@ -73,10 +71,6 @@ module TranslationRequestsResponses
   def remaining_translation_requests
     requests = TranslationRequest.includes(:user, :scanlator).by_votes
     @newest_request ? requests.where.not(id: @newest_request.id) : requests
-  end
-
-  def second_advertisement
-    Advertisement.includes(%i[cover_attachment poster_attachment]).enabled.where.not(id: @advertisement.id).sample
   end
 
   def render_requests_list
