@@ -15,7 +15,8 @@ module Adsense
     youtube_index: ENV['ADSENSE_YOUTUBE_INDEX_SLOT'].presence,
     translation_requests_sidebar: ENV['ADSENSE_TRANSLATION_REQUESTS_SIDEBAR_SLOT'].presence,
     translation_requests_top: ENV['ADSENSE_TRANSLATION_REQUESTS_TOP_SLOT'].presence,
-    tales_index: ENV['ADSENSE_TALES_INDEX_SLOT'].presence
+    tales_index: ENV['ADSENSE_TALES_INDEX_SLOT'].presence,
+    search_index: ENV['ADSENSE_SEARCH_INDEX_SLOT'].presence
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {

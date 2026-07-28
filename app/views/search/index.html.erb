@@ -107,12 +107,10 @@
           </div>
         </div>
 
-        <!-- Ad Section -->
-        <% if advertisement_banner_ready?(@advertisement) %>
-          <div class="w-[95%] mx-auto border border-gray-200 dark:border-gray-700 rounded-md shadow-md">
-            <%= render 'shared/ads', advertisement: @advertisement %>
-          </div>
-        <% end %>
+        <%= render "shared/adsense_collapse_safe",
+                   placement: :search_index,
+                   navigation_key: "sidebar",
+                   measure_as: "bottom" %>
 
         <!-- Quick Links -->
         <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">

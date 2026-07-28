@@ -8,7 +8,6 @@ class SearchController < ApplicationController
 
   include Search::IndexQuery
 
-  before_action :load_advertisement
   before_action :pokemon_appearance, only: [:index]
 
   def index
