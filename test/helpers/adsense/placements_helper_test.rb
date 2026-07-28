@@ -48,6 +48,13 @@ module Adsense
       assert_nil adsense_slot_id(:translation_requests_top)
     end
 
+    test 'tales index slot is not live without env slot id' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_not adsense_slot_live?(:tales_index)
+      assert_nil adsense_slot_id(:tales_index)
+    end
+
     test 'home banner slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 

@@ -1,8 +1,17 @@
-<%# locals: (publications:, publication_tag_counts: nil) %>
+<%# locals: (publications:, publication_tag_counts: nil, tile_offset: 0, ad_placement: nil, ad_every: 10) %>
 <div class="grid grid-cols-1 gap-x-8 lg:grid-cols-2">
-  <% Array(publications).each do |publication| %>
+  <% Array(publications).each_with_index do |publication, index| %>
     <div class="border-b border-stone-200/70 dark:border-gray-700/50">
-      <%= render 'publication_tile', publication:, publication_tag_counts: %>
+      <%= render 'tales/publication_tile', publication:, publication_tag_counts: %>
     </div>
+    <% tile_number = tile_offset + index + 1 %>
+    <% if ad_placement.present? && (tile_number % ad_every).zero? %>
+      <div class="col-span-full">
+        <%= render "shared/adsense_collapse_safe",
+                   placement: ad_placement,
+                   navigation_key: "tile-#{tile_number}",
+                   measure_as: "bottom" %>
+      </div>
+    <% end %>
   <% end %>
 </div>

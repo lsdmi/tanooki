@@ -1,4 +1,8 @@
 <%= turbo_frame_tag "publications-page-#{@pagy.page}" do %>
-  <%= render "tales/publication_tiles", publications: @publications, publication_tag_counts: @publication_tag_counts %>
+  <%= render "tales/publication_tiles",
+             publications: @publications,
+             publication_tag_counts: @publication_tag_counts,
+             tile_offset: @tile_offset,
+             ad_placement: :tales_index %>
   <%= render "home/next_page", pagy: @pagy %>
 <% end %>

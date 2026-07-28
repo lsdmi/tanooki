@@ -13,7 +13,7 @@ class TalesController < ApplicationController
   ].freeze
   helper Publications::CoverHeaderHelper
 
-  before_action :load_advertisement, only: %i[index show]
+  before_action :load_advertisement, only: :show
   before_action :set_tale, :track_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]
 
@@ -21,6 +21,7 @@ class TalesController < ApplicationController
     @highlights = highlights
     @pagy, @publications = pagy_countless(publications, limit: PUBLICATIONS_PER_PAGE)
     @publication_tag_counts = search_tag_counts(publication_search_tags)
+    @tile_offset = @highlights.size + ((@pagy.page - 1) * PUBLICATIONS_PER_PAGE)
 
     render 'home/scrollable_list' if params[:page]
   end
