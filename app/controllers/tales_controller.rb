@@ -13,7 +13,6 @@ class TalesController < ApplicationController
   ].freeze
   helper Publications::CoverHeaderHelper
 
-  before_action :load_advertisement, only: :show
   before_action :set_tale, :track_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]
 

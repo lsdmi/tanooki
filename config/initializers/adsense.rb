@@ -16,6 +16,7 @@ module Adsense
     translation_requests_sidebar: ENV['ADSENSE_TRANSLATION_REQUESTS_SIDEBAR_SLOT'].presence,
     translation_requests_top: ENV['ADSENSE_TRANSLATION_REQUESTS_TOP_SLOT'].presence,
     tales_index: ENV['ADSENSE_TALES_INDEX_SLOT'].presence,
+    tales_show: ENV['ADSENSE_TALES_SHOW_SLOT'].presence,
     search_index: ENV['ADSENSE_SEARCH_INDEX_SLOT'].presence
   }.freeze
 
