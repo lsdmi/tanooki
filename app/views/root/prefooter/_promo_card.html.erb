@@ -1,4 +1,4 @@
-<%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil) %>
+<%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil, external: true, card_class: "", content_class: "", title_class: "", description_class: "", description_short: nil, description_short_class: "lg:hidden", description_full_class: "hidden lg:inline", button_class: "", button_size: :md, button_variant: :ghost, background_class: "bg-center scale-[1.04]", gradient_class: nil, badge_label: nil, badge_class: "", badge_icon: nil, button_arrow: false, button_arrow_class: "", content_stack: false, content_stack_class: "gap-2 md:gap-4", button_stack_class: "w-fit self-start") %>
 <% has_visual = visual.present? %>
 <% card_layout_classes = if has_visual
      'md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-3 md:items-center md:justify-normal'
@@ -6,26 +6,51 @@
      'md:flex md:flex-col md:justify-center md:items-start'
    end %>
 <% visual_column_classes = has_visual ? 'hidden md:block' : 'hidden' %>
-<div class="<%= banner_class %> relative isolate flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= card_layout_classes %>">
-  <div class="pointer-events-none absolute inset-0 rounded-[inherit] bg-cover bg-center bg-no-repeat scale-[1.04]"
+<% default_gradient = 'bg-gradient-to-t from-slate-900/95 via-slate-900/55 to-slate-900/15 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/25' %>
+<% gradient_classes = gradient_class.presence || default_gradient %>
+<div class="<%= banner_class %> relative isolate flex h-full w-full min-h-[10.5rem] flex-col justify-end overflow-hidden rounded-xl pl-5 pr-10 pt-8 pb-3 md:min-h-[10.5rem] md:p-4 md:px-5 md:pr-5 lg:min-h-[11rem] lg:gap-4 lg:p-5 lg:px-6 <%= card_layout_classes %> <%= card_class %>">
+  <div class="pointer-events-none absolute inset-0 rounded-[inherit] bg-cover bg-no-repeat <%= background_class %>"
        style="background-image: url(<%= asset_path(background_image) %>)"
        aria-hidden="true"></div>
-  <div class="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-t from-slate-900/95 via-slate-900/55 to-slate-900/15 md:bg-gradient-to-r md:from-slate-900/90 md:via-slate-900/55 md:via-[52%] md:to-slate-900/25"
+  <div class="pointer-events-none absolute inset-0 rounded-[inherit] <%= gradient_classes %>"
        aria-hidden="true"></div>
 
   <% ghost_on_dark_button_classes = '!border-white/60 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/50 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10 mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0 lg:px-5 lg:py-2 lg:text-sm xl:px-6 xl:py-2.5 xl:text-base' %>
-  <div class="relative z-10 min-w-0 max-w-[16rem] md:max-w-[14rem] lg:max-w-[16rem] xl:max-w-[18rem]">
-    <h3 class="text-base font-extrabold leading-tight text-white sm:text-lg md:text-base lg:text-lg lg:leading-snug xl:text-xl"><%= title %></h3>
-    <p class="mt-3 text-xs leading-snug text-slate-200/90 sm:text-[0.8125rem] md:text-xs lg:text-sm lg:leading-snug xl:text-[0.9375rem]">
-      <%= description %>
+  <% stacked_button_classes = [button_class, button_stack_class].compact.join(' ') %>
+  <% default_button_classes = button_variant == :ghost ? [ghost_on_dark_button_classes, button_class] : [button_class, 'mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0'] %>
+  <% promo_button_classes = content_stack ? stacked_button_classes : default_button_classes %>
+  <% title_classes = title_class.presence || 'text-base font-extrabold leading-tight text-white sm:text-lg md:text-base lg:text-lg lg:leading-snug xl:text-xl' %>
+  <% description_classes = description_class.presence || 'mt-3 text-xs leading-snug text-slate-200/90 sm:text-[0.8125rem] md:text-xs lg:text-sm lg:leading-snug xl:text-[0.9375rem]' %>
+  <% content_stack_classes = content_stack ? "flex flex-col [&>*]:m-0 #{content_stack_class}" : '' %>
+  <div class="relative z-10 min-w-0 <%= content_class.presence ? '' : 'max-w-[16rem] md:max-w-[14rem] lg:max-w-[16rem] xl:max-w-[18rem]' %> <%= content_stack_classes %> <%= content_class %>">
+    <% if badge_label.present? %>
+      <span class="<%= content_stack ? 'inline-flex w-fit self-start' : 'mb-2 inline-flex' %> items-center gap-1 rounded-lg bg-cyan-700 px-2.5 py-0.5 text-sm font-normal text-white drop-shadow-md sm:gap-1.5 md:rounded-xl md:py-1 dark:bg-rose-600 <%= badge_class %>">
+        <%= render badge_icon if badge_icon.present? %>
+        <%= badge_label %>
+      </span>
+    <% end %>
+    <h3 class="<%= title_classes %>"><%= title %></h3>
+    <p class="<%= description_classes %>">
+      <% if description_short.present? %>
+        <span class="<%= description_short_class %>"><%= description_short %></span>
+        <span class="<%= description_full_class %>"><%= description %></span>
+      <% else %>
+        <%= description %>
+      <% end %>
     </p>
     <%= ui_button(as: :link,
                   href:,
-                  variant: :ghost,
-                  size: :md,
-                  html: { target: '_blank', rel: 'noopener noreferrer', class: ghost_on_dark_button_classes }) do %>
+                  variant: button_variant,
+                  size: button_size,
+                  html: { class: promo_button_classes }.tap { |attrs| attrs.merge!(target: '_blank', rel: 'noopener noreferrer') if external }) do %>
       <%= render button_icon %>
       <%= button_label %>
+      <% if button_arrow %>
+        <svg class="h-3 w-3 shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 <%= button_arrow_class %>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      <% end %>
     <% end %>
   </div>
 

@@ -13,7 +13,6 @@ module Fictions
 
       assert Rails.cache.exist?('popular_novelty_ids')
       assert Rails.cache.exist?('fiction_index/genres')
-      assert Rails.cache.exist?('fiction_index/hero_ad')
     ensure
       Rails.cache = original_cache
     end

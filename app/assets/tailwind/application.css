@@ -1,5 +1,57 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
+@source '../../helpers/**/*.rb';
+
+@theme {
+  --animate-writings-banner-sm: writings-banner-pan-sm 30s ease-in-out infinite;
+  --animate-writings-banner-md: writings-banner-pan-md 28s ease-in-out infinite;
+  --animate-writings-banner-lg: writings-banner-pan-lg 26s ease-in-out infinite;
+  --animate-writings-banner-xl: writings-banner-pan-xl 24s ease-in-out infinite;
+
+  @keyframes writings-banner-pan-sm {
+    0%,
+    100% {
+      transform: scale(1.01) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: scale(1.05) translate3d(-0.75%, -0.5%, 0);
+    }
+  }
+
+  @keyframes writings-banner-pan-md {
+    0%,
+    100% {
+      transform: scale(1.02) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: scale(1.07) translate3d(-1%, -0.65%, 0);
+    }
+  }
+
+  @keyframes writings-banner-pan-lg {
+    0%,
+    100% {
+      transform: scale(1.02) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: scale(1.08) translate3d(-1.25%, -0.75%, 0);
+    }
+  }
+
+  @keyframes writings-banner-pan-xl {
+    0%,
+    100% {
+      transform: scale(1.03) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: scale(1.09) translate3d(-1.5%, -0.85%, 0);
+    }
+  }
+}
 
 @layer components {
   .youtube-show__related-item:nth-child(3) {

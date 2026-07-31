@@ -39,6 +39,13 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     verify_fiction_index_presenter_lists(index_presenter)
   end
 
+  test 'index renders writings promo without legacy hero ad' do
+    get fictions_path
+
+    assert_select '[id^="advertisement-banner-"]', count: 0
+    assert_select '.fiction-genre-writings-banner a[href="/readings"]', text: /Відкрити писальню/
+  end
+
   test 'should get new' do
     get new_fiction_url
 
@@ -122,7 +129,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   def verify_fiction_index_presenter_lists(index_presenter)
     titles = [Fiction.find('two').title, Fiction.find('one').title]
 
-    assert_equal advertisements(:advertisement_three), index_presenter.hero_ad
     assert_equal titles, index_presenter.popular_novelty.map(&:title)
     assert_equal titles, index_presenter.most_reads.map(&:title)
   end

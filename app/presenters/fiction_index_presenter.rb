@@ -1,22 +1,12 @@
 # frozen_string_literal: true
 
-# View-model for the fictions index: hero ad, carousels, and list filter state.
+# View-model for the fictions index: carousels and list filter state.
 class FictionIndexPresenter
   GENRES_CACHE_EXPIRY = 24.hours
-  HERO_AD_CACHE_EXPIRY = 12.hours
 
   def self.warm_caches!
     Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
       Genre.order(:name).distinct.to_a
-    end
-    Rails.cache.fetch('fiction_index/hero_ad', expires_in: HERO_AD_CACHE_EXPIRY) do
-      Advertisement.find_by(slug: 'fictions-index-hero-ad')
-    end
-  end
-
-  def hero_ad
-    @hero_ad ||= Rails.cache.fetch('fiction_index/hero_ad', expires_in: HERO_AD_CACHE_EXPIRY) do
-      Advertisement.find_by(slug: 'fictions-index-hero-ad')
     end
   end
 
