@@ -18,7 +18,7 @@ module Attachments
     def vips_available?
       require 'vips'
 
-      Vips.at_least_libvips?(8, 0)
+      Vips.at_least_libvips?(8, 13)
     rescue LoadError, StandardError
       false
     end

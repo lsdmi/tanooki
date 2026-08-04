@@ -68,7 +68,16 @@ Production — [DigitalOcean App Platform](https://docs.digitalocean.com/product
 | **Web** | `bin/rails server` | Health check: `GET /up` |
 | **Worker** | `bin/jobs start` | Solid Queue; `SOLID_QUEUE_IN_PUMA=false` |
 
-`Aptfile` встановлює libvips для Active Storage thumbnails. Після деплою:
+Rails 8.0.5.1 потребує libvips ≥ 8.13 (Active Storage). Ubuntu 22.04 stack на App Platform має лише 8.12 — потрібен **Ubuntu 24 stack** + `Aptfile`.
+
+У App Spec → Settings → Edit додай (або онови) `features`:
+
+```yaml
+features:
+  - buildpack-stack=ubuntu-24
+```
+
+`Aptfile` ставить `libvips42t64` (8.15 на Noble). Після деплою:
 
 ```bash
 bundle exec rails runner "puts Attachments::VariantProcessing.available?"
