@@ -19,8 +19,19 @@
       </div>
     </div>
 
+    <%= render "shared/adsense_collapse_safe",
+               placement: :fictions_index_top,
+               navigation_key: "top",
+               wrapper_class: "mb-8 lg:mb-10" %>
+
     <!-- Mid-page Banner and Translation Request Section -->
     <%= render 'fictions/genres/promo_row' %>
+
+    <%= render "shared/adsense_collapse_safe",
+               placement: :fictions_index_mid,
+               navigation_key: "mid",
+               measure_as: "bottom",
+               wrapper_class: "mb-8 lg:mb-10" %>
 
     <!-- Second Section: Rankings and Filtered Fictions -->
     <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
