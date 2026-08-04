@@ -61,21 +61,17 @@ bin/quality    # RuboCop, Brakeman, bundler-audit, erb_lint
 
 Production — [DigitalOcean App Platform](https://docs.digitalocean.com/products/app-platform/) (`baka.in.ua`). Push to `main` on GitHub (`lsdmi/tanooki`) triggers deploy. Env vars — App Platform dashboard (див. `.env.example`).
 
+Збірка через **`Dockerfile`** (Debian Bookworm, libvips 8.14+). Деталі: [`docs/digitalocean-docker-deploy.md`](docs/digitalocean-docker-deploy.md).
+
 ### Компоненти App Platform
 
 | Component | Run command | Примітки |
 |-----------|-------------|----------|
-| **Web** | `bin/rails server` | Health check: `GET /up` |
-| **Worker** | `bin/jobs start` | Solid Queue; `SOLID_QUEUE_IN_PUMA=false` |
+| **Web** (`tanooki`) | `rails server -p $PORT -e ${RAILS_ENV:-production}` | Health check: `GET /up` |
+| **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue; `SOLID_QUEUE_IN_PUMA=false` |
+| **Pre-deploy** (`db-migrate`) | `bundle exec rails db:migrate` | Перед web + worker |
 
-Rails 8.0.5.1 потребує libvips ≥ 8.13 (Active Storage). Ubuntu 22.04 buildpack stack на App Platform має лише 8.12 і **не підтримує ubuntu-24** у `features` — тому production збирається через **`Dockerfile`** (Debian Bookworm, libvips 8.14+). App Platform автоматично використовує Dockerfile замість buildpacks. Build-time env vars (`STORAGE_*`, `SECRET_KEY_BASE`) передаються як build args для `assets:deploy`. Після деплою:
-
-```bash
-bundle exec rails runner "puts Attachments::VariantProcessing.available?"
-# → true
-```
-
-Managed add-ons: MySQL, OpenSearch. Asset CDN — опційно через `ASSET_HOST` (DigitalOcean Spaces).
+Managed add-ons: MySQL, OpenSearch. Asset CDN — через `ASSET_HOST` (DigitalOcean Spaces, upload під час Docker build).
 
 ## Структура
 
