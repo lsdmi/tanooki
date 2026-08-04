@@ -1,0 +1,11 @@
+/.bundle
+/.git
+/.github
+/coverage
+/log
+/storage
+/tmp
+/vendor/bundle
+.env*
+!.env.example
+node_modules
