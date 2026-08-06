@@ -1,5 +1,6 @@
 <div class="min-h-screen">
-  <div class="max-w-[1440px] mx-auto px-4 pb-8 z-10 relative">
+  <div class="max-w-[1300px] mx-auto px-4 pb-16 lg:pb-20 z-10 relative">
+    <div class="px-2 xl:px-0 py-6 sm:py-8 lg:py-10">
     <%= render 'showcase_carousel',
                showcase: @index_presenter.showcase,
                popular_novelty_ids: @index_presenter.carousel_popular_novelty_ids,
@@ -44,6 +45,7 @@
       <div class="w-full lg:w-2/3">
         <%= render 'filtered_fiction_list', fictions: @index_presenter.other, genres: @index_presenter.genres, sample_genre: @index_presenter.sample_genre %>
       </div>
+    </div>
     </div>
   </div>
 </div>

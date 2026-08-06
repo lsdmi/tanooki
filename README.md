@@ -61,13 +61,13 @@ bin/quality    # RuboCop, Brakeman, bundler-audit, erb_lint
 
 Production — [DigitalOcean App Platform](https://docs.digitalocean.com/products/app-platform/) (`baka.in.ua`). Push to `main` on GitHub (`lsdmi/tanooki`) triggers deploy. Env vars — App Platform dashboard (див. `.env.example`).
 
-Збірка через **`Dockerfile`** (Debian Bookworm, libvips 8.14+). Деталі: [`docs/digitalocean-docker-deploy.md`](docs/digitalocean-docker-deploy.md).
+Збірка через **`Dockerfile`** (Debian Bookworm, libvips 8.14+). Деталі: [`docs/completed/DIGITALOCEAN_DOCKER_DEPLOY.md`](docs/completed/DIGITALOCEAN_DOCKER_DEPLOY.md).
 
 ### Компоненти App Platform
 
 | Component | Run command | Примітки |
 |-----------|-------------|----------|
-| **Web** (`tanooki`) | `rails server -p $PORT -e ${RAILS_ENV:-production}` | Health check: `GET /up` |
+| **Web** (`tanooki`) | `bin/rails server -b 0.0.0.0` | Puma reads `PORT` from env; do not use `-p $PORT` (not shell-expanded) |
 | **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue; `SOLID_QUEUE_IN_PUMA=false` |
 | **Pre-deploy** (`db-migrate`) | `bundle exec rails db:migrate` | Перед web + worker |
 

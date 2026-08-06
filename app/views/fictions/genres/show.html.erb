@@ -9,14 +9,24 @@
                  top_fiction_ids: @genre_showcase_top_ids,
                  latest_update_ids: @genre_showcase_latest_ids %>
     <% end %>
-    <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton %>
+    <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton, section_class: 'mt-8 lg:mt-12 mb-8' %>
+    <%= render "shared/adsense_collapse_safe",
+               placement: :genres_show_top,
+               navigation_key: "top",
+               wrapper_class: "mb-8 lg:mb-10" %>
     <%= render 'fictions/genres/promo_row' %>
+    <%= render "shared/adsense_collapse_safe",
+               placement: :genres_show_mid,
+               navigation_key: "mid",
+               measure_as: "bottom",
+               wrapper_class: "mb-8 lg:mb-10" %>
     <% if @pagy_genre_recent.count.positive? %>
       <%= render 'fictions/genres/recommended_section',
                  skeleton: @skeleton,
                  pagy: @pagy_genre_recent,
                  fictions: @genre_recent_fictions,
-                 released_by_fiction: @genre_recent_released_counts %>
+                 released_by_fiction: @genre_recent_released_counts,
+                 section_class: '' %>
     <% end %>
   </div>
 </div>

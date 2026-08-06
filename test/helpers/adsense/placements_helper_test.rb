@@ -69,18 +69,22 @@ module Adsense
       assert_nil adsense_slot_id(:search_index)
     end
 
-    test 'fictions index top slot is not live without env slot id' do
+    test 'fictions index slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 
-      assert_not adsense_slot_live?(:fictions_index_top)
-      assert_nil adsense_slot_id(:fictions_index_top)
+      %i[fictions_index_top fictions_index_mid].each do |placement|
+        assert_not adsense_slot_live?(placement)
+        assert_nil adsense_slot_id(placement)
+      end
     end
 
-    test 'fictions index mid slot is not live without env slot id' do
+    test 'genres show slots are not live without env slot ids' do
       define_singleton_method(:adsense_allowed?) { true }
 
-      assert_not adsense_slot_live?(:fictions_index_mid)
-      assert_nil adsense_slot_id(:fictions_index_mid)
+      %i[genres_show_top genres_show_mid].each do |placement|
+        assert_not adsense_slot_live?(placement)
+        assert_nil adsense_slot_id(placement)
+      end
     end
 
     test 'home banner slots are not live without env slot ids' do

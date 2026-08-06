@@ -19,7 +19,9 @@ module Adsense
     tales_show: ENV['ADSENSE_TALES_SHOW_SLOT'].presence,
     search_index: ENV['ADSENSE_SEARCH_INDEX_SLOT'].presence,
     fictions_index_top: ENV['ADSENSE_FICTIONS_INDEX_TOP_SLOT'].presence,
-    fictions_index_mid: ENV['ADSENSE_FICTIONS_INDEX_MID_SLOT'].presence
+    fictions_index_mid: ENV['ADSENSE_FICTIONS_INDEX_MID_SLOT'].presence,
+    genres_show_top: ENV['ADSENSE_GENRES_SHOW_TOP_SLOT'].presence,
+    genres_show_mid: ENV['ADSENSE_GENRES_SHOW_MID_SLOT'].presence
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {
