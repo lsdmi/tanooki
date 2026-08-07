@@ -3,6 +3,7 @@
 # Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  include Routing::PageContextHelper
   include TurboFlashStream
   include TurboFlashStreamResponse
 
@@ -98,6 +99,6 @@ class ApplicationController < ActionController::Base
   end
 
   def ads_disabled_for_current_page?
-    false
+    adsense_excluded_page?
   end
 end

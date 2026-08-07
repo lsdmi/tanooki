@@ -26,6 +26,35 @@ module Routing
       assert_not_predicate self, :fictions_show_page?
     end
 
+    test 'genre show is adsense excluded' do
+      assign_controller('fictions/genres', :show, path: 'fictions/genres')
+
+      assert_predicate self, :adsense_excluded_show_page?
+      assert_predicate self, :adsense_excluded_page?
+    end
+
+    test 'bookshelf show is adsense excluded' do
+      assign_controller(:bookshelves, :show)
+
+      assert_predicate self, :bookshelves_show_page?
+      assert_predicate self, :adsense_excluded_show_page?
+    end
+
+    test 'bookshelf new is not adsense excluded' do
+      assign_controller(:bookshelves, :new)
+
+      assert_not_predicate self, :adsense_excluded_show_page?
+      assert_not_predicate self, :adsense_excluded_page?
+    end
+
+    test 'search index is fully adsense excluded' do
+      assign_controller(:search, :index)
+
+      assert_predicate self, :search_index_page?
+      assert_predicate self, :adsense_excluded_page?
+      assert_not_predicate self, :adsense_excluded_show_page?
+    end
+
     private
 
     def assign_controller(name, action, path: nil)
