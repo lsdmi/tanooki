@@ -44,12 +44,8 @@ module Routing
       controller_name.to_sym == :search && action_name.to_sym == :index
     end
 
-    # Matches AdSense "show only" exclusions: search (whole section) + member #show elsewhere.
-    def adsense_excluded_page?
-      search_index_page? || adsense_excluded_show_page?
-    end
-
-    def adsense_excluded_show_page?
+    # App-side Auto ads off on member #show pages; manual slots stay enabled.
+    def adsense_auto_ads_excluded_page?
       bookshelves_show_page? ||
         chapters_show_page? ||
         fictions_show_page? ||

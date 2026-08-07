@@ -2,7 +2,6 @@
 
 module Reading
   # Opens the chapter reader ad drawer every 4th chapter view in the session (1, 5, 9, …).
-  # Suppressed entirely when +User#ads_free?+ is true (future Premium / No-Ads tier).
   class AdDrawerSession
     INTERVAL = 4
 

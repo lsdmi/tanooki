@@ -15,7 +15,6 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should be valid' do
     assert_predicate @user, :valid?
-    assert_not @user.ads_free?
   end
 
   test 'normalizes name and email whitespace' do

@@ -37,6 +37,13 @@
     }
     window.__bakaAdSenseInjected = true
 
+    window.adsbygoogle = window.adsbygoogle || []
+    if (document.body.dataset.autoAds === 'true') {
+      delete window.adsbygoogle.disableAutoAds
+    } else {
+      window.adsbygoogle.disableAutoAds = true
+    }
+
     var ads = document.createElement('script')
     ads.id = ADSENSE_SCRIPT_ID
     ads.async = true
@@ -65,6 +72,12 @@
 
   function syncAdSense() {
     if (adsenseEnabled()) {
+      window.adsbygoogle = window.adsbygoogle || []
+      if (document.body.dataset.autoAds === 'true') {
+        delete window.adsbygoogle.disableAutoAds
+      } else {
+        window.adsbygoogle.disableAutoAds = true
+      }
       injectAdSense()
     } else {
       removeAdSense()

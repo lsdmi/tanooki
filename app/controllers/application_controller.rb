@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   # Layout helpers (trending_tags, recent_ranobe, etc.) are fragment-cached in navbar/footer;
   # avoid adding uncached per-request queries to ApplicationController without a similar cache.
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
-                :adsense_allowed?
+                :adsense_allowed?, :adsense_auto_ads_allowed?
 
   helper Adsense::PlacementsHelper
 
@@ -59,11 +59,11 @@ class ApplicationController < ActionController::Base
   end
 
   def adsense_allowed?
-    Rails.env.production? && !ads_disabled_for_current_page? && !user_ads_free?
+    Rails.env.production?
   end
 
-  def user_ads_free?
-    current_user&.ads_free?
+  def adsense_auto_ads_allowed?
+    Rails.env.production? && !adsense_auto_ads_excluded_page?
   end
 
   def videos
@@ -96,9 +96,5 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch('popular_videos', expires_in: 1.hour) do
       YoutubeVideo.last_month.order(views: :desc).limit(2)
     end
-  end
-
-  def ads_disabled_for_current_page?
-    adsense_excluded_page?
   end
 end
