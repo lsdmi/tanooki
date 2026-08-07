@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'baka_cookie_consent_v1'
   var GA_ID = 'G-BW05CDN8VS'
   var ADS_CLIENT = 'ca-pub-5596031369567303'
+  var ADSENSE_SCRIPT_BASE = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
 
   function prodEnabled() {
     return document.body && document.body.dataset.loadGoogleScripts === 'true'
@@ -11,6 +12,10 @@
 
   function adsenseEnabled() {
     return prodEnabled() && document.body.dataset.loadAdsense === 'true'
+  }
+
+  function autoAdsEnabled() {
+    return document.body.dataset.autoAds === 'true'
   }
 
   var ADSENSE_SCRIPT_ID = 'baka-adsense-script'
@@ -29,32 +34,43 @@
     })
   }
 
-  function injectAdSense() {
-    if (!adsenseEnabled()) return
-    if (window.__bakaAdSenseInjected) {
-      notifyAdsenseReady()
-      return
-    }
-    window.__bakaAdSenseInjected = true
-
-    window.adsbygoogle = window.adsbygoogle || []
-    if (document.body.dataset.autoAds === 'true') {
-      delete window.adsbygoogle.disableAutoAds
-    } else {
-      window.adsbygoogle.disableAutoAds = true
-    }
-
-    var ads = document.createElement('script')
-    ads.id = ADSENSE_SCRIPT_ID
-    ads.async = true
-    ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADS_CLIENT
-    ads.setAttribute('crossorigin', 'anonymous')
-    ads.onload = notifyAdsenseReady
-    document.head.appendChild(ads)
+  function adsenseScriptMode() {
+    return autoAdsEnabled() ? 'full' : 'manual'
   }
 
-  function removeAdSense() {
-    if (!window.__bakaAdSenseInjected) return
+  function adsenseScriptSrc() {
+    if (autoAdsEnabled()) {
+      return ADSENSE_SCRIPT_BASE + '?client=' + encodeURIComponent(ADS_CLIENT)
+    }
+
+    // Manual units only: omit ?client= so AdSense does not enable page-level Auto ads.
+    return ADSENSE_SCRIPT_BASE
+  }
+
+  function stopAutoPlacementGuard() {
+    if (!window.__bakaAutoPlacementGuard) return
+
+    window.__bakaAutoPlacementGuard.disconnect()
+    window.__bakaAutoPlacementGuard = null
+  }
+
+  function stripAutoPlacedAds() {
+    document.querySelectorAll('.google-auto-placed').forEach(function (node) {
+      node.remove()
+    })
+  }
+
+  function startAutoPlacementGuard() {
+    stopAutoPlacementGuard()
+    if (autoAdsEnabled()) return
+
+    stripAutoPlacedAds()
+    window.__bakaAutoPlacementGuard = new MutationObserver(stripAutoPlacedAds)
+    window.__bakaAutoPlacementGuard.observe(document.body, { childList: true, subtree: true })
+  }
+
+  function removeAdSenseScript() {
+    stopAutoPlacementGuard()
 
     var script = document.getElementById(ADSENSE_SCRIPT_ID)
     if (script) script.remove()
@@ -62,22 +78,53 @@
     document.querySelectorAll('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle"]').forEach(function (node) {
       node.remove()
     })
-    document.querySelectorAll('ins.adsbygoogle, .google-auto-placed').forEach(function (node) {
-      node.remove()
-    })
 
     window.__bakaAdSenseInjected = false
+    delete window.__bakaAdSenseMode
     delete window.adsbygoogle
+  }
+
+  function injectAdSense() {
+    if (!adsenseEnabled()) return
+
+    var mode = adsenseScriptMode()
+    if (window.__bakaAdSenseInjected && window.__bakaAdSenseMode === mode) {
+      startAutoPlacementGuard()
+      notifyAdsenseReady()
+      return
+    }
+
+    if (window.__bakaAdSenseInjected) {
+      removeAdSenseScript()
+      stripAutoPlacedAds()
+    }
+
+    window.__bakaAdSenseMode = mode
+    window.__bakaAdSenseInjected = true
+    window.adsbygoogle = window.adsbygoogle || []
+
+    var ads = document.createElement('script')
+    ads.id = ADSENSE_SCRIPT_ID
+    ads.async = true
+    ads.src = adsenseScriptSrc()
+    ads.setAttribute('crossorigin', 'anonymous')
+    ads.onload = function () {
+      startAutoPlacementGuard()
+      notifyAdsenseReady()
+    }
+    document.head.appendChild(ads)
+  }
+
+  function removeAdSense() {
+    removeAdSenseScript()
+    stripAutoPlacedAds()
+    document.querySelectorAll('ins.adsbygoogle').forEach(function (node) {
+      node.remove()
+    })
   }
 
   function syncAdSense() {
     if (adsenseEnabled()) {
-      window.adsbygoogle = window.adsbygoogle || []
-      if (document.body.dataset.autoAds === 'true') {
-        delete window.adsbygoogle.disableAutoAds
-      } else {
-        window.adsbygoogle.disableAutoAds = true
-      }
       injectAdSense()
     } else {
       removeAdSense()
