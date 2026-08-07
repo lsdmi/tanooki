@@ -6,7 +6,6 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   include SearchControllerTesting
 
   setup do
-    advertisements(:advertisement_one)
     ActionController::Base.cache_store.clear
   end
 

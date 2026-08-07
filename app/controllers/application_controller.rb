@@ -79,10 +79,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def load_advertisement
-    @advertisement = cached_sample_advertisement
-  end
-
   def recent_ranobe
     Rails.cache.fetch('recent_ranobe', expires_in: 1.hour) do
       ReadingProgress.includes(:fiction).order(:updated_at).last(3)
@@ -98,13 +94,6 @@ class ApplicationController < ActionController::Base
   def popular_videos
     Rails.cache.fetch('popular_videos', expires_in: 1.hour) do
       YoutubeVideo.last_month.order(views: :desc).limit(2)
-    end
-  end
-
-  def cached_sample_advertisement
-    bucket = Time.current.to_i / 10.minutes.to_i
-    Rails.cache.fetch(['enabled_ad_sample', bucket], expires_in: 10.minutes) do
-      Advertisement.includes(%i[cover_attachment poster_attachment]).enabled.sample
     end
   end
 

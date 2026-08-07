@@ -8,7 +8,6 @@ import "channels"
 import "cookie_consent"
 import "adblock_early"
 import "adsense_turbo"
-import "page_visit_ads"
 import "pwa"
 
 // SPA-like navigation — Turbo 8 Drive + prefetch (morph when <head> matches)

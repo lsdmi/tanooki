@@ -35,7 +35,6 @@ pin 'adblock_detect', preload: false
 pin 'adblock_early', preload: true
 pin 'cookie_consent', preload: true
 pin 'adsense_turbo', preload: true
-pin 'page_visit_ads', preload: true
 pin 'font_toggler', preload: false
 
 # Chapter schedule date (UA calendar; native type=date is OS-locale bound)

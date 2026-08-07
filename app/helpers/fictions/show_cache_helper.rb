@@ -12,14 +12,13 @@ module Fictions
       current_user.nil?
     end
 
-    def guest_fiction_show_fragment_cache_key(fiction, show_presenter, advertisement)
+    def guest_fiction_show_fragment_cache_key(fiction, show_presenter)
       [
-        'fiction_show/v1/guest',
+        'fiction_show/v2/guest',
         fiction,
         show_presenter.order,
         I18n.locale,
         cookies[:color_theme].presence || 'light',
-        advertisement&.id,
         adult_content_acknowledged?,
         fragment_cache_version_bucket(GUEST_FRAGMENT_EXPIRY)
       ]
