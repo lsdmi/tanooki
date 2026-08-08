@@ -3,7 +3,6 @@
 # Base controller: shared helpers, error handling, and layout data for all pages.
 class ApplicationController < ActionController::Base
   include Pagy::Backend
-  include Routing::PageContextHelper
   include TurboFlashStream
   include TurboFlashStreamResponse
 
@@ -13,7 +12,7 @@ class ApplicationController < ActionController::Base
   # Layout helpers (trending_tags, recent_ranobe, etc.) are fragment-cached in navbar/footer;
   # avoid adding uncached per-request queries to ApplicationController without a similar cache.
   helper_method :latest_comments, :trending_tags, :recent_ranobe, :popular_blogs, :popular_videos,
-                :adsense_allowed?, :adsense_auto_ads_allowed?
+                :adsense_allowed?
 
   helper Adsense::PlacementsHelper
 
@@ -60,10 +59,6 @@ class ApplicationController < ActionController::Base
 
   def adsense_allowed?
     Rails.env.production?
-  end
-
-  def adsense_auto_ads_allowed?
-    Rails.env.production? && !adsense_auto_ads_excluded_page?
   end
 
   def videos

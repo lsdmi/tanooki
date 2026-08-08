@@ -26,32 +26,6 @@ module Routing
       assert_not_predicate self, :fictions_show_page?
     end
 
-    test 'genre show disables auto ads only' do
-      assign_controller('fictions/genres', :show, path: 'fictions/genres')
-
-      assert_predicate self, :adsense_auto_ads_excluded_page?
-    end
-
-    test 'bookshelf show disables auto ads only' do
-      assign_controller(:bookshelves, :show)
-
-      assert_predicate self, :bookshelves_show_page?
-      assert_predicate self, :adsense_auto_ads_excluded_page?
-    end
-
-    test 'bookshelf new allows auto and manual ads' do
-      assign_controller(:bookshelves, :new)
-
-      assert_not_predicate self, :adsense_auto_ads_excluded_page?
-    end
-
-    test 'search index is not app-excluded' do
-      assign_controller(:search, :index)
-
-      assert_predicate self, :search_index_page?
-      assert_not_predicate self, :adsense_auto_ads_excluded_page?
-    end
-
     private
 
     def assign_controller(name, action, path: nil)

@@ -20,12 +20,6 @@ module Fictions
       super
     end
 
-    def adsense_auto_ads_allowed?
-      return false if fiction_ads_fully_excluded?
-
-      super
-    end
-
     def fiction_ads_fully_excluded?
       @fiction&.slug.in?(self.class::AD_EXCLUDED_SLUGS)
     end

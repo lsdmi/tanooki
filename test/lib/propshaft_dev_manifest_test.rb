@@ -5,8 +5,12 @@ require 'propshaft_dev_manifest'
 
 class PropshaftDevManifestTest < ActiveSupport::TestCase
   setup do
-    @manifest_path = Rails.application.config.assets.manifest_path
+    @manifest_path = Rails.root.join('tmp', "propshaft-dev-manifest-test-#{Process.pid}.json")
     PropshaftDevManifest.refresh!(@manifest_path)
+  end
+
+  teardown do
+    @manifest_path.delete if @manifest_path.exist?
   end
 
   test 'refresh! updates tailwind digest when builds change' do
