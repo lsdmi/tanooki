@@ -9,90 +9,29 @@ module Adsense
     test 'adsense_slot_live? requires allowed adsense and a configured slot id' do
       define_singleton_method(:adsense_allowed?) { true }
 
-      assert_not adsense_slot_live?(:fiction_alphabetical)
-      assert_nil adsense_slot_id(:fiction_alphabetical)
+      assert adsense_slot_live?(:fiction_alphabetical)
+      assert_equal Adsense::SLOTS[:fiction_alphabetical], adsense_slot_id(:fiction_alphabetical)
     end
 
-    test 'bookshelf slot is not live without env slot id' do
+    test 'browse page slots are live when adsense is allowed' do
       define_singleton_method(:adsense_allowed?) { true }
 
-      assert_not adsense_slot_live?(:bookshelf)
-      assert_nil adsense_slot_id(:bookshelf)
-    end
-
-    test 'youtube video slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:youtube_video)
-      assert_nil adsense_slot_id(:youtube_video)
-    end
-
-    test 'youtube index slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:youtube_index)
-      assert_nil adsense_slot_id(:youtube_index)
-    end
-
-    test 'translation requests sidebar slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:translation_requests_sidebar)
-      assert_nil adsense_slot_id(:translation_requests_sidebar)
-    end
-
-    test 'translation requests top slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:translation_requests_top)
-      assert_nil adsense_slot_id(:translation_requests_top)
-    end
-
-    test 'tales index slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:tales_index)
-      assert_nil adsense_slot_id(:tales_index)
-    end
-
-    test 'tales show slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:tales_show)
-      assert_nil adsense_slot_id(:tales_show)
-    end
-
-    test 'search index slot is not live without env slot id' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      assert_not adsense_slot_live?(:search_index)
-      assert_nil adsense_slot_id(:search_index)
-    end
-
-    test 'fictions index slots are not live without env slot ids' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      %i[fictions_index_top fictions_index_mid].each do |placement|
-        assert_not adsense_slot_live?(placement)
-        assert_nil adsense_slot_id(placement)
+      %i[
+        bookshelf youtube_video youtube_index translation_requests_sidebar
+        translation_requests_top tales_index tales_show search_index
+        fictions_index_top fictions_index_mid genres_show_top genres_show_mid
+      ].each do |placement|
+        assert adsense_slot_live?(placement), "expected #{placement} to be live"
+        assert_equal Adsense::SLOTS[placement], adsense_slot_id(placement)
       end
     end
 
-    test 'genres show slots are not live without env slot ids' do
-      define_singleton_method(:adsense_allowed?) { true }
-
-      %i[genres_show_top genres_show_mid].each do |placement|
-        assert_not adsense_slot_live?(placement)
-        assert_nil adsense_slot_id(placement)
-      end
-    end
-
-    test 'home banner slots are not live without env slot ids' do
+    test 'home banner slots are live when adsense is allowed' do
       define_singleton_method(:adsense_allowed?) { true }
 
       Adsense::HOME_BANNER_PLACEMENTS.each_key do |placement|
-        assert_not adsense_slot_live?(placement)
-        assert_nil adsense_slot_id(placement)
+        assert adsense_slot_live?(placement)
+        assert_equal Adsense::SLOTS[placement], adsense_slot_id(placement)
       end
     end
 
@@ -104,7 +43,9 @@ module Adsense
       end
 
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        assert_not adsense_home_banners_renderable?
+        define_singleton_method(:adsense_allowed?) { true }
+
+        assert_predicate self, :adsense_home_banners_renderable?
       end
     end
 
@@ -123,7 +64,9 @@ module Adsense
       end
 
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        assert_not adsense_slot_renderable?(:bookshelf)
+        define_singleton_method(:adsense_allowed?) { true }
+
+        assert adsense_slot_renderable?(:bookshelf)
       end
     end
 
@@ -135,7 +78,9 @@ module Adsense
       end
 
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        assert_not adsense_adblock_check?
+        define_singleton_method(:adsense_allowed?) { true }
+
+        assert_predicate self, :adsense_adblock_check?
       end
     end
   end
