@@ -8,26 +8,27 @@ namespace :assets do
     Rake::Task['assets:sync_to_cdn'].invoke
   end
 
-  desc 'Upload public/assets to Spaces (needs STORAGE_*; ASSET_HOST is runtime-only on the web app)'
+  desc 'Upload public/assets to Spaces (needs STORAGE_ACCESS_KEY; CDN host from PlatformConfig)'
   task sync_to_cdn: :environment do
     abort 'assets:sync_to_cdn is for RAILS_ENV=production only' unless Rails.env.production?
 
-    if ENV['STORAGE_ACCESS_KEY'].present? && ENV['STORAGE_BUCKET'].present?
+    if ENV['STORAGE_ACCESS_KEY'].present?
       assets_dir = Rails.public_path.join('assets')
       abort 'Missing public/assets — run assets:precompile first' unless assets_dir.directory?
 
       prefix = ENV.fetch('ASSET_CDN_PREFIX', 'assets')
       uploaded = AssetsCdnUploader.new(prefix: prefix).upload!(assets_dir)
-      cdn = ENV['ASSET_HOST'].presence || '(set ASSET_HOST on web app to serve from CDN)'
+      bucket = PlatformConfig::Storage::BUCKET
+      cdn = PlatformConfig::ASSET_CDN_HOST
 
-      puts "Uploaded #{uploaded} files to #{ENV.fetch('STORAGE_BUCKET')}/#{prefix}/ — #{cdn}"
+      puts "Uploaded #{uploaded} files to #{bucket}/#{prefix}/ — #{cdn}"
       puts <<~NOTE
 
-        ASSET_HOST is runtime-only (web app env). Use the /assets/ proc in production.rb.
-        Before enabling ASSET_HOST: Spaces CORS for https://baka.in.ua; assets/* must return 200.
+        Assets served from #{cdn} via production.rb asset_host proc.
+        Before go-live: Spaces CORS for https://#{PlatformConfig::APP_HOST}; assets/* must return 200.
       NOTE
     else
-      puts 'Skipping CDN upload (STORAGE_ACCESS_KEY or STORAGE_BUCKET not set)'
+      puts 'Skipping CDN upload (STORAGE_ACCESS_KEY not set)'
     end
   end
 end
@@ -59,7 +60,7 @@ class AssetsCdnUploader
     content_type = Marcel::MimeType.for(path, name: path.basename.to_s) || 'application/octet-stream'
 
     s3_client.put_object(
-      bucket: ENV.fetch('STORAGE_BUCKET'),
+      bucket: PlatformConfig::Storage::BUCKET,
       key: key,
       body: path.read,
       acl: 'public-read',
@@ -72,8 +73,8 @@ class AssetsCdnUploader
     @s3_client ||= Aws::S3::Client.new(
       access_key_id: ENV.fetch('STORAGE_ACCESS_KEY'),
       secret_access_key: ENV.fetch('STORAGE_SECRET_KEY'),
-      region: ENV.fetch('STORAGE_REGION'),
-      endpoint: ENV.fetch('STORAGE_ENDPOINT')
+      region: PlatformConfig::Storage::REGION,
+      endpoint: PlatformConfig::Storage::ENDPOINT
     )
   end
 end

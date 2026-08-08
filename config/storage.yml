@@ -10,9 +10,9 @@ digitalocean:
   service: S3
   access_key_id: <%= ENV.fetch('STORAGE_ACCESS_KEY') %>
   secret_access_key: <%= ENV.fetch('STORAGE_SECRET_KEY') %>
-  region: <%= ENV.fetch('STORAGE_REGION') %>
-  bucket: <%= ENV.fetch('STORAGE_BUCKET') %>
-  endpoint: <%= ENV.fetch('STORAGE_ENDPOINT') %>
+  region: <%= PlatformConfig::Storage::REGION %>
+  bucket: <%= PlatformConfig::Storage::BUCKET %>
+  endpoint: <%= PlatformConfig::Storage::ENDPOINT %>
   upload:
     cache_control: public, max-age=31536000
 

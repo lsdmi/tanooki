@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'boot'
+require_relative 'platform_config'
 
 require 'rails/all'
 

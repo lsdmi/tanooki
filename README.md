@@ -68,10 +68,10 @@ Production — [DigitalOcean App Platform](https://docs.digitalocean.com/product
 | Component | Run command | Примітки |
 |-----------|-------------|----------|
 | **Web** (`tanooki`) | `bin/rails server -b 0.0.0.0` | Puma reads `PORT` from env; do not use `-p $PORT` (not shell-expanded) |
-| **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue; `SOLID_QUEUE_IN_PUMA=false` |
+| **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue (separate from Puma web) |
 | **Pre-deploy** (`db-migrate`) | `bundle exec rails db:migrate` | Перед web + worker |
 
-Managed add-ons: MySQL, OpenSearch. Asset CDN — через `ASSET_HOST` (DigitalOcean Spaces, upload під час Docker build).
+Managed add-ons: MySQL, OpenSearch. Asset CDN — `config/platform_config.rb` (Spaces bucket + CDN host).
 
 ## Структура
 

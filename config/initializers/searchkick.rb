@@ -25,14 +25,14 @@ if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].pre
   require 'opensearch-ruby'
 
   credentials = [
-    ENV.fetch('OPENSEARCH_USER'),
+    PlatformConfig::OpenSearch::USER,
     ENV.fetch('OPENSEARCH_PASSWORD')
   ].join(':')
 
   transport_options = {
     request: {
-      open_timeout: ENV.fetch('OPENSEARCH_OPEN_TIMEOUT', 2).to_i,
-      timeout: ENV.fetch('OPENSEARCH_TIMEOUT', 60).to_i
+      open_timeout: PlatformConfig::OpenSearch::OPEN_TIMEOUT,
+      timeout: PlatformConfig::OpenSearch::TIMEOUT
     },
     headers: { 'Authorization' => "Basic #{Base64.strict_encode64(credentials)}" }
   }
