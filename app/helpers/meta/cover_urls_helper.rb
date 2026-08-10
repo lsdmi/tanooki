@@ -13,9 +13,8 @@ module Meta
     FEATURED_CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :webp }.freeze
     FEATURED_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :avif }.freeze
     PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp }.freeze
-    AD_POSTER_TRANSFORMATIONS = { resize_to_limit: [1280, 720], format: :webp }.freeze
-    WIDE_CARD_SIZE = AD_POSTER_TRANSFORMATIONS[:resize_to_limit]
-    WIDE_CARD_WEBP_TRANSFORMATIONS = AD_POSTER_TRANSFORMATIONS
+    WIDE_CARD_SIZE = [1280, 720].freeze
+    WIDE_CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: WIDE_CARD_SIZE, format: :webp }.freeze
     WIDE_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: WIDE_CARD_SIZE, format: :avif }.freeze
     CARD_TRANSFORMATIONS = CARD_WEBP_TRANSFORMATIONS
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
