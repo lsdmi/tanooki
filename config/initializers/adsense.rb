@@ -22,7 +22,9 @@ module Adsense
     fictions_index_top: '1743214661',
     fictions_index_mid: '6887464203',
     genres_show_top: '1140503454',
-    genres_show_mid: '3963656072'
+    genres_show_mid: '3963656072',
+    fiction_show: '8311601798',
+    fiction_show_sidebar: '8551274943'
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {

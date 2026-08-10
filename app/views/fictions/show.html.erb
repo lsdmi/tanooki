@@ -16,6 +16,13 @@
       <section class="lg:col-span-2 rounded-lg ">
         <%= render 'adult_content_disclaimer', fiction: @fiction if show_adult_content_disclaimer?(@fiction) %>
         <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
+
+        <section class="fiction-show__ad fiction-show__ad--main mt-8">
+          <%= render "shared/adsense_slot",
+                     placement: :fiction_show,
+                     navigation_key: @fiction.id,
+                     measure_as: "bottom" %>
+        </section>
       </section>
 
       <!-- Right Column: Chapters, CTA, and Banner -->
@@ -32,6 +39,13 @@
         </section>
 
         <%= render 'scanlator_notice', fiction: @fiction %>
+
+        <section class="fiction-show__ad fiction-show__ad--sidebar">
+          <%= render "shared/adsense_slot",
+                     placement: :fiction_show_sidebar,
+                     navigation_key: @fiction.id,
+                     measure_as: "bottom" %>
+        </section>
 
         <!-- EPUB Disclaimer -->
         <%= render 'epub_disclaimer', fiction: @fiction %>
