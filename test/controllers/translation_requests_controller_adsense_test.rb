@@ -3,11 +3,10 @@
 require 'test_helper'
 
 class TranslationRequestsControllerAdsenseTest < ActionDispatch::IntegrationTest
-  test 'index omits legacy banners outside development' do
+  test 'index omits adsense slots outside development' do
     get translation_requests_url
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.adsense-collapse-safe', count: 0
   end
 

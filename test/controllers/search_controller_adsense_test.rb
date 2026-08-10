@@ -5,7 +5,7 @@ require 'test_helper'
 class SearchControllerAdsenseTest < ActionDispatch::IntegrationTest
   include SearchControllerTesting
 
-  test 'index omits legacy banners outside development' do
+  test 'index omits adsense slots outside development' do
     with_stubbed_tag_counts do
       with_stubbed_search(Fiction, Publication, YoutubeVideo) do
         get search_index_url, params: { search: ['test'] }
@@ -13,7 +13,6 @@ class SearchControllerAdsenseTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.adsense-collapse-safe', count: 0
   end
 

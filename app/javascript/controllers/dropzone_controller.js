@@ -5,8 +5,6 @@ export default class DropzoneController extends Controller {
 
   connect() {
     const targetIds = [
-      "advertisement_cover",
-      "advertisement_poster",
       "fictions_cover",
       "fictions_banner",
       "publication_cover",
@@ -42,12 +40,6 @@ export default class DropzoneController extends Controller {
     let targetElement;
 
     switch(targetId) {
-      case 'advertisement_cover':
-        targetElement = document.querySelector(`#cover_name`);
-        break;
-      case 'advertisement_poster':
-        targetElement = document.querySelector(`#poster_name`);
-        break;
       case 'fictions_cover':
         targetElement = document.querySelector(`#cover_name`);
         break;

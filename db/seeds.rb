@@ -11,5 +11,5 @@
 # Every time we need to reset a clean development data,
 # we can run the bin/rails db:seed command
 Rails.logger.info "\n== Seeding the database with fixtures =="
-fixtures = %w[users publications advertisements active_storage_blobs active_storage_attachments action_text_rich_texts]
+fixtures = %w[users publications active_storage_blobs active_storage_attachments action_text_rich_texts]
 fixtures.each { |fixture| system("bin/rails db:fixtures:load FIXTURES=#{fixture}") }

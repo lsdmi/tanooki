@@ -66,10 +66,6 @@ module Meta
       variant_image_url(attachment, PUBLICATION_HEADER_TRANSFORMATIONS)
     end
 
-    def advertisement_poster_url(attachment)
-      variant_image_url(attachment, AD_POSTER_TRANSFORMATIONS)
-    end
-
     def video_thumbnail_url(thumbnail)
       return thumbnail if thumbnail.is_a?(String)
 

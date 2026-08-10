@@ -19,13 +19,12 @@ class YoutubeVideosControllerTest < ActionDispatch::IntegrationTest
     assert_equal({ 'one' => 5 }, assigns(:video_tag_counts))
   end
 
-  test 'show does not render legacy advertisement banner' do
+  test 'show renders sidebar ad slot' do
     Search::TagCounts.stub(:call, {}) do
       get youtube_video_path(@youtube_video)
     end
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.youtube-show__ad', count: 1
   end
 

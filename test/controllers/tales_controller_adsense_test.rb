@@ -7,13 +7,12 @@ class TalesControllerAdsenseTest < ActionDispatch::IntegrationTest
     @tale = publications(:tale_approved_one)
   end
 
-  test 'index omits legacy banners outside development' do
+  test 'index omits adsense slots outside development' do
     Search::TagCounts.stub(:call, {}) do
       get tales_url
     end
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.adsense-collapse-safe', count: 0
   end
 
@@ -33,7 +32,7 @@ class TalesControllerAdsenseTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'show omits legacy banners outside development' do
+  test 'show omits adsense slots outside development' do
     Search::TagCounts.stub(:call, {}) do
       Publication.stub :search, Publication.all do
         get tale_url(@tale)
@@ -41,7 +40,6 @@ class TalesControllerAdsenseTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.adsense-collapse-safe', count: 0
   end
 

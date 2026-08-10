@@ -427,10 +427,6 @@ uk:
       login_required_fiction_all: Це ранобе підтримує завантаження в форматі EPUB. %{login_link}, щоб завантажити файли.
       login_required_fiction_mixed: Частину розділів можна завантажити в EPUB. %{login_link}, щоб завантажити файли.
   admin:
-    advertisements:
-      notices:
-        create_success: Оголошення створено.
-        update_success: Оголошення оновлено.
     pokemons:
       notices:
         create_success: Дані про покемона додано.

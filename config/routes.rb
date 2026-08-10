@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   get '/register/new', to: redirect('/register')
 
   namespace :admin do
-    resources :advertisements, path: 'ads', except: %i[show destroy]
     resources :avatars, except: %i[new edit show update]
     resources :genres, except: %i[new show]
     resources :pokemons, except: :show

@@ -15,10 +15,9 @@ module Fictions
       assert_template :show
     end
 
-    test 'show renders writings promo for guest without legacy ads' do
+    test 'show renders writings promo for guest' do
       get fiction_genre_fictions_url(genres(:one).slug)
 
-      assert_select '[id^="advertisement-banner-"]', count: 0
       assert_select '.fiction-genre-writings-banner a[href="/login"]', text: /Увійти та почати писати/
       assert_select '.fiction-genre-writings-banner span', text: 'Для авторів'
     end

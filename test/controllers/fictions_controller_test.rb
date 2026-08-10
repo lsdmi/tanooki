@@ -39,10 +39,9 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     verify_fiction_index_presenter_lists(index_presenter)
   end
 
-  test 'index renders writings promo without legacy hero ad' do
+  test 'index renders writings promo' do
     get fictions_path
 
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.fiction-genre-writings-banner a[href="/readings"]', text: /Відкрити писальню/
   end
 

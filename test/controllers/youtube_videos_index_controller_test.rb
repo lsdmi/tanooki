@@ -14,13 +14,12 @@ class YoutubeVideosIndexControllerTest < ActionDispatch::IntegrationTest
     assert_equal({}, assigns(:video_tag_counts))
   end
 
-  test 'index omits legacy banners outside development' do
+  test 'index omits adsense slot outside development' do
     Search::TagCounts.stub(:call, {}) do
       get youtube_videos_path
     end
 
     assert_response :success
-    assert_select '[id^="advertisement-banner-"]', count: 0
     assert_select '.youtube-index__ad', count: 0
   end
 
