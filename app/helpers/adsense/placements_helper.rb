@@ -30,5 +30,37 @@ module Adsense
     def adsense_home_banners_renderable?
       Adsense::HOME_BANNER_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
     end
+
+    def calendar_ad_slots
+      slots = Adsense::CALENDAR_SLOTS
+      return [] if slots.empty?
+
+      slots.filter_map(&:presence)
+    end
+
+    def calendar_ad_slot_for(insert_index)
+      slots = calendar_ad_slots
+      return if slots.empty?
+
+      slots[insert_index % slots.length]
+    end
+
+    def calendar_adsense_live?
+      adsense_allowed? && Adsense::CALENDAR_SLOTS.any?
+    end
+
+    def calendar_adsense_renderable?
+      calendar_adsense_live? || adsense_slot_development_preview?
+    end
+
+    def adsense_inline_slot_renderable?(slot_id:, placement: nil)
+      return adsense_slot_renderable?(placement) if slot_id.blank?
+
+      adsense_slot_development_preview? || (adsense_allowed? && slot_id.present?)
+    end
+
+    def adsense_inline_slot_live?(slot_id:)
+      adsense_allowed? && slot_id.present?
+    end
   end
 end

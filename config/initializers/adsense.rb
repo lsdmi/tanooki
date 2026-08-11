@@ -41,4 +41,9 @@ module Adsense
   DRAWER_SLOTS = %w[
     3925855020
   ].freeze
+
+  # Release calendar in-feed inserts; add IDs as you create units in AdSense (rotates per insertion).
+  CALENDAR_SLOTS = %w[
+    1290932297
+  ].freeze
 end

@@ -1,6 +1,7 @@
-<%# locals: (placement:, navigation_key: "", measure_as: "top", wrapper_class: "") %>
-<% return unless adsense_slot_renderable?(placement) %>
+<%# locals: (placement:, navigation_key: "", measure_as: "top", wrapper_class: "", slot_id: nil) %>
+<% explicit_slot_id = local_assigns[:slot_id].presence %>
+<% return unless adsense_inline_slot_renderable?(slot_id: explicit_slot_id, placement:) %>
 
 <div class="adsense-collapse-safe mx-auto m-0 w-full empty:hidden has-[.reader-ad-slot--adsense-filled]:mb-6 has-[.reader-ad-slot--preview]:mb-6 has-[.reader-ad-slot--collapsed]:hidden [&:not(:has(.reader-ad-slot--preview))]:not(:has(.reader-ad-slot--adsense-filled))]:not(:has(.reader-ad-slot--measuring))]:not(:has(.reader-ad-slot--pending))]:hidden [&_.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled)_.reader-ad-slot__frame]:min-h-0 [&_.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled)_.reader-ad-slot__frame]:max-h-none <%= wrapper_class %>">
-  <%= render "shared/adsense_slot", placement:, navigation_key:, measure_as: %>
+  <%= render "shared/adsense_slot", placement:, navigation_key:, measure_as:, slot_id: explicit_slot_id %>
 </div>

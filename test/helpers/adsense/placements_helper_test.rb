@@ -20,6 +20,7 @@ module Adsense
         bookshelf youtube_video youtube_index translation_requests_sidebar
         translation_requests_top tales_index tales_show search_index
         fictions_index_top fictions_index_mid genres_show_top genres_show_mid
+        fiction_show fiction_show_sidebar
       ].each do |placement|
         assert adsense_slot_live?(placement), "expected #{placement} to be live"
         assert_equal Adsense::SLOTS[placement], adsense_slot_id(placement)
@@ -81,6 +82,37 @@ module Adsense
         define_singleton_method(:adsense_allowed?) { true }
 
         assert_predicate self, :adsense_adblock_check?
+      end
+    end
+
+    test 'calendar_ad_slot_for rotates through CALENDAR_SLOTS' do
+      define_singleton_method(:calendar_ad_slots) { %w[111 222 333] }
+
+      rotated = Array.new(4) { |index| calendar_ad_slot_for(index) }
+
+      assert_equal %w[111 222 333 111], rotated
+    end
+
+    test 'calendar_adsense_live? requires allowed adsense and configured calendar slots' do
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_predicate self, :calendar_adsense_live?
+
+      original = Adsense::CALENDAR_SLOTS
+      Adsense.send(:remove_const, :CALENDAR_SLOTS)
+      Adsense.const_set(:CALENDAR_SLOTS, [].freeze)
+
+      assert_not calendar_adsense_live?
+    ensure
+      Adsense.send(:remove_const, :CALENDAR_SLOTS) if Adsense.const_defined?(:CALENDAR_SLOTS)
+      Adsense.const_set(:CALENDAR_SLOTS, original)
+    end
+
+    test 'calendar_adsense_renderable? is true in development without live slots' do
+      define_singleton_method(:adsense_allowed?) { false }
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+        assert_predicate self, :calendar_adsense_renderable?
       end
     end
   end

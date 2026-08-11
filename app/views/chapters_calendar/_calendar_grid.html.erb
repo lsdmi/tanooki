@@ -1,8 +1,10 @@
+<%# locals: (fictions:, subscriptions_filter_active:, ad_every: 5) %>
 <% if fictions.all? { |d| d[:updates].blank? } %>
   <%= render "chapters_calendar/calendar_empty",
              subscriptions_filter_active: subscriptions_filter_active %>
 <% else %>
 <div class="relative z-10 grid w-full max-w-7xl grid-cols-1 gap-10 md:grid-cols-3">
+  <% calendar_ad_insert_index = 0 %>
   <% fictions.each_with_index do |day_update, day_index| %>
     <div class="relative overflow-hidden rounded-2xl border border-stone-200 bg-white/80 p-8 shadow-2xl backdrop-blur-xl dark:border-gray-700 dark:bg-gray-800/85">
       <div class="absolute top-0 right-0 h-24 w-24 opacity-10 text-stone-800 dark:text-gray-200">
@@ -30,7 +32,8 @@
 
       <% if day_update[:updates].present? %>
         <div class="relative z-10 space-y-8">
-          <% day_update[:updates].each do |fiction_update| %>
+          <% day_update[:updates].each_with_index do |fiction_update, update_index| %>
+            <% item_number = update_index + 1 %>
             <div class="event-card relative py-2 pl-6">
               <div class="absolute top-0 left-0 h-full w-0.5 bg-stone-300 dark:bg-gray-600"></div>
               <div class="absolute top-0 left-[-5px] h-[10px] w-[10px] rounded-full bg-stone-400 dark:bg-gray-500"></div>
@@ -76,6 +79,15 @@
                 <% end %>
               </div>
             </div>
+            <% if calendar_adsense_renderable? && (item_number % ad_every).zero? %>
+              <%= render "shared/adsense_collapse_safe",
+                         placement: :fiction_calendar,
+                         slot_id: calendar_ad_slot_for(calendar_ad_insert_index),
+                         navigation_key: "day-#{day_index}-item-#{item_number}",
+                         measure_as: "bottom",
+                         wrapper_class: "w-full" %>
+              <% calendar_ad_insert_index += 1 %>
+            <% end %>
           <% end %>
         </div>
       <% else %>

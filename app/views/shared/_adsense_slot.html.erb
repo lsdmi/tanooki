@@ -1,9 +1,11 @@
-<%# locals: (placement:, navigation_key: "", measure_as: "top") %>
-<% return unless adsense_slot_renderable?(placement) %>
+<%# locals: (placement:, navigation_key: "", measure_as: "top", slot_id: nil) %>
+<% explicit_slot_id = local_assigns[:slot_id].presence %>
+<% return unless adsense_inline_slot_renderable?(slot_id: explicit_slot_id, placement:) %>
 
 <% slot_dom_id = navigation_key.present? ? "adsense-slot-#{placement}-#{navigation_key}" : "adsense-slot-#{placement}" %>
 <% position_class = measure_as.to_s == "bottom" ? "reader-ad-slot--bottom" : "reader-ad-slot--top" %>
-<% live = adsense_slot_live?(placement) %>
+<% live = explicit_slot_id ? adsense_inline_slot_live?(slot_id: explicit_slot_id) : adsense_slot_live?(placement) %>
+<% resolved_slot_id = explicit_slot_id || adsense_slot_id(placement) %>
 
 <div id="<%= slot_dom_id %>"
      class="reader-ad-slot <%= position_class %> relative overflow-hidden rounded-md sm:rounded-lg<%= " reader-ad-slot--preview" unless live %>"
@@ -18,7 +20,7 @@
       <ins class="adsbygoogle reader-ad-slot__adsense"
            style="display:block"
            data-ad-client="<%= adsense_client_id %>"
-           data-ad-slot="<%= adsense_slot_id(placement) %>"
+           data-ad-slot="<%= resolved_slot_id %>"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
     <% else %>
