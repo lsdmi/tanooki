@@ -80,6 +80,20 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to reading_path(@chapter.fiction)
   end
 
+  test 'should return to the originating chapter list page after update' do
+    patch chapter_url(@chapter, page: 3), params: {
+      chapter: {
+        content: @chapter.content,
+        fiction_id: @chapter.fiction_id,
+        number: @chapter.number,
+        scanlator_ids: [1],
+        title: @chapter.title
+      }
+    }
+
+    assert_redirected_to reading_path(@chapter.fiction, page: 3)
+  end
+
   test 'update chapter number refreshes fiction status when unique chapters reach total' do
     fiction = @chapter.fiction
     fiction.update!(status: :ongoing, total_chapters: 2)

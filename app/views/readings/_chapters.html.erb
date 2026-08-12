@@ -1,4 +1,4 @@
-<div class="relative z-10 space-y-6 p-8">
+<div class="relative z-10 space-y-4 p-4 sm:space-y-6 sm:p-8">
   <!-- Navigation Header -->
   <div class="mb-6">
     <!-- Mobile Navigation -->
@@ -113,8 +113,18 @@
   </div>
 
   <% if chapters.any? %>
+    <!-- Compact "Add chapter" (Mobile Only) -->
+    <div class="sm:hidden">
+      <%= ui_button(as: :link, href: new_chapter_path(fiction:), full_width: true, html: { data: { turbo: false } }) do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+        </svg>
+        Додати розділ
+      <% end %>
+    </div>
+
     <!-- CTA Card -->
-    <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+    <div class="hidden sm:block rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
       <%= render 'shared/decorative_ornament' %>
 
       <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
@@ -131,6 +141,9 @@
         Додати розділ
       <% end %>
     </div>
+
+    <!-- Pagination (Top) -->
+    <%= ui_pagination(pagy, pagy_id: 'pagy-top', form_path: reading_path(fiction), html: { class: 'p-2' }) %>
 
     <!-- Chapters List -->
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
@@ -155,8 +168,8 @@
       </div>
 
       <!-- Card View (Mobile Only) -->
-      <div class="sm:hidden p-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="sm:hidden p-3">
+        <div class="grid grid-cols-1 gap-3">
           <% chapters.each do |chapter| %>
             <%= render Readings::ChapterRowComponent.new(chapter:, variant: :card, pagy_page: pagy.page) %>
           <% end %>
@@ -164,8 +177,8 @@
       </div>
     </div>
 
-    <!-- Pagination -->
-      <%= ui_pagination(pagy, form_path: reading_path(fiction), html: { class: 'p-4' }) %>
+    <!-- Pagination (Bottom) -->
+    <%= ui_pagination(pagy, form_path: reading_path(fiction), html: { class: 'p-4' }) %>
   <% else %>
     <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
       <%= render 'shared/jellyfish_ornament' %>

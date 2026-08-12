@@ -44,22 +44,15 @@
   </tr>
 <% else %>
   <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
-    <div class="flex items-start space-x-3 mb-3">
-      <div class="<%= Readings::ChapterRowComponentStyles::ICON_WRAPPER_CLASSES %> flex-shrink-0">
-        <svg class="<%= Readings::ChapterRowComponentStyles::ICON_CLASSES %>" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <%= link_to chapter.display_title,
-                    chapter_path(chapter),
-                    turbo_drive_visit_data.merge(
-                      class: 'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white'
-                    ) %>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-          Опубліковано: <%= published_at_label %>
-        </p>
-      </div>
+    <div class="mb-3 min-w-0">
+      <%= link_to chapter.display_title,
+                  chapter_path(chapter),
+                  turbo_drive_visit_data.merge(
+                    class: 'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white'
+                  ) %>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        Опубліковано: <%= published_at_label %>
+      </p>
     </div>
     <div class="flex items-center space-x-4 mb-3 text-sm">
       <div class="flex items-center space-x-1">

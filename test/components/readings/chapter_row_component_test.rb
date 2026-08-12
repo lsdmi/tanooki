@@ -18,11 +18,17 @@ module Readings
       assert_selector "a[href='#{chapter_path(@chapter)}'][title='Переглянути']"
     end
 
-    test 'renders table row delete action with pagy page' do
+    test 'renders table row edit and delete actions with pagy page' do
       render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 2))
 
-      assert_selector "a[href='#{edit_chapter_path(@chapter.slug)}']"
+      assert_selector "a[href='#{edit_chapter_path(@chapter.slug, page: 2)}']"
       assert_selector "button.sweet-alert-button[data-sweet-alert-url-value='#{reading_path(@chapter, page: 2)}']"
+    end
+
+    test 'omits page from edit action on the first page' do
+      render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 1))
+
+      assert_selector "a[href='#{edit_chapter_path(@chapter.slug)}']"
     end
 
     test 'renders card variant' do

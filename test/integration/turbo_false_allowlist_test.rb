@@ -23,7 +23,7 @@ class TurboFalseAllowlistTest < ActiveSupport::TestCase
   end
 
   test 'allowlist count stays within intentional ceiling' do
-    assert_operator turbo_false_occurrences.size, :<=, 22,
+    assert_operator turbo_false_occurrences.size, :<=, 23,
                     'Re-audit allowlist if intentional turbo:false grows beyond ceiling'
   end
 

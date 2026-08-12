@@ -41,9 +41,14 @@ module Readings
       helpers.reading_path(chapter, page: pagy_page)
     end
 
+    # Carries the list page into the editor so saving returns to the same page.
+    def edit_url
+      helpers.edit_chapter_path(chapter.slug, page: (pagy_page if pagy_page.to_i > 1))
+    end
+
     def render_actions
       render partial: 'readings/chapter_row_component/actions',
-             locals: { chapter:, delete_button:, visit_data: turbo_drive_visit_data }
+             locals: { chapter:, edit_url:, delete_button:, visit_data: turbo_drive_visit_data }
     end
 
     def delete_button

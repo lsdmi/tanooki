@@ -10,6 +10,7 @@ class ChaptersController < ApplicationController
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_chapter, only: %i[show edit update]
+  before_action :set_list_page, only: %i[edit update]
   before_action :set_fiction_for_chapter_create, only: %i[new create]
   before_action :authorize_chapter_creation, only: %i[new create]
   before_action :redirect_if_chapter_not_yet_public, only: :show
@@ -65,10 +66,17 @@ class ChaptersController < ApplicationController
     if @chapter.update(chapter_params)
       sync_chapter_scanlator_links
       update_fiction_status
-      redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.update_success')
+      redirect_to reading_path(@chapter.fiction, page: @list_page), notice: t('chapters.notices.update_success')
     else
       render 'chapters/edit', status: :unprocessable_content
     end
+  end
+
+  # Editing starts from a paginated chapter list, so its page travels through the
+  # form and back into the redirect. Page 1 stays implicit to keep URLs clean.
+  def set_list_page
+    page = params[:page].to_i
+    @list_page = page if page > 1
   end
 
   def load_chapter_comments
