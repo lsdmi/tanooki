@@ -230,6 +230,30 @@ html.adblock-likely .bookshelf-show__ad,
   display: none !important;
 }
 
+/* Scanlator show: ad-only left column must not leave an empty 1/3 grid when blocked.
+   Only collapse on adblock / explicit collapsed — not while waiting to measure (offsetParent). */
+html.adblock-likely .scanlator-show__sidebar-ad,
+.scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
+html.adblock-likely .scanlator-show__ad--full,
+.scanlator-show__ad--full:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  html.adblock-likely .scanlator-show__grid--ad-sidebar,
+  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html.adblock-likely .scanlator-show__grid--ad-sidebar .scanlator-show__fictions,
+  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) .scanlator-show__fictions {
+    grid-column: 1 / -1;
+  }
+}
+
 .reader-ad-slot--adsense-filled {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;

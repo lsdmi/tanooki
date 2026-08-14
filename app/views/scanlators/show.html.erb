@@ -86,67 +86,69 @@
     <% scanlator_sidebar_card = 'relative overflow-hidden rounded-xl border border-stone-200 bg-stone-50 shadow-md dark:border-stone-700 dark:bg-stone-800/95' %>
     <% scanlator_sidebar_mascot = 'pointer-events-none absolute bottom-4 right-4 select-none text-4xl text-stone-300 opacity-[0.15] transform -rotate-12 dark:text-stone-600 dark:opacity-20 sm:text-5xl sm:bottom-5 sm:right-5' %>
     <div class="container mx-auto px-4 py-16 max-w-5xl space-y-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Sidebar: опис / оголошення (or ad when both are blank) -->
-        <div class="lg:col-span-1 flex flex-col gap-5">
-          <% if @scanlator.description? %>
-            <section class="<%= scanlator_sidebar_card %>">
-              <div class="h-px w-full bg-gradient-to-r from-transparent via-cyan-600/50 to-transparent dark:via-rose-500/40"></div>
-              <div class="relative px-5 py-6 sm:px-6 sm:py-7">
-                <article>
-                  <header class="mb-3 flex items-center gap-2.5">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-rose-900/25 dark:text-rose-400">
-                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                    </span>
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">Про команду</h2>
-                  </header>
-                  <div class="border-l-2 border-cyan-700/30 pl-4 text-sm leading-relaxed text-stone-700 dark:border-rose-500/35 dark:text-stone-300 md:text-[15px]">
-                    <%= linkify_urls(@scanlator.description, link_class: scanlator_sidebar_link_class) %>
-                  </div>
-                </article>
-                <div class="<%= scanlator_sidebar_mascot %>" aria-hidden="true">(^o^)</div>
-              </div>
-            </section>
-          <% end %>
-
-          <% if @scanlator.notice? %>
-            <section class="<%= scanlator_sidebar_card %>">
-              <div class="h-px w-full bg-gradient-to-r from-transparent via-cyan-600/50 to-transparent dark:via-rose-500/40"></div>
-              <div class="relative px-5 py-6 sm:px-6 sm:py-7">
-                <article>
-                  <header class="mb-3 flex items-center gap-2.5">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-rose-900/25 dark:text-rose-400">
-                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
-                      </svg>
-                    </span>
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">Оголошення</h2>
-                  </header>
-                  <div class="border-l-2 border-cyan-700/40 pl-4 text-sm leading-relaxed text-stone-700 dark:border-rose-500/45 dark:text-stone-300 md:text-[15px]">
-                    <%= linkify_urls(@scanlator.notice, link_class: scanlator_sidebar_link_class) %>
-                  </div>
-                </article>
-                <% unless @scanlator.description? %>
+      <div class="scanlator-show__grid grid grid-cols-1 lg:grid-cols-3 gap-8<%= ' scanlator-show__grid--ad-sidebar' unless scanlator_ad_full_width %>">
+        <% if scanlator_has_sidebar_cards %>
+          <div class="lg:col-span-1 flex flex-col gap-5">
+            <% if @scanlator.description? %>
+              <section class="<%= scanlator_sidebar_card %>">
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-cyan-600/50 to-transparent dark:via-rose-500/40"></div>
+                <div class="relative px-5 py-6 sm:px-6 sm:py-7">
+                  <article>
+                    <header class="mb-3 flex items-center gap-2.5">
+                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-rose-900/25 dark:text-rose-400">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </span>
+                      <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">Про команду</h2>
+                    </header>
+                    <div class="border-l-2 border-cyan-700/30 pl-4 text-sm leading-relaxed text-stone-700 dark:border-rose-500/35 dark:text-stone-300 md:text-[15px]">
+                      <%= linkify_urls(@scanlator.description, link_class: scanlator_sidebar_link_class) %>
+                    </div>
+                  </article>
                   <div class="<%= scanlator_sidebar_mascot %>" aria-hidden="true">(^o^)</div>
-                <% end %>
-              </div>
-            </section>
-          <% end %>
+                </div>
+              </section>
+            <% end %>
 
-          <% unless scanlator_ad_full_width %>
+            <% if @scanlator.notice? %>
+              <section class="<%= scanlator_sidebar_card %>">
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-cyan-600/50 to-transparent dark:via-rose-500/40"></div>
+                <div class="relative px-5 py-6 sm:px-6 sm:py-7">
+                  <article>
+                    <header class="mb-3 flex items-center gap-2.5">
+                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-rose-900/25 dark:text-rose-400">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
+                        </svg>
+                      </span>
+                      <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">Оголошення</h2>
+                    </header>
+                    <div class="border-l-2 border-cyan-700/40 pl-4 text-sm leading-relaxed text-stone-700 dark:border-rose-500/45 dark:text-stone-300 md:text-[15px]">
+                      <%= linkify_urls(@scanlator.notice, link_class: scanlator_sidebar_link_class) %>
+                    </div>
+                  </article>
+                  <% unless @scanlator.description? %>
+                    <div class="<%= scanlator_sidebar_mascot %>" aria-hidden="true">(^o^)</div>
+                  <% end %>
+                </div>
+              </section>
+            <% end %>
+          </div>
+        <% else %>
+          <%# Ad-only column: collapses entirely when adblock / collapsed so fiction can go full width. %>
+          <div class="scanlator-show__sidebar-ad lg:col-span-1 flex flex-col gap-5">
             <div class="scanlator-show__ad scanlator-show__ad--sidebar">
               <%= render "shared/adsense_slot",
                          placement: :scanlator_show,
                          navigation_key: @scanlator.id,
                          measure_as: "bottom" %>
             </div>
-          <% end %>
-        </div>
-        <!-- Fictions Grid -->
+          </div>
+        <% end %>
+
         <% if scanlator_has_fictions %>
-          <div data-controller="fiction-picker" class="lg:col-span-2">
+          <div data-controller="fiction-picker" class="scanlator-show__fictions lg:col-span-2">
             <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0">
               <% if @fictions.ids.size > 1 %>
                 <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">
