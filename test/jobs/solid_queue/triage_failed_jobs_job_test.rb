@@ -19,5 +19,19 @@ module SolidQueue
 
       assert_predicate export.reload, :failed?
     end
+
+    test 'retryable list includes per-chapter compress jobs' do
+      assert_includes TriageFailedJobsJob::RETRYABLE_JOB_CLASSES, 'Chapters::CompressInlineImagesJob'
+    end
+
+    test 'retryable list excludes fan-out mailer and analyze jobs' do
+      excluded = %w[
+        Chapters::CompressRecentInlineImagesJob
+        ActionMailer::MailDeliveryJob
+        ActiveStorage::AnalyzeJob
+      ]
+
+      assert_empty(excluded & TriageFailedJobsJob::RETRYABLE_JOB_CLASSES)
+    end
   end
 end

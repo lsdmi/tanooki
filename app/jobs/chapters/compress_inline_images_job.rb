@@ -2,13 +2,19 @@
 
 module Chapters
   # Background repair for chapters with Word-pasted inline base64 images.
+  # Serialized: one job at a time on a dedicated queue so vips work cannot OOM the worker pool.
   class CompressInlineImagesJob < ApplicationJob
-    queue_as :default
+    queue_as :compress
+
+    # Global cap across all chapter compress work (Solid Queue blocked executions).
+    limits_concurrency to: 1, key: 'chapters_compress_inline_images', duration: 1.hour
 
     def perform(chapter_id)
       result = CompressInlineImages.call(chapter_id)
       log_result(result)
       result
+    ensure
+      GC.start
     end
 
     private

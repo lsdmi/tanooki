@@ -20,5 +20,11 @@ module Chapters
         assert_equal expected, result
       end
     end
+
+    test 'runs on the compress queue with a global concurrency cap' do
+      assert_equal 'test_compress', CompressInlineImagesJob.new.queue_name
+      assert_equal 1, CompressInlineImagesJob.concurrency_limit
+      assert_equal 'chapters_compress_inline_images', CompressInlineImagesJob.concurrency_key
+    end
   end
 end
