@@ -80,6 +80,10 @@
 
     <!-- Main Content -->
     <% scanlator_sidebar = @scanlator.description? || @scanlator.notice? %>
+    <% both_sidebar_cards = @scanlator.description? && @scanlator.notice? %>
+    <% scanlator_has_fictions = @fictions.ids.size.positive? %>
+    <% scanlator_ad_on_right = both_sidebar_cards && scanlator_has_fictions %>
+    <% scanlator_ad_on_left = scanlator_sidebar && !scanlator_ad_on_right %>
     <div class="container mx-auto px-4 py-16 <%= scanlator_sidebar ? 'max-w-5xl' : 'max-w-3xl' %>">
       <div class="grid grid-cols-1 <%= scanlator_sidebar ? 'lg:grid-cols-3 ' : 'lg:grid-cols-2' %> gap-8">
         <!-- Sidebar: опис та оголошення -->
@@ -133,11 +137,28 @@
                 </div>
               </section>
             <% end %>
+
+            <% if scanlator_ad_on_left %>
+              <div class="scanlator-show__ad scanlator-show__ad--sidebar mt-auto">
+                <%= render "shared/adsense_slot",
+                           placement: :scanlator_show,
+                           navigation_key: @scanlator.id,
+                           measure_as: "bottom" %>
+              </div>
+            <% end %>
           </div>
         <% end %>
         <!-- Fictions Grid -->
-        <% if @fictions.ids.size > 0 %>
-          <div data-controller="fiction-picker" class="lg:col-span-2">
+        <% if scanlator_has_fictions %>
+          <div data-controller="fiction-picker" class="lg:col-span-2 space-y-5">
+            <% if scanlator_ad_on_right %>
+              <div class="scanlator-show__ad scanlator-show__ad--main">
+                <%= render "shared/adsense_slot",
+                           placement: :scanlator_show,
+                           navigation_key: @scanlator.id,
+                           measure_as: "top" %>
+              </div>
+            <% end %>
             <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0">
               <% if @fictions.ids.size > 1 %>
                 <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">

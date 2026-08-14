@@ -20,7 +20,7 @@ module Adsense
         bookshelf youtube_video youtube_index translation_requests_sidebar
         translation_requests_top tales_index tales_show search_index
         fictions_index_top fictions_index_mid genres_show_top genres_show_mid
-        fiction_show fiction_show_sidebar
+        fiction_show fiction_show_sidebar scanlator_show
       ].each do |placement|
         assert adsense_slot_live?(placement), "expected #{placement} to be live"
         assert_equal Adsense::SLOTS[placement], adsense_slot_id(placement)

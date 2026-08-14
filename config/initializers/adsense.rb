@@ -24,7 +24,8 @@ module Adsense
     genres_show_top: '1140503454',
     genres_show_mid: '3963656072',
     fiction_show: '8311601798',
-    fiction_show_sidebar: '8551274943'
+    fiction_show_sidebar: '8551274943',
+    scanlator_show: '2428656082'
   }.freeze
 
   HOME_BANNER_PLACEMENTS = {
