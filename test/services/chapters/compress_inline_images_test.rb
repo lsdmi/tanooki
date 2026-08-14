@@ -39,6 +39,32 @@ module Chapters
       end
     end
 
+    test 'call skips bodies over the automated size limit' do
+      with_compression_stub do
+        result = CompressInlineImages.call(chapters(:one).id, max_body_bytes: 100)
+
+        assert_equal :body_too_large, result.skipped_reason
+      end
+    end
+
+    test 'call leaves an oversized body untouched' do
+      before = @rich_text.reload.read_attribute_before_type_cast(:body)
+
+      with_compression_stub do
+        CompressInlineImages.call(chapters(:one).id, max_body_bytes: 100)
+
+        assert_equal before, @rich_text.reload.read_attribute_before_type_cast(:body)
+      end
+    end
+
+    test 'call compresses an oversized body when the limit is disabled' do
+      with_compression_stub do
+        result = CompressInlineImages.call(chapters(:one).id, max_body_bytes: nil)
+
+        assert_equal 1, result.images_compressed
+      end
+    end
+
     private
 
     def with_compression_stub(&)

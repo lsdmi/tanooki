@@ -2,7 +2,7 @@
 
 module Chapters
   # Background repair for chapters with Word-pasted inline base64 images.
-  # Serialized: one job at a time on a dedicated queue so vips work cannot OOM the worker pool.
+  # Serialized to one job at a time so vips work cannot OOM the worker container.
   class CompressInlineImagesJob < ApplicationJob
     queue_as :compress
 
@@ -23,7 +23,7 @@ module Chapters
       Rails.logger.info(
         "[CompressInlineImagesJob] chapter=#{result.chapter_id} rich_text=#{result.rich_text_id} " \
         "compressed=#{result.images_compressed} bytes=#{result.before_bytes}->#{result.after_bytes} " \
-        "unchanged=#{result.unchanged}"
+        "unchanged=#{result.unchanged} skipped=#{result.skipped_reason || 'none'}"
       )
     end
   end

@@ -23,14 +23,13 @@ production:
       threads: 1
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
-    - queues: production_compress
-      threads: 1
-      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
-      polling_interval: 0.1
+    # Compress shares this worker: a third Rails process does not fit the worker container's memory.
+    # Serialization comes from CompressInlineImagesJob's concurrency cap, and it polls last.
     - queues:
         - production_default
         - production_searchkick
         - production_solid_queue_recurring
+        - production_compress
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
