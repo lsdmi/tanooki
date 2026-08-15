@@ -7,6 +7,7 @@ module SolidQueue
       Analytics::ViewIncrementJob
       Books::GenerateEpubJob
       Fictions::WarmIndexCacheJob
+      Searchkick::SyncSoftDeletableJob
       Searchkick::ReindexV2Job
       Fictions::RefreshDroppedStatusJob
       Youtube::SyncAllChannelsVideosJob
