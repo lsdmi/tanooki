@@ -10,8 +10,6 @@ module SolidQueue
       Searchkick::SyncSoftDeletableJob
       Searchkick::ReindexV2Job
       Fictions::RefreshDroppedStatusJob
-      Youtube::SyncAllChannelsVideosJob
-      Youtube::VideosJob
     ].freeze
 
     RETRY_WINDOW = 7.days

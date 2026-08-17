@@ -19,10 +19,6 @@ production:
     class: SolidQueue::TriageFailedJobsJob
     schedule: every hour at minute 45
 
-  youtube_sync_all_channels:
-    class: Youtube::SyncAllChannelsVideosJob
-    schedule: every day
-
   purge_expired_epub_exports:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: every day at 4:00am

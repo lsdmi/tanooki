@@ -230,7 +230,7 @@ html.adblock-likely .bookshelf-show__ad,
   display: none !important;
 }
 
-/* Scanlator show: ad-only left column must not leave an empty 1/3 grid when blocked.
+/* Scanlator show: ad-only left column is removed when blocked.
    Only collapse on adblock / explicit collapsed — not while waiting to measure (offsetParent). */
 html.adblock-likely .scanlator-show__sidebar-ad,
 .scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed) {
@@ -248,9 +248,13 @@ html.adblock-likely .scanlator-show__ad--full,
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* Hold the 2-of-3 column width (two tracks plus the gap between them) and centre it,
+     so losing the ad column shifts the fiction card instead of widening it. */
   html.adblock-likely .scanlator-show__grid--ad-sidebar .scanlator-show__fictions,
   .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) .scanlator-show__fictions {
     grid-column: 1 / -1;
+    width: calc((200% - 2rem) / 3);
+    justify-self: center;
   }
 }
 

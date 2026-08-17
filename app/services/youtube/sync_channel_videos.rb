@@ -3,27 +3,31 @@
 require 'google/apis/youtube_v3'
 
 module Youtube
-  # Imports the latest non-short videos from a YouTube channel into YoutubeVideo records.
-  class VideosJob < ApplicationJob
-    include YoutubeApiJob
-
-    queue_as :default
-
+  # Imports the latest non-short videos from one YouTube channel into YoutubeVideo records.
+  class SyncChannelVideos
     MAX_TAG_LENGTH = 255
 
-    def perform(channel_id)
+    def self.call(channel_id)
+      new(channel_id).call
+    end
+
+    def initialize(channel_id)
+      @channel_id = channel_id
+    end
+
+    def call
       youtube = initialize_youtube_service
-      video_ids = fetch_video_ids(youtube, channel_id)
-      ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, channel_id, video_ids) }
+      video_ids = fetch_video_ids(youtube)
+      ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, video_ids) }
     end
 
     private
 
-    def create_video(youtube, channel_id, video_id)
+    def create_video(youtube, video_id)
       video_data = video_data(youtube.list_videos('snippet', id: video_id))
 
       YoutubeVideo.create(
-        youtube_channel: YoutubeChannel.find_by(channel_id:),
+        youtube_channel: YoutubeChannel.find_by(channel_id: @channel_id),
         video_id:,
         title: video_data.title,
         description: video_data.description,
@@ -33,22 +37,26 @@ module Youtube
       )
     end
 
-    def create_videos_if_not_exists(youtube, channel_id, video_ids)
+    def create_videos_if_not_exists(youtube, video_ids)
       video_ids.each do |video_id|
         next if short_video?(youtube, video_id)
         next if YoutubeVideo.with_deleted.exists?(video_id:)
 
-        create_video(youtube, channel_id, video_id)
+        create_video(youtube, video_id)
       end
     end
 
-    def fetch_video_ids(youtube, channel_id)
-      response = youtube.list_playlist_items('snippet', playlist_id: uploads_playlist_id(channel_id), max_results: 5)
+    def fetch_video_ids(youtube)
+      response = youtube.list_playlist_items(
+        'snippet',
+        playlist_id: uploads_playlist_id,
+        max_results: 5
+      )
       response.items.filter_map { |item| item.snippet.resource_id.video_id }
     end
 
-    def uploads_playlist_id(channel_id)
-      channel_id.to_s.sub(/\AUC/, 'UU')
+    def uploads_playlist_id
+      @channel_id.to_s.sub(/\AUC/, 'UU')
     end
 
     def short_video?(youtube, video_id)
