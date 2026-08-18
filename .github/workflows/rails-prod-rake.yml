@@ -1,0 +1,74 @@
+name: Rails production rake
+
+# Shared runner for prod MySQL rake tasks (CI batch jobs). Callers pass secrets: inherit.
+on:
+  workflow_call:
+    inputs:
+      rake_task:
+        description: "Rake task to run (e.g. books:purge_expired_epub_exports)"
+        required: true
+        type: string
+      timeout_minutes:
+        description: "Job timeout in minutes"
+        required: false
+        type: number
+        default: 60
+      day:
+        description: "Optional DAY= for chapters:compress_recent"
+        required: false
+        type: string
+        default: ""
+      digest:
+        description: "Optional DIGEST= for telegram:digest"
+        required: false
+        type: string
+        default: ""
+      telegram_chat_id:
+        description: "Optional TELEGRAM_CHAT_ID= for telegram:digest"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  rake:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.9
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-libmysqlclient-dev libvips42
+
+      - name: Run ${{ inputs.rake_task }}
+        env:
+          RAILS_ENV: production
+          DAY: ${{ inputs.day }}
+          DIGEST: ${{ inputs.digest }}
+          TELEGRAM_CHAT_ID: ${{ inputs.telegram_chat_id }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          MAILER_PASSWORD: ${{ secrets.MAILER_PASSWORD }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          OPENSEARCH_URL: ${{ secrets.OPENSEARCH_URL }}
+          OPENSEARCH_PASSWORD: ${{ secrets.OPENSEARCH_PASSWORD }}
+          OPENSEARCH_CA_CERT: ${{ secrets.OPENSEARCH_CA_CERT }}
+          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
+          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
+        run: bundle exec rake ${{ inputs.rake_task }}

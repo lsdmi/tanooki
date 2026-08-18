@@ -13,38 +13,8 @@ permissions:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.4.9
-          bundler-cache: true
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y default-libmysqlclient-dev libvips42
-
-      - name: Sync YouTube channel videos
-        env:
-          RAILS_ENV: production
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-          MAILER_PASSWORD: ${{ secrets.MAILER_PASSWORD }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
-          OPENSEARCH_URL: ${{ secrets.OPENSEARCH_URL }}
-          OPENSEARCH_PASSWORD: ${{ secrets.OPENSEARCH_PASSWORD }}
-          OPENSEARCH_CA_CERT: ${{ secrets.OPENSEARCH_CA_CERT }}
-          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
-          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
-        run: bundle exec rake youtube:sync_all_channels
+    uses: ./.github/workflows/rails-prod-rake.yml
+    with:
+      rake_task: youtube:sync_all_channels
+      timeout_minutes: 60
+    secrets: inherit

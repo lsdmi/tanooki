@@ -33,22 +33,12 @@ permissions:
   contents: read
 
 jobs:
-  post:
+  prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    outputs:
+      digest: ${{ steps.digest.outputs.name }}
+      chat: ${{ steps.chat.outputs.id }}
     steps:
-      - uses: actions/checkout@v7
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.4.9
-          bundler-cache: true
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y default-libmysqlclient-dev libvips42
-
       - name: Resolve digest
         id: digest
         run: |
@@ -73,24 +63,12 @@ jobs:
             echo "id=@bakaInUa" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Post Telegram digest
-        env:
-          RAILS_ENV: production
-          DIGEST: ${{ steps.digest.outputs.name }}
-          TELEGRAM_CHAT_ID: ${{ steps.chat.outputs.id }}
-          TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-          MAILER_PASSWORD: ${{ secrets.MAILER_PASSWORD }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          OPENSEARCH_URL: ${{ secrets.OPENSEARCH_URL }}
-          OPENSEARCH_PASSWORD: ${{ secrets.OPENSEARCH_PASSWORD }}
-          OPENSEARCH_CA_CERT: ${{ secrets.OPENSEARCH_CA_CERT }}
-          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
-          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
-        run: bundle exec rake telegram:digest
+  post:
+    needs: prepare
+    uses: ./.github/workflows/rails-prod-rake.yml
+    with:
+      rake_task: telegram:digest
+      timeout_minutes: 30
+      digest: ${{ needs.prepare.outputs.digest }}
+      telegram_chat_id: ${{ needs.prepare.outputs.chat }}
+    secrets: inherit
