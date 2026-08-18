@@ -27,17 +27,30 @@ module Fictions
     test 'call reports empty tallies outside production' do
       result = RefreshDroppedStatus.call
 
-      assert_equal 0, result.checked
-      assert_equal 0, result.dropped
+      assert_equal 0, result.scanned_ongoing
+      assert_equal 0, result.dropped_ongoing
       assert_empty result.errors
     end
 
-    test 'call marks inactive unfinished fictions as dropped in production' do
+    test 'call marks inactive ongoing fictions as dropped in production' do
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         result = RefreshDroppedStatus.call
 
         assert_equal 'dropped', @fiction.reload.status
-        assert_operator result.dropped, :>=, 1
+        assert_operator result.dropped_ongoing, :>=, 1
+        assert_empty result.errors
+      end
+    end
+
+    test 'call drops stale never-started announced fictions in production' do
+      @fiction.update!(status: :announced, created_at: 100.days.ago)
+      @fiction.chapters.destroy_all
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+        result = RefreshDroppedStatus.call
+
+        assert_equal 'dropped', @fiction.reload.status
+        assert_operator result.dropped_announced, :>=, 1
         assert_empty result.errors
       end
     end
@@ -49,6 +62,17 @@ module Fictions
         assert_no_changes -> { @fiction.reload.status } do
           RefreshDroppedStatus.call
         end
+      end
+    end
+
+    test 'call reports catalog totals after the pass' do
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+        result = RefreshDroppedStatus.call
+
+        assert_equal(
+          [Fiction.ongoing.count, Fiction.announced.count, Fiction.dropped.count, Fiction.finished.count],
+          [result.total_ongoing, result.total_announced, result.total_dropped, result.total_finished]
+        )
       end
     end
   end

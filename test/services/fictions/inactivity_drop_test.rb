@@ -56,15 +56,42 @@ module Fictions
       create_chapter(created_at: 100.days.ago, number: 1)
       InactivityDrop.new(@fiction).call
 
-      assert_equal 'dropped', @fiction.reload.status # dropped
+      assert_equal 'dropped', @fiction.reload.status
     end
 
-    test 'does nothing if fiction has no chapters' do
+    test 'does nothing if ongoing fiction has no chapters' do
       @fiction.update!(status: :ongoing)
       @fiction.chapters.destroy_all
       assert_no_changes -> { @fiction.reload.status } do
         InactivityDrop.new(@fiction).call
       end
+    end
+
+    test 'does nothing if announced fiction has chapters' do
+      @fiction.update!(status: :announced)
+      @fiction.chapters.destroy_all
+      create_chapter(created_at: 100.days.ago, number: 1)
+
+      assert_no_changes -> { @fiction.reload.status } do
+        InactivityDrop.new(@fiction).call
+      end
+    end
+
+    test 'does nothing if announced fiction was created recently' do
+      @fiction.update!(status: :announced, created_at: 1.day.ago)
+      @fiction.chapters.destroy_all
+
+      assert_no_changes -> { @fiction.reload.status } do
+        InactivityDrop.new(@fiction).call
+      end
+    end
+
+    test 'drops announced fiction with no chapters created more than 90 days ago' do
+      @fiction.update!(status: :announced, created_at: 100.days.ago)
+      @fiction.chapters.destroy_all
+      InactivityDrop.new(@fiction).call
+
+      assert_equal 'dropped', @fiction.reload.status
     end
   end
 end
