@@ -8,7 +8,7 @@ module Fictions
     end
 
     def call
-      return if @fiction.finished?
+      return if @fiction.finished? || @fiction.dropped?
 
       last_chapter_time = @fiction.chapters.maximum(Arel.sql('COALESCE(published_at, created_at)'))
       return if last_chapter_time.nil? || (Time.current - last_chapter_time) < 90.days

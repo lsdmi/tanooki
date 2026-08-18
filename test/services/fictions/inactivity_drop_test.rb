@@ -30,6 +30,18 @@ module Fictions
       end
     end
 
+    test 'does not save fictions that are already dropped' do
+      @fiction.update!(status: :dropped)
+      @fiction.chapters.destroy_all
+      create_chapter(created_at: 100.days.ago, number: 1)
+
+      @fiction.stub(:update!, ->(*) { flunk 'must not re-save an already-dropped fiction' }) do
+        InactivityDrop.new(@fiction).call
+      end
+
+      assert_equal 'dropped', @fiction.reload.status
+    end
+
     test 'does nothing if last chapter is recent' do
       @fiction.update!(status: :ongoing)
       create_chapter(created_at: 1.day.ago, number: 1)
