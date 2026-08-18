@@ -23,18 +23,6 @@ production:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: every day at 4:00am
 
-  weekly_stats_telegram:
-    class: WeeklyStatsTelegramJob
-    schedule: every wednesday at 3:00pm
-
-  fictions_telegram:
-    class: FictionsTelegramJob
-    schedule: every thursday at 2:00pm
-
-  publications_telegram:
-    class: PublicationsTelegramJob
-    schedule: every friday at 3:00pm
-
   fictions_refresh_dropped_status:
     class: Fictions::RefreshDroppedStatusJob
     schedule: every sunday at 12:00pm
@@ -46,7 +34,3 @@ production:
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
     schedule: every sunday at 5:00am
-
-  youtube_telegram:
-    class: Youtube::TelegramJob
-    schedule: every sunday at 12:00pm

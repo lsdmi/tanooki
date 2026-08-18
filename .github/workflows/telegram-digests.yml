@@ -1,0 +1,96 @@
+name: Telegram digests
+
+# Weekly @bakaInUa posts. Runs on GitHub Actions (not the DO job worker).
+# Schedules use summer Kyiv offset (EEST, UTC+3); winter is +1h UTC.
+on:
+  schedule:
+    # Sunday 12:00 Europe/Kyiv → youtube
+    - cron: "0 9 * * 0"
+    # Wednesday 15:00 Europe/Kyiv → weekly_stats
+    - cron: "0 12 * * 3"
+    # Thursday 14:00 Europe/Kyiv → fictions
+    - cron: "0 11 * * 4"
+    # Friday 15:00 Europe/Kyiv → publications
+    - cron: "0 12 * * 5"
+  workflow_dispatch:
+    inputs:
+      digest:
+        description: "Which digest to post"
+        required: true
+        type: choice
+        options:
+          - youtube
+          - weekly_stats
+          - fictions
+          - publications
+      test_channel:
+        description: "Post to @bakaTgTest instead of @bakaInUa"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.9
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-libmysqlclient-dev libvips42
+
+      - name: Resolve digest
+        id: digest
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "name=${{ inputs.digest }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          case "${{ github.event.schedule }}" in
+            "0 9 * * 0")  echo "name=youtube" >> "$GITHUB_OUTPUT" ;;
+            "0 12 * * 3") echo "name=weekly_stats" >> "$GITHUB_OUTPUT" ;;
+            "0 11 * * 4") echo "name=fictions" >> "$GITHUB_OUTPUT" ;;
+            "0 12 * * 5") echo "name=publications" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Unknown schedule: ${{ github.event.schedule }}" >&2; exit 1 ;;
+          esac
+
+      - name: Resolve chat
+        id: chat
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.test_channel }}" = "true" ]; then
+            echo "id=@bakaTgTest" >> "$GITHUB_OUTPUT"
+          else
+            echo "id=@bakaInUa" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post Telegram digest
+        env:
+          RAILS_ENV: production
+          DIGEST: ${{ steps.digest.outputs.name }}
+          TELEGRAM_CHAT_ID: ${{ steps.chat.outputs.id }}
+          TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          MAILER_PASSWORD: ${{ secrets.MAILER_PASSWORD }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          OPENSEARCH_URL: ${{ secrets.OPENSEARCH_URL }}
+          OPENSEARCH_PASSWORD: ${{ secrets.OPENSEARCH_PASSWORD }}
+          OPENSEARCH_CA_CERT: ${{ secrets.OPENSEARCH_CA_CERT }}
+          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
+          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
+        run: bundle exec rake telegram:digest

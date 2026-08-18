@@ -1,37 +1,16 @@
 # frozen_string_literal: true
 
-module Youtube
-  # Production digest: top videos of the week posted to the @bakaInUa Telegram channel.
-  class TelegramJob < ApplicationJob
-    include TelegramApiJob
+module TelegramDigests
+  # Weekly CI digest: top YouTube videos of the week → @bakaInUa.
+  class YoutubeVideos
+    def self.call
+      new.call
+    end
 
-    queue_as :default
-
-    def perform
+    def call
       return unless Rails.env.production?
 
-      send_telegram_message
-    end
-
-    private
-
-    def index_path
-      Rails.application.routes.url_helpers.youtube_videos_url(host: ApplicationHelper::PRODUCTION_URL)
-    end
-
-    def medal_icon(index)
-      case index
-      when 0
-        '🥇'
-      when 1
-        '🥈'
-      when 2
-        '🥉'
-      end
-    end
-
-    def send_telegram_message
-      TelegramBot.client.api.send_message(chat_id: '@bakaInUa', text: text_message, parse_mode: 'HTML')
+      Sender.call(text_message)
     end
 
     def text_message
@@ -43,6 +22,20 @@ module Youtube
         "🎬 <i>Насолоджуйтеся світом японської анімації на нашому сайті!</i> 🎬 \n\n " \
         '<i><b>#щотижневий_ютуб</b></i>'
       )
+    end
+
+    private
+
+    def index_path
+      Rails.application.routes.url_helpers.youtube_videos_url(host: ApplicationHelper::PRODUCTION_URL)
+    end
+
+    def medal_icon(index)
+      case index
+      when 0 then '🥇'
+      when 1 then '🥈'
+      when 2 then '🥉'
+      end
     end
 
     def top_three
