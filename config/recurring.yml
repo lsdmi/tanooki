@@ -19,10 +19,6 @@ production:
     class: SolidQueue::TriageFailedJobsJob
     schedule: every hour at minute 45
 
-  purge_expired_epub_exports:
-    class: Books::PurgeExpiredEpubExportsJob
-    schedule: every day at 4:00am
-
   warm_fiction_index_cache:
     class: Fictions::WarmIndexCacheJob
     schedule: every hour at minute 5
