@@ -23,10 +23,6 @@ production:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: every day at 4:00am
 
-  fictions_refresh_dropped_status:
-    class: Fictions::RefreshDroppedStatusJob
-    schedule: every sunday at 12:00pm
-
   warm_fiction_index_cache:
     class: Fictions::WarmIndexCacheJob
     schedule: every hour at minute 5

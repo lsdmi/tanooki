@@ -9,7 +9,6 @@ module SolidQueue
       Fictions::WarmIndexCacheJob
       Searchkick::SyncSoftDeletableJob
       Searchkick::ReindexV2Job
-      Fictions::RefreshDroppedStatusJob
     ].freeze
 
     RETRY_WINDOW = 7.days

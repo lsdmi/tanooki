@@ -3,7 +3,7 @@
 require 'test_helper'
 
 module Fictions
-  class RefreshDroppedStatusJobTest < ActiveSupport::TestCase
+  class RefreshDroppedStatusTest < ActiveSupport::TestCase
     setup do
       @fiction = fictions(:one)
       @fiction.update!(status: :ongoing)
@@ -18,26 +18,36 @@ module Fictions
       )
     end
 
-    test 'perform is a no-op outside production' do
+    test 'call is a no-op outside production' do
       assert_no_changes -> { @fiction.reload.status } do
-        RefreshDroppedStatusJob.new.perform
+        RefreshDroppedStatus.call
       end
     end
 
-    test 'perform marks inactive unfinished fictions as dropped in production' do
+    test 'call reports empty tallies outside production' do
+      result = RefreshDroppedStatus.call
+
+      assert_equal 0, result.checked
+      assert_equal 0, result.dropped
+      assert_empty result.errors
+    end
+
+    test 'call marks inactive unfinished fictions as dropped in production' do
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        RefreshDroppedStatusJob.new.perform
-      end
+        result = RefreshDroppedStatus.call
 
-      assert_equal 'dropped', @fiction.reload.status
+        assert_equal 'dropped', @fiction.reload.status
+        assert_operator result.dropped, :>=, 1
+        assert_empty result.errors
+      end
     end
 
-    test 'perform skips finished fictions in production' do
+    test 'call skips finished fictions in production' do
       @fiction.update!(status: :finished)
 
       Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
         assert_no_changes -> { @fiction.reload.status } do
-          RefreshDroppedStatusJob.new.perform
+          RefreshDroppedStatus.call
         end
       end
     end
