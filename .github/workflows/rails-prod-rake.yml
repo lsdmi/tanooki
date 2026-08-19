@@ -28,6 +28,11 @@ on:
         required: false
         type: string
         default: ""
+      chapter_id:
+        description: "Optional CHAPTER_ID= for chapters:compress_inline_images"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -55,6 +60,7 @@ jobs:
           DAY: ${{ inputs.day }}
           DIGEST: ${{ inputs.digest }}
           TELEGRAM_CHAT_ID: ${{ inputs.telegram_chat_id }}
+          CHAPTER_ID: ${{ inputs.chapter_id }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
           DB_HOST: ${{ secrets.DB_HOST }}

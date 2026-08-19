@@ -1,0 +1,113 @@
+name: Ops rake (manual)
+
+# Allowlisted production rake tasks via Actions UI. Prefer dedicated workflows for
+# scheduled jobs; use this for one-off operator runs.
+on:
+  workflow_dispatch:
+    inputs:
+      rake_task:
+        description: "Rake task to run"
+        required: true
+        type: choice
+        options:
+          - books:purge_expired_epub_exports
+          - chapters:compress_recent
+          - chapters:compress_inline_images
+          - fictions:refresh_dropped_status
+          - fictions:warm_index_cache
+          - solid_queue:clear_finished
+          - solid_queue:triage
+          - youtube:sync_all_channels
+          - telegram:digest
+      day:
+        description: "Optional DAY= for chapters:compress_recent (YYYY-MM-DD)"
+        required: false
+        type: string
+      chapter_id:
+        description: "Required CHAPTER_ID= for chapters:compress_inline_images"
+        required: false
+        type: string
+      digest:
+        description: "DIGEST= for telegram:digest (ignore for other tasks)"
+        required: false
+        type: choice
+        options:
+          - none
+          - youtube
+          - weekly_stats
+          - fictions
+          - publications
+        default: none
+      telegram_chat_id:
+        description: "TELEGRAM_CHAT_ID for telegram:digest (default @bakaTgTest)"
+        required: false
+        type: string
+        default: "@bakaTgTest"
+      timeout_minutes:
+        description: "Job timeout in minutes"
+        required: false
+        type: number
+        default: 60
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.resolve.outputs.digest }}
+      telegram_chat_id: ${{ steps.resolve.outputs.telegram_chat_id }}
+    steps:
+      - name: Check required inputs
+        id: resolve
+        env:
+          RAKE_TASK: ${{ inputs.rake_task }}
+          CHAPTER_ID: ${{ inputs.chapter_id }}
+          DIGEST: ${{ inputs.digest }}
+          TELEGRAM_CHAT_ID: ${{ inputs.telegram_chat_id }}
+        run: |
+          set -eu
+          digest="$DIGEST"
+          if [ "$digest" = "none" ]; then
+            digest=""
+          fi
+
+          case "$RAKE_TASK" in
+            chapters:compress_inline_images)
+              if [ -z "$CHAPTER_ID" ]; then
+                echo "chapter_id is required for chapters:compress_inline_images" >&2
+                exit 1
+              fi
+              ;;
+            telegram:digest)
+              if [ -z "$digest" ]; then
+                echo "digest is required for telegram:digest" >&2
+                exit 1
+              fi
+              ;;
+          esac
+
+          chat="$TELEGRAM_CHAT_ID"
+          if [ "$RAKE_TASK" = "telegram:digest" ] && [ -z "$chat" ]; then
+            chat="@bakaTgTest"
+          fi
+          if [ "$RAKE_TASK" != "telegram:digest" ]; then
+            chat=""
+            digest=""
+          fi
+
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+          echo "telegram_chat_id=$chat" >> "$GITHUB_OUTPUT"
+
+  rake:
+    needs: validate
+    uses: ./.github/workflows/rails-prod-rake.yml
+    with:
+      rake_task: ${{ inputs.rake_task }}
+      timeout_minutes: ${{ fromJSON(inputs.timeout_minutes) }}
+      day: ${{ inputs.day }}
+      chapter_id: ${{ inputs.chapter_id }}
+      digest: ${{ needs.validate.outputs.digest }}
+      telegram_chat_id: ${{ needs.validate.outputs.telegram_chat_id }}
+    secrets: inherit

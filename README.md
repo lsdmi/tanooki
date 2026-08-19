@@ -1,5 +1,7 @@
 # Tanooki
 
+[![CI](https://github.com/lsdmi/tanooki/actions/workflows/ci.yml/badge.svg)](https://github.com/lsdmi/tanooki/actions/workflows/ci.yml)
+
 Українська платформа для читання ранобе.
 
 ## Функції

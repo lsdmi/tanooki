@@ -1,11 +1,11 @@
 name: Clear finished Solid Queue jobs
 
-# Hourly pass: delete finished Solid Queue job rows in batches.
+# Every 2 hours: delete finished Solid Queue job rows in batches.
 # Runs on GitHub Actions (not the DO job worker).
 on:
   schedule:
-    # Every hour at :12 Europe/Kyiv (whole-hour offset → same UTC minute).
-    - cron: "12 * * * *"
+    # Every 2 hours at :12 Europe/Kyiv (whole-hour offset → same UTC minute).
+    - cron: "12 */2 * * *"
   workflow_dispatch:
 
 permissions:

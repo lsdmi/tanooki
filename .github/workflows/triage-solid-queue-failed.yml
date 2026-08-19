@@ -1,11 +1,11 @@
 name: Triage failed Solid Queue jobs
 
-# Hourly pass: fail stale EPUB exports, retry safe recent failures, purge old failed rows.
+# Every 2 hours: fail stale EPUB exports, retry safe recent failures, purge old failed rows.
 # Runs on GitHub Actions (not the DO job worker). Retries re-enqueue onto DO Solid Queue.
 on:
   schedule:
-    # Every hour at :45 Europe/Kyiv (whole-hour offset → same UTC minute).
-    - cron: "45 * * * *"
+    # Every 2 hours at :45 Europe/Kyiv (whole-hour offset → same UTC minute).
+    - cron: "45 */2 * * *"
   workflow_dispatch:
 
 permissions:
