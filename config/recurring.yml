@@ -1,28 +1,9 @@
 # Solid Queue recurring tasks (app time zone: Europe/Kiev).
-# Development keeps side-effect-free tasks only; production schedules external integrations.
+# Production-only schedules; development runs none.
 
-development:
-  clear_solid_queue_finished_jobs:
-    command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
-    schedule: every hour at minute 12
-
-  warm_fiction_index_cache:
-    class: Fictions::WarmIndexCacheJob
-    schedule: every hour at minute 5
+development: {}
 
 production:
-  clear_solid_queue_finished_jobs:
-    command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
-    schedule: every hour at minute 12
-
-  triage_failed_solid_queue_jobs:
-    class: SolidQueue::TriageFailedJobsJob
-    schedule: every hour at minute 45
-
-  warm_fiction_index_cache:
-    class: Fictions::WarmIndexCacheJob
-    schedule: every hour at minute 5
-
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
     schedule: every sunday at 5:00am

@@ -1,0 +1,20 @@
+name: Clear finished Solid Queue jobs
+
+# Hourly pass: delete finished Solid Queue job rows in batches.
+# Runs on GitHub Actions (not the DO job worker).
+on:
+  schedule:
+    # Every hour at :12 Europe/Kyiv (whole-hour offset → same UTC minute).
+    - cron: "12 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clear:
+    uses: ./.github/workflows/rails-prod-rake.yml
+    with:
+      rake_task: solid_queue:clear_finished
+      timeout_minutes: 30
+    secrets: inherit
