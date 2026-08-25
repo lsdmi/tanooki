@@ -1,9 +1,11 @@
 name: CI
 
 on:
+  # PRs get CI from pull_request. Push only on main so a PR SHA does not
+  # report the same jobs twice (which makes required checks noisy).
   push:
     branches:
-      - '*'
+      - main
   pull_request:
 
 permissions:

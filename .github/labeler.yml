@@ -1,0 +1,49 @@
+# Path-based PR labels. Size labels are applied separately in label-prs.yml.
+# Do not enable sync-labels on the action — it would strip size/* labels.
+
+jobs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/jobs/**
+          - test/jobs/**
+          - lib/tasks/**
+          - .github/workflows/compress-chapters.yml
+          - .github/workflows/clear-solid-queue-finished.yml
+          - .github/workflows/warm-fiction-index-cache.yml
+          - .github/workflows/triage-solid-queue-failed.yml
+          - .github/workflows/purge-expired-epub-exports.yml
+          - .github/workflows/rails-prod-rake.yml
+          - .github/workflows/refresh-dropped-fictions.yml
+          - .github/workflows/sync-youtube-videos.yml
+          - .github/workflows/telegram-digests.yml
+          - .github/workflows/ops-rake.yml
+
+ads:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*adsense*'
+          - '**/*ad_drawer*'
+          - '**/*adblock*'
+          - app/helpers/adsense/**
+          - app/javascript/adsense_turbo.js
+          - app/javascript/cookie_consent.js
+          - app/services/reading/ad_drawer_session.rb
+          - app/views/shared/_cookie_consent_banner.html.erb
+
+reader:
+  - changed-files:
+      - any-glob-to-any-file:
+          - app/controllers/chapters_controller.rb
+          - app/controllers/readings_controller.rb
+          - app/helpers/chapters/**
+          - app/javascript/reader_preferences.js
+          - app/javascript/controllers/reader_*.js
+          - app/services/chapters/**
+          - app/services/reading/**
+          - app/services/reading_history/**
+          - app/views/chapters/**
+          - test/controllers/chapters*
+          - test/helpers/chapters/**
+          - test/services/chapters/**
+          - test/services/reading/**
+          - test/services/reading_history/**

@@ -1,0 +1,97 @@
+name: Label PRs
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: label-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  area:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/labeler@v7
+        with:
+          # Keep false: true would remove size/* labels that are not in labeler.yml
+          sync-labels: false
+
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: CodelyTV/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: size/xs
+          xs_max_size: "20"
+          s_label: size/s
+          s_max_size: "100"
+          m_label: size/m
+          m_max_size: "300"
+          l_label: size/l
+          l_max_size: "600"
+          xl_label: size/xl
+          fail_if_xl: "false"
+          files_to_ignore: |
+            "Gemfile.lock"
+            "db/schema.rb"
+            "app/assets/builds/**"
+            "coverage/**"
+
+  # Large PRs (size/l or size/xl) open as draft. Mark Ready for review when
+  # the change is one theme. Do not convert back after ready_for_review.
+  draft-large:
+    needs: size
+    if: github.event.action == 'opened' || github.event.action == 'reopened'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number
+            })
+            const big = labels.some((label) => label.name === 'size/l' || label.name === 'size/xl')
+            if (!big) {
+              return
+            }
+
+            const marker = '<!-- tanooki-draft-habit -->'
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number
+            })
+            const alreadyNoted = comments.some((comment) => comment.body?.includes(marker))
+            if (!alreadyNoted) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `${marker}
+            This PR is large (\`size/l\` or \`size/xl\`). Keep it as a **draft** until the change is one theme and you are ready for review.
+
+            Then click **Ready for review** — that is the review signal, not opening the PR.`
+              })
+            }
+
+            if (!pr.draft) {
+              await github.graphql(
+                `mutation($id: ID!) {
+                  convertPullRequestToDraft(input: { pullRequestId: $id }) {
+                    clientMutationId
+                  }
+                }`,
+                { id: pr.node_id }
+              )
+            }
