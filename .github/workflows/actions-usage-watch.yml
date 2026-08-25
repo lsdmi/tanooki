@@ -1,0 +1,117 @@
+name: Actions usage watch
+
+# Weekly billable-minutes estimate (ubuntu jobs ≈ 1×). Ops signal only — not a merge gate.
+on:
+  schedule:
+    # Monday 09:00 Europe/Kyiv (EEST → UTC+3)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v8
+        id: usage
+        with:
+          script: |
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const now = Date.now()
+            const day = 24 * 60 * 60 * 1000
+
+            const ranges = [
+              { label: '7d', days: 7 },
+              { label: '30d', days: 30 }
+            ]
+
+            function jobMinutes(job) {
+              if (!job.started_at || !job.completed_at) return 0
+              const ms = new Date(job.completed_at) - new Date(job.started_at)
+              return Math.max(0, Math.ceil(ms / 60000))
+            }
+
+            async function runsSince(days) {
+              const created = `${new Date(now - days * day).toISOString().slice(0, 10)}..${new Date(now).toISOString().slice(0, 10)}`
+              const runs = []
+              for (let page = 1; page <= 20; page++) {
+                const { data } = await github.rest.actions.listWorkflowRunsForRepo({
+                  owner,
+                  repo,
+                  per_page: 100,
+                  page,
+                  created,
+                  status: 'completed'
+                })
+                runs.push(...data.workflow_runs)
+                if (data.workflow_runs.length < 100) break
+              }
+              return runs
+            }
+
+            async function billableMinutesForRun(runId) {
+              const { data } = await github.rest.actions.listJobsForWorkflowRun({
+                owner,
+                repo,
+                run_id: runId
+              })
+              return data.jobs.reduce((sum, job) => sum + jobMinutes(job), 0)
+            }
+
+            const report = {}
+            for (const { label, days } of ranges) {
+              const runs = await runsSince(days)
+              const byWorkflow = {}
+              let total = 0
+              for (const run of runs) {
+                const mins = await billableMinutesForRun(run.id)
+                total += mins
+                const name = run.name || run.path || 'unknown'
+                byWorkflow[name] = (byWorkflow[name] || 0) + mins
+              }
+              report[label] = {
+                runs: runs.length,
+                minutes: total,
+                byWorkflow: Object.entries(byWorkflow)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 8)
+              }
+            }
+
+            const monthlyQuota = 2000 // private repo free tier (linux ≈ 1×)
+            const warnAt = 1500
+            const m30 = report['30d'].minutes
+            const lines = [
+              `Actions usage — ${owner}/${repo}`,
+              `Last 7d: ${report['7d'].minutes} min (${report['7d'].runs} completed runs)`,
+              `Last 30d: ${m30} min (${report['30d'].runs} completed runs) — ~${monthlyQuota} min/mo free tier`,
+              '',
+              'Top workflows (30d):'
+            ]
+            for (const [name, mins] of report['30d'].byWorkflow) {
+              lines.push(`• ${name}: ${mins} min`)
+            }
+            if (m30 >= warnAt) {
+              lines.push('', `⚠️ Over ${warnAt} min in 30d — check Settings → Billing → Plans and usage`)
+            }
+
+            core.setOutput('text', lines.join('\n'))
+            core.setOutput('minutes_30d', String(m30))
+            core.setOutput('warn', m30 >= warnAt ? 'true' : 'false')
+
+            await core.summary.addHeading('Actions usage (billable estimate)').addRaw(lines.join('\n')).write()
+
+      - name: Notify Telegram (ops)
+        if: steps.usage.outputs.warn == 'true'
+        env:
+          TELEGRAM_KEY: ${{ secrets.TELEGRAM_KEY }}
+          REPORT: ${{ steps.usage.outputs.text }}
+        run: |
+          curl -fsS -X POST "https://api.telegram.org/bot${TELEGRAM_KEY}/sendMessage" \
+            -d chat_id="@bakaTgTest" \
+            --data-urlencode "text=${REPORT}" \
+            -d disable_web_page_preview=true
