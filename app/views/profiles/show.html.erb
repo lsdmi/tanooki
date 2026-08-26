@@ -16,6 +16,12 @@
         </div>
       </div>
 
+      <div class="profile-show__ad flex w-full flex-col">
+        <%= render "shared/adsense_slot",
+                   placement: :profile,
+                   navigation_key: params[:id] %>
+      </div>
+
       <!-- My Blogs -->
       <% if @recent_publications.any? %>
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
