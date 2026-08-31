@@ -93,6 +93,23 @@ docs/                # Архітектура та modernization spike
 - `config/credentials.yml.enc` — секрети
 - `.env` — локально; production — App Platform env vars
 
+## Tombstone user (prod)
+
+Do not `destroy` the `User` row. Anonymize in place so comments, chapters, ratings, and other FKs stay valid, and so Google OAuth cannot match the old Gmail.
+
+Pattern (same for every account):
+
+- name: `deleted-<id>`
+- email: `deleted-<id>@deleted.invalid`
+- password: random (not stored in git or logs)
+
+Local operator script (`bin/prod/tombstone-user`, gitignored):
+
+```bash
+bin/prod/tombstone-user USER_ID           # report associations, write nothing
+APPLY=1 bin/prod/tombstone-user USER_ID   # apply
+```
+
 ## Ліцензія
 
 Приватний проект.

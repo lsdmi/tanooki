@@ -27,7 +27,7 @@
         <% if card[:genres].present? %>
           <p class="mt-1 line-clamp-1 text-[10px] font-normal text-stone-600 dark:text-slate-400 lg:text-xs">
             <% card[:genres].each_with_index do |genre, index| %>
-              <% if index.positive? %><span aria-hidden="true"> </span><% end %>
+              <% if index.positive? %><span class="mx-0.5 text-stone-400 dark:text-slate-500" aria-hidden="true">•</span><% end %>
               <%= link_to genre[:name],
                           fiction_genre_fictions_path(genre[:slug]),
                           turbo_drive_visit_data.merge(class: 'transition-colors hover:text-cyan-700 hover:underline dark:hover:text-rose-400') %>
