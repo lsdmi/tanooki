@@ -1,4 +1,6 @@
-<%# locals: (path:, link_class: nil) %>
+<%# locals: (path:, link_class: nil, label: nil) %>
+<%# Keep the default out of the strict-locals signature: non-ASCII defaults there are compiled as binary and render as mojibake. %>
+<% label ||= 'Більше' %>
 <%= link_to path,
             class: [
               'inline-flex shrink-0 items-center justify-center rounded-md p-2 -my-2 -mr-2',
@@ -6,7 +8,7 @@
               'text-md font-medium leading-snug transition duration-300 hover:underline',
               link_class
             ].compact.join(' ') do %>
-  <span class="hidden text-sm sm:inline lg:text-base">Більше</span>
+  <span class="hidden text-sm sm:inline lg:text-base"><%= label %></span>
   <svg class="h-6 w-6 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6"
        xmlns="http://www.w3.org/2000/svg"
        fill="none"

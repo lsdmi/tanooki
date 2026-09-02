@@ -30,8 +30,8 @@ module Fictions
 
       def latest_updates
         load_fictions_by_cached_ids(
-          cached_latest_updates_ids.first(IndexVariablesManager::LATEST_UPDATES_INDEX_LIMIT),
-          includes: %i[cover_attachment genres]
+          cached_latest_updates_ids.first(IndexVariablesManager::LATEST_UPDATES_INDEX_CARDS),
+          includes: %i[cover_attachment]
         )
       end
 
@@ -82,7 +82,7 @@ module Fictions
           .merge(Chapter.released)
           .group('fictions.id')
           .order(Arel.sql("MAX(#{Chapter::PUBLIC_TIME_SQL}) DESC"))
-          .limit(IndexVariablesManager::LATEST_UPDATES_INDEX_LIMIT)
+          .limit(IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT)
       end
 
       def cached_latest_updates_ids

@@ -13,12 +13,11 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
     assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_fiction_details_frame_html)
   end
 
-  test 'fictions index hot updates escape turbo frame for fiction show' do
+  test 'fictions index new releases escape turbo frame for fiction show' do
     get fictions_url
 
     assert_response :success
-    assert_select 'turbo-frame#fiction_details a[data-turbo-frame="_top"][href*="/fictions/"]'
-    assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_hot_updates_html)
+    assert_select '[aria-label="Нові Релізи"] a[data-turbo-frame="_top"][href*="/fictions/"]', minimum: 1
   end
 
   test 'fiction show details browse links use Turbo Drive' do
@@ -47,10 +46,6 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
 
   def extract_fiction_details_frame_html
     response.body[%r{turbo-frame[^>]*id="fiction_details_frame"[^>]*>.*?</turbo-frame>}m] || ''
-  end
-
-  def extract_hot_updates_html
-    response.body[%r{turbo-frame[^>]*id="fiction_details"[^>]*>.*?</turbo-frame>}m] || ''
   end
 
   def extract_fiction_details_section_html

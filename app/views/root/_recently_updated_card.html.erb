@@ -1,8 +1,10 @@
-<%# locals: fiction:, chapter: %>
+<%# locals: fiction:, chapter:, cover_class:, gap_class: %>
+<% cover_class = local_assigns.fetch(:cover_class, 'w-16 sm:w-[4.5rem] lg:w-[5.25rem]') %>
+<% gap_class = local_assigns.fetch(:gap_class, 'gap-3') %>
 <% text_link_class = 'rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900' %>
-<article class="flex gap-3">
+<article class="flex <%= gap_class %>">
   <%= link_to chapter_path(chapter),
-              turbo_drive_visit_data.merge(class: 'group/cover aspect-[3/4] w-16 shrink-0 overflow-hidden rounded-lg bg-stone-200 shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:bg-slate-800 dark:focus-visible:ring-violet-400 sm:w-[4.5rem] lg:w-[5.25rem]') do %>
+              turbo_drive_visit_data.merge(class: "group/cover aspect-[3/4] #{cover_class} shrink-0 overflow-hidden rounded-lg bg-stone-200 shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:bg-slate-800 dark:focus-visible:ring-violet-400") do %>
     <%= cover_card_picture_tag(fiction.cover,
                   alt: fiction.title,
                   class: 'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-[1.03]',

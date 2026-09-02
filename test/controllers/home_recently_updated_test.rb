@@ -11,6 +11,13 @@ class HomeRecentlyUpdatedTest < ActionDispatch::IntegrationTest
     assert_select '[aria-label="Нові Релізи"] a[href*="chapters"]', minimum: 1
   end
 
+  test 'section more link renders its default label as readable utf-8' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_match 'Більше', response.body
+    assert_no_match(/\uFFFD/, response.body)
+  end
+
   test 'recently updated section uses mobile column slider layout' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 

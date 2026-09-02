@@ -58,7 +58,7 @@ module Fictions
     test 'latest_updates_for_homepage loads only eight cached ids' do
       with_memory_cache do
         ids = (1..12).to_a
-        Rails.cache.write('latest_updates_ids', ids, expires_in: 30.minutes)
+        Rails.cache.write('latest_updates_ids', ids, expires_in: IndexVariablesManager::LATEST_UPDATES_CACHE_EXPIRY)
         loaded_ids = nil
 
         IndexVariablesManager.stub(:load_fictions_by_cached_ids, lambda { |cached_ids, **|

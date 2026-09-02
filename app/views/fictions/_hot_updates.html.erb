@@ -1,33 +1,40 @@
-<div data-controller="fiction-picker" class="mb-8">
-  <div class="flex flex-row justify-between items-start lg:items-center mb-2">
-    <h2 class="text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Нові Релізи</h2>
-    <%= link_to calendar_fictions_path, class: "inline-flex text-sm lg:text-base text-stone-700 dark:text-gray-300 hover:text-cyan-700 hover:underline dark:hover:text-rose-700" do %>
-      Календар
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-      </svg>
+<%# locals: fictions:, latest_chapters_by_fiction: %>
+<% cards = recently_updated_cards(fictions, latest_chapters_by_fiction) %>
+<% card_options = { cover_class: 'w-[68px] lg:w-[92px]', gap_class: 'gap-3 lg:gap-4' } %>
+
+<section aria-labelledby="fictions-index-new-releases">
+  <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
+    <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
+    <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
+      <h2 id="fictions-index-new-releases" class="text-xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100 lg:text-2xl">
+        Нові Релізи
+      </h2>
+      <%= render 'root/section_more_link',
+                 path: calendar_fictions_path,
+                 label: 'Календар',
+                 link_class: 'text-cyan-700 dark:text-rose-400' %>
+    </div>
+  </header>
+
+  <%# Below sm the rows collapse into one snap column per swipe; -mr-6 clears the page gutter so the next column peeks. %>
+  <div
+    class="-mr-6 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] sm:hidden"
+    role="group"
+    aria-label="Нові Релізи">
+    <% cards.each_slice(3) do |column_cards| %>
+      <div class="flex w-[78%] shrink-0 snap-start flex-col gap-3">
+        <% column_cards.each do |card| %>
+          <%= render 'root/recently_updated_card', **card_options, fiction: card[:fiction], chapter: card[:chapter] %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 
-  <div class="p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-cyan-700 dark:border-rose-700">
-    <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-2 -mx-2 px-2">
-      <% fictions.each_with_index do |fiction, index| %>
-        <div class="relative transition duration-300 transform hover:scale-105 cursor-pointer flex-shrink-0 w-14 h-20 sm:w-16 sm:h-24">
-          <%= image_tag cover_thumbnail_url(fiction.cover),
-              alt: fiction.cover.blob.filename.to_s,
-              class: "w-full h-full object-cover rounded-lg shadow-sm #{index == 0 ? 'ring-2 ring-cyan-800 dark:ring-rose-800' : ''}",
-              data: {
-                action: "click->fiction-picker#selectFiction",
-                fiction_picker_target: "image",
-                fiction_picker_id_param: fiction.id
-              } %>
-        </div>
-      <% end %>
-    </div>
-    <%= turbo_frame_tag "fiction_details" do %>
-      <% if fictions.any? %>
-        <%= render "fiction_details", fiction: fictions.first, eager_cover: true %>
-      <% end %>
+  <ul class="hidden list-none gap-3 sm:grid sm:grid-cols-2 lg:gap-4" aria-label="Нові Релізи">
+    <% cards.each do |card| %>
+      <li>
+        <%= render 'root/recently_updated_card', **card_options, fiction: card[:fiction], chapter: card[:chapter] %>
+      </li>
     <% end %>
-  </div>
-</div>
+  </ul>
+</section>

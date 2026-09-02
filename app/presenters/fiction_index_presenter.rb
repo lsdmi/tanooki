@@ -34,6 +34,10 @@ class FictionIndexPresenter
     @latest_updates ||= Fictions::IndexVariablesManager.latest_updates
   end
 
+  def latest_update_chapters
+    @latest_update_chapters ||= Fictions::LatestReleasedChapters.for_fiction_ids(latest_updates.map(&:id))
+  end
+
   def carousel_popular_novelty_ids
     @carousel_popular_novelty_ids ||= Fictions::IndexVariablesManager.popular_novelty_ids_for_badges
   end
