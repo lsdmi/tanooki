@@ -6,7 +6,8 @@
           <%= render Ui::GenrePageTagComponent.new(
                 variant: tag_variant_for(genre),
                 label: genre[:name],
-                href: fiction_genre_fictions_path(genre[:slug])
+                href: fiction_genre_fictions_path(genre[:slug]),
+                html: tag_html_for(genre)
               ) %>
         <% end %>
       </div>
@@ -14,8 +15,16 @@
       <%= render Ui::GenrePageTagComponent.new(
             variant: tag_variant_for(group[:genre]),
             label: group[:genre][:name],
-            href: fiction_genre_fictions_path(group[:genre][:slug])
+            href: fiction_genre_fictions_path(group[:genre][:slug]),
+            html: tag_html_for(group[:genre])
           ) %>
     <% end %>
+  <% end %>
+  <% if collapsed? %>
+    <%= render Ui::GenrePageTagComponent.new(
+          variant: :genre,
+          label: "+#{overflow_count}",
+          html: { class: 'pointer-events-none lg:hidden' }
+        ) %>
   <% end %>
 </div>

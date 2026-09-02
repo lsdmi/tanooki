@@ -41,7 +41,7 @@ export default class extends Controller {
     this.abortDetailsFetch()
     this.detailsAbortController = new AbortController()
 
-    fetch(`/fictions/${fictionId}/details`, {
+    fetch(this.detailsUrl(fictionId), {
       headers: {
         Accept: "text/vnd.turbo-stream.html",
       },
@@ -59,6 +59,14 @@ export default class extends Controller {
         frame.removeAttribute("data-transitioning")
         this.detailsAbortController = null
       })
+  }
+
+  detailsUrl(fictionId) {
+    const url = new URL(`/fictions/${fictionId}/details`, window.location.origin)
+    const variant = this.element.dataset.fictionPickerVariant
+    if (variant) url.searchParams.set("variant", variant)
+
+    return url
   }
 
   abortDetailsFetch() {

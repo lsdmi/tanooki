@@ -7,6 +7,9 @@ module Ui
       super()
       @genres = sorted_genres(Array(genres).compact_blank)
       @html = options.fetch(:html, {})
+      @tag_html = options.fetch(:tag_html, {})
+      @pin_bottom = options.fetch(:pin_bottom, true)
+      @compact_max = options[:compact_max]
     end
 
     def render?
@@ -15,10 +18,27 @@ module Ui
 
     private
 
-    attr_reader :genres, :html
+    attr_reader :genres, :html, :tag_html, :pin_bottom, :compact_max
 
     def wrapper_classes
-      ['mt-auto flex flex-wrap gap-2 pt-4', html[:class]].compact.join(' ')
+      ['flex flex-wrap gap-2', pin_bottom ? 'mt-auto pt-4' : nil, html[:class]].compact.join(' ')
+    end
+
+    # Below lg only the first compact_max pills stay, with a +N pill standing in for the rest.
+    def collapsed?
+      compact_max.present? && genres.size > compact_max
+    end
+
+    def overflow_count
+      genres.size - compact_max
+    end
+
+    # max-lg:hidden rather than a bare hidden: the pill's base inline-flex would otherwise
+    # win or lose on stylesheet order instead of breakpoint.
+    def tag_html_for(genre)
+      return tag_html unless collapsed? && genres.index(genre).to_i >= compact_max
+
+      tag_html.merge(class: [tag_html[:class], 'max-lg:hidden'].compact.join(' '))
     end
 
     def sorted_genres(genres)

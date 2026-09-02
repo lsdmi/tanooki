@@ -82,13 +82,13 @@ class FictionsController < ApplicationController
   def similar_fictions = render_fiction_show_fragment
 
   def details
-    @fiction = Fiction.find(params.expect(:id))
+    @fiction = Fiction.includes(:genres, :fiction_ratings, cover_attachment: :blob).find(params.expect(:id))
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           'fiction_details',
           partial: details_partial,
-          locals: { fiction: @fiction }
+          locals: details_stream_locals
         )
       end
     end

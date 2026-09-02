@@ -5,6 +5,8 @@ module Fictions
   module TurboStreamResponses
     extend ActiveSupport::Concern
 
+    HOT_NOVELTY_PARTIAL = 'fictions/hot_novelty_featured'
+
     private
 
     def render_sorted_chapters
@@ -56,11 +58,25 @@ module Fictions
     end
 
     def details_partial
-      if request.referer == alphabetical_fictions_url || request.referer&.include?('/bookshelves/')
-        'fiction_lists/fiction_details'
-      else
-        'fictions/fiction_details'
-      end
+      @details_partial ||=
+        if params[:variant] == 'hot_novelty'
+          HOT_NOVELTY_PARTIAL
+        elsif catalog_or_bookshelf_referer?
+          'fiction_lists/fiction_details'
+        else
+          'fictions/fiction_details'
+        end
+    end
+
+    def catalog_or_bookshelf_referer?
+      request.referer == alphabetical_fictions_url || request.referer&.include?('/bookshelves/')
+    end
+
+    def details_stream_locals
+      locals = { fiction: @fiction }
+      return locals unless details_partial == HOT_NOVELTY_PARTIAL
+
+      locals.merge(released_chapter_count: Chapter.released.where(fiction_id: @fiction.id).count)
     end
   end
 end

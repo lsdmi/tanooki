@@ -16,7 +16,10 @@
       </div>
 
       <div class="w-full lg:w-2/4">
-        <%= render 'new_releases', fictions: @index_presenter.popular_novelty %>
+        <%= render 'new_releases',
+                   fictions: @index_presenter.popular_novelty,
+                   featured: @index_presenter.popular_novelty_featured,
+                   released_chapter_count: @index_presenter.popular_novelty_featured_chapter_count %>
       </div>
     </div>
 

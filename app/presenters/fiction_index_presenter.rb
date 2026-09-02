@@ -14,6 +14,25 @@ class FictionIndexPresenter
     @popular_novelty ||= Fictions::IndexVariablesManager.popular_novelty
   end
 
+  def popular_novelty_featured
+    return @popular_novelty_featured if defined?(@popular_novelty_featured)
+
+    @popular_novelty_featured = Array(popular_novelty).first
+    return unless @popular_novelty_featured
+
+    ActiveRecord::Associations::Preloader.new(
+      records: [@popular_novelty_featured],
+      associations: %i[genres fiction_ratings]
+    ).call
+    @popular_novelty_featured
+  end
+
+  def popular_novelty_featured_chapter_count
+    return 0 unless popular_novelty_featured
+
+    Chapter.released.where(fiction_id: popular_novelty_featured.id).count
+  end
+
   def most_reads
     @most_reads ||= Fictions::IndexVariablesManager.most_reads
   end

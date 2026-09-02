@@ -10,7 +10,10 @@ module Fictions
     # Class methods mixed into IndexVariablesManager.
     module ClassMethods
       def popular_novelty
-        load_fictions_by_cached_ids(cached_popular_novelty_ids, includes: %i[cover_attachment])
+        load_fictions_by_cached_ids(
+          cached_popular_novelty_ids,
+          includes: %i[cover_attachment]
+        )
       end
 
       def popular_novelty_ids_for_badges
@@ -53,17 +56,17 @@ module Fictions
                .group(:id)
                .where(id: recent_fiction_ids)
                .order('COUNT(reading_progresses.fiction_id) DESC')
-               .limit(8)
+               .limit(IndexVariablesManager::POPULAR_NOVELTY_INDEX_CARDS)
       end
 
       def cached_popular_novelty_ids
-        Rails.cache.fetch('popular_novelty_ids', expires_in: IndexVariablesManager::LIST_CACHE_EXPIRY) do
+        Rails.cache.fetch('popular_novelty_ids', expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
           popular_novelty_scope.pluck(:id)
         end
       end
 
       def recent_fiction_ids
-        Fiction.order(id: :desc).limit(15).pluck(:id)
+        Fiction.order(id: :desc).limit(IndexVariablesManager::POPULAR_NOVELTY_POOL).pluck(:id)
       end
 
       def most_reads_scope
@@ -95,7 +98,7 @@ module Fictions
         return Fiction.none if ids.blank?
 
         Fiction.where(id: ids)
-               .includes(includes)
+               .preload(includes)
                .in_order_of(:id, ids)
       end
     end
