@@ -36,6 +36,20 @@ module Adsense
       end
     end
 
+    test 'adsense_fictions_index_banners_renderable? follows development preview rules' do
+      define_singleton_method(:adsense_allowed?) { false }
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+        assert_predicate self, :adsense_fictions_index_banners_renderable?
+      end
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+        define_singleton_method(:adsense_allowed?) { true }
+
+        assert_predicate self, :adsense_fictions_index_banners_renderable?
+      end
+    end
+
     test 'adsense_home_banners_renderable? follows development preview rules' do
       define_singleton_method(:adsense_allowed?) { false }
 

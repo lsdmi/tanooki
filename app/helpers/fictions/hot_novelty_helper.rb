@@ -4,10 +4,13 @@ module Fictions
   # Featured-card copy for «Гарячі Новинки» on the fictions index.
   module HotNoveltyHelper
     def hot_novelty_featured_copy(fiction, released_chapter_count)
+      status = hot_novelty_status_label(fiction)
+
       {
         rating: hot_novelty_rating(fiction),
         views: format_view_count(fiction.views),
-        status: hot_novelty_status_label(fiction),
+        status: status,
+        status_short: hot_novelty_status_short(status),
         chapters: released_chapter_count.to_i,
         excerpt: hot_novelty_excerpt(fiction),
         genres: hot_novelty_genres(fiction)
@@ -29,6 +32,11 @@ module Fictions
 
     def hot_novelty_status_label(fiction)
       (Fiction.statuses[fiction.status] || fiction.status).to_s
+    end
+
+    # Same 6-character cut as fictions/show so «Видається» fits the stats row below lg.
+    def hot_novelty_status_short(label)
+      label.length > 6 ? "#{label[0, 6]}." : label
     end
 
     def hot_novelty_excerpt(fiction)

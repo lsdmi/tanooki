@@ -614,3 +614,55 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
 .home-videos-ads__slot:has(.reader-ad-slot--collapsed) {
   display: none;
 }
+
+/* Fictions index dual banners: fluid width, fixed 280px height, stacked mobile / side-by-side sm+ */
+.index-banners__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem; /* 12px */
+}
+
+@media (min-width: 640px) {
+  .index-banners__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem; /* 28px */
+  }
+}
+
+.index-banners .reader-ad-slot,
+.index-banners .reader-ad-slot--preview,
+.index-banners .reader-ad-slot--adsense-filled {
+  margin: 0;
+}
+
+/* Every state shares one fixed height so the row never reflows as units fill.
+   min-height carries the size: .reader-ad-slot__preview inherits it to fill the box.
+   max-height is load-bearing — without it the measuring state clamps the frame to 120px. */
+.index-banners .reader-ad-slot .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+}
+
+/* Right cell is optional: an unfilled or blocked unit leaves the left one full-width. */
+.index-banners__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}
+
+.index-banners:not(:has(.reader-ad-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
+  display: none;
+  margin: 0;
+}
+
+html.adblock-likely .index-banners .reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

@@ -1,0 +1,14 @@
+<%# locals: (wrapper_class: "") %>
+<%# Dual fictions-index banner row: stacked on mobile, side-by-side on sm+. %>
+<% return unless adsense_fictions_index_banners_renderable? %>
+
+<section class="index-banners <%= wrapper_class %>" aria-label="Реклама">
+  <div class="index-banners__grid">
+    <% Adsense::FICTIONS_INDEX_BANNER_PLACEMENTS.each do |placement, navigation_key| %>
+      <div class="index-banners__slot">
+        <%# measure_as bottom buys the longer fill window; both cells sit at the same height. %>
+        <%= render 'shared/adsense_slot', placement:, navigation_key:, measure_as: 'bottom' %>
+      </div>
+    <% end %>
+  </div>
+</section>

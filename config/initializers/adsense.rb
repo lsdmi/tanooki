@@ -34,6 +34,11 @@ module Adsense
     home_banner_right: 'home-mid-right'
   }.freeze
 
+  FICTIONS_INDEX_BANNER_PLACEMENTS = {
+    fictions_index_top: 'top',
+    fictions_index_mid: 'mid'
+  }.freeze
+
   CHAPTER_READER_SLOTS = {
     top: SLOTS[:chapter_reader_top],
     bottom: SLOTS[:chapter_reader_bottom]
