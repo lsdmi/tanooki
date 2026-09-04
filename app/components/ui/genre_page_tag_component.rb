@@ -6,7 +6,7 @@ module Ui
     include GenrePageTagComponentStyles
 
     VARIANTS = %i[rank stat_views stat_rating chapters status genre adult].freeze
-    RANK_SIZES = %i[featured thumb].freeze
+    RANK_SIZES = %i[featured thumb strip].freeze
 
     def initialize(variant:, label:, **options)
       super()

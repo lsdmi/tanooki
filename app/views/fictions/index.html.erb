@@ -25,6 +25,8 @@
 
     <%= render 'shared/adsense_fictions_index_banners', wrapper_class: 'mb-8 lg:mb-14' %>
 
+    <%= render 'popular_ranobe', fictions: @index_presenter.most_reads %>
+
     <!-- Mid-page Banner and Translation Request Section -->
     <%= render 'fictions/genres/promo_row' %>
 
@@ -32,7 +34,9 @@
     <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
       <!-- Rankings -->
       <div class="w-full lg:w-1/3">
-        <%= render 'top_fictions', fictions: @index_presenter.most_reads, released_chapter_counts: @index_presenter.released_chapters_counts_for_most_reads %>
+        <%= render 'top_fictions',
+                   fictions: @index_presenter.most_reads_sidebar,
+                   released_chapter_counts: @index_presenter.released_chapters_counts_for_most_reads %>
       </div>
 
       <!-- Filtered Fictions -->

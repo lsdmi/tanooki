@@ -80,6 +80,28 @@ module Ui
       assert_selector 'a.border-gray-300', text: 'Драма'
     end
 
+    test 'html gap class replaces the default gap-2' do
+      render_inline(TagListComponent.new(labels: %w[аніме], html: { class: 'gap-1' }))
+
+      assert_selector 'div.gap-1'
+      assert_no_selector 'div.gap-2'
+    end
+
+    test 'compact_max hides overflow pills below lg and adds a counter' do
+      render_inline(
+        TagListComponent.new(
+          labels: %w[Бойовик Ісекай],
+          variant: :genre,
+          compact_max: 1,
+          href_builder: ->(label) { "/genres/#{label}" }
+        )
+      )
+
+      assert_selector 'a:not(.max-lg\\:hidden)', text: 'Бойовик'
+      assert_selector 'a.max-lg\\:hidden', text: 'Ісекай'
+      assert_selector 'span.lg\\:hidden', text: '+1'
+    end
+
     test 'renders overflow tag when max exceeded' do
       render_inline(
         TagListComponent.new(

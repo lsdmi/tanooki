@@ -70,11 +70,14 @@ module Fictions
       end
 
       def most_reads_scope
-        Fiction.most_reads.limit(6)
+        Fiction.most_reads.limit(IndexVariablesManager::MOST_READS_INDEX_CARDS)
       end
 
       def cached_most_reads_ids
-        Rails.cache.fetch('most_reads_ids', expires_in: IndexVariablesManager::LIST_CACHE_EXPIRY) do
+        Rails.cache.fetch(
+          ['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS],
+          expires_in: IndexVariablesManager::MOST_READS_CACHE_EXPIRY
+        ) do
           most_reads_scope.pluck(:id)
         end
       end

@@ -10,6 +10,15 @@
       <%= render_tag(group[:label]) %>
     <% end %>
   <% end %>
+  <% if compact_collapsed? %>
+    <%= render Ui::TagComponent.new(
+          label: "+#{compact_overflow_count}",
+          variant: :genre,
+          size: size,
+          as: :span,
+          html: { class: 'pointer-events-none lg:hidden' }
+        ) %>
+  <% end %>
   <% if overflow_count.positive? %>
     <%= render Ui::TagComponent.new(
           label: "+#{overflow_count}",

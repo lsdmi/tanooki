@@ -6,11 +6,13 @@ module Fictions
     include IndexCachedLists
     include IndexGenreLists
 
-    LIST_CACHE_EXPIRY = 12.hours
     POPULAR_NOVELTY_CACHE_EXPIRY = 24.hours
+    MOST_READS_CACHE_EXPIRY = 24.hours
     LATEST_UPDATES_CACHE_EXPIRY = 10.minutes
     LATEST_UPDATES_INDEX_CARDS = 6
     LATEST_UPDATES_HOME_LIMIT = 8
+    MOST_READS_INDEX_CARDS = 10
+    MOST_READS_SIDEBAR_CARDS = 6
     POPULAR_NOVELTY_INDEX_CARDS = 13
     # Candidate window the novelty ranking draws from; must exceed the card count so all slots can fill.
     POPULAR_NOVELTY_POOL = 20

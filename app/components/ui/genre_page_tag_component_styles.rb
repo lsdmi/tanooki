@@ -62,9 +62,18 @@ module Ui
       'focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
+    # Thumb's translucent white at the featured badge's dimensions, for the popular cover strip.
+    RANK_STRIP_CLASSES = [
+      'absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center',
+      'rounded-lg border border-slate-500/70 bg-white/55 px-1.5 text-sm font-bold text-slate-900 shadow-sm',
+      'backdrop-blur-[2px] pointer-events-none',
+      'dark:border-slate-400/50 dark:bg-slate-900/55 dark:text-white'
+    ].join(' ').freeze
+
     RANK_CLASSES = {
       featured: RANK_FEATURED_CLASSES,
-      thumb: RANK_THUMB_CLASSES
+      thumb: RANK_THUMB_CLASSES,
+      strip: RANK_STRIP_CLASSES
     }.freeze
 
     VARIANT_CLASSES = {

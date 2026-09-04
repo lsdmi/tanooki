@@ -19,6 +19,20 @@ module Ui
       assert_selector 'span.dark\\:border-slate-400\\/50.dark\\:bg-slate-900\\/55'
     end
 
+    test 'renders strip rank badge with thumb colours at featured size' do
+      render_inline(GenrePageTagComponent.new(variant: :rank, label: '1', rank_size: :strip))
+
+      assert_selector 'span.border-slate-500\\/70.bg-white\\/55.text-sm.font-bold', text: '1'
+      assert_selector 'span.h-7'
+      assert_no_selector 'span.text-xs'
+    end
+
+    test 'rejects unknown rank size' do
+      assert_raises(ArgumentError) do
+        GenrePageTagComponent.new(variant: :rank, label: '1', rank_size: :huge)
+      end
+    end
+
     test 'renders cover stat tags with icons' do
       render_inline(GenrePageTagComponent.new(variant: :stat_views, label: '526'))
 

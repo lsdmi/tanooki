@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Root
-  # Card fields for the home page «Популярне ранобе» strip.
+  # Card fields for the «Популярне ранобе» strip on home and the fictions index.
   module PopularFictionsHelper
     def popular_fiction_card_stats(fiction)
       {

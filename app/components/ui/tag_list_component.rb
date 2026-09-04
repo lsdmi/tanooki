@@ -14,8 +14,8 @@ module Ui
 
     private
 
-    attr_reader :labels, :variant, :size, :max, :href_builder, :current_label, :counts, :genre_slugs, :html,
-                :tag_html
+    attr_reader :labels, :variant, :size, :max, :compact_max, :href_builder, :current_label, :counts, :genre_slugs,
+                :html, :tag_html
 
     def variant_for(label)
       return variant unless variant == :genre
@@ -45,6 +45,15 @@ module Ui
       labels.size - visible_labels.size
     end
 
+    # Below lg only the first compact_max pills stay, with a +N pill standing in for the rest.
+    def compact_collapsed?
+      compact_max.present? && visible_labels.size > compact_max
+    end
+
+    def compact_overflow_count
+      visible_labels.size - compact_max
+    end
+
     def tag_groups
       adults, regular = visible_labels.partition { |label| adult_label?(label) }
       groups = []
@@ -64,13 +73,23 @@ module Ui
     def tag_component_options(label)
       tag_href = href_for(label)
       { label: label, variant: variant_for(label), size: size, as: tag_href.present? ? :link : :span, href: tag_href,
-        current: current?(label), count: count_for(label), html: tag_html }
+        current: current?(label), count: count_for(label), html: tag_html_for(label) }
+    end
+
+    # max-lg:hidden rather than a bare hidden: the pill's base inline-flex would otherwise
+    # win or lose on stylesheet order instead of breakpoint.
+    def tag_html_for(label)
+      return tag_html unless compact_collapsed? && visible_labels.index(label).to_i >= compact_max
+
+      tag_html.merge(class: [tag_html[:class], 'max-lg:hidden'].compact.join(' '))
     end
 
     def wrapper_classes
-      wrap = html[:class].to_s.include?('nowrap') ? 'flex-nowrap' : 'flex-wrap'
+      extra = html[:class].to_s
+      wrap = extra.include?('nowrap') ? 'flex-nowrap' : 'flex-wrap'
+      gap = extra.match?(/\bgap-/) ? nil : 'gap-2'
 
-      ['flex items-center gap-2', wrap, html[:class]].compact.join(' ')
+      ['flex items-center', gap, wrap, extra.presence].compact.join(' ')
     end
 
     def href_for(label)
@@ -100,6 +119,7 @@ module Ui
       @variant = variant
       @size = size
       @max = options[:max]
+      @compact_max = options[:compact_max]
     end
 
     def assign_tag_list_presentation(options)

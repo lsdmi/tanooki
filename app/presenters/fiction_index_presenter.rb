@@ -37,10 +37,15 @@ class FictionIndexPresenter
     @most_reads ||= Fictions::IndexVariablesManager.most_reads
   end
 
+  def most_reads_sidebar
+    Array(most_reads).first(Fictions::IndexVariablesManager::MOST_READS_SIDEBAR_CARDS)
+  end
+
   def released_chapters_counts_for_most_reads
     @released_chapters_counts_for_most_reads ||= begin
-      fiction_ids = Array(most_reads).map(&:id)
-      Rails.cache.fetch(['fiction_index/released_chapters_by_fiction', fiction_ids.sort], expires_in: 12.hours) do
+      fiction_ids = most_reads_sidebar.map(&:id)
+      Rails.cache.fetch(['fiction_index/released_chapters_by_fiction', fiction_ids.sort],
+                        expires_in: Fictions::IndexVariablesManager::MOST_READS_CACHE_EXPIRY) do
         Chapter.released
                .where(fiction_id: fiction_ids)
                .group(:fiction_id)

@@ -27,7 +27,7 @@ module Fictions
     test 'call populates most reads ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?('most_reads_ids')
+      assert Rails.cache.exist?(['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS])
     end
 
     test 'call populates latest updates ids cache' do

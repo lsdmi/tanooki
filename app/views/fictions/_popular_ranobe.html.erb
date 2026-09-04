@@ -1,0 +1,17 @@
+<%# locals: (fictions:) %>
+<section class="mb-8 lg:mb-14" aria-labelledby="fictions-index-popular-ranobe">
+  <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
+    <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
+    <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
+      <h2 id="fictions-index-popular-ranobe"
+          class="text-xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100 lg:text-2xl">
+        Популярне <span class="text-cyan-700 dark:text-rose-400">Ранобе</span>
+      </h2>
+      <%= render 'root/section_more_link',
+                 path: alphabetical_fictions_path,
+                 link_class: 'text-cyan-700 dark:text-rose-400' %>
+    </div>
+  </header>
+
+  <%= render 'root/fictions', fictions:, ranked: true %>
+</section>

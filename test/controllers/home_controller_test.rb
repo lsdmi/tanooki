@@ -121,7 +121,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_select '[aria-label="Популярне ранобе"][class*="-mr-4"]'
     assert_select '[aria-label="Популярне ранобе"] .text-sm.font-semibold', minimum: 1
-    assert_select '[aria-label="Популярне ранобе"] .text-\\[10px\\]', minimum: 1
+    assert_select '[aria-label="Популярне ранобе"] article .pb-2 a.border', minimum: 1
   end
 
   private
