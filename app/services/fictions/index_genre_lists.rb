@@ -18,6 +18,13 @@ module Fictions
         )
       end
 
+      def originals
+        load_fictions_by_cached_ids(
+          cached_originals_ids,
+          includes: %i[cover_attachment scanlators]
+        )
+      end
+
       def genre_recent_updates_excluding(genre, exclude_ids: [])
         base = Fiction.joins(:genres, :chapters).where(genres: { id: genre.id }).merge(Chapter.released)
         base = base.where.not(id: exclude_ids) if exclude_ids.present?
@@ -28,6 +35,26 @@ module Fictions
       end
 
       private
+
+      def cached_originals_ids
+        Rails.cache.fetch(
+          ['fiction_index/originals_ids', IndexVariablesManager::ORIGINALS_INDEX_CARDS],
+          expires_in: IndexVariablesManager::ORIGINALS_CACHE_EXPIRY
+        ) do
+          originals_ids_from_db
+        end
+      end
+
+      def originals_ids_from_db
+        genre_id = Genre.find_by(slug: Genre::ORIGINAL_SLUG)&.id
+        return [] unless genre_id
+
+        fictions_joined_to_latest_released_chapter
+          .where(genres: { id: genre_id })
+          .order('latest_chapters.max_created_at DESC')
+          .limit(IndexVariablesManager::ORIGINALS_INDEX_CARDS)
+          .pluck(:id)
+      end
 
       def cached_filtered_fiction_ids(genre_id)
         Rails.cache.fetch(['fiction_index/filtered_fiction_ids', genre_id],

@@ -37,6 +37,10 @@ class FictionIndexPresenter
     @most_reads ||= Fictions::IndexVariablesManager.most_reads
   end
 
+  def originals
+    @originals ||= Fictions::IndexVariablesManager.originals
+  end
+
   def most_reads_sidebar
     Array(most_reads).first(Fictions::IndexVariablesManager::MOST_READS_SIDEBAR_CARDS)
   end

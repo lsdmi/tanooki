@@ -1,0 +1,33 @@
+<%# locals: (id_seed:) %>
+<%# Eight-point stars (Алатир) scattered by hand rather than tiled, so they pop up irregularly
+    instead of marching in rows. The whole group is nudged by a per-card offset so neighbouring
+    cards in the carousel do not line their stars up. slice keeps the stitches square. %>
+<% drift_x = (id_seed % 7) * 6 - 18 %>
+<% drift_y = (id_seed % 4) * 5 - 8 %>
+<svg class="pointer-events-none absolute inset-0 h-full w-full text-cyan-400 dark:text-rose-400"
+     viewBox="0 0 344 150" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+  <defs>
+    <%# One star on a 4-unit cross-stitch grid, 36x36 overall. %>
+    <path id="star-<%= id_seed %>" fill="currentColor"
+          d="M0 0h4v4h-4z M16 0h4v4h-4z M32 0h4v4h-4z
+             M4 4h4v4h-4z M16 4h4v4h-4z M28 4h4v4h-4z
+             M8 8h4v4h-4z M16 8h4v4h-4z M24 8h4v4h-4z
+             M12 12h12v4h-12z
+             M0 16h36v4h-36z
+             M12 20h12v4h-12z
+             M8 24h4v4h-4z M16 24h4v4h-4z M24 24h4v4h-4z
+             M4 28h4v4h-4z M16 28h4v4h-4z M28 28h4v4h-4z
+             M0 32h4v4h-4z M16 32h4v4h-4z M32 32h4v4h-4z" />
+  </defs>
+
+  <g opacity="0.12" transform="translate(<%= drift_x %> <%= drift_y %>)">
+    <use href="#star-<%= id_seed %>" transform="translate(14 92)" />
+    <use href="#star-<%= id_seed %>" transform="translate(92 12) scale(0.7)" />
+    <use href="#star-<%= id_seed %>" transform="translate(150 102) scale(0.85)" />
+    <use href="#star-<%= id_seed %>" transform="translate(208 32)" />
+    <use href="#star-<%= id_seed %>" transform="translate(264 110) scale(0.65)" />
+    <use href="#star-<%= id_seed %>" transform="translate(296 14) scale(0.9)" />
+    <use href="#star-<%= id_seed %>" transform="translate(56 42) scale(0.5)" />
+    <use href="#star-<%= id_seed %>" transform="translate(322 76) scale(0.55)" />
+  </g>
+</svg>

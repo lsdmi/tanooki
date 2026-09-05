@@ -47,6 +47,20 @@ module Fictions
       end
     end
 
+    test 'originals are ordered by their latest released chapter' do
+      with_memory_cache do
+        genre = genres(:original)
+        older = fictions(:one)
+        newer = fictions(:two)
+        [older, newer].each { |fiction| fiction.genres << genre unless fiction.genres.exists?(genre.id) }
+        stamp_released_at(chapters(:one), 3.days.ago)
+        stamp_released_at(chapters(:two), 2.days.ago)
+        stamp_released_at(chapters(:three), 1.hour.ago)
+
+        assert_equal [newer.id, older.id], IndexVariablesManager.originals.ids
+      end
+    end
+
     test 'hot_updates returns unloaded relation' do
       result = IndexVariablesManager.hot_updates
 
@@ -62,6 +76,10 @@ module Fictions
     end
 
     private
+
+    def stamp_released_at(chapter, time)
+      chapter.update_columns(created_at: time, published_at: time) # rubocop:disable Rails/SkipsModelValidations
+    end
 
     def with_memory_cache
       original_cache = Rails.cache

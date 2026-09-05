@@ -12,6 +12,7 @@ module Fictions
       IndexVariablesManager.send(:cached_popular_novelty_ids)
       IndexVariablesManager.send(:cached_most_reads_ids)
       IndexVariablesManager.send(:cached_latest_updates_ids)
+      IndexVariablesManager.send(:cached_originals_ids)
       IndexVariablesManager.popular_novelty_ids_for_badges
       IndexVariablesManager.most_reads_ids_for_badges
       IndexVariablesManager.latest_updates_ids_for_badges

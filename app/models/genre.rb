@@ -11,6 +11,7 @@ class Genre < ApplicationRecord
   # Slugs for genres treated as mature / explicit in tag UI (see SLUG_BY_DISPLAY_NAME migration).
   EXPLICIT_CONTENT_SLUGS = %w[bl gl lgbt harem omegaverse].freeze
   ADULT_CONTENT_LABEL = '18+'
+  ORIGINAL_SLUG = 'original'
 
   friendly_id :slug_candidates
 
