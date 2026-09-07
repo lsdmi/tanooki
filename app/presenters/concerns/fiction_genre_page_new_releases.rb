@@ -56,7 +56,7 @@ module FictionGenrePageNewReleases
   end
 
   def chapters_label_for_card(released_n, fiction)
-    released_n.positive? ? released_n.to_s : fiction.total_chapters.to_s
+    released_n.positive? ? released_n.to_s : (fiction.expected_chapters || fiction.chapter_count).to_s
   end
 
   def shared_card_fields(fiction, chapters_label)

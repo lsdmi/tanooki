@@ -96,7 +96,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'update chapter number refreshes fiction status when unique chapters reach total' do
     fiction = @chapter.fiction
-    fiction.update!(status: :ongoing, total_chapters: 2)
+    fiction.update!(status: :ongoing, expected_chapters: 2)
     duplicate = chapters(:two)
     duplicate.update!(number: 1)
 

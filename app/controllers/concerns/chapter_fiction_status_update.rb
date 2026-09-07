@@ -8,7 +8,8 @@ module ChapterFictionStatusUpdate
 
   def update_fiction_status
     fiction = @chapter.fiction.reload
-    new_status = Fictions::DeriveStatusFromChapters.new(fiction).call
+    Catalog::RefreshChapterStats.call(fiction)
+    new_status = Fictions::DeriveStatusFromChapters.new(fiction.reload).call
     fiction.status = new_status
     fiction.save(validate: false)
   end

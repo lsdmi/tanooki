@@ -30,6 +30,13 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
     assert_turbo_stream_flash_notice(I18n.t('chapters.notices.destroy_success'))
   end
 
+  test 'destroying a chapter lowers chapter_count' do
+    Catalog::RefreshChapterStats.call(@fiction)
+    delete reading_url(@chapter), as: :turbo_stream
+
+    assert_equal 1, @fiction.reload.chapter_count
+  end
+
   test 'should remove user scanlator link after destroying last team chapter from shared fiction' do
     FictionScanlator.create!(fiction: @fiction, scanlator: scanlators(:two))
     chapters(:two).destroy

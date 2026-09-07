@@ -14,7 +14,7 @@ class FictionFormTest < ActiveSupport::TestCase
         title: '',
         author: fiction.author,
         description: fiction.description,
-        total_chapters: fiction.total_chapters,
+        expected_chapters: fiction.expected_chapters,
         scanlator_ids: submitted_scanlator_ids,
         genre_ids: submitted_genre_ids
       }
@@ -33,7 +33,7 @@ class FictionFormTest < ActiveSupport::TestCase
         title: fiction.title,
         author: fiction.author,
         description: fiction.description,
-        total_chapters: fiction.total_chapters,
+        expected_chapters: fiction.expected_chapters,
         scanlator_ids: [1],
         cover: Rack::Test::UploadedFile.new(
           Rails.root.join('app/assets/images/logo-default.svg'),
@@ -54,7 +54,7 @@ class FictionFormTest < ActiveSupport::TestCase
         title: fiction.title,
         author: fiction.author,
         description: fiction.description,
-        total_chapters: fiction.total_chapters,
+        expected_chapters: fiction.expected_chapters,
         scanlator_ids: [1],
         cover: valid_cover_upload
       }
@@ -73,7 +73,7 @@ class FictionFormTest < ActiveSupport::TestCase
         title: fiction.title,
         author: fiction.author,
         description: fiction.description,
-        total_chapters: fiction.total_chapters,
+        expected_chapters: fiction.expected_chapters,
         scanlator_ids: [1],
         cover: valid_png_cover_upload
       }
@@ -91,7 +91,7 @@ class FictionFormTest < ActiveSupport::TestCase
         title: 'Legacy Cover Still Fine',
         author: fiction.author,
         description: fiction.description,
-        total_chapters: fiction.total_chapters,
+        expected_chapters: fiction.expected_chapters,
         scanlator_ids: [1]
       }
     )

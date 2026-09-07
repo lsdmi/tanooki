@@ -21,6 +21,7 @@ class ReadingsController < ApplicationController
     @chapter.destroy
 
     handle_scanlators_destruction(stack_size)
+    Catalog::RefreshChapterStats.call(@chapter.fiction)
 
     reload_fiction_chapters
     render turbo_stream: turbo_stream_destroy_success(refresh_list, t('chapters.notices.destroy_success'))

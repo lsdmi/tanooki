@@ -3,11 +3,11 @@
 module Fictions
   # Derives fiction status from unique chapter release progress.
   class DeriveStatusFromChapters
-    attr_reader :fiction_status, :total_chapters, :unique
+    attr_reader :fiction_status, :expected_chapters, :unique
 
     def initialize(fiction)
       @fiction_status = fiction.status
-      @total_chapters = fiction.total_chapters
+      @expected_chapters = fiction.expected_chapters
       @unique = Library::ChapterNavigation.unique_chapters(fiction.chapters)
     end
 
@@ -17,12 +17,16 @@ module Fictions
 
     private
 
+    def plan_met?
+      expected_chapters.present? && unique.size >= expected_chapters
+    end
+
     def announced_dropped_new_status
-      unique.size >= total_chapters ? Fiction.statuses[:finished] : Fiction.statuses[:ongoing]
+      plan_met? ? Fiction.statuses[:finished] : Fiction.statuses[:ongoing]
     end
 
     def ongoing_new_status
-      unique.size >= total_chapters ? Fiction.statuses[:finished] : fiction_status
+      plan_met? ? Fiction.statuses[:finished] : fiction_status
     end
 
     def new_fiction_status

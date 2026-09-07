@@ -11,6 +11,7 @@ module Fictions
     def call
       scanlator_chapters.destroy_all
       fiction_scanlator&.destroy
+      Catalog::RefreshChapterStats.call(fiction)
     end
 
     private

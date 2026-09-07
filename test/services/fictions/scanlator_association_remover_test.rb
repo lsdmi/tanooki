@@ -15,6 +15,13 @@ module Fictions
       assert_not FictionScanlator.exists?(fiction:, scanlator:)
     end
 
+    test 'refreshes chapter_count after removing the team chapters' do
+      fiction = fictions(:one)
+      ScanlatorAssociationRemover.new(fiction, scanlators(:one)).call
+
+      assert_equal 0, fiction.reload.chapter_count
+    end
+
     private
 
     def scanlator_chapter_count(fiction, scanlator)

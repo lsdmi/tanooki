@@ -28,8 +28,10 @@ module FictionPresentation
   end
 
   def finished_and_complete?
+    return false if expected_chapters.blank?
+
     unique_chapters = chapters.to_a.uniq { |obj| [obj.number, obj.volume_number] }
-    unique_chapters.size >= total_chapters && status.to_sym == :finished
+    unique_chapters.size >= expected_chapters && status.to_sym == :finished
   end
 
   private

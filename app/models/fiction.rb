@@ -4,6 +4,7 @@
 class Fiction < ApplicationRecord
   include FictionPresentation
   include FictionRatings
+  include FictionListingProgress
   include NormalizesWhitespace
 
   normalizes_squished :title, :alternative_title, :english_title, :author, :description, :short_description
@@ -47,7 +48,6 @@ class Fiction < ApplicationRecord
   validates :short_description, length: { in: 25..120 }, allow_blank: true
   validates :title, length: { in: 3..100 }
   validates :alternative_title, :english_title, length: { maximum: 100 }
-  validates :total_chapters, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validate :cover_format
 

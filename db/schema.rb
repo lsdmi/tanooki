@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_10_160000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -193,10 +193,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_10_160000) do
     t.string "author", null: false
     t.string "origin"
     t.boolean "adult_content", default: false, null: false
-    t.integer "total_chapters", default: 0
+    t.integer "chapter_count", default: 0, null: false
+    t.integer "expected_chapters"
+    t.datetime "last_chapter_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "completed_at"
+    t.datetime "abandoned_at"
     t.datetime "deleted_at"
+    t.index ["completed_at", "abandoned_at", "last_chapter_at"], name: "index_fictions_on_listing_progress"
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
     t.index ["status", "deleted_at", "created_at"], name: "index_fictions_on_status_deleted_created"

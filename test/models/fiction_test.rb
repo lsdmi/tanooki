@@ -7,7 +7,7 @@ class FictionTest < ActiveSupport::TestCase
     @user = users(:user_one)
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                           total_chapters: 5, user_id: @user.id)
+                           expected_chapters: 5, status: :announced, user_id: @user.id)
     @fiction.cover.attach(valid_cover_upload)
   end
 
@@ -93,18 +93,6 @@ class FictionTest < ActiveSupport::TestCase
 
   test 'description should not be too long' do
     @fiction.description = 'a' * 1001
-
-    assert_not @fiction.valid?
-  end
-
-  test 'total_chapters should be an integer' do
-    @fiction.total_chapters = 5.5
-
-    assert_not @fiction.valid?
-  end
-
-  test 'total_chapters should not be negative' do
-    @fiction.total_chapters = -1
 
     assert_not @fiction.valid?
   end
