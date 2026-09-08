@@ -5,8 +5,8 @@ tale_approved_one:
   title: <%= Faker::Book.title %>
   highlight: true
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 1.hour.ago %>
 
 tale_created_one:
   id: 2
@@ -15,8 +15,8 @@ tale_created_one:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 2.hours.ago %>
 
 three:
   id: 3
@@ -25,8 +25,8 @@ three:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 3.hours.ago %>
+  updated_at: <%= 3.hours.ago %>
 
 four:
   id: 4
@@ -35,8 +35,8 @@ four:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 4.hours.ago %>
+  updated_at: <%= 4.hours.ago %>
 
 five:
   id: 5
@@ -45,8 +45,8 @@ five:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 5.hours.ago %>
+  updated_at: <%= 5.hours.ago %>
 
 six:
   id: 6
@@ -55,8 +55,8 @@ six:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 6.hours.ago %>
+  updated_at: <%= 6.hours.ago %>
 
 seven:
   id: 7
@@ -65,5 +65,5 @@ seven:
   title: <%= Faker::Book.title %>
   highlight: false
   user_id: 1
-  created_at: <%= Time.now %>
-  updated_at: <%= Time.now %>
+  created_at: <%= 7.hours.ago %>
+  updated_at: <%= 7.hours.ago %>

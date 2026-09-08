@@ -14,5 +14,5 @@ FileUtils.chdir(APP_ROOT) do
   end
 
   system('git', 'config', 'core.hooksPath', '.githooks', exception: true)
-  puts 'Installed git hooks from .githooks (pre-commit gates main/master).'
+  puts 'Installed git hooks from .githooks (pre-commit blocks RuboCop directives; verify on main/master).'
 end

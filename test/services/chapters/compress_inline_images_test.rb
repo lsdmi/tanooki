@@ -39,6 +39,17 @@ module Chapters
       end
     end
 
+    test 'persists even when the chapter would fail validations' do
+      ChapterScanlator.where(chapter_id: chapters(:one).id).delete_all
+
+      with_compression_stub do
+        result = CompressInlineImages.call(chapters(:one).id)
+
+        assert_not result.unchanged
+        assert_includes @rich_text.reload.read_attribute_before_type_cast(:body), 'data:image/jpeg;base64,'
+      end
+    end
+
     private
 
     def with_compression_stub(&)

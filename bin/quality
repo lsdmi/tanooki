@@ -10,6 +10,9 @@ def system!(*)
 end
 
 FileUtils.chdir(APP_ROOT) do
+  puts '== RuboCop directives =='
+  system! 'bin/no-rubocop-directives'
+
   puts '== RuboCop =='
   system! 'bin/rubocop'
 

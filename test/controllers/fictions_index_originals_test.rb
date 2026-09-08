@@ -10,9 +10,6 @@ class FictionsIndexOriginalsTest < ActionDispatch::IntegrationTest
     [@older, @newer].each do |fiction|
       fiction.genres << @genre unless fiction.genres.exists?(@genre.id)
     end
-    stamp_released_at(chapters(:one), 3.days.ago)
-    stamp_released_at(chapters(:two), 2.days.ago)
-    stamp_released_at(chapters(:three), 1.hour.ago)
     Rails.cache.delete(['fiction_index/originals_ids', Fictions::IndexVariablesManager::ORIGINALS_INDEX_CARDS])
   end
 
@@ -112,11 +109,5 @@ class FictionsIndexOriginalsTest < ActionDispatch::IntegrationTest
 
     assert_select '[aria-labelledby="fictions-index-originals"] [aria-label="Українські Автори"] article',
                   maximum: Fictions::IndexVariablesManager::ORIGINALS_INDEX_CARDS
-  end
-
-  private
-
-  def stamp_released_at(chapter, time)
-    chapter.update_columns(created_at: time, published_at: time) # rubocop:disable Rails/SkipsModelValidations
   end
 end

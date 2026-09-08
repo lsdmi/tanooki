@@ -5,11 +5,33 @@ module Analytics
   class ViewIncrementJob < ApplicationJob
     queue_as :default
 
-    def perform(class_name, record_id)
-      klass = class_name.constantize
-      return unless klass.exists?(id: record_id)
+    MODELS = {
+      'Bookshelf' => Bookshelf,
+      'Chapter' => Chapter,
+      'Fiction' => Fiction,
+      'Publication' => Publication,
+      'Tale' => Tale,
+      'YoutubeVideo' => YoutubeVideo
+    }.freeze
 
-      klass.where(id: record_id).update_all('views = COALESCE(views, 0) + 1') # rubocop:disable Rails/SkipsModelValidations
+    def perform(class_name, record_id)
+      klass = MODELS[class_name]
+      return unless klass
+
+      increment_views(klass, record_id)
+    end
+
+    private
+
+    def increment_views(klass, record_id)
+      predicates = ["#{klass.quoted_primary_key} = #{Integer(record_id)}"]
+      predicates << 'deleted_at IS NULL' if klass.soft_deletable?
+
+      klass.lease_connection.update(<<~SQL.squish)
+        UPDATE #{klass.quoted_table_name}
+        SET views = COALESCE(views, 0) + 1
+        WHERE #{predicates.join(' AND ')}
+      SQL
     end
   end
 end

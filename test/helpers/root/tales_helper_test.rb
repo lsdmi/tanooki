@@ -14,7 +14,6 @@ module Root
         publications(:four),
         publications(:five)
       ]
-      stamp_recency(side)
 
       assert_equal(
         { hero: hero, left: side.first(2), right: side.last(2), side: side },
@@ -28,7 +27,6 @@ module Root
         publications(:three),
         publications(:four)
       ]
-      stamp_recency(tales)
 
       assert_equal(
         { hero: tales.first, left: [tales[1], tales[2]], right: [], side: [tales[1], tales[2]] },
@@ -42,7 +40,6 @@ module Root
       middle = publications(:three)
       older = publications(:four)
       oldest = publications(:five)
-      stamp_recency([newest, middle, older, oldest])
 
       cards = home_tales_editorial_cards(hero, [oldest, middle, newest, older])
 
@@ -58,7 +55,6 @@ module Root
         publications(:three),
         publications(:four)
       ]
-      stamp_recency(side)
 
       cards = home_tales_editorial_cards(hero, [hero, *side])
 
@@ -74,21 +70,9 @@ module Root
     end
 
     test 'tale_published_date formats created_at in Ukrainian short form' do
-      publication = publications(:tale_approved_one)
+      publication = Publication.new(created_at: Time.zone.parse('2026-06-25 10:00'))
 
-      travel_to Time.zone.parse('2026-07-14 12:00') do
-        publication.update_column(:created_at, Time.zone.parse('2026-06-25 10:00')) # rubocop:disable Rails/SkipsModelValidations
-
-        assert_equal '25 червень 2026', tale_published_date(publication)
-      end
-    end
-
-    private
-
-    def stamp_recency(publications, base_time: Time.zone.parse('2026-07-15 12:00'))
-      publications.each_with_index do |publication, index|
-        publication.update_column(:created_at, base_time - index.days) # rubocop:disable Rails/SkipsModelValidations
-      end
+      assert_equal '25 червень 2026', tale_published_date(publication)
     end
   end
 end

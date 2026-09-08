@@ -13,34 +13,23 @@ module Chapters
     end
 
     test 'call compresses chapters posted on the previous day' do
-      travel_to Time.zone.parse('2026-07-19 04:00:00') do
-        stamp(@chapter, published_at: '2026-07-18 12:00')
-        write_compressible_body
-        stamp(chapters(:two), published_at: '2026-07-16 12:00')
+      write_compressible_body
 
-        result = with_compression_stub do
-          CompressRecent.call(day: Date.parse('2026-07-19'))
-        end
+      result = with_compression_stub { CompressRecent.call(day: day_after_chapter) }
 
-        assert_equal [@chapter.id], result.chapter_ids
-        assert_equal 1, result.compressed
-        assert_empty result.errors
-      end
+      assert_equal [@chapter.id], result.chapter_ids
+      assert_equal 1, result.compressed
+      assert_empty result.errors
     end
 
     test 'call reports unchanged when no images need compression' do
-      travel_to Time.zone.parse('2026-07-19 04:00:00') do
-        stamp(@chapter, published_at: '2026-07-18 12:00')
-        @rich_text.update!(body: '<p>no images</p>')
+      @rich_text.update!(body: '<p>no images</p>')
 
-        result = with_compression_stub do
-          CompressRecent.call(day: Date.parse('2026-07-19'))
-        end
+      result = with_compression_stub { CompressRecent.call(day: day_after_chapter) }
 
-        assert_equal [@chapter.id], result.chapter_ids
-        assert_equal 1, result.unchanged
-        assert_equal 0, result.compressed
-      end
+      assert_equal [@chapter.id], result.chapter_ids
+      assert_equal 1, result.unchanged
+      assert_equal 0, result.compressed
     end
 
     private
@@ -50,11 +39,9 @@ module Chapters
       @rich_text.update!(body: %(<p><img src="data:image/png;base64,#{encoded}"></p>))
     end
 
-    def stamp(chapter, published_at:)
-      chapter.update_columns( # rubocop:disable Rails/SkipsModelValidations
-        published_at: Time.zone.parse(published_at),
-        created_at: Time.zone.parse(published_at)
-      )
+    # The service compresses the day before the one it is given, so aim it at the day after @chapter went public.
+    def day_after_chapter
+      @chapter.public_at.to_date.next_day
     end
 
     def with_compression_stub(&)

@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+# Rejects inline RuboCop directives (disable/enable/todo).
+set -eu
+
+cd "$(dirname "$0")/.."
+
+# Split so this file does not match the search.
+pattern="rubo"'cop:(disable|enable|todo)'
+
+if [ "${1-}" = "--staged" ]; then
+  set -- git grep --cached -n -I -E "$pattern"
+else
+  set -- git grep -n -I -E "$pattern"
+fi
+
+set +e
+"$@"
+status=$?
+set -e
+
+if [ "$status" -eq 0 ]; then
+  echo "Inline RuboCop directives are not allowed. Remove the comment and fix the offense." >&2
+  exit 1
+fi
+
+if [ "$status" -ne 1 ]; then
+  exit "$status"
+fi
+
+exit 0

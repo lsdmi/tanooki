@@ -20,6 +20,7 @@ jobs:
         with:
           ruby-version: 3.4.9
           bundler-cache: true
+      - run: bin/no-rubocop-directives
       - run: bin/rubocop
 
   brakeman:

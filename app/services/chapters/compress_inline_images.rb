@@ -39,12 +39,27 @@ module Chapters
     end
 
     def persist!(rich_text_id, html)
-      # Intentionally bypasses validations; this repair shrinks legacy oversized bodies.
-      ActionText::RichText.where(id: rich_text_id).update_all( # rubocop:disable Rails/SkipsModelValidations
-        body: html,
-        updated_at: Time.current
-      )
-      Chapter.where(id: @chapter_id).update_all(updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      now = Time.current
+      connection = ActionText::RichText.lease_connection
+      update_rich_text(connection, rich_text_id, html, now)
+      touch_chapter(connection, now)
+    end
+
+    def update_rich_text(connection, rich_text_id, html, now)
+      connection.update(<<~SQL.squish)
+        UPDATE #{ActionText::RichText.quoted_table_name}
+        SET body = #{connection.quote(html)},
+            updated_at = #{connection.quote(now)}
+        WHERE #{ActionText::RichText.quoted_primary_key} = #{Integer(rich_text_id)}
+      SQL
+    end
+
+    def touch_chapter(connection, now)
+      connection.update(<<~SQL.squish)
+        UPDATE #{Chapter.quoted_table_name}
+        SET updated_at = #{connection.quote(now)}
+        WHERE #{Chapter.quoted_primary_key} = #{Integer(@chapter_id)}
+      SQL
     end
 
     def unchanged_result(rich_text_id, compression)

@@ -36,10 +36,8 @@ module Catalog
     end
 
     test 'sets last_chapter_at to the latest public time' do
-      older = create_chapter(number: 1)
-      newer = create_chapter(number: 2)
-      older.update_columns(created_at: 2.days.ago, published_at: 2.days.ago) # rubocop:disable Rails/SkipsModelValidations
-      newer.update_columns(created_at: 1.hour.ago, published_at: 1.hour.ago) # rubocop:disable Rails/SkipsModelValidations
+      travel_to(2.days.ago) { create_chapter(number: 1) }
+      travel_to(1.hour.ago) { create_chapter(number: 2) }
 
       RefreshChapterStats.call(@fiction)
 
@@ -64,6 +62,25 @@ module Catalog
       RefreshChapterStats.call(@fiction)
 
       assert_nil @fiction.reload.last_chapter_at
+    end
+
+    test 'writes projections even when the fiction would fail validations' do
+      create_chapter(number: 1)
+      @fiction.scanlator_ids = []
+
+      RefreshChapterStats.call(@fiction)
+
+      assert_equal 1, @fiction.chapter_count
+      assert_equal 1, @fiction.reload.chapter_count
+    end
+
+    test 'does not bump updated_at' do
+      create_chapter(number: 1)
+      before = @fiction.reload.updated_at
+
+      RefreshChapterStats.call(@fiction)
+
+      assert_equal before, @fiction.reload.updated_at
     end
 
     private
