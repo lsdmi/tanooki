@@ -10,39 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_122000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", null: false
     t.text "body", size: :long
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
+    t.string "content_type"
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -59,8 +59,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
 
   create_table "bookshelf_fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "bookshelf_id", null: false
-    t.bigint "fiction_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "fiction_id", null: false
     t.datetime "updated_at", null: false
     t.index ["bookshelf_id", "fiction_id"], name: "index_bookshelf_fictions_on_bookshelf_id_and_fiction_id", unique: true
     t.index ["bookshelf_id"], name: "index_bookshelf_fictions_on_bookshelf_id"
@@ -68,37 +68,37 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "bookshelves", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title", null: false
+    t.datetime "created_at", null: false
     t.text "description", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "views", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_bookshelves_on_user_id"
   end
 
   create_table "chapter_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "chapter_id", null: false
-    t.bigint "scanlator_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "scanlator_id", null: false
     t.datetime "updated_at", null: false
     t.index ["chapter_id"], name: "index_chapter_scanlators_on_chapter_id"
     t.index ["scanlator_id"], name: "index_chapter_scanlators_on_scanlator_id"
   end
 
   create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
-    t.bigint "fiction_id", null: false
-    t.bigint "user_id", null: false
-    t.string "title", null: false
-    t.decimal "number", precision: 9, scale: 2, null: false
-    t.decimal "volume_number", precision: 9, scale: 1
     t.integer "comments_count", default: 0
-    t.integer "views", default: 0
-    t.datetime "published_at"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.bigint "fiction_id", null: false
+    t.decimal "number", precision: 9, scale: 2, null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "views", default: 0
+    t.decimal "volume_number", precision: 9, scale: 1
     t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
     t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
     t.index ["published_at"], name: "index_chapters_on_published_at"
@@ -107,42 +107,42 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "chat_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.text "content", null: false
-    t.string "room", default: "general", null: false
     t.datetime "created_at", null: false
+    t.string "room", default: "general", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["created_at"], name: "index_chat_messages_on_created_at"
     t.index ["room"], name: "index_chat_messages_on_room"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "parent_id"
     t.bigint "commentable_id", null: false
     t.string "commentable_type", null: false
     t.text "content"
     t.datetime "created_at", null: false
+    t.bigint "parent_id"
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "epub_export_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "token", null: false
-    t.integer "status", default: 0, null: false
-    t.json "rich_text_ids", null: false
-    t.string "volume_title"
-    t.string "filename"
     t.string "content_fingerprint", limit: 64
-    t.text "error_message"
-    t.string "processing_step"
-    t.datetime "expires_at", null: false
     t.datetime "created_at", null: false
+    t.text "error_message"
+    t.datetime "expires_at", null: false
+    t.string "filename"
+    t.string "processing_step"
+    t.json "rich_text_ids", null: false
+    t.integer "status", default: 0, null: false
+    t.string "token", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.string "volume_title"
     t.index ["expires_at"], name: "index_epub_export_requests_on_expires_at"
     t.index ["status"], name: "index_epub_export_requests_on_status"
     t.index ["token"], name: "index_epub_export_requests_on_token", unique: true
@@ -151,20 +151,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "fiction_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "fiction_id"
     t.bigint "genre_id"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fiction_id"], name: "index_fiction_genres_on_fiction_id"
     t.index ["genre_id"], name: "index_fiction_genres_on_genre_id"
   end
 
   create_table "fiction_ratings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
     t.bigint "fiction_id", null: false
     t.integer "rating", limit: 1, null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["fiction_id"], name: "index_fiction_ratings_on_fiction_id"
     t.index ["user_id", "fiction_id"], name: "index_fiction_ratings_on_user_and_fiction", unique: true
     t.index ["user_id"], name: "index_fiction_ratings_on_user_id"
@@ -172,35 +172,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "fiction_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "fiction_id", null: false
     t.bigint "scanlator_id", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fiction_id"], name: "index_fiction_scanlators_on_fiction_id"
     t.index ["scanlator_id"], name: "index_fiction_scanlators_on_scanlator_id"
   end
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
-    t.string "title", null: false
-    t.string "alternative_title"
-    t.string "english_title"
-    t.text "description", null: false
-    t.text "short_description"
-    t.integer "comments_count", default: 0
-    t.integer "views", default: 0
-    t.string "status", null: false
-    t.string "author", null: false
-    t.string "origin"
+    t.datetime "abandoned_at"
     t.boolean "adult_content", default: false, null: false
+    t.string "alternative_title"
+    t.string "author", null: false
     t.integer "chapter_count", default: 0, null: false
+    t.integer "comments_count", default: 0
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.text "description", null: false
+    t.string "english_title"
     t.integer "expected_chapters"
     t.datetime "last_chapter_at"
-    t.datetime "created_at", null: false
+    t.string "origin"
+    t.text "short_description"
+    t.string "slug", null: false
+    t.string "status", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
-    t.datetime "completed_at"
-    t.datetime "abandoned_at"
-    t.datetime "deleted_at"
+    t.integer "views", default: 0
     t.index ["completed_at", "abandoned_at", "last_chapter_at"], name: "index_fictions_on_listing_progress"
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
@@ -210,10 +210,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug"
-    t.string "name"
-    t.text "description"
     t.datetime "created_at", null: false
+    t.text "description"
+    t.string "name"
+    t.string "slug"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
     t.index ["slug"], name: "index_genres_on_slug", unique: true
@@ -221,19 +221,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
 
   create_table "pokemon_battle_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "attacker_id", null: false
-    t.bigint "defender_id", null: false
-    t.bigint "winner_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "defender_id", null: false
     t.datetime "updated_at", null: false
+    t.bigint "winner_id", null: false
     t.index ["attacker_id"], name: "index_pokemon_battle_logs_on_attacker_id"
     t.index ["defender_id"], name: "index_pokemon_battle_logs_on_defender_id"
     t.index ["winner_id"], name: "index_pokemon_battle_logs_on_winner_id"
   end
 
   create_table "pokemon_type_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "pokemon_id", null: false
     t.bigint "pokemon_type_id", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pokemon_id", "pokemon_type_id"], name: "index_pokemon_type_relations_on_pokemon_id_and_pokemon_type_id", unique: true
     t.index ["pokemon_id"], name: "index_pokemon_type_relations_on_pokemon_id"
@@ -241,21 +241,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "pokemon_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", null: false
     t.datetime "created_at", null: false
+    t.string "name", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "ancestor_id"
+    t.datetime "created_at", null: false
+    t.bigint "descendant_id"
+    t.integer "descendant_level"
     t.integer "dex_id"
-    t.string "slug", null: false
     t.string "name", null: false
     t.integer "power_level", null: false
     t.integer "rarity", null: false
-    t.bigint "ancestor_id"
-    t.bigint "descendant_id"
-    t.integer "descendant_level"
-    t.datetime "created_at", null: false
+    t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.index ["ancestor_id"], name: "index_pokemons_on_ancestor_id"
     t.index ["descendant_id"], name: "index_pokemons_on_descendant_id"
@@ -263,25 +263,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "publication_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "publication_id"
     t.bigint "tag_id"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["publication_id"], name: "index_publication_tags_on_publication_id"
     t.index ["tag_id"], name: "index_publication_tags_on_tag_id"
   end
 
   create_table "publications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
-    t.string "type", null: false
-    t.string "title", null: false
-    t.boolean "highlight", default: false
-    t.bigint "user_id", null: false
     t.integer "comments_count", default: 0
-    t.integer "views", default: 0
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.boolean "highlight", default: false
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "views", default: 0
     t.index ["created_at"], name: "index_publications_on_created_at"
     t.index ["slug"], name: "index_publications_on_slug", unique: true
     t.index ["user_id"], name: "index_publications_on_user_id"
@@ -289,12 +289,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "fiction_id", null: false
-    t.bigint "user_id", null: false
     t.bigint "chapter_id", null: false
-    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
+    t.bigint "fiction_id", null: false
+    t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
     t.index ["created_at", "fiction_id"], name: "index_reading_progresses_on_created_at_and_fiction_id"
     t.index ["fiction_id"], name: "index_reading_progresses_on_fiction_id"
@@ -305,78 +305,78 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "scanlator_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "scanlator_id", null: false
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "scanlator_id", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["scanlator_id"], name: "index_scanlator_users_on_scanlator_id"
     t.index ["user_id"], name: "index_scanlator_users_on_user_id"
   end
 
   create_table "scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
-    t.string "telegram_id"
     t.string "bank_url"
-    t.string "extra_url"
-    t.string "title", null: false
-    t.string "description"
-    t.string "notice"
     t.boolean "convertable", default: true
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.string "extra_url"
     t.integer "fictions_count", default: 0, null: false
     t.integer "members_count", default: 0, null: false
-    t.datetime "created_at", null: false
+    t.string "notice"
+    t.string "slug", null: false
+    t.string "telegram_id"
+    t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_scanlators_on_slug", unique: true
   end
 
   create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.binary "key", limit: 1024, null: false
-    t.binary "value", size: :long, null: false
-    t.datetime "created_at", null: false
-    t.bigint "key_hash", null: false
     t.integer "byte_size", null: false
+    t.datetime "created_at", null: false
+    t.binary "key", limit: 1024, null: false
+    t.bigint "key_hash", null: false
+    t.binary "value", size: :long, null: false
     t.index ["byte_size"], name: "index_solid_cache_entries_on_byte_size"
     t.index ["key_hash", "byte_size"], name: "index_solid_cache_entries_on_key_hash_and_byte_size"
     t.index ["key_hash"], name: "index_solid_cache_entries_on_key_hash", unique: true
   end
 
   create_table "solid_queue_blocked_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "job_id", null: false
-    t.string "queue_name", null: false
-    t.integer "priority", default: 0, null: false
     t.string "concurrency_key", null: false
-    t.datetime "expires_at", null: false
     t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.bigint "job_id", null: false
+    t.integer "priority", default: 0, null: false
+    t.string "queue_name", null: false
     t.index ["concurrency_key", "priority", "job_id"], name: "index_solid_queue_blocked_executions_for_release"
     t.index ["expires_at", "concurrency_key"], name: "index_solid_queue_blocked_executions_for_maintenance"
     t.index ["job_id"], name: "index_solid_queue_blocked_executions_on_job_id", unique: true
   end
 
   create_table "solid_queue_claimed_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "job_id", null: false
     t.bigint "process_id"
-    t.datetime "created_at", null: false
     t.index ["job_id"], name: "index_solid_queue_claimed_executions_on_job_id", unique: true
     t.index ["process_id", "job_id"], name: "index_solid_queue_claimed_executions_on_process_id_and_job_id"
   end
 
   create_table "solid_queue_failed_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "job_id", null: false
-    t.text "error"
     t.datetime "created_at", null: false
+    t.text "error"
+    t.bigint "job_id", null: false
     t.index ["job_id"], name: "index_solid_queue_failed_executions_on_job_id", unique: true
   end
 
   create_table "solid_queue_jobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "queue_name", null: false
-    t.string "class_name", null: false
-    t.text "arguments"
-    t.integer "priority", default: 0, null: false
     t.string "active_job_id"
-    t.datetime "scheduled_at"
-    t.datetime "finished_at"
+    t.text "arguments"
+    t.string "class_name", null: false
     t.string "concurrency_key"
     t.datetime "created_at", null: false
+    t.datetime "finished_at"
+    t.integer "priority", default: 0, null: false
+    t.string "queue_name", null: false
+    t.datetime "scheduled_at"
     t.datetime "updated_at", null: false
     t.index ["active_job_id"], name: "index_solid_queue_jobs_on_active_job_id"
     t.index ["class_name"], name: "index_solid_queue_jobs_on_class_name"
@@ -386,108 +386,108 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "solid_queue_pauses", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "queue_name", null: false
     t.datetime "created_at", null: false
+    t.string "queue_name", null: false
     t.index ["queue_name"], name: "index_solid_queue_pauses_on_queue_name", unique: true
   end
 
   create_table "solid_queue_processes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "hostname"
     t.string "kind", null: false
     t.datetime "last_heartbeat_at", null: false
-    t.bigint "supervisor_id"
-    t.integer "pid", null: false
-    t.string "hostname"
     t.text "metadata"
-    t.datetime "created_at", null: false
     t.string "name", null: false
+    t.integer "pid", null: false
+    t.bigint "supervisor_id"
     t.index ["last_heartbeat_at"], name: "index_solid_queue_processes_on_last_heartbeat_at"
     t.index ["name", "supervisor_id"], name: "index_solid_queue_processes_on_name_and_supervisor_id", unique: true
     t.index ["supervisor_id"], name: "index_solid_queue_processes_on_supervisor_id"
   end
 
   create_table "solid_queue_ready_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "job_id", null: false
-    t.string "queue_name", null: false
-    t.integer "priority", default: 0, null: false
     t.datetime "created_at", null: false
+    t.bigint "job_id", null: false
+    t.integer "priority", default: 0, null: false
+    t.string "queue_name", null: false
     t.index ["job_id"], name: "index_solid_queue_ready_executions_on_job_id", unique: true
     t.index ["priority", "job_id"], name: "index_solid_queue_poll_all"
     t.index ["queue_name", "priority", "job_id"], name: "index_solid_queue_poll_by_queue"
   end
 
   create_table "solid_queue_recurring_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "job_id", null: false
-    t.string "task_key", null: false
-    t.datetime "run_at", null: false
     t.datetime "created_at", null: false
+    t.bigint "job_id", null: false
+    t.datetime "run_at", null: false
+    t.string "task_key", null: false
     t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
     t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
   end
 
   create_table "solid_queue_recurring_tasks", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "schedule", null: false
-    t.string "command", limit: 2048
-    t.string "class_name"
     t.text "arguments"
-    t.string "queue_name"
-    t.integer "priority", default: 0
-    t.boolean "static", default: true, null: false
-    t.text "description"
+    t.string "class_name"
+    t.string "command", limit: 2048
     t.datetime "created_at", null: false
+    t.text "description"
+    t.string "key", null: false
+    t.integer "priority", default: 0
+    t.string "queue_name"
+    t.string "schedule", null: false
+    t.boolean "static", default: true, null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_solid_queue_recurring_tasks_on_key", unique: true
     t.index ["static"], name: "index_solid_queue_recurring_tasks_on_static"
   end
 
   create_table "solid_queue_scheduled_executions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "job_id", null: false
-    t.string "queue_name", null: false
-    t.integer "priority", default: 0, null: false
-    t.datetime "scheduled_at", null: false
     t.datetime "created_at", null: false
+    t.bigint "job_id", null: false
+    t.integer "priority", default: 0, null: false
+    t.string "queue_name", null: false
+    t.datetime "scheduled_at", null: false
     t.index ["job_id"], name: "index_solid_queue_scheduled_executions_on_job_id", unique: true
     t.index ["scheduled_at", "priority", "job_id"], name: "index_solid_queue_dispatch_all"
   end
 
   create_table "solid_queue_semaphores", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "key", null: false
-    t.integer "value", default: 1, null: false
-    t.datetime "expires_at", null: false
     t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "key", null: false
     t.datetime "updated_at", null: false
+    t.integer "value", default: 1, null: false
     t.index ["expires_at"], name: "index_solid_queue_semaphores_on_expires_at"
     t.index ["key", "value"], name: "index_solid_queue_semaphores_on_key_and_value"
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "translation_request_votes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "translation_request_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "translation_request_id", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["translation_request_id"], name: "index_translation_request_votes_on_translation_request_id"
     t.index ["user_id", "translation_request_id"], name: "index_tr_votes_on_user_and_request", unique: true
     t.index ["user_id"], name: "index_translation_request_votes_on_user_id"
   end
 
   create_table "translation_requests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "scanlator_id"
-    t.string "title", null: false
     t.string "author"
-    t.string "source_url"
-    t.text "notes"
-    t.integer "votes_count", default: 0, null: false
     t.datetime "created_at", null: false
+    t.text "notes"
+    t.bigint "scanlator_id"
+    t.string "source_url"
+    t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "votes_count", default: 0, null: false
     t.index ["created_at"], name: "index_translation_requests_on_created_at"
     t.index ["scanlator_id"], name: "index_translation_requests_on_scanlator_id"
     t.index ["user_id"], name: "index_translation_requests_on_user_id"
@@ -495,35 +495,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
   end
 
   create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "pokemon_id"
-    t.bigint "user_id"
-    t.integer "current_level", default: 0
     t.integer "battle_experience", default: 0
     t.string "character"
     t.datetime "created_at", null: false
+    t.integer "current_level", default: 0
+    t.bigint "pokemon_id"
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["pokemon_id"], name: "index_user_pokemons_on_pokemon_id"
     t.index ["user_id"], name: "index_user_pokemons_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "name", null: false
     t.boolean "admin", default: false
+    t.date "adult_content_acknowledged_at"
     t.bigint "avatar_id"
     t.integer "battle_win_rate", default: 50
-    t.bigint "latest_read_comment_id"
-    t.date "adult_content_acknowledged_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
-    t.datetime "pokemon_last_training", default: "2023-11-02 02:58:41"
+    t.datetime "confirmation_sent_at"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "reset_password_token"
+    t.datetime "created_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.bigint "latest_read_comment_id"
+    t.string "name", null: false
+    t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
+    t.datetime "pokemon_last_training", default: "2023-11-02 02:58:41"
     t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
+    t.datetime "updated_at", null: false
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -534,25 +534,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_07_122000) do
 
   create_table "youtube_channels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "channel_id", null: false
-    t.string "title", null: false
-    t.string "thumbnail", null: false
     t.datetime "created_at", null: false
+    t.string "thumbnail", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "youtube_videos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
-    t.bigint "youtube_channel_id", null: false
-    t.string "video_id", null: false
-    t.string "title", null: false
-    t.string "thumbnail", null: false
-    t.string "tags"
     t.integer "comments_count", default: 0
-    t.integer "views", default: 0
-    t.datetime "published_at", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.datetime "published_at", null: false
+    t.string "slug", null: false
+    t.string "tags"
+    t.string "thumbnail", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "video_id", null: false
+    t.integer "views", default: 0
+    t.bigint "youtube_channel_id", null: false
     t.index ["published_at"], name: "index_youtube_videos_on_published_at"
     t.index ["views"], name: "index_youtube_videos_on_views"
     t.index ["youtube_channel_id", "published_at"], name: "index_youtube_videos_on_channel_id_and_published_at"

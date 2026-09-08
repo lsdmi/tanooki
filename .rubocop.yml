@@ -7,7 +7,7 @@ plugins:
 AllCops:
   NewCops: enable
   SuggestExtensions: false
-  TargetRailsVersion: 8.0
+  TargetRailsVersion: 8.1
   Exclude:
     - 'bin/**'
     - 'db/migrate/**'

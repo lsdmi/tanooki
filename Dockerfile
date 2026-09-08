@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=skip
 
-# Debian Bookworm ships libvips 8.14+, required by Rails 8.0.5.1 Active Storage.
+# Debian Bookworm ships libvips 8.14+, required by Rails 8.1 Active Storage.
 # DigitalOcean App Platform builds all components from this file (dockerfile_path: Dockerfile).
 ARG RUBY_VERSION=3.4.9
 FROM docker.io/library/ruby:${RUBY_VERSION}-slim-bookworm AS base

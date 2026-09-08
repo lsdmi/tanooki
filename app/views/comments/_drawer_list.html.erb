@@ -1,11 +1,10 @@
 <%# locals: comments:, comment:, commentable: %>
-<% if comments.any? %>
-  <div class="space-y-4">
-    <%= turbo_frame_tag "comments" do %>
-      <%= render partial: "comments/comment", collection: comments, as: :comment, locals: { commentable: commentable, drawer: true } %>
-    <% end %>
-  </div>
-<% end %>
+<%# The frame renders even when empty so `turbo_stream.prepend "comments"` has a target for the first comment. %>
+<div class="space-y-4">
+  <%= turbo_frame_tag "comments" do %>
+    <%= render partial: "comments/comment", collection: comments, as: :comment, locals: { commentable: commentable, drawer: true } %>
+  <% end %>
+</div>
 
 <% unless current_user %>
   <div class="<%= comments.any? ? 'mt-6 border-t border-stone-200 pt-6 dark:border-zinc-700' : 'py-8' %> text-center">

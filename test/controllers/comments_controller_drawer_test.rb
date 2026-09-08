@@ -9,6 +9,15 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
     sign_in users(:user_one)
   end
 
+  test 'drawer renders comments frame so the first comment has a stream target' do
+    chapter = chapters(:one)
+
+    get chapter_url(chapter)
+
+    assert_response :success
+    assert_includes response.body, '<turbo-frame id="comments">'
+  end
+
   test 'creating chapter comment updates drawer count stream' do
     chapter = chapters(:two)
     chapter.update!(comments_count: 0)

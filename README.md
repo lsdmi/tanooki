@@ -16,7 +16,7 @@
 
 ## Технології
 
-- Ruby 3.4.9 / Rails 8
+- Ruby 3.4.9 / Rails 8.1
 - MySQL (app DB + Solid Cache + Solid Queue)
 - OpenSearch (DO Managed)
 - Hotwire (Turbo, Stimulus), Propshaft, Importmap — **без Node/npm**
