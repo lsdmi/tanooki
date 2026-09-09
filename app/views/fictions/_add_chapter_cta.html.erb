@@ -12,7 +12,7 @@
     </div>
   <% end %>
   <%= render 'shared/info_card', title: 'Приєднайтеся до спільноти!', content: content %>
-<% elsif fiction.finished_and_complete? %>
+<% elsif fiction.completed_at? %>
   <% content = capture do %>
     <%= tag.p 'Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!',
               class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' %>

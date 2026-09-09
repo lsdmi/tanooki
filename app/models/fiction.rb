@@ -39,6 +39,7 @@ class Fiction < ApplicationRecord
                   chinese: 'китайське', korean: 'корейське', dutch: 'нідерландське', polish: 'польське',
                   thai: 'тайське', ukrainian: 'українське', french: 'французьке', japanese: 'японське' }
 
+  before_validation :assign_default_status, on: :create
   before_validation :cleanup_scanlator_ids
 
   validates :cover, presence: true
@@ -95,6 +96,10 @@ class Fiction < ApplicationRecord
   end
 
   private
+
+  def assign_default_status
+    self.status = :announced if status.blank?
+  end
 
   def cover_format
     return unless cover.attached?

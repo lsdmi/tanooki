@@ -10,10 +10,9 @@ module FictionGenrePageNewReleases
   ].freeze
 
   # Locals for compact genre cards (thumbs / «Нові Релізи» grid).
-  def genre_thumb_card_locals(fiction, released_n:, accent_index:)
-    label = chapters_label_for_card(released_n, fiction)
-    shared_card_fields(fiction, label).merge(fiction: fiction, title: fiction.title,
-                                             accent: card_accent_at(accent_index))
+  def genre_thumb_card_locals(fiction, accent_index:)
+    shared_card_fields(fiction).merge(fiction: fiction, title: fiction.title,
+                                      accent: card_accent_at(accent_index))
   end
 
   private
@@ -32,15 +31,11 @@ module FictionGenrePageNewReleases
 
     ActiveRecord::Associations::Preloader.new(records: fictions, associations: [:genres]).call
 
-    released_counts =
-      Chapter.where(fiction_id: fictions.map(&:id)).merge(Chapter.released).group(:fiction_id).count
-
-    fictions.each_with_index.map { |fiction, index| new_release_ranked_row(fiction, index, released_counts) }
+    fictions.each_with_index.map { |fiction, index| new_release_ranked_row(fiction, index) }
   end
 
-  def new_release_ranked_row(fiction, index, released_by_fiction)
-    n = released_by_fiction[fiction.id].to_i
-    shared_card_fields(fiction, chapters_label_for_card(n, fiction)).merge(ranked_extras(fiction, index))
+  def new_release_ranked_row(fiction, index)
+    shared_card_fields(fiction).merge(ranked_extras(fiction, index))
   end
 
   def ranked_extras(fiction, index)
@@ -55,16 +50,12 @@ module FictionGenrePageNewReleases
     }
   end
 
-  def chapters_label_for_card(released_n, fiction)
-    released_n.positive? ? released_n.to_s : (fiction.expected_chapters || fiction.chapter_count).to_s
-  end
-
-  def shared_card_fields(fiction, chapters_label)
+  def shared_card_fields(fiction)
     {
       rating: formatted_avg_rating(fiction),
-      chapters: chapters_label,
+      chapters: fiction.chapter_count,
       views: helpers.format_view_count(fiction.views),
-      status: fiction_status_label(fiction)
+      status: fiction.listing_state_label
     }
   end
 
@@ -80,10 +71,6 @@ module FictionGenrePageNewReleases
     return '—' unless fiction.average_rating.positive?
 
     helpers.number_with_precision(fiction.average_rating, precision: 1)
-  end
-
-  def fiction_status_label(fiction)
-    (Fiction.statuses[fiction.status] || fiction.status).to_s
   end
 
   def featured_excerpt_for(fiction)

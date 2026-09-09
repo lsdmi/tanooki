@@ -2,6 +2,7 @@
 
 module Catalog
   # Writes listing projections from live chapters. Does not touch status or expected_chapters.
+  # last_chapter_at is the latest already-public time; scheduled rows still count in chapter_count.
   class RefreshChapterStats
     def self.call(fiction)
       new(fiction).call
@@ -12,12 +13,11 @@ module Catalog
     end
 
     def call
-      listing = @fiction
-      listing.chapters.reset
+      @fiction.chapters.reset
       write_projections(
-        listing,
-        chapter_count: ChapterSlots.call(listing),
-        last_chapter_at: listing.chapters.maximum(Arel.sql(Chapter::PUBLIC_TIME_SQL))
+        @fiction,
+        chapter_count: ChapterSlots.call(@fiction),
+        last_chapter_at: @fiction.chapters.released.maximum(Arel.sql(Chapter::PUBLIC_TIME_SQL))
       )
     end
 

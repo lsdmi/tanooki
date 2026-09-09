@@ -10,6 +10,8 @@ AllCops:
   TargetRailsVersion: 8.1
   Exclude:
     - 'bin/**'
+    - 'bin/**/*'
+    - 'bin/prod/**/*'
     - 'db/migrate/**'
     - 'db/schema.rb'
     - 'vendor/bundle/**/*'

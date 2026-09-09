@@ -38,7 +38,8 @@ class ChaptersControllerListingStatsTest < ActionDispatch::IntegrationTest
     assert_equal 2, @chapter.fiction.reload.chapter_count
   end
 
-  test 'updating published_at refreshes last_chapter_at' do
+  test 'scheduling a chapter does not move last_chapter_at into the future' do
+    public_at = chapters(:two).created_at
     scheduled = 2.days.from_now.change(usec: 0)
     patch chapter_url(@chapter), params: {
       chapter: {
@@ -52,6 +53,6 @@ class ChaptersControllerListingStatsTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_equal scheduled, @chapter.fiction.reload.last_chapter_at
+    assert_in_delta public_at, @chapter.fiction.reload.last_chapter_at, 2.seconds
   end
 end

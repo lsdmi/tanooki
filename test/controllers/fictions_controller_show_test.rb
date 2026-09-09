@@ -100,4 +100,33 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
 
     assert_select '.reader-support-card [class*="hover:-translate-y-1"]', count: 0
   end
+
+  test 'show chapters tile is live count even when expected is larger' do
+    @fiction.update!(chapter_count: 160, expected_chapters: 2334, last_chapter_at: 3.days.ago)
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select '.fiction-details .text-2xl', text: '160'
+    assert_select '.fiction-details', text: '2334', count: 0
+  end
+
+  test 'show chapters tile is live count when expected is unknown' do
+    @fiction.update!(chapter_count: 307, expected_chapters: nil, last_chapter_at: nil)
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select '.fiction-details .text-2xl', text: '307'
+  end
+
+  test 'show hides add-chapter CTA when completed_at is set' do
+    @fiction.update!(completed_at: Time.current)
+
+    get fiction_url(@fiction)
+
+    assert_response :success
+    assert_select 'a', text: 'Додати розділ', count: 0
+    assert_includes response.body, 'Ранобе завершено!'
+  end
 end

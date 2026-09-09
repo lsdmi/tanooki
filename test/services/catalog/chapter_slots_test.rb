@@ -13,27 +13,34 @@ module Catalog
       @fiction.chapters.destroy_all
     end
 
-    test 'floors sub-chapters so 1, 2, 3.1, 3.2 count as three slots' do
+    test 'counts decimal chapter numbers separately so 1, 2, 3.1, 3.2 is four slots' do
       create_chapter(number: 1)
       create_chapter(number: 2)
       create_chapter(number: 3.1)
       create_chapter(number: 3.2)
 
-      assert_equal 3, ChapterSlots.call(@fiction)
+      assert_equal 4, ChapterSlots.call(@fiction)
     end
 
-    test 'counts duplicate translations of the same integer once' do
+    test 'counts duplicate translations of the same number once' do
       create_chapter(number: 1)
       create_chapter(number: 1)
 
       assert_equal 1, ChapterSlots.call(@fiction)
     end
 
-    test 'ignores volume so the same integer in two volumes is one slot' do
+    test 'counts duplicate translations of the same decimal number once' do
+      create_chapter(number: 3.1)
+      create_chapter(number: 3.1)
+
+      assert_equal 1, ChapterSlots.call(@fiction)
+    end
+
+    test 'counts the same number in two volumes as two slots' do
       create_chapter(number: 1, volume_number: 1)
       create_chapter(number: 1, volume_number: 2)
 
-      assert_equal 1, ChapterSlots.call(@fiction)
+      assert_equal 2, ChapterSlots.call(@fiction)
     end
 
     test 'returns zero when the listing has no chapters' do

@@ -1,7 +1,7 @@
-<%# locals: skeleton:, pagy:, fictions:, released_by_fiction: %>
+<%# locals: skeleton:, pagy:, fictions: %>
 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
   <% fictions.each_with_index do |fiction, i| %>
-    <% card = skeleton.genre_thumb_card_locals(fiction, released_n: released_by_fiction[fiction.id].to_i, accent_index: pagy.offset + i) %>
+    <% card = skeleton.genre_thumb_card_locals(fiction, accent_index: pagy.offset + i) %>
     <article class="group rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-black/50">
       <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: "relative block aspect-[3/4] bg-gradient-to-br #{card[:accent]} overflow-hidden rounded-t-lg transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 group-hover:brightness-105 dark:focus-visible:ring-violet-400") do %>
         <%= cover_card_picture_tag(fiction.cover, alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" ) %>

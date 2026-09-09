@@ -75,7 +75,7 @@ class FictionListQueryBuilder
   def finished_only(scope)
     return scope if @params['finished'].blank?
 
-    scope.where(status: 'Завершено')
+    scope.listing_finished
   end
 
   def with_recent_chapters_subquery(scope)

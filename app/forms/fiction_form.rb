@@ -9,10 +9,13 @@ class FictionForm
   validate :banner_is_valid
   validate :cover_is_valid
 
+  FORM_ONLY_PARAMS = %i[genre_ids scanlator_ids expected_chapters complete].freeze
+
   def save
     return false unless normalize_cover_upload
 
-    fiction.assign_attributes(params.except(:genre_ids, :scanlator_ids))
+    fiction.assign_attributes(params.except(*FORM_ONLY_PARAMS))
+    apply_listing_editorial
     assign_association_ids_from_params
     if valid? && fiction.save
       fiction
@@ -27,6 +30,24 @@ class FictionForm
   def assign_association_ids_from_params
     fiction.genre_ids = params[:genre_ids] if params.key?(:genre_ids)
     fiction.scanlator_ids = params[:scanlator_ids] if params.key?(:scanlator_ids)
+  end
+
+  def apply_listing_editorial
+    fields = editorial_fields
+    return if fields.empty?
+
+    Catalog::UpdateListingEditorial.call(fiction, **fields)
+  end
+
+  def editorial_fields
+    fields = {}
+    fields[:expected] = params[:expected_chapters] if param?(:expected_chapters)
+    fields[:complete] = params[:complete] if param?(:complete)
+    fields
+  end
+
+  def param?(key)
+    params.key?(key) || params.key?(key.to_s)
   end
 
   def banner_is_valid

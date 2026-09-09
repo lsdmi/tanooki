@@ -55,7 +55,7 @@ class ChaptersController < ApplicationController
   def persist_new_chapter
     if @chapter.save
       sync_chapter_scanlator_links
-      update_fiction_status
+      refresh_chapter_stats
       redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
     else
       render 'chapters/new', status: :unprocessable_content
@@ -65,7 +65,7 @@ class ChaptersController < ApplicationController
   def persist_chapter_update
     if @chapter.update(chapter_params)
       sync_chapter_scanlator_links
-      update_fiction_status
+      refresh_chapter_stats
       redirect_to reading_path(@chapter.fiction, page: @list_page), notice: t('chapters.notices.update_success')
     else
       render 'chapters/edit', status: :unprocessable_content

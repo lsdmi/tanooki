@@ -1,6 +1,5 @@
 <div class="bg-stone-100 dark:bg-gray-900 p-8 rounded-xl shadow-xl border border-stone-300 dark:border-gray-700">
   <h2 class="text-3xl font-bold text-stone-800 dark:text-gray-200 mb-6">Налаштування Твору</h2>
-  <%= f.input :status, as: :hidden, input_html: { value: fiction.status || Fiction.statuses[:announced] } %>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
@@ -61,9 +60,20 @@
 
     <div>
       <div class="relative mb-4">
-        <%= f.label :expected_chapters, 'Кількість розділів', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
+        <%= f.label :expected_chapters, 'Очікувана кількість розділів', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
         <%= f.input :expected_chapters, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600", type: 'number', min: 1 }, label: false, placeholder: '' %>
         <%= tag.p fiction.errors[:expected_chapters].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:expected_chapters].any? %>
+      </div>
+
+      <div class="relative mb-4">
+        <div class="flex items-center">
+          <%= hidden_field_tag 'fiction[complete]', '0', id: nil %>
+          <%= check_box_tag 'fiction[complete]', '1', fiction.completed_at.present?,
+                            id: 'fiction_complete',
+                            class: 'w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 rounded focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2' %>
+          <%= label_tag 'fiction_complete', 'Переклад на Баці завершено', class: 'ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold' %>
+        </div>
+        <p class="text-stone-600 dark:text-gray-400 text-sm mt-1">Позначте, якщо нових розділів на цій сторінці не буде.</p>
       </div>
 
       <div class="relative mb-4">

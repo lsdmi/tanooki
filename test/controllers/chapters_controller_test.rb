@@ -94,13 +94,11 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to reading_path(@chapter.fiction, page: 3)
   end
 
-  test 'update chapter number refreshes fiction status when unique chapters reach total' do
+  test 'update chapter number does not mark the listing finished from chapter count' do
     fiction = @chapter.fiction
-    fiction.update!(status: :ongoing, expected_chapters: 2)
+    fiction.update!(status: :ongoing, expected_chapters: 2, completed_at: nil)
     duplicate = chapters(:two)
     duplicate.update!(number: 1)
-
-    assert_predicate fiction.reload, :ongoing?
 
     patch chapter_url(duplicate), params: {
       chapter: {
@@ -113,7 +111,10 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to reading_path(fiction)
-    assert_predicate fiction.reload, :finished?
+    fiction.reload
+
+    assert_nil fiction.completed_at
+    assert_not_equal :finished, fiction.listing_state
   end
 
   test 'should not update chapter with invalid data' do

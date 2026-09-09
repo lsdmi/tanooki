@@ -50,4 +50,46 @@ class FictionListingProgressTest < ActiveSupport::TestCase
 
     assert_predicate @fiction, :valid?
   end
+
+  test 'listing_state is finished when completed_at is set' do
+    @fiction.completed_at = Time.current
+    @fiction.chapter_count = 10
+    @fiction.last_chapter_at = Time.current
+
+    assert_equal :finished, @fiction.listing_state
+    assert_equal 'Завершено', @fiction.listing_state_label
+  end
+
+  test 'abandoned_at does not affect listing_state' do
+    @fiction.abandoned_at = Time.current
+    @fiction.chapter_count = 10
+    @fiction.last_chapter_at = 1.day.ago
+
+    assert_equal :ongoing, @fiction.listing_state
+  end
+
+  test 'listing_state is announced when nothing is public yet' do
+    @fiction.chapter_count = 4
+    @fiction.last_chapter_at = nil
+
+    assert_equal :announced, @fiction.listing_state
+    assert_equal 'Анонсовано', @fiction.listing_state_label
+  end
+
+  test 'listing_state is stale when last_chapter_at is older than 90 days' do
+    @fiction.chapter_count = 10
+    @fiction.last_chapter_at = (FictionListingProgress::STALE_AFTER + 1.day).ago
+
+    assert_equal :stale, @fiction.listing_state
+    assert_equal 'Покинуто', @fiction.listing_state_label
+  end
+
+  test 'listing_state is ongoing when last_chapter_at is recent' do
+    @fiction.chapter_count = 10
+    @fiction.last_chapter_at = 1.day.ago
+
+    assert_equal :ongoing, @fiction.listing_state
+    assert_equal 'Видається', @fiction.listing_state_label
+    assert_equal 'Видаєт.', @fiction.listing_state_label_short
+  end
 end

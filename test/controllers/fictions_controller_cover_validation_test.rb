@@ -23,7 +23,6 @@ class FictionsControllerCoverValidationTest < ActionDispatch::IntegrationTest
             'image/svg'
           ),
           scanlator_ids: [1],
-          status: :announced,
           user_id: @fiction.user_id
         }
       }

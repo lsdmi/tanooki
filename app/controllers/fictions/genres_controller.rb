@@ -25,8 +25,7 @@ module Fictions
              locals: {
                skeleton: @skeleton,
                pagy: @pagy_genre_recent,
-               fictions: @genre_recent_fictions,
-               released_by_fiction: @genre_recent_released_counts
+               fictions: @genre_recent_fictions
              }
       true
     end
@@ -49,13 +48,6 @@ module Fictions
       exclude_ids = @skeleton.popular_top_eight_fiction_ids
       scope = Fictions::IndexVariablesManager.genre_recent_updates_excluding(@genre, exclude_ids: exclude_ids)
       @pagy_genre_recent, @genre_recent_fictions = pagy(scope, limit: 12)
-      ids = @genre_recent_fictions.map(&:id)
-      @genre_recent_released_counts =
-        if ids.empty?
-          {}
-        else
-          Chapter.where(fiction_id: ids).merge(Chapter.released).group(:fiction_id).count
-        end
     end
   end
 end

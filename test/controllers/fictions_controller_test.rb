@@ -60,7 +60,6 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
           description: 'a' * 50,
           cover: valid_cover_upload,
           scanlator_ids: [1],
-          status: :announced,
           user_id: @fiction.user_id
         }
       }

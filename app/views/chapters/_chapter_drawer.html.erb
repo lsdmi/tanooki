@@ -28,7 +28,7 @@
               <span><%= fiction.author %></span>
               <span class="mx-1 text-stone-400 dark:text-zinc-600" aria-hidden="true">•</span>
             <% end %>
-            <span><%= Fiction.statuses[fiction.status] %></span>
+            <span><%= fiction.listing_state_label %></span>
           </p>
           <p class="mt-0.5 truncate text-sm text-stone-600 dark:text-zinc-400">
             <%= fiction_chapter_drawer_count(fiction) %>
