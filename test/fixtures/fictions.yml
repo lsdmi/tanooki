@@ -1,7 +1,6 @@
 one:
   id: 1
   slug: 'one'
-  status: 'announced'
   title: "Test Fiction"
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -10,7 +9,6 @@ one:
 two:
   id: 2
   slug: 'two'
-  status: 'announced'
   title: "Test Fiction 2"
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."

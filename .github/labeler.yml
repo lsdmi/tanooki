@@ -13,7 +13,6 @@ jobs:
           - .github/workflows/triage-solid-queue-failed.yml
           - .github/workflows/purge-expired-epub-exports.yml
           - .github/workflows/rails-prod-rake.yml
-          - .github/workflows/refresh-dropped-fictions.yml
           - .github/workflows/sync-youtube-videos.yml
           - .github/workflows/telegram-digests.yml
           - .github/workflows/ops-rake.yml

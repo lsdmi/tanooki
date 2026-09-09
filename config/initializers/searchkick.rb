@@ -4,7 +4,7 @@
 # OpenSearch configured, index inline so new records appear in search without a worker.
 module SearchkickCallbacks
   def self.mode
-    return false unless Rails.env.production? || ENV['OPENSEARCH_URL'].present?
+    return false if ENV['OPENSEARCH_URL'].blank?
 
     Rails.env.development? ? :inline : :async
   end
@@ -21,7 +21,7 @@ module SearchkickCallbacks
   end
 end
 
-if Rails.env.production? || (Rails.env.development? && ENV['OPENSEARCH_URL'].present?)
+if ENV['OPENSEARCH_URL'].present?
   require 'opensearch-ruby'
 
   credentials = [

@@ -7,7 +7,7 @@ class FictionListingProgressTest < ActiveSupport::TestCase
     @user = users(:user_one)
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                           expected_chapters: 5, status: :announced, user_id: @user.id)
+                           expected_chapters: 5, user_id: @user.id)
     @fiction.cover.attach(valid_cover_upload)
   end
 
@@ -58,14 +58,6 @@ class FictionListingProgressTest < ActiveSupport::TestCase
 
     assert_equal :finished, @fiction.listing_state
     assert_equal 'Завершено', @fiction.listing_state_label
-  end
-
-  test 'abandoned_at does not affect listing_state' do
-    @fiction.abandoned_at = Time.current
-    @fiction.chapter_count = 10
-    @fiction.last_chapter_at = 1.day.ago
-
-    assert_equal :ongoing, @fiction.listing_state
   end
 
   test 'listing_state is announced when nothing is public yet' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_122000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_09_200000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -181,7 +181,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_122000) do
   end
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.datetime "abandoned_at"
     t.boolean "adult_content", default: false, null: false
     t.string "alternative_title"
     t.string "author", null: false
@@ -197,15 +196,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_122000) do
     t.string "origin"
     t.text "short_description"
     t.string "slug", null: false
-    t.string "status", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.integer "views", default: 0
-    t.index ["completed_at", "abandoned_at", "last_chapter_at"], name: "index_fictions_on_listing_progress"
+    t.index ["completed_at", "last_chapter_at"], name: "index_fictions_on_listing_progress"
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
-    t.index ["status", "deleted_at", "created_at"], name: "index_fictions_on_status_deleted_created"
-    t.index ["status"], name: "index_fictions_on_status"
     t.index ["views"], name: "index_fictions_on_views"
   end
 

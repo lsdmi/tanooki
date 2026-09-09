@@ -21,16 +21,15 @@ module FictionListingProgress
     validates :expected_chapters, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
     validate :expected_chapters_at_least_chapter_count, if: :will_save_change_to_expected_chapters?
 
-    # Named listing_* so they do not clobber Fiction.statuses enum scopes until phase 9.
-    scope :listing_finished, -> { where.not(completed_at: nil) }
-    scope :listing_live, lambda {
+    scope :finished, -> { where.not(completed_at: nil) }
+    scope :live, lambda {
       where(completed_at: nil).where.not(chapter_count: 0).where(last_chapter_at: STALE_AFTER.ago..)
     }
-    scope :listing_announced, lambda {
+    scope :announced, lambda {
       table = arel_table
       where(completed_at: nil).where(table[:chapter_count].eq(0).or(table[:last_chapter_at].eq(nil)))
     }
-    scope :listing_stale, lambda {
+    scope :stale, lambda {
       where(completed_at: nil)
         .where.not(chapter_count: 0)
         .where(arel_table[:last_chapter_at].lt(STALE_AFTER.ago))

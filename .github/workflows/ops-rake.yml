@@ -13,7 +13,6 @@ on:
           - books:purge_expired_epub_exports
           - chapters:compress_recent
           - chapters:compress_inline_images
-          - fictions:refresh_dropped_status
           - fictions:warm_index_cache
           - solid_queue:clear_finished
           - solid_queue:triage

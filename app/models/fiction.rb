@@ -34,12 +34,10 @@ class Fiction < ApplicationRecord
   has_many :bookshelf_fictions, dependent: :destroy
   has_many :bookshelves, through: :bookshelf_fictions
 
-  enum :status, { announced: 'Анонсовано', dropped: 'Покинуто', ongoing: 'Видається', finished: 'Завершено' }
   enum :origin, { nknown: 'невідоме', english: 'англійське', bosnian: 'боснійське', italian: 'італійське',
                   chinese: 'китайське', korean: 'корейське', dutch: 'нідерландське', polish: 'польське',
                   thai: 'тайське', ukrainian: 'українське', french: 'французьке', japanese: 'японське' }
 
-  before_validation :assign_default_status, on: :create
   before_validation :cleanup_scanlator_ids
 
   validates :cover, presence: true
@@ -91,15 +89,7 @@ class Fiction < ApplicationRecord
     [title.to_s.downcase]
   end
 
-  def set_dropped_status
-    Fictions::InactivityDrop.new(self).call
-  end
-
   private
-
-  def assign_default_status
-    self.status = :announced if status.blank?
-  end
 
   def cover_format
     return unless cover.attached?

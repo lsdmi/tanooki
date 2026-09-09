@@ -10,7 +10,7 @@ class HotLookupIndexesTest < ActiveSupport::TestCase
   test 'hot lookup indexes exist' do
     assert @connection.index_exists?(:scanlators, :slug, unique: true)
     assert @connection.index_exists?(:chapters, %i[fiction_id deleted_at published_at])
-    assert @connection.index_exists?(:fictions, %i[status deleted_at created_at])
+    assert @connection.index_exists?(:fictions, %i[completed_at last_chapter_at])
   end
 
   test 'scanlator slug lookup uses slug index' do
@@ -28,10 +28,11 @@ class HotLookupIndexesTest < ActiveSupport::TestCase
     assert_includes possible_keys, 'index_chapters_on_fiction_deleted_published'
   end
 
-  test 'fiction status lists use status deleted created index' do
-    sql = Fiction.where(status: 'Видається').order(created_at: :desc).limit(20).to_sql
+  test 'listing finished filter can use listing progress index' do
+    sql = Fiction.finished.order(last_chapter_at: :desc).limit(20).to_sql
+    possible_keys = explain_possible_keys(sql)
 
-    assert_index_used(sql, 'index_fictions_on_status_deleted_created')
+    assert_includes possible_keys, 'index_fictions_on_listing_progress'
   end
 
   private

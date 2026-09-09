@@ -7,7 +7,7 @@ class FictionTest < ActiveSupport::TestCase
     @user = users(:user_one)
     @fiction = Fiction.new(title: 'Test Fiction', author: 'Test Author', scanlator_ids: [1],
                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                           expected_chapters: 5, status: :announced, user_id: @user.id)
+                           expected_chapters: 5, user_id: @user.id)
     @fiction.cover.attach(valid_cover_upload)
   end
 

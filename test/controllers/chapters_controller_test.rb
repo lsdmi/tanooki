@@ -96,7 +96,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'update chapter number does not mark the listing finished from chapter count' do
     fiction = @chapter.fiction
-    fiction.update!(status: :ongoing, expected_chapters: 2, completed_at: nil)
+    fiction.update!(expected_chapters: 2, completed_at: nil)
     duplicate = chapters(:two)
     duplicate.update!(number: 1)
 

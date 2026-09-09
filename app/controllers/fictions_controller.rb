@@ -50,12 +50,12 @@ class FictionsController < ApplicationController
 
   def create
     @fiction = Fiction.new
-    persist_fiction(Fictions::SyncAssociations, :new, t('fictions.notices.create_success'))
+    persist_fiction(:new, t('fictions.notices.create_success'))
   end
 
   def update
     @fiction = Fiction.find(params.expect(:id))
-    persist_fiction(Fictions::SyncAssociationsAndStatus, :edit, t('fictions.notices.update_success'))
+    persist_fiction(:edit, t('fictions.notices.update_success'))
   end
 
   def destroy

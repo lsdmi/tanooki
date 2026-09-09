@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Syncs genre and scanlator links after a fiction is created.
+  # Syncs genre and scanlator links after a fiction is saved.
   class SyncAssociations
     def initialize(fiction, genre_ids:, scanlator_ids:, user: nil)
       @fiction = fiction

@@ -12,8 +12,9 @@ class FictionListQueryBuilderTest < ActiveSupport::TestCase
     @open.update!(completed_at: nil)
   end
 
-  test 'finished filter uses listing_finished not status' do
-    @finished.update!(status: :ongoing)
+  test 'finished filter uses completed_at not chapter recency' do
+    @finished.update!(last_chapter_at: 1.day.ago, chapter_count: 3)
+    @open.update!(last_chapter_at: 1.day.ago, chapter_count: 3)
 
     ids = FictionListQueryBuilder.new(Fiction.all, finished: '1').call.map(&:id)
 

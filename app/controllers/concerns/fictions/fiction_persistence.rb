@@ -7,18 +7,18 @@ module Fictions
 
     private
 
-    def persist_fiction(sync_class, failure_template, notice)
+    def persist_fiction(failure_template, notice)
       form = FictionForm.new(fiction: @fiction, params: fiction_params)
       if form.save
-        sync_fiction_associations(sync_class)
+        sync_fiction_associations
         redirect_to @fiction, notice: notice
       else
         render failure_template, status: :unprocessable_content
       end
     end
 
-    def sync_fiction_associations(sync_class)
-      sync_class.new(
+    def sync_fiction_associations
+      Fictions::SyncAssociations.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
         scanlator_ids: fiction_params[:scanlator_ids],
