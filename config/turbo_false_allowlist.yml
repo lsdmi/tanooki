@@ -3,11 +3,11 @@
 # Verified: 2026-08-12 — 23 occurrences across 15 files (OmniAuth keeps turbo:false).
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
-  - app/views/fictions/edit.html.erb:3
+  - app/views/fictions/edit.html.erb:5
   - app/views/fictions/new.html.erb:3
-  - app/views/readings/_chapters.html.erb:118
-  - app/views/readings/_chapters.html.erb:137
-  - app/views/readings/_chapters.html.erb:193
+  - app/views/readings/_chapters.html.erb:120
+  - app/views/readings/_chapters.html.erb:139
+  - app/views/readings/_chapters.html.erb:195
   - app/views/readings/chapter_row_component/_actions.html.erb:9
   - app/views/scanlators/_team_card.html.erb:29
   - app/views/studio/tabs/_blogs.html.erb:13

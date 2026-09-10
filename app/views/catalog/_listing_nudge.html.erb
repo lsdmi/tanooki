@@ -1,0 +1,30 @@
+<%# locals: (fiction:, wrapper_class: nil) %>
+<% nudge = Catalog::ListingNudge.for(fiction) %>
+<% if nudge %>
+  <% primary_url = case nudge.kind
+                   when Catalog::ListingNudge::POSTED_AFTER_COMPLETE then reopen_fiction_listing_nudge_path(fiction)
+                   when Catalog::ListingNudge::STALE_PLAN then raise_expected_fiction_listing_nudge_path(fiction)
+                   else complete_fiction_listing_nudge_path(fiction)
+                   end %>
+  <section class="rounded-lg border border-cyan-200 bg-cyan-50 p-4 shadow-sm dark:border-rose-900/40 dark:bg-rose-950/40 sm:p-6 <%= wrapper_class %>" aria-label="<%= t("fictions.listing_nudges.#{nudge.kind}.title") %>">
+    <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+      <%= t("fictions.listing_nudges.#{nudge.kind}.title") %>
+    </h2>
+    <p class="mb-4 text-sm text-gray-600 dark:text-gray-300 sm:text-base">
+      <%= t("fictions.listing_nudges.#{nudge.kind}.body", count: nudge.chapter_count, plan: nudge.expected_chapters) %>
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <%= form_with url: primary_url, method: :post, class: 'inline' do %>
+        <%= ui_button(as: :submit, size: :md, label: t("fictions.listing_nudges.#{nudge.kind}.action")) %>
+      <% end %>
+      <% if nudge.kind == Catalog::ListingNudge::STALE_PLAN %>
+        <%= form_with url: clear_expected_fiction_listing_nudge_path(fiction), method: :post, class: 'inline' do %>
+          <%= ui_button(as: :submit, variant: :ghost, size: :md, label: t('fictions.listing_nudges.stale_plan.clear')) %>
+        <% end %>
+      <% end %>
+      <%= form_with url: dismiss_fiction_listing_nudge_path(fiction), method: :post, class: 'inline' do %>
+        <%= ui_button(as: :submit, variant: :ghost, size: :md, label: t("fictions.listing_nudges.#{nudge.kind}.dismiss")) %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

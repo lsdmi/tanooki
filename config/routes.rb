@@ -74,6 +74,13 @@ Rails.application.routes.draw do
   end
   resources :fictions do
     resources :fiction_ratings, only: %i[create update]
+    resource :listing_nudge, only: [], module: :catalog, controller: 'listing_nudges' do
+      post :complete
+      post :reopen
+      post :raise_expected
+      post :clear_expected
+      post :dismiss
+    end
   end
 
   resources :fictions, only: [] do
