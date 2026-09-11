@@ -47,10 +47,19 @@ class ApplicationController < ActionController::Base
   end
 
   def track_visit
+    return if turbo_prefetch_request?
+
     Analytics::ViewIncrement.new(
       @publication || @chapter || @fiction || @youtube_video || @bookshelf,
       session
     ).call
+  end
+
+  # Turbo Drive/preload fetches send this header; treat them as cache fills, not visits.
+  def turbo_prefetch_request?
+    return false unless request
+
+    request.headers['X-Sec-Purpose'] == 'prefetch'
   end
 
   def verify_user_permissions

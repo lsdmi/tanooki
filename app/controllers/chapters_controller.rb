@@ -4,6 +4,7 @@
 class ChaptersController < ApplicationController
   include ChapterFictionStatusUpdate
   include Chapters::CreationAuthorization
+  include Chapters::ShowTracking
   include ChaptersViewHelpers
   include ChapterScheduleParams
   include FictionQuery
@@ -97,22 +98,6 @@ class ChaptersController < ApplicationController
                 { scanlator_ids: [] }]
     )
     merge_published_at_from_schedule_fields(permitted)
-  end
-
-  def track_reading_progress
-    Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
-  end
-
-  # Every-4th-chapter session cadence gates only the auto-opening ad drawer, not top/bottom reader slots.
-  def assign_reader_ad_drawer_session
-    @reader_ad_drawer_open = false
-    return unless chapter_reader_ad_drawer_live?
-
-    state, @reader_ad_drawer_open = Reading::AdDrawerSession.call(
-      chapter_id: @chapter.id,
-      session_state: session[:reader_ad_drawer]
-    )
-    session[:reader_ad_drawer] = state
   end
 
   def verify_permissions
