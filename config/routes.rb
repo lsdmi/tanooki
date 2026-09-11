@@ -48,7 +48,11 @@ Rails.application.routes.draw do
       get :cancel_reply
     end
   end
-  resources :chapters, except: %i[index destroy]
+  resources :chapters, except: %i[index destroy] do
+    member do
+      post :record_progress
+    end
+  end
   resources :fictions, only: [] do
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'

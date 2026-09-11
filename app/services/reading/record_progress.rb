@@ -11,9 +11,27 @@ module Reading
     end
 
     def call
-      return unless user
+      return false unless user
 
-      progress = ReadingProgress.find_or_initialize_by(fiction_id: chapter.fiction.id, user_id: user.id)
+      progress = find_progress
+      return false if already_on_chapter?(progress)
+      return false unless save_chapter!(progress)
+
+      ProgressCacheInvalidation.new(user, chapter.fiction).clear
+      true
+    end
+
+    private
+
+    def find_progress
+      ReadingProgress.find_or_initialize_by(fiction_id: chapter.fiction.id, user_id: user.id)
+    end
+
+    def already_on_chapter?(progress)
+      progress.persisted? && progress.chapter_id == chapter.id
+    end
+
+    def save_chapter!(progress)
       progress.chapter_id = chapter.id
       progress.save
     end

@@ -9,6 +9,7 @@ module ReadingHistory
 
     def call
       @user.readings.includes(
+        :chapter,
         fiction: [:cover_attachment, { scanlators: :avatar_attachment }]
       ).order(updated_at: :desc)
     end

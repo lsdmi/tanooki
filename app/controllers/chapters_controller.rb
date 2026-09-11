@@ -10,13 +10,13 @@ class ChaptersController < ApplicationController
   include FictionQuery
 
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_chapter, only: %i[show edit update]
+  before_action :set_chapter, only: %i[show edit update record_progress]
   before_action :set_list_page, only: %i[edit update]
   before_action :set_fiction_for_chapter_create, only: %i[new create]
   before_action :authorize_chapter_creation, only: %i[new create]
-  before_action :redirect_if_chapter_not_yet_public, only: :show
+  before_action :redirect_if_chapter_not_yet_public, only: %i[show record_progress]
   before_action :track_visit, :track_reading_progress, only: :show
-  before_action :verify_permissions, except: %i[new create show]
+  before_action :verify_permissions, except: %i[new create show record_progress]
 
   def show
     @comments = load_chapter_comments
@@ -29,6 +29,12 @@ class ChaptersController < ApplicationController
     )
     @fiction_sidebar_presenter = FictionShowPresenter.new(@chapter.fiction, current_user, params)
     assign_reader_ad_drawer_session
+  end
+
+  # Used when Turbo shows a prefetched chapter: show skipped progress on prefetch, this records on real view.
+  def record_progress
+    changed = Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
+    head(changed ? :ok : :no_content)
   end
 
   def new

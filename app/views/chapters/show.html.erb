@@ -1,5 +1,12 @@
+<%
+  reader_controllers = 'comments-drawer jump-to-top chapter-drawer reader-settings'
+  reader_controllers = "#{reader_controllers} reading-progress" if user_signed_in?
+%>
 <div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
-     data-controller="comments-drawer jump-to-top chapter-drawer reader-settings">
+     data-controller="<%= reader_controllers %>"
+     <% if user_signed_in? %>
+       data-reading-progress-url-value="<%= record_progress_chapter_path(@chapter) %>"
+     <% end %>>
   <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= cover_background_url(@chapter.fiction.cover) %>');"></div>
   <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
 
