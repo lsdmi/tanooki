@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       post :reopen
       post :raise_expected
       post :clear_expected
+      post :mark_adult
       post :dismiss
     end
   end

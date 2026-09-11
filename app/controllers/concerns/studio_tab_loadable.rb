@@ -7,7 +7,7 @@ module StudioTabLoadable
 
   STUDIO_TAB_COLLECTION_DEFAULTS = %i[
     comments fictions publications avatars scanlators bookshelves epub_export_requests
-    cover_quality_flags
+    cover_quality_flags listing_nudge_flags
   ].freeze
 
   private
@@ -39,7 +39,7 @@ module StudioTabLoadable
   def assign_instance_variables
     STUDIO_TAB_COLLECTION_DEFAULTS.each do |name|
       ivar = :"@#{name}"
-      default = name == :cover_quality_flags ? {} : []
+      default = %i[cover_quality_flags listing_nudge_flags].include?(name) ? {} : []
       instance_variable_set(ivar, instance_variable_get(ivar) || default)
     end
   end

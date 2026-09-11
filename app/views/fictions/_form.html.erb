@@ -59,9 +59,9 @@
     </div>
 
     <div>
-      <div class="relative mb-4">
+      <div id="fiction_expected_chapters" class="relative mb-4 scroll-mt-24">
         <%= f.label :expected_chapters, 'Очікувана кількість розділів', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :expected_chapters, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600", type: 'number', min: 1 }, label: false, placeholder: '' %>
+        <%= f.input :expected_chapters, input_html: { id: 'fiction_expected_chapters_input', class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600", type: 'number', min: 1 }, label: false, placeholder: '' %>
         <%= tag.p fiction.errors[:expected_chapters].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:expected_chapters].any? %>
       </div>
 
@@ -89,9 +89,9 @@
         <p class="text-stone-600 dark:text-gray-400 text-sm mt-1">Позначте, якщо твір містить контент, призначений лише для дорослої аудиторії</p>
       </div>
 
-      <div class="relative mb-4">
+      <div id="fiction_genre_ids" class="relative mb-4 scroll-mt-24">
         <%= f.label :genre_ids, 'Жанри', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genre_ids.presence || f.object.genres.ids), {}, { data: { controller: 'slim' }, multiple: true, class: 'w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600' } %>
+        <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genre_ids.presence || f.object.genres.ids), {}, { id: 'fiction_genre_ids_select', data: { controller: 'slim' }, multiple: true, class: 'w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600' } %>
       </div>
 
       <div class="relative mb-4">

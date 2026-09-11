@@ -8,6 +8,7 @@ module Studio
     ASSIGNMENT_KEYS = %i[
       pagy publications pokemon_show scanlators fictions comments avatars bookshelves epub_export_requests
       cover_quality_flags
+      listing_nudge_flags
     ].freeze
 
     def initialize(user, active_tab, params = {})
@@ -53,8 +54,9 @@ module Studio
     end
 
     def writings_content_loader
-      @pagy, @fictions = pagy(fiction_list.includes(cover_attachment: :blob), limit: 8)
+      @pagy, @fictions = pagy(fiction_list.includes(:genres, cover_attachment: :blob), limit: 8)
       @cover_quality_flags = Fictions::CoverQualityFlags.for_fictions(@fictions)
+      @listing_nudge_flags = Catalog::ListingNudgeFlags.for_fictions(@fictions)
     end
 
     def notifications_content_loader

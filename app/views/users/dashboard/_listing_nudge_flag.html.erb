@@ -1,0 +1,9 @@
+<%# locals: (flag:, fiction:) %>
+<% return if flag.blank? %>
+
+<%= link_to reading_path(fiction),
+            turbo_drive_visit_data.merge(
+              class: 'mt-2 block rounded-md border border-stone-200 bg-stone-50/70 px-3 py-2 text-xs leading-snug text-stone-700 hover:bg-stone-100 dark:border-zinc-700 dark:bg-zinc-900/40 dark:text-zinc-300 dark:hover:bg-zinc-800/60'
+            ) do %>
+  <p class="whitespace-normal"><%= flag.body %></p>
+<% end %>

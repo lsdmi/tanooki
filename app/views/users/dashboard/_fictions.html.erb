@@ -1,5 +1,6 @@
 <div class="space-y-6">
   <% cover_quality_flags ||= {} %>
+  <% listing_nudge_flags ||= {} %>
   <% if current_user.scanlators.any? || current_user.admin? %>
     <!-- CTA Card -->
     <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
@@ -54,6 +55,7 @@
                             Створено: <%= l(fiction.created_at, format: :short).downcase %>
                           </p>
                           <%= render 'users/dashboard/cover_quality_flag', flag: cover_quality_flags[fiction.id] %>
+                          <%= render 'users/dashboard/listing_nudge_flag', flag: listing_nudge_flags[fiction.id], fiction: fiction %>
                         </div>
                       </div>
                     </th>
@@ -139,6 +141,7 @@
                       Створено: <%= l(fiction.created_at, format: :short).downcase %>
                     </p>
                     <%= render 'users/dashboard/cover_quality_flag', flag: cover_quality_flags[fiction.id] %>
+                    <%= render 'users/dashboard/listing_nudge_flag', flag: listing_nudge_flags[fiction.id], fiction: fiction %>
                   </div>
                 </div>
 
