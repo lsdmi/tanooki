@@ -82,18 +82,6 @@ module Fictions
       end
     end
 
-    test 'filtered_by_genre uses cached ids after first fetch' do
-      with_memory_cache do
-        genre = genres(:one)
-
-        IndexVariablesManager.filtered_by_genre(genre)
-
-        IndexVariablesManager.stub(:filtered_fiction_ids_for_genre, ->(_genre_id) { raise 'cache miss' }) do
-          assert_nothing_raised { IndexVariablesManager.filtered_by_genre(genre).load }
-        end
-      end
-    end
-
     test 'originals uses cached ids after first fetch' do
       with_memory_cache do
         IndexVariablesManager.originals

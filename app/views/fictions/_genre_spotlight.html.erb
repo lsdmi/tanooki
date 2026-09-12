@@ -1,0 +1,41 @@
+<%# locals: (entries:) %>
+<% return if entries.blank? %>
+<% featured, *rest = entries %>
+<section class="mb-8 lg:mb-14" aria-labelledby="fictions-index-genres">
+  <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
+    <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
+    <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
+      <h2 id="fictions-index-genres"
+          class="text-xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100 lg:text-2xl">
+        Жанри
+      </h2>
+      <%= render 'root/section_more_link',
+                 path: alphabetical_fictions_path,
+                 link_class: 'text-cyan-700 dark:text-rose-400' %>
+    </div>
+  </header>
+
+  <%# Mobile / tablet: equal horizontal strip %>
+  <div
+    class="-mr-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-1 [-webkit-overflow-scrolling:touch] md:-mr-6 md:gap-4 lg:hidden"
+    role="region"
+    aria-label="Жанри">
+    <% entries.each do |entry| %>
+      <div class="snap-start">
+        <%= render 'genre_spotlight_card', entry: %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Desktop: fixed 450px band — featured matches two small rows + 24px gap. %>
+  <div class="hidden h-[450px] overflow-visible lg:flex lg:gap-[52px]" role="region" aria-label="Жанри">
+    <%= render 'genre_spotlight_card', entry: featured, featured: true %>
+    <% if rest.any? %>
+      <div class="grid h-full min-w-0 flex-1 grid-cols-5 grid-rows-2 gap-6 overflow-visible">
+        <% rest.each do |entry| %>
+          <%= render 'genre_spotlight_card', entry:, fill: true %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

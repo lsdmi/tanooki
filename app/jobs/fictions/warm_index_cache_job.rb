@@ -7,7 +7,6 @@ module Fictions
 
     def perform
       IndexVariablesManager.warm_index_caches!
-      FictionIndexPresenter.warm_caches!
     end
   end
 end

@@ -1,0 +1,32 @@
+<%# locals: (fictions:) %>
+<% covers = fictions %>
+<% slots = %w[front left right] %>
+<% face_class = [
+     'absolute overflow-hidden rounded-xl bg-stone-200',
+     'shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_1px_2px_rgb(0_0_0/0.06)]',
+     'dark:bg-slate-800 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_1px_2px_rgb(0_0_0/0.2)]',
+     'data-[slot=front]:inset-y-0 data-[slot=front]:left-[14%] data-[slot=front]:right-[14%] data-[slot=front]:z-10',
+     'data-[slot=front]:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_4px_6px_rgb(0_0_0/0.1)]',
+     'dark:data-[slot=front]:shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_4px_6px_rgb(0_0_0/0.35)]',
+     'data-[slot=left]:bottom-0 data-[slot=left]:left-0 data-[slot=left]:right-[28%] data-[slot=left]:top-[16%] data-[slot=left]:z-[1]',
+     'data-[slot=right]:bottom-0 data-[slot=right]:left-[28%] data-[slot=right]:right-0 data-[slot=right]:top-[16%] data-[slot=right]:z-[1]',
+     'data-[slot=solo]:inset-0 data-[slot=solo]:z-10',
+     'desktop-fine-hover:transition-[left,right,top,bottom,box-shadow] desktop-fine-hover:duration-[550ms]',
+     'desktop-fine-hover:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:!transition-none'
+   ].join(' ') %>
+<div class="h-full min-h-0 w-full desktop-fine-hover:origin-center desktop-fine-hover:transition-transform desktop-fine-hover:duration-300 desktop-fine-hover:group-hover:scale-105 desktop-fine-hover:group-focus-visible:scale-105 motion-reduce:!transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100">
+  <div class="relative h-full w-full">
+    <% covers.each_with_index do |fiction, index| %>
+      <% slot = covers.one? ? 'solo' : slots.fetch(index) %>
+      <div class="<%= face_class %>"
+           data-genre-cover-stack-target="cover"
+           data-slot="<%= slot %>">
+        <%= cover_card_picture_tag(fiction.cover,
+                      alt: '',
+                      aria: { hidden: true },
+                      class: 'h-full w-full object-cover object-center',
+                      loading: 'lazy') %>
+      </div>
+    <% end %>
+  </div>
+</div>

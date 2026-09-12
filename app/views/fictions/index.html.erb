@@ -35,23 +35,9 @@
     <div class="px-2 xl:px-0">
     <%= render 'fanfictions', fictions: @index_presenter.fanfictions %>
 
-    <!-- Mid-page Banner and Translation Request Section -->
+    <%= render 'genre_spotlight', entries: @index_presenter.genre_spotlight %>
+
     <%= render 'fictions/genres/promo_row' %>
-
-    <!-- Second Section: Rankings and Filtered Fictions -->
-    <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
-      <!-- Rankings -->
-      <div class="w-full lg:w-1/3">
-        <%= render 'top_fictions',
-                   fictions: @index_presenter.most_reads_sidebar,
-                   released_chapter_counts: @index_presenter.released_chapters_counts_for_most_reads %>
-      </div>
-
-      <!-- Filtered Fictions -->
-      <div class="w-full lg:w-2/3">
-        <%= render 'filtered_fiction_list', fictions: @index_presenter.other, genres: @index_presenter.genres, sample_genre: @index_presenter.sample_genre %>
-      </div>
-    </div>
     </div>
   </div>
 </div>

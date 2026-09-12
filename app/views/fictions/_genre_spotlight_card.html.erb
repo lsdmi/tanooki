@@ -1,0 +1,34 @@
+<%# locals: (entry:, featured: false, fill: false) %>
+<% genre = entry.genre %>
+<% animate = entry.fictions.size >= 2 %>
+<% link_data = turbo_drive_visit_data[:data] || {} %>
+<% link_data = link_data.merge(controller: 'genre-cover-stack') if animate %>
+<%= link_to fiction_genre_fictions_path(genre),
+            {
+              data: link_data,
+              class: [
+                'group relative flex min-w-0 flex-col rounded-xl text-left focus:outline-none',
+                'focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2',
+                'focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900',
+                'lg:transition-[z-index] lg:hover:z-20 lg:focus-visible:z-20',
+                if featured
+                  'h-full w-[367px] max-w-full shrink-0'
+                elsif fill
+                  'h-full min-h-0 w-full'
+                else
+                  'h-[213px] w-[153px] shrink-0'
+                end
+              ].join(' ')
+            } do %>
+  <div class="min-h-0 flex-1">
+    <%= render 'genre_spotlight_covers', fictions: entry.fictions %>
+  </div>
+  <div class="shrink-0 <%= featured ? 'mt-4' : 'mt-3' %>">
+    <p class="truncate font-semibold leading-tight text-stone-900 transition-colors group-hover:text-cyan-700 dark:text-slate-100 dark:group-hover:text-rose-400 <%= featured ? 'text-2xl' : fill ? 'text-base' : 'text-sm' %>">
+      <%= genre.name %>
+    </p>
+    <p class="mt-0.5 truncate text-stone-500 dark:text-slate-400 <%= featured ? 'text-base' : fill ? 'text-sm' : 'text-xs' %>">
+      <%= number_with_delimiter(entry.fictions_count) %> творів
+    </p>
+  </div>
+<% end %>

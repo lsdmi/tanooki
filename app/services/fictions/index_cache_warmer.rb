@@ -4,19 +4,8 @@ module Fictions
   # Preloads fiction index cache keys used by the homepage and warm job.
   class IndexCacheWarmer
     def self.call
-      warm_list_caches
-      warm_genre_caches
-    end
-
-    def self.warm_list_caches
       warm_cached_list_ids
       warm_badge_and_side_caches
-    end
-
-    def self.warm_genre_caches
-      Genre.order(:name).pluck(:id).each do |genre_id|
-        IndexVariablesManager.send(:cached_filtered_fiction_ids, genre_id)
-      end
     end
 
     def self.warm_cached_list_ids
@@ -37,6 +26,7 @@ module Fictions
       IndexShowcase.for_index
       IndexHotUpdates.fictions
       IndexHotUpdates.counts
+      IndexGenreSpotlight.warm!
     end
     private_class_method :warm_badge_and_side_caches
   end

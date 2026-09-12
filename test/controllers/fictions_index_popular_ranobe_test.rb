@@ -21,13 +21,6 @@ class FictionsIndexPopularRanobeTest < ActionDispatch::IntegrationTest
                   maximum: Fictions::IndexVariablesManager::MOST_READS_INDEX_CARDS
   end
 
-  test 'legacy top ranobe column still shows the first six' do
-    get fictions_path
-
-    assert_select 'h2', text: 'Топ Ранобе'
-    assert_select 'img.h-48', maximum: Fictions::IndexVariablesManager::MOST_READS_SIDEBAR_CARDS
-  end
-
   test 'ranked strip renders genres as pills' do
     get fictions_path
 

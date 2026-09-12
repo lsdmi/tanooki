@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
-# View-model for the fictions index: carousels and list filter state.
+# View-model for the fictions index carousels and sections.
 class FictionIndexPresenter
-  GENRES_CACHE_EXPIRY = 24.hours
-
-  def self.warm_caches!
-    Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
-      Genre.order(:name).distinct.to_a
-    end
-  end
-
   def popular_novelty
     @popular_novelty ||= Fictions::IndexVariablesManager.popular_novelty
   end
@@ -45,21 +37,8 @@ class FictionIndexPresenter
     @fanfictions ||= Fictions::IndexVariablesManager.fanfictions
   end
 
-  def most_reads_sidebar
-    Array(most_reads).first(Fictions::IndexVariablesManager::MOST_READS_SIDEBAR_CARDS)
-  end
-
-  def released_chapters_counts_for_most_reads
-    @released_chapters_counts_for_most_reads ||= begin
-      fiction_ids = most_reads_sidebar.map(&:id)
-      Rails.cache.fetch(['fiction_index/released_chapters_by_fiction', fiction_ids.sort],
-                        expires_in: Fictions::IndexVariablesManager::MOST_READS_CACHE_EXPIRY) do
-        Chapter.released
-               .where(fiction_id: fiction_ids)
-               .group(:fiction_id)
-               .count
-      end
-    end
+  def genre_spotlight
+    @genre_spotlight ||= Fictions::IndexVariablesManager.genre_spotlight
   end
 
   def latest_updates
@@ -80,20 +59,6 @@ class FictionIndexPresenter
 
   def carousel_latest_update_ids
     @carousel_latest_update_ids ||= Fictions::IndexVariablesManager.latest_updates_ids_for_badges
-  end
-
-  def genres
-    @genres ||= Rails.cache.fetch('fiction_index/genres', expires_in: GENRES_CACHE_EXPIRY) do
-      Genre.order(:name).distinct.to_a
-    end
-  end
-
-  def sample_genre
-    @sample_genre ||= genres.sample
-  end
-
-  def other
-    @other ||= Fictions::IndexVariablesManager.filtered_by_genre(sample_genre)
   end
 
   def showcase

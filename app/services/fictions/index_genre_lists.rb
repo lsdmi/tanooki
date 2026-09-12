@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Genre-filtered fiction lists for the fictions index.
+  # Originals and fanfiction lists for the fictions index.
   module IndexGenreLists
     def self.included(base)
       base.extend ClassMethods
@@ -9,15 +9,6 @@ module Fictions
 
     # Class methods mixed into IndexVariablesManager.
     module ClassMethods
-      def filtered_by_genre(genre)
-        return Fiction.none unless genre
-
-        load_fictions_by_cached_ids(
-          cached_filtered_fiction_ids(genre.id),
-          includes: %i[cover_attachment]
-        )
-      end
-
       def originals
         load_fictions_by_cached_ids(
           cached_originals_ids,
@@ -73,17 +64,6 @@ module Fictions
           Genre::FANFICTION_SLUG,
           IndexVariablesManager::FANFICTION_INDEX_CARDS
         )
-      end
-
-      def cached_filtered_fiction_ids(genre_id)
-        Rails.cache.fetch(['fiction_index/filtered_fiction_ids', genre_id],
-                          expires_in: IndexVariablesManager::FILTERED_CACHE_EXPIRY) do
-          filtered_fiction_ids_for_genre(genre_id)
-        end
-      end
-
-      def filtered_fiction_ids_for_genre(genre_id)
-        recent_fiction_ids_for_genre_id(genre_id, IndexVariablesManager::FILTERED_INDEX_CARDS)
       end
 
       def recent_fiction_ids_for_genre_slug(slug, limit)

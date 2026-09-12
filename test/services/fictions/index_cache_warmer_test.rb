@@ -47,5 +47,11 @@ module Fictions
 
       assert Rails.cache.exist?(['fiction_index/fanfiction_ids', IndexVariablesManager::FANFICTION_INDEX_CARDS])
     end
+
+    test 'call populates genre spotlight cache' do
+      IndexCacheWarmer.call
+
+      assert Rails.cache.exist?(IndexGenreSpotlight.cache_key)
+    end
   end
 end
