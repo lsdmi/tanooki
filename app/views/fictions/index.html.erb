@@ -33,6 +33,8 @@
 
   <div class="max-w-[1300px] mx-auto px-4 pb-16 lg:pb-20 z-10 relative">
     <div class="px-2 xl:px-0">
+    <%= render 'fanfictions', fictions: @index_presenter.fanfictions %>
+
     <!-- Mid-page Banner and Translation Request Section -->
     <%= render 'fictions/genres/promo_row' %>
 

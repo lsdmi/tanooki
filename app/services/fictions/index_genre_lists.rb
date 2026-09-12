@@ -25,6 +25,13 @@ module Fictions
         )
       end
 
+      def fanfictions
+        load_fictions_by_cached_ids(
+          cached_fanfiction_ids,
+          includes: %i[cover_attachment genres fiction_ratings scanlators]
+        )
+      end
+
       def genre_recent_updates_excluding(genre, exclude_ids: [])
         base = Fiction.joins(:genres, :chapters).where(genres: { id: genre.id }).merge(Chapter.released)
         base = base.where.not(id: exclude_ids) if exclude_ids.present?
@@ -46,14 +53,26 @@ module Fictions
       end
 
       def originals_ids_from_db
-        genre_id = Genre.find_by(slug: Genre::ORIGINAL_SLUG)&.id
-        return [] unless genre_id
+        recent_fiction_ids_for_genre_slug(
+          Genre::ORIGINAL_SLUG,
+          IndexVariablesManager::ORIGINALS_INDEX_CARDS
+        )
+      end
 
-        fictions_joined_to_latest_released_chapter
-          .where(genres: { id: genre_id })
-          .order('latest_chapters.max_created_at DESC')
-          .limit(IndexVariablesManager::ORIGINALS_INDEX_CARDS)
-          .pluck(:id)
+      def cached_fanfiction_ids
+        Rails.cache.fetch(
+          ['fiction_index/fanfiction_ids', IndexVariablesManager::FANFICTION_INDEX_CARDS],
+          expires_in: IndexVariablesManager::FANFICTION_CACHE_EXPIRY
+        ) do
+          fanfiction_ids_from_db
+        end
+      end
+
+      def fanfiction_ids_from_db
+        recent_fiction_ids_for_genre_slug(
+          Genre::FANFICTION_SLUG,
+          IndexVariablesManager::FANFICTION_INDEX_CARDS
+        )
       end
 
       def cached_filtered_fiction_ids(genre_id)
@@ -64,10 +83,20 @@ module Fictions
       end
 
       def filtered_fiction_ids_for_genre(genre_id)
+        recent_fiction_ids_for_genre_id(genre_id, IndexVariablesManager::FILTERED_INDEX_CARDS)
+      end
+
+      def recent_fiction_ids_for_genre_slug(slug, limit)
+        recent_fiction_ids_for_genre_id(Genre.find_by(slug: slug)&.id, limit)
+      end
+
+      def recent_fiction_ids_for_genre_id(genre_id, limit)
+        return [] if genre_id.blank?
+
         fictions_joined_to_latest_released_chapter
           .where(genres: { id: genre_id })
           .order('latest_chapters.max_created_at DESC')
-          .limit(8)
+          .limit(limit)
           .pluck(:id)
       end
 

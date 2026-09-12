@@ -1,11 +1,11 @@
-<%# locals: (fictions:, ranked: false) %>
+<%# locals: (fictions:, ranked: false, show_scanlator: false) %>
 <%# Card widths show a sliver of the next item so horizontal scroll is obvious. %>
 <%# Below lg the row is fluid (~2.5 / 3.2 cards). At lg the cover is the 256×384 (2:3) mock size. %>
 <%# Break out of the page gutter on the right so the trailing card bleeds off the screen edge. %>
 <div
   class="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] md:gap-4 lg:snap-proximity -mr-4 md:-mr-6 lg:mr-0"
   role="region"
-  aria-label="Популярне ранобе">
+  aria-label="<%= show_scanlator ? 'Фанфіки' : 'Популярне ранобе' %>">
   <% fictions.each_with_index do |fiction, index| %>
     <% card = popular_fiction_card_stats(fiction) %>
     <article class="group w-[calc((100%-24px)/2.5)] shrink-0 snap-start sm:w-[calc((100%-12px)/2.15)] md:w-[calc((100%-48px)/3.2)] lg:w-[256px]">
@@ -29,6 +29,13 @@
                       fiction_path(fiction),
                       turbo_drive_visit_data.merge(class: 'line-clamp-1 rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 group-hover/cover:text-cyan-700 dark:group-hover/cover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900') %>
         </p>
+        <% if show_scanlator && (creator = fiction.scanlators.first) %>
+          <p class="mt-1 truncate text-xs lg:text-sm">
+            <%= link_to creator.title,
+                        scanlator_path(creator),
+                        turbo_drive_visit_data.merge(class: 'rounded-lg font-medium text-cyan-700 transition-colors hover:text-cyan-900 hover:underline underline-offset-2 dark:text-rose-400 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900') %>
+          </p>
+        <% end %>
         <% if card[:genres].present? %>
           <% genre_slugs = card[:genres].to_h { |genre| [genre[:name], genre[:slug]] } %>
           <%= render Ui::TagListComponent.new(

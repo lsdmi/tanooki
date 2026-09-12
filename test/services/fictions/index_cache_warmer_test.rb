@@ -41,5 +41,11 @@ module Fictions
 
       assert Rails.cache.exist?(['fiction_index/originals_ids', IndexVariablesManager::ORIGINALS_INDEX_CARDS])
     end
+
+    test 'call populates fanfiction ids cache' do
+      IndexCacheWarmer.call
+
+      assert Rails.cache.exist?(['fiction_index/fanfiction_ids', IndexVariablesManager::FANFICTION_INDEX_CARDS])
+    end
   end
 end

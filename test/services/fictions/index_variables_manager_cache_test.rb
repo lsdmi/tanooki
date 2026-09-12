@@ -104,6 +104,16 @@ module Fictions
       end
     end
 
+    test 'fanfictions uses cached ids after first fetch' do
+      with_memory_cache do
+        IndexVariablesManager.fanfictions
+
+        IndexVariablesManager.stub(:fanfiction_ids_from_db, -> { raise 'cache miss' }) do
+          assert_nothing_raised { IndexVariablesManager.fanfictions.load }
+        end
+      end
+    end
+
     private
 
     def with_memory_cache

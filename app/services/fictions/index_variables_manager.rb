@@ -17,8 +17,11 @@ module Fictions
     # Candidate window the novelty ranking draws from; must exceed the card count so all slots can fill.
     POPULAR_NOVELTY_POOL = 20
     FILTERED_CACHE_EXPIRY = 12.hours
+    FILTERED_INDEX_CARDS = 8
     ORIGINALS_CACHE_EXPIRY = 30.minutes
     ORIGINALS_INDEX_CARDS = 8
+    FANFICTION_CACHE_EXPIRY = 30.minutes
+    FANFICTION_INDEX_CARDS = 10
 
     def self.warm_index_caches!
       IndexCacheWarmer.call

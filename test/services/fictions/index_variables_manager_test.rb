@@ -58,6 +58,17 @@ module Fictions
       end
     end
 
+    test 'fanfictions are ordered by their latest released chapter' do
+      with_memory_cache do
+        genre = genres(:fanfiction)
+        older = fictions(:one)
+        newer = fictions(:two)
+        [older, newer].each { |fiction| fiction.genres << genre unless fiction.genres.exists?(genre.id) }
+
+        assert_equal [newer.id, older.id], IndexVariablesManager.fanfictions.ids
+      end
+    end
+
     test 'hot_updates returns unloaded relation' do
       result = IndexVariablesManager.hot_updates
 

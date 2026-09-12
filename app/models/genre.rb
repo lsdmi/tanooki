@@ -12,6 +12,7 @@ class Genre < ApplicationRecord
   EXPLICIT_CONTENT_SLUGS = %w[bl gl lgbt harem omegaverse].freeze
   ADULT_CONTENT_LABEL = '18+'
   ORIGINAL_SLUG = 'original'
+  FANFICTION_SLUG = 'fanfiction'
 
   friendly_id :slug_candidates
 
