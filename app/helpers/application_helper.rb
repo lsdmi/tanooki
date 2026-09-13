@@ -12,6 +12,7 @@ module ApplicationHelper
   include Fictions::FormattingHelper
   include Fictions::GenresPromoHelper
   include Fictions::HotNoveltyHelper
+  include Fictions::IndexNavigationHubHelper
   include Layout::Helper
   include Meta::CanonicalUrlHelper
   include Meta::CoverUrlsHelper

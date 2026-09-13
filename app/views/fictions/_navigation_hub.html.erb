@@ -1,0 +1,10 @@
+<%# locals: (wrapper_class: 'mb-16 lg:mb-20') %>
+<section class="<%= wrapper_class %>" aria-label="Сховище, календар і читальня">
+  <div class="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+    <% fiction_index_navigation_hub_cards.each_with_index do |card, index| %>
+      <div class="h-[220px] w-full <%= 'sm:max-lg:hidden' if index == 2 %>">
+        <%= render 'root/prefooter/promo_card', **card %>
+      </div>
+    <% end %>
+  </div>
+</section>

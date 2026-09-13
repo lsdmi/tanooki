@@ -31,13 +31,15 @@
 
   <%= render 'originals', fictions: @index_presenter.originals %>
 
-  <div class="max-w-[1300px] mx-auto px-4 pb-16 lg:pb-20 z-10 relative">
+  <div class="max-w-[1300px] mx-auto px-4 z-10 relative">
     <div class="px-2 xl:px-0">
     <%= render 'fanfictions', fictions: @index_presenter.fanfictions %>
 
     <%= render 'genre_spotlight', entries: @index_presenter.genre_spotlight %>
 
-    <%= render 'fictions/genres/promo_row' %>
+    <%= render 'fictions/genres/promo_row', wrapper_class: 'mb-8' %>
+
+    <%= render 'navigation_hub' %>
     </div>
   </div>
 </div>
