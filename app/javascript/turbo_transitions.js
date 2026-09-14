@@ -136,6 +136,7 @@ function cleanupBeforeTurboCache() {
   document.documentElement.classList.remove('overflow-hidden')
 
   if (Swal.isVisible?.()) Swal.close()
+  document.querySelectorAll('[data-controller~="flash-toast"]').forEach((el) => el.remove())
 
   if (typeof tinymce !== 'undefined') {
     tinymce.remove()

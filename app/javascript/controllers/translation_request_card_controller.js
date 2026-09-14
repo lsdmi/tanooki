@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { fetchJson, safeHttpUrl } from "translation_requests/http"
-import { showErrorMessage, showSuccessMessage } from "translation_requests/notifications"
+import { showErrorMessage, showSuccessMessage } from "flash_toast"
 
 export default class extends Controller {
   static targets = [

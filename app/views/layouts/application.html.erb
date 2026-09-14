@@ -80,10 +80,10 @@
         <%= render "shared/navbar" %>
       </div>
     <% end %>
-    <%= turbo_frame_tag 'application-notice' do %>
+    <%= turbo_frame_tag 'application-notice', class: 'hidden' do %>
       <%= render "shared/notice" if notice %>
     <% end %>
-    <%= turbo_frame_tag "application-alert" do %>
+    <%= turbo_frame_tag "application-alert", class: 'hidden' do %>
       <%= render "shared/alert" if alert %>
     <% end %>
     <main>

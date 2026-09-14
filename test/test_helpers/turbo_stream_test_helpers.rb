@@ -3,6 +3,8 @@
 module TurboStreamTestHelpers
   def assert_turbo_stream_flash_notice(message)
     assert_includes response.body, message
+    assert_includes response.body, 'data-controller="flash-toast"'
+    assert_includes response.body, 'data-flash-toast-type-value="notice"'
     assert_select 'turbo-stream[action="update"][target="application-notice"]'
     assert_select 'turbo-stream[action="update"][target="application-alert"]'
   end

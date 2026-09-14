@@ -24,6 +24,13 @@ class TurboFlashStreamResponseTest < ActiveSupport::TestCase
     assert_includes @controller.response.body, 'target="application-alert"'
   end
 
+  test 'append_session_flash_to_turbo_stream notice payload wires flash-toast' do
+    @controller.flash[:notice] = 'Допис створено.'
+    @controller.append_session_flash_to_turbo_stream
+
+    assert_includes @controller.response.body, 'data-controller="flash-toast"'
+  end
+
   test 'append_session_flash_to_turbo_stream skips when flash frames already present' do
     @controller.flash[:notice] = 'Допис створено.'
     @controller.response.body = '<turbo-stream action="update" target="application-notice"></turbo-stream>'

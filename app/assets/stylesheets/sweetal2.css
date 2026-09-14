@@ -3,7 +3,7 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
 }
 
-.swal2-popup {
+.swal2-popup:not(.swal2-toast) {
   border-radius: 0.75rem !important;
   padding: 1.25rem !important;
   margin: 0.5rem !important;
@@ -107,7 +107,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .swal2-popup {
+  .swal2-popup:not(.swal2-toast) {
     padding: 1rem !important;
     margin: 0.25rem !important;
     max-width: calc(100vw - 1rem) !important;

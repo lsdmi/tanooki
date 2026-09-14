@@ -27,12 +27,19 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
     assert_match(%r{/assets/bg-\w+\.webp}, response.body)
   end
 
-  test 'static page layout uses flash turbo frames without legacy modal background' do
+  test 'static page layout uses hidden flash turbo frames' do
     get privacy_path
 
     assert_no_match(/modal-bg/, response.body)
-    assert_select 'turbo-frame#application-notice'
-    assert_select 'turbo-frame#application-alert'
+    assert_select 'turbo-frame#application-notice.hidden'
+    assert_select 'turbo-frame#application-alert.hidden'
+  end
+
+  test 'static page layout omits flash banner markup' do
+    get privacy_path
+
+    assert_select '#toast-default', count: 0
+    assert_select '#toast-warning', count: 0
   end
 
   test 'static page layout defers flatpickr and tracks core assets for reload' do

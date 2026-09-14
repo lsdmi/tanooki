@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { applyTurboStream, fetchTurboStream } from "translation_requests/http"
-import { showErrorMessage } from "translation_requests/notifications"
+import { showErrorMessage } from "flash_toast"
 
 export default class extends Controller {
   static values = {

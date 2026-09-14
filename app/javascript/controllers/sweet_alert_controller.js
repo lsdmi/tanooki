@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 import Swal from 'sweetalert2'
 import { Turbo } from '@hotwired/turbo-rails'
+import { flushPendingFlashToasts } from 'flash_toast'
 
 export default class extends Controller {
   static values = {
@@ -40,6 +41,7 @@ export default class extends Controller {
     if (message) swalOptions.title = message
 
     const result = await Swal.fire(swalOptions)
+    flushPendingFlashToasts()
 
     if (!result.isConfirmed || !this.hasUrlValue) return
 

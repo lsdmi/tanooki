@@ -11,7 +11,7 @@ class TurboFlashStreamTest < ActiveSupport::TestCase
     end
 
     def view_context
-      @view_context ||= ActionController::Base.new.view_context
+      @view_context ||= ApplicationController.new.view_context
     end
 
     def destroy_success_streams(list_stream, message)
@@ -53,5 +53,6 @@ class TurboFlashStreamTest < ActiveSupport::TestCase
     assert_equal size, streams.size
     targets.each { |target| assert_includes rendered, "target=\"#{target}\"" }
     assert_includes rendered, message if message
+    assert_includes rendered, 'data-controller="flash-toast"' if message
   end
 end

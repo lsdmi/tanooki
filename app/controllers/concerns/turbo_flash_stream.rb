@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Turbo Stream helpers for layout flash frames (application-notice / application-alert).
+# Turbo Stream helpers for hidden layout flash frames (application-notice / application-alert).
 module TurboFlashStream
   extend ActiveSupport::Concern
 
