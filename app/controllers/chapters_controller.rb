@@ -75,7 +75,7 @@ class ChaptersController < ApplicationController
 
   def redirect_after_persist
     if @chapter.draft?
-      redirect_to edit_chapter_path(@chapter, page: @list_page), notice: t('chapters.notices.draft_saved')
+      redirect_to edit_chapter_path(@chapter, page: @list_page), notice: chapter_draft_notice
     elsif @chapter.previously_new_record?
       redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
     else
@@ -108,6 +108,14 @@ class ChaptersController < ApplicationController
                 { scanlator_ids: [] }]
     )
     merge_published_at_from_schedule_fields(permitted)
+  end
+
+  def chapter_draft_notice
+    if @chapter.status_before_last_save == 'published'
+      t('chapters.notices.unpublished')
+    else
+      t('chapters.notices.draft_saved')
+    end
   end
 
   def verify_permissions

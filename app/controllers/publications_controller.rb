@@ -53,7 +53,7 @@ class PublicationsController < ApplicationController
 
   def redirect_after_persist
     if @publication.draft?
-      redirect_to edit_publication_path(@publication), notice: t('publications.notices.draft_saved')
+      redirect_to edit_publication_path(@publication), notice: publication_draft_notice
     elsif @publication.previously_new_record?
       redirect_to root_path, notice: t('publications.notices.create_success')
     else
@@ -85,6 +85,14 @@ class PublicationsController < ApplicationController
 
   def publication_tags_ids
     @publication_tags_ids ||= params[:publication][:tag_ids].compact_blank.map(&:to_i)
+  end
+
+  def publication_draft_notice
+    if @publication.status_before_last_save == 'published'
+      t('publications.notices.unpublished')
+    else
+      t('publications.notices.draft_saved')
+    end
   end
 
   def set_publication

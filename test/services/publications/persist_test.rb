@@ -81,17 +81,16 @@ module Publications
       assert_nil Rails.cache.read(PublicCache::HIGHLIGHTS_KEY)
     end
 
-    test 'draft intent does not unpublish a live publication' do
+    test 'draft intent unpublishes a live publication' do
       Persist.call(publication: @publication, attributes: persist_attrs, intent: 'publish')
-
       saved = Persist.call(
         publication: @publication,
-        attributes: persist_attrs(title: 'Still a live blog title'),
+        attributes: persist_attrs(title: 'Now a draft blog title'),
         intent: 'draft'
       )
 
       assert saved
-      assert_predicate @publication.reload, :published?
+      assert_predicate @publication.reload, :draft?
     end
 
     test 'publishing a placeholder draft regenerates slug from the new title' do

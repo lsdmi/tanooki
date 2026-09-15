@@ -10,7 +10,7 @@ allowed:
   - app/views/readings/_chapters.html.erb:195
   - app/views/readings/chapter_row_component/_actions.html.erb:11
   - app/components/readings/chapter_row_component.rb:51
-  - app/helpers/publications/form_helper.rb:21
+  - app/helpers/publications/form_helper.rb:25
   - app/views/scanlators/_team_card.html.erb:29
   - app/views/studio/tabs/_blogs.html.erb:13
   - app/views/studio/tabs/_bookshelves.html.erb:15

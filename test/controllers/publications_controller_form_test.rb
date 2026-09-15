@@ -32,12 +32,12 @@ class PublicationsControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
   end
 
-  test 'edit published publication hides save' do
+  test 'edit published publication offers unpublish with confirm' do
     get edit_publication_path(@publication)
 
-    assert_select 'input[name=_method][value=put]'
-    assert_select 'button[name=intent][value=draft]', count: 0
-    assert_select 'button[type=submit][name=intent][value=publish]', text: I18n.t('publications.buttons.publish')
+    assert_select 'button[name=intent][value=draft]', text: I18n.t('chapters.buttons.unpublish')
+    assert_select 'button[name=intent][value=draft][data-turbo-confirm]'
+    assert_select '[data-controller~=draft-hotkey]', count: 0
   end
 
   test 'edit draft publication shows badge and save' do

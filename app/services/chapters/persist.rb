@@ -38,9 +38,8 @@ module Chapters
     attr_reader :chapter, :attributes, :intent, :user
 
     def assign_and_apply_intent
-      allow_draft = chapter.new_record? || chapter.draft?
       chapter.assign_attributes(attributes)
-      apply_intent(allow_draft:)
+      apply_intent
     end
 
     def after_save
@@ -52,8 +51,8 @@ module Chapters
       chapter.status = previous_status if chapter.persisted?
     end
 
-    def apply_intent(allow_draft:)
-      if intent == DRAFT_INTENT && allow_draft
+    def apply_intent
+      if intent == DRAFT_INTENT
         chapter.status = :draft
         chapter.published_at = nil
       else

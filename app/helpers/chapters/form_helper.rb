@@ -13,9 +13,13 @@ module Chapters
       title.match?(/Розділ/i)
     end
 
-    # Live and scheduled chapters update the public body on submit; hide Зберегти.
+    # Live and scheduled chapters update the public body on submit; Зберегти stays off those forms.
     def show_chapter_draft_save?(chapter)
       chapter.new_record? || chapter.draft?
+    end
+
+    def show_chapter_unpublish?(chapter)
+      chapter.persisted? && chapter.published?
     end
 
     # Half-hour slots 00:00–23:30 (24h labels). Includes +selected+ if it is not on the grid (legacy data).

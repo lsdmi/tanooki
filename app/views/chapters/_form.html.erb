@@ -156,5 +156,7 @@
   </div>
   <%= render 'shared/rich_text_submit',
              primary_label: t('chapters.buttons.publish'),
-             show_draft: show_chapter_draft_save?(chapter) %>
+             show_draft: show_chapter_draft_save?(chapter),
+             unpublish: show_chapter_unpublish?(chapter),
+             unpublish_confirm: t('chapters.confirms.unpublish') %>
 </div>

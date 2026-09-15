@@ -32,12 +32,12 @@ class ChaptersControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
   end
 
-  test 'edit published chapter hides save and has put form' do
+  test 'edit published chapter offers unpublish with confirm' do
     get edit_chapter_url(@chapter)
 
-    assert_select 'input[name=_method][value=put]'
-    assert_select 'button[name=intent][value=draft]', count: 0
-    assert_select 'button[type=submit][name=intent][value=publish]', text: I18n.t('chapters.buttons.publish')
+    assert_select 'button[name=intent][value=draft]', text: I18n.t('chapters.buttons.unpublish')
+    assert_select 'button[name=intent][value=draft][data-turbo-confirm]'
+    assert_select '[data-controller~=draft-hotkey]', count: 0
   end
 
   test 'edit draft chapter shows badge and save' do
@@ -49,11 +49,11 @@ class ChaptersControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'button[data-draft-hotkey-target=draftSubmit]'
   end
 
-  test 'edit scheduled chapter hides save' do
+  test 'edit scheduled chapter offers unpublish' do
     @chapter.update!(published_at: 2.days.from_now, scanlator_ids: @chapter.scanlators.ids)
     get edit_chapter_url(@chapter)
 
-    assert_select 'button[name=intent][value=draft]', count: 0
+    assert_select 'button[name=intent][value=draft]', text: I18n.t('chapters.buttons.unpublish')
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
     assert_select 'p', text: I18n.t('chapters.hints.scheduled_vs_draft')
   end

@@ -112,5 +112,7 @@
 
   <%= render 'shared/rich_text_submit',
              primary_label: t('publications.buttons.publish'),
-             show_draft: show_publication_draft_save?(publication) %>
+             show_draft: show_publication_draft_save?(publication),
+             unpublish: show_publication_unpublish?(publication),
+             unpublish_confirm: t('publications.confirms.unpublish') %>
 </div>

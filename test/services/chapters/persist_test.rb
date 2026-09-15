@@ -61,18 +61,20 @@ module Chapters
       assert_predicate @chapter, :draft?
     end
 
-    test 'draft intent does not unpublish a live chapter' do
+    test 'draft intent unpublishes a live chapter and drops catalog slots' do
       Persist.call(chapter: @chapter, attributes: persist_attrs, intent: 'publish', user: @user)
+      slots_before = Catalog::ChapterSlots.call(@fiction.reload)
 
       saved = Persist.call(
         chapter: @chapter,
-        attributes: persist_attrs(title: 'Still live', number: @chapter.number),
+        attributes: persist_attrs(title: 'Now a draft', number: @chapter.number),
         intent: 'draft',
         user: @user
       )
 
       assert saved
-      assert_predicate @chapter.reload, :published?
+      assert_predicate @chapter.reload, :draft?
+      assert_equal slots_before - 1, Catalog::ChapterSlots.call(@fiction.reload)
     end
 
     private

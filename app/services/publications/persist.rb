@@ -37,9 +37,8 @@ module Publications
     attr_reader :publication, :attributes, :intent
 
     def assign_and_apply_intent
-      allow_draft = publication.new_record? || publication.draft?
       publication.assign_attributes(attributes)
-      apply_intent(allow_draft:)
+      apply_intent
       apply_placeholder_title if publication.draft?
     end
 
@@ -51,8 +50,8 @@ module Publications
       PublicCache.bust(publication)
     end
 
-    def apply_intent(allow_draft:)
-      publication.status = intent == DRAFT_INTENT && allow_draft ? :draft : :published
+    def apply_intent
+      publication.status = intent == DRAFT_INTENT ? :draft : :published
     end
 
     def apply_placeholder_title

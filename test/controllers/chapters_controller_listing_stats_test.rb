@@ -55,4 +55,19 @@ class ChaptersControllerListingStatsTest < ActionDispatch::IntegrationTest
 
     assert_in_delta public_at, @chapter.fiction.reload.last_chapter_at, 2.seconds
   end
+
+  test 'unpublishing a unique-number chapter lowers chapter_count' do
+    patch chapter_url(@chapter), params: {
+      intent: 'draft',
+      chapter: {
+        content: @chapter.content,
+        fiction_id: @chapter.fiction_id,
+        number: @chapter.number,
+        scanlator_ids: [1],
+        title: @chapter.title
+      }
+    }
+
+    assert_equal 1, @chapter.fiction.reload.chapter_count
+  end
 end

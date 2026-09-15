@@ -21,6 +21,21 @@ module Publications
       assert_not show_publication_draft_save?(publications(:tale_approved_one))
     end
 
+    test 'show_publication_unpublish? is true for persisted published publications' do
+      assert show_publication_unpublish?(publications(:tale_approved_one))
+    end
+
+    test 'show_publication_unpublish? is false for new publications' do
+      assert_not show_publication_unpublish?(Publication.new)
+    end
+
+    test 'show_publication_unpublish? is false for drafts' do
+      publication = publications(:tale_approved_one)
+      publication.status = :draft
+
+      assert_not show_publication_unpublish?(publication)
+    end
+
     test 'publication_studio_title_path points drafts at edit' do
       publication = publications(:tale_approved_one)
       publication.status = :draft

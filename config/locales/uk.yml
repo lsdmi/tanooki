@@ -389,15 +389,19 @@ uk:
       update_success: Розділ оновлено.
       destroy_success: Розділ видалено.
       draft_saved: Начерк збережено.
+      unpublished: Повернуто в начерк.
     buttons:
       cancel: Скасувати
       save: Зберегти
+      unpublish: Повернути в начерк
       publish: Надіслати
+    confirms:
+      unpublish: Розділ зникне зі сторінки твору та каталогу. Продовжити?
     alerts:
       draft: Начерк
       not_yet_public: Цей розділ ще недоступний для читання.
     hints:
-      scheduled_vs_draft: Розклад — час виходу для читачів. Незавершену роботу зберігайте через «Зберегти».
+      scheduled_vs_draft: Розклад — час виходу для читачів. Щоб сховати розділ раніше, поверніть його в начерк.
     status:
       unpublished: Ще не опубліковано.
     reader_epub_banner:
@@ -491,8 +495,11 @@ uk:
       update_success: Допис оновлено.
       destroy_success: Допис видалено.
       draft_saved: Начерк збережено.
+      unpublished: Повернуто в начерк.
     buttons:
       publish: Опублікувати
+    confirms:
+      unpublish: Допис зникне з блоґів і пошуку. Продовжити?
     placeholder_title: Начерк
     alerts:
       not_yet_public: Цей допис ще недоступний для читання.
