@@ -23,6 +23,12 @@ module Readings
       'transition-colors duration-200'
     ].join(' ').freeze
 
+    CARD_TITLE_CLASSES = [
+      'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200',
+      'font-medium text-gray-900 dark:text-white'
+    ].join(' ').freeze
+    TABLE_TITLE_CLASSES = 'hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium'
+
     DELETE_ACTION_CLASSES = [
       'inline-flex h-8 w-8 items-center justify-center rounded-lg',
       'text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300',

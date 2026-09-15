@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_10_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_230000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -94,12 +94,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_150000) do
     t.decimal "number", precision: 9, scale: 2, null: false
     t.datetime "published_at"
     t.string "slug", null: false
+    t.string "status", limit: 16, default: "published", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.decimal "volume_number", precision: 9, scale: 1
     t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
+    t.index ["fiction_id", "deleted_at", "status", "published_at"], name: "index_chapters_on_fiction_deleted_status_published"
     t.index ["fiction_id"], name: "index_chapters_on_fiction_id"
     t.index ["published_at"], name: "index_chapters_on_published_at"
     t.index ["slug"], name: "index_chapters_on_slug", unique: true
@@ -274,12 +276,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_150000) do
     t.datetime "deleted_at"
     t.boolean "highlight", default: false
     t.string "slug", null: false
+    t.string "status", limit: 16, default: "published", null: false
     t.string "title", null: false
     t.string "type", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.index ["created_at"], name: "index_publications_on_created_at"
+    t.index ["deleted_at", "status"], name: "index_publications_on_deleted_status"
     t.index ["slug"], name: "index_publications_on_slug", unique: true
     t.index ["user_id"], name: "index_publications_on_user_id"
     t.index ["views"], name: "index_publications_on_views"

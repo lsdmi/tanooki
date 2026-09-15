@@ -18,7 +18,7 @@
 
     <%= json_ld_script(article_meta(@publication)) if article_meta? %>
 
-    <%= json_ld_script(chapter_article_meta(@chapter)) if chapter_reader_meta? && @chapter %>
+    <%= json_ld_script(chapter_article_meta(@chapter)) if chapter_reader_meta?(@chapter) %>
 
     <%= json_ld_script(fiction_book_meta(@fiction)) if fiction_reader_meta? && @fiction %>
 

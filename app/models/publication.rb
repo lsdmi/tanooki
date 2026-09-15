@@ -11,6 +11,7 @@ class Publication < ApplicationRecord
 
   normalizes_squished :title
   include SearchkickSoftDeletable
+  include Draftable
 
   friendly_id :slug_candidates
   searchkick callbacks: SearchkickCallbacks.mode
@@ -35,6 +36,10 @@ class Publication < ApplicationRecord
   scope :weekly, -> { where(created_at: 7.days.ago..) }
   scope :popular, -> { order(views: :desc) }
   scope :recent, -> { order(created_at: :desc) }
+
+  def should_index?
+    deleted_at.nil? && published?
+  end
 
   def search_data
     {

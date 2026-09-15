@@ -40,7 +40,7 @@ module Scanlators
     end
 
     def self.compute(scanlator)
-      chapters = scanlator.chapters
+      chapters = scanlator.chapters.not_draft
       fiction_ids = scanlator.fiction_ids
 
       new(

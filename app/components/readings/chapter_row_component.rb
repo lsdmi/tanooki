@@ -29,10 +29,6 @@ module Readings
       variant == :table_row
     end
 
-    def card?
-      variant == :card
-    end
-
     def published_at_label
       helpers.l(chapter.public_at.in_time_zone('Kyiv'), format: :short_datetime).downcase
     end
@@ -46,9 +42,27 @@ module Readings
       helpers.edit_chapter_path(chapter.slug, page: (pagy_page if pagy_page.to_i > 1))
     end
 
+    def title_url
+      chapter.draft? ? edit_url : helpers.chapter_path(chapter)
+    end
+
+    def title_link_html(css_classes)
+      if chapter.draft?
+        { data: { turbo: false }, class: css_classes }
+      else
+        turbo_drive_visit_data.merge(class: css_classes)
+      end
+    end
+
     def render_actions
       render partial: 'readings/chapter_row_component/actions',
-             locals: { chapter:, edit_url:, delete_button:, visit_data: turbo_drive_visit_data }
+             locals: {
+               chapter:,
+               edit_url:,
+               delete_button:,
+               visit_data: turbo_drive_visit_data,
+               show_view: !chapter.draft?
+             }
     end
 
     def delete_button

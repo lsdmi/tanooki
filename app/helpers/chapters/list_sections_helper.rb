@@ -40,7 +40,7 @@ module Chapters
     def epub_download_available_for_section?(chapter_ids)
       return false unless user_signed_in? && chapter_ids.present?
 
-      chapters = Chapter.where(id: chapter_ids).includes(:scanlators)
+      chapters = Chapter.where(id: chapter_ids).not_draft.includes(:scanlators)
       chapters_allow_epub_download?(chapters)
     end
   end

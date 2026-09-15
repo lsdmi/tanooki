@@ -71,6 +71,15 @@ class FictionsChapterListTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'admin chapter list excludes drafts from the public fiction page' do
+    chapters(:one).update!(status: :draft, scanlator_ids: chapters(:one).scanlators.ids)
+
+    get fiction_url(@fiction)
+
+    assert_select '#chapters-list a[href=?]', chapter_path(chapters(:one)), count: 0
+    assert_select '#chapters-list a[href=?]', chapter_path(chapters(:two))
+  end
+
   test 'show renders epub download on section header when allowed' do
     get fiction_url(@fiction)
 

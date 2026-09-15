@@ -30,6 +30,8 @@ module ChapterScheduleParams
   end
 
   def published_at_schedule_invalid?
+    return false if Chapters::Persist.normalize_intent(params[:intent]) == Chapters::Persist::DRAFT_INTENT
+
     ch = params[:chapter]
     return false unless ch
 

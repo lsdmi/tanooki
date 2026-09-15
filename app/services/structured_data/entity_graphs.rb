@@ -22,6 +22,8 @@ module StructuredData
     end
 
     def chapter_article_json(chapter)
+      return unless chapter.public_visible?
+
       chapter_article_graph(chapter).to_json
     end
 

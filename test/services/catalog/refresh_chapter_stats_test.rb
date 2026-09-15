@@ -73,6 +73,17 @@ module Catalog
       assert_equal 0, @fiction.reload.chapter_count
     end
 
+    test 'drafts do not count toward chapter_count or last_chapter_at' do
+      travel_to(2.days.ago) { create_chapter(number: 1) }
+      draft = create_chapter(number: 2)
+      draft.update!(status: :draft, scanlator_ids: [@scanlator.id])
+
+      RefreshChapterStats.call(@fiction)
+
+      assert_equal 1, @fiction.reload.chapter_count
+      assert_in_delta 2.days.ago, @fiction.last_chapter_at, 2.seconds
+    end
+
     test 'clears last_chapter_at when no chapters remain' do
       create_chapter(number: 1)
       RefreshChapterStats.call(@fiction)

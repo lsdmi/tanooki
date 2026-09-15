@@ -198,6 +198,11 @@ const initializeTinymce = () => {
         }
       });
 
+      // Cmd/Ctrl+S inside the iframe does not bubble to the Stimulus hotkey.
+      editor.addShortcut('Meta+S', 'Save draft', function() {
+        document.querySelector('[data-draft-hotkey-target="draftSubmit"]')?.click();
+      });
+
       editor.on('init', function() {
         const form = editor.getElement()?.form;
         if (form) {
@@ -836,6 +841,8 @@ const initializeTinymce = () => {
 document.addEventListener('turbo:load', initializeTinymce);
 document.addEventListener('turbo:render', initializeTinymce);
 
+// Both Зберегти (intent=draft) and Надіслати (intent=publish) are type=submit,
+// so turbo:submit-start runs triggerSave for either button.
 function syncTinymceBeforeTurboSubmit(event) {
   if (typeof tinymce === 'undefined') return;
 

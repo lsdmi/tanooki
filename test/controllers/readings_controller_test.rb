@@ -20,6 +20,15 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'readings list shows draft badge and hides view' do
+    @chapter.update!(status: :draft, scanlator_ids: @chapter.scanlators.ids)
+    get reading_url(@fiction)
+
+    assert_select 'span', text: I18n.t('chapters.alerts.draft')
+    assert_select 'a[href=?]', edit_chapter_path(@chapter.slug), text: @chapter.display_title
+    assert_select "a[href=?][title='Переглянути']", chapter_path(@chapter), count: 0
+  end
+
   test 'should destroy chapter' do
     # Make sure @user is authorized for this chapter (admin or included)
     @user.chapters << @chapter unless @user.admin? || @user.chapters.include?(@chapter)
@@ -28,6 +37,14 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
     assert_turbo_stream_flash_notice(I18n.t('chapters.notices.destroy_success'))
+  end
+
+  test 'destroying a draft soft-deletes it' do
+    @chapter.update!(status: :draft, scanlator_ids: @chapter.scanlators.ids)
+    delete reading_url(@chapter), as: :turbo_stream
+
+    assert_not Chapter.exists?(@chapter.id)
+    assert Chapter.only_deleted.exists?(@chapter.id)
   end
 
   test 'destroying a chapter lowers chapter_count' do

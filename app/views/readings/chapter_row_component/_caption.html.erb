@@ -1,0 +1,15 @@
+<%# locals: (chapter:, published_at_label:) %>
+<div class="flex flex-wrap items-center gap-2">
+  <%= yield %>
+  <%= render 'chapters/draft_badge', chapter: chapter, compact: true %>
+</div>
+<% if chapter.draft? %>
+  <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= t('chapters.status.unpublished') %></p>
+<% else %>
+  <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+    Опубліковано: <%= published_at_label %>
+  </p>
+  <% if chapter.scheduled? %>
+    <p class="mt-1 text-xs leading-snug text-amber-800 dark:text-amber-200"><%= t('chapters.hints.scheduled_vs_draft') %></p>
+  <% end %>
+<% end %>

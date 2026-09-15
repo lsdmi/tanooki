@@ -9,8 +9,8 @@ module StructuredData
       tales_show_page?
     end
 
-    def chapter_reader_meta?
-      chapters_show_page?
+    def chapter_reader_meta?(chapter = nil)
+      chapters_show_page? && chapter&.public_visible?
     end
 
     def fiction_reader_meta?

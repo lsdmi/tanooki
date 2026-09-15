@@ -6,6 +6,7 @@ class Chapter < ApplicationRecord
 
   extend FriendlyId
   include SoftDeletable
+  include Draftable
 
   normalizes_squished :title
   friendly_id :slug_candidates
@@ -24,19 +25,19 @@ class Chapter < ApplicationRecord
   before_validation :cleanup_scanlator_ids
 
   validates :scanlator_ids, presence: true
-  validates :content, length: { minimum: 500 }
+  validates :content, length: { minimum: 500 }, unless: :draft?
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
 
-  # When set, this is the moment the chapter becomes visible to everyone (nil = visible as soon as saved).
+  # When set, this is the moment a published chapter becomes visible to everyone (nil = live on save).
   validate :published_at_not_in_the_past
 
   scope :by_user_scanlators, ->(user) { joins(:scanlators).where(scanlators: { id: user.scanlators.ids }) }
-  # Visible to the general public now: no schedule, or published_at has passed.
+  # Live for readers now: not a draft, and no schedule or published_at has passed.
   scope :released, lambda {
     t = arel_table
-    where(t[:published_at].eq(nil).or(t[:published_at].lteq(Time.current)))
+    published.where(t[:published_at].eq(nil).or(t[:published_at].lteq(Time.current)))
   }
 
   # SQL fragment (qualified for joins): wall-clock moment a chapter became public on the site.

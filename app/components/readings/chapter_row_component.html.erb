@@ -8,14 +8,9 @@
           </svg>
         </div>
         <div>
-          <%= link_to chapter.display_title,
-                      chapter_path(chapter),
-                      turbo_drive_visit_data.merge(
-                        class: 'hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium'
-                      ) %>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Опубліковано: <%= published_at_label %>
-          </p>
+          <%= render 'readings/chapter_row_component/caption', chapter:, published_at_label: do %>
+            <%= link_to chapter.display_title, title_url, title_link_html(TABLE_TITLE_CLASSES) %>
+          <% end %>
         </div>
       </div>
     </th>
@@ -45,14 +40,9 @@
 <% else %>
   <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
     <div class="mb-3 min-w-0">
-      <%= link_to chapter.display_title,
-                  chapter_path(chapter),
-                  turbo_drive_visit_data.merge(
-                    class: 'block hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium text-gray-900 dark:text-white'
-                  ) %>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        Опубліковано: <%= published_at_label %>
-      </p>
+      <%= render 'readings/chapter_row_component/caption', chapter:, published_at_label: do %>
+        <%= link_to chapter.display_title, title_url, title_link_html(CARD_TITLE_CLASSES) %>
+      <% end %>
     </div>
     <div class="flex items-center space-x-4 mb-3 text-sm">
       <div class="flex items-center space-x-1">

@@ -41,7 +41,7 @@ class DownloadsController < ApplicationController
   end
 
   def requested_chapters
-    Chapter.includes(:scanlators).where(id: params[:chapter_ids])
+    Chapter.includes(:scanlators).where(id: params[:chapter_ids]).released
   end
 
   def chapter_content_ids(chapters)

@@ -88,4 +88,18 @@ class PublicationTest < ActiveSupport::TestCase
 
     assert_not_predicate @publication, :valid?
   end
+
+  test 'defaults to published status' do
+    assert_predicate @publication, :published?
+    assert_not @publication.draft?
+  end
+
+  test 'should_index? is false when draft' do
+    assert_predicate @publication, :should_index?
+
+    @publication.status = :draft
+
+    assert_not @publication.should_index?
+    assert_not @publication.public_visible?
+  end
 end

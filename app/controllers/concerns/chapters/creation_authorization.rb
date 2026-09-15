@@ -34,12 +34,5 @@ module Chapters
         Fiction.find_by(id: params[:chapter][:fiction_id])
       end
     end
-
-    def sync_chapter_scanlator_links
-      Chapters::SyncScanlatorAssociations.new(
-        chapter_params[:scanlator_ids], @chapter, user: current_user
-      ).call
-      Chapters::LinkFictionScanlators.call(chapter: @chapter)
-    end
   end
 end

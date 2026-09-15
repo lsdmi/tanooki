@@ -24,7 +24,7 @@
 <% elsif fiction_author_meta?(fiction) %>
   <%= tag.meta name: 'author', content: fiction.author %>
   <%= tag.meta property: 'article:author', content: fiction_author_url(fiction) %>
-<% elsif chapter_reader_meta? && chapter %>
+<% elsif chapter_reader_meta?(chapter) %>
   <%= tag.meta name: 'author', content: chapter.author %>
   <%= tag.meta property: 'article:author', content: fiction_author_url(chapter.fiction) %>
   <%= tag.meta property: 'article:published_time', content: (chapter.published_at || chapter.created_at).iso8601 %>

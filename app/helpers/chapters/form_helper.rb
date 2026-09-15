@@ -13,6 +13,11 @@ module Chapters
       title.match?(/Розділ/i)
     end
 
+    # Live and scheduled chapters update the public body on submit; hide Зберегти.
+    def show_chapter_draft_save?(chapter)
+      chapter.new_record? || chapter.draft?
+    end
+
     # Half-hour slots 00:00–23:30 (24h labels). Includes +selected+ if it is not on the grid (legacy data).
     def chapter_publish_time_select_options(selected = nil)
       slots = (0..23).flat_map do |h|

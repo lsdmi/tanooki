@@ -33,6 +33,17 @@ module Scanlators
       assert_predicate Stats.compute(scanlator), :active_recently?
     end
 
+    test 'excludes drafts from chapter counts and views' do
+      scanlator = scanlators(:one)
+      draft = scanlator.chapters.first
+      draft.update!(status: :draft, scanlator_ids: draft.scanlators.ids, views: 50)
+
+      stats = Stats.compute(scanlator)
+
+      assert_equal 1, stats.chapters_count
+      assert_equal 0, stats.total_views
+    end
+
     private
 
     def backdate_scanlator_chapters!(scanlator, time)

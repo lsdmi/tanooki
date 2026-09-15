@@ -60,14 +60,22 @@ module Catalog
       assert_equal 1, ChapterSlots.call(@fiction)
     end
 
+    test 'excludes drafts' do
+      create_chapter(number: 1)
+      create_chapter(number: 2, status: :draft)
+
+      assert_equal 1, ChapterSlots.call(@fiction)
+    end
+
     private
 
-    def create_chapter(number:, volume_number: nil, published_at: nil)
+    def create_chapter(number:, volume_number: nil, published_at: nil, status: :published)
       @fiction.chapters.create!(
         title: "Chapter #{number}",
         number:,
         volume_number:,
         published_at:,
+        status:,
         user: @user,
         content: @content,
         scanlator_ids: [@scanlator.id]

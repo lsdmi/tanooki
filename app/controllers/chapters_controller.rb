@@ -2,10 +2,10 @@
 
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
-  include ChapterFictionStatusUpdate
   include Chapters::CreationAuthorization
   include Chapters::ShowTracking
   include ChaptersViewHelpers
+  include ChapterPublicAccess
   include ChapterScheduleParams
   include FictionQuery
 
@@ -33,6 +33,8 @@ class ChaptersController < ApplicationController
 
   # Used when Turbo shows a prefetched chapter: show skipped progress on prefetch, this records on real view.
   def record_progress
+    return head(:no_content) if @chapter.draft?
+
     changed = Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
     head(changed ? :ok : :no_content)
   end
@@ -48,34 +50,36 @@ class ChaptersController < ApplicationController
     @chapter.user = current_user
     return render_new_with_schedule_error if published_at_schedule_invalid?
 
-    persist_new_chapter
+    persist_chapter(failure_template: 'chapters/new')
   end
 
   def update
     return render_edit_with_schedule_error if published_at_schedule_invalid?
 
-    persist_chapter_update
+    persist_chapter(failure_template: 'chapters/edit')
   end
 
   private
 
-  def persist_new_chapter
-    if @chapter.save
-      sync_chapter_scanlator_links
-      refresh_chapter_stats
-      redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
-    else
-      render 'chapters/new', status: :unprocessable_content
-    end
+  def persist_chapter(failure_template:)
+    saved = Chapters::Persist.call(
+      chapter: @chapter,
+      attributes: chapter_params,
+      intent: params[:intent],
+      user: current_user
+    )
+    return render failure_template, status: :unprocessable_content unless saved
+
+    redirect_after_persist
   end
 
-  def persist_chapter_update
-    if @chapter.update(chapter_params)
-      sync_chapter_scanlator_links
-      refresh_chapter_stats
-      redirect_to reading_path(@chapter.fiction, page: @list_page), notice: t('chapters.notices.update_success')
+  def redirect_after_persist
+    if @chapter.draft?
+      redirect_to edit_chapter_path(@chapter, page: @list_page), notice: t('chapters.notices.draft_saved')
+    elsif @chapter.previously_new_record?
+      redirect_to reading_path(@chapter.fiction), notice: t('chapters.notices.create_success')
     else
-      render 'chapters/edit', status: :unprocessable_content
+      redirect_to reading_path(@chapter.fiction, page: @list_page), notice: t('chapters.notices.update_success')
     end
   end
 
@@ -108,13 +112,5 @@ class ChaptersController < ApplicationController
 
   def verify_permissions
     redirect_to root_path unless current_user.manages_chapter?(@chapter)
-  end
-
-  def redirect_if_chapter_not_yet_public
-    return unless @chapter.scheduled?
-    return if current_user&.admin?
-    return if current_user && current_user.scanlators.ids.intersect?(@chapter.scanlators.ids)
-
-    redirect_to fiction_path(@chapter.fiction), alert: t('chapters.alerts.not_yet_public')
   end
 end

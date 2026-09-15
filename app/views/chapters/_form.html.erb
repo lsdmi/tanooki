@@ -129,6 +129,7 @@
           <svg class="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
           <span class="text-sm text-amber-800 dark:text-amber-200 leading-snug">Цей розділ заплановано на <strong><%= l(chapter.published_at, format: :long) %></strong></span>
         </div>
+        <p class="text-xs leading-snug text-amber-800 dark:text-amber-200"><%= t('chapters.hints.scheduled_vs_draft') %></p>
       <% end %>
     </div>
   </div>
@@ -153,17 +154,7 @@
       <% end if chapter.errors[:content].any? %>
     </div>
   </div>
-  <!-- Submit Section -->
-  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-        </div>
-      </div>
-      <div class="flex items-center space-x-3">
-        <%= link_to "Скасувати", :back, class: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" %>
-        <%= ui_button(as: :submit, label: 'Надіслати', size: :md) %>
-      </div>
-    </div>
-  </div>
+  <%= render 'shared/rich_text_submit',
+             primary_label: t('chapters.buttons.publish'),
+             show_draft: show_chapter_draft_save?(chapter) %>
 </div>

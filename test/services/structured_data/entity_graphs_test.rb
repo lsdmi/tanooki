@@ -24,5 +24,14 @@ module StructuredData
       assert_equal 'https://schema.org', payload['@context']
       assert_equal 'WebSite', payload['@graph'].first['@type']
     end
+
+    test 'chapter_article_json is blank for drafts' do
+      chapter = chapters(:one)
+      chapter.status = :draft
+      payload = EntityGraphs.new(asset_url: ->(_attachment) { 'https://example.test/cover.webp' })
+                            .chapter_article_json(chapter)
+
+      assert_nil payload
+    end
   end
 end

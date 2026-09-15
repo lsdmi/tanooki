@@ -388,8 +388,18 @@ uk:
       create_success: Розділ додано.
       update_success: Розділ оновлено.
       destroy_success: Розділ видалено.
+      draft_saved: Начерк збережено.
+    buttons:
+      cancel: Скасувати
+      save: Зберегти
+      publish: Надіслати
     alerts:
+      draft: Начерк
       not_yet_public: Цей розділ ще недоступний для читання.
+    hints:
+      scheduled_vs_draft: Розклад — час виходу для читачів. Незавершену роботу зберігайте через «Зберегти».
+    status:
+      unpublished: Ще не опубліковано.
     reader_epub_banner:
       title: Завантажити EPUB
       login_description: Увійдіть, щоб зберегти розділ та читати офлайн на будь-якому пристрої.

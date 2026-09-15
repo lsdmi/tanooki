@@ -18,6 +18,22 @@ module Readings
       assert_selector "a[href='#{chapter_path(@chapter)}'][title='Переглянути']"
     end
 
+    test 'draft table row shows badge and points title at edit' do
+      @chapter.status = :draft
+      render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 1))
+
+      assert_text I18n.t('chapters.alerts.draft')
+      assert_selector "a[href='#{edit_chapter_path(@chapter.slug)}']", text: @chapter.display_title
+      assert_no_selector "a[title='Переглянути']"
+    end
+
+    test 'scheduled table row shows release hint' do
+      @chapter.published_at = 2.days.from_now
+      render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 1))
+
+      assert_text I18n.t('chapters.hints.scheduled_vs_draft')
+    end
+
     test 'renders table row edit and delete actions with pagy page' do
       render_inline(ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 2))
 

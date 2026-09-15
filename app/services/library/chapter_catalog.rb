@@ -14,7 +14,7 @@ module Library
     end
 
     def ordered_user_chapters_desc(fiction, user)
-      base = fiction.chapters.order(order_clause_desc)
+      base = fiction.chapters.order(user_chapters_order_clause)
       return base if user.admin?
 
       base.joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct
@@ -29,7 +29,7 @@ module Library
     end
 
     def chapters_scope_for_list(fiction, viewer)
-      return fiction.chapters if viewer&.admin?
+      return fiction.chapters.published if viewer&.admin?
 
       chapters_scope_by_visibility(fiction, viewer)
     end
@@ -45,6 +45,13 @@ module Library
       Arel.sql("COALESCE(volume_number, 0) DESC, number DESC, #{Chapter::PUBLIC_TIME_SQL} DESC")
     end
 
+    def user_chapters_order_clause
+      draft_first = ActiveRecord::Base.sanitize_sql_array(
+        ['CASE WHEN chapters.status = ? THEN 0 ELSE 1 END', Chapter.statuses[:draft]]
+      )
+      Arel.sql("#{draft_first}, COALESCE(volume_number, 0) DESC, number DESC, #{Chapter::PUBLIC_TIME_SQL} DESC")
+    end
+
     def group_by_number_range(chapters)
       chapters.group_by do |chapter|
         if chapter.number.to_i.zero?
@@ -57,7 +64,8 @@ module Library
       end
     end
 
-    # Guests: only chapters already public. Team on this fiction: also chapters with future published_at they scanlate.
+    # Guests: only chapters already public. Team on this fiction: also scheduled rows they scanlate.
+    # Drafts stay off this list (they belong on readings#show via ordered_user_chapters_desc).
     def chapters_scope_by_visibility(fiction, viewer)
       now = Time.current
       released_sql = visible_to_everyone_sql_fragment
@@ -73,14 +81,19 @@ module Library
     module_function :guest_or_no_team_overlap?
 
     def visible_to_everyone_sql_fragment
-      '(chapters.published_at IS NULL OR chapters.published_at <= ?)'
+      "(#{published_status_sql} AND (chapters.published_at IS NULL OR chapters.published_at <= ?))"
     end
     module_function :visible_to_everyone_sql_fragment
 
     def sql_visible_now_or_future_for_team(visible_to_all_sql)
-      "#{visible_to_all_sql} OR (chapters.published_at > ? AND EXISTS (" \
+      "#{visible_to_all_sql} OR (#{published_status_sql} AND chapters.published_at > ? AND EXISTS (" \
         'SELECT 1 FROM chapter_scanlators cs WHERE cs.chapter_id = chapters.id AND cs.scanlator_id IN (?)))'
     end
     module_function :sql_visible_now_or_future_for_team
+
+    def published_status_sql
+      ActiveRecord::Base.sanitize_sql_array(['chapters.status = ?', Chapter.statuses[:published]])
+    end
+    module_function :published_status_sql
   end
 end
