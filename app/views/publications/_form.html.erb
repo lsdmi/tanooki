@@ -110,18 +110,7 @@
     </div>
   </div>
 
-  <!-- Submit Section -->
-  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-3">
-        <%= link_to "Скасувати", :back, class: "px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200" %>
-        <%= ui_button(as: :submit, label: 'Опублікувати', size: :md) %>
-      </div>
-    </div>
-  </div>
+  <%= render 'shared/rich_text_submit',
+             primary_label: t('publications.buttons.publish'),
+             show_draft: show_publication_draft_save?(publication) %>
 </div>

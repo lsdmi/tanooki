@@ -1,6 +1,6 @@
 # Intentional data-turbo=false (Category D/F + admin forms).
 # Every match in app/views, app/helpers, app/components must appear here.
-# Verified: 2026-09-14 — 24 occurrences across 16 files (OmniAuth keeps turbo:false).
+# Verified: 2026-09-15 — 25 occurrences across 17 files (OmniAuth keeps turbo:false).
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
   - app/views/fictions/edit.html.erb:5
@@ -10,6 +10,7 @@ allowed:
   - app/views/readings/_chapters.html.erb:195
   - app/views/readings/chapter_row_component/_actions.html.erb:11
   - app/components/readings/chapter_row_component.rb:51
+  - app/helpers/publications/form_helper.rb:21
   - app/views/scanlators/_team_card.html.erb:29
   - app/views/studio/tabs/_blogs.html.erb:13
   - app/views/studio/tabs/_bookshelves.html.erb:15
@@ -20,8 +21,8 @@ allowed:
   - app/views/users/dashboard/_fictions.html.erb:85
   - app/views/users/dashboard/_fictions.html.erb:172
   - app/views/users/dashboard/_no_scanlators_screen.html.erb:74
-  - app/views/users/dashboard/_publications.html.erb:64
-  - app/views/users/dashboard/_publications.html.erb:140
+  - app/views/users/dashboard/_publications.html.erb:68
+  - app/views/users/dashboard/_publications.html.erb:148
   - app/views/admin/pokemons/_list.html.erb:28
   - app/views/admin/pokemons/_list.html.erb:37
 

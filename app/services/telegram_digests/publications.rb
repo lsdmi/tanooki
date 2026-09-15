@@ -12,7 +12,7 @@ module TelegramDigests
 
     def call
       return unless Rails.env.production?
-      return unless Publication.weekly.any?
+      return unless weekly_publications.any?
 
       Sender.call(text_message)
     end
@@ -32,9 +32,13 @@ module TelegramDigests
     end
 
     def recent_publications
-      Publication.weekly.limit(WEEKLY_PUBLICATIONS_LIMIT).map do |publication|
+      weekly_publications.limit(WEEKLY_PUBLICATIONS_LIMIT).map do |publication|
         "📰 <b><a href=\"#{route(publication)}\">#{publication.title}</a></b>"
       end.join("\n\n")
+    end
+
+    def weekly_publications
+      Publication.published.weekly
     end
 
     def route(publication)

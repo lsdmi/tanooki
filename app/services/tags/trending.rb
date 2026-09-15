@@ -25,7 +25,7 @@ module Tags
     def trending_tag_names
       Tag.joins(:publications)
          .select(:name)
-         .where(publications: { created_at: 21.days.ago.. })
+         .where(publications: { created_at: 21.days.ago.., status: :published })
          .group('tags.id')
          .order('SUM(publications.views) DESC')
          .limit(TAG_LIMIT)

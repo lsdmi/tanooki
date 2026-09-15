@@ -42,3 +42,4 @@ coverage/*
 
 # Editor settings (machine-specific paths, e.g. mise Ruby/RuboCop)
 .vscode/
+.cursor/

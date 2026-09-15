@@ -38,7 +38,7 @@ module Sitemaps
     end
 
     def tale_entries
-      Publication.order(:id).pluck(:slug, :updated_at).map do |slug, updated_at|
+      Publication.published.order(:id).pluck(:slug, :updated_at).map do |slug, updated_at|
         entry(:tale_url, slug, lastmod: updated_at)
       end
     end

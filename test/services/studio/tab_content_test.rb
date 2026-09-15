@@ -55,5 +55,16 @@ module Studio
       assert_equal user.publications.order(created_at: :desc).limit(8).to_a,
                    service.instance_variable_get(:@publications).to_a
     end
+
+    test 'blogs tab includes drafts' do
+      user = users(:user_one)
+      draft = publications(:tale_created_one)
+      draft.update!(status: :draft)
+      service = TabContent.new(user, 'blogs', { page: 1 })
+
+      service.call
+
+      assert_includes service.instance_variable_get(:@publications).to_a, draft
+    end
   end
 end

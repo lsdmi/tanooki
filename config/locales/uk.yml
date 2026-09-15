@@ -490,6 +490,12 @@ uk:
       create_success: Допис створено.
       update_success: Допис оновлено.
       destroy_success: Допис видалено.
+      draft_saved: Начерк збережено.
+    buttons:
+      publish: Опублікувати
+    placeholder_title: Начерк
+    alerts:
+      not_yet_public: Цей допис ще недоступний для читання.
   scanlators:
     notices:
       create_success: Команду додано, час додати ваші твори.

@@ -23,6 +23,26 @@ class ChaptersControllerDraftAccessTest < ActionDispatch::IntegrationTest
     assert_redirected_to fiction_path(@chapter.fiction)
   end
 
+  test 'guest cannot guess-edit a draft chapter' do
+    get edit_chapter_url(@chapter)
+
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'outsider cannot guess-edit a draft chapter' do
+    sign_in users(:user_two)
+    get edit_chapter_url(@chapter)
+
+    assert_redirected_to root_path
+  end
+
+  test 'guest cannot patch a draft chapter' do
+    patch chapter_url(@chapter), params: { chapter: { title: 'Hijacked' } }
+
+    assert_redirected_to new_user_session_path
+    assert_not_equal 'Hijacked', @chapter.reload.title
+  end
+
   test 'record_progress on a draft does not change reading progress' do
     sign_in users(:user_one)
     progress = reading_progresses(:one)

@@ -2,7 +2,7 @@
 
 # Blog-style publications (tales): list, show, and tag browsing.
 class TalesController < ApplicationController
-  HIGHLIGHTS_LIMIT = 10
+  HIGHLIGHTS_LIMIT = Publications::PublicCache::HIGHLIGHTS_LIMIT
   PUBLICATIONS_PER_PAGE = 16
   OPENSEARCH_CONNECTION_ERRORS = [
     Faraday::Error,
@@ -12,8 +12,11 @@ class TalesController < ApplicationController
     OpenSearch::Transport::Transport::Error
   ].freeze
   helper Publications::CoverHeaderHelper
+  include PublicationPublicAccess
 
-  before_action :set_tale, :track_visit, only: :show
+  before_action :set_tale, only: :show
+  before_action :redirect_if_publication_not_public, only: :show
+  before_action :track_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]
 
   def index
@@ -40,12 +43,14 @@ class TalesController < ApplicationController
   private
 
   def more_tails
-    return base_search.excluding(@publication).first(5) if base_search.size > 5
-
-    (
-      base_search.to_a + Publication.includes([{ cover_attachment: :blob },
-                                               :rich_text_description]).order(created_at: :desc).first(6)
-    ).excluding(@publication).uniq.first(5)
+    related = if base_search.size > 5
+                base_search.excluding(@publication).first(5)
+              else
+                (
+                  base_search.to_a + catalog_publications.first(6)
+                ).excluding(@publication).uniq.first(5)
+              end
+    Array(related).select(&:published?)
   end
 
   def base_search
@@ -61,31 +66,33 @@ class TalesController < ApplicationController
   end
 
   def set_tale
-    @publication = @commentable = Rails.cache.fetch("publication_#{params[:id]}", expires_in: 1.hour) do
-      Publication.friendly.find(params.expect(:id))
-    end
+    @publication = @commentable = load_publication_for_show
   end
 
   def all_publications
-    Publication.includes([{ cover_attachment: :blob }, :rich_text_description, :tags]).order(created_at: :desc)
+    catalog_publications.includes(:tags)
+  end
+
+  def catalog_publications
+    Publication.published.includes([{ cover_attachment: :blob }, :rich_text_description]).order(created_at: :desc)
   end
 
   def highlights
-    cached_ids = highlight_ids
-    Publication.includes(%i[cover_attachment rich_text_description
-                            tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment rich_text_description
+                                      tags]).where(id: highlight_ids).order(created_at: :desc)
   end
 
   def publications
-    cached_ids = Rails.cache.fetch("publications_excluding_#{HIGHLIGHTS_LIMIT}", expires_in: 4.hours) do
+    cached_ids = Rails.cache.fetch(Publications::PublicCache::EXCLUDING_HIGHLIGHTS_KEY,
+                                   expires_in: Publications::PublicCache::LIST_TTL) do
       all_publications.where.not(id: highlight_ids).map(&:id)
     end
-    Publication.includes(%i[cover_attachment rich_text_description
-                            tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment rich_text_description
+                                      tags]).where(id: cached_ids).order(created_at: :desc)
   end
 
   def highlight_ids
-    Rails.cache.fetch("highlights_#{HIGHLIGHTS_LIMIT}", expires_in: 4.hours) do
+    Rails.cache.fetch(Publications::PublicCache::HIGHLIGHTS_KEY, expires_in: Publications::PublicCache::LIST_TTL) do
       all_publications.first(HIGHLIGHTS_LIMIT).map(&:id)
     end
   end

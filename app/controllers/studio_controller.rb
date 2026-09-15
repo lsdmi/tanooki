@@ -4,6 +4,7 @@
 class StudioController < ApplicationController
   helper Pokemons::DexHelper,
          Pokemons::StatsHelper,
+         Publications::FormHelper,
          Studio::MenuHelper
 
   include FictionQuery

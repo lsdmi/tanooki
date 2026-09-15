@@ -1,7 +1,7 @@
 <%# locals: (chapter:, published_at_label:) %>
 <div class="flex flex-wrap items-center gap-2">
   <%= yield %>
-  <%= render 'chapters/draft_badge', chapter: chapter, compact: true %>
+  <%= render 'shared/draft_badge', record: chapter, compact: true %>
 </div>
 <% if chapter.draft? %>
   <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= t('chapters.status.unpublished') %></p>

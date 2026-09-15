@@ -4,7 +4,7 @@ require 'test_helper'
 
 class HomeTalesSectionTest < ActionDispatch::IntegrationTest
   def setup
-    Rails.cache.delete('top_tale/v1')
+    Rails.cache.delete(Publications::PublicCache::TOP_TALE_KEY)
   end
 
   test 'news and blogs section renders full-width editorial shell' do
@@ -35,5 +35,14 @@ class HomeTalesSectionTest < ActionDispatch::IntegrationTest
 
     assert_select '[aria-label="Новини та Блоги"] .aspect-video', minimum: 1
     assert_select '.lg\\:grid-cols-\\[minmax\\(0\\,1fr\\)_minmax\\(0\\,2\\.15fr\\)_minmax\\(0\\,1fr\\)\\]'
+  end
+
+  test 'home does not render a draft stuffed into the top tale cache' do
+    draft = publications(:tale_approved_one)
+    draft.update!(status: :draft)
+    Rails.cache.write(Publications::PublicCache::TOP_TALE_KEY, draft.id)
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_select 'a[href=?]', tale_path(draft), count: 0
   end
 end

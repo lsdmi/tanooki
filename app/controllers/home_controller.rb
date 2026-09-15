@@ -19,9 +19,9 @@ class HomeController < ApplicationController
   private
 
   def tales
-    scope = Publication
-            .includes(:rich_text_description, cover_attachment: :blob)
-            .order(created_at: :desc)
+    scope = Publication.published
+                       .includes(:rich_text_description, cover_attachment: :blob)
+                       .order(created_at: :desc)
     scope = scope.where.not(id: @top_tale.id) if @top_tale
     scope.limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
   end
@@ -40,12 +40,14 @@ class HomeController < ApplicationController
   end
 
   def top_tale
-    publication_id = Rails.cache.fetch('top_tale/v1', expires_in: 12.hours) do
-      Publication.weekly.order(views: :desc).limit(1).pick(:id)
+    publication_id = Rails.cache.fetch(Publications::PublicCache::TOP_TALE_KEY, expires_in: 12.hours) do
+      Publication.published.weekly.order(views: :desc).limit(1).pick(:id)
     end
-    return Publication.last if publication_id.blank?
+    published_catalog.find_by(id: publication_id) || published_catalog.order(:id).last
+  end
 
-    Publication.includes({ cover_attachment: :blob }, :rich_text_description).find_by(id: publication_id)
+  def published_catalog
+    Publication.published.includes({ cover_attachment: :blob }, :rich_text_description)
   end
 
   def videos

@@ -102,4 +102,39 @@ class PublicationTest < ActiveSupport::TestCase
     assert_not @publication.should_index?
     assert_not @publication.public_visible?
   end
+
+  test 'draft skips description cover and title minimums' do
+    publication = Publication.new(
+      user: @user,
+      type: 'Tale',
+      status: :draft,
+      title: 'Hi',
+      description: 'short'
+    )
+
+    assert_predicate publication, :valid?
+  end
+
+  test 'draft still rejects title longer than 100 characters' do
+    @publication.status = :draft
+    @publication.title = 'Title' * 25
+
+    assert_not_predicate @publication, :valid?
+  end
+
+  test 'published still requires description cover and title minimums' do
+    @publication.title = 'Hi'
+    @publication.description = 'short'
+    @publication.cover = nil
+
+    assert_not_predicate @publication, :valid?
+  end
+
+  test 'should_generate_new_friendly_id? when title changes' do
+    assert_not @publication.should_generate_new_friendly_id?
+
+    @publication.title = 'A brand new publication title'
+
+    assert_predicate @publication, :should_generate_new_friendly_id?
+  end
 end

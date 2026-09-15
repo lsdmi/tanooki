@@ -15,7 +15,7 @@ module UserProfile
   end
 
   def profile_recent_publications
-    publications.includes(:cover_attachment, :rich_text_description).weekly.recent.limit(3)
+    publications.published.includes(:cover_attachment, :rich_text_description).weekly.recent.limit(3)
   end
 
   def profile_recent_comments

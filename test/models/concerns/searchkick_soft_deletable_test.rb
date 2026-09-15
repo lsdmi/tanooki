@@ -33,4 +33,15 @@ class SearchkickSoftDeletableTest < ActiveSupport::TestCase
 
     assert removed
   end
+
+  test 'drafting a publication removes it from the search index' do
+    publication = publications(:tale_approved_one)
+    removed = false
+
+    Publication.searchkick_index.stub(:remove, ->(_) { removed = true }) do
+      publication.update!(status: :draft)
+    end
+
+    assert removed
+  end
 end

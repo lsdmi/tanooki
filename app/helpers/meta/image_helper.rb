@@ -52,7 +52,7 @@ module Meta
     end
 
     def tales_cover
-      meta_assign(:highlights).first.cover
+      meta_assign(:highlights)&.first&.cover
     end
   end
 end

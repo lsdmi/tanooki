@@ -1,5 +1,5 @@
-<%# locals: (chapter:, compact: false) %>
-<% if chapter.draft? %>
+<%# locals: (record:, compact: false) %>
+<% if record.draft? %>
   <% size_classes = compact ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-0.5 text-sm' %>
   <span class="inline-flex items-center rounded-full border border-amber-200/90 bg-amber-50 font-medium text-amber-800 dark:border-amber-800/80 dark:bg-amber-900/25 dark:text-amber-200 <%= size_classes %>">
     <%= t('chapters.alerts.draft') %>

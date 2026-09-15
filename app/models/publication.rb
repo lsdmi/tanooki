@@ -26,9 +26,10 @@ class Publication < ApplicationRecord
   has_many :publication_tags, dependent: :destroy
   has_many :tags, through: :publication_tags
 
-  validates :cover, presence: true
-  validates :description, length: { minimum: 500 }
-  validates :title, length: { minimum: 10, maximum: 100 }
+  validates :cover, presence: true, unless: :draft?
+  validates :description, length: { minimum: 500 }, unless: :draft?
+  validates :title, length: { maximum: 100 }
+  validates :title, length: { minimum: 10 }, unless: :draft?
 
   validate :cover_format
 
@@ -53,8 +54,12 @@ class Publication < ApplicationRecord
 
   def slug_candidates
     [
-      title.downcase
+      title&.downcase
     ]
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || (title_changed? && title.present?)
   end
 
   def cover_format

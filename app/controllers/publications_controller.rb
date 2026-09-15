@@ -2,7 +2,7 @@
 
 # Handles authenticated creation, editing, and deletion of blog-style publications.
 class PublicationsController < ApplicationController
-  helper Publications::CoverHeaderHelper
+  helper Publications::CoverHeaderHelper, Publications::FormHelper
 
   before_action :authenticate_user!
   before_action :set_publication, only: %i[edit update destroy]
@@ -16,27 +16,17 @@ class PublicationsController < ApplicationController
   def edit; end
 
   def create
-    @publication = current_user.publications.build(publication_params)
-
-    if @publication.save
-      manage_tags if params[:publication][:tag_ids]
-      redirect_to root_path, notice: t('publications.notices.create_success')
-    else
-      render 'publications/new', status: :unprocessable_content
-    end
+    @publication = current_user.publications.build
+    persist_publication(failure_template: 'publications/new')
   end
 
   def update
-    if @publication.update(publication_params)
-      manage_tags if params[:publication][:tag_ids]
-      redirect_to tale_path(@publication), notice: t('publications.notices.update_success')
-    else
-      render :edit, status: :unprocessable_content
-    end
+    persist_publication(failure_template: 'publications/edit')
   end
 
   def destroy
     @publication.destroy
+    Publications::PublicCache.bust(@publication)
     @pagy, @publications = pagy(
       publications,
       limit: 8,
@@ -48,6 +38,28 @@ class PublicationsController < ApplicationController
   end
 
   private
+
+  def persist_publication(failure_template:)
+    saved = Publications::Persist.call(
+      publication: @publication,
+      attributes: publication_params,
+      intent: params[:intent]
+    )
+    return render failure_template, status: :unprocessable_content unless saved
+
+    manage_tags if params.dig(:publication, :tag_ids)
+    redirect_after_persist
+  end
+
+  def redirect_after_persist
+    if @publication.draft?
+      redirect_to edit_publication_path(@publication), notice: t('publications.notices.draft_saved')
+    elsif @publication.previously_new_record?
+      redirect_to root_path, notice: t('publications.notices.create_success')
+    else
+      redirect_to tale_path(@publication), notice: t('publications.notices.update_success')
+    end
+  end
 
   def publications
     if current_user.admin?

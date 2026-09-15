@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Keeps Searchkick indexes aligned with SoftDeletable: soft-deleted rows are removed
-# from OpenSearch and indexed documents carry `active: true` for query filtering.
+# Keeps Searchkick indexes aligned with SoftDeletable (and Draftable): rows that
+# should not be searchable are removed from OpenSearch.
 module SearchkickSoftDeletable
   extend ActiveSupport::Concern
 
@@ -14,7 +14,7 @@ module SearchkickSoftDeletable
   end
 
   included do
-    after_commit :remove_from_search_index_after_soft_delete, on: :update
+    after_commit :remove_from_search_index_when_not_indexable, on: :update
     after_real_destroy :remove_from_search_index_after_hard_destroy
   end
 
@@ -24,10 +24,15 @@ module SearchkickSoftDeletable
 
   private
 
-  def remove_from_search_index_after_soft_delete
-    return unless saved_change_to_deleted_at? && deleted?
+  def remove_from_search_index_when_not_indexable
+    return if should_index?
+    return unless unindexable_attribute_changed?
 
     safely_remove_from_search_index
+  end
+
+  def unindexable_attribute_changed?
+    saved_change_to_deleted_at? || (has_attribute?(:status) && saved_change_to_status?)
   end
 
   def remove_from_search_index_after_hard_destroy

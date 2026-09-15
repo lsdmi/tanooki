@@ -15,6 +15,17 @@ module TelegramDigests
       end
     end
 
+    test 'weekly digest omits drafts' do
+      draft = publications(:tale_approved_one)
+      draft.update!(status: :draft, title: 'Unique draft digest title')
+
+      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+        sent = capture_send { Publications.call }
+
+        assert_no_match(/#{Regexp.escape(draft.title)}/, sent[:text])
+      end
+    end
+
     private
 
     def capture_send(&)
@@ -37,7 +48,7 @@ module TelegramDigests
     end
 
     def recent_publications
-      Publication.weekly.limit(Publications::WEEKLY_PUBLICATIONS_LIMIT).map do |tale|
+      Publication.published.weekly.limit(Publications::WEEKLY_PUBLICATIONS_LIMIT).map do |tale|
         "📰 <b><a href=\"https://baka.in.ua/tales/#{tale.slug}\">#{tale.title}</a></b>"
       end.join("\n\n")
     end
