@@ -1,0 +1,179 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Official Google PageSpeed Insights (hosted Lighthouse lab + CrUX field data).
+#
+#   bin/pagespeed /fictions
+#   bin/pagespeed --desktop https://baka.in.ua/fictions/genres/horror
+#
+# Create a key: Google Cloud Console → enable "PageSpeed Insights API" →
+# Credentials → API key, restrict it to that API, then set PAGESPEED_API_KEY in .env.
+
+require 'json'
+require 'net/http'
+require 'optparse'
+require 'uri'
+
+ORIGIN = 'https://baka.in.ua'
+ENDPOINT = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
+CATEGORIES = %w[performance accessibility best-practices seo].freeze
+LAB_AUDITS = [
+  ['FCP', 'first-contentful-paint'],
+  ['LCP', 'largest-contentful-paint'],
+  ['TBT', 'total-blocking-time'],
+  ['CLS', 'cumulative-layout-shift'],
+  ['SI', 'speed-index'],
+  ['TTFB', 'server-response-time']
+].freeze
+FIELD_METRICS = {
+  'LARGEST_CONTENTFUL_PAINT_MS' => 'LCP',
+  'INTERACTION_TO_NEXT_PAINT' => 'INP',
+  'CUMULATIVE_LAYOUT_SHIFT_SCORE' => 'CLS',
+  'FIRST_CONTENTFUL_PAINT_MS' => 'FCP'
+}.freeze
+
+def load_dotenv
+  path = File.expand_path('../.env', __dir__)
+  return unless File.readable?(path)
+
+  File.foreach(path) do |line|
+    next if line.start_with?('#') || line.strip.empty?
+
+    key, sep, value = line.chomp.partition('=')
+    next if sep.empty? || ENV.key?(key.strip)
+
+    ENV[key.strip] = value.strip.sub(/\A['"]/, '').sub(/['"]\z/, '')
+  end
+end
+
+def resolve_url(input)
+  return ORIGIN if input.nil? || input.strip.empty?
+
+  raw = input.strip
+  return raw if raw.match?(%r{\Ahttps?://}i)
+  return "#{ORIGIN}#{raw}" if raw.start_with?('/')
+
+  "#{ORIGIN}/#{raw}"
+end
+
+def parse_args(argv)
+  strategy = 'mobile'
+  parser = OptionParser.new do |opts|
+    opts.banner = 'Usage: bin/pagespeed [--desktop] [URL or /path ...]'
+    opts.on('--desktop', 'Lab strategy desktop (default: mobile)') { strategy = 'desktop' }
+    opts.on('-h', '--help', 'Show this help') do
+      puts opts
+      exit
+    end
+  end
+  targets = parser.parse(argv)
+  targets = ['/'] if targets.empty?
+  [strategy, targets]
+end
+
+def request_report(url, strategy, key)
+  params = { url: url, strategy: strategy, prettyPrint: false }
+  params[:key] = key if key
+  uri = URI(ENDPOINT)
+  uri.query = URI.encode_www_form(params.to_a + CATEGORIES.map { |c| ['category', c] })
+
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.read_timeout = 120
+  http.open_timeout = 15
+  response = http.request(Net::HTTP::Get.new(uri))
+  body = JSON.parse(response.body)
+  raise body.dig('error', 'message') || "HTTP #{response.code}" unless response.is_a?(Net::HTTPSuccess)
+
+  body
+end
+
+def format_score(value)
+  return '—' if value.nil?
+
+  (value * 100).round
+end
+
+def print_categories(lighthouse)
+  puts '  Lab scores'
+  lighthouse.fetch('categories', {}).each_value do |cat|
+    printf "    %-16s %s\n", cat['title'], format_score(cat['score'])
+  end
+end
+
+def print_lab_metrics(lighthouse)
+  audits = lighthouse.fetch('audits', {})
+  parts = LAB_AUDITS.filter_map do |label, id|
+    display = audits.dig(id, 'displayValue')
+    next if display.nil? || display.empty?
+
+    "#{label} #{display}"
+  end
+  puts "  Lab metrics    #{parts.join('  ·  ')}" unless parts.empty?
+end
+
+def print_field(title, experience)
+  return if experience.nil? || experience.empty?
+
+  metrics = experience['metrics']
+  return if metrics.nil? || metrics.empty?
+
+  parts = FIELD_METRICS.filter_map do |id, label|
+    metric = metrics[id]
+    next unless metric
+
+    value = metric['percentile']
+    shown = if id.end_with?('_MS')
+              "#{value} ms"
+            elsif id.include?('LAYOUT_SHIFT')
+              format('%.3f', value / 100.0)
+            else
+              value.to_s
+            end
+    "#{label} #{shown} (#{metric['category']})"
+  end
+  overall = experience['overall_category']
+  puts "  #{title}#{overall ? " [#{overall}]" : ''}"
+  puts "    #{parts.join('  ·  ')}" unless parts.empty?
+end
+
+def print_report(url, strategy, payload)
+  lighthouse = payload['lighthouseResult'] || {}
+  fetch = lighthouse.dig('timing', 'total')
+  puts "#{url}  (#{strategy})"
+  print_categories(lighthouse)
+  print_lab_metrics(lighthouse)
+  print_field('Field (this URL)', payload['loadingExperience'])
+  print_field('Field (origin)', payload['originLoadingExperience'])
+  puts "  PSI lab ms     #{fetch.round}" if fetch
+  puts
+end
+
+load_dotenv
+strategy, targets = parse_args(ARGV)
+key = ENV['PAGESPEED_API_KEY'].to_s.strip
+if key.empty?
+  warn <<~MSG
+    Missing PAGESPEED_API_KEY.
+
+    1. Open https://console.cloud.google.com/apis/library/pagespeedonline.googleapis.com
+    2. Enable the PageSpeed Insights API on a GCP project.
+    3. Credentials → Create credentials → API key. Restrict the key to that API.
+    4. Put the key in .env:
+
+       PAGESPEED_API_KEY=your-key-here
+
+    Anonymous PSI quota is too small to be useful.
+  MSG
+  exit 1
+end
+
+targets.each do |target|
+  url = resolve_url(target)
+  if url.match?(%r{\Ahttps?://(localhost|127\.0\.0\.1)}i)
+    warn "Skip #{url}: PageSpeed Insights can only fetch public URLs."
+    next
+  end
+
+  print_report(url, strategy, request_report(url, strategy, key))
+end

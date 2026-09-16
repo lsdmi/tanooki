@@ -27,11 +27,10 @@ class FictionsIndexPopularRanobeTest < ActionDispatch::IntegrationTest
     assert_select '[aria-labelledby="fictions-index-popular-ranobe"] article .pb-2 a.border.text-xs', minimum: 1
   end
 
-  test 'header links to the alphabetical catalog' do
+  test 'header more-link keeps its label for assistive tech' do
     get fictions_path
 
-    assert_response :success
-    assert_select "[aria-labelledby='fictions-index-popular-ranobe'] a[href='#{alphabetical_fictions_path}']",
+    assert_select "[aria-labelledby='fictions-index-popular-ranobe'] a[href='#{alphabetical_fictions_path}'] .sr-only",
                   text: /Більше/
   end
 end
