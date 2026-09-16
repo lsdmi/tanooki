@@ -1,5 +1,5 @@
 <%# locals: skeleton:, pagy:, fictions: %>
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
   <% fictions.each_with_index do |fiction, i| %>
     <% card = skeleton.genre_thumb_card_locals(fiction, accent_index: pagy.offset + i) %>
     <article class="group rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-black/50">
@@ -14,10 +14,7 @@
         <p class="min-h-[1.25rem] text-sm font-bold leading-tight text-slate-900 dark:text-slate-100">
           <%= link_to card[:title], fiction_path(fiction), turbo_drive_visit_data.merge(class: "block truncate rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 group-hover:text-cyan-700 dark:group-hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800") %>
         </p>
-        <div class="mt-1.5 flex min-w-0 items-center gap-1">
-          <%= render Ui::GenrePageTagComponent.new(variant: :chapters, label: "#{card[:chapters]} Розділи") %>
-          <%= render Ui::GenrePageTagComponent.new(variant: :status, label: card[:status]) %>
-        </div>
+        <%= render 'fictions/genres/thumb_card_pills', card: card %>
       </div>
     </article>
   <% end %>

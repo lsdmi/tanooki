@@ -47,28 +47,29 @@ module Ui
     test 'renders footer chapters tag' do
       render_inline(GenrePageTagComponent.new(variant: :chapters, label: '252 Розділи'))
 
-      assert_selector 'span.border-slate-400\\/90.bg-slate-100', text: '252 Розділи'
+      assert_selector 'span.border-slate-400\\/90.bg-slate-100.text-xs', text: '252 Розділи'
       assert_selector 'span.dark\\:bg-slate-700\\/80.dark\\:text-slate-200', text: '252 Розділи'
     end
 
     test 'renders footer status tag' do
       render_inline(GenrePageTagComponent.new(variant: :status, label: 'Покинуто'))
 
-      assert_selector 'span.border-slate-300\\/90.bg-slate-50', text: 'Покинуто'
+      assert_selector 'span.border-slate-300\\/90.bg-slate-50.text-xs.shrink-0', text: 'Покинуто'
       assert_selector 'span.dark\\:text-slate-300', text: 'Покинуто'
+      assert_no_selector 'span.truncate', text: 'Покинуто'
     end
 
     test 'renders genre link with light and dark classes' do
       render_inline(GenrePageTagComponent.new(variant: :genre, label: 'Бойовик', href: '/fictions/genres/action'))
 
-      assert_selector 'a.border-slate-300.bg-white.text-slate-700', text: 'Бойовик'
+      assert_selector 'a.border-slate-300.bg-white.text-slate-700.text-xs', text: 'Бойовик'
       assert_selector 'a.dark\\:bg-slate-800\\/85.dark\\:text-slate-200'
     end
 
     test 'renders adult genre link with warning icon' do
       render_inline(GenrePageTagComponent.new(variant: :adult, label: 'BL', href: '/fictions/genres/bl'))
 
-      assert_selector 'a.bg-rose-200', text: 'BL'
+      assert_selector 'a.bg-rose-200.text-xs', text: 'BL'
       assert_selector 'a svg[aria-hidden="true"]'
     end
 

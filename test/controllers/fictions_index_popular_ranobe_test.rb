@@ -24,7 +24,7 @@ class FictionsIndexPopularRanobeTest < ActionDispatch::IntegrationTest
   test 'ranked strip renders genres as pills' do
     get fictions_path
 
-    assert_select '[aria-labelledby="fictions-index-popular-ranobe"] article .pb-2 a.border', minimum: 1
+    assert_select '[aria-labelledby="fictions-index-popular-ranobe"] article .pb-2 a.border.text-xs', minimum: 1
   end
 
   test 'header links to the alphabetical catalog' do

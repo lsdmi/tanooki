@@ -1,0 +1,23 @@
+<%# locals: card (thumb/grid payload from FictionGenrePageNewReleases) %>
+<div class="mt-1.5 flex flex-nowrap items-center gap-1">
+  <%= render Ui::GenrePageTagComponent.new(
+        variant: :chapters,
+        label: card[:chapters_label_short],
+        html: { class: 'inline-flex sm:hidden' }
+      ) %>
+  <%= render Ui::GenrePageTagComponent.new(
+        variant: :chapters,
+        label: card[:chapters_label],
+        html: { class: 'hidden sm:inline-flex' }
+      ) %>
+  <%= render Ui::GenrePageTagComponent.new(
+        variant: :status,
+        label: card[:status_short],
+        html: { class: 'inline-flex sm:hidden', title: card[:status] }
+      ) %>
+  <%= render Ui::GenrePageTagComponent.new(
+        variant: :status,
+        label: card[:status],
+        html: { class: 'hidden sm:inline-flex' }
+      ) %>
+</div>

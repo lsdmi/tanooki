@@ -32,14 +32,14 @@ module Ui
     ].join(' ').freeze
 
     CHAPTERS_CLASSES = [
-      'shrink-0 rounded-lg border border-slate-400/90 bg-slate-100 px-2 py-0.5',
-      'text-[10px] font-medium tabular-nums text-slate-600',
+      'shrink-0 rounded-lg border border-slate-400/90 bg-slate-100 px-1.5 py-0.5',
+      'text-xs font-medium tabular-nums text-slate-600',
       'dark:border-slate-500 dark:bg-slate-700/80 dark:text-slate-200'
     ].join(' ').freeze
 
     STATUS_CLASSES = [
-      'min-w-0 truncate rounded-lg border border-slate-300/90 bg-slate-50 px-2 py-0.5',
-      'text-[10px] font-medium text-slate-600',
+      'shrink-0 rounded-lg border border-slate-300/90 bg-slate-50 px-1.5 py-0.5',
+      'text-xs font-medium text-slate-600',
       'dark:border-slate-500 dark:bg-slate-800/60 dark:text-slate-300'
     ].join(' ').freeze
 
