@@ -17,7 +17,7 @@ module Fictions
       end
 
       def popular_novelty_ids_for_badges
-        Set.new(cached_popular_novelty_ids)
+        Set.new(cached_recent_fiction_ids)
       end
 
       def most_reads
@@ -54,7 +54,7 @@ module Fictions
       def popular_novelty_scope
         Fiction.joins(:readings)
                .group(:id)
-               .where(id: recent_fiction_ids)
+               .where(id: cached_recent_fiction_ids)
                .order('COUNT(reading_progresses.fiction_id) DESC')
                .limit(IndexVariablesManager::POPULAR_NOVELTY_INDEX_CARDS)
       end
@@ -65,8 +65,10 @@ module Fictions
         end
       end
 
-      def recent_fiction_ids
-        Fiction.order(id: :desc).limit(IndexVariablesManager::POPULAR_NOVELTY_POOL).pluck(:id)
+      def cached_recent_fiction_ids
+        Rails.cache.fetch('recent_fiction_ids', expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
+          Fiction.order(id: :desc).limit(IndexVariablesManager::POPULAR_NOVELTY_POOL).pluck(:id)
+        end
       end
 
       def most_reads_scope

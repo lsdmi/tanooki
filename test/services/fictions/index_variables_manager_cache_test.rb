@@ -72,6 +72,15 @@ module Fictions
       end
     end
 
+    test 'novelty badges use the recent pool not the ranked cards' do
+      with_memory_cache do
+        Rails.cache.write('recent_fiction_ids', [1, 2, 3], expires_in: 1.hour)
+        Rails.cache.write('popular_novelty_ids', [1], expires_in: 1.hour)
+
+        assert_equal Set.new([1, 2, 3]), IndexVariablesManager.popular_novelty_ids_for_badges
+      end
+    end
+
     test 'badge id sets reuse cached list ids' do
       with_memory_cache do
         Rails.cache.write('latest_updates_ids', [1, 2, 3], expires_in: 1.hour)

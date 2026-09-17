@@ -10,6 +10,7 @@ module Fictions
 
     def self.warm_cached_list_ids
       %i[
+        cached_recent_fiction_ids
         cached_popular_novelty_ids
         cached_most_reads_ids
         cached_latest_updates_ids

@@ -12,6 +12,7 @@ module Fictions
       WarmIndexCacheJob.perform_now
 
       assert Rails.cache.exist?('popular_novelty_ids')
+      assert Rails.cache.exist?('recent_fiction_ids')
       assert Rails.cache.exist?(IndexGenreSpotlight.cache_key)
     ensure
       Rails.cache = original_cache
