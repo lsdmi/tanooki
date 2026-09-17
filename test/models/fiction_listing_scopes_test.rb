@@ -40,7 +40,7 @@ class FictionListingScopesTest < ActiveSupport::TestCase
     assert_not_includes Fiction.finished, @fiction
   end
 
-  test 'recent Thursday window includes last Thursday through Wednesday night' do
+  test 'thursday digest window includes last Thursday through Wednesday night' do
     membership = {
       '2026-09-09 23:59:59' => false,
       '2026-09-10 00:00:00' => true,
@@ -56,37 +56,39 @@ class FictionListingScopesTest < ActiveSupport::TestCase
           @fiction.update!(created_at: Time.zone.parse(created_at))
 
           if included
-            assert_includes Fiction.recent, @fiction, "#{created_at} should be listed at #{run_at}"
+            assert_includes Fiction.for_thursday_digest, @fiction, "#{created_at} should be listed at #{run_at}"
           else
-            assert_not_includes Fiction.recent, @fiction, "#{created_at} should wait until next week at #{run_at}"
+            assert_not_includes Fiction.for_thursday_digest, @fiction,
+                                "#{created_at} should wait until next week at #{run_at}"
           end
         end
       end
     end
   end
 
-  test 'recent Thursday windows tile without overlap' do
+  test 'thursday digest windows tile without overlap' do
     @fiction.update!(created_at: Time.zone.parse('2026-09-10 10:00'))
 
     travel_to Time.zone.parse('2026-09-10 18:29') do
-      assert_not_includes Fiction.recent, @fiction
+      assert_not_includes Fiction.for_thursday_digest, @fiction
     end
 
     travel_to Time.zone.parse('2026-09-17 18:29') do
-      assert_includes Fiction.recent, @fiction
+      assert_includes Fiction.for_thursday_digest, @fiction
     end
 
     travel_to Time.zone.parse('2026-09-24 14:00') do
-      assert_not_includes Fiction.recent, @fiction
+      assert_not_includes Fiction.for_thursday_digest, @fiction
     end
   end
 
-  test 'recent lists newest first' do
+  test 'thursday digest lists newest first' do
     travel_to Time.zone.parse('2026-09-17 18:29') do
       @fiction.update!(created_at: Time.zone.parse('2026-09-14 12:00'))
       @other.update!(created_at: Time.zone.parse('2026-09-16 12:00'))
 
-      assert_equal [@other.id, @fiction.id], Fiction.recent.where(id: [@fiction.id, @other.id]).map(&:id)
+      assert_equal [@other.id, @fiction.id],
+                   Fiction.for_thursday_digest.where(id: [@fiction.id, @other.id]).map(&:id)
     end
   end
 end

@@ -71,9 +71,7 @@ class Fiction < ApplicationRecord
       .joins(readings_join_sql)
       .order(Arel.sql('recent_readings_count DESC, fictions.id ASC'))
   }
-  # Thursday digest in Kyiv: [last Thursday 00:00, this Thursday 00:00).
-  # Weekday-anchored so a late CI run on Friday keeps the same titles.
-  scope :recent, lambda {
+  scope :for_thursday_digest, lambda {
     period_end = Time.current.beginning_of_week(:thursday)
     where(created_at: (period_end - 7.days)...period_end).order(created_at: :desc)
   }

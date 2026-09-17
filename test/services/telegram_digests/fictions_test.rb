@@ -4,7 +4,7 @@ require 'test_helper'
 
 module TelegramDigests
   class FictionsTest < ActiveSupport::TestCase
-    test 'call sends message in production when there are recent fictions' do
+    test 'call sends message in production when there are thursday digest fictions' do
       travel_to Time.zone.parse('2026-09-17 14:00') do
         fictions(:one).update!(created_at: Time.zone.parse('2026-09-12 12:00'))
 
