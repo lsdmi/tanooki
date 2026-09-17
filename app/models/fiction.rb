@@ -71,7 +71,12 @@ class Fiction < ApplicationRecord
       .joins(readings_join_sql)
       .order(Arel.sql('recent_readings_count DESC, fictions.id ASC'))
   }
-  scope :recent, -> { where(created_at: 7.days.ago..) }
+  # Thursday digest in Kyiv: [last Thursday 00:00, this Thursday 00:00).
+  # Weekday-anchored so a late CI run on Friday keeps the same titles.
+  scope :recent, lambda {
+    period_end = Time.current.beginning_of_week(:thursday)
+    where(created_at: (period_end - 7.days)...period_end).order(created_at: :desc)
+  }
   scope :safe_content, -> { where(adult_content: false) }
 
   def search_data

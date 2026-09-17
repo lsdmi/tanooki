@@ -5,14 +5,18 @@ require 'test_helper'
 module TelegramDigests
   class FictionsTest < ActiveSupport::TestCase
     test 'call sends message in production when there are recent fictions' do
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        expected_text = Fictions.new.text_message
-        sent = capture_send { Fictions.call }
+      travel_to Time.zone.parse('2026-09-17 14:00') do
+        fictions(:one).update!(created_at: Time.zone.parse('2026-09-12 12:00'))
 
-        assert_equal(
-          { chat_id: '@bakaInUa', text: expected_text, parse_mode: 'HTML' },
-          sent
-        )
+        Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
+          expected_text = Fictions.new.text_message
+          sent = capture_send { Fictions.call }
+
+          assert_equal(
+            { chat_id: '@bakaInUa', text: expected_text, parse_mode: 'HTML' },
+            sent
+          )
+        end
       end
     end
 
