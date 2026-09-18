@@ -57,4 +57,15 @@ class ChaptersControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
     assert_select 'p', text: I18n.t('chapters.hints.scheduled_vs_draft')
   end
+
+  test 'edit live chapter does not prefill a past published_at as a schedule' do
+    @chapter.published_at = 1.hour.ago
+    @chapter.save(validate: false)
+    get edit_chapter_url(@chapter)
+
+    input = css_select('input#chapter_published_at_date').first
+
+    assert input
+    assert_predicate input['value'].to_s, :blank?
+  end
 end

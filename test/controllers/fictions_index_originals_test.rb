@@ -25,8 +25,16 @@ class FictionsIndexOriginalsTest < ActionDispatch::IntegrationTest
     get fictions_path
 
     assert_select 'section[aria-labelledby="fictions-index-originals"].w-full', count: 1
-    assert_select '.fictions-originals.w-full.bg-blend-multiply[style*="writer"]', count: 1
+    assert_select '.fictions-originals.w-full.bg-blend-multiply[data-controller="lazy-bg"]', count: 1
     assert_select '.fictions-originals .max-w-\\[1300px\\]', count: 1
+  end
+
+  test 'originals band defers the writer background image' do
+    get fictions_path
+
+    assert_select '.fictions-originals[data-lazy-bg-url-value*="writer"]', count: 1
+    assert_select '.fictions-originals[data-lazy-bg-small-url-value*="writer-sm"]', count: 1
+    assert_select '.fictions-originals[style*="writer"]', count: 0
   end
 
   test 'header copy names Ukrainian authors' do

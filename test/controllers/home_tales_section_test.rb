@@ -18,8 +18,16 @@ class HomeTalesSectionTest < ActionDispatch::IntegrationTest
   test 'news and blogs section uses writer background and catalog link' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 
-    assert_select '.home-tales.w-full.bg-blend-multiply[style*="writer"]', count: 1
+    assert_select '.home-tales.w-full.bg-blend-multiply[data-controller="lazy-bg"]', count: 1
     assert_select "a[href='#{tales_path}']", text: /Більше/
+  end
+
+  test 'news and blogs section defers the writer background image' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_select '.home-tales[data-lazy-bg-url-value*="writer"]', count: 1
+    assert_select '.home-tales[data-lazy-bg-small-url-value*="writer-sm"]', count: 1
+    assert_select '.home-tales[style*="writer"]', count: 0
   end
 
   test 'news and blogs cards expose dynamic text clamp targets' do

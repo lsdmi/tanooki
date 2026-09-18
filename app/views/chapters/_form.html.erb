@@ -91,7 +91,7 @@
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Необов'язково — керуйте моментом появи розділу</p>
       </div>
     </div>
-    <% schedule_at = chapter.published_at&.in_time_zone %>
+    <% schedule_at = chapter.scheduled? ? chapter.published_at.in_time_zone : nil %>
     <% published_at_date_value = params.dig(:chapter, :published_at_date).presence || schedule_at&.strftime('%Y-%m-%d') %>
     <% published_at_time_value = params.dig(:chapter, :published_at_time).presence || schedule_at&.strftime('%H:%M') %>
     <% sched_field_class = "dark:[color-scheme:dark] bg-gray-50 dark:bg-gray-700/90 text-gray-900 dark:text-white text-sm rounded-lg block w-full py-3 px-3 transition-all duration-200 #{'ring-red-200 dark:ring-red-900/20' if chapter.errors[:published_at].any?}" %>

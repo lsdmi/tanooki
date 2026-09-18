@@ -16,6 +16,13 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1', text: 'Друзі Баки'
   end
 
+  test 'friends page defers the writer background image' do
+    get friends_url
+
+    assert_select '[data-controller="lazy-bg"][data-lazy-bg-url-value*="writer"]', count: 1
+    assert_select '[style*="writer"]', count: 0
+  end
+
   test 'friends page renders section headings' do
     get friends_url
 

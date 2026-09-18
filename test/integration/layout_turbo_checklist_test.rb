@@ -27,6 +27,26 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
     assert_match(%r{/assets/bg-\w+\.webp}, response.body)
   end
 
+  test 'static page layout does not prefetch page background as an img' do
+    get privacy_path
+
+    assert_select '#page-background img', count: 0
+  end
+
+  test 'static page layout loads compressed theme logos' do
+    get privacy_path
+
+    assert_select '#site-logo[src*="logo-default"][src*=".webp"]'
+    assert_select '#site-logo[src*="logo-dark"]', count: 0
+    assert_select 'footer img[src*="logo-dark"][src*=".webp"]'
+  end
+
+  test 'static page layout omits svg logos' do
+    get privacy_path
+
+    assert_select 'img[src*="logo"][src*=".svg"]', count: 0
+  end
+
   test 'static page layout uses hidden flash turbo frames' do
     get privacy_path
 

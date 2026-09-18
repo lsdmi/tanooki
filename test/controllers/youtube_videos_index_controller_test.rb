@@ -55,7 +55,15 @@ class YoutubeVideosIndexControllerTest < ActionDispatch::IntegrationTest
       get youtube_videos_path
     end
 
-    assert_select 'section.youtube-index__hero iframe[src*="youtube.com/embed"]', count: 2
+    assert_select 'section.youtube-index__hero iframe', count: 0
+    assert_select 'section.youtube-index__hero [data-controller="youtube-facade"]', count: 2
+  end
+
+  test 'index hero includes desktop and mobile video list frames' do
+    Search::TagCounts.stub(:call, {}) do
+      get youtube_videos_path
+    end
+
     assert_select 'section.youtube-index__hero turbo-frame#video-list.contents'
     assert_select 'section.youtube-index__hero turbo-frame#video-list-mobile'
   end

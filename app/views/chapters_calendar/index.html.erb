@@ -1,5 +1,8 @@
 <section class="relative min-h-screen overflow-hidden bg-stone-50 dark:bg-gray-800 tracking-widest font-sans">
-  <div class="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url(<%= asset_path('psyduck_background.webp') %>);"></div>
+  <%= tag.div **lazy_decoration_background(
+        'psyduck_background.webp',
+        html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed'
+      ) %>
   <div class="pointer-events-none absolute inset-0 bg-stone-50/95 dark:bg-gray-800/90"></div>
 
   <div class="relative z-10 mx-auto max-w-5xl px-4">

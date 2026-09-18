@@ -29,4 +29,14 @@ class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
     assert_select 'section.home-videos-ads .buymeacoffee-banner a[href*="buymeacoffee.com"]',
                   count: 1
   end
+
+  test 'homepage promo banners defer decoration backgrounds' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_select 'section.home-videos-ads .community-banner [data-lazy-bg-url-value*="psyduck"]',
+                  count: 1
+    assert_select 'section.home-videos-ads .buymeacoffee-banner [data-lazy-bg-url-value*="modal-bg"]',
+                  count: 1
+    assert_select 'section.home-videos-ads [style*="background-image"]', count: 0
+  end
 end

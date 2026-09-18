@@ -1,8 +1,10 @@
 <%# locals: (fictions:) %>
 <% return if fictions.blank? %>
 <section class="relative z-10 mb-8 w-full lg:mb-14" aria-labelledby="fictions-index-originals">
-  <div class="fictions-originals w-full bg-slate-800 bg-cover bg-center bg-no-repeat bg-blend-multiply pt-8 pb-10 lg:pt-14 lg:pb-14 dark:bg-slate-900"
-       style="background-image: url(<%= asset_path('writer.webp') %>);">
+  <%= tag.div **lazy_decoration_background(
+        'writer.webp',
+        html_class: 'fictions-originals w-full bg-slate-800 bg-cover bg-center bg-no-repeat bg-blend-multiply pt-8 pb-10 lg:pt-14 lg:pb-14 dark:bg-slate-900'
+      ) do %>
     <div class="mx-auto w-full max-w-[1300px] px-6 xl:px-4">
       <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
         <div class="w-1.5 shrink-0 rounded-lg bg-cyan-400 dark:bg-rose-500" aria-hidden="true"></div>
@@ -31,5 +33,5 @@
         <% end %>
       </div>
     </div>
-  </div>
+  <% end %>
 </section>

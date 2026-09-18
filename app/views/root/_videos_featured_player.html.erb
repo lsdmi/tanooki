@@ -1,7 +1,33 @@
 <%# locals: (video:) %>
-<div class="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-800 lg:aspect-auto lg:h-full lg:min-h-0">
-  <%= tag.iframe src: "https://www.youtube.com/embed/#{video.video_id}",
-                 class: 'absolute inset-0 h-full w-full rounded-xl',
-                 allowfullscreen: true,
-                 title: video.title %>
-</div>
+<%= tag.div class: 'relative aspect-video w-full overflow-hidden rounded-xl bg-gray-800 lg:aspect-auto lg:h-full lg:min-h-0',
+            data: {
+              controller: 'youtube-facade',
+              youtube_facade_video_id_value: video.video_id,
+              youtube_facade_title_value: video.title,
+              youtube_facade_fallback_poster_value: home_featured_video_fallback_poster_url(video)
+            } do %>
+  <button type="button"
+          class="group absolute inset-0 h-full w-full overflow-hidden"
+          data-action="click->youtube-facade#play"
+          data-youtube-facade-target="facade"
+          aria-label="<%= t('videos.play', title: video.title) %>">
+    <%= image_tag home_featured_video_poster_url(video),
+                  alt: '',
+                  width: 1280,
+                  height: 720,
+                  class: 'absolute inset-0 h-full w-full object-cover object-center',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  data: { youtube_facade_target: 'poster' } %>
+    <span class="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <%# YouTube large play button (red rounded rect), same shape as the official embed. %>
+      <svg class="h-12 w-[68px] drop-shadow-md transition group-hover:scale-110 group-focus-visible:scale-110 sm:h-14 sm:w-[79px]"
+           viewBox="0 0 68 48"
+           aria-hidden="true">
+        <path fill="#f00"
+              d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" />
+        <path fill="#fff" d="M45 24 27 14v20z" />
+      </svg>
+    </span>
+  </button>
+<% end %>

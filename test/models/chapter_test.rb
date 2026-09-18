@@ -89,6 +89,12 @@ class ChapterTest < ActiveSupport::TestCase
     assert_includes @chapter.errors[:published_at], 'не може бути в минулому'
   end
 
+  test 'published_at accepts Time.current' do
+    @chapter.published_at = Time.current
+
+    assert_predicate @chapter, :valid?
+  end
+
   test 'released scope excludes drafts' do
     chapter = chapters(:one)
     chapter.update!(status: :draft, scanlator_ids: chapter.scanlators.ids)

@@ -38,8 +38,10 @@ module Chapters
     attr_reader :chapter, :attributes, :intent, :user
 
     def assign_and_apply_intent
+      was_draft = chapter.draft?
+      previous_published_at = chapter.published_at
       chapter.assign_attributes(attributes)
-      apply_intent
+      apply_intent(was_draft:, previous_published_at:)
     end
 
     def after_save
@@ -51,13 +53,32 @@ module Chapters
       chapter.status = previous_status if chapter.persisted?
     end
 
-    def apply_intent
+    def apply_intent(was_draft:, previous_published_at:)
       if intent == DRAFT_INTENT
         chapter.status = :draft
         chapter.published_at = nil
       else
         chapter.status = :published
+        apply_release_time(was_draft:, previous_published_at:)
       end
+    end
+
+    # Empty schedule fields arrive as published_at: nil. Stamp "now" when the chapter
+    # is going live for the first time (or a future schedule is cleared); keep the
+    # existing release time when an already-live chapter is only being edited.
+    def apply_release_time(was_draft:, previous_published_at:)
+      return if chapter.published_at.present?
+
+      chapter.published_at =
+        if was_draft || future_schedule?(previous_published_at)
+          Time.current
+        else
+          previous_published_at
+        end
+    end
+
+    def future_schedule?(timestamp)
+      timestamp.present? && timestamp > Time.current
     end
 
     def sync_scanlators

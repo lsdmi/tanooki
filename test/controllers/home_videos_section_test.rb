@@ -21,11 +21,18 @@ class HomeVideosSectionTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{youtube_videos_path}']", text: /Більше/
   end
 
-  test 'popular videos section uses iframe for featured and thumbnails for compact cards' do
+  test 'popular videos featured player is a facade without a live youtube iframe' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 
-    assert_select '[aria-label="Популярні Відео"] iframe[src*="youtube.com/embed"]', minimum: 1
+    assert_select 'section[aria-labelledby="home-videos"] iframe', count: 0
+    assert_select 'section[aria-labelledby="home-videos"] [data-controller="youtube-facade"]', minimum: 1
     assert_select '[aria-label="Популярні Відео"] [data-controller="lazy-image"]', minimum: 1
+  end
+
+  test 'homepage html does not emit a youtube embed url' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_no_match %r{youtube\.com/embed}, response.body
   end
 
   test 'popular videos section uses featured and compact title clamps' do

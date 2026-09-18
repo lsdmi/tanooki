@@ -1,5 +1,9 @@
 <div class="relative min-h-screen overflow-hidden">
-  <div class="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('writer.webp') %>);" aria-hidden="true"></div>
+  <%= tag.div **lazy_decoration_background(
+        'writer.webp',
+        html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat',
+        aria: { hidden: true }
+      ) %>
   <div class="pointer-events-none absolute inset-0 bg-stone-50/92 dark:bg-gray-900/92" aria-hidden="true"></div>
 
   <div class="relative z-10 container mx-auto px-4 py-10 md:py-12">

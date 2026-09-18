@@ -4,7 +4,13 @@
     <div class="grid grid-cols-2 gap-8 lg:grid-cols-6">
       <div class="col-span-2">
         <a href="/" class="mb-2 flex items-center text-2xl font-semibold text-white sm:mb-0 mt-10 lg:mt-0">
-          <%= image_tag 'logo-dark.svg', class: 'h-14 lg:h-28 transition duration-500 hover:scale-110', alt: 'logo', width: '192', height: '64' %>
+          <%= image_tag 'logo-dark.webp',
+                        class: 'h-14 lg:h-28 w-auto transition duration-500 hover:scale-110',
+                        alt: 'logo',
+                        width: '147',
+                        height: '56',
+                        loading: 'lazy',
+                        decoding: 'async' %>
         </a>
         <p class="my-4 font-light text-gray-400">baka.in.ua - українська аніме-платформа, де зібрано сотні блогів, статей, ранобе та веб-новел, а також відео вітчизняних ютуберів!</p>
       </div>

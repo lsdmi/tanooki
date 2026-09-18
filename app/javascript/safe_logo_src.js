@@ -7,7 +7,7 @@ export function safeLogoSrc(url) {
   try {
     const parsed = new URL(trimmed, window.location.origin)
     const path = parsed.pathname
-    if (!path.endsWith(".svg")) return null
+    if (!/\.(svg|webp|png)$/i.test(path)) return null
     if (!path.includes("logo-default") && !path.includes("logo-dark")) return null
 
     const sameOrigin = parsed.origin === window.location.origin

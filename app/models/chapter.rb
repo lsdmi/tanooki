@@ -40,6 +40,8 @@ class Chapter < ApplicationRecord
     published.where(t[:published_at].eq(nil).or(t[:published_at].lteq(Time.current)))
   }
 
+  # Stamping Time.current in Persist can be a few ms "in the past" by validation time.
+  PUBLISHED_AT_NOW_LEEWAY = 2.seconds
   # SQL fragment (qualified for joins): wall-clock moment a chapter became public on the site.
   PUBLIC_TIME_SQL = 'COALESCE(chapters.published_at, chapters.created_at)'
 
@@ -79,7 +81,7 @@ class Chapter < ApplicationRecord
     published_at.present? && published_at > Time.current
   end
 
-  # When the chapter went (or goes) live for readers: scheduled time, or save time if unscheduled.
+  # When the chapter went (or goes) live: schedule, draft→publish stamp, or created_at.
   def public_at
     published_at.presence || created_at
   end
@@ -94,7 +96,7 @@ class Chapter < ApplicationRecord
 
   def published_at_not_in_the_past
     return if published_at.blank?
-    return if published_at >= Time.current
+    return if published_at >= PUBLISHED_AT_NOW_LEEWAY.ago
     return if persisted? && !published_at_changed?
 
     errors.add(:published_at, :in_the_past)

@@ -9,6 +9,8 @@ class ChaptersCalendarControllerTest < ActionDispatch::IntegrationTest
     get calendar_fictions_path
 
     assert_response :success
+    assert_select '[data-controller="lazy-bg"][data-lazy-bg-url-value*="psyduck"]', count: 1
+    assert_select '[style*="psyduck"]', count: 0
   end
 
   test 'subscriptions param without sign in shows all updates' do

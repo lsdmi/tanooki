@@ -2,15 +2,15 @@
         <% theme = cookies[:color_theme] || 'light' %>
         <a href="/" class="flex items-center">
           <%= image_tag(
-                theme == 'dark' ? 'logo-dark.svg' : 'logo-default.svg',
+                theme == 'dark' ? 'logo-dark.webp' : 'logo-default.webp',
                 id: 'site-logo',
                 class: 'mr-3 h-10 md:h-14 w-auto',
                 alt: 'logo',
                 width: '105',
                 height: '40',
                 data: {
-                  "default-logo": asset_path('logo-default.svg'),
-                  "dark-logo": asset_path('logo-dark.svg')
+                  "default-logo": asset_path('logo-default.webp'),
+                  "dark-logo": asset_path('logo-dark.webp')
                 }
               ) %>
         </a>

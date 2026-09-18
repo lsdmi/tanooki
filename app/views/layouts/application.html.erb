@@ -73,7 +73,6 @@
     <%= render "shared/adblock_early_check" %>
     <div id="page-background" class="fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center" style="background-image: url(<%= asset_path('bg.webp') %>);">
       <div class="absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 dark:from-gray-800 dark:to-gray-900 opacity-95"></div>
-      <%= image_tag 'bg.webp', alt: 'bg image', class: 'hidden' %>
     </div>
     <% unless immersive_reader_layout? %>
       <div id="site-navbar" class="relative z-50">
