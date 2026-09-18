@@ -3,7 +3,6 @@ import { isAdblockLikely } from "adblock_detect"
 
 const FILL_TIMEOUT_MS = { top: 2500, bottom: 4000 }
 const SCRIPT_RETRY_MS = 250
-const MAX_SCRIPT_RETRIES = 10
 const PENDING_CLASS = "reader-ad-slot--pending"
 const MEASURING_CLASS = "reader-ad-slot--measuring"
 const COLLAPSED_CLASS = "reader-ad-slot--collapsed"
@@ -19,7 +18,6 @@ export default class extends Controller {
   }
 
   connect() {
-    this.scriptRetries = 0
     this.visitGeneration = 0
     this.previousNavigationKey = undefined
     this.boundReady = this.onReady.bind(this)
@@ -83,7 +81,6 @@ export default class extends Controller {
     this.visitGeneration += 1
     this.clearRetry()
     this.stopWatching()
-    this.scriptRetries = 0
     this.clearMeasuring()
     this.replaceAdElement()
   }
@@ -137,12 +134,6 @@ export default class extends Controller {
     }
 
     if (!window.adsbygoogle) {
-      this.scriptRetries += 1
-      if (this.scriptRetries >= MAX_SCRIPT_RETRIES) {
-        this.hideSlot()
-        return
-      }
-      this.scheduleRetry(generation)
       return
     }
 

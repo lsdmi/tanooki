@@ -5,36 +5,32 @@ require 'test_helper'
 class MorphHeadParityTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test 'fictions index and studio index tracked stylesheets match' do
-    sign_in users(:user_one)
-    get fictions_path
-    fictions_hrefs = tracked_stylesheet_hrefs(response.body)
+  test 'homepage omits unused feature stylesheets' do
+    Search::TagCounts.stub(:call, {}) { get root_path }
+    hrefs = tracked_stylesheet_hrefs(response.body).join(' ')
 
-    get studio_index_path
-
-    assert_equal fictions_hrefs, tracked_stylesheet_hrefs(response.body)
+    assert_no_match(/pagy|slimselect|sweetal2/, hrefs)
   end
 
-  test 'fiction show and studio index tracked stylesheets match' do
-    sign_in users(:user_one)
-    fiction = fictions(:one)
-    Rails.cache.delete("fiction_#{fiction.id}")
+  test 'homepage omits reader and actiontext stylesheets' do
+    Search::TagCounts.stub(:call, {}) { get root_path }
+    hrefs = tracked_stylesheet_hrefs(response.body).join(' ')
 
-    get fiction_path(fiction)
-    fiction_hrefs = tracked_stylesheet_hrefs(response.body)
-
-    get studio_index_path
-
-    assert_equal fiction_hrefs, tracked_stylesheet_hrefs(response.body)
+    assert_no_match(/chapters_reader|actiontext/, hrefs)
   end
 
-  test 'privacy page and fictions index tracked stylesheets match' do
-    get privacy_path
-    privacy_hrefs = tracked_stylesheet_hrefs(response.body)
+  test 'studio index tracks sweetalert stylesheet for turbo reload' do
+    sign_in users(:user_one)
+    get studio_index_path
 
-    get fictions_path
+    assert_select 'link[href*="sweetal2"][data-turbo-track="reload"]'
+  end
 
-    assert_equal privacy_hrefs, tracked_stylesheet_hrefs(response.body)
+  test 'chapter reader tracks reader and actiontext stylesheets' do
+    get chapter_url(chapters(:one))
+
+    assert_select 'link[href*="chapters_reader"][data-turbo-track="reload"]'
+    assert_select 'link[href*="actiontext"][data-turbo-track="reload"]'
   end
 
   test 'browse routes include turbo morph meta tag' do
@@ -43,14 +39,16 @@ class MorphHeadParityTest < ActionDispatch::IntegrationTest
     assert_select 'meta[name="turbo-refresh-method"][content="morph"]'
   end
 
-  test 'chapter form tracked stylesheets differ from browse by flatpickr overrides' do
+  test 'chapter form tracked stylesheets include slimselect and flatpickr overrides' do
     sign_in users(:user_one)
     get new_chapter_url(fiction: fictions(:one).slug)
     form_hrefs = tracked_stylesheet_hrefs(response.body)
 
-    get fictions_path
+    Search::TagCounts.stub(:call, {}) { get root_path }
     browse_hrefs = tracked_stylesheet_hrefs(response.body)
+    extra = (form_hrefs - browse_hrefs).join(' ')
 
-    assert_includes (form_hrefs - browse_hrefs).join(' '), 'flatpickr_overrides'
+    assert_includes extra, 'flatpickr_overrides'
+    assert_includes extra, 'slimselect'
   end
 end

@@ -1,0 +1,383 @@
+/* AdSense slot layout (browse + in-chapter units). Loaded only when slots can render. */
+
+/* In-flow AdSense slots (chapter reader + browse): zero footprint until filled */
+.reader-ad-slot {
+  margin: 0;
+  padding: 0;
+  overflow-anchor: none;
+}
+
+.reader-ad-slot__frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  min-height: 0;
+}
+
+html.adblock-likely .reader-ad-slot,
+.reader-ad-slot--collapsed {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.adblock-likely .bookshelf-show__ad,
+.bookshelf-show__ad:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
+/* Scanlator show: ad-only left column is removed when blocked.
+   Only collapse on adblock / explicit collapsed — not while waiting to measure (offsetParent). */
+html.adblock-likely .scanlator-show__sidebar-ad,
+.scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
+html.adblock-likely .scanlator-show__ad--full,
+.scanlator-show__ad--full:has(.reader-ad-slot--collapsed) {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  html.adblock-likely .scanlator-show__grid--ad-sidebar,
+  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Hold the 2-of-3 column width (two tracks plus the gap between them) and centre it,
+     so losing the ad column shifts the fiction card instead of widening it. */
+  html.adblock-likely .scanlator-show__grid--ad-sidebar .scanlator-show__fictions,
+  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) .scanlator-show__fictions {
+    grid-column: 1 / -1;
+    width: calc((200% - 2rem) / 3);
+    justify-self: center;
+  }
+}
+
+.reader-ad-slot--adsense-filled {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .reader-ad-slot--adsense-filled {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .reader-ad-slot--adsense-filled {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
+  min-height: 90px;
+  max-height: 120px;
+}
+
+.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+  min-height: 0;
+}
+
+.reader-ad-slot--adsense-filled .reader-ad-slot__adsense {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Development-only layout preview (no AdSense script in local env) */
+.reader-ad-slot--preview {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .reader-ad-slot--preview {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .reader-ad-slot--preview {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.reader-ad-slot--preview .reader-ad-slot__frame {
+  min-height: 90px;
+}
+
+@media (min-width: 640px) {
+  .reader-ad-slot--preview .reader-ad-slot__frame {
+    min-height: 120px;
+  }
+}
+
+.reader-ad-slot__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-height: inherit;
+  border: 2px dashed rgb(168 162 158); /* stone-400 */
+  border-radius: inherit;
+  background: rgb(245 245 244); /* stone-100 */
+  color: rgb(120 113 108); /* stone-500 */
+  text-align: center;
+  padding: 0.75rem;
+}
+
+.dark .reader-ad-slot__preview {
+  border-color: rgb(75 85 99); /* gray-600 */
+  background: rgb(31 41 55); /* gray-800 */
+  color: rgb(156 163 175); /* gray-400 */
+}
+
+.reader-ad-slot__preview-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reader-ad-slot__preview-placement {
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+}
+
+/* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */
+.bookshelf-show__ad .reader-ad-slot__adsense iframe {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .bookshelf-show__ad .reader-ad-slot--preview,
+  .bookshelf-show__ad .reader-ad-slot--adsense-filled {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bookshelf-show__sidebar {
+    height: 100%;
+  }
+
+  .bookshelf-show__ad {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview,
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled {
+    margin: 0;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__preview {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview .reader-ad-slot__frame {
+    min-height: 16rem;
+  }
+}
+
+/* Homepage mid-page dual banners (626×166 design, stacked mobile / side-by-side desktop) */
+.home-banners {
+  margin-bottom: 0;
+}
+
+.home-banners__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem; /* 12px */
+}
+
+@media (min-width: 640px) {
+  .home-banners__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem; /* 28px */
+  }
+}
+
+.home-banner-slot {
+  overflow: hidden;
+  border-radius: 0.5rem; /* 8px mobile */
+}
+
+@media (min-width: 640px) {
+  .home-banner-slot {
+    border-radius: 0.75rem; /* 12px */
+  }
+}
+
+.home-banner-slot--preview,
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  aspect-ratio: 626 / 166;
+}
+
+.home-banner-slot--preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px dashed rgb(168 162 158); /* stone-400 */
+  background: rgb(245 245 244); /* stone-100 */
+  color: rgb(120 113 108); /* stone-500 */
+  text-align: center;
+}
+
+.dark .home-banner-slot--preview {
+  border-color: rgb(75 85 99); /* gray-600 */
+  background: rgb(31 41 55); /* gray-800 */
+  color: rgb(156 163 175); /* gray-400 */
+}
+
+.home-banner-slot__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-banner-slot__placement {
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+}
+
+.home-banner-slot.reader-ad-slot--adsense-filled {
+  margin: 0;
+}
+
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  display: flex;
+  min-height: 0;
+  max-height: none;
+}
+
+.home-banners:not(:has(.home-banner-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
+  display: none;
+  margin: 0;
+}
+
+html.adblock-likely .home-banner-slot.reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.home-banners__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}
+
+/* Hide collapsed AdSense cells in the videos grid (:has variant not in Tailwind build). */
+.home-videos-ads__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}
+
+/* Fictions index dual banners: fluid width, fixed 280px height, stacked mobile / side-by-side sm+ */
+.index-banners__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem; /* 12px */
+}
+
+@media (min-width: 640px) {
+  .index-banners__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem; /* 28px */
+  }
+}
+
+.index-banners .reader-ad-slot,
+.index-banners .reader-ad-slot--preview,
+.index-banners .reader-ad-slot--adsense-filled {
+  margin: 0;
+}
+
+/* Every state shares one fixed height so the row never reflows as units fill.
+   min-height carries the size: .reader-ad-slot__preview inherits it to fill the box.
+   max-height is load-bearing — without it the measuring state clamps the frame to 120px. */
+.index-banners .reader-ad-slot .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+}
+
+/* Right cell is optional: an unfilled or blocked unit leaves the left one full-width. */
+.index-banners__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}
+
+.index-banners:not(:has(.reader-ad-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
+  display: none;
+  margin: 0;
+}
+
+html.adblock-likely .index-banners .reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

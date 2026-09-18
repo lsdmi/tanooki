@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 import SlimSelect from 'slim-select'
+import { connectSlimSelect, disconnectSlimSelect } from 'slim_select_lifecycle'
 
 // Slim Select with remote fiction search for bookshelf forms.
 export default class extends Controller {
   static values = { url: String }
 
   connect() {
-    this.select = new SlimSelect({
+    connectSlimSelect(this, () => new SlimSelect({
       select: this.element,
       settings: {
         closeOnSelect: false,
@@ -18,11 +19,11 @@ export default class extends Controller {
       events: {
         search: (search) => this.fetchOptions(search)
       }
-    })
+    }))
   }
 
   disconnect() {
-    this.select?.destroy()
+    disconnectSlimSelect(this)
   }
 
   fetchOptions(search) {

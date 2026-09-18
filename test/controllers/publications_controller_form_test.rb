@@ -32,6 +32,21 @@ class PublicationsControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
   end
 
+  test 'unprocessable publish still loads slimselect assets' do
+    post publications_url, params: {
+      intent: 'publish',
+      publication: {
+        type: 'Tale',
+        title: 'Too short',
+        description: 'short'
+      }
+    }
+
+    assert_response :unprocessable_content
+    assert_select 'link[href*="slimselect"][data-turbo-track="reload"]'
+    assert_select 'select[data-controller="slim"]'
+  end
+
   test 'edit published publication offers unpublish with confirm' do
     get edit_publication_path(@publication)
 

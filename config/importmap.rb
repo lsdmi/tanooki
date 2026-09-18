@@ -6,8 +6,9 @@ pin 'application', preload: true
 pin 'pwa', preload: true
 pin 'turbo_transitions', preload: true
 pin 'turbo_cache_hooks', preload: true
-pin 'flash_toast'
-pin 'adult_content_disclaimer'
+pin 'flash_toast', preload: false
+pin 'slim_select_lifecycle', preload: false
+pin 'adult_content_disclaimer', preload: false
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
 pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true
 pin '@hotwired/stimulus-loading', to: 'stimulus-loading.js', preload: true
@@ -17,25 +18,27 @@ pin_all_from 'app/javascript/controllers', under: 'controllers', preload: false
 pin 'controllers/chapters_accordion_controller', preload: false
 pin 'controllers/note_reference_controller', preload: false
 pin 'controllers/sweet_alert_controller', preload: false
-pin 'slim-select', to: 'https://cdnjs.cloudflare.com/ajax/libs/slim-select/2.8.2/slimselect.es.min.js'
-pin 'sweetalert2', to: 'https://ga.jspm.io/npm:sweetalert2@11.14.0/dist/sweetalert2.all.js'
-pin '@rails/actioncable', to: 'actioncable.esm.js'
-pin_all_from 'app/javascript/channels', under: 'channels', preload: true
+pin 'slim-select', to: 'https://cdnjs.cloudflare.com/ajax/libs/slim-select/2.8.2/slimselect.es.min.js',
+                   preload: false
+pin 'sweetalert2', to: 'https://ga.jspm.io/npm:sweetalert2@11.14.0/dist/sweetalert2.all.min.js',
+                   preload: false
+pin '@rails/actioncable', to: 'actioncable.esm.js', preload: false
+pin_all_from 'app/javascript/channels', under: 'channels', preload: false
 
 # Explicit pins for Action Cable files
-pin 'channels/consumer', preload: true
-pin 'channels/chat_channel', preload: true
-pin 'channels/index', preload: true
+pin 'channels/consumer', preload: false
+pin 'channels/chat_channel', preload: false
+pin 'channels/index', preload: false
 
 # Translation request Stimulus helpers
-pin_all_from 'app/javascript/translation_requests', under: 'translation_requests'
+pin_all_from 'app/javascript/translation_requests', under: 'translation_requests', preload: false
 pin 'reader_preferences', preload: false
 pin 'safe_logo_src', preload: false
 pin 'mode_toggler', preload: false
 pin 'adblock_detect', preload: false
 pin 'adblock_early', preload: true
-pin 'cookie_consent', preload: true
-pin 'adsense_turbo', preload: true
+pin 'cookie_consent', preload: false
+pin 'adsense_turbo', preload: false
 pin 'font_toggler', preload: false
 
 # Chapter schedule date (UA calendar; native type=date is OS-locale bound)

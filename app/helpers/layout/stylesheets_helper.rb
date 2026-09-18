@@ -5,7 +5,16 @@ module Layout
   module StylesheetsHelper
     include AssetRequirementsHelper
 
-    GLOBAL_STYLESHEETS = %w[pagy slimselect actiontext chapters_reader sweetal2].freeze
+    GLOBAL_STYLESHEETS = [].freeze
+
+    FEATURE_STYLESHEETS = [
+      ['pagy', :requires_pagy_styles?],
+      ['slimselect', :requires_slimselect_styles?],
+      ['actiontext', :requires_actiontext_styles?],
+      ['chapters_reader', :requires_chapters_reader_styles?],
+      ['sweetal2', :requires_sweetalert_styles?],
+      ['adsense_slots', :requires_adsense_slots_styles?]
+    ].freeze
 
     def global_stylesheets
       GLOBAL_STYLESHEETS
@@ -16,10 +25,16 @@ module Layout
     end
 
     def optional_stylesheets
-      [
+      feature_stylesheets + [
         ['adult_content_disclaimer', requires_adult_content_disclaimer_styles?],
         ['flatpickr_overrides', requires_flatpickr_styles?]
       ]
+    end
+
+    private
+
+    def feature_stylesheets
+      FEATURE_STYLESHEETS.map { |sheet, predicate| [sheet, public_send(predicate)] }
     end
   end
 end

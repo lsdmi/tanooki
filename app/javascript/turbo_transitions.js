@@ -1,4 +1,3 @@
-import Swal from 'sweetalert2'
 import { turboCacheHooks } from 'turbo_cache_hooks'
 
 // Turbo Drive UX: cross-fade on full body swaps (not morph), prefetch guards on slow/save-data networks.
@@ -22,19 +21,22 @@ document.addEventListener('turbo:before-render', (event) => {
   }
 })
 
+function endPageTransition() {
+  document.documentElement.classList.remove('turbo-transitioning')
+}
+
 document.addEventListener('turbo:morph', () => {
   setProgressBarHidden(true)
+  endPageTransition()
 })
 
 document.addEventListener('turbo:load', () => {
   setProgressBarHidden(false)
-  document.documentElement.classList.remove('turbo-transitioning')
+  endPageTransition()
 })
 
-document.addEventListener('turbo:render', (event) => {
-  if (event.detail?.renderMethod === 'morph') return
-  document.documentElement.classList.remove('turbo-transitioning')
-})
+document.addEventListener('turbo:render', endPageTransition)
+document.addEventListener('turbo:submit-end', endPageTransition)
 
 document.addEventListener('turbo:before-prefetch', (event) => {
   const conn = navigator.connection
@@ -135,7 +137,7 @@ function cleanupBeforeTurboCache() {
   document.body.classList.remove('overflow-hidden')
   document.documentElement.classList.remove('overflow-hidden')
 
-  if (Swal.isVisible?.()) Swal.close()
+  closeSweetAlertIfOpen()
   document.querySelectorAll('[data-controller~="flash-toast"]').forEach((el) => el.remove())
 
   if (typeof tinymce !== 'undefined') {
@@ -146,6 +148,16 @@ function cleanupBeforeTurboCache() {
   document.querySelectorAll('[data-mode-toggler-bound="true"]').forEach((btn) => {
     delete btn.dataset.modeTogglerBound
   })
+}
+
+function closeSweetAlertIfOpen() {
+  if (!document.querySelector('.swal2-container')) return
+
+  import('sweetalert2')
+    .then(({ default: Swal }) => {
+      if (Swal.isVisible?.()) Swal.close()
+    })
+    .catch(() => {})
 }
 
 document.addEventListener('turbo:before-cache', cleanupBeforeTurboCache)

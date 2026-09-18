@@ -57,6 +57,59 @@ module Layout
       assert_not_predicate self, :requires_reader_google_fonts?
     end
 
+    test 'pagy styles load when a pagy assign is present' do
+      assign_controller(:fictions, :index)
+      @controller.define_singleton_method(:view_assigns) { { 'pagy' => Pagy.new(count: 1, page: 1, limit: 1) } }
+
+      assert_predicate self, :requires_pagy_styles?
+    end
+
+    test 'pagy styles skip when no pagy assign is present' do
+      assign_controller(:home, :index)
+
+      assert_not_predicate self, :requires_pagy_styles?
+    end
+
+    test 'slimselect styles load on chapter and fiction forms' do
+      assign_controller(:chapters, :new)
+
+      assert_predicate self, :requires_slimselect_styles?
+
+      assign_controller(:fictions, :index)
+
+      assert_not_predicate self, :requires_slimselect_styles?
+    end
+
+    test 'actiontext and chapters reader styles load on chapter show' do
+      assign_controller(:chapters, :show)
+
+      assert_predicate self, :requires_actiontext_styles?
+      assert_predicate self, :requires_chapters_reader_styles?
+    end
+
+    test 'actiontext styles load on tale show' do
+      assign_controller(:tales, :show)
+
+      assert_predicate self, :requires_actiontext_styles?
+      assert_not_predicate self, :requires_chapters_reader_styles?
+    end
+
+    test 'sweetalert styles load on studio and readings show' do
+      assign_controller(:studio, :index)
+
+      assert_predicate self, :requires_sweetalert_styles?
+
+      assign_controller(:readings, :show)
+
+      assert_predicate self, :requires_sweetalert_styles?
+    end
+
+    test 'sweetalert styles skip browse pages' do
+      assign_controller(:home, :index)
+
+      assert_not_predicate self, :requires_sweetalert_styles?
+    end
+
     private
 
     def assign_controller(name, action, path: nil)

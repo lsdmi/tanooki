@@ -63,9 +63,37 @@
     delete window.adsbygoogle
   }
 
+  function afterLcp(callback) {
+    var finished = false
+
+    function finish() {
+      if (finished) return
+      finished = true
+      requestAnimationFrame(function () {
+        requestAnimationFrame(callback)
+      })
+    }
+
+    window.setTimeout(finish, 4000)
+
+    if (typeof PerformanceObserver === 'undefined') return
+
+    try {
+      var observer = new PerformanceObserver(function (list) {
+        if (list.getEntries().length) finish()
+      })
+      observer.observe({ type: 'largest-contentful-paint', buffered: true })
+    } catch (_error) {
+      // Safari < 16 / reduced PerformanceObserver — timeout above still fires.
+    }
+  }
+
   function syncAdSense() {
     if (adsenseEnabled()) {
-      injectAdSense()
+      afterLcp(function () {
+        injectAdSense()
+        scheduleAdsenseReadyForUnits()
+      })
     } else {
       removeAdSense()
     }
@@ -100,7 +128,6 @@
     // Banner is visible in every environment for UI checks; AdSense/Analytics scripts load only in production.
     // Re-sync on turbo:load when navigating between pages.
     syncAdSense()
-    scheduleAdsenseReadyForUnits()
 
     var stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {
@@ -128,6 +155,10 @@
     hideBanner()
   }
 
-  // Script inject + first paint ready; turbo navigation refresh lives in adsense_turbo.js.
+  // Deferred import can miss the first turbo:load; still re-sync on later navigations.
   document.addEventListener('turbo:load', initConsentUi)
+
+  if (document.readyState !== 'loading') {
+    initConsentUi()
+  }
 })()

@@ -8,7 +8,7 @@
 
     <!-- Form Container -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg p-8">
-      <%= simple_form_for @scanlator, as: :scanlator, url: scanlator_path(@scanlator), method: :put, html: { class: "form", multipart: true } do |f| %>
+      <%= simple_form_for @scanlator, as: :scanlator, url: scanlator_path(@scanlator), method: :put, html: { class: "form", multipart: true }, data: { turbo: false } do |f| %>
         <%= render 'form', scanlator: @scanlator, f: f %>
       <% end %>
     </div>

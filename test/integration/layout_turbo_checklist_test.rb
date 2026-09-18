@@ -62,11 +62,40 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
     assert_select '#toast-warning', count: 0
   end
 
+  test 'static page omits unused feature stylesheets' do
+    get privacy_path
+
+    assert_select 'link[href*="pagy"]', count: 0
+    assert_select 'link[href*="slimselect"]', count: 0
+    assert_select 'link[href*="sweetal2"]', count: 0
+  end
+
   test 'static page layout defers flatpickr and tracks core assets for reload' do
     get privacy_path
 
     assert_select 'link[href*="flatpickr"]', count: 0
     assert_select 'link[data-turbo-track="reload"]'
+  end
+
+  test 'static page omits reader and actiontext stylesheets' do
+    get privacy_path
+
+    assert_select 'link[href*="chapters_reader"]', count: 0
+    assert_select 'link[href*="actiontext"]', count: 0
+  end
+
+  test 'static page does not preload deferred importmap modules' do
+    get privacy_path
+
+    assert_select 'link[rel="modulepreload"][href*="cookie_consent"]', count: 0
+    assert_select 'link[rel="modulepreload"][href*="adsense_turbo"]', count: 0
+    assert_select 'link[rel="modulepreload"][href*="channels"]', count: 0
+  end
+
+  test 'static page does not preload sweetalert2' do
+    get privacy_path
+
+    assert_select 'link[rel="modulepreload"][href*="sweetalert2"]', count: 0
   end
 
   test 'chapter form loads flatpickr without turbo-track' do

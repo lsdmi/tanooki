@@ -1,4 +1,4 @@
-<%= form_with model: bookshelf, local: true, class: "space-y-6" do |form| %>
+<%= form_with model: bookshelf, local: true, class: "space-y-6", data: { turbo: false } do |form| %>
   <% if bookshelf.errors.any? %>
     <div class="rounded-md bg-red-50 p-4 dark:bg-red-900/20">
       <div class="flex">

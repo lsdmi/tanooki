@@ -1,10 +1,19 @@
 # Intentional data-turbo=false (Category D/F + admin forms).
 # Every match in app/views, app/helpers, app/components must appear here.
-# Verified: 2026-09-15 — 25 occurrences across 17 files (OmniAuth keeps turbo:false).
+# Verified: 2026-09-18 — 34 occurrences (composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE).
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
   - app/views/fictions/edit.html.erb:5
   - app/views/fictions/new.html.erb:3
+  - app/views/scanlators/edit.html.erb:11
+  - app/views/scanlators/new.html.erb:11
+  - app/views/chapters/edit.html.erb:10
+  - app/views/chapters/new.html.erb:10
+  - app/views/publications/_edit.html.erb:14
+  - app/views/publications/_new.html.erb:11
+  - app/views/bookshelves/_form.html.erb:1
+  - app/views/admin/pokemons/edit.html.erb:4
+  - app/views/admin/pokemons/new.html.erb:4
   - app/views/readings/_chapters.html.erb:120
   - app/views/readings/_chapters.html.erb:139
   - app/views/readings/_chapters.html.erb:195

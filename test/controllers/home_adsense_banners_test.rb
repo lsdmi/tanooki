@@ -13,6 +13,14 @@ class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'homepage loads adsense slot stylesheet in development preview' do
+    Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
+      Search::TagCounts.stub(:call, {}) { get root_url }
+
+      assert_select 'link[href*="adsense_slots"][data-turbo-track="reload"]'
+    end
+  end
+
   test 'homepage renders videos grid with two promo slots' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 

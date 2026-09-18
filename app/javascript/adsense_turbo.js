@@ -3,7 +3,9 @@
 ;(function () {
   "use strict"
 
-  var initialNavigation = true
+  // Skip the in-flight first load only when this file evaluated before turbo:load.
+  // Deferred import after window.load must still refresh on the next navigation.
+  var skipNextLoad = document.readyState !== 'complete'
   var refreshTimer = null
 
   function adsensePageEnabled() {
@@ -40,8 +42,8 @@
   }
 
   function onTurboNavigation() {
-    if (initialNavigation) {
-      initialNavigation = false
+    if (skipNextLoad) {
+      skipNextLoad = false
       return
     }
     scheduleAdsenseRefresh()
