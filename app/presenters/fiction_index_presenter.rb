@@ -22,7 +22,7 @@ class FictionIndexPresenter
   def popular_novelty_featured_chapter_count
     return 0 unless popular_novelty_featured
 
-    Chapter.released.where(fiction_id: popular_novelty_featured.id).count
+    Fictions::IndexVariablesManager.popular_novelty_featured_chapter_count_for(popular_novelty_featured.id)
   end
 
   def most_reads

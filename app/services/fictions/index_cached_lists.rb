@@ -20,6 +20,21 @@ module Fictions
         Set.new(cached_recent_fiction_ids)
       end
 
+      def popular_novelty_featured_chapter_count
+        popular_novelty_featured_chapter_count_for(cached_popular_novelty_ids.first)
+      end
+
+      def popular_novelty_featured_chapter_count_for(fiction_id)
+        return 0 if fiction_id.blank?
+
+        Rails.cache.fetch(
+          IndexVariablesManager.popular_novelty_featured_chapter_count_cache_key(fiction_id),
+          expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY
+        ) do
+          Chapter.released.where(fiction_id:).count
+        end
+      end
+
       def most_reads
         load_fictions_by_cached_ids(
           cached_most_reads_ids,
@@ -60,8 +75,11 @@ module Fictions
       end
 
       def cached_popular_novelty_ids
-        Rails.cache.fetch('popular_novelty_ids', expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
-          popular_novelty_scope.pluck(:id)
+        Rails.cache.fetch(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY,
+                          expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
+          ids = popular_novelty_scope.pluck(:id)
+          popular_novelty_featured_chapter_count_for(ids.first)
+          ids
         end
       end
 
@@ -94,7 +112,8 @@ module Fictions
       end
 
       def cached_latest_updates_ids
-        Rails.cache.fetch('latest_updates_ids', expires_in: IndexVariablesManager::LATEST_UPDATES_CACHE_EXPIRY) do
+        Rails.cache.fetch(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY,
+                          expires_in: IndexVariablesManager::LATEST_UPDATES_CACHE_EXPIRY) do
           latest_updates_ranked.pluck(:id)
         end
       end

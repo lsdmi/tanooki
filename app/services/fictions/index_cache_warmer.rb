@@ -24,6 +24,7 @@ module Fictions
       IndexVariablesManager.popular_novelty_ids_for_badges
       IndexVariablesManager.most_reads_ids_for_badges
       IndexVariablesManager.latest_updates_ids_for_badges
+      IndexVariablesManager.popular_novelty_featured_chapter_count
       IndexShowcase.for_index
       IndexHotUpdates.fictions
       IndexHotUpdates.counts

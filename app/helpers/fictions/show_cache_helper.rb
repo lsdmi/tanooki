@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Fragment and HTTP cache keys for guest fiction#show (Phase 5 TTFB).
+  # Fragment keys for guest fiction#show; HTTP max-age for guest show and fictions#index.
   module ShowCacheHelper
     include Layout::LayoutFragmentKeysHelper
 

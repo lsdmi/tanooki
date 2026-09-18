@@ -13,6 +13,7 @@ class FictionsController < ApplicationController
   include Fictions::DashboardListing
   include Fictions::FictionControllerSetup
   include Fictions::FictionPersistence
+  include Fictions::GuestIndexCaching
   include Fictions::GuestShowCaching
   include Fictions::TurboStreamResponses
 
@@ -28,9 +29,12 @@ class FictionsController < ApplicationController
   before_action :track_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
   before_action :authorize_fiction_creation, only: %i[new create]
-  before_action :pokemon_appearance, only: :index
+  around_action :instrument_guest_fiction_index, only: :index
+  after_action :set_guest_fiction_index_cache_headers, only: :index
 
   def index
+    return if serve_fresh_guest_fiction_index?
+
     @index_presenter = FictionIndexPresenter.new
   end
 

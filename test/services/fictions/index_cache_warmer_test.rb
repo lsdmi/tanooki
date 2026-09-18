@@ -21,8 +21,17 @@ module Fictions
     test 'call populates popular novelty ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?('popular_novelty_ids')
+      assert Rails.cache.exist?(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY)
       assert Rails.cache.exist?('recent_fiction_ids')
+    end
+
+    test 'call populates featured novelty chapter count next to popular novelty ids' do
+      IndexCacheWarmer.call
+
+      featured_id = Rails.cache.read(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY)&.first
+
+      assert_predicate featured_id, :present?
+      assert Rails.cache.exist?(IndexVariablesManager.popular_novelty_featured_chapter_count_cache_key(featured_id))
     end
 
     test 'call populates most reads ids cache' do
@@ -34,7 +43,7 @@ module Fictions
     test 'call populates latest updates ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?('latest_updates_ids')
+      assert Rails.cache.exist?(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY)
     end
 
     test 'call populates originals ids cache' do
