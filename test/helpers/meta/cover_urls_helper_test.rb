@@ -94,6 +94,18 @@ module Meta
       assert_includes banner_showcase_url(@fiction.banner), '/rails/active_storage/representations'
     end
 
+    test 'banner_showcase_url mobile size uses a narrower variant than desktop' do
+      skip 'libvips not installed' unless Attachments::VariantProcessing.available?
+      skip 'fiction fixture has no banner' unless @fiction.banner.attached?
+
+      desktop = banner_showcase_url(@fiction.banner)
+      mobile = banner_showcase_url(@fiction.banner, size: :mobile)
+
+      assert_includes desktop, '/rails/active_storage/representations'
+      assert_includes mobile, '/rails/active_storage/representations'
+      assert_not_equal desktop, mobile
+    end
+
     test 'avatar_image_url returns a representation url when variants are available' do
       skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 

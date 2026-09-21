@@ -9,7 +9,7 @@ module Publications
     HIGHLIGHTS_KEY = "highlights_#{HIGHLIGHTS_LIMIT}".freeze
     EXCLUDING_HIGHLIGHTS_KEY = "publications_excluding_#{HIGHLIGHTS_LIMIT}".freeze
     POPULAR_BLOGS_KEY = 'popular_blogs'
-    TOP_TALE_KEY = 'top_tale/v1'
+    TOP_TALE_KEY = 'top_tale/v2'
     LIST_KEYS = [HIGHLIGHTS_KEY, EXCLUDING_HIGHLIGHTS_KEY, POPULAR_BLOGS_KEY, TOP_TALE_KEY].freeze
 
     def self.show_key(id_or_slug)

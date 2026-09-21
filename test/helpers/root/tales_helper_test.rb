@@ -21,7 +21,7 @@ module Root
       )
     end
 
-    test 'home_tales_editorial_cards promotes first tale when no highlight exists' do
+    test 'home_tales_editorial_cards leaves the hero empty when no highlight exists' do
       tales = [
         publications(:tale_created_one),
         publications(:three),
@@ -29,7 +29,7 @@ module Root
       ]
 
       assert_equal(
-        { hero: tales.first, left: [tales[1], tales[2]], right: [], side: [tales[1], tales[2]] },
+        { hero: nil, left: [tales[0], tales[1]], right: [tales[2]], side: tales },
         home_tales_editorial_cards(nil, tales)
       )
     end

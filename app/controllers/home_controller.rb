@@ -41,9 +41,11 @@ class HomeController < ApplicationController
 
   def top_tale
     publication_id = Rails.cache.fetch(Publications::PublicCache::TOP_TALE_KEY, expires_in: 12.hours) do
-      Publication.published.weekly.order(views: :desc).limit(1).pick(:id)
+      Publication.published.highlights.order(created_at: :desc).limit(1).pick(:id)
     end
-    published_catalog.find_by(id: publication_id) || published_catalog.order(:id).last
+    return if publication_id.blank?
+
+    published_catalog.highlights.find_by(id: publication_id)
   end
 
   def published_catalog

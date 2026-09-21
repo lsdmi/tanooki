@@ -18,8 +18,7 @@ module Root
     def home_tales_editorial_cards(top_tale, tales)
       return home_tales_empty_editorial if top_tale.blank? && tales.blank?
 
-      hero = top_tale || tales.first
-      { hero: hero, **home_tales_editorial_columns(home_tales_side_tales(tales, hero)) }
+      { hero: top_tale, **home_tales_editorial_columns(home_tales_side_tales(tales, top_tale)) }
     end
 
     def home_tales_title_link_class

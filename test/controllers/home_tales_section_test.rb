@@ -53,4 +53,28 @@ class HomeTalesSectionTest < ActionDispatch::IntegrationTest
 
     assert_select 'a[href=?]', tale_path(draft), count: 0
   end
+
+  test 'featured news slot is the admin highlight not the most viewed blog' do
+    highlight = publications(:tale_approved_one)
+    popular = publications(:tale_created_one)
+    highlight.update!(views: 1, highlight: true)
+    popular.update!(views: 99_999, highlight: false)
+
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_equal highlight.id, assigns(:top_tale).id
+    assert_select 'a.aspect-\\[4\\/3\\][href=?]', tale_path(highlight)
+    assert_select 'a.aspect-\\[4\\/3\\][href=?]', tale_path(popular), count: 0
+  end
+
+  test 'news section omits the featured slot when no highlight is published' do
+    publications(:tale_approved_one).update!(highlight: false)
+    Rails.cache.delete(Publications::PublicCache::TOP_TALE_KEY)
+
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_nil assigns(:top_tale)
+    assert_select 'a.aspect-\\[4\\/3\\]', count: 0
+    assert_select '[aria-label="Новини та Блоги"]', minimum: 1
+  end
 end

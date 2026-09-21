@@ -1,6 +1,6 @@
 <%# locals: (tales:, top_tale:) %>
 <% editorial = home_tales_editorial_cards(top_tale, tales) %>
-<% return if editorial[:hero].blank? %>
+<% return if editorial[:hero].blank? && editorial[:side].blank? %>
 
 <section class="mt-10 w-full lg:mb-14 lg:mt-14" aria-labelledby="home-tales">
   <%= tag.div **lazy_decoration_background(
@@ -20,39 +20,49 @@
         </div>
       </header>
 
-      <div class="flex flex-col gap-4 lg:hidden">
-        <%= render 'root/tales_card', publication: editorial[:hero], variant: :featured %>
-
-        <% if editorial[:side].any? %>
-          <ul class="grid list-none grid-cols-2 gap-4" aria-label="Новини та Блоги">
-            <% editorial[:side].each do |publication| %>
-              <li>
-                <%= render 'root/tales_card', publication:, variant: :compact %>
-              </li>
-            <% end %>
-          </ul>
-        <% end %>
-      </div>
-
-      <div class="hidden gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2.15fr)_minmax(0,1fr)] lg:items-stretch"
-           role="group"
-           aria-label="Новини та Блоги">
-        <div class="flex flex-col gap-4">
-          <% editorial[:left].each do |publication| %>
-            <%= render 'root/tales_card', publication:, variant: :compact %>
-          <% end %>
-        </div>
-
-        <div class="flex min-h-0 flex-col">
+      <% if editorial[:hero].present? %>
+        <div class="flex flex-col gap-4 lg:hidden">
           <%= render 'root/tales_card', publication: editorial[:hero], variant: :featured %>
-        </div>
 
-        <div class="flex flex-col gap-4">
-          <% editorial[:right].each do |publication| %>
-            <%= render 'root/tales_card', publication:, variant: :compact %>
+          <% if editorial[:side].any? %>
+            <ul class="grid list-none grid-cols-2 gap-4" aria-label="Новини та Блоги">
+              <% editorial[:side].each do |publication| %>
+                <li>
+                  <%= render 'root/tales_card', publication:, variant: :compact %>
+                </li>
+              <% end %>
+            </ul>
           <% end %>
         </div>
-      </div>
+
+        <div class="hidden gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2.15fr)_minmax(0,1fr)] lg:items-stretch"
+             role="group"
+             aria-label="Новини та Блоги">
+          <div class="flex flex-col gap-4">
+            <% editorial[:left].each do |publication| %>
+              <%= render 'root/tales_card', publication:, variant: :compact %>
+            <% end %>
+          </div>
+
+          <div class="flex min-h-0 flex-col">
+            <%= render 'root/tales_card', publication: editorial[:hero], variant: :featured %>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <% editorial[:right].each do |publication| %>
+              <%= render 'root/tales_card', publication:, variant: :compact %>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <ul class="grid list-none grid-cols-2 gap-4 lg:grid-cols-4" aria-label="Новини та Блоги">
+          <% editorial[:side].each do |publication| %>
+            <li>
+              <%= render 'root/tales_card', publication:, variant: :compact %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   <% end %>
 </section>

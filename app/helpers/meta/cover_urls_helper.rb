@@ -19,7 +19,10 @@ module Meta
     CARD_TRANSFORMATIONS = CARD_WEBP_TRANSFORMATIONS
     THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
-    SHOWCASE_TRANSFORMATIONS = { resize_to_limit: [1600, 540], format: :webp }.freeze
+    SHOWCASE_SIZE = [1600, 540].freeze
+    SHOWCASE_MOBILE_SIZE = [768, 320].freeze
+    SHOWCASE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_SIZE, format: :webp }.freeze
+    SHOWCASE_MOBILE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_MOBILE_SIZE, format: :webp }.freeze
     AVATAR_TRANSFORMATIONS = { resize_to_limit: [128, 128], format: :webp }.freeze
     SCANLATOR_AVATAR_TRANSFORMATIONS = { resize_to_limit: [256, 256], format: :webp }.freeze
     VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp }.freeze
@@ -41,8 +44,12 @@ module Meta
       variant_image_url(attachment, BACKGROUND_TRANSFORMATIONS)
     end
 
-    def banner_showcase_url(attachment)
-      variant_image_url(attachment, SHOWCASE_TRANSFORMATIONS)
+    def banner_showcase_url(attachment, size: :desktop)
+      variant_image_url(attachment, showcase_transformations_for(size))
+    end
+
+    def banner_showcase_mobile_dimensions
+      SHOWCASE_MOBILE_SIZE
     end
 
     def avatar_image_url(attachment)
@@ -85,6 +92,10 @@ module Meta
       }
     rescue ActiveStorage::Error
       { fallback: url_for(attachment) }
+    end
+
+    def showcase_transformations_for(size)
+      size.to_sym == :mobile ? SHOWCASE_MOBILE_TRANSFORMATIONS : SHOWCASE_TRANSFORMATIONS
     end
 
     def cover_preset_transformations(preset)
