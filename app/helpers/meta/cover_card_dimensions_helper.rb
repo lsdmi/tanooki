@@ -19,14 +19,7 @@ module Meta
     private
 
     def cover_card_limit_for_preset(preset)
-      case preset.to_sym
-      when :featured
-        CoverUrlsHelper::FEATURED_CARD_SIZE
-      when :wide
-        CoverUrlsHelper::WIDE_CARD_SIZE
-      else
-        CoverUrlsHelper::CARD_SIZE
-      end
+      CoverCardPresets.size_for(preset)
     end
 
     def resize_to_limit_dimensions(width, height, max_width, max_height)

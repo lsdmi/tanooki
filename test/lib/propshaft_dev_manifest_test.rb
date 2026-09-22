@@ -5,7 +5,7 @@ require 'propshaft_dev_manifest'
 
 class PropshaftDevManifestTest < ActiveSupport::TestCase
   setup do
-    @manifest_path = Rails.root.join('tmp', "propshaft-dev-manifest-test-#{Process.pid}.json")
+    @manifest_path = Rails.root.join("tmp/propshaft-dev-manifest-test-#{Process.pid}.json")
     PropshaftDevManifest.refresh!(@manifest_path)
   end
 
@@ -14,16 +14,22 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
   end
 
   test 'refresh! updates tailwind digest when builds change' do
+    # Parallel workers share app/assets/builds/tailwind.css; mutating it races the suite.
+    skip 'shared tailwind.css is unsafe under parallel workers' if ENV['TEST_ENV_NUMBER'].present?
+
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
+    original = tailwind_path.read
     stale_digest = JSON.parse(@manifest_path.read)['tailwind.css']['digested_path']
 
-    tailwind_path.open('a') { |file| file.write(' ') }
-    PropshaftDevManifest.refresh!(@manifest_path)
+    begin
+      tailwind_path.write("#{original} ")
+      PropshaftDevManifest.refresh!(@manifest_path)
 
-    assert_not_equal stale_digest, JSON.parse(@manifest_path.read)['tailwind.css']['digested_path']
-  ensure
-    tailwind_path.open('a') { |file| file.write("\b") if file.size.positive? }
-    PropshaftDevManifest.refresh!(@manifest_path)
+      assert_not_equal stale_digest, JSON.parse(@manifest_path.read)['tailwind.css']['digested_path']
+    ensure
+      tailwind_path.write(original)
+      PropshaftDevManifest.refresh!(@manifest_path)
+    end
   end
 
   test 'stale? is true when a new image is not in the manifest' do

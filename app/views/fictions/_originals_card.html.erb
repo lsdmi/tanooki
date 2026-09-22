@@ -4,8 +4,9 @@
   <%# Backdrop bleeds to the card edges; its height is the cover inset plus the cover, so both end on the same line. %>
   <%= link_to fiction_path(fiction),
               turbo_drive_visit_data.merge(class: 'relative block h-[142px] overflow-hidden bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400 lg:h-[238px]') do %>
-    <%# Same cover variant as the thumbnail, so the backdrop costs no extra request. %>
+    <%# Same thumb variant as the inset cover, so the backdrop costs no extra request. %>
     <%= cover_card_picture_tag(fiction.cover,
+                  preset: :thumb,
                   alt: '',
                   aria: { hidden: true },
                   class: 'absolute inset-0 h-full w-full scale-110 object-cover object-center blur-sm brightness-[0.65]',
@@ -14,6 +15,7 @@
     <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-800 via-slate-800/65 to-transparent lg:h-32"></div>
     <div class="absolute bottom-0 left-2.5 h-[132px] w-[88px] overflow-hidden rounded-lg border border-white shadow-lg lg:left-4 lg:h-[222px] lg:w-[148px]">
       <%= cover_card_picture_tag(fiction.cover,
+                    preset: :thumb,
                     alt: fiction.title,
                     class: 'h-full w-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03]',
                     loading: 'lazy') %>

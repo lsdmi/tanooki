@@ -33,6 +33,7 @@
           data-fiction-picker-target="image"
           data-fiction-picker-id-param="<%= fiction.id %>">
           <%= cover_card_picture_tag(fiction.cover,
+                        preset: :thumb,
                         alt: fiction.title,
                         class: 'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-105',
                         loading: 'lazy') %>

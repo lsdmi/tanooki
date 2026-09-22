@@ -6,18 +6,7 @@ module Meta
     include CoverCardPictureHelper
     include CoverCardDimensionsHelper
 
-    CARD_SIZE = [400, 600].freeze
-    CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :webp }.freeze
-    CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :avif }.freeze
-    FEATURED_CARD_SIZE = [1280, 960].freeze
-    FEATURED_CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :webp }.freeze
-    FEATURED_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: FEATURED_CARD_SIZE, format: :avif }.freeze
     PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp }.freeze
-    WIDE_CARD_SIZE = [1280, 720].freeze
-    WIDE_CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: WIDE_CARD_SIZE, format: :webp }.freeze
-    WIDE_CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: WIDE_CARD_SIZE, format: :avif }.freeze
-    CARD_TRANSFORMATIONS = CARD_WEBP_TRANSFORMATIONS
-    THUMB_TRANSFORMATIONS = { resize_to_limit: [160, 240], format: :webp }.freeze
     BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
     SHOWCASE_SIZE = [1600, 540].freeze
     SHOWCASE_MOBILE_SIZE = [768, 320].freeze
@@ -37,7 +26,7 @@ module Meta
     end
 
     def cover_thumbnail_url(attachment)
-      variant_image_url(attachment, THUMB_TRANSFORMATIONS)
+      variant_image_url(attachment, CoverCardPresets::THUMB_TRANSFORMATIONS)
     end
 
     def cover_background_url(attachment)
@@ -84,7 +73,7 @@ module Meta
       return {} unless attachment&.attached?
       return { fallback: url_for(attachment) } unless variable_cover?(attachment)
 
-      avif_transform, webp_transform = cover_preset_transformations(preset)
+      avif_transform, webp_transform = CoverCardPresets.transformations_for(preset)
 
       {
         avif: url_for(attachment.variant(avif_transform)),
@@ -96,17 +85,6 @@ module Meta
 
     def showcase_transformations_for(size)
       size.to_sym == :mobile ? SHOWCASE_MOBILE_TRANSFORMATIONS : SHOWCASE_TRANSFORMATIONS
-    end
-
-    def cover_preset_transformations(preset)
-      case preset.to_sym
-      when :featured
-        [FEATURED_CARD_AVIF_TRANSFORMATIONS, FEATURED_CARD_WEBP_TRANSFORMATIONS]
-      when :wide
-        [WIDE_CARD_AVIF_TRANSFORMATIONS, WIDE_CARD_WEBP_TRANSFORMATIONS]
-      else
-        [CARD_AVIF_TRANSFORMATIONS, CARD_WEBP_TRANSFORMATIONS]
-      end
     end
 
     def variable_cover?(attachment)

@@ -1,5 +1,6 @@
-<%# locals: (fictions:) %>
+<%# locals: (fictions:, cover_preset: :thumb) %>
 <% covers = fictions %>
+<% cover_preset = local_assigns.fetch(:cover_preset, :thumb) %>
 <% slots = %w[front left right] %>
 <% face_class = [
      'absolute overflow-hidden rounded-xl bg-stone-200',
@@ -22,6 +23,7 @@
            data-genre-cover-stack-target="cover"
            data-slot="<%= slot %>">
         <%= cover_card_picture_tag(fiction.cover,
+                      preset: cover_preset,
                       alt: '',
                       aria: { hidden: true },
                       class: 'h-full w-full object-cover object-center',

@@ -6,6 +6,7 @@
   <%= link_to chapter_path(chapter),
               turbo_drive_visit_data.merge(class: "group/cover aspect-[3/4] #{cover_class} shrink-0 overflow-hidden rounded-lg bg-stone-200 shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:bg-slate-800 dark:focus-visible:ring-violet-400") do %>
     <%= cover_card_picture_tag(fiction.cover,
+                  preset: :thumb,
                   alt: fiction.title,
                   class: 'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-[1.03]',
                   loading: 'lazy' ) %>
