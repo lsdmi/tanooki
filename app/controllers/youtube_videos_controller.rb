@@ -2,7 +2,7 @@
 
 # YouTube video index and watch pages with curated highlights and related videos.
 class YoutubeVideosController < ApplicationController
-  before_action :set_video, :track_visit, only: :show
+  before_action :set_video, :track_video_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]
 
   def index
@@ -55,6 +55,10 @@ class YoutubeVideosController < ApplicationController
     @youtube_video = Rails.cache.fetch("video_#{params[:id]}", expires_in: 1.hour) do
       YoutubeVideo.friendly.find(params.expect(:id))
     end
+  end
+
+  def track_video_visit
+    track_visit(@youtube_video)
   end
 
   def video_tags_for_sidebar

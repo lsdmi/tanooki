@@ -14,6 +14,10 @@ module Fictions
       @commentable = @fiction
     end
 
+    def track_fiction_visit
+      track_visit(@fiction)
+    end
+
     def adsense_allowed?
       return false if fiction_ads_fully_excluded?
 

@@ -34,7 +34,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
-      @controller.send(:track_visit)
+      @controller.send(:track_visit, @tale)
       Analytics::ViewIncrementJob.perform_now('Publication', @tale.id)
 
       assert_equal 1, @tale.reload.views
@@ -46,7 +46,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
-      @controller.send(:track_visit)
+      @controller.send(:track_visit, @tale)
 
       assert_equal 0, @tale.reload.views
     end
@@ -57,7 +57,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
-      @controller.send(:track_visit)
+      @controller.send(:track_visit, @tale)
 
       assert_equal [@tale.slug], session[:viewed]
     end
@@ -68,7 +68,7 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
-      @controller.send(:track_visit)
+      @controller.send(:track_visit, @tale)
 
       assert_equal [@tale.slug], session[:viewed]
     end

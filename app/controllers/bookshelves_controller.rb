@@ -7,7 +7,7 @@ class BookshelvesController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
   before_action :load_selected_fictions, only: %i[new create edit update]
-  before_action :track_visit, only: :show
+  before_action :track_bookshelf_visit, only: :show
 
   def index; end
 
@@ -69,6 +69,10 @@ class BookshelvesController < ApplicationController
                  else
                    current_user.bookshelves.by_sqid(params[:sqid]).first!
                  end
+  end
+
+  def track_bookshelf_visit
+    track_visit(@bookshelf)
   end
 
   def bookshelf_params

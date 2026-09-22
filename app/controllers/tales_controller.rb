@@ -16,7 +16,7 @@ class TalesController < ApplicationController
 
   before_action :set_tale, only: :show
   before_action :redirect_if_publication_not_public, only: :show
-  before_action :track_visit, only: :show
+  before_action :track_tale_visit, only: :show
   before_action :pokemon_appearance, only: %i[index show]
 
   def index
@@ -67,6 +67,10 @@ class TalesController < ApplicationController
 
   def set_tale
     @publication = @commentable = load_publication_for_show
+  end
+
+  def track_tale_visit
+    track_visit(@publication)
   end
 
   def all_publications

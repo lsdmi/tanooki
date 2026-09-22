@@ -27,12 +27,15 @@ class ApplicationController < ActionController::Base
   private
 
   def pokemon_appearance
+    # Opt-in via before_action on browse/discovery only — never a global filter
+    # (skipped on fictions#index/show, chapters#show, studio).
     return if params[:page].present?
 
     @wild_pokemon = Pokemons::WildCatch.new(user: current_user, session:).call
   end
 
   def latest_comments
+    # Lazy nav badge / studio inbox only — not on the main HTML path.
     Rails.cache.fetch("latest_comments_for_#{current_user.id}", expires_in: 10.minutes) do
       Comments::InboxCollector.new(current_user).call
     end
@@ -46,13 +49,11 @@ class ApplicationController < ActionController::Base
     Tags::Trending.new.tags
   end
 
-  def track_visit
+  def track_visit(record)
     return if turbo_prefetch_request?
+    return if record.nil?
 
-    Analytics::ViewIncrement.new(
-      @publication || @chapter || @fiction || @youtube_video || @bookshelf,
-      session
-    ).call
+    Analytics::ViewIncrement.new(record, session).call
   end
 
   # Turbo Drive/preload fetches send this header; treat them as cache fills, not visits.

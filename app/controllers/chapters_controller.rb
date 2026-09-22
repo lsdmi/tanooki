@@ -15,7 +15,7 @@ class ChaptersController < ApplicationController
   before_action :set_fiction_for_chapter_create, only: %i[new create]
   before_action :authorize_chapter_creation, only: %i[new create]
   before_action :redirect_if_chapter_not_yet_public, only: %i[show record_progress]
-  before_action :track_visit, :track_reading_progress, only: :show
+  before_action :track_chapter_visit, :track_reading_progress, only: :show
   before_action :verify_permissions, except: %i[new create show record_progress]
 
   def show
@@ -99,6 +99,10 @@ class ChaptersController < ApplicationController
 
   def set_chapter
     @chapter = @commentable = Chapter.friendly.find(params.expect(:id))
+  end
+
+  def track_chapter_visit
+    track_visit(@chapter)
   end
 
   def chapter_params

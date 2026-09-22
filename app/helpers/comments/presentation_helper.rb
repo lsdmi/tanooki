@@ -11,6 +11,8 @@ module Comments
     end
 
     def show_comment_status?
+      return false unless current_user
+
       current_user.latest_read_comment_id != latest_comments.first&.id
     end
 

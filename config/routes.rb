@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       get :tab
     end
   end
+  resource :notification_badge, only: :show
   resources :tales, only: %i[index show]
   resources :translation_requests, only: %i[index create update destroy], path: 'translate' do
     member do

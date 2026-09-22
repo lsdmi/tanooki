@@ -29,21 +29,13 @@ module Users
     # end
 
     def notice_pokemon_catch
-      if no_caught_pokemon?
-        no_pokemon_notice
-      else
-        pokemon_notice
-      end
-    end
-
-    def no_pokemon_notice
-      Pokemons::CollectionUpdater.new(pokemon_id: nil, user_id: @user.id).grant if @user&.pokemons&.empty?
-      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
-    end
-
-    def pokemon_notice
-      Pokemons::CollectionUpdater.new(pokemon_id: session[:caught_pokemon_id], user_id: @user.id).trap
-      flash[:notice] = I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
+      flash[:notice] =
+        case Pokemons::AuthCatch.after_omniauth!(user: @user, session: session)
+        when :with_pokemon
+          I18n.t 'devise.omniauth_callbacks.success_with_pokemon', kind: 'Google'
+        else
+          I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
+        end
     end
 
     def success_google_oauth
@@ -54,12 +46,6 @@ module Users
     def failure_google_oauth
       session['devise.google_data'] = request.env['omniauth.auth'].except('extra')
       redirect_to register_url, alert: @user.errors.full_messages.join("\n")
-    end
-
-    private
-
-    def no_caught_pokemon?
-      session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
     end
   end
 end

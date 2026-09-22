@@ -17,7 +17,7 @@ module Users
     def create
       super do |user|
         if user.persisted?
-          inactive_kind = Pokemons::SignupCatchAssigner.new(user, session).perform
+          inactive_kind = Pokemons::AuthCatch.assign_on_signup!(user: user, session: session)
           set_flash_message! :notice, :"signed_up_but_#{inactive_kind}" if inactive_kind
         else
           set_flash_message! :alert, :sign_up_error

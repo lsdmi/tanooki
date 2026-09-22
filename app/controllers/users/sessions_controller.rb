@@ -31,9 +31,9 @@ module Users
     # end
 
     def catch_pokemon(resource)
-      return if session[:pokemon_guest_caught].nil? || session[:caught_pokemon_id].nil?
+      return unless Pokemons::AuthCatch.guest_catch_pending?(session)
 
-      Pokemons::CollectionUpdater.new(pokemon_id: session[:caught_pokemon_id], user_id: resource.id).trap
+      Pokemons::AuthCatch.transfer_guest_catch!(user: resource, session: session)
       set_flash_message! :notice, :signed_in_with_pokemon
     end
   end
