@@ -1,19 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 import { acknowledgeAdultContent } from "adult_content_disclaimer"
 
-/** Dismissible 18+ disclaimer; acknowledgement is stored in the Rails session. */
+/** 16+ hides for this page load; 18+ unlocks the reader gate and persists acknowledgement. */
 export default class extends Controller {
+  static values = { rating: String }
+
   disconnect() {
     this.abortAcknowledge()
     this.hide()
   }
 
   dismiss() {
-    this.unlockGatedContent()
+    if (this.eighteen) this.unlockGatedContent()
     this.hide()
+    if (!this.eighteen) return
+
     this.abortAcknowledge()
     this.acknowledgeAbortController = new AbortController()
     acknowledgeAdultContent({ signal: this.acknowledgeAbortController.signal }).catch(() => {})
+  }
+
+  get eighteen() {
+    return this.ratingValue === "eighteen"
   }
 
   unlockGatedContent() {

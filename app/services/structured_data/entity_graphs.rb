@@ -50,7 +50,7 @@ module StructuredData
         image: [@asset_url.call(fiction.cover)],
         url:,
         inLanguage: 'uk-UA'
-      }
+      }.merge(content_rating_node(fiction))
     end
 
     def fiction_author_node(fiction)
@@ -91,7 +91,14 @@ module StructuredData
         author: fiction_author_node(fiction),
         url:,
         mainEntityOfPage: url
-      }
+      }.merge(content_rating_node(fiction))
+    end
+
+    def content_rating_node(fiction)
+      label = fiction.content_rating_label
+      return {} unless label
+
+      { contentRating: label }
     end
 
     def default_public_url_options

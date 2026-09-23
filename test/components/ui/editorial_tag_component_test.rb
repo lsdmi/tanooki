@@ -10,6 +10,13 @@ module Ui
       assert_text '18+'
     end
 
+    test 'renders default sixteen label styles' do
+      render_inline(EditorialTagComponent.new(kind: :sixteen))
+
+      assert_text '16+'
+      assert_selector 'span.bg-amber-600.text-white'
+    end
+
     test 'renders default adult label styles' do
       render_inline(EditorialTagComponent.new(kind: :adult))
 

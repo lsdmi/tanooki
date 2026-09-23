@@ -27,15 +27,17 @@
         </h3>
       <% end %>
 
-        <% if fiction.genres.any? %>
+        <% if fiction.genres.any? || fiction.age_labelled? %>
           <%= render Ui::TagListComponent.new(
-                labels: fiction.genres.map(&:name),
+                labels: fiction.with_content_rating_tag_labels(fiction.genres.map(&:name)),
                 variant: :genre,
                 size: :sm,
                 max: 2,
                 sort_adult_first: true,
                 genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
                 href_builder: ->(name) {
+                  next if Genre.rating_tag?(name)
+
                   fiction_genre_fictions_path(fiction.genres.find { |genre| genre.name == name })
                 },
                 html: { class: 'text-xs flex flex-wrap gap-2 mt-2' },

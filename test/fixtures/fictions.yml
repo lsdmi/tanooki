@@ -5,6 +5,7 @@ one:
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   expected_chapters: 5
+  content_rating: 0
 
 two:
   id: 2
@@ -13,3 +14,13 @@ two:
   author: "Test Author"
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   expected_chapters: 5
+  content_rating: 16
+
+eighteen:
+  id: 3
+  slug: 'eighteen'
+  title: "Test Fiction 18"
+  author: "Test Author"
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  expected_chapters: 5
+  content_rating: 18

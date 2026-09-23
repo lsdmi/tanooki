@@ -16,5 +16,15 @@ module Root
       assert_equal ['Жанр Альфа', 'Жанр Бета'], links.pluck(:name)
       assert_equal %w[genre-alpha genre-beta], links.pluck(:slug)
     end
+
+    test 'popular_fiction_genre_links prepends the content rating pill' do
+      fiction = fictions(:two)
+      fiction.genres = [genres(:one), genres(:two)]
+
+      links = popular_fiction_genre_links(fiction)
+
+      assert_equal ['16+', 'Жанр Альфа'], links.pluck(:name)
+      assert_nil links.first[:slug]
+    end
   end
 end

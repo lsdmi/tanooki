@@ -46,7 +46,10 @@
                 compact_max: 1,
                 sort_adult_first: true,
                 genre_slugs:,
-                href_builder: ->(name) { fiction_genre_fictions_path(genre_slugs.fetch(name)) },
+                href_builder: ->(name) {
+                  slug = genre_slugs[name]
+                  fiction_genre_fictions_path(slug) if slug.present?
+                },
                 tag_html: turbo_drive_visit_data,
                 html: { class: 'mt-1.5 gap-1 nowrap' }
               ) %>

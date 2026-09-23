@@ -73,6 +73,21 @@ module Ui
       assert_selector 'a svg[aria-hidden="true"]'
     end
 
+    test 'renders sixteen rating as amber span without link' do
+      render_inline(GenrePageTagComponent.new(variant: :sixteen, label: '16+'))
+
+      assert_selector 'span.bg-amber-200.text-xs', text: '16+'
+      assert_selector 'span svg[aria-hidden="true"]'
+      assert_no_selector 'a'
+    end
+
+    test 'renders eighteen rating with rose classes' do
+      render_inline(GenrePageTagComponent.new(variant: :eighteen, label: '18+'))
+
+      assert_selector 'span.bg-rose-200.text-xs', text: '18+'
+      assert_selector 'span svg[aria-hidden="true"]'
+    end
+
     test 'rejects unknown variant' do
       assert_raises(ArgumentError) do
         GenrePageTagComponent.new(variant: :unknown, label: 'x')

@@ -30,7 +30,7 @@ module Fictions
       params.expect(
         fiction: [
           :alternative_title, :author, :cover, :description, :english_title, :origin,
-          :title, :expected_chapters, :complete, :short_description, :banner, :adult_content,
+          :title, :expected_chapters, :complete, :short_description, :banner, :content_rating,
           { genre_ids: [], scanlator_ids: [] }
         ]
       )

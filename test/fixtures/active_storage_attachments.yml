@@ -40,6 +40,13 @@ attachment_eight:
   blob_id: 8
   created_at: <%= Time.now %>
 
+attachment_fiction_eighteen_cover:
+  name: cover
+  record_type: Fiction
+  record_id: 3
+  blob_id: 22
+  created_at: <%= Time.now %>
+
 attachment_thirteen:
   name: cover
   record_type: Publication

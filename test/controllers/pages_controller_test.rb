@@ -9,6 +9,20 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'rules page covers age rating labelling and gating' do
+    get rules_url
+
+    assert_select 'h3', text: 'Вікові обмеження'
+    assert_select 'li', text: /Твори 16\+ мають бути позначені/
+    assert_select 'li', text: /Твори 18\+ мають бути позначені та захищені/
+  end
+
+  test 'rules page forbids explicit sex labelled as sixteen' do
+    get rules_url
+
+    assert_select 'li', text: /під позначкою 16\+ є порушенням правил/
+  end
+
   test 'should get friends' do
     get friends_url
 

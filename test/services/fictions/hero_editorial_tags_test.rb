@@ -8,8 +8,8 @@ module Fictions
       @fiction = fictions(:one)
     end
 
-    test 'returns adult first then novelty up to hero max' do
-      @fiction.update!(adult_content: true)
+    test 'returns eighteen first then novelty up to hero max' do
+      @fiction.update!(content_rating: :eighteen)
 
       kinds = HeroEditorialTags.new(
         @fiction,
@@ -21,7 +21,20 @@ module Fictions
       assert_equal %i[adult novelty], kinds
     end
 
-    test 'returns editorial tags in priority order without adult' do
+    test 'returns sixteen first then novelty up to hero max' do
+      @fiction.update!(content_rating: :sixteen)
+
+      kinds = HeroEditorialTags.new(
+        @fiction,
+        popular_novelty_ids: [@fiction.id],
+        top_fiction_ids: [@fiction.id],
+        latest_update_ids: [@fiction.id]
+      ).call
+
+      assert_equal %i[sixteen novelty], kinds
+    end
+
+    test 'returns editorial tags in priority order without rating' do
       kinds = HeroEditorialTags.new(
         @fiction,
         popular_novelty_ids: [@fiction.id],

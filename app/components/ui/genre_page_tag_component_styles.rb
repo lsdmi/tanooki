@@ -62,6 +62,14 @@ module Ui
       'focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
+    SIXTEEN_CLASSES = [
+      'inline-flex items-center gap-1 rounded-lg border border-amber-800 bg-amber-200 px-3 py-1',
+      'text-xs font-medium text-amber-900 transition-colors hover:bg-amber-300 hover:text-amber-950',
+      'hover:border-amber-900',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0f252c]'
+    ].join(' ').freeze
+
     # Thumb's translucent white at the featured badge's dimensions, for the popular cover strip.
     RANK_STRIP_CLASSES = [
       'absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center',
@@ -82,7 +90,9 @@ module Ui
       chapters: CHAPTERS_CLASSES,
       status: STATUS_CLASSES,
       genre: GENRE_CLASSES,
-      adult: ADULT_CLASSES
+      adult: ADULT_CLASSES,
+      eighteen: ADULT_CLASSES,
+      sixteen: SIXTEEN_CLASSES
     }.freeze
 
     ADULT_ICON_CLASSES = 'h-3.5 w-3.5 shrink-0'

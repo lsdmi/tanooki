@@ -38,6 +38,19 @@ class FictionsAuthorMetaTest < ActionDispatch::IntegrationTest
     assert_equal @fiction.author, book_ld.dig('author', 'name')
   end
 
+  test 'show Book JSON-LD omits contentRating for everyone' do
+    get fiction_url(@fiction)
+
+    assert_not json_ld_type_from_response('Book').key?('contentRating')
+  end
+
+  test 'show Book JSON-LD includes contentRating for sixteen' do
+    fiction = fictions(:two)
+    get fiction_url(fiction)
+
+    assert_equal '16+', json_ld_type_from_response('Book')['contentRating']
+  end
+
   private
 
   def json_ld_type_from_response(type)

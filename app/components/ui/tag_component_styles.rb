@@ -14,11 +14,18 @@ module Ui
       'dark:border-rose-400 dark:bg-rose-600 dark:hover:bg-rose-700 dark:text-white'
     ].join(' ').freeze
 
-    # Adult: rose-200 fill, rose-700 border, rose-800 label/icon (light + dark)
+    # Adult tropes + 18+ rating: rose-200 fill, rose-700 border, rose-800 label/icon
     ADULT_CLASSES = [
       'border border-rose-700 bg-rose-200 text-rose-800',
       'hover:bg-rose-300 hover:text-rose-900 hover:border-rose-800',
       'focus-visible:ring-rose-600'
+    ].join(' ').freeze
+
+    # 16+ rating: amber fill distinct from rose 18+
+    SIXTEEN_CLASSES = [
+      'border border-amber-800 bg-amber-200 text-amber-900',
+      'hover:bg-amber-300 hover:text-amber-950 hover:border-amber-900',
+      'focus-visible:ring-amber-700'
     ].join(' ').freeze
 
     SIZE_CLASSES = {

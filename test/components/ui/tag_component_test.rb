@@ -42,9 +42,29 @@ module Ui
       assert_no_selector 'span.text-white'
     end
 
+    test 'renders eighteen rating with rose classes' do
+      render_inline(TagComponent.new(label: '18+', variant: :eighteen))
+
+      assert_selector 'span.border-rose-700.bg-rose-200.text-rose-800'
+      assert_selector 'span.bg-rose-200 svg'
+    end
+
+    test 'renders sixteen rating with amber classes' do
+      render_inline(TagComponent.new(label: '16+', variant: :sixteen))
+
+      assert_selector 'span.border-amber-800.bg-amber-200.text-amber-900'
+      assert_selector 'span.bg-amber-200 svg'
+    end
+
     test 'rejects count on adult variant' do
       assert_raises(ArgumentError) do
         TagComponent.new(label: '18+', variant: :adult, count: 3)
+      end
+    end
+
+    test 'rejects count on sixteen variant' do
+      assert_raises(ArgumentError) do
+        TagComponent.new(label: '16+', variant: :sixteen, count: 3)
       end
     end
 

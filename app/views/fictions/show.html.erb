@@ -14,7 +14,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
       <section class="lg:col-span-2 rounded-lg ">
-        <%= render 'adult_content_disclaimer', fiction: @fiction if show_adult_content_disclaimer?(@fiction) %>
+        <%= render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@fiction)) if show_age_rating_notice?(@fiction) %>
         <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
 
         <section class="fiction-show__ad fiction-show__ad--main mt-8">

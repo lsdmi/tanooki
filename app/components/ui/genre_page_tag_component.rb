@@ -5,8 +5,9 @@ module Ui
   class GenrePageTagComponent < ViewComponent::Base
     include GenrePageTagComponentStyles
 
-    VARIANTS = %i[rank stat_views stat_rating chapters status genre adult].freeze
+    VARIANTS = %i[rank stat_views stat_rating chapters status genre adult sixteen eighteen].freeze
     RANK_SIZES = %i[featured thumb strip].freeze
+    WARNING_VARIANTS = %i[adult sixteen eighteen].freeze
 
     def initialize(variant:, label:, **options)
       super()
@@ -32,11 +33,11 @@ module Ui
     end
 
     def interactive?
-      variant.in?(%i[genre adult]) && href.present?
+      variant.in?(%i[genre adult sixteen eighteen]) && href.present?
     end
 
-    def adult?
-      variant == :adult
+    def warning_icon?
+      WARNING_VARIANTS.include?(variant)
     end
 
     def tag_attributes
@@ -52,7 +53,7 @@ module Ui
     end
 
     def icon_classes
-      return ADULT_ICON_CLASSES if adult?
+      return ADULT_ICON_CLASSES if warning_icon?
 
       ICON_CLASSES.fetch(variant)
     end

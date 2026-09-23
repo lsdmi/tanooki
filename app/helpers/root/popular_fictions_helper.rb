@@ -20,7 +20,8 @@ module Root
     end
 
     def popular_fiction_genre_links(fiction)
-      fiction.genres.sort_by(&:name).first(2).map { |genre| { name: genre.name, slug: genre.slug } }
+      genre_links = fiction.genres.sort_by(&:name).map { |genre| { name: genre.name, slug: genre.slug } }
+      fiction.with_content_rating_genre_links(genre_links).first(2)
     end
   end
 end

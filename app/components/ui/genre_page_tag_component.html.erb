@@ -1,6 +1,6 @@
 <% if interactive? %>
   <%= link_to href, tag_attributes do %>
-    <% if adult? %>
+    <% if warning_icon? %>
       <%= render Ui::AdultWarningIconComponent.new(class: icon_classes) %>
     <% end %>
     <% if stat_variant? %>
@@ -20,7 +20,7 @@
   <% end %>
 <% else %>
   <%= content_tag(:span, tag_attributes) do %>
-    <% if adult? %>
+    <% if warning_icon? %>
       <%= render Ui::AdultWarningIconComponent.new(class: icon_classes) %>
     <% end %>
     <% if stat_variant? %>

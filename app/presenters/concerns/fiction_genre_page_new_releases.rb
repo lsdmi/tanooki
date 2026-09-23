@@ -63,7 +63,8 @@ module FictionGenrePageNewReleases
   end
 
   def genre_links_for_card(fiction)
-    fiction.genres.order(:name).limit(4).map { |g| { name: g.name, slug: g.slug } }
+    genre_links = fiction.genres.order(:name).limit(4).map { |g| { name: g.name, slug: g.slug } }
+    fiction.with_content_rating_genre_links(genre_links).first(4)
   end
 
   def card_accent_at(index)

@@ -7,6 +7,7 @@ module Ui
     HERO_MAX = 2
 
     KINDS = {
+      sixteen: { label: '16+', icon: :warning },
       adult: { label: '18+', icon: :warning },
       novelty: { label: 'Новинка', icon: :lightning },
       popular: { label: 'Популярне', icon: :star },
@@ -14,6 +15,7 @@ module Ui
     }.freeze
 
     KIND_COLORS = {
+      sixteen: 'bg-amber-600',
       adult: 'bg-rose-600',
       novelty: 'bg-violet-600',
       popular: 'bg-fuchsia-700',

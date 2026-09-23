@@ -23,8 +23,8 @@ module Ui
       Genre.tag_variant(name: label, slug: genre_slugs[label] || genre_slugs[label.to_s])
     end
 
-    def adult_label?(label)
-      variant_for(label) == :adult
+    def priority_label?(label)
+      variant_for(label).in?(%i[adult sixteen eighteen])
     end
 
     def visible_labels
@@ -55,7 +55,7 @@ module Ui
     end
 
     def tag_groups
-      adults, regular = visible_labels.partition { |label| adult_label?(label) }
+      adults, regular = visible_labels.partition { |label| priority_label?(label) }
       groups = []
       groups << { type: :adult_cluster, labels: adults } if adults.any?
       regular.each { |label| groups << { type: :single, label: label } }
@@ -63,7 +63,7 @@ module Ui
     end
 
     def partitioned_labels
-      labels.partition { |label| adult_label?(label) }
+      labels.partition { |label| priority_label?(label) }
     end
 
     def render_tag(label)

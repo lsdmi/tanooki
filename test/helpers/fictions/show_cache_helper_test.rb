@@ -27,19 +27,23 @@ module Fictions
 
     test 'guest_fiction_show_fragment_cache_key includes fiction order' do
       key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
-      expected = ['fiction_show/v7/guest', @fiction, :asc, I18n.locale, 'light', false]
+      expected = ['fiction_show/v9/guest', @fiction, :asc, I18n.locale, 'light', nil]
 
       assert_equal expected, key.first(6)
       assert_kind_of Integer, key.last
     end
 
-    test 'guest_fiction_show_fragment_cache_key varies with adult content acknowledgement' do
-      unacked_key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
+    test 'guest cache key varies with acknowledgement for age-labelled works' do
+      fiction = fictions(:two)
+      presenter = FictionShowPresenter.new(fiction, nil, { order: :asc })
+      unacked_key = guest_fiction_show_fragment_cache_key(fiction, presenter)
 
       define_singleton_method(:session) { { adult_content_ack: true } }
-      acked_key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
+      acked_key = guest_fiction_show_fragment_cache_key(fiction, presenter)
 
       assert_not_equal unacked_key, acked_key
+      assert_not unacked_key[5]
+      assert acked_key[5]
     end
   end
 end

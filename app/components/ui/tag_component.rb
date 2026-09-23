@@ -2,13 +2,14 @@
 
 module Ui
   # Taxonomy / keyword tag (genres, news tags, video keywords).
-  # Keyword: neutral outline. Filter: primary (cyan light / rose-600 dark). Adult: rose-200 (18+ / mature).
-  # Light filled borders darker than fill; dark filled borders lighter than fill.
+  # Keyword: neutral outline. Filter: primary (cyan light / rose-600 dark).
+  # Rating pills: amber 16+, rose 18+. Adult tropes (BL/harem): rose cluster.
   class TagComponent < ViewComponent::Base
     include TagComponentStyles
 
-    VARIANTS = %i[keyword genre status filter adult].freeze
+    VARIANTS = %i[keyword genre status filter adult sixteen eighteen].freeze
     SIZES = %i[sm md].freeze
+    WARNING_VARIANTS = %i[adult sixteen eighteen].freeze
 
     def initialize(label:, variant: :keyword, size: :sm, **options)
       super()
@@ -39,18 +40,18 @@ module Ui
       raise ArgumentError, "unknown variant: #{@variant}" unless VARIANTS.include?(@variant)
       raise ArgumentError, "unknown size: #{@size}" unless SIZES.include?(@size)
       raise ArgumentError, "unknown as: #{@as}" unless %i[link button span].include?(@as)
-      raise ArgumentError, 'count is not supported for adult variant' if @variant == :adult && !@count.nil?
+      raise ArgumentError, "count is not supported for #{@variant} variant" if warning_icon? && !@count.nil?
     end
 
     def count?
       !count.nil?
     end
 
-    def adult?
-      variant == :adult
+    def warning_icon?
+      WARNING_VARIANTS.include?(variant)
     end
 
-    def adult_icon_classes
+    def warning_icon_classes
       size == :md ? 'h-4 w-4 shrink-0' : 'h-3.5 w-3.5 shrink-0'
     end
 
@@ -73,7 +74,7 @@ module Ui
     def css_classes
       [
         'inline-flex w-fit items-center whitespace-nowrap',
-        (adult? || count? ? 'gap-1.5' : nil),
+        (warning_icon? || count? ? 'gap-1.5' : nil),
         size_classes,
         variant_classes,
         (INTERACTIVE_CLASSES if interactive?)
@@ -107,7 +108,8 @@ module Ui
     def variant_classes
       case variant
       when :filter then FILTER_CLASSES
-      when :adult then ADULT_CLASSES
+      when :adult, :eighteen then ADULT_CLASSES
+      when :sixteen then SIXTEEN_CLASSES
       when :keyword, :genre, :status
         current ? FILTER_CLASSES : OUTLINED_CLASSES
       end

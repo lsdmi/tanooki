@@ -27,7 +27,7 @@ module Layout
 
     test 'chapter show loads reader actiontext and adult disclaimer sheets' do
       chapter = chapters(:one)
-      chapter.fiction.update!(adult_content: true)
+      chapter.fiction.update!(content_rating: :eighteen)
       assign_controller(:chapters, :show, chapter: chapter, fiction: chapter.fiction)
 
       assert_equal %w[actiontext chapters_reader adult_content_disclaimer], page_stylesheets
@@ -35,10 +35,17 @@ module Layout
 
     test 'fiction show loads adult disclaimer only when gate is active' do
       fiction = fictions(:one)
-      fiction.update!(adult_content: true)
+      fiction.update!(content_rating: :eighteen)
       assign_controller(:fictions, :show, fiction: fiction)
 
       assert_equal %w[adult_content_disclaimer], page_stylesheets
+    end
+
+    test 'sixteen fiction show does not load adult disclaimer styles' do
+      fiction = fictions(:two)
+      assign_controller(:fictions, :show, fiction: fiction)
+
+      assert_empty page_stylesheets
     end
 
     test 'studio index loads sweetalert styles' do

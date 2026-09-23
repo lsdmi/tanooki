@@ -28,6 +28,7 @@ module Fictions
       attach_genre(@shared, @fantasy)
       attach_genre(@shared, @history)
       attach_genre(@history_only, @history)
+      # Fantasy must rank first; equal MAX(public_time) leaves genre order unstable.
       set_public_time(chapters(:two), 1.hour.ago)
       set_public_time(chapters(:three), 2.hours.ago)
 
@@ -35,6 +36,7 @@ module Fictions
       fantasy_entry = entries.find { |entry| entry.genre.id == @fantasy.id }
       history_entry = entries.find { |entry| entry.genre.id == @history.id }
 
+      assert fantasy_entry, 'expected fantasy in spotlight when it has the newest chapter'
       assert_equal [@shared.id], fantasy_entry.fictions.map(&:id)
       assert_equal [@history_only.id], history_entry.fictions.map(&:id)
     end

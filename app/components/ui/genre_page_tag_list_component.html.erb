@@ -6,7 +6,7 @@
           <%= render Ui::GenrePageTagComponent.new(
                 variant: tag_variant_for(genre),
                 label: genre[:name],
-                href: fiction_genre_fictions_path(genre[:slug]),
+                href: (fiction_genre_fictions_path(genre[:slug]) if genre[:slug].present?),
                 html: tag_html_for(genre)
               ) %>
         <% end %>
@@ -15,7 +15,7 @@
       <%= render Ui::GenrePageTagComponent.new(
             variant: tag_variant_for(group[:genre]),
             label: group[:genre][:name],
-            href: fiction_genre_fictions_path(group[:genre][:slug]),
+            href: (fiction_genre_fictions_path(group[:genre][:slug]) if group[:genre][:slug].present?),
             html: tag_html_for(group[:genre])
           ) %>
     <% end %>

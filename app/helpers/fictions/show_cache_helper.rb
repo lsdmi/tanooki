@@ -14,12 +14,12 @@ module Fictions
 
     def guest_fiction_show_fragment_cache_key(fiction, show_presenter)
       [
-        'fiction_show/v7/guest',
+        'fiction_show/v9/guest',
         fiction,
         show_presenter.order,
         I18n.locale,
         cookies[:color_theme].presence || 'light',
-        adult_content_acknowledged?,
+        (adult_content_acknowledged? if fiction.age_labelled?),
         fragment_cache_version_bucket(GUEST_FRAGMENT_EXPIRY)
       ]
     end

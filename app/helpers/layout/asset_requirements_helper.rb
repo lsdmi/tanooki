@@ -51,9 +51,9 @@ module Layout
       chapters_show_page?
     end
 
-    def requires_adult_content_disclaimer_styles?
+    def requires_eighteen_notice_styles?
       fiction = stylesheet_context_fiction
-      fiction.present? && show_adult_content_disclaimer?(fiction)
+      fiction.present? && age_rating_reader_gate?(fiction)
     end
 
     def requires_flatpickr_styles?

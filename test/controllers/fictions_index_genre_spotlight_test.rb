@@ -8,9 +8,10 @@ class FictionsIndexGenreSpotlightTest < ActionDispatch::IntegrationTest
     @history = genres(:two)
     @shared = fictions(:one)
     @history_only = fictions(:two)
-    @shared.genres << @fantasy unless @shared.genres.exists?(@fantasy.id)
-    @shared.genres << @history unless @shared.genres.exists?(@history.id)
-    @history_only.genres << @history unless @history_only.genres.exists?(@history.id)
+    FictionGenre.where(genre_id: [@fantasy.id, @history.id, genres(:three).id]).delete_all
+    @shared.genres << @fantasy
+    @history_only.genres << @history
+    # Distinct public times so genre ranking is stable (tied MAX would skip the later genre's covers).
     set_public_time(chapters(:two), 1.hour.ago)
     set_public_time(chapters(:three), 2.hours.ago)
     Rails.cache.delete(Fictions::IndexGenreSpotlight.cache_key)

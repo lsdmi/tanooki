@@ -22,9 +22,9 @@
           <%= fiction.title %>
         </h3>
       <% end %>
-      <% if fiction.genres.any? %>
+      <% if fiction.genres.any? || fiction.age_labelled? %>
         <div class="hidden text-xs sm:text-sm sm:flex flex-wrap gap-2 mt-2 sm:mt-4 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none">
-          <%= render partial: 'fiction_lists/genre_tags', locals: { genres: fiction.fiction_genres.map(&:genre) } %>
+          <%= render partial: 'fiction_lists/genre_tags', locals: { fiction: fiction, genres: fiction.fiction_genres.map(&:genre) } %>
         </div>
       <% end %>
     </div>

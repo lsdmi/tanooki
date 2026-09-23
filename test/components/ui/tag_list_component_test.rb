@@ -37,34 +37,6 @@ module Ui
       assert_no_selector 'span', text: '0'
     end
 
-    test 'renders 18+ as adult tag without link' do
-      render_inline(
-        TagListComponent.new(
-          labels: ['18+', 'Драма'],
-          variant: :genre,
-          genre_slugs: { 'Драма' => 'drama' },
-          href_builder: ->(name) { "/genres/#{name}" unless name == '18+' }
-        )
-      )
-
-      assert_selector 'span.bg-rose-200', text: '18+'
-      assert_selector 'span.bg-rose-200 svg'
-      assert_selector 'a.border-gray-300', text: 'Драма'
-    end
-
-    test 'sort_adult_first orders red tags before outline tags' do
-      render_inline(
-        TagListComponent.new(
-          labels: %w[Романтика 18+ Драма BL],
-          variant: :genre,
-          sort_adult_first: true,
-          genre_slugs: { 'BL' => 'bl', 'Драма' => 'drama', 'Романтика' => 'romance' }
-        )
-      )
-
-      assert_text(/18\+.*BL.*Романтика.*Драма/m)
-    end
-
     test 'uses adult variant for explicit genres when variant is genre' do
       render_inline(
         TagListComponent.new(

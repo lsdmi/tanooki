@@ -14,7 +14,8 @@ module Fictions
 
     def call
       kinds = []
-      kinds << :adult if @fiction.adult_content?
+      kinds << :sixteen if @fiction.content_rating_sixteen?
+      kinds << :adult if @fiction.content_rating_eighteen?
 
       EDITORIAL_PRIORITY.each do |kind|
         kinds << kind if badge?(kind)

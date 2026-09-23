@@ -77,16 +77,20 @@ class GenreTest < ActiveSupport::TestCase
     drama&.destroy
   end
 
-  test 'tag_variant returns adult for explicit genres' do
+  test 'tag_variant maps rating labels' do
+    assert_equal :sixteen, Genre.tag_variant(name: '16+')
+    assert_equal :eighteen, Genre.tag_variant(name: '18+')
+  end
+
+  test 'tag_variant keeps tropes adult and regular genres outlined' do
     assert_equal :adult, Genre.tag_variant(slug: 'omegaverse')
-    assert_equal :adult, Genre.tag_variant(name: '18+')
     assert_equal :genre, Genre.tag_variant(slug: 'fantasy')
   end
 
-  test 'sort_labels_adult_first puts 18+ and explicit genres before others' do
+  test 'sort_labels_adult_first puts ratings then explicit genres before others' do
     slugs = { 'BL' => 'bl', 'Драма' => 'drama', 'Романтика' => 'romance' }
-    labels = %w[Романтика 18+ Драма BL]
+    labels = %w[Романтика 16+ Драма 18+ BL]
 
-    assert_equal %w[18+ BL Романтика Драма], Genre.sort_labels_adult_first(labels, slugs: slugs)
+    assert_equal %w[18+ 16+ BL Романтика Драма], Genre.sort_labels_adult_first(labels, slugs: slugs)
   end
 end

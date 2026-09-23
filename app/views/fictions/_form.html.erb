@@ -81,12 +81,35 @@
         <%= f.select :origin, options_for_select(Fiction.origins.map { |key, value| value }, selected: Fiction.origins[f.object.origin]), {}, { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" } %>
       </div>
 
-      <div class="relative mb-4">
-        <div class="flex items-center">
-          <%= f.check_box :adult_content, class: "w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 rounded focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2" %>
-          <%= f.label :adult_content, 'Містить контент для дорослих (18+)', class: 'ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold' %>
-        </div>
-        <p class="text-stone-600 dark:text-gray-400 text-sm mt-1">Позначте, якщо твір містить контент, призначений лише для дорослої аудиторії</p>
+      <% content_rating_hints = Fiction.content_ratings.keys.index_with { |band| t("fictions.form.content_rating.hints.#{band}") } %>
+      <div class="relative mb-4"
+           data-controller="content-rating-hint"
+           data-action="change->content-rating-hint#show"
+           data-content-rating-hint-hints-value="<%= content_rating_hints.to_json %>">
+        <fieldset aria-describedby="fiction_content_rating_hint">
+          <legend class="block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2">
+            <%= t('fictions.form.content_rating.legend') %>
+          </legend>
+          <div class="flex flex-wrap gap-x-6 gap-y-2">
+            <% Fiction.content_ratings.each_key do |band| %>
+              <label class="inline-flex items-center cursor-pointer" for="fiction_content_rating_<%= band %>">
+                <%= f.radio_button :content_rating, band,
+                      class: 'w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2',
+                      required: true %>
+                <span class="ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold">
+                  <%= t("fictions.form.content_rating.labels.#{band}") %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+        <p id="fiction_content_rating_hint"
+           class="text-stone-600 dark:text-gray-400 text-sm mt-1"
+           data-content-rating-hint-target="hint"
+           aria-live="polite">
+          <%= t("fictions.form.content_rating.hints.#{fiction.content_rating}") %>
+        </p>
+        <%= tag.p fiction.errors[:content_rating].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:content_rating].any? %>
       </div>
 
       <div id="fiction_genre_ids" class="relative mb-4 scroll-mt-24">

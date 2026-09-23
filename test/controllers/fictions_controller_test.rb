@@ -125,9 +125,9 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
   private
 
   def verify_fiction_index_presenter_lists(index_presenter)
-    titles = [Fiction.find('two').title, Fiction.find('one').title]
+    novelty_titles = [Fiction.find('two').title, Fiction.find('one').title]
 
-    assert_equal titles, index_presenter.popular_novelty.map(&:title)
-    assert_equal titles, index_presenter.most_reads.map(&:title)
+    assert_equal novelty_titles, index_presenter.popular_novelty.map(&:title)
+    assert_equal novelty_titles + [Fiction.find('eighteen').title], index_presenter.most_reads.map(&:title)
   end
 end

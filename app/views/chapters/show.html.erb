@@ -24,12 +24,13 @@
     <% end %>
 
     <!-- Main Content -->
-    <% show_adult_gate = show_adult_content_disclaimer?(@chapter.fiction) %>
+    <% show_rating_notice = show_age_rating_notice?(@chapter.fiction) %>
+    <% lock_reader = age_rating_reader_gate?(@chapter.fiction) %>
     <div class="container mx-auto px-4 py-2">
-      <%= render 'fictions/adult_content_disclaimer', reader_gate: true if show_adult_gate %>
+      <%= render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@chapter.fiction), reader_gate: lock_reader) if show_rating_notice %>
 
-      <div class="w-full py-2 sm:py-4 <%= ' adult-content-gate--locked' if show_adult_gate %>"
-           <%= 'data-adult-content-gate-content' if show_adult_gate %>>
+      <div class="w-full py-2 sm:py-4<%= ' adult-content-gate--locked' if lock_reader %>"
+           <%= 'data-adult-content-gate-content' if lock_reader %>>
         <%= render @chapter, previous_chapter: @previous_chapter, next_chapter: @next_chapter %>
       </div>
     </div>
