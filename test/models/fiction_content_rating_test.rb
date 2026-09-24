@@ -19,35 +19,18 @@ class FictionContentRatingTest < ActiveSupport::TestCase
   end
 
   test 'everyone is unlabelled' do
-    assert_not @everyone.adult_content?
     assert_not @everyone.age_gated?
     assert_not @everyone.age_labelled?
   end
 
   test 'sixteen is labelled and not gated' do
-    assert_not @sixteen.adult_content?
     assert_not @sixteen.age_gated?
     assert_predicate @sixteen, :age_labelled?
   end
 
   test 'eighteen is gated' do
-    assert_predicate @eighteen, :adult_content?
     assert_predicate @eighteen, :age_gated?
     assert_predicate @eighteen, :age_labelled?
-  end
-
-  test 'adult_content= sets eighteen and clears only eighteen' do
-    @everyone.update!(adult_content: true)
-
-    assert_predicate @everyone, :content_rating_eighteen?
-
-    @everyone.update!(adult_content: false)
-
-    assert_predicate @everyone, :content_rating_everyone?
-
-    @sixteen.update!(adult_content: false)
-
-    assert_predicate @sixteen, :content_rating_sixteen?
   end
 
   test 'rejects a rating outside the three bands' do
@@ -57,11 +40,10 @@ class FictionContentRatingTest < ActiveSupport::TestCase
     assert @everyone.errors.of_kind?(:content_rating, :inclusion)
   end
 
-  test 'not_eighteen and safe_content keep sixteen and drop eighteen' do
+  test 'not_eighteen keeps sixteen and drops eighteen' do
     ids = [@everyone.id, @sixteen.id]
 
     assert_equal ids, Fiction.not_eighteen.order(:id).pluck(:id)
-    assert_equal ids, Fiction.safe_content.order(:id).pluck(:id)
   end
 
   test 'rated_at_most compares the ordinal' do

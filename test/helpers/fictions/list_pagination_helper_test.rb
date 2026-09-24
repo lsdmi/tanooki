@@ -15,9 +15,19 @@ module Fictions
     test 'fiction_list_pagy_custom_params allows numeric genre and flag keys only' do
       controller.params[:genre] = '12'
       controller.params[:only_new] = '1'
+      controller.params[:include_eighteen] = '1'
       controller.params[:evil] = '<script>'
 
-      assert_equal({ genre: '12', only_new: '1' }, fiction_list_pagy_custom_params)
+      assert_equal(
+        { genre: '12', only_new: '1', include_eighteen: '1' },
+        fiction_list_pagy_custom_params
+      )
+    end
+
+    test 'fiction_list_pagy_custom_params maps legacy adult_content to include_eighteen' do
+      controller.params[:adult_content] = '1'
+
+      assert_equal({ include_eighteen: '1' }, fiction_list_pagy_custom_params)
     end
 
     test 'fiction_list_pagy_custom_params rejects non-numeric genre' do

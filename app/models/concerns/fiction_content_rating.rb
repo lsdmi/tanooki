@@ -12,21 +12,6 @@ module FictionContentRating
 
     scope :rated_at_most, ->(band) { where(content_rating: ..band) }
     scope :not_eighteen, -> { rated_at_most(content_ratings[:sixteen]) }
-    scope :safe_content, -> { not_eighteen }
-  end
-
-  # Studio nudge still stamps 18+ through this boolean until the rating prompt lands.
-  # False clears eighteen only, so sixteen is not wiped.
-  def adult_content=(value)
-    if ActiveModel::Type::Boolean.new.cast(value)
-      self.content_rating = :eighteen
-    elsif content_rating_eighteen?
-      self.content_rating = :everyone
-    end
-  end
-
-  def adult_content?
-    content_rating_eighteen?
   end
 
   def age_gated?

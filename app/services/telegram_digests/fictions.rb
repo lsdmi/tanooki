@@ -38,9 +38,23 @@ module TelegramDigests
     def digest_fictions
       Fiction.for_thursday_digest.limit(DIGEST_LIMIT).map do |fiction|
         fiction_details = "📖 <b><a href=\"#{route(fiction)}\">#{fiction.title}</a></b>"
-        genre_details = fiction.genres.first(5).map { |genre| "##{formatted_genres(genre)}" }.join(', ')
-        genre_details.present? ? "#{fiction_details} #{genre_details}" : fiction_details
+        tags = digest_hashtags(fiction)
+        tags.present? ? "#{fiction_details} #{tags}" : fiction_details
       end.join("\n\n")
+    end
+
+    def digest_hashtags(fiction)
+      [
+        content_rating_hashtag(fiction),
+        *fiction.genres.first(5).map { |genre| "##{formatted_genres(genre)}" }
+      ].compact.join(', ')
+    end
+
+    def content_rating_hashtag(fiction)
+      label = fiction.content_rating_label
+      return unless label
+
+      "##{label}"
     end
 
     def route(fiction)

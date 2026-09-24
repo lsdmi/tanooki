@@ -33,7 +33,13 @@ module Meta
     end
 
     test 'canonical_url drops fiction list filter params' do
-      assign_mock_request('http://example.com/fictions/alphabetical?genre=3&adult_content=1&only_new=1')
+      assign_mock_request('http://example.com/fictions/alphabetical?genre=3&include_eighteen=1&only_new=1')
+
+      assert_equal 'http://example.com/fictions/alphabetical', canonical_url
+    end
+
+    test 'canonical_url also drops legacy adult_content list filter' do
+      assign_mock_request('http://example.com/fictions/alphabetical?adult_content=1')
 
       assert_equal 'http://example.com/fictions/alphabetical', canonical_url
     end

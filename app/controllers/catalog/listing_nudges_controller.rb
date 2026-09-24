@@ -27,9 +27,14 @@ module Catalog
       redirect_back_or_to reading_path(@fiction), notice: t('fictions.listing_nudges.notices.cleared')
     end
 
-    def mark_adult
-      Catalog::ListingNudge.new(@fiction).mark_adult!
-      redirect_back_or_to reading_path(@fiction), notice: t('fictions.listing_nudges.notices.marked_adult')
+    def mark_sixteen
+      Catalog::ListingNudge.new(@fiction).mark_sixteen!
+      redirect_back_or_to reading_path(@fiction), notice: t('fictions.listing_nudges.notices.marked_sixteen')
+    end
+
+    def mark_eighteen
+      Catalog::ListingNudge.new(@fiction).mark_eighteen!
+      redirect_back_or_to reading_path(@fiction), notice: t('fictions.listing_nudges.notices.marked_eighteen')
     end
 
     def dismiss

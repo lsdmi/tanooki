@@ -10,7 +10,6 @@
                    when Catalog::ListingNudge::STALE_PLAN then raise_expected_fiction_listing_nudge_path(fiction)
                    when Catalog::ListingNudge::OPTIONAL_EXPECTED then expected_href
                    when Catalog::ListingNudge::MISSING_GENRES then genres_href
-                   when Catalog::ListingNudge::ADULT_CONTENT then mark_adult_fiction_listing_nudge_path(fiction)
                    else complete_fiction_listing_nudge_path(fiction)
                    end %>
   <section class="rounded-lg border border-stone-200 bg-stone-50/70 p-4 dark:border-zinc-700 dark:bg-zinc-900/40 sm:p-5 <%= wrapper_class %>" aria-label="<%= t("fictions.listing_nudges.#{nudge.kind}.title") %>">
@@ -21,7 +20,14 @@
       <%= t("fictions.listing_nudges.#{nudge.kind}.body", count: nudge.chapter_count, plan: nudge.expected_chapters) %>
     </p>
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-      <% if link_kinds.include?(nudge.kind) %>
+      <% if nudge.kind == Catalog::ListingNudge::CONTENT_RATING %>
+        <%= form_with url: mark_sixteen_fiction_listing_nudge_path(fiction), method: :post, class: 'inline' do %>
+          <%= ui_button(as: :submit, size: :xs, label: t('fictions.listing_nudges.content_rating.mark_sixteen')) %>
+        <% end %>
+        <%= form_with url: mark_eighteen_fiction_listing_nudge_path(fiction), method: :post, class: 'inline' do %>
+          <%= ui_button(as: :submit, size: :xs, label: t('fictions.listing_nudges.content_rating.mark_eighteen')) %>
+        <% end %>
+      <% elsif link_kinds.include?(nudge.kind) %>
         <%= ui_button(as: :link, href: primary_url, size: :xs, label: t("fictions.listing_nudges.#{nudge.kind}.action"),
                       html: (field_links == :fragment ? {} : turbo_drive_visit_data)) %>
       <% else %>

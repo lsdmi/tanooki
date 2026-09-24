@@ -328,6 +328,9 @@ uk:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
       destroy_success: Полицю видалено.
+  fiction_lists:
+    filters:
+      include_eighteen: Показувати 18+
   fictions:
     form:
       content_rating:
@@ -351,7 +354,8 @@ uk:
         reopened: Позначку «завершено» знято.
         raised: Очікувану кількість оновлено.
         cleared: Очікувану кількість прибрано.
-        marked_adult: Твір позначено як 18+.
+        marked_sixteen: Твір позначено як 16+.
+        marked_eighteen: Твір позначено як 18+.
       plan_reached:
         title: Переклад завершено?
         body: Схоже, ви виклали всі %{count} розділів. Позначити переклад завершеним?
@@ -378,10 +382,11 @@ uk:
         body: Знаєте, скільки розділів буде? Можна вказати очікувану кількість — це необов’язково.
         action: Вказати план
         dismiss: Не зараз
-      adult_content:
-        title: Позначити контент 18+?
-        body: У творі є теґи 18+ (BL, гарем…). Позначити контент для дорослих?
-        action: Позначити 18+
+      content_rating:
+        title: Уточнити вікове обмеження?
+        body: У творі є теґи на кшталт BL, гарем… Це лише підказка — оберіть 16+ або 18+, якщо підходить.
+        mark_sixteen: Позначити 16+
+        mark_eighteen: Позначити 18+
         dismiss: Не зараз
       missing_genres:
         title: Додайте жанр

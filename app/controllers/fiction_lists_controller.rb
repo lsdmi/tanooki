@@ -2,9 +2,12 @@
 
 # Paginated fiction browse lists (alphabetical index with filters and Turbo updates).
 class FictionListsController < ApplicationController
+  include Fictions::CatalogIncludeEighteenPreference
+
   helper Fictions::ListPaginationHelper
 
   before_action :pokemon_appearance, only: [:alphabetical]
+  before_action :resolve_catalog_include_eighteen, only: [:alphabetical]
 
   def alphabetical
     @pagy, @fictions = paginated_fictions
@@ -23,7 +26,7 @@ class FictionListsController < ApplicationController
   private
 
   def paginated_fictions
-    base_scope = params[:adult_content].present? ? Fiction.all : Fiction.safe_content
+    base_scope = catalog_include_eighteen? ? Fiction.all : Fiction.not_eighteen
 
     pagy(
       FictionListQueryBuilder.new(

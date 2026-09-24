@@ -12,7 +12,7 @@ module Catalog
     POSTED_AFTER_COMPLETE = :posted_after_complete
     STALE_PLAN = :stale_plan
     OPTIONAL_EXPECTED = :optional_expected
-    ADULT_CONTENT = :adult_content
+    CONTENT_RATING = :content_rating
     MISSING_GENRES = :missing_genres
 
     # Soft ask only — never required. High enough that the listing is past “just started.”
@@ -28,7 +28,7 @@ module Catalog
 
     def current
       posted_after_complete_nudge || plan_reached_nudge || stale_plan_nudge || gone_quiet_nudge ||
-        adult_content_nudge || missing_genres_nudge || optional_expected_nudge
+        content_rating_nudge || missing_genres_nudge || optional_expected_nudge
     end
 
     def complete!
@@ -59,10 +59,16 @@ module Catalog
       @listing.save!
     end
 
-    def mark_adult!
-      return unless current&.kind == ADULT_CONTENT
+    def mark_sixteen!
+      return unless current&.kind == CONTENT_RATING
 
-      @listing.update!(adult_content: true)
+      @listing.update!(content_rating: :sixteen)
+    end
+
+    def mark_eighteen!
+      return unless current&.kind == CONTENT_RATING
+
+      @listing.update!(content_rating: :eighteen)
     end
 
     def dismiss!
@@ -86,8 +92,8 @@ module Catalog
       dismissals[kind.to_s].to_i == @listing.chapter_count
     end
 
-    def dismissed_adult_content?
-      dismissals[ADULT_CONTENT.to_s].to_s == explicit_genre_fingerprint
+    def dismissed_content_rating?
+      dismissals[CONTENT_RATING.to_s].to_s == explicit_genre_fingerprint
     end
 
     def dismissed_last_chapter?(kind)
@@ -100,7 +106,7 @@ module Catalog
       case kind
       when PLAN_REACHED then @listing.expected_chapters
       when STALE_PLAN, OPTIONAL_EXPECTED, MISSING_GENRES then @listing.chapter_count
-      when ADULT_CONTENT then explicit_genre_fingerprint
+      when CONTENT_RATING then explicit_genre_fingerprint
       when GONE_QUIET, POSTED_AFTER_COMPLETE then @listing.last_chapter_at.to_i
       end
     end

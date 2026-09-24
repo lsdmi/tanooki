@@ -56,7 +56,7 @@ class FictionsControllerContentRatingTest < ActionDispatch::IntegrationTest
     fiction = Fiction.find_by!(slug: 'rated-sixteen')
 
     assert_predicate fiction, :content_rating_sixteen?
-    assert_not fiction.adult_content?
+    assert_not fiction.age_gated?
   end
 
   test 'ignores the retired adult_content param' do

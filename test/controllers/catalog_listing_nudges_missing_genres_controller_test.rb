@@ -13,7 +13,7 @@ class CatalogListingNudgesMissingGenresControllerTest < ActionDispatch::Integrat
       chapter_count: 3,
       expected_chapters: 20,
       completed_at: nil,
-      adult_content: false,
+      content_rating: :everyone,
       last_chapter_at: 1.day.ago,
       listing_nudge_dismissals: {}
     )

@@ -50,12 +50,12 @@ module Catalog
         build_nudge(OPTIONAL_EXPECTED)
       end
 
-      def adult_content_nudge
-        return if @listing.adult_content?
+      def content_rating_nudge
+        return unless @listing.content_rating_everyone?
         return if explicit_genre_slugs.empty?
-        return if dismissed_adult_content?
+        return if dismissed_content_rating?
 
-        build_nudge(ADULT_CONTENT)
+        build_nudge(CONTENT_RATING)
       end
 
       def missing_genres_nudge
