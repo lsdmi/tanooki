@@ -1,0 +1,6 @@
+one_fiction_one_chapter_two:
+  user_id: 1
+  fiction_id: 1
+  chapter_id: 2
+  completed_at: <%= 1.day.ago.to_fs(:db) %>
+  source: scroll

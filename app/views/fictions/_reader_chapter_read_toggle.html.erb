@@ -1,0 +1,14 @@
+<%# locals: chapter:, read:, current_chapter: nil %>
+<% label = t(read ? 'chapters.reader_chapter_drawer.mark_unread' : 'chapters.reader_chapter_drawer.mark_read') %>
+<%= button_to chapter_read_path(chapter),
+              method: read ? :delete : :post,
+              params: { current_chapter_id: current_chapter&.id }.compact,
+              form: {
+                class: 'flex shrink-0 self-stretch',
+                data: { turbo_stream: true, action: 'turbo:submit-end->reading-progress#clearCache' }
+              },
+              class: 'flex items-center px-4 transition-colors hover:bg-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-stone-400 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-500',
+              title: label,
+              aria: { label: } do %>
+  <%= render 'fictions/reader_chapter_drawer_status', status: read ? :read : :unread %>
+<% end %>

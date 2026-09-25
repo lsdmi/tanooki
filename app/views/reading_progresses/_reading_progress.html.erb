@@ -1,4 +1,5 @@
 <% preload_continue = local_assigns.fetch(:preload_continue, false) %>
+<% continue_reading = continue_reading_for(reading) %>
 <li id="reading-progress-<%= reading.id %>" class="flex items-start sm:items-center pb-4 hover:scale-[1.015] transition-all duration-300 gap-3 sm:gap-4">
   <%= link_to fiction_path(reading.fiction), turbo_drive_visit_data.merge(class: 'flex-shrink-0 relative block') do %>
     <%= cover_card_picture_tag(reading.fiction.cover,
@@ -19,12 +20,12 @@
     </div>
     <div class="text-xs sm:text-sm text-stone-800 dark:text-gray-200 flex gap-1 mt-2 font-light">
       <span class="">Прочитано:</span>
-      <%= tag.span chapter_index(unique_chapters(ordered_chapters(reading.fiction, viewer: current_user)), reading.chapter) + 1, class: 'font-bold' %> /
-      <%= tag.span chapters_size(reading.fiction, viewer: current_user) %>
+      <%= tag.span continue_reading.read_count, class: 'font-bold' %> /
+      <%= tag.span continue_reading.total %>
     </div>
 
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-3 sm:mt-4">
-      <% if ordered_chapters_desc(reading.chapter.fiction, viewer: current_user).first == reading.chapter %>
+      <% if continue_reading.all_read? %>
         <%= ui_button(as: :button,
                       size: :xs,
                       html: { class: 'w-fit pointer-events-none cursor-default', tabindex: -1, 'aria-disabled': true }) do %>
@@ -33,9 +34,9 @@
           </svg>
           <span>Все прочитано</span>
         <% end %>
-      <% else %>
+      <% elsif continue_reading.continue_chapter %>
         <%= ui_button(as: :link,
-                      href: following_chapter(reading.fiction, reading.chapter, viewer: current_user),
+                      href: chapter_path(continue_reading.continue_chapter),
                       size: :xs,
                       html: turbo_drive_visit_data(preload: preload_continue).merge(class: 'w-fit')) do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

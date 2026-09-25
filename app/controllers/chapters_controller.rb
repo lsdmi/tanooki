@@ -3,6 +3,7 @@
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
   include Chapters::CreationAuthorization
+  include Chapters::ReadingEvents
   include Chapters::ShowTracking
   include ChaptersViewHelpers
   include ChapterPublicAccess
@@ -15,7 +16,7 @@ class ChaptersController < ApplicationController
   before_action :set_fiction_for_chapter_create, only: %i[new create]
   before_action :authorize_chapter_creation, only: %i[new create]
   before_action :redirect_if_chapter_not_yet_public, only: %i[show record_progress]
-  before_action :track_chapter_visit, :track_reading_progress, only: :show
+  before_action :track_chapter_visit, only: :show
   before_action :verify_permissions, except: %i[new create show record_progress]
 
   def show
@@ -31,12 +32,9 @@ class ChaptersController < ApplicationController
     assign_reader_ad_drawer_session
   end
 
-  # Used when Turbo shows a prefetched chapter: show skipped progress on prefetch, this records on real view.
+  # The only progress write path: show never records, the reader posts engaged / completed events here.
   def record_progress
-    return head(:no_content) if @chapter.draft?
-
-    changed = Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
-    head(changed ? :ok : :no_content)
+    head(@chapter.draft? ? :no_content : record_reading_event)
   end
 
   def new

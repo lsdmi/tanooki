@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 module Reading
-  # Derives read / current / unread status for chapters in the reader drawer.
+  # Derives read / current / unread status for chapters in the reader drawer from `ReadKeys`.
+  # Never infers reads from the resume chapter. Reading one translation ticks all translations of that chapter.
   class ChapterDrawerProgress
-    include Library::ChapterNavigation
-
     def self.build(fiction:, viewer:, current_chapter: nil)
       new(fiction:, viewer:, current_chapter:).tap(&:prepare)
     end
@@ -13,41 +12,33 @@ module Reading
       @fiction = fiction
       @viewer = viewer
       @current_chapter_id = current_chapter&.id
-      @unique_chapters = []
-      @progress_index = nil
+      @read_keys = Set.new
       @finished = false
     end
 
     def prepare
-      @unique_chapters = unique_chapters(Library::ChapterCatalog.ordered_chapters(@fiction, viewer: @viewer))
-      progress = @viewer && ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @viewer.id)
+      return self unless @viewer
 
-      if progress&.finished?
-        @finished = true
-      elsif progress&.chapter
-        @progress_index = chapter_index(@unique_chapters, progress.chapter)
-      end
-
+      progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @viewer.id)
+      @finished = progress&.finished? || false
+      @read_keys = ReadKeys.call(user: @viewer, fiction: @fiction, progress:) unless @finished
       self
     end
 
     def status_for(chapter)
       return :current if chapter.id == @current_chapter_id
-      return :read if @finished
-      return :unread unless @progress_index
+      return :read if read?(chapter)
 
-      status_from_progress_index(chapter)
+      :unread
     end
 
-    def status_from_progress_index(chapter)
-      index = chapter_index(@unique_chapters, chapter)
-      if index < @progress_index
-        :read
-      elsif index == @progress_index
-        :current
-      else
-        :unread
-      end
+    def read?(chapter)
+      @finished || @read_keys.include?(ReadingChapterRead.chapter_key(chapter))
+    end
+
+    # A finished fiction shows every chapter read regardless of the read set, so a toggle would do nothing visible.
+    def toggleable?
+      @viewer.present? && !@finished
     end
   end
 end

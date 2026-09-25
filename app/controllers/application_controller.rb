@@ -16,7 +16,12 @@ class ApplicationController < ActionController::Base
 
   helper Adsense::PlacementsHelper
 
-  def handle_error
+  def handle_error(error)
+    Rails.logger.error(
+      "[handle_error] #{request.method} #{request.path} #{error.class}: #{error.message}\n" \
+      "#{Rails.backtrace_cleaner.clean(error.backtrace.to_a).first(15).join("\n")}"
+    )
+    Rails.error.report(error, handled: true)
     render :error, status: :internal_server_error
   end
 

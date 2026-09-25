@@ -2,11 +2,18 @@ import { Controller } from "@hotwired/stimulus"
 
 /** Filters the reader chapter list by number or title (full fiction index, not lazy sections only). */
 export default class extends Controller {
-  static targets = ["input", "results", "resultsList", "list", "empty"]
+  static targets = ["input", "results", "resultsList", "list", "empty", "row"]
   static values = { chapters: Array }
 
   connect() {
     this.filter = this.filter.bind(this)
+  }
+
+  // The chapters value is built at page load; a read toggle re-renders only its list rows,
+  // so results take the read state from the latest row for that chapter.
+  rowTargetConnected(row) {
+    this.readById ??= new Map()
+    this.readById.set(row.dataset.chapterId, row.dataset.chapterRead === "true")
   }
 
   filter() {
@@ -77,7 +84,7 @@ export default class extends Controller {
   buildResultRow(chapter) {
     const row = document.createElement("li")
     row.className = "group"
-    const status = chapter.status || (chapter.current ? "current" : "unread")
+    const status = this.statusFor(chapter)
 
     if (status === "current") {
       const current = document.createElement("div")
@@ -100,6 +107,14 @@ export default class extends Controller {
     row.appendChild(link)
 
     return row
+  }
+
+  statusFor(chapter) {
+    if (chapter.current || chapter.status === "current") return "current"
+
+    const read = this.readById?.get(String(chapter.id))
+    if (read === undefined) return chapter.status || "unread"
+    return read ? "read" : "unread"
   }
 
   buildTitle(title, status) {

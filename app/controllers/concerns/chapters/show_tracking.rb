@@ -7,12 +7,6 @@ module Chapters
 
     private
 
-    def track_reading_progress
-      return if turbo_prefetch_request?
-
-      Reading::RecordProgress.new(chapter: @chapter, user: current_user).call
-    end
-
     # Every-4th-chapter session cadence gates only the auto-opening ad drawer, not top/bottom reader slots.
     def assign_reader_ad_drawer_session
       @reader_ad_drawer_open = false

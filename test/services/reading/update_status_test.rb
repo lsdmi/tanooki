@@ -25,6 +25,20 @@ module Reading
       end
     end
 
+    test 'status change clears library sidebars and fiction stats' do
+      write_caches
+      UpdateStatus.new(@reading_progress, :postponed, @user).call
+
+      assert_empty cached_broad_keys
+    end
+
+    test 'destroy clears library sidebars and fiction stats' do
+      write_caches
+      UpdateStatus.new(@reading_progress, :destroy, @user).call
+
+      assert_empty cached_broad_keys
+    end
+
     test 'rejects invalid status without changing record' do
       ProgressCacheInvalidation.stub(:new, ->(*) { raise 'cache should not be cleared' }) do
         result = UpdateStatus.new(@reading_progress, :invalid, @user).call
@@ -51,5 +65,16 @@ module Reading
     test 'normalize_status defaults blank create param to active' do
       assert_equal 'active', UpdateStatus.normalize_status(nil, default: 'active')
     end
+
+    private
+
+    def broad_keys
+      slug = @reading_progress.fiction.slug
+      ["user:#{@user.id}:related_fictions:active", "fiction-#{slug}-stats", "fiction-#{slug}-ranks"]
+    end
+
+    def write_caches = broad_keys.each { |key| Rails.cache.write(key, 'stale') }
+
+    def cached_broad_keys = broad_keys.filter_map { |key| Rails.cache.read(key) }
   end
 end

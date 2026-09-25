@@ -16,7 +16,7 @@
       <% end %>
 
       <% if next_chapter.present? %>
-        <%= link_to chapter_path(next_chapter), turbo_drive_visit_data(preload: true).merge(class: "#{nav_btn_class} sm:justify-end") do %>
+        <%= link_to chapter_path(next_chapter), turbo_drive_visit_data(preload: true).deep_merge(class: "#{nav_btn_class} sm:justify-end", data: { action: 'click->reading-progress#next' }) do %>
           <span class="truncate">Наступний розділ</span>
           <svg class="h-3 w-3 shrink-0 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

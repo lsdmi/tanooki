@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_23_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_24_190100) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -290,16 +290,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_23_180000) do
     t.index ["views"], name: "index_publications_on_views"
   end
 
-  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "reading_chapter_reads", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "chapter_id", null: false
+    t.datetime "completed_at", null: false
     t.datetime "created_at", null: false
     t.bigint "fiction_id", null: false
+    t.string "source", limit: 16, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chapter_id"], name: "index_reading_chapter_reads_on_chapter_id"
+    t.index ["fiction_id"], name: "index_reading_chapter_reads_on_fiction_id"
+    t.index ["user_id", "chapter_id"], name: "index_reading_chapter_reads_on_user_id_and_chapter_id", unique: true
+    t.index ["user_id", "fiction_id"], name: "index_reading_chapter_reads_on_user_id_and_fiction_id"
+  end
+
+  create_table "reading_progresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "chapter_id", null: false
+    t.integer "completed_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.bigint "fiction_id", null: false
+    t.bigint "legacy_read_through_chapter_id"
+    t.datetime "resume_at"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
     t.index ["created_at", "fiction_id"], name: "index_reading_progresses_on_created_at_and_fiction_id"
     t.index ["fiction_id"], name: "index_reading_progresses_on_fiction_id"
+    t.index ["legacy_read_through_chapter_id"], name: "index_reading_progresses_on_legacy_read_through_chapter_id"
     t.index ["status"], name: "index_reading_progresses_on_status"
     t.index ["user_id", "fiction_id"], name: "index_reading_progresses_on_user_id_and_fiction_id", unique: true
     t.index ["user_id", "updated_at"], name: "index_reading_progresses_on_user_id_and_updated_at"
@@ -590,6 +608,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_23_180000) do
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade
+  add_foreign_key "reading_chapter_reads", "chapters", on_delete: :cascade
+  add_foreign_key "reading_chapter_reads", "fictions", on_delete: :cascade
+  add_foreign_key "reading_chapter_reads", "users", on_delete: :cascade
+  add_foreign_key "reading_progresses", "chapters", column: "legacy_read_through_chapter_id", on_delete: :nullify
   add_foreign_key "reading_progresses", "chapters", on_delete: :cascade
   add_foreign_key "reading_progresses", "fictions", on_delete: :cascade
   add_foreign_key "reading_progresses", "users", on_delete: :cascade

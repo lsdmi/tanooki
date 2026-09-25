@@ -12,5 +12,9 @@ module Library
     def fiction_epub_download_support(fiction, viewer: nil)
       ReadingState.fiction_epub_download_support(fiction, viewer: viewer)
     end
+
+    def continue_reading_for(reading, viewer: current_user)
+      ContinueReadingPresenter.new(reading, viewer:)
+    end
   end
 end

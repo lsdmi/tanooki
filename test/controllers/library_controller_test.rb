@@ -25,6 +25,7 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
 
   test 'library prefetches only the first continue reading CTA' do
     sign_in users(:user_one)
+    ReadingChapterRead.where(user: users(:user_one)).delete_all
     reading_progresses(:one).update!(status: :active, chapter: chapters(:one))
     reading_progresses(:two).update!(status: :postponed)
 
@@ -33,6 +34,29 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'a[data-turbo-preload="true"][href*="/chapters/"]', count: 1
     assert_select 'span', text: 'Читати далі'
+  end
+
+  test 'accidental latest open still offers continue reading at that chapter' do
+    sign_in users(:user_one)
+    ReadingChapterRead.where(user: users(:user_one)).delete_all
+    reading_progresses(:one).update!(status: :active, chapter: chapters(:two))
+
+    get library_url(section: :active)
+
+    assert_select "#reading-progress-#{reading_progresses(:one).id} a[href=?]", chapter_path(chapters(:two))
+    assert_select "#reading-progress-#{reading_progresses(:one).id}", text: /Все прочитано/, count: 0
+  end
+
+  test 'completed latest chapter shows all read with the sparse count' do
+    sign_in users(:user_one)
+    reading_progresses(:one).update!(status: :active, chapter: chapters(:two))
+
+    get library_url(section: :active)
+
+    card = "#reading-progress-#{reading_progresses(:one).id}"
+
+    assert_select card, text: /Все прочитано/
+    assert_select "#{card} span.font-bold", text: '1'
   end
 
   test 'should not change status for invalid status param' do

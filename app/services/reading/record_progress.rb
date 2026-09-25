@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Reading
-  # Records the current chapter in the user's reading progress for a fiction.
+  # Moves the user's resume cursor to an engaged chapter. Never marks chapters read.
   class RecordProgress
     attr_reader :chapter, :user
 
@@ -15,9 +15,11 @@ module Reading
 
       progress = find_progress
       return false if already_on_chapter?(progress)
-      return false unless save_chapter!(progress)
 
-      ProgressCacheInvalidation.new(user, chapter.fiction).clear
+      started = progress.new_record?
+      return false unless save_resume!(progress)
+
+      clear_caches(started:)
       true
     end
 
@@ -31,9 +33,20 @@ module Reading
       progress.persisted? && progress.chapter_id == chapter.id
     end
 
-    def save_chapter!(progress)
+    # Reads outlive a removed library row, so a fresh row starts from the existing read set.
+    def save_resume!(progress)
       progress.chapter_id = chapter.id
+      progress.resume_at = Time.current
+      if progress.new_record?
+        progress.completed_count = ReadingChapterRead.read_keys(user:, fiction: chapter.fiction).size
+      end
       progress.save
+    end
+
+    # A new row adds the fiction to the library; moving an existing cursor only changes «Читати далі».
+    def clear_caches(started:)
+      invalidation = ProgressCacheInvalidation.new(user, chapter.fiction)
+      started ? invalidation.clear : invalidation.clear_resume
     end
   end
 end

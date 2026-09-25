@@ -52,6 +52,7 @@ Rails.application.routes.draw do
     member do
       post :record_progress
     end
+    resource :read, only: %i[create destroy], module: :chapters
   end
   resources :fictions, only: [] do
     collection do
