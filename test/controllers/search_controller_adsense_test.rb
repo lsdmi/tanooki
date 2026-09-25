@@ -17,10 +17,12 @@ class SearchControllerAdsenseTest < ActionDispatch::IntegrationTest
   end
 
   test 'index renders adsense slot preview in development' do
+    # Routes load lazily; drawing them under the stubbed env would add development-only routes and break the worker.
+    url = search_index_url
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
       with_stubbed_tag_counts do
         with_stubbed_search(Fiction, Publication, YoutubeVideo) do
-          get search_index_url, params: { search: ['test'] }
+          get url, params: { search: ['test'] }
         end
       end
     end

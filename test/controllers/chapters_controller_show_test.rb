@@ -41,6 +41,13 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'baka.in.ua™'
   end
 
+  test 'show tags chapter text blocks for resume' do
+    @chapter.content.update!(body: '<p>one</p><p>two</p>')
+    get chapter_url(@chapter)
+
+    assert_select '#user-content[data-rp-digest] p[data-rp-i]', 2
+  end
+
   test 'show loads reader google fonts stylesheet' do
     get chapter_url(@chapter)
 

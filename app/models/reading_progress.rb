@@ -16,6 +16,9 @@ class ReadingProgress < ApplicationRecord
 
   validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :user_id, uniqueness: { scope: :fiction_id }
+  validates :resume_quote, length: { maximum: Reading::ResumeLocator::QUOTE_LENGTH }
+  validates :resume_block_index, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :resume_percent, numericality: { in: 0..100 }, allow_nil: true
 
   scope :recent, -> { order(updated_at: :desc) }
 

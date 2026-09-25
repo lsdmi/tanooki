@@ -23,5 +23,21 @@ module Chapters
       assert_includes ReaderContentHtml.render(chapter), 'word word'
       assert_not_includes ReaderContentHtml.render(chapter), '&nbsp;'
     end
+
+    test 'render tags resume blocks' do
+      chapter = chapters(:one)
+      chapter.content = '<p>one</p><p>two</p>'
+
+      assert_equal 2, Nokogiri::HTML5.fragment(ReaderContentHtml.render(chapter)).css('p[data-rp-i]').size
+    end
+
+    test 'digest changes when chapter content changes' do
+      chapter = chapters(:one)
+      chapter.content = '<p>one</p><p>two</p>'
+      digest = ReaderContentHtml.new(chapter).digest
+      chapter.content = '<p>one</p><p>two, edited</p>'
+
+      assert_not_equal digest, ReaderContentHtml.new(chapter).digest
+    end
   end
 end

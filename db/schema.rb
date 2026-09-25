@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_24_190100) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_190000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -311,6 +311,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_190100) do
     t.bigint "fiction_id", null: false
     t.bigint "legacy_read_through_chapter_id"
     t.datetime "resume_at"
+    t.integer "resume_block_index"
+    t.string "resume_digest", limit: 64
+    t.decimal "resume_percent", precision: 5, scale: 2
+    t.string "resume_quote", limit: 120
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false

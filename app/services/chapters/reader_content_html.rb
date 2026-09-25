@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Normalizes chapter HTML for the reader so pasted non-breaking spaces do not
-  # create horizontal overflow on narrow viewports.
+  # Prepares chapter HTML for the reader: pasted non-breaking spaces become regular spaces so they do not
+  # create horizontal overflow on narrow viewports, and text blocks are tagged for resume (see ReaderBlocks).
   class ReaderContentHtml
     NBSP_PATTERN = /&(nbsp|#160|#x0?A0);/i
 
@@ -14,12 +14,21 @@ module Chapters
       html.to_s.gsub(NBSP_PATTERN, ' ').tr("\u00A0", ' ')
     end
 
+    # A stored block index is only trusted while the digest still matches.
+    delegate :digest, to: :blocks
+
     def initialize(chapter)
       @chapter = chapter
     end
 
     def render
-      ActiveSupport::SafeBuffer.new(self.class.normalize(@chapter.content.to_s))
+      blocks.html
+    end
+
+    private
+
+    def blocks
+      @blocks ||= ReaderBlocks.new(self.class.normalize(@chapter.content.to_s))
     end
   end
 end

@@ -8,6 +8,9 @@ const ENGAGED_SCROLL_SEEN = 0.25
 const COMPLETED_SEEN = 0.9
 const NEXT_SEEN = 0.7
 const TICK_MS = 1000
+const POSITION_DEBOUNCE_MS = 1000
+const POSITION_FLUSH_MS = 5000
+const QUOTE_LENGTH = 120
 
 // Records reading from the chapter page: "engaged" moves the resume cursor, "completed" adds
 // this chapter to the sparse read set. Completion always implies engagement first.
@@ -16,21 +19,34 @@ const TICK_MS = 1000
 // comments and the support card sit outside it and do not count.
 // One-screen chapters are fully "seen" on load, so for them only dwell proves reading.
 // Turbo prefetch fetches HTML without connecting Stimulus, so prefetch never records.
+//
+// Once engaged, the in-chapter position (first visible [data-rp-i] block, its quote, percent and
+// the content digest) is captured 1s after scrolling settles and sent as "position" at most every
+// 5s, plus when the tab hides or the reader leaves. The hold value pauses capture (resume banner).
 export default class extends Controller {
-  static values = { url: String }
+  static values = { url: String, hold: Boolean }
 
   // A Turbo visit keeps this page on screen until the next one renders; that wait is not reading.
   connect() {
-    this.onVisit = () => this.stop()
+    this.onVisit = () => {
+      this.capturePosition()
+      this.stop()
+    }
     this.onLoad = () => this.start()
+    this.onPageHide = () => {
+      this.capturePosition()
+      this.flushPosition({ now: true })
+    }
     document.addEventListener("turbo:visit", this.onVisit)
     document.addEventListener("turbo:load", this.onLoad)
+    window.addEventListener("pagehide", this.onPageHide)
     this.start()
   }
 
   disconnect() {
     document.removeEventListener("turbo:visit", this.onVisit)
     document.removeEventListener("turbo:load", this.onLoad)
+    window.removeEventListener("pagehide", this.onPageHide)
     this.stop()
   }
 
@@ -69,6 +85,10 @@ export default class extends Controller {
     this.seen = 0
     this.inView = false
     this.lastTick = performance.now()
+    this.blocks = null
+    this.locator = null
+    this.sentLocator = null
+    this.lastFlush = performance.now()
 
     this.observer = new IntersectionObserver(([entry]) => {
       this.inView = entry.isIntersecting
@@ -77,20 +97,29 @@ export default class extends Controller {
     this.observer.observe(this.content)
 
     // Font size / family changes resize #user-content without a window resize.
-    this.onScroll = () => this.scheduleMeasure()
+    this.onScroll = () => {
+      this.scheduleMeasure()
+      this.schedulePosition()
+    }
     this.resizeObserver = new ResizeObserver(this.onScroll)
     this.resizeObserver.observe(this.content)
     window.addEventListener("scroll", this.onScroll, { passive: true })
     window.addEventListener("resize", this.onScroll, { passive: true })
 
-    this.onVisibility = () => { this.lastTick = performance.now() }
+    this.onVisibility = () => {
+      this.lastTick = performance.now()
+      if (document.visibilityState === "hidden") this.flushPosition({ now: true })
+    }
     document.addEventListener("visibilitychange", this.onVisibility)
 
     this.timer = setInterval(() => this.tick(), TICK_MS)
   }
 
+  // Sends the last captured position without measuring again: after a morph the content is already the next chapter.
   stop() {
+    this.flushPosition()
     clearInterval(this.timer)
+    clearTimeout(this.positionTimer)
     this.observer?.disconnect()
     this.resizeObserver?.disconnect()
     if (this.onScroll) {
@@ -100,6 +129,7 @@ export default class extends Controller {
     if (this.onVisibility) document.removeEventListener("visibilitychange", this.onVisibility)
     if (this.frame) cancelAnimationFrame(this.frame)
     this.timer = this.observer = this.resizeObserver = this.onScroll = this.onVisibility = this.frame = null
+    this.positionTimer = null
     this.trackedUrl = null
   }
 
@@ -110,6 +140,57 @@ export default class extends Controller {
 
     if (this.readable()) this.dwellMs += elapsed
     this.measure()
+    if (now - this.lastFlush >= POSITION_FLUSH_MS) this.flushPosition()
+  }
+
+  schedulePosition() {
+    clearTimeout(this.positionTimer)
+    this.positionTimer = setTimeout(() => this.capturePosition(), POSITION_DEBOUNCE_MS)
+  }
+
+  capturePosition() {
+    if (!this.trackedUrl || !this.engaged || this.holdValue || !this.readable()) return
+
+    const rect = this.content.getBoundingClientRect()
+    if (rect.height <= 0) return
+
+    const percent = Math.min(100, Math.max(0, (-rect.top / rect.height) * 100))
+    const block = this.firstVisibleBlock()
+    this.locator = {
+      percent: Math.round(percent * 100) / 100,
+      block_index: block ? Number(block.dataset.rpI) : null,
+      quote: block ? block.textContent.replace(/\s+/g, " ").trim().slice(0, QUOTE_LENGTH) : null,
+      digest: this.content.dataset.rpDigest || null
+    }
+  }
+
+  // Blocks are in document order, so their bottoms only grow: binary search for the first one below the viewport top.
+  firstVisibleBlock() {
+    this.blocks ??= Array.from(this.content.querySelectorAll("[data-rp-i]"))
+    let low = 0
+    let high = this.blocks.length - 1
+    let found = null
+    while (low <= high) {
+      const mid = (low + high) >> 1
+      if (this.blocks[mid].getBoundingClientRect().bottom > 0) {
+        found = this.blocks[mid]
+        high = mid - 1
+      } else {
+        low = mid + 1
+      }
+    }
+    return found
+  }
+
+  flushPosition({ now = false } = {}) {
+    this.lastFlush = performance.now()
+    if (!this.trackedUrl || !this.locator) return
+
+    const key = JSON.stringify(this.locator)
+    if (key === this.sentLocator) return
+
+    this.sentLocator = key
+    this.send({ event: "position", locator: this.locator }, { now })
   }
 
   scheduleMeasure() {
@@ -167,7 +248,9 @@ export default class extends Controller {
     if (this.engaged) return
 
     this.engaged = true
-    this.send({ event: "engaged" })
+    this.capturePosition()
+    if (this.locator) this.sentLocator = JSON.stringify(this.locator)
+    this.send({ event: "engaged", locator: this.locator })
   }
 
   complete(source) {
@@ -176,12 +259,14 @@ export default class extends Controller {
   }
 
   // Sequential so "completed" never races "engaged" when both create the library row.
-  send(payload) {
-    const url = this.urlValue
+  // Posts to the tracked chapter: after a morph, urlValue already names the next one.
+  // A page being hidden or unloaded may not run queued callbacks, so `now` skips the queue.
+  send(payload, { now = false } = {}) {
+    const url = this.trackedUrl || this.urlValue
     const token = document.querySelector('meta[name="csrf-token"]')?.content
     if (!token) return
 
-    this.queue = (this.queue || Promise.resolve()).then(() =>
+    const post = () =>
       fetch(url, {
         method: "POST",
         headers: {
@@ -195,11 +280,16 @@ export default class extends Controller {
         keepalive: true
       })
         .then((response) => {
-          if (response.status === 200) Turbo.cache.clear()
+          if (response.status === 200 && payload.event !== "position") Turbo.cache.clear()
         })
         .catch(() => {
           // Ignore network errors; reading the chapter again on a later visit retries.
         })
-    )
+
+    if (now) {
+      post()
+    } else {
+      this.queue = (this.queue || Promise.resolve()).then(post)
+    }
   }
 }

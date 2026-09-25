@@ -65,6 +65,28 @@ module Reading
       assert_nil Rails.cache.read(stats_key)
     end
 
+    test 'stores the locator sent with the engaged event' do
+      RecordProgress.new(chapter: @chapter, user: @user, locator: ResumeLocator.parse(percent: 30, block_index: 4)).call
+
+      assert_in_delta 30, @progress.reload.resume_percent
+      assert_equal 4, @progress.resume_block_index
+    end
+
+    test 'moving to another chapter drops the previous chapter locator' do
+      @progress.update!(resume_percent: 80, resume_block_index: 40, resume_quote: 'old', resume_digest: 'a' * 16)
+      RecordProgress.new(chapter: @chapter, user: @user).call
+
+      assert_equal ResumeLocator::CLEARED, @progress.reload.attributes.symbolize_keys.slice(*ResumeLocator::CLEARED.keys)
+    end
+
+    test 'engaged again on the resume chapter only refreshes the locator' do
+      @progress.update!(chapter: @chapter)
+
+      assert RecordProgress.new(chapter: @chapter, user: @user, locator: ResumeLocator.parse(percent: 55)).call
+      assert_in_delta 55, @progress.reload.resume_percent
+      assert_nil @progress.resume_at
+    end
+
     test 'does not write or clear cache when chapter is unchanged' do
       @progress.update!(chapter: @chapter)
       write_caches

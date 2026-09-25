@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 module Reading
-  # Moves the user's resume cursor to an engaged chapter. Never marks chapters read.
+  # Moves the user's resume cursor to an engaged chapter, with the in-chapter locator when the reader sent one.
+  # Never marks chapters read.
   class RecordProgress
-    attr_reader :chapter, :user
+    attr_reader :chapter, :user, :locator
 
-    def initialize(chapter:, user:)
+    def initialize(chapter:, user:, locator: nil)
       @chapter = chapter
       @user = user
+      @locator = locator
     end
 
     def call
       return false unless user
 
       progress = find_progress
-      return false if already_on_chapter?(progress)
+      return RecordPosition.new(chapter:, user:, locator:).call if already_on_chapter?(progress)
 
       started = progress.new_record?
       return false unless save_resume!(progress)
@@ -34,9 +36,11 @@ module Reading
     end
 
     # Reads outlive a removed library row, so a fresh row starts from the existing read set.
+    # The previous chapter's locator never carries over.
     def save_resume!(progress)
       progress.chapter_id = chapter.id
       progress.resume_at = Time.current
+      progress.assign_attributes(locator&.attributes || ResumeLocator::CLEARED)
       if progress.new_record?
         progress.completed_count = ReadingChapterRead.read_keys(user:, fiction: chapter.fiction).size
       end

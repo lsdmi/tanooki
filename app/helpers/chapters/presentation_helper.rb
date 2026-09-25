@@ -7,9 +7,9 @@ module Chapters
     include FormHelper
     include ListSectionsHelper
 
+    # Action Text already sanitizes chapter HTML; the reader only normalizes nbsp and tags resume blocks.
     def reader_chapter_content(chapter)
-      # Action Text already sanitizes chapter HTML; we only normalize nbsp for wrapping.
-      Chapters::ReaderContentHtml.render(chapter)
+      Chapters::ReaderContentHtml.new(chapter)
     end
   end
 end
