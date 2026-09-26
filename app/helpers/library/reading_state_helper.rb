@@ -16,5 +16,14 @@ module Library
     def continue_reading_for(reading, viewer: current_user)
       ContinueReadingPresenter.new(reading, viewer:)
     end
+
+    # Fiction page «Продовжити»: the same chapter as the library «Читати далі». Nil without a resume cursor or once
+    # everything is read, so the page keeps «Читати» from the first chapter.
+    def fiction_continue_reading(reading, viewer: current_user)
+      return unless reading
+
+      continue = continue_reading_for(reading, viewer:)
+      continue if continue.continue_chapter && !continue.all_read?
+    end
   end
 end

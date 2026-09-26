@@ -332,6 +332,10 @@ uk:
     filters:
       include_eighteen: Показувати 18+
   fictions:
+    read_cta:
+      read: Читати
+      continue: Продовжити
+      from_start: З початку
     form:
       content_rating:
         legend: Аудиторія
@@ -437,6 +441,10 @@ uk:
       description: Допоможемо створити та перекласти ще більше захоплюючих історій рідною мовою!
       support: Підтримка
       mascot_alt: Бака — маскот платформи
+    reader_resume_banner:
+      label: Продовжити читання
+      resume: Продовжити з %{percent}%
+      from_start: З початку
     reader_ad_drawer:
       countdown: Автозакриття через %{seconds} с
       label: Реклама

@@ -1,0 +1,16 @@
+<%# locals: locator: %>
+<%# Fixed, so showing or hiding it never shifts the text. Right inset on mobile clears the jump-to-top button. %>
+<section class="fixed bottom-4 left-4 right-16 z-40 mx-auto rounded-xl border border-stone-200/90 bg-white/95 p-2 shadow-lg shadow-stone-900/10 backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-900/95 dark:shadow-black/40 sm:bottom-6 sm:left-1/2 sm:right-auto sm:w-max sm:-translate-x-1/2"
+         data-reading-resume-target="banner"
+         aria-label="<%= t('chapters.reader_resume_banner.label') %>"
+         hidden>
+  <%# Both buttons grow from their text width; on the narrowest phones they wrap to two full-width rows. %>
+  <div class="flex flex-wrap items-center gap-2">
+    <%= ui_button(size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#resume' } }) do %>
+      <%= t('chapters.reader_resume_banner.resume', percent: locator.percent.round) %>
+    <% end %>
+    <%= ui_button(variant: :ghost, size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#dismiss' } }) do %>
+      <%= t('chapters.reader_resume_banner.from_start') %>
+    <% end %>
+  </div>
+</section>

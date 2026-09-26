@@ -4,16 +4,21 @@ import { resolveResumeTarget } from "reading_resume"
 const BLOCK_MARGIN_PX = 16
 const SETTLE_TIMEOUT_MS = 4000
 const ANCHOR_MIN_MS = 1500
+const BANNER_HIDE_PERCENT = 15
 const READER_INPUTS = ["wheel", "touchstart", "keydown", "mousedown"]
 const RESUME_PARAM = "resume"
+const HOLD_ATTRIBUTE = "data-reading-progress-hold-value"
 
-// Scrolls a chapter opened from «Читати далі» (?resume=1) back to where the reader stopped.
-// The server only mounts this with a stored locator for this chapter. Fonts and images above the
-// target can still shift layout: until they settle the target is re-anchored on every content
-// resize, then once more on the next frame. Any reader input ends it. The resume flag leaves the
-// URL, so reload and back never jump again.
+// Brings the reader back to where they stopped in the chapter the resume cursor is on.
+// Opened from «Читати далі» (?resume=1, auto) it restores straight away. Any other visit shows a banner:
+// «Продовжити з N%» runs the same restore, «З початку» or scrolling past 15% dismisses it. The server renders
+// the reading-progress hold with the banner, so nothing overwrites the saved place until the reader answers.
+// Fonts and images above the target can still shift layout: until they settle the target is re-anchored on
+// every content resize, then once more on the next frame. Any reader input ends it. The resume flag leaves the
+// URL and the controller detaches when done, so reload, Back and Turbo snapshots never jump again.
 export default class extends Controller {
-  static values = { quote: String, blockIndex: Number, percent: Number, digest: String }
+  static targets = ["banner"]
+  static values = { quote: String, blockIndex: Number, percent: Number, digest: String, auto: Boolean }
 
   connect() {
     this.content = this.element.querySelector("#user-content")
@@ -22,7 +27,47 @@ export default class extends Controller {
     this.destination = resolveResumeTarget(this.readBlocks(), this.locator(), this.content.dataset.rpDigest)
     if (!this.destination) return this.finish()
 
-    this.dropResumeParam()
+    if (this.autoValue) {
+      this.dropResumeParam()
+      this.restore()
+    } else {
+      this.offer()
+    }
+  }
+
+  disconnect() {
+    this.release()
+  }
+
+  resume() {
+    this.hideBanner()
+    this.restore()
+  }
+
+  dismiss() {
+    this.finish()
+  }
+
+  // A Back visit or a morph can reconnect with the reader already scrolled into the chapter.
+  offer() {
+    if (!this.hasBannerTarget || this.readPercent() >= BANNER_HIDE_PERCENT) return this.finish()
+
+    this.bannerTarget.hidden = false
+    this.onScroll = () => {
+      if (this.readPercent() >= BANNER_HIDE_PERCENT) this.finish()
+    }
+    window.addEventListener("scroll", this.onScroll, { passive: true })
+  }
+
+  hideBanner() {
+    if (this.hasBannerTarget) this.bannerTarget.hidden = true
+    if (!this.onScroll) return
+
+    window.removeEventListener("scroll", this.onScroll)
+    this.onScroll = null
+  }
+
+  restore() {
     this.watchReaderInput()
     this.scrollToTarget()
     this.anchor = new ResizeObserver(() => this.scrollToTarget())
@@ -34,8 +79,9 @@ export default class extends Controller {
     }))
   }
 
-  disconnect() {
-    this.release()
+  readPercent() {
+    const rect = this.content.getBoundingClientRect()
+    return rect.height > 0 ? (-rect.top / rect.height) * 100 : 0
   }
 
   locator() {
@@ -97,6 +143,7 @@ export default class extends Controller {
   }
 
   release() {
+    this.hideBanner()
     this.anchor?.disconnect()
     this.anchor = null
     if (!this.onReaderInput) return
@@ -118,6 +165,7 @@ export default class extends Controller {
   // Detaching keeps a Turbo snapshot of this page from restoring again when it is shown later.
   finish() {
     this.release()
+    this.element.removeAttribute(HOLD_ATTRIBUTE)
     const controllers = (this.element.dataset.controller || "").split(/\s+/).filter((name) => name !== this.identifier)
     this.element.dataset.controller = controllers.join(" ")
   }

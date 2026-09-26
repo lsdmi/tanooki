@@ -67,6 +67,20 @@ module Reading
       assert_equal chapters(:one).id, @progress.reload.chapter_id
     end
 
+    test 'completing the cursor chapter marks its stored position finished, keeping the quote' do
+      @progress.update!(chapter: @chapters[3], resume_percent: 40, resume_quote: 'Тут')
+      complete(@chapters[6])
+      complete(@chapters[3], source: 'manual')
+
+      assert_equal [100, 'Тут'], @progress.reload.values_at(:resume_percent, :resume_quote)
+    end
+
+    test 'a cursor chapter without a stored position stays without one' do
+      complete(chapters(:one))
+
+      assert_nil @progress.reload.resume_percent
+    end
+
     test 'without a library row, the completed chapter becomes the resume point' do
       @progress.destroy!
       complete(@chapters[6])

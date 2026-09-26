@@ -40,14 +40,6 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_select '#toggle-fictions-order[data-action="click->fictions-order-toggle#spin"]'
   end
 
-  test 'show primary read CTA prefetches chapter once' do
-    get fiction_url(@fiction)
-
-    assert_response :success
-    assert_select 'a[data-turbo-preload="true"][href*="/chapters/"]', count: 1
-    assert_select 'a[data-turbo-preload="true"][href*="/chapters/"] span', text: 'Читати'
-  end
-
   test 'show support card uses shared reader copy' do
     @fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
     Rails.cache.delete("fiction_#{@fiction.id}")

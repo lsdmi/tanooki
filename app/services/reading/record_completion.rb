@@ -15,7 +15,7 @@ module Reading
       return false unless user
       return false unless insert_read
 
-      sync_completed_count
+      sync_progress
       ProgressCacheInvalidation.new(user, fiction).clear
       true
     end
@@ -36,8 +36,13 @@ module Reading
     end
 
     # Distinct chapters, not rows: reading two translations of one chapter counts once.
-    def sync_completed_count
-      find_or_start_progress.update!(completed_count: ReadingChapterRead.read_keys(user:, fiction:).size)
+    # Completing the chapter the cursor is on marks its stored position finished (see Reading::ContinueTarget);
+    # the quote and block still name the line for a restore.
+    def sync_progress
+      progress = find_or_start_progress
+      progress.completed_count = ReadingChapterRead.read_keys(user:, fiction:).size
+      progress.resume_percent = 100 if progress.chapter_id == chapter.id && progress.resume_percent
+      progress.save!
     end
 
     # No library row yet (the engaged request failed or is still in flight): this chapter becomes the resume point.

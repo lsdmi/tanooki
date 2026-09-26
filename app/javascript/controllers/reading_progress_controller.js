@@ -154,7 +154,9 @@ export default class extends Controller {
     const rect = this.content.getBoundingClientRect()
     if (rect.height <= 0) return
 
-    const percent = Math.min(100, Math.max(0, (-rect.top / rect.height) * 100))
+    // Once this visit completed the chapter the position reports 100% so «Читати далі» moves on; the block and
+    // quote still name the line on screen for a restore.
+    const percent = this.completed ? 100 : Math.min(100, Math.max(0, (-rect.top / rect.height) * 100))
     const block = this.firstVisibleBlock()
     this.locator = {
       percent: Math.round(percent * 100) / 100,

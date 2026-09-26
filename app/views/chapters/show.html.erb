@@ -51,6 +51,8 @@
     </svg>
   </button>
 
+  <%= render 'reader_resume_banner', locator: resume_locator if resume_locator && !reader_resume_auto? %>
+
   <% if fiction_has_listable_chapters?(@chapter.fiction, current_user) %>
     <%= render "chapter_drawer",
                fiction: @chapter.fiction,
