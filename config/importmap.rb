@@ -33,6 +33,7 @@ pin 'channels/index', preload: false
 # Translation request Stimulus helpers
 pin_all_from 'app/javascript/translation_requests', under: 'translation_requests', preload: false
 pin 'reader_preferences', preload: false
+pin 'reading_resume', preload: false
 pin 'safe_logo_src', preload: false
 pin 'mode_toggler', preload: false
 pin 'adblock_detect', preload: false

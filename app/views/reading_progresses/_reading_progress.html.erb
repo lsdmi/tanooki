@@ -36,7 +36,7 @@
         <% end %>
       <% elsif continue_reading.continue_chapter %>
         <%= ui_button(as: :link,
-                      href: chapter_path(continue_reading.continue_chapter),
+                      href: chapter_path(continue_reading.continue_chapter, resume: (1 if continue_reading.resume?)),
                       size: :xs,
                       html: turbo_drive_visit_data(preload: preload_continue).merge(class: 'w-fit')) do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

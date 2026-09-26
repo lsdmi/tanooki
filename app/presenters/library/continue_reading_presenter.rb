@@ -34,6 +34,11 @@ module Library
       @continue_chapter = resolve_continue_chapter
     end
 
+    # True when «Читати далі» reopens the resume chapter itself, so the reader can restore the in-chapter position.
+    def resume?
+      continue_chapter.present? && continue_chapter.id == @reading.chapter_id
+    end
+
     private
 
     def resolve_continue_chapter

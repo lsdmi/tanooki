@@ -43,7 +43,7 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
 
     get library_url(section: :active)
 
-    assert_select "#reading-progress-#{reading_progresses(:one).id} a[href=?]", chapter_path(chapters(:two))
+    assert_select "#reading-progress-#{reading_progresses(:one).id} a[href=?]", chapter_path(chapters(:two), resume: 1)
     assert_select "#reading-progress-#{reading_progresses(:one).id}", text: /Все прочитано/, count: 0
   end
 

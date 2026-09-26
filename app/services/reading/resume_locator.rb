@@ -24,6 +24,14 @@ module Reading
           digest: parse_digest(raw[:digest]))
     end
 
+    # The stored locator of a progress row, or nil when the reader never reported a position there.
+    def self.from_progress(progress)
+      return unless progress&.resume_percent
+
+      new(quote: progress.resume_quote, block_index: progress.resume_block_index,
+          percent: progress.resume_percent.to_f, digest: progress.resume_digest)
+    end
+
     def self.parse_quote(value)
       value.is_a?(String) ? value.squish.first(QUOTE_LENGTH).presence : nil
     end

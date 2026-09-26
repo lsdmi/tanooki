@@ -72,6 +72,14 @@ module Library
       assert_predicate presenter_for(resume: @latest), :all_read?
     end
 
+    test 'resumes inside the chapter only when continuing at the resume chapter itself' do
+      assert_predicate presenter_for(resume: @first), :resume?
+
+      mark_read(@first)
+
+      assert_not presenter_for(resume: @first).resume?
+    end
+
     test 'fiction marked finished is all read with a full count' do
       @reading.update!(chapter: @first, status: :finished)
       presenter = continue_reading

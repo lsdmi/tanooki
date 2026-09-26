@@ -10,6 +10,7 @@ module ChaptersViewHelpers
     helper Adsense::ChapterReaderHelper,
            Chapters::ChapterDrawerHelper,
            Chapters::PresentationHelper,
+           Chapters::ReaderResumeHelper,
            Chapters::ReaderSettingsHelper,
            Library::ChapterCatalogHelper,
            Library::ChapterNavigationHelper,

@@ -24,4 +24,7 @@ FileUtils.chdir(APP_ROOT) do
 
   puts '== ERB Lint =='
   system! 'bundle', 'exec', 'erb_lint', '.'
+
+  puts '== JavaScript unit tests =='
+  system! 'node', '--test', 'test/javascript/**/*.test.js'
 end

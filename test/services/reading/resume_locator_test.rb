@@ -36,6 +36,16 @@ module Reading
                    locator.attributes)
     end
 
+    test 'reads the stored locator back from a progress row' do
+      progress = ReadingProgress.new(resume_quote: 'Так', resume_block_index: 4, resume_percent: 12.34,
+                                     resume_digest: DIGEST)
+
+      assert_equal({ resume_quote: 'Так', resume_block_index: 4, resume_percent: 12.34, resume_digest: DIGEST },
+                   ResumeLocator.from_progress(progress).attributes)
+      assert_nil ResumeLocator.from_progress(ReadingProgress.new(resume_quote: 'Так'))
+      assert_nil ResumeLocator.from_progress(nil)
+    end
+
     test 'rejects fractional and huge block indices' do
       assert_nil ResumeLocator.parse(block_index: '1.5', percent: 1).block_index
       assert_nil ResumeLocator.parse(block_index: ResumeLocator::MAX_BLOCK_INDEX + 1, percent: 1).block_index
