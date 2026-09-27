@@ -34,6 +34,7 @@
 .env
 .env.production.local
 bin/prod-db
+bin/db-local-access
 bin/prod/
 coverage/*
 

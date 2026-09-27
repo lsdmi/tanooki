@@ -30,3 +30,7 @@ production:
   connect_timeout: <%= ENV.fetch('DB_CONNECT_TIMEOUT', 5) %>
   read_timeout: <%= ENV.fetch('DB_READ_TIMEOUT', 30) %>
   write_timeout: <%= ENV.fetch('DB_WRITE_TIMEOUT', 30) %>
+  # Server-side: drop sessions whose client vanished (e.g. a container killed
+  # mid-transaction) so their locks are released. Rails defaults to ~24 days.
+  # Must stay above the pool's idle_timeout (300 s).
+  wait_timeout: <%= ENV.fetch('DB_WAIT_TIMEOUT', 600) %>
