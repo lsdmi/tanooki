@@ -26,3 +26,7 @@ production:
   username: <%= ENV.fetch('DB_USER') %>
   password: <%= ENV.fetch('DB_PASSWORD') %>
   port: <%= ENV.fetch('DB_PORT') %>
+  # Without these, a silently dropped connection hangs a thread forever.
+  connect_timeout: <%= ENV.fetch('DB_CONNECT_TIMEOUT', 5) %>
+  read_timeout: <%= ENV.fetch('DB_READ_TIMEOUT', 30) %>
+  write_timeout: <%= ENV.fetch('DB_WRITE_TIMEOUT', 30) %>
