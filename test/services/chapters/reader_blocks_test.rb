@@ -33,6 +33,23 @@ module Chapters
       assert_equal ['p'], blocks.map(&:name)
     end
 
+    test 'pads a whitespace-only block so the blank line is not collapsed' do
+      html = ReaderBlocks.new('<div>one</div><div> </div><div>two</div>').html
+      children = Nokogiri::HTML5.fragment(html).element_children
+
+      assert_equal 'br', children[1].element_children.first.name
+      assert_equal %w[0 1], indices(children.css('[data-rp-i]'))
+      assert_equal(%w[one two], children.css('[data-rp-i]').map { |node| node.text.squish })
+    end
+
+    test 'leaves whitespace-only paragraphs collapsed because paragraph margins already separate them' do
+      html = ReaderBlocks.new('<p>one</p><p> </p><hr><div><br></div><p>two</p>').html
+      fragment = Nokogiri::HTML5.fragment(html)
+
+      assert_equal 0, fragment.css('p br, hr br').size
+      assert_equal 1, fragment.css('br').size
+    end
+
     test 'skips blocks with no visible content but keeps images' do
       blocks = tagged('<p>one</p><p> </p><p><br></p><hr><figure><img src="/a.png"></figure><p>two</p>')
 

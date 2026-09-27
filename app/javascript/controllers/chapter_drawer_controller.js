@@ -28,7 +28,9 @@ export default class extends Controller {
     this.panelTarget.classList.remove("translate-x-full")
     this.panelTarget.classList.add("translate-x-0")
 
-    if (this.hasTriggerTarget) this.triggerTarget.setAttribute("aria-expanded", "true")
+    this.setExpanded(true)
+    this.opener = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null
+    this.panelTarget.focus({ preventScroll: true })
 
     document.body.classList.add("overflow-hidden")
     document.addEventListener("keydown", this._onEscape)
@@ -47,15 +49,27 @@ export default class extends Controller {
     this.backdropTarget.classList.remove("opacity-100", "pointer-events-auto")
     this.backdropTarget.setAttribute("aria-hidden", "true")
 
+    const wasOpen = this.panelTarget.classList.contains("translate-x-0")
     this.panelTarget.classList.add("translate-x-full")
     this.panelTarget.classList.remove("translate-x-0")
 
-    if (this.hasTriggerTarget) this.triggerTarget.setAttribute("aria-expanded", "false")
+    this.setExpanded(false)
 
     document.body.classList.remove("overflow-hidden")
     document.removeEventListener("keydown", this._onEscape)
 
     this.resetChapterDrawerSearch()
+    if (wasOpen && this.focusWasInDrawer()) this.opener?.focus({ preventScroll: true })
+    this.opener = null
+  }
+
+  focusWasInDrawer() {
+    const active = document.activeElement
+    return !active || active === document.body || this.panelTarget.contains(active)
+  }
+
+  setExpanded(expanded) {
+    this.triggerTargets.forEach((trigger) => trigger.setAttribute("aria-expanded", String(expanded)))
   }
 
   resetChapterDrawerSearch() {

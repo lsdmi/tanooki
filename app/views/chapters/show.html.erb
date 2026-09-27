@@ -54,6 +54,7 @@
   <%= render 'reader_resume_banner', locator: resume_locator if resume_locator && !reader_resume_auto? %>
 
   <% if fiction_has_listable_chapters?(@chapter.fiction, current_user) %>
+    <%= render 'reader_toc_button' %>
     <%= render "chapter_drawer",
                fiction: @chapter.fiction,
                order: @fiction_sidebar_presenter.order,

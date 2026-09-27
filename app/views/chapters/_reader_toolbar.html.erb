@@ -21,16 +21,15 @@
     <div class="flex min-w-0 flex-wrap items-center justify-end gap-0.5 sm:gap-1">
       <% if fiction_has_listable_chapters?(fiction, current_user) %>
         <button type="button"
-                class="<%= action_icon %>"
+                class="<%= action_icon %> inline-flex items-center gap-1.5 sm:px-2.5"
                 data-action="click->chapter-drawer#open"
-                title="<%= t('chapters.reader_chapter_drawer.sections_heading') %>"
-                aria-label="<%= t('chapters.reader_chapter_drawer.sections_heading') %>"
                 aria-expanded="false"
                 aria-controls="reader-chapter-list-panel"
                 data-chapter-drawer-target="trigger">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
           </svg>
+          <span class="sr-only text-sm font-medium sm:not-sr-only"><%= t('chapters.reader_chapter_drawer.toc') %></span>
         </button>
       <% end %>
       <% if epub_download_available?(chapter) %>

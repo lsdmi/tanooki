@@ -467,7 +467,7 @@ uk:
         pt_serif: Сериф
     reader_chapter_drawer:
       close: Закрити список розділів
-      sections_heading: Розділи
+      toc: Зміст
       search_label: Шукати розділ
       search_placeholder: Шукати назву або розділ
       search_empty: Розділів не знайдено

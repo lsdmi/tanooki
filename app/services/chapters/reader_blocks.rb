@@ -6,6 +6,10 @@ module Chapters
   # content are skipped. A leaf split by <br> gets one span per line run, since some imports keep a whole
   # chapter in a single <p>. The digest covers every block's text and the block count, so it changes whenever
   # a stored index could point somewhere else.
+  #
+  # A <div> whose only content is whitespace (often a &nbsp; paragraph spacer, later normalized to a regular
+  # space) collapses to zero height in the browser. Pad it with a <br> so the blank line survives. Empty <p>
+  # spacers stay collapsed: paragraph margins already separate those chapters.
   class ReaderBlocks
     INDEX_ATTRIBUTE = 'data-rp-i'
     DIGEST_LENGTH = 16
@@ -15,6 +19,7 @@ module Chapters
     ].to_set.freeze
     MEDIA_TAGS = %w[img picture video iframe svg].freeze
     MEDIA_SELECTOR = MEDIA_TAGS.join(', ').freeze
+    SPACER_TAG = 'div'
 
     def initialize(html)
       @fragment = Nokogiri::HTML5.fragment(html.to_s)
@@ -35,6 +40,7 @@ module Chapters
     def walk(parent)
       parent.element_children.each do |node|
         next walk(node) if container?(node)
+        next pad_spacer(node) if collapsed_spacer?(node)
 
         runs = line_runs(node)
         if runs.size > 1
@@ -61,6 +67,18 @@ module Chapters
       return true if node.text.match?(/\S/)
 
       node.element? && (MEDIA_TAGS.include?(node.name) || node.at_css(MEDIA_SELECTOR).present?)
+    end
+
+    def collapsed_spacer?(node)
+      return false unless node.name == SPACER_TAG
+      return false if node.element_children.any?
+      return false if visible?(node)
+
+      node.text.match?(/[[:space:]]/)
+    end
+
+    def pad_spacer(node)
+      node.add_child(@fragment.document.create_element('br'))
     end
 
     def wrap(run)

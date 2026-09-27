@@ -24,6 +24,15 @@ module Chapters
       assert_not_includes ReaderContentHtml.render(chapter), '&nbsp;'
     end
 
+    test 'render keeps a paragraph spacer that was only a non-breaking space' do
+      chapter = chapters(:one)
+      chapter.content = '<div>one</div><div>&nbsp;</div><div>two</div>'
+      children = Nokogiri::HTML5.fragment(ReaderContentHtml.render(chapter)).element_children
+
+      assert_equal 'br', children[1].at_css('br')&.name
+      assert_not_includes children[1].text, "\u00A0"
+    end
+
     test 'render tags resume blocks' do
       chapter = chapters(:one)
       chapter.content = '<p>one</p><p>two</p>'
