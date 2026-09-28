@@ -16,13 +16,13 @@ module Chapters
     end
 
     def initialize(chapter_id)
-      @chapter = Chapter.find(chapter_id)
+      @chapter = Chapter.with_deleted.find(chapter_id)
       @blobs = []
       @failed = 0
     end
 
     def call
-      rich_text = @chapter.rich_text_content
+      rich_text = ActionText::RichText.with_deleted.find_by(record: @chapter, name: 'content')
       html = rich_text&.read_attribute_before_type_cast(:body).to_s
       return result(:unchanged, html, html) unless html.include?(ContentLimits::BASE64_MARKER)
 

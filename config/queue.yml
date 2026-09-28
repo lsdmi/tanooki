@@ -19,7 +19,7 @@ production:
     - polling_interval: 1
       batch_size: 500
   workers:
-    # One thread: memory-heavy jobs (EPUB builds, image compression) run one at a
+    # One thread: memory-heavy jobs (EPUB builds, chapter image extraction) run one at a
     # time so two vips jobs never share the worker's memory.
     # production_epub: drain jobs enqueued before the rename; remove once empty.
     - queues:

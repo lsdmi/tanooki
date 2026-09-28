@@ -21,8 +21,8 @@ class RecurringScheduleTest < ActiveSupport::TestCase
   end
 
   test 'nightly jobs run at the intended Kyiv time' do
-    { 'compress_recent_chapters' => '03:30', 'purge_expired_epub_exports' => '04:00',
-      'purge_orphan_chapter_images' => '04:20', 'sync_youtube_videos' => '00:00' }.each do |key, kyiv_time|
+    { 'purge_expired_epub_exports' => '04:00', 'purge_orphan_chapter_images' => '04:20',
+      'sync_youtube_videos' => '00:00' }.each do |key, kyiv_time|
       assert_equal kyiv_time, kyiv(@tasks.fetch(key).next_time).strftime('%H:%M'), key
     end
   end

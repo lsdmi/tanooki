@@ -17,9 +17,43 @@ module Chapters
     test 'purges only unattached chapter images past the grace period' do
       PurgeOrphanImagesJob.perform_now
 
-      assert_not ActiveStorage::Blob.exists?(@old_orphan.id)
-      assert_equal [@recent_orphan, @old_attached, @old_cover].map(&:id).sort,
-                   ActiveStorage::Blob.where(id: [@recent_orphan, @old_attached, @old_cover]).ids.sort
+      assert purged?(@old_orphan)
+      assert_equal([false, false, false], [@recent_orphan, @old_attached, @old_cover].map { purged?(it) })
+    end
+
+    test 'deletes the file and the row, not only a soft delete' do
+      service = ActiveStorage::Blob.services.fetch(@old_orphan.service_name)
+
+      PurgeOrphanImagesJob.perform_now
+
+      assert_not service.exist?(@old_orphan.key)
+      assert_not ActiveStorage::Blob.with_deleted.exists?(@old_orphan.id)
+    end
+
+    test 'finishes rows an earlier purge only soft-deleted' do
+      @old_orphan.destroy!
+
+      PurgeOrphanImagesJob.perform_now
+
+      assert_not ActiveStorage::Blob.with_deleted.exists?(@old_orphan.id)
+    end
+
+    test 'keeps the images of a soft-deleted chapter and purges them once it is hard-deleted' do
+      chapters(:one).destroy!
+      PurgeOrphanImagesJob.perform_now
+
+      assert_not purged?(@old_attached)
+
+      Chapter.with_deleted.find(chapters(:one).id).really_destroy!
+      PurgeOrphanImagesJob.perform_now
+
+      assert purged?(@old_attached)
+    end
+
+    private
+
+    def purged?(blob)
+      !ActiveStorage::Blob.with_deleted.exists?(blob.id)
     end
   end
 end

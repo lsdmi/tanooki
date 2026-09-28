@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Self-rescheduling backfill of oversized inline images in old chapter bodies.
-  # Each run handles one CompressBackfill batch and enqueues the next with the cursor
+  # Self-rescheduling backfill that moves inline base64 images out of old chapter bodies.
+  # Each run handles one ExtractBackfill batch and enqueues the next with the cursor
   # (last scanned rich text id), so progress survives deploys in solid_queue_jobs.
-  # Start and stop with `rake chapters:compress_backfill:{start,status,stop}`.
-  class CompressBackfillJob < ApplicationJob
+  # Start and stop with `rake chapters:extract_backfill:{start,status,stop}`.
+  class ExtractBackfillJob < ApplicationJob
     SCAN_SIZE = 200
     PAUSE = 20.seconds
     # Peak memory is about twice the body; larger bodies go through the local rake pass.
-    MAX_BODY_BYTES = 16.megabytes
+    MAX_BODY_BYTES = ExtractInlineImagesJob::MAX_BODY_BYTES
     # Kyiv hours with the least traffic. Rewritten bodies also land in the binlog, so each
     # night stops after this many bytes of rewritten bodies to keep disk growth gradual.
     WINDOW_HOURS = (2...7)
     NIGHTLY_BUDGET_BYTES = 1.gigabyte
-    STOP_KEY = 'chapters_compress_backfill:stop'
+    STOP_KEY = 'chapters_extract_backfill:stop'
 
     queue_as :heavy
-    limits_concurrency key: 'chapters_compress_backfill', to: 1, duration: 1.hour
+    limits_concurrency key: 'chapters_extract_backfill', to: 1, duration: 1.hour
 
     class << self
       def pending
@@ -48,7 +48,7 @@ module Chapters
     end
 
     def perform(after_id = 0, night_bytes = 0, dry_run: false)
-      return Rails.logger.info("[CompressBackfillJob] stopped at after_id=#{after_id}") if Rails.cache.read(STOP_KEY)
+      return Rails.logger.info("[ExtractBackfillJob] stopped at after_id=#{after_id}") if Rails.cache.read(STOP_KEY)
       return continue_at(next_window_start, after_id, 0, dry_run) unless off_peak?
 
       run_batch(after_id, night_bytes, dry_run)
@@ -57,7 +57,7 @@ module Chapters
     private
 
     def run_batch(after_id, night_bytes, dry_run)
-      result = CompressBackfill.call(after_id:, scan_size: SCAN_SIZE, max_body_bytes: MAX_BODY_BYTES, dry_run:)
+      result = ExtractBackfill.call(after_id:, scan_size: SCAN_SIZE, max_body_bytes: MAX_BODY_BYTES, dry_run:)
       log_batch(result)
       return log_finished if result.done
 
@@ -82,15 +82,16 @@ module Chapters
 
     def log_batch(result)
       Rails.logger.info(
-        "[CompressBackfillJob] ids=#{result.after_id + 1}..#{result.to_id} " \
+        "[ExtractBackfillJob] ids=#{result.after_id + 1}..#{result.to_id} " \
         "candidates=#{result.candidates} candidate_bytes=#{result.candidate_bytes} " \
-        "compressed=#{result.compressed} unchanged=#{result.unchanged} skipped=#{result.skipped.size} " \
-        "errors=#{result.errors.size} bytes=#{result.before_bytes}->#{result.after_bytes}"
+        "extracted=#{result.extracted} images=#{result.images} failed_images=#{result.failed_images} " \
+        "unchanged=#{result.unchanged} skipped=#{result.skipped.size} errors=#{result.errors.size} " \
+        "bytes=#{result.before_bytes}->#{result.after_bytes}"
       )
     end
 
     def log_finished
-      Rails.logger.info('[CompressBackfillJob] finished: reached the last rich text id')
+      Rails.logger.info('[ExtractBackfillJob] finished: reached the last rich text id')
     end
   end
 end

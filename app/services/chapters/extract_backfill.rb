@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 module Chapters
-  # One batch of the inline image backfill: scans a window of rich text ids for live chapter
-  # bodies that embed base64 images and compresses them with CompressInlineImages.
+  # One batch of the inline image backfill: scans a window of rich text ids for chapter bodies
+  # that still embed base64 images and moves them to storage with ExtractInlineImages.
+  # Soft-deleted chapters (and their soft-deleted bodies) are included, or their base64 would stay in the table.
   # Windows are small because every scan pulls bodies through the database's small buffer pool.
-  class CompressBackfill
+  class ExtractBackfill
     # before_bytes/after_bytes cover only rewritten bodies; candidate_bytes is every candidate body.
     Result = Data.define(
-      :after_id, :to_id, :done, :candidates, :candidate_bytes, :compressed, :unchanged, :skipped, :errors,
-      :before_bytes, :after_bytes
+      :after_id, :to_id, :done, :candidates, :candidate_bytes, :extracted, :unchanged, :images, :failed_images,
+      :skipped, :errors, :before_bytes, :after_bytes
     )
     Options = Data.define(:scan_size, :max_body_bytes, :min_body_bytes, :dry_run)
 
@@ -35,7 +36,8 @@ module Chapters
     end
 
     def call
-      tallies = { compressed: 0, unchanged: 0, skipped: [], errors: [], before_bytes: 0, after_bytes: 0 }
+      tallies = { extracted: 0, unchanged: 0, images: 0, failed_images: 0, skipped: [], errors: [],
+                  before_bytes: 0, after_bytes: 0 }
       candidates = find_candidates
       candidates.each { |chapter_id, body_bytes| process(tallies, chapter_id, body_bytes) }
       Result.new(after_id: @after_id, to_id: @to_id, done: @to_id >= max_rich_text_id,
@@ -46,7 +48,8 @@ module Chapters
 
     def find_candidates
       ActionText::RichText
-        .joins('INNER JOIN chapters ON chapters.id = action_text_rich_texts.record_id AND chapters.deleted_at IS NULL')
+        .with_deleted
+        .joins('INNER JOIN chapters ON chapters.id = action_text_rich_texts.record_id')
         .where(record_type: 'Chapter', name: 'content', id: (@after_id + 1)..@to_id)
         .where("LOCATE('base64,', action_text_rich_texts.body) > 0")
         .order(:id)
@@ -61,7 +64,7 @@ module Chapters
       return tallies[:skipped] << skip(chapter_id, body_bytes) unless in_size_range?(body_bytes)
       return log("chapter=#{chapter_id} body=#{body_bytes} dry_run") if @options.dry_run
 
-      record!(tallies, CompressInlineImages.call(chapter_id))
+      record!(tallies, chapter_id, ExtractInlineImages.call(chapter_id))
     rescue StandardError => e
       tallies[:errors] << failure(chapter_id, e)
     ensure
@@ -70,7 +73,7 @@ module Chapters
 
     def failure(chapter_id, error)
       message = "#{error.class}: #{error.message}"
-      Rails.logger.error("[CompressBackfill] chapter=#{chapter_id} #{message}")
+      Rails.logger.error("[ExtractBackfill] chapter=#{chapter_id} #{message}")
       { chapter_id:, error: message }
     end
 
@@ -86,18 +89,25 @@ module Chapters
       { chapter_id:, body_bytes: }
     end
 
-    def record!(tallies, result)
-      return tallies[:unchanged] += 1 if result.unchanged
+    # :conflict (edited while this ran) counts as unchanged: that save queued its own extraction.
+    def record!(tallies, chapter_id, result)
+      log_result(chapter_id, result)
+      tallies[:failed_images] += result.failed
+      return tallies[:unchanged] += 1 unless result.status == :extracted
 
-      tallies[:compressed] += 1
+      tallies[:extracted] += 1
+      tallies[:images] += result.extracted
       tallies[:before_bytes] += result.before_bytes
       tallies[:after_bytes] += result.after_bytes
-      log("chapter=#{result.chapter_id} images=#{result.images_compressed} " \
+    end
+
+    def log_result(chapter_id, result)
+      log("chapter=#{chapter_id} status=#{result.status} images=#{result.extracted} failed=#{result.failed} " \
           "bytes=#{result.before_bytes}->#{result.after_bytes}")
     end
 
     def log(message)
-      Rails.logger.info("[CompressBackfill] #{message}")
+      Rails.logger.info("[ExtractBackfill] #{message}")
     end
   end
 end

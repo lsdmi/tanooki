@@ -21,10 +21,6 @@ production:
     class: Youtube::SyncAllChannelsJob
     schedule: "0 0 * * * Europe/Kiev"
 
-  compress_recent_chapters:
-    class: Chapters::CompressRecentJob
-    schedule: "30 3 * * * Europe/Kiev"
-
   purge_expired_epub_exports:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: "0 4 * * * Europe/Kiev"
