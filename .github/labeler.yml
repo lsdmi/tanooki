@@ -7,15 +7,9 @@ jobs:
           - app/jobs/**
           - test/jobs/**
           - lib/tasks/**
-          - .github/workflows/compress-chapters.yml
-          - .github/workflows/clear-solid-queue-finished.yml
-          - .github/workflows/warm-fiction-index-cache.yml
-          - .github/workflows/triage-solid-queue-failed.yml
-          - .github/workflows/purge-expired-epub-exports.yml
-          - .github/workflows/rails-prod-rake.yml
-          - .github/workflows/sync-youtube-videos.yml
-          - .github/workflows/telegram-digests.yml
-          - .github/workflows/ops-rake.yml
+          - config/queue.yml
+          - config/recurring.yml
+          - bin/jobs
 
 ads:
   - changed-files:

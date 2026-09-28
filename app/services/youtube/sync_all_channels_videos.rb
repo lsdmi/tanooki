@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Youtube
-  # Daily CI / operator pass: sync latest videos for every YoutubeChannel inline.
-  # Runs outside Solid Queue (GitHub Actions or laptop).
+  # Daily pass (Youtube::SyncAllChannelsJob) or operator rake: sync latest videos for every YoutubeChannel inline.
   class SyncAllChannelsVideos
     Result = Data.define(:channel_ids, :synced, :errors)
 

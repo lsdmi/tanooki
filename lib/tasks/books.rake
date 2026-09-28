@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :books do
-  desc 'Destroy expired EPUB export requests and attached files (CI / laptop)'
+  desc 'Destroy expired EPUB export requests and attached files (manual run; scheduled in config/recurring.yml)'
   task purge_expired_epub_exports: :environment do
     result = Books::PurgeExpiredEpubExports.call
 

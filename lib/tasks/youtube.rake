@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :youtube do
-  desc 'Sync latest videos for all YoutubeChannel records (CI / laptop)'
+  desc 'Sync latest videos for all YoutubeChannel records (manual run; scheduled in config/recurring.yml)'
   task sync_all_channels: :environment do
     result = Youtube::SyncAllChannelsVideos.call
 

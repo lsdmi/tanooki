@@ -70,7 +70,7 @@ Production — [DigitalOcean App Platform](https://docs.digitalocean.com/product
 | Component | Run command | Примітки |
 |-----------|-------------|----------|
 | **Web** (`tanooki`) | `bin/rails server -b 0.0.0.0` | Puma reads `PORT` from env; do not use `-p $PORT` (not shell-expanded) |
-| **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue (separate from Puma web) |
+| **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue in one process (separate from Puma web); scheduled jobs in `config/recurring.yml` |
 | **Pre-deploy** (`db-migrate`) | `bundle exec rails db:migrate` | Перед web + worker |
 
 Managed add-ons: MySQL, OpenSearch. Asset CDN — `config/platform_config.rb` (Spaces bucket + CDN host).

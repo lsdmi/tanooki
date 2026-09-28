@@ -6,6 +6,7 @@ module SolidQueue
     RETRYABLE_JOB_CLASSES = %w[
       Analytics::ViewIncrementJob
       Books::GenerateEpubJob
+      Books::PurgeExpiredEpubExportsJob
       Fictions::WarmIndexCacheJob
       Searchkick::SyncSoftDeletableJob
       Searchkick::ReindexV2Job

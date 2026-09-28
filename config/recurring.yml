@@ -1,9 +1,54 @@
-# Solid Queue recurring tasks (app time zone: Europe/Kiev).
-# Production-only schedules; development runs none.
+# Solid Queue recurring tasks, production only (development runs none).
+# Schedules are parsed by Fugit in the container's zone (UTC), not config.time_zone,
+# so every cron names its zone. Europe/Kiev follows summer and winter time.
 
 development: {}
 
 production:
+  warm_fiction_index_cache:
+    class: Fictions::WarmIndexCacheJob
+    schedule: "5 * * * * Europe/Kiev"
+
+  clear_solid_queue_finished:
+    command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
+    schedule: "12 */2 * * * Europe/Kiev"
+
+  triage_solid_queue_failed:
+    class: SolidQueue::TriageFailedJobsJob
+    schedule: "45 */2 * * * Europe/Kiev"
+
+  sync_youtube_videos:
+    class: Youtube::SyncAllChannelsJob
+    schedule: "0 0 * * * Europe/Kiev"
+
+  compress_recent_chapters:
+    class: Chapters::CompressRecentJob
+    schedule: "30 3 * * * Europe/Kiev"
+
+  purge_expired_epub_exports:
+    class: Books::PurgeExpiredEpubExportsJob
+    schedule: "0 4 * * * Europe/Kiev"
+
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
-    schedule: every sunday at 5:00am
+    schedule: "0 5 * * 0 UTC"
+
+  telegram_digest_youtube:
+    class: TelegramDigests::PostJob
+    args: [youtube]
+    schedule: "0 12 * * 0 Europe/Kiev"
+
+  telegram_digest_weekly_stats:
+    class: TelegramDigests::PostJob
+    args: [weekly_stats]
+    schedule: "0 15 * * 3 Europe/Kiev"
+
+  telegram_digest_fictions:
+    class: TelegramDigests::PostJob
+    args: [fictions]
+    schedule: "0 14 * * 4 Europe/Kiev"
+
+  telegram_digest_publications:
+    class: TelegramDigests::PostJob
+    args: [publications]
+    schedule: "0 15 * * 5 Europe/Kiev"

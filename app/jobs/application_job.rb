@@ -2,6 +2,9 @@
 
 # Base class for Active Job workers; configures default retry/discard behavior.
 class ApplicationJob < ActiveJob::Base
+  # Raised after a batch finishes with some items failed, so the run shows up as a failed job.
+  class BatchErrors < StandardError; end
+
   retry_on ActiveRecord::Deadlocked, wait: :polynomially_longer, attempts: 3
   retry_on SolidQueue::Processes::ProcessPrunedError, wait: 30.seconds, attempts: 5
   retry_on Faraday::SSLError, Faraday::ConnectionFailed, wait: :polynomially_longer, attempts: 5

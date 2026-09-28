@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Books
-  # Daily CI / operator pass: destroy expired EPUB export requests and attached files.
+  # Daily pass (Books::PurgeExpiredEpubExportsJob) or operator rake: destroy expired EPUB export requests and files.
   class PurgeExpiredEpubExports
     Result = Data.define(:purged, :errors)
 

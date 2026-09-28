@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :solid_queue do
-  desc 'Delete finished Solid Queue job rows in batches (CI / laptop)'
+  desc 'Delete finished Solid Queue job rows in batches (manual run; scheduled in config/recurring.yml)'
   task clear_finished: :environment do
     SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)
     puts 'Solid Queue finished jobs cleared.'

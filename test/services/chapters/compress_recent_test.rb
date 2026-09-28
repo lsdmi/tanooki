@@ -32,6 +32,16 @@ module Chapters
       assert_equal 0, result.compressed
     end
 
+    test 'call skips bodies over max_body_bytes' do
+      write_compressible_body
+
+      result = with_compression_stub { CompressRecent.call(day: day_after_chapter, max_body_bytes: 1.kilobyte) }
+
+      assert_equal [@chapter.id], result.chapter_ids
+      assert_equal 1, result.skipped
+      assert_equal 0, result.compressed
+    end
+
     private
 
     def write_compressible_body

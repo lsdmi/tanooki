@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TelegramDigests
-  # Dispatches a named weekly digest for CI / operator rake runs.
+  # Dispatches a named weekly digest (TelegramDigests::PostJob or operator rake).
   class Post
     DIGESTS = {
       'youtube' => YoutubeVideos,
