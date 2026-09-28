@@ -26,6 +26,17 @@ module Books
       assert_empty book.manifest.items
     end
 
+    test 'embeds stored chapter images linked by URL' do
+      book = GEPUB::Book.new
+      blob = store_chapter_image
+      html = %(<p><img src="#{Chapters::Images.url_for(blob)}"></p>)
+
+      result = EpubDataUriImages.extract!(html, book: book, chapter_key: 'chapter_3')
+
+      assert_includes result, '../images/chapter_3_0'
+      assert_not_includes result, Chapters::Images.url_for(blob)
+    end
+
     test 'extracts multiple inline images with stable indices' do
       book = GEPUB::Book.new
       html = <<~HTML

@@ -45,6 +45,7 @@ module Chapters
     end
 
     def after_save
+      SyncImages.call(chapter)
       sync_scanlators
       Catalog::RefreshChapterStats.call(chapter.fiction.reload)
     end

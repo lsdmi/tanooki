@@ -523,6 +523,13 @@ uk:
       notices:
         create_success: Дані про покемона додано.
         update_success: Дані про покемона оновлено.
+  chapter_images:
+    errors:
+      forbidden: Завантажувати зображення можуть лише учасники команд.
+      missing: Файл не надіслано.
+      rate_limited: Забагато зображень за хвилину. Зачекайте трохи й спробуйте ще раз.
+      too_large: Зображення завелике (максимум %{max} МБ).
+      unsupported: Це не зображення або формат не підтримується (JPEG, PNG, WebP, GIF).
   publications:
     notices:
       create_success: Допис створено.

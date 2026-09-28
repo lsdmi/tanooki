@@ -16,6 +16,27 @@ digitalocean:
   upload:
     cache_control: public, max-age=31536000
 
+# Chapter body images: public objects served straight from the CDN. Separate services
+# per environment so orphan cleanup can scope by service_name and never touch covers.
+digitalocean_chapter_images:
+  service: S3
+  access_key_id: <%= ENV.fetch('STORAGE_ACCESS_KEY') %>
+  secret_access_key: <%= ENV.fetch('STORAGE_SECRET_KEY') %>
+  region: <%= PlatformConfig::Storage::REGION %>
+  bucket: <%= PlatformConfig::Storage::BUCKET %>
+  endpoint: <%= PlatformConfig::Storage::ENDPOINT %>
+  public: true
+  upload:
+    cache_control: public, max-age=31536000, immutable
+
+local_chapter_images:
+  service: Disk
+  root: <%= Rails.root.join("storage/chapter_images") %>
+
+test_chapter_images:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage/chapter_images") %>
+
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3

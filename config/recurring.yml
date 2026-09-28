@@ -29,6 +29,10 @@ production:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: "0 4 * * * Europe/Kiev"
 
+  purge_orphan_chapter_images:
+    class: Chapters::PurgeOrphanImagesJob
+    schedule: "20 4 * * * Europe/Kiev"
+
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
     schedule: "0 5 * * 0 UTC"

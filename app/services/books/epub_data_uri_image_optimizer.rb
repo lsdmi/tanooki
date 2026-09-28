@@ -9,11 +9,12 @@ module Books
 
     module_function
 
+    # Accepts an attachment or a blob.
     def optimize_attachment(attachment)
       return [nil, nil] if attachment.nil?
       return [nil, nil] if attachment.respond_to?(:attached?) && !attachment.attached?
 
-      attachment.open { |file| optimize_file(file.path, attachment.blob.content_type) }
+      attachment.open { |file| optimize_file(file.path, attachment.content_type) }
     rescue StandardError => e
       Rails.logger.warn("[EPUB] attachment shrink failed: #{e.class}: #{e.message}")
       [nil, nil]

@@ -53,6 +53,15 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     assert_includes helper.asset_path('baka-telegram-mockup.webp'), 'baka-telegram-mockup'
   end
 
+  test 'stale? watches top-level javascript files, not only controllers' do
+    roots = []
+    PropshaftDevManifest.stub(:stale_tree?, ->(root, _mtime) { roots.push(root).empty? }) do
+      PropshaftDevManifest.stale?(@manifest_path)
+    end
+
+    assert_includes roots, Rails.root.join('app/javascript')
+  end
+
   test 'stale? is true when tailwind build is newer than manifest' do
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
     PropshaftDevManifest.refresh!(@manifest_path)

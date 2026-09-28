@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Keeps tmp/propshaft-dev-manifest.json aligned with app/javascript/controllers and
+# Keeps tmp/propshaft-dev-manifest.json aligned with app/javascript and
 # app/assets/builds (tailwindcss:watch). Without this, Propshaft's Static resolver
 # emits stale digested URLs while the asset server rejects them → 404 and no CSS.
 module PropshaftDevManifest
@@ -36,7 +36,7 @@ module PropshaftDevManifest
     return true if manifest_missing_assets?(manifest_path)
 
     manifest_mtime = manifest_path.mtime
-    stale_tree?(Rails.root.join('app/javascript/controllers'), manifest_mtime) ||
+    stale_tree?(Rails.root.join('app/javascript'), manifest_mtime) ||
       stale_tree?(Rails.root.join('app/assets/builds'), manifest_mtime) ||
       stale_tree?(Rails.root.join('app/assets/images'), manifest_mtime) ||
       stale_tree?(Rails.root.join('vendor/javascript'), manifest_mtime)

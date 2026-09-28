@@ -16,6 +16,9 @@ class Chapter < ApplicationRecord
   belongs_to :fiction
   belongs_to :user
   has_rich_text :content
+  # Blobs linked from the body by URL. Blobs are never purged with the chapter: another
+  # chapter may link the same URL, so Chapters::PurgeOrphanImagesJob removes unused ones.
+  has_many_attached :images, service: Rails.configuration.x.chapter_images.service, dependent: false
   has_many :chapter_scanlators, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy

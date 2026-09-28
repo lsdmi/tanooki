@@ -24,6 +24,7 @@ Rails.root.glob('test/test_helpers/**/*.rb').each { |path| require path }
 module ActiveSupport
   class TestCase
     include CoverUploadHelper
+    include ChapterImageHelper
 
     parallelize(workers: :number_of_processors)
 

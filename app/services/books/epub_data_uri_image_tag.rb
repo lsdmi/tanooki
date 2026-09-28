@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Books
-  # Parses one <img> tag and swaps an inline data URI for an EPUB manifest asset.
+  # Parses one <img> tag and swaps an inline data URI or a stored chapter image for an EPUB manifest asset.
   class EpubDataUriImageTag
     TransformContext = Data.define(:html, :tag_start, :tag_end, :book, :chapter_key, :index, :export_request_id)
 
@@ -28,21 +28,33 @@ module Books
     end
 
     def transform_range
-      bounds = data_uri_src_bounds
+      bounds = src_bounds
       return [tag_markup, false] unless bounds
 
       value_start, value_end = bounds
-      EpubExportProgress.update!(@context.export_request_id, "#{@context.chapter_key} image #{@context.index}")
+      source = image_source(value_start, value_end)
+      return [tag_markup, false] unless source
 
-      binary, extension = EpubDataUriImageOptimizer.optimize_data_uri_in_html(
-        @context.html, value_start, value_end
-      )
+      EpubExportProgress.update!(@context.export_request_id, "#{@context.chapter_key} image #{@context.index}")
+      binary, extension = optimize(source, value_start, value_end)
       return [missing_image_markup, false] if binary.blank?
 
       attach_image(binary, extension, value_start, value_end)
     end
 
     private
+
+    def image_source(value_start, value_end)
+      return :data_uri if data_uri_at?(value_start, value_end)
+
+      Chapters::Images.blob_for_url(@context.html[value_start...value_end])
+    end
+
+    def optimize(source, value_start, value_end)
+      return EpubDataUriImageOptimizer.optimize_attachment(source) unless source == :data_uri
+
+      EpubDataUriImageOptimizer.optimize_data_uri_in_html(@context.html, value_start, value_end)
+    end
 
     def attach_image(binary, extension, value_start, value_end)
       href = "images/#{@context.chapter_key}_#{@context.index}.#{extension}"
@@ -66,7 +78,7 @@ module Books
       %(<p class="epub-missing-image">[#{label}]</p>)
     end
 
-    def data_uri_src_bounds
+    def src_bounds
       offset = @context.tag_start
       while (src_idx = @context.html.index('src', offset))
         break if src_idx > @context.tag_end
@@ -86,10 +98,7 @@ module Books
       bounds = quoted_value_bounds(src_idx)
       return [nil, src_idx + 3] unless bounds
 
-      value_start, value_end = bounds
-      return [[value_start, value_end], value_end + 1] if data_uri_at?(value_start, value_end)
-
-      [nil, value_end + 1]
+      [bounds, bounds.last + 1]
     end
 
     def quoted_value_bounds(src_idx)

@@ -1,3 +1,70 @@
+// Resolves with the stored image URL; on failure the image stays inline and the
+// after-save job moves it to storage.
+const uploadChapterImage = (url, blobInfo, progress) => new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', url);
+  xhr.setRequestHeader('Accept', 'application/json');
+  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+  if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+
+  xhr.upload.onprogress = (event) => {
+    if (event.lengthComputable) progress((event.loaded / event.total) * 100);
+  };
+  xhr.onload = () => {
+    let data = {};
+    try { data = JSON.parse(xhr.responseText); } catch (_error) { data = {}; }
+
+    if (xhr.status >= 200 && xhr.status < 300 && data.location) resolve(data.location);
+    else reject({ message: data.error || `HTTP ${xhr.status}`, remove: false });
+  };
+  xhr.onerror = () => reject({ message: 'Не вдалося надіслати зображення', remove: false });
+
+  const body = new FormData();
+  body.append('file', blobInfo.blob(), blobInfo.filename());
+  xhr.send(body);
+});
+
+// Only forms that opt in (the chapter form) upload images instead of keeping base64.
+const imageUploadOptions = (textarea) => {
+  const url = textarea.dataset.imageUploadUrl;
+  if (!url) return {};
+
+  return {
+    automatic_uploads: true,
+    paste_data_images: true,
+    images_file_types: 'jpeg,jpg,jpe,jfi,jif,jfif,png,gif,webp,bmp,tif,tiff',
+    images_upload_handler: (blobInfo, progress) => uploadChapterImage(url, blobInfo, progress),
+    // Keep stored URLs as returned: absolute on the CDN, root-relative in development.
+    relative_urls: false,
+    remove_script_host: true
+  };
+};
+
+const base64Key = (base64) => `${base64.length}:${base64.slice(-32)}`;
+const dataUriBase64 = (src) => src.split(';base64,')[1] || '';
+
+// Inline images already in the body stay inline for the after-save job, so opening an old
+// chapter neither uploads its images nor marks the editor as changed. The parser turns
+// data URIs into blob: URIs, so images are matched by their base64 in the blob cache.
+const keepExistingInlineImages = (editor) => {
+  const textarea = editor.getElement();
+  if (!textarea?.dataset.imageUploadUrl) return;
+
+  const html = new DOMParser().parseFromString(textarea.value, 'text/html');
+  const existing = new Set(
+    Array.from(html.querySelectorAll('img[src^="data:"]'), (img) => base64Key(dataUriBase64(img.getAttribute('src'))))
+  );
+  if (existing.size === 0) return;
+
+  editor.on('PreInit', () => {
+    const { blobCache } = editor.editorUpload;
+    editor.editorUpload.addFilter((img) => {
+      const base64 = blobCache.getByUri(img.src)?.base64() ?? dataUriBase64(img.src);
+      return !existing.has(base64Key(base64));
+    });
+  });
+};
+
 const initializeTinymce = () => {
   const textarea = document.querySelector('.tinymce');
   if (!textarea) return;
@@ -65,9 +132,15 @@ const initializeTinymce = () => {
     'Insert/edit tooltip': 'Вставити/редагувати примітку',
     'Tooltip text': 'Текст примітки',
     'Remove tooltip': 'Видалити примітку',
-    'Please select some text first': 'Спершу виділіть текст для примітки'
+    'Please select some text first': 'Спершу виділіть текст для примітки',
+    'Upload': 'Завантажити',
+    'Drop an image here': 'Перетягніть зображення сюди',
+    'Browse for an image': 'Вибрати зображення',
+    'Browse files': 'Вибрати файл',
+    'Failed to upload image: {0}': 'Не вдалося завантажити зображення: {0}'
   });
   tinymce.init({
+    ...imageUploadOptions(textarea),
     license_key: 'gpl',
     language: 'uk',
     selector: 'textarea',
@@ -138,6 +211,8 @@ const initializeTinymce = () => {
     extended_valid_elements: 'span[class|data-note|data-note-id|style]',
     valid_children: '+body[style],+span[data-note]',
     setup: function(editor) {
+      keepExistingInlineImages(editor);
+
       // Add custom note button
       editor.ui.registry.addIcon('note-icon', '<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/></svg>');
 
