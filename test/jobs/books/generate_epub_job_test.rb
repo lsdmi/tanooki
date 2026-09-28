@@ -15,6 +15,10 @@ module Books
       FileUtils.rm_f(@dummy_file_path)
     end
 
+    test 'runs on the serialized heavy queue' do
+      assert_equal "#{Rails.env}_heavy", Books::GenerateEpubJob.new.queue_name
+    end
+
     test 'perform marks request ready with generated filename' do
       run_successful_export
       @export_request.reload

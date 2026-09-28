@@ -3,7 +3,7 @@
 module Books
   # Generates and attaches an EPUB file for a persisted export request.
   class GenerateEpubJob < ApplicationJob
-    queue_as :epub
+    queue_as :heavy
 
     after_discard do |job, error|
       export_request = EpubExportRequest.find_by(id: job.arguments.first)

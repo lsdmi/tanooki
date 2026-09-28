@@ -1,6 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require_relative "../config/environment"
-require "solid_queue/cli"
+# One process with threads instead of a forked process per worker, dispatcher and
+# scheduler: each fork is a full Rails app and five of them filled the 1 GB worker.
+# All threads then share one connection pool, so it must cover every worker's
+# threads plus the dispatcher, scheduler and heartbeats (about 13 at peak).
+ENV['SOLID_QUEUE_SUPERVISOR_MODE'] ||= 'async'
+ENV['DB_POOL'] ||= '15'
+
+require_relative '../config/environment'
+require 'solid_queue/cli'
 
 SolidQueue::Cli.start(ARGV)
