@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Manual read / unread toggle from the reader drawer. Responds with the re-rendered drawer row.
+  # Manual read / unread toggle from the reader drawer or the fiction page list (`fiction_list`).
+  # Responds with the re-rendered rows of the list the toggle came from.
   class ReadsController < ApplicationController
     helper Chapters::ChapterDrawerHelper
 
@@ -10,12 +11,12 @@ module Chapters
 
     def create
       Reading::RecordCompletion.new(chapter: @chapter, user: current_user, source: 'manual').call
-      render_drawer_row
+      render_rows
     end
 
     def destroy
       Reading::RemoveRead.new(chapter: @chapter, user: current_user).call
-      render_drawer_row
+      render_rows
     end
 
     private
@@ -27,18 +28,19 @@ module Chapters
       listable ? @chapter = chapter : head(:not_found)
     end
 
-    def render_drawer_row
+    def render_rows
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: drawer_row_streams }
+        format.turbo_stream { render turbo_stream: row_streams }
         format.html { redirect_back_or_to chapter_path(@chapter) }
       end
     end
 
-    # The drawer lists every translation as its own row, and a read ticks all of them.
-    def drawer_row_streams
-      locals = drawer_row_locals
+    # Both lists show every translation as its own row, and a read ticks all of them.
+    def row_streams
+      fiction_list = params[:fiction_list].present?
+      locals = fiction_list ? fiction_list_row_locals : drawer_row_locals
       listed_translations.map do |chapter|
-        turbo_stream.replace(helpers.dom_id(chapter, :reader_drawer),
+        turbo_stream.replace(helpers.dom_id(chapter, fiction_list ? :chapter_list : :reader_drawer),
                              partial: 'fictions/chapter_item', locals: locals.merge(chapter:))
       end
     end
@@ -54,6 +56,11 @@ module Chapters
         fiction: @chapter.fiction, viewer: current_user, current_chapter:
       )
       { reader_drawer: true, current_chapter:, drawer_progress: }
+    end
+
+    def fiction_list_row_locals
+      drawer_progress = Reading::ChapterDrawerProgress.build(fiction: @chapter.fiction, viewer: current_user)
+      { reader_drawer: false, drawer_progress: }
     end
   end
 end

@@ -67,11 +67,6 @@ export default class extends Controller {
     if (this.fits(rect) || this.seen >= NEXT_SEEN) this.complete("next")
   }
 
-  // Drawer read toggles answer with a Turbo Stream, which leaves stale library snapshots in the Turbo cache.
-  clearCache(event) {
-    if (event.detail?.success) Turbo.cache.clear()
-  }
-
   start() {
     if (this.trackedUrl === this.urlValue || !this.urlValue) return
 
