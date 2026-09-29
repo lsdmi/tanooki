@@ -1,4 +1,4 @@
-<%# locals: locator: %>
+<%# locals: locator: (nil for guests: `guest-resume` fills in the percent from this device's record) %>
 <%# Fixed, so showing or hiding it never shifts the text. On phones it sits above the Зміст / jump-to-top row. %>
 <section class="fixed bottom-18 left-4 right-4 z-40 mx-auto rounded-xl border border-stone-200/90 bg-white/95 p-2 shadow-lg shadow-stone-900/10 backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-900/95 dark:shadow-black/40 sm:bottom-6 sm:left-1/2 sm:right-auto sm:w-max sm:-translate-x-1/2"
          data-reading-resume-target="banner"
@@ -7,7 +7,11 @@
   <%# Both buttons grow from their text width; on the narrowest phones they wrap to two full-width rows. %>
   <div class="flex flex-wrap items-center gap-2">
     <%= ui_button(size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#resume' } }) do %>
-      <%= t('chapters.reader_resume_banner.resume', percent: locator.percent.round) %>
+      <% if locator %>
+        <%= t('chapters.reader_resume_banner.resume', percent: locator.percent.round) %>
+      <% else %>
+        <span data-guest-resume-target="label"></span>
+      <% end %>
     <% end %>
     <%= ui_button(variant: :ghost, size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#dismiss' } }) do %>
       <%= t('chapters.reader_resume_banner.from_start') %>

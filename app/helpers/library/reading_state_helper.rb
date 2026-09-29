@@ -25,5 +25,19 @@ module Library
       continue = continue_reading_for(reading, viewer:)
       continue if continue.continue_chapter && !continue.all_read?
     end
+
+    # Guests' fiction page CTA is cached for everyone, so `guest-continue` swaps in «Продовжити» from the reading
+    # record on their device. It needs the latest listable chapter to tell «Все прочитано» (keep «Читати»).
+    def guest_continue_data(fiction, first_chapter)
+      latest_id = ChapterCatalog.chapters_scope_for_list(fiction, nil).order(ChapterCatalog.order_clause_desc).pick(:id)
+      {
+        controller: 'guest-continue',
+        guest_continue_fiction_id_value: fiction.id,
+        guest_continue_latest_chapter_id_value: latest_id,
+        guest_continue_read_path_value: chapter_path(first_chapter),
+        guest_continue_read_label_value: t('fictions.read_cta.read'),
+        guest_continue_continue_label_value: t('fictions.read_cta.continue')
+      }
+    end
   end
 end

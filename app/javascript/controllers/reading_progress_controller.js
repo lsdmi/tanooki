@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
+import { applyReadingEvent } from "guest_reading"
+import { updateRecord } from "guest_reading_store"
 
 const MIN_DWELL_MS = 4000
 const ENGAGED_DWELL_MS = 8000
@@ -23,8 +25,18 @@ const QUOTE_LENGTH = 120
 // Once engaged, the in-chapter position (first visible [data-rp-i] block, its quote, percent and
 // the content digest) is captured 1s after scrolling settles and sent as "position" at most every
 // 5s, plus when the tab hides or the reader leaves. The hold value pauses capture (resume banner).
+//
+// Guests: the same events are written to this device's reading record (IndexedDB) instead of the server.
 export default class extends Controller {
-  static values = { url: String, hold: Boolean }
+  static values = {
+    url: String,
+    hold: Boolean,
+    guest: Boolean,
+    fictionId: Number,
+    chapterId: Number,
+    chapterPath: String,
+    nextPath: String
+  }
 
   // A Turbo visit keeps this page on screen until the next one renders; that wait is not reading.
   connect() {
@@ -74,6 +86,12 @@ export default class extends Controller {
     if (!this.content) return
 
     this.trackedUrl = this.urlValue
+    this.trackedChapter = {
+      id: this.chapterIdValue,
+      fictionId: this.fictionIdValue,
+      path: this.chapterPathValue,
+      nextPath: this.nextPathValue || null
+    }
     this.engaged = false
     this.completed = false
     this.dwellMs = 0
@@ -259,6 +277,8 @@ export default class extends Controller {
   // Posts to the tracked chapter: after a morph, urlValue already names the next one.
   // A page being hidden or unloaded may not run queued callbacks, so `now` skips the queue.
   send(payload, { now = false } = {}) {
+    if (this.guestValue) return this.keep(payload, { now })
+
     const url = this.trackedUrl || this.urlValue
     const token = document.querySelector('meta[name="csrf-token"]')?.content
     if (!token) return
@@ -287,6 +307,19 @@ export default class extends Controller {
       post()
     } else {
       this.queue = (this.queue || Promise.resolve()).then(post)
+    }
+  }
+
+  // Same queue as the server path, so "completed" is written after "engaged" for the same chapter.
+  keep(payload, { now }) {
+    const chapter = this.trackedChapter
+    if (!chapter?.id || !chapter.fictionId) return
+
+    const write = () => updateRecord(chapter.fictionId, (record) => applyReadingEvent(record, payload, chapter))
+    if (now) {
+      write()
+    } else {
+      this.queue = (this.queue || Promise.resolve()).then(write)
     }
   }
 }
