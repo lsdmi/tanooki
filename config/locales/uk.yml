@@ -473,6 +473,7 @@ uk:
       search_empty: Розділів не знайдено
       progress_read: Прочитано
       progress_current: Читаю зараз
+      progress_in_progress: Ви зупинилися тут
       mark_read: Позначити розділ прочитаним
       mark_unread: Позначити розділ непрочитаним
       fiction_chapters_count:

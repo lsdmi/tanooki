@@ -3,17 +3,17 @@ import { Controller } from "@hotwired/stimulus"
 /** Filters the reader chapter list by number or title (full fiction index, not lazy sections only). */
 export default class extends Controller {
   static targets = ["input", "results", "resultsList", "list", "empty", "row"]
-  static values = { chapters: Array }
+  static values = { chapters: Array, labels: Object }
 
   connect() {
     this.filter = this.filter.bind(this)
   }
 
   // The chapters value is built at page load; a read toggle re-renders only its list rows,
-  // so results take the read state from the latest row for that chapter.
+  // so results take the status from the latest row for that chapter.
   rowTargetConnected(row) {
-    this.readById ??= new Map()
-    this.readById.set(row.dataset.chapterId, row.dataset.chapterRead === "true")
+    this.statusById ??= new Map()
+    this.statusById.set(row.dataset.chapterId, row.dataset.chapterStatus)
   }
 
   filter() {
@@ -99,8 +99,7 @@ export default class extends Controller {
 
     const link = document.createElement("a")
     link.href = chapter.url
-    link.className =
-      "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-stone-50 dark:hover:bg-zinc-800/60"
+    link.className = `flex items-center gap-3 px-4 py-3 transition-colors ${this.rowClass(status)}`
     link.dataset.turbo = "false"
     link.appendChild(this.buildTitle(chapter.title, status))
     link.appendChild(this.buildStatusIcon(status))
@@ -110,11 +109,9 @@ export default class extends Controller {
   }
 
   statusFor(chapter) {
-    if (chapter.current || chapter.status === "current") return "current"
+    if (chapter.status === "current") return "current"
 
-    const read = this.readById?.get(String(chapter.id))
-    if (read === undefined) return chapter.status || "unread"
-    return read ? "read" : "unread"
+    return this.statusById?.get(String(chapter.id)) || chapter.status || "unread"
   }
 
   buildTitle(title, status) {
@@ -124,22 +121,35 @@ export default class extends Controller {
     return label
   }
 
+  // Mirrors Chapters::ChapterDrawerHelper: only read rows are washed and muted.
   titleClass(status) {
     if (status === "current") return "text-sm font-medium text-cyan-900 dark:text-rose-200"
-    if (status === "read") return "text-sm text-stone-700 dark:text-zinc-300"
-    return "text-sm text-stone-400 dark:text-zinc-500"
+    if (status === "in_progress") return "text-sm font-medium text-stone-900 dark:text-zinc-50"
+    if (status === "read") return "text-sm text-stone-500 dark:text-zinc-400"
+    return "text-sm text-stone-800 dark:text-zinc-200"
+  }
+
+  rowClass(status) {
+    if (status === "read") return "bg-stone-50 hover:bg-stone-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70"
+    return "hover:bg-stone-50 dark:hover:bg-zinc-800/60"
   }
 
   buildStatusIcon(status) {
     const icon = document.createElement("span")
     icon.className = "inline-flex h-5 w-5 shrink-0 items-center justify-center"
-    icon.setAttribute("aria-hidden", "true")
+    const label = this.labelsValue[status]
+    if (label) {
+      icon.setAttribute("role", "img")
+      icon.setAttribute("aria-label", label)
+    } else {
+      icon.setAttribute("aria-hidden", "true")
+    }
 
     if (status === "read") {
       icon.classList.add("text-emerald-500", "dark:text-emerald-400")
       icon.innerHTML =
-        '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-    } else if (status === "current") {
+        '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
+    } else if (status === "current" || status === "in_progress") {
       icon.classList.add("text-cyan-700", "dark:text-rose-400")
       icon.innerHTML =
         '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>'

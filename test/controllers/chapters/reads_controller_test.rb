@@ -30,7 +30,7 @@ module Chapters
     test 'replaced row carries the read state for drawer search results' do
       post chapter_read_url(@chapter), as: :turbo_stream
 
-      assert_select 'li[data-chapter-drawer-search-target=row][data-chapter-id=?][data-chapter-read=true]',
+      assert_select 'li[data-chapter-drawer-search-target=row][data-chapter-id=?][data-chapter-status=read]',
                     @chapter.id.to_s
     end
 

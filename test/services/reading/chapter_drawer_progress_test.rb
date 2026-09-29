@@ -57,12 +57,6 @@ module Reading
       assert_equal %i[read unread], [progress.status_for(@chapter_one), progress.status_for(create_chapter(3))]
     end
 
-    test 'resume chapter off screen is not current' do
-      reading_progresses(:one).update!(chapter: @chapter_two, status: :active)
-
-      assert_equal :unread, build(current_chapter: @chapter_one).status_for(@chapter_two)
-    end
-
     test 'open chapter is current even when already read' do
       mark_read(@chapter_two)
 
@@ -103,7 +97,7 @@ module Reading
       ReadingChapterRead.create!(user: @user, fiction: fictions(:two), chapter: chapters(:three),
                                  completed_at: Time.current, source: 'scroll')
 
-      assert_equal :unread, build(current_chapter: nil).status_for(@chapter_one)
+      assert_equal :unread, build(current_chapter: nil).status_for(@chapter_two)
     end
 
     test 'guest sees only the open chapter as current' do

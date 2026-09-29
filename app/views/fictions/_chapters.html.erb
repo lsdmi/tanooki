@@ -4,7 +4,8 @@
 <% if reader_drawer %>
   <section class="max-w-full bg-transparent"
            data-controller="chapter-drawer-search"
-           data-chapter-drawer-search-chapters-value="<%= reader_chapter_drawer_search_index(fiction, order: order, current_chapter: local_assigns[:current_chapter]).to_json %>">
+           data-chapter-drawer-search-chapters-value="<%= reader_chapter_drawer_search_index(fiction, order: order, current_chapter: local_assigns[:current_chapter]).to_json %>"
+           data-chapter-drawer-search-labels-value="<%= reader_chapter_drawer_status_labels.to_json %>">
     <%= render 'fictions/reader_chapter_drawer_search',
                fiction: fiction,
                order: order,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Builds locals for lazy-loaded chapter section partials in the reader drawer.
+  # Builds locals for lazy-loaded chapter section partials in the reader drawer and the signed-in fiction page.
   module ChapterSectionRendering
     extend ActiveSupport::Concern
 
@@ -17,7 +17,7 @@ module Fictions
       reader_drawer = ActiveModel::Type::Boolean.new.cast(params[:reader_drawer])
       current_chapter = chapter_from_section_params
       locals = { chapters: @section_chapters, reader_drawer:, current_chapter: }
-      return locals unless reader_drawer
+      return locals unless reader_drawer || current_user
 
       locals.merge(drawer_progress: chapter_section_drawer_progress(current_chapter))
     end
