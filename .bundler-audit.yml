@@ -1,0 +1,6 @@
+---
+ignore:
+  # rubyzip path traversal on extraction. We only write zips (gepub EPUB export) and never extract archives;
+  # selenium-webdriver uses it in tests only. gepub (<= 2.0.1) caps rubyzip below 3.3, so the 3.4.0 fix is
+  # unreachable until gepub allows it. Remove this entry once rubyzip >= 3.4.0 is in Gemfile.lock.
+  - CVE-2026-85396
