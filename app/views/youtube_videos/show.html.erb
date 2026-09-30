@@ -2,7 +2,7 @@
   <section class="youtube-show flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-x-10 lg:gap-y-0">
     <div class="youtube-show__main flex min-w-0 flex-col gap-5">
       <%= link_to youtube_videos_path,
-                  class: 'youtube-show__back inline-flex w-fit items-center gap-1 text-xs font-medium text-stone-600 transition duration-300 hover:text-cyan-700 sm:text-sm dark:text-gray-400 dark:hover:text-rose-400' do %>
+                  class: 'youtube-show__back inline-flex w-fit items-center gap-1 text-xs font-medium text-fg-muted transition duration-300 hover:text-fg-brand sm:text-sm' do %>
         <svg class="h-4 w-4 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
         </svg>
@@ -10,7 +10,7 @@
       <% end %>
 
       <div class="youtube-show__player">
-        <div class="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-800 shadow-xl">
+        <div class="token-raw relative aspect-video w-full overflow-hidden rounded-xl bg-zinc-800 shadow-xl">
           <%= tag.iframe src: "https://www.youtube.com/embed/#{@youtube_video.video_id}",
                          width: '1280',
                          height: '720',
@@ -22,15 +22,15 @@
       </div>
 
       <div class="youtube-show__title">
-        <h1 class="break-words text-lg font-semibold leading-snug text-stone-800 drop-shadow transition-colors duration-300 sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight dark:text-gray-200">
+        <h1 class="break-words text-lg font-semibold leading-snug text-fg drop-shadow transition-colors duration-300 sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight">
           <%= @youtube_video.title %>
         </h1>
       </div>
 
-      <div class="youtube-show__meta flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-stone-700 drop-shadow md:text-base dark:text-gray-300">
+      <div class="youtube-show__meta flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-fg-secondary drop-shadow md:text-base">
         <%= link_to @youtube_video.youtube_channel_title,
                     search_index_path(search: [@youtube_video.youtube_channel_title]),
-                    class: 'inline text-stone-800 line-clamp-1 transition-colors duration-300 hover:text-cyan-700 dark:text-gray-200 dark:hover:text-rose-700' %>
+                    class: 'inline text-fg line-clamp-1 transition-colors duration-300 hover:text-brand' %>
         <span aria-hidden="true">•</span>
         <%= tag.span l(@youtube_video.published_at, format: :short).downcase, class: 'inline' %>
         <% if @youtube_video.views.positive? %>
@@ -41,8 +41,8 @@
 
       <% if @video_tags.any? %>
         <section class="youtube-show__tags">
-          <p class="mb-3 text-sm font-extrabold uppercase tracking-wide text-gray-900 drop-shadow sm:text-base dark:text-gray-100">
-            Теґи <span class="text-cyan-700 dark:text-rose-700">Відео</span>
+          <p class="mb-3 text-sm font-extrabold uppercase tracking-wide text-fg drop-shadow sm:text-base">
+            Теґи <span class="text-brand">Відео</span>
           </p>
 
           <%= render Ui::TagListComponent.new(
@@ -59,8 +59,8 @@
     <aside class="youtube-show__sidebar flex min-w-0 flex-col gap-6 lg:min-h-full">
       <% if @more_videos.any? %>
         <section class="youtube-show__related flex flex-col lg:min-h-0 lg:flex-1">
-          <p class="mb-4 text-lg font-extrabold uppercase leading-5 text-gray-900 drop-shadow sm:text-xl lg:text-2xl dark:text-gray-100">
-            Від <span class="text-cyan-700 dark:text-rose-700">Автора</span>
+          <p class="mb-4 text-lg font-extrabold uppercase leading-5 text-fg drop-shadow sm:text-xl lg:text-2xl">
+            Від <span class="text-brand">Автора</span>
           </p>
 
           <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-3 lg:grid-cols-1 lg:gap-y-4">

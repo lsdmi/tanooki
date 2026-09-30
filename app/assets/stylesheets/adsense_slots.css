@@ -154,9 +154,9 @@ html.adblock-likely .scanlator-show__ad--full,
 }
 
 .dark .reader-ad-slot__preview {
-  border-color: rgb(75 85 99); /* gray-600 */
-  background: rgb(31 41 55); /* gray-800 */
-  color: rgb(156 163 175); /* gray-400 */
+  border-color: rgb(82 82 91); /* zinc-600 */
+  background: rgb(39 39 42); /* zinc-800 */
+  color: rgb(161 161 170); /* zinc-400 */
 }
 
 .reader-ad-slot__preview-label {
@@ -278,9 +278,9 @@ html.adblock-likely .scanlator-show__ad--full,
 }
 
 .dark .home-banner-slot--preview {
-  border-color: rgb(75 85 99); /* gray-600 */
-  background: rgb(31 41 55); /* gray-800 */
-  color: rgb(156 163 175); /* gray-400 */
+  border-color: rgb(82 82 91); /* zinc-600 */
+  background: rgb(39 39 42); /* zinc-800 */
+  color: rgb(161 161 170); /* zinc-400 */
 }
 
 .home-banner-slot__label {

@@ -7,11 +7,11 @@
 </div>
 
 <% unless current_user %>
-  <div class="<%= comments.any? ? 'mt-6 border-t border-stone-200 pt-6 dark:border-zinc-700' : 'py-8' %> text-center">
+  <div class="<%= comments.any? ? 'mt-6 border-t border-line pt-6' : 'py-8' %> text-center">
     <% if comments.any? %>
-      <%= tag.p t('chapters.reader_comments_drawer.login_prompt'), class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+      <%= tag.p t('chapters.reader_comments_drawer.login_prompt'), class: 'mb-4 text-sm text-fg-muted' %>
     <% else %>
-      <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-stone-600 dark:text-zinc-400' %>
+      <%= tag.p no_comments_prompt, class: 'mb-4 text-sm text-fg-muted' %>
     <% end %>
     <%= ui_button(as: :link, href: new_user_session_path, size: :md, label: t('chapters.reader_comments_drawer.login_to_comment')) %>
   </div>

@@ -1,7 +1,7 @@
 <%# locals: (publications:, publication_tag_counts: nil, tile_offset: 0, ad_placement: nil, ad_every: 10) %>
 <div class="grid grid-cols-1 gap-x-8 lg:grid-cols-2">
   <% Array(publications).each_with_index do |publication, index| %>
-    <div class="border-b border-stone-200/70 dark:border-gray-700/50">
+    <div class="border-b border-line/70 dark:border-line/50">
       <%= render 'tales/publication_tile', publication:, publication_tag_counts: %>
     </div>
     <% tile_number = tile_offset + index + 1 %>

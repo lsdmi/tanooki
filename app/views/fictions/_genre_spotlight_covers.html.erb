@@ -3,9 +3,9 @@
 <% cover_preset = local_assigns.fetch(:cover_preset, :thumb) %>
 <% slots = %w[front left right] %>
 <% face_class = [
-     'absolute overflow-hidden rounded-xl bg-stone-200',
+     'token-raw absolute overflow-hidden rounded-xl bg-stone-200',
      'shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_1px_2px_rgb(0_0_0/0.06)]',
-     'dark:bg-slate-800 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_1px_2px_rgb(0_0_0/0.2)]',
+     'token-raw dark:bg-zinc-800 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_1px_2px_rgb(0_0_0/0.2)]',
      'data-[slot=front]:inset-y-0 data-[slot=front]:left-[14%] data-[slot=front]:right-[14%] data-[slot=front]:z-10',
      'data-[slot=front]:shadow-[0_0_0_1px_rgb(0_0_0/0.1),0_4px_6px_rgb(0_0_0/0.1)]',
      'dark:data-[slot=front]:shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_4px_6px_rgb(0_0_0/0.35)]',

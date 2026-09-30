@@ -1,18 +1,18 @@
 <div id="cookie-consent-banner"
      data-turbo-permanent
-     class="hidden fixed bottom-0 inset-x-0 z-[100] p-4 sm:p-5 border-t border-stone-200 dark:border-gray-600 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
+     class="hidden fixed bottom-0 inset-x-0 z-[100] p-4 sm:p-5 border-t border-line-strong bg-main/95 backdrop-blur-md shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
      role="dialog"
      aria-modal="false"
      aria-labelledby="cookie-consent-title">
   <div class="max-w-4xl mx-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <div class="text-sm text-stone-700 dark:text-gray-300 sm:pr-4">
-      <p id="cookie-consent-title" class="font-semibold text-stone-900 dark:text-white mb-1">Файли cookie на baka.in.ua</p>
+    <div class="text-sm text-fg-secondary sm:pr-4">
+      <p id="cookie-consent-title" class="font-semibold text-fg mb-1">Файли cookie на baka.in.ua</p>
       <p>
         Реклама Google AdSense на сайті показується незалежно від цього вибору. Це повідомлення стосується лише необов’язкової аналітики відвідувань (Google Analytics).
         Деталі — у
-        <%= link_to 'політиці конфіденційності', privacy_path, class: 'text-cyan-700 dark:text-rose-400 hover:underline' %>
+        <%= link_to 'політиці конфіденційності', privacy_path, class: 'text-fg-brand hover:underline' %>
         та
-        <%= link_to 'розділі про cookies', privacy_path(anchor: 'cookies'), class: 'text-cyan-700 dark:text-rose-400 hover:underline' %>.
+        <%= link_to 'розділі про cookies', privacy_path(anchor: 'cookies'), class: 'text-fg-brand hover:underline' %>.
       </p>
     </div>
     <div class="flex flex-shrink-0 flex-wrap gap-2 sm:justify-end">

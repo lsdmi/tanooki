@@ -1,5 +1,5 @@
 <% cache footer_fragment_cache_key, expires_in: 12.hours do %>
-<footer class="bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+<footer class="token-raw bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700">
   <div class="mx-auto w-full max-w-[1300px] px-5 py-8 md:px-6 md:py-10 lg:px-4">
     <div class="grid grid-cols-2 gap-8 lg:grid-cols-6">
       <div class="col-span-2">
@@ -12,13 +12,13 @@
                         loading: 'lazy',
                         decoding: 'async' %>
         </a>
-        <p class="my-4 font-light text-gray-400">baka.in.ua - українська аніме-платформа, де зібрано сотні блогів, статей, ранобе та веб-новел, а також відео вітчизняних ютуберів!</p>
+        <p class="token-raw my-4 font-light text-zinc-400">baka.in.ua - українська аніме-платформа, де зібрано сотні блогів, статей, ранобе та веб-новел, а також відео вітчизняних ютуберів!</p>
       </div>
       <div class="col-span-2 grid grid-cols-2 gap-4 lg:hidden">
         <% trending_tags.first(::Tags::Trending::TAG_LIMIT).in_groups_of(4).each_with_index do |group, index| %>
           <div class="min-w-0">
             <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
-            <ul class="text-gray-400">
+            <ul class="token-raw text-zinc-400">
               <% group.each do |trending_tag| %>
                 <li class="mb-4">
                   <%= link_to trending_tag[:name], trending_tag[:link], class: "hover:underline" if trending_tag.present? %>
@@ -32,7 +32,7 @@
         <% trending_tags.first(::Tags::Trending::FOOTER_DESKTOP_TAG_LIMIT).in_groups_of(4).each_with_index do |group, index| %>
           <div class="min-w-0">
             <%= tag.h2 index.zero? ? 'Популярні теґи' : '', class: 'mb-6 text-sm font-semibold uppercase text-white min-h-5' %>
-            <ul class="text-gray-400">
+            <ul class="token-raw text-zinc-400">
               <% group.each do |trending_tag| %>
                 <li class="mb-4">
                   <%= link_to trending_tag[:name], trending_tag[:link], class: "hover:underline" if trending_tag.present? %>
@@ -43,8 +43,8 @@
         <% end %>
       </div>
     </div>
-    <hr class="my-6 sm:mx-auto border-gray-700 lg:my-8">
-    <div class="flex flex-col items-center gap-6 text-sm text-gray-400 lg:flex-row lg:items-start lg:justify-between">
+    <hr class="token-raw my-6 sm:mx-auto border-zinc-700 lg:my-8">
+    <div class="token-raw flex flex-col items-center gap-6 text-sm text-zinc-400 lg:flex-row lg:items-start lg:justify-between">
       <p class="text-center lg:mb-0 lg:max-w-md lg:text-left">
         © 2023-<%= Time.zone.now.year %>
         <a href="/" class="hover:underline">baka.in.ua™</a>.

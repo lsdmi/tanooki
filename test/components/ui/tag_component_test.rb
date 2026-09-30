@@ -7,15 +7,14 @@ module Ui
     test 'renders outlined keyword classes' do
       render_inline(TagComponent.new(label: 'аніме', variant: :keyword, href: '/search'))
 
-      assert_selector 'a.border-gray-300.bg-white.text-gray-800.dark\\:bg-gray-900.dark\\:border-zinc-500'
-      assert_no_selector 'a.bg-cyan-700, a.bg-rose-200'
+      assert_selector 'a.border-line-strong.bg-main.text-fg'
+      assert_no_selector 'a.bg-brand, a.bg-rose-200'
     end
 
-    test 'renders filter with primary cyan in light and red in dark' do
+    test 'renders filter with brand token' do
       render_inline(TagComponent.new(label: 'аніме', variant: :filter, href: '/search'))
 
-      assert_selector 'a.border-cyan-800.bg-cyan-700.text-white'
-      assert_selector 'a.dark\\:border-rose-400.dark\\:bg-rose-600'
+      assert_selector 'a.border-brand-hover.bg-brand.text-fg-on-brand'
     end
 
     test 'renders current keyword as filter style' do
@@ -23,14 +22,13 @@ module Ui
         TagComponent.new(label: 'аніме', variant: :keyword, href: '/search', current: true)
       )
 
-      assert_selector 'a.bg-cyan-700.text-white[aria-current="page"]'
+      assert_selector 'a.bg-brand.text-fg-on-brand[aria-current="page"]'
     end
 
     test 'renders static outlined status tag' do
       render_inline(TagComponent.new(label: 'Completed', variant: :status))
 
-      assert_selector 'span.border-gray-300.bg-white'
-      assert_selector 'span.dark\\:bg-gray-900'
+      assert_selector 'span.border-line-strong.bg-main'
       assert_no_selector 'a'
     end
 
@@ -71,8 +69,8 @@ module Ui
     test 'renders count badge on outlined keyword' do
       render_inline(TagComponent.new(label: 'аніме', variant: :keyword, href: '/search', count: 12))
 
-      assert_selector 'a span.bg-cyan-100.text-cyan-700', text: '12'
-      assert_selector 'a span.dark\\:bg-zinc-600.dark\\:text-zinc-100', text: '12'
+      assert_selector 'a span.bg-brand-subtle.text-fg-brand', text: '12'
+      assert_selector 'a span.dark\\:bg-surface-hover.dark\\:text-fg', text: '12'
     end
 
     test 'renders count badge on solid filter' do
@@ -93,7 +91,7 @@ module Ui
         )
       )
 
-      assert_selector 'button[type="button"].bg-cyan-700', text: /Усе/
+      assert_selector 'button[type="button"].bg-brand', text: /Усе/
       assert_selector 'button span', text: '0'
       assert_no_selector 'a'
     end

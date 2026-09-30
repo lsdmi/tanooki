@@ -89,7 +89,7 @@ export default class extends Controller {
     if (status === "current") {
       const current = document.createElement("div")
       current.className =
-        "flex items-center gap-3 border-l-2 border-cyan-700 bg-cyan-50/80 px-4 py-3 dark:border-rose-500 dark:bg-rose-950/40"
+        "flex items-center gap-3 border-l-2 border-brand bg-brand-subtle px-4 py-3"
       current.setAttribute("aria-current", "page")
       current.appendChild(this.buildTitle(chapter.title, status))
       current.appendChild(this.buildStatusIcon(status))
@@ -123,15 +123,15 @@ export default class extends Controller {
 
   // Mirrors Chapters::ChapterDrawerHelper: only read rows are washed and muted.
   titleClass(status) {
-    if (status === "current") return "text-sm font-medium text-cyan-900 dark:text-rose-200"
-    if (status === "in_progress") return "text-sm font-medium text-stone-900 dark:text-zinc-50"
-    if (status === "read") return "text-sm text-stone-500 dark:text-zinc-400"
-    return "text-sm text-stone-800 dark:text-zinc-200"
+    if (status === "current") return "text-sm font-medium text-fg-brand-hover"
+    if (status === "in_progress") return "text-sm font-medium text-fg"
+    if (status === "read") return "text-sm text-fg-muted"
+    return "text-sm text-fg"
   }
 
   rowClass(status) {
-    if (status === "read") return "bg-stone-50 hover:bg-stone-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70"
-    return "hover:bg-stone-50 dark:hover:bg-zinc-800/60"
+    if (status === "read") return "bg-surface hover:bg-surface-strong dark:bg-surface/40 dark:hover:bg-surface/70"
+    return "hover:bg-surface dark:hover:bg-surface/60"
   }
 
   buildStatusIcon(status) {
@@ -150,11 +150,11 @@ export default class extends Controller {
       icon.innerHTML =
         '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
     } else if (status === "current" || status === "in_progress") {
-      icon.classList.add("text-cyan-700", "dark:text-rose-400")
+      icon.classList.add("text-fg-brand")
       icon.innerHTML =
         '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>'
     } else {
-      icon.classList.add("text-stone-300", "dark:text-zinc-600")
+      icon.classList.add("text-fg-subtle")
       icon.innerHTML =
         '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" /></svg>'
     }

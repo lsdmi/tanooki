@@ -1,13 +1,13 @@
 <div class="flex items-center justify-between mb-6" data-translation-requests-page-page="<%= pagy.page %>">
   <div class="flex items-center">
-    <div class="h-6 w-6 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-2">
-      <svg class="h-3 w-3 text-cyan-800 dark:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <div class="h-6 w-6 rounded-lg bg-brand-subtle flex items-center justify-center mr-2">
+      <svg class="h-3 w-3 text-fg-brand-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
     </div>
-    <h3 class="text-lg font-extrabold text-gray-700 dark:text-gray-200">Всі Запити</h3>
+    <h3 class="text-lg font-extrabold text-fg">Всі Запити</h3>
   </div>
-  <span class="text-sm font-bold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full"><%= total_requests_count %></span>
+  <span class="text-sm font-bold text-fg bg-surface-strong px-3 py-1 rounded-full"><%= total_requests_count %></span>
 </div>
 
 <div class="space-y-3">
@@ -16,16 +16,16 @@
       <%= render 'translation_requests/request_card',
                  request: request,
                  compact: true,
-                 wrapper_class: 'bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-600 rounded-lg p-6 hover:border-cyan-300 dark:hover:border-rose-400 transition-all duration-300' %>
+                 wrapper_class: 'bg-surface/50 dark:bg-surface-strong/30 border border-line-strong rounded-lg p-6 hover:border-brand/50 transition-all duration-300' %>
     <% end %>
   <% else %>
     <div class="text-center py-12">
-      <div class="h-16 w-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-6">
-        <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <div class="h-16 w-16 rounded-full bg-surface-strong flex items-center justify-center mx-auto mb-6">
+        <svg class="h-8 w-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
       </div>
-      <p class="text-gray-500 dark:text-gray-400 text-lg">
+      <p class="text-fg-muted text-lg">
         Поки що немає активних запитів на переклад.<br>
         Станьте першим, хто додасть запит!
       </p>

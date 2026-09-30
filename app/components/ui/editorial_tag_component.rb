@@ -16,7 +16,7 @@ module Ui
 
     KIND_COLORS = {
       sixteen: 'bg-amber-600',
-      adult: 'bg-rose-600',
+      adult: 'token-raw bg-rose-600',
       novelty: 'bg-violet-600',
       popular: 'bg-fuchsia-700',
       update: 'bg-teal-600'

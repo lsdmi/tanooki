@@ -168,8 +168,8 @@ export default class extends Controller {
       if (this.hasMessagesTarget && this.messagesTarget) {
         this.messagesTarget.innerHTML = `
           <div class="flex items-center justify-center h-full">
-            <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-700 dark:border-rose-400"></div>
+            <div class="flex items-center space-x-2 text-fg-muted">
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-brand"></div>
               <span class="text-sm">Завантаження чату...</span>
             </div>
           </div>
@@ -186,7 +186,7 @@ export default class extends Controller {
 
       this.messagesTarget.innerHTML = `
         <div class="flex items-center justify-center h-full px-4 text-center">
-          <p class="text-sm text-gray-500 dark:text-gray-400">
+          <p class="text-sm text-fg-muted">
             Не вдалося завантажити чат. Спробуйте оновити сторінку.
           </p>
         </div>
@@ -307,19 +307,19 @@ export default class extends Controller {
       const messageHtml = `
         <div class="flex items-start space-x-3" data-message-id="${data.id || Date.now()}">
           <div class="flex-shrink-0">
-            <img src="${avatarUrl}" alt="${data.user_name || 'User'}" class="w-8 h-8 rounded-full border border-cyan-200 dark:border-rose-700">
+            <img src="${avatarUrl}" alt="${data.user_name || 'User'}" class="w-8 h-8 rounded-full border border-brand/30">
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex items-center space-x-2 mb-1">
-              <span class="font-medium text-gray-900 dark:text-white text-sm">
+              <span class="font-medium text-fg text-sm">
                 ${data.user_name || 'User'}
               </span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">
+              <span class="text-xs text-fg-muted">
                 ${data.formatted_time || 'now'}
               </span>
             </div>
-            <div class="bg-white dark:bg-gray-600 rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-700">
-              <p class="text-gray-800 dark:text-gray-200 text-sm break-words">
+            <div class="bg-card dark:bg-surface-hover rounded-lg px-3 py-2 shadow-sm border border-line">
+              <p class="text-fg text-sm break-words">
                 ${this.escapeHtml(data.content || '')}
               </p>
             </div>

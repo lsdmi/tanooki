@@ -5,26 +5,25 @@ const pendingToasts = []
 const TOAST_POPUP_BASE = [
   '!m-3 !box-border !flex !w-auto !max-w-sm !items-center !gap-3 max-sm:!max-w-[calc(100vw-1.5rem)]',
   '!rounded-lg !border !border-l-[3px] !py-2.5 !pl-3.5 !pr-2 !font-sans',
-  '!bg-white/95 !text-stone-800 !shadow-md !shadow-stone-900/10 !backdrop-blur-md',
-  'dark:!bg-gray-900/95 dark:!text-gray-100 dark:!shadow-black/40',
-  '!border-stone-200 dark:!border-gray-700'
+  '!bg-main/95 !text-fg !shadow-md !shadow-slate-900/10 !backdrop-blur-md',
+  'dark:!shadow-black/40',
+  '!border-line'
 ].join(' ')
 
 const TOAST_TITLE_CLASSES = [
   '!m-0 !flex-1 !p-0 !text-left !text-sm !font-medium !leading-snug !tracking-wide',
-  '!text-stone-800 dark:!text-gray-100'
+  '!text-fg'
 ].join(' ')
 
 const TOAST_CLOSE_CLASSES = [
   '!order-last !ml-auto !mr-0 !mt-0 !mb-0 !flex !h-7 !w-7 !shrink-0 !items-center !justify-center !rounded-md !border-0',
-  '!bg-transparent !text-lg !font-normal !text-stone-400',
-  'hover:!bg-stone-100 hover:!text-stone-700',
-  'dark:!text-gray-500 dark:hover:!bg-gray-800 dark:hover:!text-gray-200'
+  '!bg-transparent !text-lg !font-normal !text-fg-subtle',
+  'hover:!bg-surface hover:!text-fg-secondary'
 ].join(' ')
 
 const NOTICE_VARIANT = {
-  popup: '!border-l-cyan-700 dark:!border-l-rose-500',
-  timerBar: '!bg-cyan-700 dark:!bg-rose-500',
+  popup: '!border-l-brand',
+  timerBar: '!bg-brand',
   timer: 3000
 }
 
@@ -37,8 +36,8 @@ const TOAST_VARIANTS = {
     timer: 5000
   },
   error: {
-    popup: '!border-l-red-600 dark:!border-l-red-400',
-    timerBar: '!bg-red-600 dark:!bg-red-400',
+    popup: '!border-l-status-danger-solid',
+    timerBar: '!bg-status-danger-solid',
     timer: 5000
   }
 }

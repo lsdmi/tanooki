@@ -1,28 +1,28 @@
 <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative py-6 sm:py-8">
   <div class="bookshelf-show grid grid-cols-1 lg:grid-cols-[20rem_minmax(0,1fr)] gap-6 lg:gap-8">
     <aside class="bookshelf-show__sidebar flex flex-col gap-6 min-h-0">
-      <div class="relative shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+      <div class="relative shrink-0 overflow-hidden rounded-xl border border-line bg-card p-5 shadow-md sm:p-6">
         <%= render 'shared/decorative_ornament' %>
 
         <div class="relative z-10">
-          <p class="text-xs font-semibold uppercase tracking-wider text-cyan-700 dark:text-rose-500 mb-2">Полиця</p>
-          <h1 class="text-xl sm:text-2xl font-black text-stone-900 dark:text-gray-100 tracking-tight leading-tight">
+          <p class="text-xs font-semibold uppercase tracking-wider text-fg-brand mb-2">Полиця</p>
+          <h1 class="text-xl sm:text-2xl font-black text-fg tracking-tight leading-tight">
             <%= @bookshelf.title %>
           </h1>
 
           <dl class="mt-4 space-y-3 text-sm">
             <div>
-              <dt class="font-medium text-gray-600 dark:text-gray-400">Автор</dt>
-              <dd class="mt-1 text-gray-900 dark:text-gray-200">
+              <dt class="font-medium text-fg-muted">Автор</dt>
+              <dd class="mt-1 text-fg">
                 <%= link_to @bookshelf.user_name,
                             profile_path(@bookshelf.user_sqid),
-                            class: 'hover:text-cyan-700 dark:hover:text-rose-500 transition-colors duration-200' %>
+                            class: 'hover:text-fg-brand transition-colors duration-200' %>
               </dd>
             </div>
             <% if @bookshelf.description.present? %>
               <div>
-                <dt class="font-medium text-gray-600 dark:text-gray-400">Опис</dt>
-                <dd class="mt-1 leading-relaxed text-gray-700 dark:text-gray-300">
+                <dt class="font-medium text-fg-muted">Опис</dt>
+                <dd class="mt-1 leading-relaxed text-fg-secondary">
                   <%= @bookshelf.description %>
                 </dd>
               </div>
@@ -39,7 +39,7 @@
     </aside>
 
     <main class="min-w-0">
-      <div class="rounded-xl border border-gray-200 bg-stone-100 p-3 shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-4">
+      <div class="rounded-xl border border-line bg-surface p-3 shadow-md sm:p-4">
         <%= render partial: 'fiction_lists/dynamic_content',
                    locals: { fictions: @fictions, pagy: @pagy } %>
       </div>

@@ -3,12 +3,12 @@
   reader_controllers = "comments-drawer jump-to-top chapter-drawer reader-settings #{reader_progress_controllers}"
   reader_controllers = "#{reader_controllers} reading-resume" if resume_locator
 %>
-<div class="immersive-reader bg-stone-100 dark:bg-zinc-950 min-h-screen relative"
+<div class="immersive-reader bg-reader-bg min-h-screen relative"
      data-controller="<%= reader_controllers %>"
      <%= tag.attributes(data: reader_progress_data(@chapter, @next_chapter)) %>
      <%= tag.attributes(data: reader_resume_data(resume_locator)) if resume_locator %>>
   <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= cover_background_url(@chapter.fiction.cover) %>');"></div>
-  <div class="absolute inset-0 z-[1] bg-stone-100/90 dark:bg-zinc-950/90"></div>
+  <div class="absolute inset-0 z-[1] bg-reader-bg/90"></div>
 
   <%= render 'reader_settings_drawer', chapter: @chapter %>
   <%= render 'comments_drawer', chapter: @chapter, comments: @comments, comment: @comment, commentable: @commentable %>
@@ -40,7 +40,7 @@
 
   <button type="button"
           id="jump-to-top"
-          class="fixed z-40 bottom-4 right-4 hidden rounded-full border border-stone-200/90 bg-stone-50/95 p-2.5 text-stone-700 shadow-md shadow-stone-900/10 transition-opacity dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:shadow-black/40 sm:bottom-6 sm:right-6"
+          class="fixed z-40 bottom-4 right-4 hidden rounded-full border border-line/90 bg-page/95 p-2.5 text-fg shadow-md shadow-slate-900/10 transition-opacity dark:shadow-black/40 sm:bottom-6 sm:right-6"
           title="Догори"
           aria-label="Прокрутити догори">
     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

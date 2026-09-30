@@ -4,25 +4,24 @@ require 'test_helper'
 
 module Ui
   class ButtonComponentTest < ViewComponentTestCase
-    test 'renders primary button with cyan light and rose dark tokens' do
+    test 'renders primary button with brand tokens' do
       render_inline(ButtonComponent.new(label: 'Зберегти', variant: :primary))
 
-      assert_selector 'button[type="button"].bg-cyan-700.text-white.border-cyan-800', text: 'Зберегти'
-      assert_selector 'button.dark\\:bg-rose-600.dark\\:border-rose-400'
+      assert_selector 'button[type="button"].bg-brand.text-fg-on-brand.border-brand-hover', text: 'Зберегти'
+      assert_no_selector 'button[class*="dark:"]'
     end
 
-    test 'renders ghost button with stone and zinc tokens' do
+    test 'renders ghost button with line and fg tokens' do
       render_inline(ButtonComponent.new(label: 'Детальніше', variant: :ghost))
 
-      assert_selector 'button.border-stone-200.bg-transparent.text-stone-700'
-      assert_selector 'button.dark\\:border-zinc-600.dark\\:bg-transparent'
-      assert_no_selector 'button.bg-white, button.dark\\:bg-zinc-900'
+      assert_selector 'button.border-line.bg-transparent.text-fg-secondary'
+      assert_no_selector 'button.bg-white, button[class*="dark:"]'
     end
 
     test 'renders link when as is link' do
       render_inline(ButtonComponent.new(label: 'Увійти', as: :link, href: '/login'))
 
-      assert_selector 'a[href="/login"].bg-cyan-700', text: 'Увійти'
+      assert_selector 'a[href="/login"].bg-brand', text: 'Увійти'
       assert_no_selector 'button'
     end
 

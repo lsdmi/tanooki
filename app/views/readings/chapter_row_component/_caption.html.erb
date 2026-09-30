@@ -4,9 +4,9 @@
   <%= render 'shared/draft_badge', record: chapter, compact: true %>
 </div>
 <% if chapter.draft? %>
-  <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= t('chapters.status.unpublished') %></p>
+  <p class="mt-1 text-xs text-fg-muted"><%= t('chapters.status.unpublished') %></p>
 <% else %>
-  <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+  <p class="mt-1 text-xs text-fg-muted">
     Опубліковано: <%= published_at_label %>
   </p>
   <% if chapter.scheduled? %>

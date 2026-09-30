@@ -4,8 +4,7 @@ module Chapters
   # EPUB download affordances in chapter and fiction views.
   module EpubDownloadHelper
     EPUB_LOGIN_LINK_CLASS =
-      'font-semibold text-stone-800 underline underline-offset-2 hover:text-stone-600 ' \
-      'dark:text-gray-100 dark:hover:text-gray-300'
+      'font-semibold text-fg underline underline-offset-2 hover:text-fg-secondary'
 
     def chapters_allow_epub_download?(chapters)
       Books::EpubDownloadPermission.allowed?(chapters)
@@ -38,7 +37,7 @@ module Chapters
     end
 
     def epub_notice_paragraph(content)
-      tag.p(content, class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300')
+      tag.p(content, class: 'text-sm sm:text-base text-fg-secondary')
     end
   end
 end

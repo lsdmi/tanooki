@@ -2,21 +2,21 @@
 
 <div class="relative z-10">
   <section class="mx-auto xl:w-[1300px]">
-    <div class="<%= page_gutter %> mt-8 overflow-hidden rounded-xl border border-gray-200 shadow-md lg:mt-10 lg:rounded-2xl dark:border-gray-700">
+    <div class="<%= page_gutter %> mt-8 overflow-hidden rounded-xl border border-line shadow-md lg:mt-10 lg:rounded-2xl">
       <%= render 'root/hero' %>
     </div>
 
     <div class="<%= page_gutter %>">
       <div class="mb-8 mt-8 lg:mb-14 lg:mt-14">
         <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
-          <div class="w-1.5 shrink-0 rounded-lg bg-cyan-700 dark:bg-rose-500" aria-hidden="true"></div>
+          <div class="w-1.5 shrink-0 rounded-lg bg-brand" aria-hidden="true"></div>
           <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
-            <h2 class="text-xl lg:text-2xl font-bold leading-snug tracking-tight text-stone-900 dark:text-slate-100">
-              Популярне <span class="text-cyan-700 dark:text-rose-400">Ранобе</span>
+            <h2 class="text-xl lg:text-2xl font-bold leading-snug tracking-tight text-fg">
+              Популярне <span class="text-fg-brand">Ранобе</span>
             </h2>
             <%= render 'root/section_more_link',
                        path: fictions_path,
-                       link_class: 'text-cyan-700 dark:text-rose-400' %>
+                       link_class: 'text-fg-brand' %>
           </div>
         </header>
 

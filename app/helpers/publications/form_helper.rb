@@ -3,8 +3,8 @@
 module Publications
   # Publication composer footer and Studio blogs title links.
   module FormHelper
-    TITLE_LINK_CLASSES = 'hover:text-cyan-700 dark:hover:text-rose-400 transition-colors duration-200 font-medium'
-    MOBILE_TITLE_LINK_CLASSES = "#{TITLE_LINK_CLASSES} block text-gray-900 dark:text-white".freeze
+    TITLE_LINK_CLASSES = 'hover:text-fg-brand transition-colors duration-200 font-medium'
+    MOBILE_TITLE_LINK_CLASSES = "#{TITLE_LINK_CLASSES} block text-fg".freeze
 
     # Live blogs update the public body on submit; Зберегти stays off those forms.
     def show_publication_draft_save?(publication)

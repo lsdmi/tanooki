@@ -81,7 +81,7 @@ function closeFlowbiteDropdownsAndModals() {
 
   // Flowbite appends a body-level backdrop when a modal opens.
   document.querySelectorAll('body > div.fixed.inset-0').forEach((el) => {
-    if (el.classList.contains('bg-gray-900/50') || el.classList.contains('dark:bg-gray-900/80')) {
+    if (el.classList.contains('bg-gray-900/50') || el.classList.contains('dark:bg-gray-900/80')) { // token-raw: Flowbite's own classes
       el.remove()
     }
   })

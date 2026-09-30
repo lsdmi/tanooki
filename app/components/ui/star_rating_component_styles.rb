@@ -13,15 +13,15 @@ module Ui
 
     STAR_SIZE_CLASSES = 'w-3 h-3 sm:w-4 sm:h-4'
     FULL_STAR_CLASSES = "#{STAR_SIZE_CLASSES} text-yellow-400 fill-current".freeze
-    EMPTY_STAR_CLASSES = "#{STAR_SIZE_CLASSES} text-stone-400 fill-current".freeze
+    EMPTY_STAR_CLASSES = "token-raw #{STAR_SIZE_CLASSES} text-stone-400 fill-current".freeze
     HALF_STAR_OVERLAY_CLASSES = [
       STAR_SIZE_CLASSES,
       'text-yellow-400 fill-current absolute top-0 left-0 overflow-hidden'
     ].join(' ').freeze
     HALF_STAR_CLIP_STYLE = 'clip-path: inset(0 50% 0 0);'
 
-    VALUE_CLASSES = 'text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-100'
-    EMPTY_VALUE_CLASSES = 'text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-400'
-    LABEL_CLASSES = 'text-xs sm:text-sm md:text-base text-stone-300'
+    VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-100'
+    EMPTY_VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-400'
+    LABEL_CLASSES = 'token-raw text-xs sm:text-sm md:text-base text-stone-300'
   end
 end

@@ -6,39 +6,39 @@
 
 <aside id="reader-chapter-list-panel"
        data-chapter-drawer-target="panel"
-       class="reader-chapter-drawer fixed inset-y-0 right-0 z-[52] flex h-dvh max-h-dvh w-full max-w-md translate-x-full flex-col overflow-hidden border-l border-stone-200 bg-white shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-black/40"
+       class="reader-chapter-drawer fixed inset-y-0 right-0 z-[52] flex h-dvh max-h-dvh w-full max-w-md translate-x-full flex-col overflow-hidden border-l border-line bg-main shadow-xl shadow-stone-900/10 transition-transform duration-200 ease-out focus:outline-none dark:shadow-black/40"
        tabindex="-1"
        role="dialog"
        aria-modal="true"
        aria-labelledby="reader-chapter-drawer-title">
-  <div class="flex shrink-0 flex-col border-b border-stone-200 px-4 py-4 dark:border-zinc-700 sm:px-5">
+  <div class="flex shrink-0 flex-col border-b border-line px-4 py-4 sm:px-5">
     <div class="flex items-start justify-between gap-3">
       <div class="flex min-w-0 flex-1 items-start gap-3 pr-2">
-        <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'relative block h-[4.5rem] w-[3.25rem] shrink-0 overflow-hidden rounded-md bg-stone-200 ring-1 ring-stone-200 dark:bg-zinc-800 dark:ring-zinc-700') do %>
+        <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'relative block h-[4.5rem] w-[3.25rem] shrink-0 overflow-hidden rounded-md bg-surface ring-1 ring-line') do %>
           <% if fiction.cover.attached? %>
             <%= image_tag cover_thumbnail_url(fiction.cover), alt: fiction.title, class: 'h-full w-full object-cover' %>
           <% end %>
         <% end %>
 
         <div class="min-w-0 flex-1">
-          <h2 id="reader-chapter-drawer-title" class="text-base font-semibold leading-snug text-stone-900 dark:text-zinc-50">
-            <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: 'block truncate hover:text-cyan-700 dark:hover:text-rose-400') %>
+          <h2 id="reader-chapter-drawer-title" class="text-base font-semibold leading-snug text-fg">
+            <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: 'block truncate hover:text-fg-brand') %>
           </h2>
-          <p class="mt-1 truncate text-sm text-stone-600 dark:text-zinc-400">
+          <p class="mt-1 truncate text-sm text-fg-muted">
             <% if fiction.author? %>
               <span><%= fiction.author %></span>
-              <span class="mx-1 text-stone-400 dark:text-zinc-600" aria-hidden="true">•</span>
+              <span class="mx-1 text-fg-subtle" aria-hidden="true">•</span>
             <% end %>
             <span><%= fiction.listing_state_label %></span>
           </p>
-          <p class="mt-0.5 truncate text-sm text-stone-600 dark:text-zinc-400">
+          <p class="mt-0.5 truncate text-sm text-fg-muted">
             <%= fiction_chapter_drawer_count(fiction) %>
           </p>
         </div>
       </div>
 
       <button type="button"
-              class="shrink-0 rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:focus-visible:ring-zinc-500"
+              class="shrink-0 rounded-md p-1.5 text-fg-muted transition-colors hover:bg-surface hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
               data-action="click->chapter-drawer#close"
               aria-label="<%= t('chapters.reader_chapter_drawer.close') %>">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

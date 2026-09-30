@@ -32,13 +32,13 @@
     <div class="<%= hero_content_width_classes %>">
       <% if user_signed_in? %>
         <h1 class="<%= hero_title_classes %>">
-          Ласкаво просимо до нашої <span class="text-cyan-400 dark:text-rose-500">Бібліярні</span>
+          Ласкаво просимо до нашої <span class="token-raw text-cyan-400 dark:text-rose-500">Бібліярні</span>
         </h1>
         <p class="<%= hero_body_classes %> sm:hidden"><%= hero_copy[:body_compact] %></p>
         <p class="<%= hero_body_classes %> hidden sm:block"><%= hero_copy[:body] %></p>
       <% else %>
         <h1 class="<%= hero_title_classes %>">
-          Найбільша скарбниця <span class="text-cyan-400 dark:text-rose-500">ранобе в Україні</span>
+          Найбільша скарбниця <span class="token-raw text-cyan-400 dark:text-rose-500">ранобе в Україні</span>
         </h1>
         <p class="<%= hero_body_classes %> sm:hidden"><%= hero_copy[:body_compact] %></p>
         <p class="<%= hero_body_classes %> hidden sm:block"><%= hero_copy[:body] %></p>

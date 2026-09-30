@@ -17,6 +17,6 @@
 <% else %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
     <%= tag.p @comment.content.to_s.strip,
-              class: 'whitespace-pre-line break-words text-sm leading-relaxed text-stone-600 dark:text-gray-300 pr-4 pb-2' %>
+              class: 'whitespace-pre-line break-words text-sm leading-relaxed text-fg-secondary pr-4 pb-2' %>
   <% end %>
 <% end %>

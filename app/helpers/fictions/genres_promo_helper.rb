@@ -25,7 +25,7 @@ module Fictions
       button_icon: 'fictions/genres/promo/writings_button_icon',
       external: false,
       card_class: [
-        'group !justify-center border border-cyan-700 dark:border-rose-700',
+        'group !justify-center border border-brand',
         'transition-shadow duration-300 hover:shadow-lg',
         'max-lg:!rounded-lg',
         '!px-4 !py-6 md:!px-6 md:!py-8',
@@ -40,9 +40,9 @@ module Fictions
         'group-hover:[animation-duration:20s] motion-reduce:animate-none motion-reduce:scale-[1.02]'
       ].join(' '),
       gradient_class: [
-        'bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/25',
-        'sm:bg-gradient-to-tr sm:from-slate-950/95 sm:via-slate-900/80 sm:to-slate-900/20',
-        'md:bg-gradient-to-r md:from-slate-950/95 md:via-slate-900/85 md:via-[62%] md:to-slate-900/10',
+        'token-raw bg-gradient-to-t from-zinc-950/95 via-zinc-900/80 to-zinc-900/25',
+        'token-raw sm:bg-gradient-to-tr sm:from-zinc-950/95 sm:via-zinc-900/80 sm:to-zinc-900/20',
+        'token-raw md:bg-gradient-to-r md:from-zinc-950/95 md:via-zinc-900/85 md:via-[62%] md:to-zinc-900/10',
         'lg:via-[58%] xl:via-[55%]',
         'transition-opacity duration-500 group-hover:opacity-100'
       ].join(' '),

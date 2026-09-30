@@ -1,22 +1,22 @@
-<div id="pokemon-details" class="p-6 border-t border-gray-200 dark:border-gray-700">
+<div id="pokemon-details" class="p-6 border-t border-line">
   <div class="grid grid-cols-2">
-    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon_name}", class: 'mb-4 text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100' %>
+    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon_name}", class: 'mb-4 text-xl font-bold tracking-tight text-fg' %>
     <div class="flex justify-end">
       <% if training_cooldown?(current_user) %>
         <div class="flex flex-col items-center">
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-fg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5" />
           </svg>
-          <%= tag.p training_cooldown_reason(current_user), class: 'text-xs text-black dark:text-white truncate font-light mx-px mt-1' %>
+          <%= tag.p training_cooldown_reason(current_user), class: 'text-xs text-fg truncate font-light mx-px mt-1' %>
         </div>
       <% else %>
         <div class="flex flex-col items-center">
           <%= button_to training_pokemon_path(user_pokemon_id: selected_pokemon.id),
                 data: { turbo_stream: "", "turbo-method": :post },
                 remote: true,
-                class: "group inline-flex items-center justify-center rounded-full hover:bg-cyan-100 dark:hover:bg-rose-900/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 p-2 transition" do %>
+                class: "token-raw group inline-flex items-center justify-center rounded-full hover:bg-brand-subtle focus:outline-none focus:ring-2 focus:ring-cyan-400 p-2 transition" do %>
             <svg
-              class="w-7 h-7 text-black dark:text-white group-hover:text-white transition"
+              class="w-7 h-7 text-fg group-hover:text-white transition"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -48,19 +48,19 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6 text-black dark:text-white transform transition duration-500 hover:scale-110">
+          class="w-6 h-6 text-fg transform transition duration-500 hover:scale-110">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
         </svg>
-        <p class="ml-1 mb-3 font-normal text-gray-700 dark:text-gray-300">Відомості:</p>
+        <p class="ml-1 mb-3 font-normal text-fg-secondary">Відомості:</p>
       </div>
-      <div class="grid grid-cols-2 text-gray-700 dark:text-gray-300">
-        <p class="ml-1 mb-2 text-sm text-gray-700 dark:text-gray-300 font-light">Могуть:</p>
+      <div class="grid grid-cols-2 text-fg-secondary">
+        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Могуть:</p>
         <%= tag.span I18n.t("activerecord.enum.power_level.#{selected_pokemon.pokemon_power_level}"), class: 'text-base font-light' %>
 
         <p class="ml-1 mb-2 text-sm font-light">Рідкість:</p>
         <%= tag.span I18n.t("activerecord.enum.rarity.#{selected_pokemon.pokemon.rarity}"), class: 'text-base font-light' %>
 
-        <p class="ml-1 text-sm text-gray-700 dark:text-gray-300 font-light">Тип:</p>
+        <p class="ml-1 text-sm text-fg-secondary font-light">Тип:</p>
         <div>
           <% selected_pokemon.pokemon.types.pluck(:name).each do |type| %>
             <div class="leading-tight mb-1">
@@ -72,37 +72,37 @@
     </div>
     <div>
       <div class="inline-flex">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black dark:text-white w-6 h-6 transform transition duration-500 hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-fg w-6 h-6 transform transition duration-500 hover:scale-110">
           <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
         </svg>
-        <p class="ml-1 mb-3 font-normal text-gray-700 dark:text-gray-300">Облік:</p>
+        <p class="ml-1 mb-3 font-normal text-fg-secondary">Облік:</p>
       </div>
-      <div class="grid grid-cols-2 text-gray-700 dark:text-gray-300">
-        <p class="ml-1 mb-2 text-sm text-gray-700 dark:text-gray-300 font-light">Бойовий досвід:</p>
+      <div class="grid grid-cols-2 text-fg-secondary">
+        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Бойовий досвід:</p>
         <%= tag.span experience_to_sentence(selected_pokemon.battle_experience), class: 'text-base font-light' %>
 
-        <p class="ml-1 mb-2 text-sm text-gray-700 dark:text-gray-300 font-light">Вік:</p>
+        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Вік:</p>
         <%= tag.span time_ago_in_words(selected_pokemon.created_at), class: 'text-base font-light' %>
 
-        <p class="ml-1 mb-2 text-sm text-gray-700 dark:text-gray-300 font-light">Норов:</p>
+        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Норов:</p>
         <%= tag.span UserPokemon.characters[selected_pokemon.character], class: 'text-base font-light' %>
       </div>
     </div>
   </div>
   <%= tag.div class: 'mt-2' do %>
     <div class="inline-flex">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black dark:text-white w-6 h-6 transform transition duration-500 hover:scale-110">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-fg w-6 h-6 transform transition duration-500 hover:scale-110">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
-      <p class="ml-1 mb-3 font-normal text-gray-700 dark:text-gray-300">Еволюція:</p>
+      <p class="ml-1 mb-3 font-normal text-fg-secondary">Еволюція:</p>
     </div>
     <div class="">
-      <div class="border-2 border-gray-200 shadow-md rounded-full">
+      <div class="border-2 border-line shadow-md rounded-full">
         <%= tag.div class: "flex items-center justify-center h-12" do %>
           <%= image_tag url_for(descendant.sprite), alt: descendant.sprite.blob.filename, class: 'w-auto cursor-pointer rounded-lg mb-8 transform transition duration-500 hover:scale-110' %>
         <% end %>
-        <%= tag.div descendant.name, class: 'flex items-center justify-center mt-2 text-gray-700 dark:text-gray-300' %>
-        <p class="flex items-center justify-center mb-2 font-light text-xs text-gray-700 dark:text-gray-300">Рівень:
+        <%= tag.div descendant.name, class: 'flex items-center justify-center mt-2 text-fg-secondary' %>
+        <p class="flex items-center justify-center mb-2 font-light text-xs text-fg-secondary">Рівень:
           <%= tag.span "#{selected_pokemon.current_level}/#{selected_pokemon.pokemon.descendant_level unless selected_pokemon.pokemon.descendant_level.zero? }", class: 'text-sm font-bold ml-1' %>
         </p>
         <div class="flex items-center justify-center mb-4">

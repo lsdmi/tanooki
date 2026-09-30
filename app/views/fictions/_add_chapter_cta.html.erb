@@ -1,7 +1,7 @@
 <% if current_user.nil? %>
   <% content = capture do %>
     <%= tag.p 'Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.',
-              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300 mb-6' %>
+              class: 'text-sm sm:text-base text-fg-secondary mb-6' %>
     <div class="flex justify-start">
       <%= ui_button(as: :link, href: register_path, variant: :ghost, size: :md) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -15,13 +15,13 @@
 <% elsif fiction.completed_at? %>
   <% content = capture do %>
     <%= tag.p 'Всі розділи цього ранобе вже перекладено. Дякуємо за вашу підтримку!',
-              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300' %>
+              class: 'text-sm sm:text-base text-fg-secondary' %>
   <% end %>
   <%= render 'shared/info_card', title: 'Ранобе завершено!', content: content %>
 <% else %>
   <% content = capture do %>
     <%= tag.p 'Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!',
-              class: 'text-sm sm:text-base text-stone-600 dark:text-gray-300 mb-6' %>
+              class: 'text-sm sm:text-base text-fg-secondary mb-6' %>
     <div class="flex justify-start">
       <%= ui_button(as: :link, href: new_chapter_path(fiction:), variant: :ghost, size: :md) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

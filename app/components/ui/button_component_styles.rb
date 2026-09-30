@@ -8,19 +8,14 @@ module Ui
 
     VARIANT_CLASSES = {
       primary: [
-        'border border-cyan-800 bg-cyan-700 text-white font-medium shadow-sm',
-        'hover:bg-cyan-800 hover:shadow-md',
-        'focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
-        'dark:border-rose-400 dark:bg-rose-600 dark:text-white dark:hover:bg-rose-700',
-        'dark:focus-visible:ring-rose-400 dark:focus-visible:ring-offset-gray-900'
+        'border border-brand-hover bg-brand text-fg-on-brand font-medium shadow-sm',
+        'hover:bg-brand-hover hover:shadow-md',
+        'focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-main'
       ].join(' ').freeze,
       ghost: [
-        'border border-stone-200 bg-transparent text-stone-700 font-medium',
-        'hover:border-stone-300 hover:text-stone-900',
-        'focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2',
-        'dark:border-zinc-600 dark:bg-transparent dark:text-zinc-200',
-        'dark:hover:border-zinc-600 dark:hover:text-white',
-        'dark:focus-visible:ring-zinc-500 dark:focus-visible:ring-offset-zinc-900'
+        'border border-line bg-transparent text-fg-secondary font-medium',
+        'hover:border-line-strong hover:text-fg',
+        'focus-visible:ring-2 focus-visible:ring-line-strong focus-visible:ring-offset-2 focus-visible:ring-offset-main'
       ].join(' ').freeze
     }.freeze
 

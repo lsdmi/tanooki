@@ -19,11 +19,11 @@
 
 .dark {
   --ss-primary-color: #f43f5e; /* Rose color for dark mode */
-  --ss-bg-color: #374151; /* Dark gray background */
-  --ss-font-color: #f9fafb; /* Light text */
-  --ss-font-placeholder-color: #9ca3af; /* Medium gray placeholder */
-  --ss-disabled-color: #4b5563; /* Dark gray disabled */
-  --ss-border-color: #4b5563; /* Dark gray border */
+  --ss-bg-color: #3f3f46; /* Dark zinc background */
+  --ss-font-color: #fafafa; /* Light text */
+  --ss-font-placeholder-color: #a1a1aa; /* Medium zinc placeholder */
+  --ss-disabled-color: #52525b; /* Dark zinc disabled */
+  --ss-border-color: #52525b; /* Dark zinc border */
   --ss-highlight-color: #fef3c7; /* Light yellow highlight */
   --ss-success-color: #10b981; /* Green success */
   --ss-error-color: #ef4444; /* Red error */

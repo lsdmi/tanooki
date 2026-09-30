@@ -42,7 +42,7 @@ module Fictions
         '!rounded-xl !border-0 !px-5 !py-5 !pr-8'
       ].join(' '),
       gradient_class: [
-        'bg-gradient-to-r from-slate-950/92 via-slate-950/70 via-[42%] to-slate-950/10',
+        'token-raw bg-gradient-to-r from-zinc-950/92 via-zinc-950/70 via-[42%] to-zinc-950/10',
         'transition-opacity duration-500 group-hover:opacity-100'
       ].join(' '),
       content_class: 'max-w-[15.5rem] w-full items-start text-left',

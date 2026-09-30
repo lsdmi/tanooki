@@ -1,5 +1,5 @@
 <section class="">
-  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-200 mb-4 sm:mb-6 pb-2 border-b border-stone-200 dark:border-gray-700">Коментарі</h2>
+  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-fg mb-4 sm:mb-6 pb-2 border-b border-line">Коментарі</h2>
 
   <% if current_user || comments.any? %>
     <div class="space-y-4 sm:space-y-6">
@@ -17,7 +17,7 @@
     </div>
   <% else %>
     <div class="text-center py-6 sm:py-8">
-      <%= tag.p no_comments_prompt, class: 'text-sm sm:text-base text-stone-600 dark:text-gray-400 mb-4' %>
+      <%= tag.p no_comments_prompt, class: 'text-sm sm:text-base text-fg-muted mb-4' %>
       <%= ui_button(as: :link, href: new_user_session_path, size: :md, label: 'Увійти, аби лишити коментар!') %>
     </div>
   <% end %>

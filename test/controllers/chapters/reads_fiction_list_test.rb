@@ -42,7 +42,7 @@ module Chapters
       post chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
 
       assert_select 'turbo-stream[action=replace][target=?]', "chapter_list_chapter_#{@chapter.id}"
-      assert_select "#{@row}[data-chapter-status=read] > div.bg-stone-50 button[aria-label=?]",
+      assert_select "#{@row}[data-chapter-status=read] > div.bg-surface button[aria-label=?]",
                     I18n.t('chapters.reader_chapter_drawer.mark_unread')
     end
 
@@ -51,7 +51,7 @@ module Chapters
       post chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
       delete chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
 
-      assert_select "#{@row}[data-chapter-status=unread] .bg-stone-50", count: 0
+      assert_select "#{@row}[data-chapter-status=unread] .bg-surface", count: 0
     end
   end
 end

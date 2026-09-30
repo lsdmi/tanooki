@@ -4,26 +4,22 @@ module Ui
   # Tailwind class strings for Ui::TagComponent variants and sizes.
   module TagComponentStyles
     OUTLINED_CLASSES = [
-      'border border-gray-300 bg-white text-gray-800',
-      'hover:bg-gray-50',
-      'dark:border-zinc-500 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800'
+      'border border-line-strong bg-main text-fg',
+      'hover:bg-surface'
     ].join(' ').freeze
 
-    FILTER_CLASSES = [
-      'border border-cyan-800 bg-cyan-700 text-white hover:bg-cyan-800',
-      'dark:border-rose-400 dark:bg-rose-600 dark:hover:bg-rose-700 dark:text-white'
-    ].join(' ').freeze
+    FILTER_CLASSES = 'border border-brand-hover bg-brand text-fg-on-brand hover:bg-brand-hover'
 
     # Adult tropes + 18+ rating: rose-200 fill, rose-700 border, rose-800 label/icon
     ADULT_CLASSES = [
-      'border border-rose-700 bg-rose-200 text-rose-800',
-      'hover:bg-rose-300 hover:text-rose-900 hover:border-rose-800',
-      'focus-visible:ring-rose-600'
+      'token-raw border border-rose-700 bg-rose-200 text-rose-800',
+      'token-raw hover:bg-rose-300 hover:text-rose-900 hover:border-rose-800',
+      'token-raw focus-visible:ring-rose-600'
     ].join(' ').freeze
 
     # 16+ rating: amber fill distinct from rose 18+
     SIXTEEN_CLASSES = [
-      'border border-amber-800 bg-amber-200 text-amber-900',
+      'token-raw border border-amber-800 bg-amber-200 text-amber-900',
       'hover:bg-amber-300 hover:text-amber-950 hover:border-amber-900',
       'focus-visible:ring-amber-700'
     ].join(' ').freeze
@@ -35,8 +31,7 @@ module Ui
 
     INTERACTIVE_CLASSES = [
       'transition-colors focus:outline-none focus-visible:ring-2',
-      'focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
-      'dark:focus-visible:ring-rose-400 dark:focus-visible:ring-offset-gray-900'
+      'focus-visible:ring-fg-brand focus-visible:ring-offset-2 focus-visible:ring-offset-main'
     ].join(' ').freeze
 
     COUNT_SIZE_CLASSES = {

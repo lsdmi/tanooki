@@ -18,7 +18,7 @@ export default class extends Controller {
     const fictionId = event.currentTarget.dataset.fictionPickerIdParam
 
     this.imageTargets.forEach((img) => {
-      img.classList.remove("ring-2", "ring-cyan-700", "dark:ring-rose-800")
+      img.classList.remove("ring-2", "ring-brand")
     })
 
     this.highlightImage(event.currentTarget)
@@ -77,6 +77,6 @@ export default class extends Controller {
   }
 
   highlightImage(image) {
-    image.classList.add("ring-2", "ring-cyan-700", "dark:ring-rose-800")
+    image.classList.add("ring-2", "ring-brand")
   }
 }

@@ -1,19 +1,19 @@
 /* Flatpickr (chapter schedule date) — calendar is portaled to <body>; match dark UI */
 html.dark .flatpickr-calendar {
-  background: rgb(31 41 55);
+  background: rgb(39 39 42);
   color: rgb(243 244 246);
-  border-color: rgb(75 85 99);
+  border-color: rgb(82 82 91);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.35);
 }
 
 html.dark .flatpickr-months .flatpickr-month {
-  background: rgb(31 41 55);
+  background: rgb(39 39 42);
   color: rgb(243 244 246);
   fill: rgb(243 244 246);
 }
 
 html.dark span.flatpickr-weekday {
-  color: rgb(156 163 175);
+  color: rgb(161 161 170);
 }
 
 html.dark .flatpickr-day {
@@ -22,7 +22,7 @@ html.dark .flatpickr-day {
 
 html.dark .flatpickr-day.prevMonthDay,
 html.dark .flatpickr-day.nextMonthDay {
-  color: rgb(107 114 128);
+  color: rgb(113 113 122);
 }
 
 html.dark .flatpickr-day.selected,
@@ -34,6 +34,6 @@ html.dark .flatpickr-day.endRange {
 }
 
 html.dark .flatpickr-day:hover {
-  background: rgb(55 65 81);
-  border-color: rgb(75 85 99);
+  background: rgb(63 63 70);
+  border-color: rgb(82 82 91);
 }

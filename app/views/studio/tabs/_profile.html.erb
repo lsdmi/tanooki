@@ -1,28 +1,28 @@
 <turbo-frame id="profile-form">
   <div class="space-y-6">
     <!-- Profile Information Card -->
-    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800 relative overflow-hidden">
+    <div class="rounded-lg border border-line bg-card shadow-sm relative overflow-hidden">
       <%= render 'shared/decorative_ornament' %>
 
       <div class="p-6 sm:p-8">
         <!-- Header Section -->
         <div class="text-center mb-8">
-          <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4">
-            <svg class="h-8 w-8 text-cyan-700 dark:text-rose-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <div class="mx-auto h-16 w-16 rounded-full bg-brand-subtle flex items-center justify-center mb-4">
+            <svg class="h-8 w-8 text-fg-brand" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Налаштування профілю</h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400">Персоналізуйте свій акаунт та зробіть його унікальним</p>
+          <h3 class="text-xl font-semibold text-fg mb-2">Налаштування профілю</h3>
+          <p class="text-sm text-fg-muted">Персоналізуйте свій акаунт та зробіть його унікальним</p>
         </div>
 
         <%= simple_form_for current_user, url: user_path(current_user), method: :put, data: { turbo_stream: "" } do |f| %>
           <div class="max-w-2xl mx-auto space-y-8">
             <!-- Avatar Selection Section -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+            <div class="bg-surface-strong rounded-lg p-6">
               <div class="text-center mb-4">
-                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Оберіть портретик</h4>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Виберіть улюблений аватар для свого профілю</p>
+                <h4 class="text-lg font-medium text-fg mb-2">Оберіть портретик</h4>
+                <p class="text-sm text-fg-muted">Виберіть улюблений аватар для свого профілю</p>
               </div>
 
               <div class="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-4 justify-items-center">
@@ -36,23 +36,23 @@
                           action: 'click->image-click#addSelected',
                           "avatar-id": avatar.id
                         },
-                        class: "w-16 h-16 lg:w-18 cursor-pointer rounded-full shadow-md hover:shadow-lg transition-all duration-200 #{'ring-2 ring-cyan-500 ring-offset-2 scale-105' if current_user.avatar == avatar}" %>
+                        class: "w-16 h-16 lg:w-18 cursor-pointer rounded-full shadow-md hover:shadow-lg transition-all duration-200 #{'ring-2 ring-brand ring-offset-2 scale-105' if current_user.avatar == avatar}" %>
                   </div>
                 <% end %>
               </div>
             </div>
 
             <!-- Nickname Section -->
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+            <div class="bg-surface-strong rounded-lg p-6">
               <div class="text-center mb-4">
-                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Ваше прізвисько</h4>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Як вас будуть бачити інші користувачі</p>
+                <h4 class="text-lg font-medium text-fg mb-2">Ваше прізвисько</h4>
+                <p class="text-sm text-fg-muted">Як вас будуть бачити інші користувачі</p>
               </div>
 
               <div class="max-w-md mx-auto">
                 <div class="flex">
-                  <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <span class="inline-flex items-center px-3 text-sm text-fg bg-surface-hover border border-r-0 border-line-strong rounded-l-lg">
+                    <svg class="w-4 h-4 text-fg-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
                     </svg>
                   </span>
@@ -60,13 +60,13 @@
                       type: 'text',
                       wrapper_html: { class: 'w-full' },
                       input_html: {
-                        class: 'rounded-none rounded-r-lg bg-white border border-gray-300 text-gray-900 focus:ring-cyan-500 focus:border-cyan-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-800 dark:border-gray-500 dark:text-white dark:focus:ring-cyan-500 dark:focus:border-cyan-500'
+                        class:'rounded-none rounded-r-lg bg-card border border-line-strong text-fg focus:ring-brand focus:border-brand block flex-1 min-w-0 w-full text-sm p-2.5 '
                       },
                       label: false,
                       placeholder: 'Введіть своє прізвисько' %>
                 </div>
                 <% if current_user.errors[:name].any? %>
-                  <p class="mt-2 text-sm text-red-600 dark:text-red-400 text-center">
+                  <p class="mt-2 text-sm text-status-danger-solid text-center">
                     <%= current_user.errors[:name].to_sentence(two_words_connector: "", last_word_connector: "") %>
                   </p>
                 <% end %>

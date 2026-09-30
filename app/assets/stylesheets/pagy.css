@@ -101,9 +101,9 @@
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
-  background-color: #1f2937; /* dark gray background */
-  color: #9ca3af; /* lighter gray text */
-  border: 1px solid #374151; /* darker border */
+  background-color: #27272a; /* dark zinc background */
+  color: #a1a1aa; /* lighter zinc text */
+  border: 1px solid #3f3f46; /* darker border */
   border-radius: 8px;
   box-shadow: none;
   transition: background 0.2s, color 0.2s;
@@ -114,23 +114,23 @@
 
 .dark .pagy-nav .pagy a:hover,
 .dark .pagy-nav .pagy button:hover {
-  background-color: #374151; /* slightly lighter dark */
-  color: #f3f4f6; /* off-white */
+  background-color: #3f3f46; /* slightly lighter dark */
+  color: #f4f4f5; /* off-white */
 }
 
 .dark .pagy-nav .pagy a:active,
 .dark .pagy-nav .pagy button:active {
-  background-color: #4b5563; /* medium dark */
-  color: #f9fafb; /* near white */
+  background-color: #52525b; /* medium dark */
+  color: #fafafa; /* near white */
 }
 
 .dark .pagy-nav .pagy .prev.disabled,
 .dark .pagy-nav .pagy .next.disabled,
 .dark .pagy-nav .pagy button.disabled {
-  color: #6b7280; /* muted gray */
-  background-color: #1f2937;
+  color: #71717a; /* muted zinc */
+  background-color: #27272a;
   cursor: default;
-  border-color: #374151;
+  border-color: #3f3f46;
 }
 
 .dark .pagy-nav .pagy .prev.disabled:hover,
@@ -139,26 +139,26 @@
 .dark .pagy-nav .pagy .next.disabled:active,
 .dark .pagy-nav .pagy button.disabled:hover,
 .dark .pagy-nav .pagy button.disabled:active {
-  color: #6b7280;
-  background-color: #1f2937;
+  color: #71717a;
+  background-color: #27272a;
 }
 
 .dark .pagy-nav .pagy .current {
   color: #fff; /* white */
-  background-color: #6b7280; /* gray */
-  border-color: #6b7280;
+  background-color: #71717a; /* zinc */
+  border-color: #71717a;
   cursor: default;
   pointer-events: none;
 }
 
 .dark .pagy-nav .pagy .current:hover,
 .dark .pagy-nav .pagy .current:active {
-  background-color: #6b7280;
+  background-color: #71717a;
   color: #fff;
 }
 
 .dark .pagy-nav .pagy .gap {
-  color: #6b7280; /* muted gray */
+  color: #71717a; /* muted zinc */
   background: transparent;
   border: none;
   cursor: default;

@@ -4,7 +4,7 @@
   <%= link_to tale_path(publication),
               turbo_drive_visit_data.merge(
                 class: [
-                  'group/cover relative block shrink-0 overflow-hidden bg-gray-800',
+                  'token-raw group/cover relative block shrink-0 overflow-hidden bg-zinc-800',
                   featured ? 'aspect-[4/3] rounded-xl lg:aspect-auto lg:min-h-0 lg:flex-1' : 'aspect-video rounded-lg'
                 ].join(' ')
               ) do %>
@@ -17,11 +17,11 @@
         data-tale-card-text-target="title">
       <%= link_to publication.title, tale_path(publication), turbo_drive_visit_data.merge(class: home_tales_title_link_class) %>
     </h3>
-    <p class="<%= featured ? 'mt-2 line-clamp-2 text-sm' : 'mt-1 line-clamp-2 text-xs' %> leading-relaxed text-gray-300"
+    <p class="<%= featured ? 'mt-2 line-clamp-2 text-sm' : 'mt-1 line-clamp-2 text-xs' %> leading-relaxed text-fg-subtle"
        data-tale-card-text-target="description">
       <%= publication.description.to_plain_text %>
     </p>
-    <p class="<%= featured ? 'mt-3 text-sm' : 'mt-2 text-xs sm:text-sm' %> text-cyan-300 dark:text-rose-300">
+    <p class="<%= featured ? 'mt-3 text-sm' : 'mt-2 text-xs sm:text-sm' %> token-raw text-cyan-300 dark:text-rose-300">
       <%= tale_published_date(publication) %>
     </p>
   </div>

@@ -18,7 +18,7 @@ module Ui
 
     EIGHTEEN_ICON_WRAP =
       'adult-content-disclaimer__icon flex h-11 w-11 shrink-0 items-center ' \
-      'justify-center rounded-xl bg-white dark:bg-zinc-100'
+      'token-raw justify-center rounded-xl bg-white dark:bg-zinc-100'
 
     SIXTEEN_ICON_WRAP =
       'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ' \
@@ -33,9 +33,9 @@ module Ui
 
     EIGHTEEN_DISMISS = [
       'adult-content-disclaimer__dismiss w-full shrink-0 rounded-lg bg-white px-5 py-2 text-sm font-bold',
-      'text-stone-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white',
-      'focus-visible:ring-offset-2 focus-visible:ring-offset-[#ff4d4f] dark:bg-zinc-100',
-      'dark:text-stone-900 dark:hover:bg-white dark:focus-visible:ring-offset-[#c42f31]',
+      'token-raw text-stone-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white',
+      'token-raw focus-visible:ring-offset-2 focus-visible:ring-offset-[#ff4d4f] dark:bg-zinc-100',
+      'token-raw dark:text-stone-900 dark:hover:bg-white dark:focus-visible:ring-offset-[#c42f31]',
       'sm:w-auto sm:self-center'
     ].join(' ').freeze
 

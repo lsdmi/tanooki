@@ -2,16 +2,16 @@
 <% pagy = local_assigns.fetch(:pagy, nil) %>
 <div class="space-y-6">
   <!-- CTA Card -->
-  <div class="col-span-2 rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+  <div class="col-span-2 rounded-lg border border-line bg-card p-6 text-center shadow-sm relative overflow-hidden">
     <!-- SVG Ornament -->
     <%= render 'shared/jellyfish_ornament' %>
-    <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-      <svg class="h-10 w-10 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="mx-auto h-20 w-20 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
+      <svg class="h-10 w-10 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
       </svg>
     </div>
-    <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">Додайте команду!</h3>
-    <p class="mb-4 text-gray-500 dark:text-gray-400 relative z-10">Створіть перекладацьку сторінку, щоб керувати командою та взаємодіяти з читачами!</p>
+    <h3 class="mb-2 text-lg font-semibold leading-none text-fg relative z-10">Додайте команду!</h3>
+    <p class="mb-4 text-fg-muted relative z-10">Створіть перекладацьку сторінку, щоб керувати командою та взаємодіяти з читачами!</p>
     <%= ui_button(as: :link, href: new_scanlator_path, html: { data: { turbo: false }, class: 'relative z-10' }) do %>
       <svg class="w-5 h-5 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -26,16 +26,16 @@
       <%= render 'scanlators/team_grid', scanlators: scanlators, pagy: pagy %>
     <% end %>
   <% else %>
-    <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+    <div class="rounded-lg border border-line bg-card p-8 text-center shadow-sm relative overflow-hidden">
       <!-- SVG Ornament -->
       <%= render 'shared/ornament' %>
-      <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-        <svg class="h-8 w-8 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="mx-auto h-16 w-16 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
+        <svg class="h-8 w-8 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       </div>
-      <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white relative z-10">Команди відсутні</h3>
-      <p class="mb-2 text-gray-500 dark:text-gray-400 relative z-10">Створіть команду та почніть перекладати разом!</p>
+      <h3 class="mb-2 text-lg font-semibold text-fg relative z-10">Команди відсутні</h3>
+      <p class="mb-2 text-fg-muted relative z-10">Створіть команду та почніть перекладати разом!</p>
     </div>
   <% end %>
 </div>

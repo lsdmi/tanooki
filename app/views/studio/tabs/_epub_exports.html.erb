@@ -1,38 +1,38 @@
 <% epub_export_requests = local_assigns.fetch(:epub_export_requests, []) %>
 
 <div class="space-y-6">
-  <div class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+  <div class="rounded-lg border border-line bg-card p-6 text-center shadow-sm relative overflow-hidden">
     <%= render 'shared/jellyfish_ornament' %>
-    <div class="mx-auto h-20 w-20 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-      <svg class="h-10 w-10 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="mx-auto h-20 w-20 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
+      <svg class="h-10 w-10 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16V4m0 12-4-4m4 4 4-4M5 20h14" />
       </svg>
     </div>
-    <h3 class="mb-2 text-lg font-semibold leading-none text-gray-900 dark:text-white relative z-10">EPUB-завантаження</h3>
-    <p class="text-gray-500 dark:text-gray-400 relative z-10">Останні згенеровані EPUB-файли доступні протягом 24 годин.</p>
+    <h3 class="mb-2 text-lg font-semibold leading-none text-fg relative z-10">EPUB-завантаження</h3>
+    <p class="text-fg-muted relative z-10">Останні згенеровані EPUB-файли доступні протягом 24 годин.</p>
   </div>
 
   <% if epub_export_requests.any? %>
-    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
+    <div class="rounded-lg border border-line bg-card shadow-sm">
       <div class="hidden sm:block rounded-lg relative overflow-x-auto">
         <%= render 'shared/jellyfish_ornament' %>
-        <table class="w-full divide-y divide-gray-200 text-left text-sm text-gray-900 dark:text-white">
-          <thead class="bg-cyan-50 text-xs uppercase text-gray-700 dark:bg-rose-900/20 dark:text-gray-400">
+        <table class="w-full divide-y divide-line text-left text-sm text-fg">
+          <thead class="bg-brand-subtle text-xs uppercase text-fg-muted">
             <tr>
-              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300">Файл</th>
-              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Статус</th>
-              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-center">Створено</th>
-              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 text-right">Дії</th>
+              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-fg-secondary">Файл</th>
+              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-fg-secondary text-center">Статус</th>
+              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-fg-secondary text-center">Створено</th>
+              <th scope="col" class="whitespace-nowrap p-4 text-xs font-semibold uppercase text-fg-secondary text-right">Дії</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
+          <tbody class="divide-y divide-line">
             <% epub_export_requests.each do |export_request| %>
-              <tr class="hover:bg-cyan-50 dark:hover:bg-rose-900/10 transition-colors duration-200">
-                <th scope="row" class="p-4 text-sm font-medium text-gray-900 dark:text-white">
+              <tr class="hover:bg-brand-subtle transition-colors duration-200">
+                <th scope="row" class="p-4 text-sm font-medium text-fg">
                   <%= export_request.filename.presence || export_request.volume_title.presence || "EPUB ##{export_request.id}" %>
                 </th>
-                <td class="p-4 text-center text-sm text-gray-500 dark:text-gray-400"><%= export_request.status_label %></td>
-                <td class="whitespace-nowrap p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                <td class="p-4 text-center text-sm text-fg-muted"><%= export_request.status_label %></td>
+                <td class="whitespace-nowrap p-4 text-center text-sm text-fg-muted">
                   <%= l(export_request.created_at, format: :short_datetime) %>
                 </td>
                 <td class="p-4 text-right">
@@ -43,9 +43,9 @@
                                   label: 'Завантажити',
                                   html: { data: { turbo: false } }) %>
                   <% elsif export_request.failed? %>
-                    <span class="text-sm text-red-600 dark:text-red-400"><%= export_request.error_message.presence || t('downloads.alerts.error') %></span>
+                    <span class="text-sm text-status-danger-solid"><%= export_request.error_message.presence || t('downloads.alerts.error') %></span>
                   <% else %>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">Готується...</span>
+                    <span class="text-sm text-fg-muted">Готується...</span>
                   <% end %>
                 </td>
               </tr>
@@ -56,9 +56,9 @@
 
       <div class="space-y-3 p-4 sm:hidden">
         <% epub_export_requests.each do |export_request| %>
-          <article class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            <p class="font-medium text-gray-900 dark:text-white"><%= export_request.filename.presence || export_request.volume_title.presence || "EPUB ##{export_request.id}" %></p>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= l(export_request.created_at, format: :short_datetime) %> · <%= export_request.status_label %></p>
+          <article class="rounded-lg border border-line bg-card p-4 shadow-sm">
+            <p class="font-medium text-fg"><%= export_request.filename.presence || export_request.volume_title.presence || "EPUB ##{export_request.id}" %></p>
+            <p class="mt-1 text-sm text-fg-muted"><%= l(export_request.created_at, format: :short_datetime) %> · <%= export_request.status_label %></p>
             <div class="mt-3">
               <% if export_request.downloadable? %>
                 <%= ui_button(as: :link,
@@ -67,9 +67,9 @@
                               label: 'Завантажити',
                               html: { data: { turbo: false } }) %>
               <% elsif export_request.failed? %>
-                <span class="text-sm text-red-600 dark:text-red-400"><%= export_request.error_message.presence || t('downloads.alerts.error') %></span>
+                <span class="text-sm text-status-danger-solid"><%= export_request.error_message.presence || t('downloads.alerts.error') %></span>
               <% else %>
-                <span class="text-sm text-gray-500 dark:text-gray-400">Готується...</span>
+                <span class="text-sm text-fg-muted">Готується...</span>
               <% end %>
             </div>
           </article>
@@ -77,15 +77,15 @@
       </div>
     </div>
   <% else %>
-    <div class="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:bg-gray-800 relative overflow-hidden">
+    <div class="rounded-lg border border-line bg-card p-8 text-center shadow-sm relative overflow-hidden">
       <%= render 'shared/ornament' %>
-      <div class="mx-auto h-16 w-16 rounded-full bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mb-4 relative z-10">
-        <svg class="h-8 w-8 text-cyan-700 dark:text-rose-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="mx-auto h-16 w-16 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
+        <svg class="h-8 w-8 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16V4m0 12-4-4m4 4 4-4M5 20h14" />
         </svg>
       </div>
-      <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white relative z-10">У вас ще немає EPUB-завантажень</h3>
-      <p class="text-gray-500 dark:text-gray-400 relative z-10">Коли ви створите EPUB, він з'явиться тут.</p>
+      <h3 class="mb-2 text-lg font-semibold text-fg relative z-10">У вас ще немає EPUB-завантажень</h3>
+      <p class="text-fg-muted relative z-10">Коли ви створите EPUB, він з'явиться тут.</p>
     </div>
   <% end %>
 </div>

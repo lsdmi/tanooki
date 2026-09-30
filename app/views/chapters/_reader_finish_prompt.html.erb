@@ -1,13 +1,13 @@
 <%# locals: chapter: %>
 <%# Hidden until `reading-progress` reports this chapter newly completed. Fixed, like the resume banner. %>
-<section class="fixed bottom-18 left-4 right-4 z-40 mx-auto rounded-xl border border-stone-200/90 bg-white/95 p-4 shadow-lg shadow-stone-900/10 backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-900/95 dark:shadow-black/40 sm:bottom-6 sm:left-1/2 sm:right-auto sm:w-max sm:max-w-lg sm:-translate-x-1/2"
+<section class="fixed bottom-18 left-4 right-4 z-40 mx-auto rounded-xl border border-line/90 bg-main/95 p-4 shadow-lg shadow-stone-900/10 backdrop-blur-sm dark:shadow-black/40 sm:bottom-6 sm:left-1/2 sm:right-auto sm:w-max sm:max-w-lg sm:-translate-x-1/2"
          data-controller="reader-finish-prompt"
          data-reader-finish-prompt-chapter-url-value="<%= record_progress_chapter_path(chapter) %>"
          data-reader-finish-prompt-done-text-value="<%= t('reading_progress.finish_prompt.done') %>"
          data-action="reading-progress:completed@window->reader-finish-prompt#show"
          aria-live="polite"
          hidden>
-  <p class="text-sm font-medium text-stone-800 dark:text-zinc-100" data-reader-finish-prompt-target="text">
+  <p class="text-sm font-medium text-fg" data-reader-finish-prompt-target="text">
     <%= t('reading_progress.finish_prompt.text') %>
   </p>
   <%# Two equal columns whatever the label lengths. %>

@@ -5,8 +5,8 @@ module FictionGenrePageNewReleases
   extend ActiveSupport::Concern
 
   FEATURED_CARD_ACCENTS = [
-    'from-slate-800 to-slate-950',
-    'from-indigo-950 via-slate-900 to-slate-950'
+    'token-raw from-slate-800 to-slate-950',
+    'token-raw from-indigo-950 via-slate-900 to-slate-950'
   ].freeze
 
   # Locals for compact genre cards (thumbs / «Нові Релізи» grid).

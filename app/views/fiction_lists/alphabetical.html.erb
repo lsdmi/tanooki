@@ -1,8 +1,8 @@
 <div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
   <!-- Page Title -->
   <div class="py-4 sm:pt-8 sm:pb-4">
-    <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none mb-2 sm:mb-4">Сховище</h1>
-    <p class="text-stone-800 dark:text-gray-200 text-sm sm:text-lg lg:text-2xl font-light">Усі ранобе, веб-новели та художня проза!</p>
+    <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-fg tracking-tight leading-none mb-2 sm:mb-4">Сховище</h1>
+    <p class="text-fg text-sm sm:text-lg lg:text-2xl font-light">Усі ранобе, веб-новели та художня проза!</p>
   </div>
 
   <%# Full-width horizontal unit below the H1 (responsive AdSense fills the container). %>
@@ -14,8 +14,8 @@
 
   <!-- Filters: Top (mobile/tablet only) -->
   <div class="block lg:hidden w-full mb-6">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-md border border-gray-200">
-      <h2 class="text-2xl line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none mb-4">Фільтри</h2>
+    <div class="bg-card rounded-xl p-4 sm:p-6 shadow-md border border-line">
+      <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
       <%= turbo_frame_tag "filters" do %>
         <%= render partial: 'fiction_lists/filter_form' %>
       <% end %>
@@ -26,8 +26,8 @@
   <div class="flex flex-col lg:flex-row gap-8">
     <!-- Sidebar: Filters & Ads (desktop only) -->
     <aside class="lg:w-80 w-full flex-shrink-0 flex-col gap-6 hidden lg:flex">
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200">
-        <h2 class="text-2xl line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-700 transition-colors duration-300 font-black text-stone-900 dark:text-gray-100 tracking-tight leading-none mb-4">Фільтри</h2>
+      <div class="bg-card rounded-xl p-6 shadow-md border border-line">
+        <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
         <%= turbo_frame_tag "filters" do %>
           <%= render partial: 'fiction_lists/filter_form' %>
         <% end %>
@@ -35,7 +35,7 @@
     </aside>
 
     <!-- Main Content: Fiction Picker & Details -->
-    <main class="flex-1 p-2 sm:p-4 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200">
+    <main class="flex-1 p-2 sm:p-4 bg-surface rounded-lg shadow-md overflow-hidden border border-line">
       <%= turbo_frame_tag 'fiction-list-page', data: { controller: 'fiction-picker' }, class: 'mb-4' do %>
         <%= render partial: 'fiction_lists/dynamic_content',
                    locals: { fictions: @fictions, pagy: @pagy } %>

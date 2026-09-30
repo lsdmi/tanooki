@@ -1,15 +1,15 @@
 <section class="relative min-h-screen flex items-center justify-center py-10 px-4">
-  <div class="w-full max-w-7xl bg-white/90 dark:bg-gray-950/90 rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-gray-200 dark:border-gray-700">
+  <div class="w-full max-w-7xl bg-main/90 rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-line">
     <!-- Left: Welcome and Registration Form -->
     <div class="flex-1 flex flex-col justify-center p-10 md:p-14">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2 tracking-tight leading-tight">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-fg mb-2 tracking-tight leading-tight">
         Ласкаво Просимо до Баки!
       </h1>
-      <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light mb-6">
+      <p class="text-lg md:text-xl text-fg-muted font-light mb-6">
         Вже маєте обліковий запис?
-        <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-semibold text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+        <%= link_to 'Поринути до Світу Аніме', new_user_session_path, class: 'font-semibold text-status-success-solid hover:underline transition' %>
       </p>
-      <div class="bg-emerald-50 dark:bg-gray-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-gray-200 dark:border-gray-700">
+      <div class="token-raw bg-emerald-50 dark:bg-zinc-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-line">
         <%= simple_form_for(resource, as: resource_name, url: register_path) do |f| %>
           <%= f.input :avatar_id, as: :hidden, input_html: { value: Avatar.all.sample.id } %>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -22,10 +22,10 @@
                 placeholder: "user@baka.in.ua",
                 input_html: {
                   autocomplete: "email",
-                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:email].any? }"
+                  class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:email].any? }"
                 },
                 label_html: {
-                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                  class: 'block text-sm font-medium text-fg-secondary mb-1'
                 } %>
               <%= tag.span resource.errors[:email].uniq.to_sentence(two_words_connector: "", last_word_connector: ""), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:email].any? %>
             </div>
@@ -37,12 +37,12 @@
                 placeholder: "username",
                 input_html: {
                   autocomplete: "name",
-                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:name].any? }"
+                  class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:name].any? }"
                 },
                 label_html: {
-                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                  class: 'block text-sm font-medium text-fg-secondary mb-1'
                 } %>
-              <%= tag.span resource.errors[:name].join(''), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:name].any? %>
+              <%= tag.span resource.errors[:name].join(''), class: "flex items-center font-medium tracking-wide text-status-danger-solid text-xs mt-1 ml-1" if resource.errors[:name].any? %>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
@@ -54,10 +54,10 @@
                 placeholder: "***********",
                 input_html: {
                   autocomplete: "new-password",
-                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:password].any? }"
+                  class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:password].any? }"
                 },
                 label_html: {
-                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                  class: 'block text-sm font-medium text-fg-secondary mb-1'
                 } %>
               <%= tag.span resource.errors[:password].to_sentence(two_words_connector: "", last_word_connector: ""), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password].any? %>
             </div>
@@ -69,10 +69,10 @@
                 placeholder: "***********",
                 input_html: {
                   autocomplete: "new-password",
-                  class: "w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-base text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                  class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:password_confirmation].any? }"
                 },
                 label_html: {
-                  class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
+                  class: 'block text-sm font-medium text-fg-secondary mb-1'
                 } %>
               <%= tag.span resource.errors[:password_confirmation].to_sentence(two_words_connector: "", last_word_connector: ""), class: "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" if resource.errors[:password_confirmation].any? %>
             </div>
@@ -83,13 +83,13 @@
           <%= render 'users/sessions/omniauth' %>
         </div>
         <div class="flex justify-end mt-4">
-          <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:underline transition' %>
+          <%= link_to 'Забули пароль?', new_user_password_path, class: 'text-sm font-medium text-status-success-solid hover:underline transition' %>
         </div>
       </div>
     </div>
     <!-- Right: Visual -->
-    <div class="hidden md:flex flex-1 items-center justify-center bg-gradient-to-tr from-emerald-100 via-white to-emerald-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      <%= image_tag 'registration.png', alt: 'registration', class: 'w-80 h-80 object-cover rounded-xl shadow-lg border-4 border-emerald-100 dark:border-gray-800' %>
+    <div class="token-raw hidden md:flex flex-1 items-center justify-center bg-gradient-to-tr from-emerald-100 via-main to-emerald-50 dark:from-zinc-950 dark:to-zinc-950">
+      <%= image_tag 'registration.png', alt: 'registration', class: 'token-raw w-80 h-80 object-cover rounded-xl shadow-lg border-4 border-emerald-100 dark:border-zinc-800' %>
     </div>
   </div>
 </section>

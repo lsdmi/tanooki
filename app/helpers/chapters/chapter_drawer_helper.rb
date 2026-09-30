@@ -5,24 +5,24 @@ module Chapters
   module ChapterDrawerHelper
     # Only :read rows are washed and muted. The resume chapter stands out by weight and its marker, never the wash.
     DRAWER_TITLE_CLASSES = {
-      current: 'text-sm font-medium text-cyan-900 dark:text-rose-200',
-      in_progress: 'text-sm font-medium text-stone-900 dark:text-zinc-50',
-      read: 'text-sm text-stone-500 dark:text-zinc-400',
-      unread: 'text-sm text-stone-800 dark:text-zinc-200'
+      current: 'text-sm font-medium text-fg-brand-hover',
+      in_progress: 'text-sm font-medium text-fg',
+      read: 'text-sm text-fg-muted',
+      unread: 'text-sm text-fg'
     }.freeze
     LIST_TITLE_CLASSES = {
-      current: 'font-medium text-stone-900 dark:text-gray-100',
-      in_progress: 'font-medium text-stone-900 dark:text-gray-100',
-      read: 'text-stone-500 dark:text-gray-400',
-      unread: 'text-stone-700 group-hover:text-stone-900 dark:text-gray-300 dark:group-hover:text-gray-100'
+      current: 'font-medium text-fg',
+      in_progress: 'font-medium text-fg',
+      read: 'text-fg-muted',
+      unread: 'text-fg-secondary group-hover:text-fg'
     }.freeze
     DRAWER_ROW_CLASSES = {
-      read: 'bg-stone-50 hover:bg-stone-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70',
-      other: 'hover:bg-stone-50 dark:hover:bg-zinc-800/60'
+      read: 'bg-surface hover:bg-surface-strong dark:bg-surface/40 dark:hover:bg-surface/70',
+      other: 'hover:bg-surface dark:hover:bg-surface/60'
     }.freeze
     LIST_ROW_CLASSES = {
-      read: 'bg-stone-50 hover:bg-stone-100 dark:bg-gray-800/60 dark:hover:bg-gray-700',
-      other: 'hover:bg-stone-50 dark:hover:bg-gray-700'
+      read: 'bg-surface hover:bg-surface-strong dark:bg-surface/60',
+      other: 'hover:bg-surface-strong'
     }.freeze
 
     def fiction_chapter_drawer_count(fiction, viewer: current_user)

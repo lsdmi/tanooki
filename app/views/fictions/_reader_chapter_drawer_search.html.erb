@@ -1,8 +1,8 @@
 <%# locals: fiction:, order:, toggle_order_button_id:, current_chapter: nil %>
-<div class="flex items-center gap-2 border-b border-stone-200 px-4 py-3 dark:border-zinc-700">
+<div class="flex items-center gap-2 border-b border-line px-4 py-3">
   <label class="relative min-w-0 flex-1">
     <span class="sr-only"><%= t('chapters.reader_chapter_drawer.search_label') %></span>
-    <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
     </svg>
     <input type="search"
@@ -11,7 +11,7 @@
            autocorrect="off"
            spellcheck="false"
            placeholder="<%= t('chapters.reader_chapter_drawer.search_placeholder') %>"
-           class="w-full rounded-lg border border-stone-200 bg-stone-50 py-2 pl-9 pr-3 text-sm text-stone-800 placeholder:text-stone-400 focus:border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-300/60 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500 dark:focus:ring-zinc-500/50"
+           class="w-full rounded-lg border border-line-strong bg-surface py-2 pl-9 pr-3 text-sm text-fg placeholder:text-fg-subtle focus:border-line-strong focus:outline-none focus:ring-2 focus:ring-line-strong/60"
            data-chapter-drawer-search-target="input"
            data-action="input->chapter-drawer-search#filter search->chapter-drawer-search#filter">
   </label>
@@ -26,7 +26,7 @@
                   action: 'click->fictions-order-toggle#spin'
                 },
                 id: toggle_order_button_id,
-                class: 'inline-flex shrink-0 items-center justify-center rounded-lg border border-stone-200 bg-stone-50 p-2 text-stone-600 transition hover:bg-stone-100 hover:text-stone-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-zinc-100' do %>
+                class: 'inline-flex shrink-0 items-center justify-center rounded-lg border border-line-strong bg-surface p-2 text-fg-secondary transition hover:bg-surface-strong hover:text-fg' do %>
     <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -35,9 +35,9 @@
 </div>
 
 <div data-chapter-drawer-search-target="results" class="hidden">
-  <ul data-chapter-drawer-search-target="resultsList" class="divide-y divide-stone-100 dark:divide-zinc-800"></ul>
+  <ul data-chapter-drawer-search-target="resultsList" class="divide-y divide-line"></ul>
 </div>
 
-<p data-chapter-drawer-search-target="empty" class="hidden px-4 py-6 text-center text-sm text-stone-500 dark:text-zinc-400">
+<p data-chapter-drawer-search-target="empty" class="hidden px-4 py-6 text-center text-sm text-fg-muted">
   <%= t('chapters.reader_chapter_drawer.search_empty') %>
 </p>

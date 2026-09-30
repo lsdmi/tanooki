@@ -5,14 +5,14 @@
     <div class="lg:col-span-1 space-y-6">
 
       <!-- User Avatar and Name -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+      <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
         <%= render 'shared/ornament' %>
         <div class="text-center relative">
           <div class="relative inline-block">
-            <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg" %>
+            <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "token-raw w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg" %>
           </div>
-          <h1 class="text-2xl font-semibold text-cyan-700 dark:text-rose-700 mt-2" style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;"><%= @user.name %></h1>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Учасник з <%= @user.created_at.year %>-го</p>
+          <h1 class="text-2xl font-semibold text-brand mt-2" style="text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;"><%= @user.name %></h1>
+          <p class="text-xs text-fg-muted mt-1">Учасник з <%= @user.created_at.year %>-го</p>
         </div>
       </div>
 
@@ -24,17 +24,17 @@
 
       <!-- My Blogs -->
       <% if @recent_publications.any? %>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+        <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
-            <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
+            <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
             </svg>
             Нові Блоги
           </h2>
           <div class="space-y-3">
             <% @recent_publications.each do |publication| %>
-              <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div class="flex items-center p-3 bg-surface-strong rounded-lg">
                 <%= cover_card_picture_tag(publication.cover,
                         alt: publication.cover.blob.filename.to_s,
                         class: "w-10 h-10 rounded-lg flex items-center justify-center object-cover",
@@ -45,10 +45,10 @@
                           lazy_image_url_value: cover_card_url(publication.cover)
                         } ) %>
                 <div class="ml-3 flex-1">
-                  <h4 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                  <h4 class="text-sm font-medium text-fg line-clamp-1">
                     <%= link_to publication.title, tale_path(publication), class: "hover:underline" %>
                   </h4>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                  <p class="text-xs text-fg-muted line-clamp-1">
                     <%= publication.description.to_plain_text %>
                   </p>
                 </div>
@@ -60,33 +60,33 @@
 
       <!-- My Teams -->
       <% if @user_scanlators.any? %>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+        <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
           <%= render 'shared/decorative_ornament' %>
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
-            <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
+            <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
             Мої команди
           </h2>
           <div class="space-y-3">
             <% @user_scanlators.each do |scanlator| %>
-              <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div class="flex items-center p-3 bg-surface-strong rounded-lg">
                 <% if scanlator.avatar.attached? %>
                   <%= image_tag scanlator_avatar_url(scanlator.avatar),
                       alt: scanlator.title,
                       class: "w-10 h-10 rounded-lg flex items-center justify-center" %>
                 <% else %>
                   <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </div>
                 <% end %>
                 <div class="ml-3 flex-1">
-                  <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                  <h3 class="text-sm font-medium text-fg line-clamp-1">
                     <%= link_to scanlator.title, scanlator_path(scanlator), class: "hover:underline" %>
                   </h3>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"><%= scanlator.description %></p>
+                  <p class="text-xs text-fg-muted line-clamp-1"><%= scanlator.description %></p>
                 </div>
               </div>
             <% end %>
@@ -96,36 +96,36 @@
 
       <!-- My Bookshelves -->
       <% if @user_bookshelves.any? %>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+        <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
           <%= render 'shared/decorative_ornament' %>
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
-            <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
+            <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4" />
             </svg>
             Книжкова Полиця
           </h2>
           <div class="space-y-3">
             <% @user_bookshelves.each do |bookshelf| %>
-              <div class="group p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200">
+              <div class="group p-4 bg-card rounded-lg border border-line hover:shadow-md transition-all duration-200">
                 <div class="space-y-3">
                   <!-- Title and Fiction Count Row -->
                   <div class="flex items-center justify-between">
                     <%= link_to bookshelf_path(bookshelf.sqid), class: "block" do %>
-                      <h3 class="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-cyan-700 dark:group-hover:text-rose-400 transition-colors">
+                      <h3 class="text-lg font-bold text-fg line-clamp-1 group-hover:text-fg-brand transition-colors">
                         <%= bookshelf.title %>
                       </h3>
                     <% end %>
-                    <div class="flex items-center px-3 py-1 bg-cyan-100 dark:bg-rose-900/30 rounded-full">
-                      <svg class="w-4 h-4 mr-1.5 text-cyan-700 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center px-3 py-1 bg-brand-subtle rounded-full">
+                      <svg class="w-4 h-4 mr-1.5 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                       </svg>
-                      <span class="text-sm font-semibold text-cyan-700 dark:text-rose-400">
+                      <span class="text-sm font-semibold text-fg-brand">
                         <%= bookshelf.fictions.count %>
                       </span>
                     </div>
                   </div>
                   <!-- Description -->
-                  <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2">
+                  <p class="text-sm text-fg-secondary leading-relaxed line-clamp-2">
                     <%= bookshelf.description %>
                   </p>
                 </div>
@@ -134,7 +134,7 @@
                     <div class="mt-3 flex -space-x-2 overflow-x-auto scrollbar-hide pb-2">
                       <% bookshelf.fictions.each do |fiction| %>
                         <div class="relative flex-shrink-0">
-                        <%= link_to fiction_path(fiction), class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
+                        <%= link_to fiction_path(fiction), class: "block w-8 h-10 rounded-sm overflow-hidden border-2 border-card shadow-sm hover:z-10 hover:scale-110 transition-all duration-200" do %>
                           <%= cover_card_picture_tag(fiction.cover,
                               alt: fiction.title,
                               class: "w-full h-full object-cover",
@@ -160,54 +160,54 @@
     <div class="lg:col-span-2 space-y-6">
 
       <!-- Pokemon Stats -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+      <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
         <%= render 'shared/ornament' %>
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center relative z-10">
-          <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
+          <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
           </svg>
           Статистика Покемонів
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
-          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @pokemon_count %> / <%= @total_pokemon %></div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Покедекс</div>
+          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+            <div class="text-2xl font-bold text-fg-brand"><%= @pokemon_count %> / <%= @total_pokemon %></div>
+            <div class="text-sm text-fg-secondary">Покедекс</div>
           </div>
-          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400"><%= @victories %> / <%= @total_battles %></div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Вдалі Виклики</div>
+          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+            <div class="text-2xl font-bold text-fg-brand"><%= @victories %> / <%= @total_battles %></div>
+            <div class="text-sm text-fg-secondary">Вдалі Виклики</div>
           </div>
-          <div class="text-center p-4 bg-cyan-50 dark:bg-rose-900/20 rounded-lg border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-cyan-700 dark:text-rose-400">#<%= @user_rating %></div>
-            <div class="text-sm text-gray-600 dark:text-gray-300">Рейтинг</div>
+          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+            <div class="text-2xl font-bold text-fg-brand">#<%= @user_rating %></div>
+            <div class="text-sm text-fg-secondary">Рейтинг</div>
           </div>
         </div>
       </div>
 
       <!-- My Comments -->
       <% if @recent_comments.any? %>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+        <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-            <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-lg font-semibold text-fg mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
             </svg>
             Останні Коментарі
           </h2>
           <div class="space-y-4">
             <% @recent_comments.each do |comment| %>
-              <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div class="p-4 bg-surface-strong rounded-lg">
                 <div class="flex items-start space-x-3">
-                  <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center text-xs font-medium text-cyan-700 dark:text-cyan-400" %>
+                  <%= image_tag avatar_image_url(@user.avatar.image), alt: @user.name, class: "w-8 h-8 bg-brand-subtle rounded-full flex items-center justify-center text-xs font-medium text-fg-brand" %>
                   <div class="flex-1">
                     <div class="flex items-center space-x-2 mb-1">
-                      <span class="text-sm font-medium text-gray-900 dark:text-white"><%= comment.username %></span>
-                      <span class="text-xs text-gray-500 dark:text-gray-400"><%= time_ago_in_words(comment.created_at) %> тому</span>
+                      <span class="text-sm font-medium text-fg"><%= comment.username %></span>
+                      <span class="text-xs text-fg-muted"><%= time_ago_in_words(comment.created_at) %> тому</span>
                     </div>
-                    <p class="text-sm text-gray-700 dark:text-gray-300"><%= comment.content.truncate(120) %></p>
-                    <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-fg-secondary"><%= comment.content.truncate(120) %></p>
+                    <div class="mt-2 text-xs text-fg-muted">
                       Коментар до:
-                      <span class="text-cyan-700 dark:text-rose-400 hover:underline cursor-pointer">
+                      <span class="text-fg-brand hover:underline cursor-pointer">
                         <%= link_to commentable_title(comment.commentable), comment_url(comment), class: 'hover:underline' %>
                       </span>
                     </div>
@@ -221,17 +221,17 @@
 
       <!-- Recent Book Choices -->
       <% if @recent_readings.any? %>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stone-200 dark:border-gray-700 p-6 relative overflow-hidden">
+        <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
           <%= render 'shared/decorative_ornament' %>
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-            <svg class="w-5 h-5 mr-2 text-cyan-700 dark:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-lg font-semibold text-fg mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
             Щойно Переглянуте
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <% @recent_readings.joins(:chapter).each do |reading| %>
-              <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div class="flex items-center space-x-3 p-3 bg-surface-strong rounded-lg">
                 <%= link_to fiction_path(reading.fiction), class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
                   <%= cover_card_picture_tag(reading.fiction.cover,
                     alt: reading.fiction.cover.blob.filename.to_s,
@@ -245,10 +245,10 @@
                 <% end %>
 
                 <div class="flex-1">
-                  <h3 class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
+                  <h3 class="text-sm font-medium text-fg line-clamp-1">
                     <%= link_to reading.fiction.title, fiction_path(reading.fiction), class: "hover:underline" %>
                   </h3>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                  <p class="text-xs text-fg-muted line-clamp-1">
                     <%= reading.chapter.display_title_no_volume %>
                   </p>
                 </div>

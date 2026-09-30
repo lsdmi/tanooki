@@ -16,7 +16,7 @@ module Ui
 
       assert_selector 'span.bg-rose-200', text: '18+'
       assert_selector 'span.bg-rose-200 svg'
-      assert_selector 'a.border-gray-300', text: 'Драма'
+      assert_selector 'a.border-line-strong', text: 'Драма'
     end
 
     test 'renders 16+ as amber rating tag without link' do
@@ -31,7 +31,7 @@ module Ui
 
       assert_selector 'span.bg-amber-200', text: '16+'
       assert_selector 'span.bg-amber-200 svg'
-      assert_selector 'a.border-gray-300', text: 'Драма'
+      assert_selector 'a.border-line-strong', text: 'Драма'
     end
 
     test 'sort_adult_first orders red tags before outline tags' do

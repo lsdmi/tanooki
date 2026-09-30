@@ -25,11 +25,11 @@ export default class extends Controller {
     this.starTargets.forEach((star, index) => {
       const starValue = parseInt(star.dataset.starValue)
       if (starValue <= rating) {
-        star.classList.remove('text-gray-300', 'dark:text-gray-600')
-        star.classList.add('text-cyan-700', 'dark:text-rose-700')
+        star.classList.remove('text-fg-subtle')
+        star.classList.add('text-brand')
       } else {
-        star.classList.remove('text-cyan-700', 'dark:text-rose-700')
-        star.classList.add('text-gray-300', 'dark:text-gray-600')
+        star.classList.remove('text-brand')
+        star.classList.add('text-fg-subtle')
       }
     })
     
@@ -39,7 +39,7 @@ export default class extends Controller {
 
   updateFishLabelForUser(userRating) {
     // Find the fish label and update it with the user's rating
-    const fishLabel = document.querySelector('.text-xs.text-gray-500.dark\\:text-gray-400')
+    const fishLabel = document.querySelector('[data-rating-label]')
     if (fishLabel) {
       fishLabel.textContent = `Ваша оцінка (${userRating})`
     }
@@ -94,11 +94,11 @@ export default class extends Controller {
         staticFish.forEach((fish, index) => {
           const fishValue = index + 1
           if (fishValue <= roundedRating) {
-            fish.classList.remove('text-gray-300', 'dark:text-gray-600')
-            fish.classList.add('text-cyan-700', 'dark:text-rose-700')
+            fish.classList.remove('text-fg-subtle')
+            fish.classList.add('text-brand')
           } else {
-            fish.classList.remove('text-cyan-700', 'dark:text-rose-700')
-            fish.classList.add('text-gray-300', 'dark:text-gray-600')
+            fish.classList.remove('text-brand')
+            fish.classList.add('text-fg-subtle')
           }
         })
       }
@@ -110,7 +110,7 @@ export default class extends Controller {
 
   updateFishLabel(averageRating) {
     // Find the fish label and update it with the new average
-    const fishLabel = document.querySelector('.text-xs.text-gray-500.dark\\:text-gray-400')
+    const fishLabel = document.querySelector('[data-rating-label]')
     if (fishLabel) {
       // Check if user is logged in by looking for interactive fish buttons
       const interactiveFish = document.querySelectorAll('button[data-rating-target="star"]')
@@ -119,7 +119,7 @@ export default class extends Controller {
         // We need to get the current user's rating from the active fish
         let userRating = 0
         interactiveFish.forEach(fish => {
-          if (fish.classList.contains('text-cyan-700') || fish.classList.contains('dark:text-rose-700')) {
+          if (fish.classList.contains('text-brand')) {
             userRating = Math.max(userRating, parseInt(fish.dataset.starValue))
           }
         })

@@ -1,10 +1,10 @@
 <%# locals: fiction:, chapter:, cover_class:, gap_class: %>
 <% cover_class = local_assigns.fetch(:cover_class, 'w-16 sm:w-[4.5rem] lg:w-[5.25rem]') %>
 <% gap_class = local_assigns.fetch(:gap_class, 'gap-3') %>
-<% text_link_class = 'rounded-lg transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:hover:text-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900' %>
+<% text_link_class = 'rounded-lg transition-colors hover:text-fg-brand hover:underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main' %>
 <article class="flex <%= gap_class %>">
   <%= link_to chapter_path(chapter),
-              turbo_drive_visit_data.merge(class: "group/cover aspect-[3/4] #{cover_class} shrink-0 overflow-hidden rounded-lg bg-stone-200 shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:bg-slate-800 dark:focus-visible:ring-violet-400") do %>
+              turbo_drive_visit_data.merge(class: "group/cover aspect-[3/4] #{cover_class} shrink-0 overflow-hidden rounded-lg bg-surface shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 dark:focus-visible:ring-violet-400") do %>
     <%= cover_card_picture_tag(fiction.cover,
                   preset: :thumb,
                   alt: fiction.title,
@@ -12,15 +12,15 @@
                   loading: 'lazy' ) %>
   <% end %>
   <div class="min-w-0 flex-1 py-0.5">
-    <p class="line-clamp-2 text-sm font-semibold leading-snug text-stone-900 dark:text-slate-100 lg:text-base">
+    <p class="line-clamp-2 text-sm font-semibold leading-snug text-fg lg:text-base">
       <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: text_link_class) %>
     </p>
     <p class="mt-1 text-xs lg:text-sm font-semibold">
       <%= link_to recently_updated_chapter_label(chapter),
                   chapter_path(chapter),
-                  turbo_drive_visit_data.merge(class: "text-cyan-700 dark:text-rose-400 #{text_link_class}") %>
+                  turbo_drive_visit_data.merge(class: "text-fg-brand #{text_link_class}") %>
     </p>
-    <p class="mt-1 text-xs text-stone-500 dark:text-slate-400 lg:text-sm">
+    <p class="mt-1 text-xs text-fg-muted lg:text-sm">
       <%= recently_updated_timestamp(chapter) %>
     </p>
   </div>

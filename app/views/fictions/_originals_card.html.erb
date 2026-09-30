@@ -1,9 +1,9 @@
 <%# locals: (fiction:) %>
 <% synopsis = fiction.short_description.presence || fiction.description %>
-<article class="group flex w-[202px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-slate-400 bg-slate-800 transition-colors duration-200 hover:border-cyan-400 focus-within:border-cyan-400 dark:hover:border-rose-400 dark:focus-within:border-rose-400 lg:w-[344px]">
+<article class="token-raw group flex w-[202px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-line-strong bg-slate-800 dark:bg-zinc-800 transition-colors duration-200 hover:border-cyan-400 focus-within:border-cyan-400 dark:hover:border-rose-400 dark:focus-within:border-rose-400 lg:w-[344px]">
   <%# Backdrop bleeds to the card edges; its height is the cover inset plus the cover, so both end on the same line. %>
   <%= link_to fiction_path(fiction),
-              turbo_drive_visit_data.merge(class: 'relative block h-[142px] overflow-hidden bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400 lg:h-[238px]') do %>
+              turbo_drive_visit_data.merge(class: 'token-raw relative block h-[142px] overflow-hidden bg-slate-800 dark:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400 lg:h-[238px]') do %>
     <%# Same thumb variant as the inset cover, so the backdrop costs no extra request. %>
     <%= cover_card_picture_tag(fiction.cover,
                   preset: :thumb,
@@ -12,7 +12,7 @@
                   class: 'absolute inset-0 h-full w-full scale-110 object-cover object-center blur-sm brightness-[0.65]',
                   loading: 'lazy') %>
     <%# Sits above the backdrop but below the cover, so only the blur dissolves into the card panel. %>
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-800 via-slate-800/65 to-transparent lg:h-32"></div>
+    <div class="token-raw pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-800 via-slate-800/65 to-transparent dark:from-zinc-800 dark:via-zinc-800/65 lg:h-32"></div>
     <div class="absolute bottom-0 left-2.5 h-[132px] w-[88px] overflow-hidden rounded-lg border border-white shadow-lg lg:left-4 lg:h-[222px] lg:w-[148px]">
       <%= cover_card_picture_tag(fiction.cover,
                     preset: :thumb,
@@ -37,18 +37,18 @@
       <p class="text-sm font-semibold leading-tight text-white lg:text-lg">
         <%= link_to fiction.title,
                     fiction_path(fiction),
-                    turbo_drive_visit_data.merge(class: 'line-clamp-1 rounded-lg transition-colors hover:text-cyan-300 hover:underline underline-offset-2 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400') %>
+                    turbo_drive_visit_data.merge(class: 'token-raw line-clamp-1 rounded-lg transition-colors hover:text-cyan-300 hover:underline underline-offset-2 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400') %>
       </p>
       <% creator = fiction.scanlators.first %>
       <% if creator %>
         <p class="mt-1 truncate text-xs lg:mt-1.5 lg:text-sm">
           <%= link_to creator.title,
                       scanlator_path(creator),
-                      turbo_drive_visit_data.merge(class: 'rounded-lg font-medium text-cyan-300 transition-colors hover:text-cyan-200 hover:underline underline-offset-2 dark:text-rose-400 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400') %>
+                      turbo_drive_visit_data.merge(class: 'token-raw rounded-lg font-medium text-cyan-300 transition-colors hover:text-cyan-200 hover:underline underline-offset-2 dark:text-rose-400 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400') %>
         </p>
       <% end %>
       <% if synopsis.present? %>
-        <p class="mt-2 line-clamp-3 text-xs leading-snug text-slate-200 lg:mt-2.5 lg:text-sm"><%= synopsis %></p>
+        <p class="token-raw mt-2 line-clamp-3 text-xs leading-snug text-slate-200 dark:text-zinc-200 lg:mt-2.5 lg:text-sm"><%= synopsis %></p>
       <% end %>
     </div>
   </div>

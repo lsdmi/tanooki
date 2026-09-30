@@ -9,23 +9,9 @@ import {
 } from "reader_preferences"
 import { safeLogoSrc } from "safe_logo_src"
 
-const FONT_ACTIVE_CLASSES = [
-  "!border-cyan-700",
-  "!bg-cyan-700",
-  "!text-white",
-  "dark:!border-rose-600",
-  "dark:!bg-rose-600",
-  "dark:!text-white"
-]
+const FONT_ACTIVE_CLASSES = ["!border-brand", "!bg-brand", "!text-fg-on-brand"]
 
-const FONT_INACTIVE_CLASSES = [
-  "border-stone-200",
-  "bg-white",
-  "text-stone-700",
-  "dark:border-zinc-600",
-  "dark:bg-zinc-900",
-  "dark:text-zinc-200"
-]
+const FONT_INACTIVE_CLASSES = ["border-line-strong", "bg-main", "text-fg"]
 
 /** Reading settings side panel (font, size, theme) on the chapter reader. */
 export default class extends Controller {

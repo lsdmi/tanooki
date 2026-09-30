@@ -1,22 +1,22 @@
-<section class="tracking-widest bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 min-h-screen flex flex-col p-8 font-sans relative overflow-hidden">
+<section class="tracking-widest bg-gradient-to-br from-page to-surface min-h-screen flex flex-col p-8 font-sans relative overflow-hidden">
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('request-page.webp') %>);"></div>
-  <div class="absolute inset-0 bg-gray-50/95 dark:bg-gray-900/95"></div>
+  <div class="absolute inset-0 bg-page/95"></div>
 
   <div class="max-w-7xl mx-auto px-4 z-10 relative w-full">
     <!-- Header Section -->
     <div class="text-center mb-8">
-      <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-gray-800 dark:text-gray-100 tracking-tight leading-none mb-4">
-        Результати<br><span class="text-gray-600 dark:text-gray-400">Пошуку</span>
+      <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-fg tracking-tight leading-none mb-4">
+        Результати<br><span class="text-fg-muted">Пошуку</span>
       </h1>
       <% if params[:search].present? %>
-        <p class="text-gray-700 dark:text-gray-300 text-lg sm:text-xl lg:text-2xl font-light">
-          Знайдено за запитом: "<span class="font-semibold text-cyan-700 dark:text-rose-700"><%= Array(params[:search]).join(', ') %></span>"
+        <p class="text-fg-secondary text-lg sm:text-xl lg:text-2xl font-light">
+          Знайдено за запитом: "<span class="font-semibold text-brand"><%= Array(params[:search]).join(', ') %></span>"
         </p>
       <% end %>
     </div>
 
     <!-- Filter Controls -->
-    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-8 relative overflow-hidden">
+    <div class="bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-8 relative overflow-hidden">
       <div class="absolute inset-0 z-0 opacity-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
           <pattern id="filter-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -30,12 +30,12 @@
 
       <div class="relative z-10">
         <div class="flex items-center mb-4">
-          <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
-            <svg class="h-4 w-4 text-cyan-700/80 dark:text-rose-400/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
+            <svg class="h-4 w-4 text-fg-brand/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
             </svg>
           </div>
-          <h2 class="text-xl font-extrabold text-gray-700 dark:text-gray-200">Фільтри</h2>
+          <h2 class="text-xl font-extrabold text-fg">Фільтри</h2>
         </div>
         <%= turbo_frame_tag "filter-buttons", id: "filter-buttons" do %>
           <%= render 'search/filter_buttons', pagy_fictions: @pagy_fictions, pagy_results: @pagy_results, pagy_videos: @pagy_videos %>
@@ -81,7 +81,7 @@
       <!-- Sidebar -->
       <div class="lg:col-span-1 space-y-8">
         <!-- Popular Tags Section -->
-        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+        <div class="bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
           <div class="absolute inset-0 z-0 opacity-5">
             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
               <pattern id="tags-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -95,7 +95,7 @@
 
           <div class="relative z-10">
             <div class="flex items-center mb-4">
-              <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">Популярні Теґи</h3>
+              <h3 class="text-lg font-bold text-fg">Популярні Теґи</h3>
             </div>
             <%= render Ui::TagListComponent.new(
                   labels: @trending_tag_labels,
@@ -113,7 +113,7 @@
                    measure_as: "bottom" %>
 
         <!-- Quick Links -->
-        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+        <div class="bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
           <div class="absolute inset-0 z-0 opacity-5">
             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
               <pattern id="links-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -127,48 +127,48 @@
 
           <div class="relative z-10">
             <div class="flex items-center mb-4">
-              <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">Швидкі Посилання</h3>
+              <h3 class="text-lg font-bold text-fg">Швидкі Посилання</h3>
             </div>
             <div class="space-y-3">
-              <%= link_to fictions_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+              <%= link_to fictions_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
-                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Ранобе</span>
+                <span class="text-fg-secondary text-sm group-hover:text-fg">Всі Ранобе</span>
               <% end %>
-              <%= link_to tales_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+              <%= link_to tales_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                 </svg>
-                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Новини</span>
+                <span class="text-fg-secondary text-sm group-hover:text-fg">Всі Новини</span>
               <% end %>
-              <%= link_to youtube_videos_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+              <%= link_to youtube_videos_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Всі Відео</span>
+                <span class="text-fg-secondary text-sm group-hover:text-fg">Всі Відео</span>
               <% end %>
 
               <% if user_signed_in? %>
-                <%= link_to library_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                  <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                <%= link_to library_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                  <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                   </svg>
-                  <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Бібліотека</span>
+                  <span class="text-fg-secondary text-sm group-hover:text-fg">Бібліотека</span>
                 <% end %>
               <% end %>
-              <%= link_to translation_requests_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+              <%= link_to translation_requests_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                 </svg>
-                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Запити на Переклад</span>
+                <span class="text-fg-secondary text-sm group-hover:text-fg">Запити на Переклад</span>
               <% end %>
 
-              <%= link_to root_path, class: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition duration-300 group" do %>
-                <svg class="w-4 h-4 shrink-0 mr-3 text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+              <%= link_to root_path, class: "flex items-center p-2 rounded-lg hover:bg-surface-strong dark:hover:bg-surface-strong/50 transition duration-300 group" do %>
+                <svg class="w-4 h-4 shrink-0 mr-3 text-fg-subtle group-hover:text-fg-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                <span class="text-gray-700 dark:text-gray-300 text-sm group-hover:text-gray-900 dark:group-hover:text-gray-100">Головна</span>
+                <span class="text-fg-secondary text-sm group-hover:text-fg">Головна</span>
               <% end %>
             </div>
           </div>

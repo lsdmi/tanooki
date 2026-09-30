@@ -1,14 +1,14 @@
 <%# locals: show_presenter: %>
-<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
+<div class="bg-surface rounded-lg p-4 border border-line relative overflow-hidden">
   <%= render 'shared/jellyfish_ornament' %>
-  <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Відзнаки та нагороди</h3>
+  <h3 class="font-semibold text-fg mb-4">Відзнаки та нагороди</h3>
   <div class="relative">
     <% main_rank = show_presenter.ranks.first %>
     <% main_badge_slug = main_rank && genre_badge_slug(main_rank[0]) %>
     <% if main_badge_slug.present? && badge_asset_available?(main_badge_slug) %>
       <%= link_to fiction_genre_fictions_path(main_badge_slug),
                   turbo_drive_visit_data.merge(
-                    class: 'text-center mb-4 block text-inherit no-underline rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 dark:focus-visible:ring-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800'
+                    class: 'text-center mb-4 block text-inherit no-underline rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 dark:focus-visible:ring-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
                   ) do %>
         <div class="relative inline-block">
           <%= image_tag asset_path("badges/#{main_badge_slug}.webp"),
@@ -18,7 +18,7 @@
             #<%= main_rank[1] %>
           </div>
         </div>
-        <div class="mt-3 text-sm font-bold text-gray-900 dark:text-white">
+        <div class="mt-3 text-sm font-bold text-fg">
           <%= main_rank[0].to_s.titleize %>
         </div>
       <% end %>
@@ -32,7 +32,7 @@
           <% if rank_badge_slug.present? && badge_asset_available?(rank_badge_slug) %>
             <%= link_to fiction_genre_fictions_path(rank_badge_slug),
                         turbo_drive_visit_data.merge(
-                          class: 'text-center text-inherit no-underline inline-block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 dark:focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 dark:focus-visible:ring-offset-gray-800'
+                          class: 'text-center text-inherit no-underline inline-block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 dark:focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
                         ) do %>
               <div class="relative">
                 <%= image_tag asset_path("badges/#{rank_badge_slug}.webp"),
@@ -42,7 +42,7 @@
                   #<%= value %>
                 </div>
               </div>
-              <div class="mt-1 text-xs text-gray-600 dark:text-gray-400 font-medium">
+              <div class="mt-1 text-xs text-fg-muted font-medium">
                 <%= rank.to_s.titleize.length > 5 ? "#{rank.to_s.titleize[0..4]}..." : rank.to_s.titleize %>
               </div>
             <% end %>

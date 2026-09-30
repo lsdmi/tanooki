@@ -1,14 +1,14 @@
 <%# locals: skeleton: FictionGenrePageSkeleton %>
 <div class="pb-4">
-  <nav class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 min-w-0" aria-label="Навігація">
+  <nav class="text-xs sm:text-sm text-fg-muted min-w-0" aria-label="Навігація">
     <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
       <% skeleton.breadcrumbs.each_with_index do |crumb, i| %>
         <% if i.positive? %>
-          <li class="text-slate-600 dark:text-slate-500 select-none" aria-hidden="true">·</li>
+          <li class="token-raw text-slate-600 dark:text-slate-500 select-none" aria-hidden="true">·</li>
         <% end %>
-        <li class="<%= crumb[:path].blank? ? 'font-semibold text-slate-900 dark:text-slate-100' : '' %>">
+        <li class="<%= crumb[:path].blank? ? 'font-semibold text-fg' : '' %>">
           <% if crumb[:path].present? %>
-            <%= link_to crumb[:label], crumb[:path], class: 'rounded-lg transition-colors hover:text-cyan-700 dark:hover:text-rose-300 hover:underline underline-offset-2' %>
+            <%= link_to crumb[:label], crumb[:path], class: 'rounded-lg transition-colors hover:text-fg-brand-hover hover:underline underline-offset-2' %>
           <% else %>
             <span aria-current="page"><%= crumb[:label] %></span>
           <% end %>

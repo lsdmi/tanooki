@@ -15,9 +15,9 @@ module Ui
         )
       )
 
-      assert_selector 'button.border-cyan-800.bg-cyan-700', text: /Ранобе/
-      assert_selector 'button.border-cyan-800 span', text: '1'
-      assert_selector 'button.border-gray-300.bg-white', text: /Усе/
+      assert_selector 'button.border-brand-hover.bg-brand', text: /Ранобе/
+      assert_selector 'button.border-brand-hover span', text: '1'
+      assert_selector 'button.border-line-strong.bg-main', text: /Усе/
     end
 
     test 'renders all tab count from section pagy totals' do
@@ -31,7 +31,7 @@ module Ui
         )
       )
 
-      assert_selector 'button.border-gray-300 span', text: '8'
+      assert_selector 'button.border-line-strong span', text: '8'
     end
 
     test 'all tab count sums section pagy counts' do
@@ -45,7 +45,7 @@ module Ui
         )
       )
 
-      assert_selector 'button.border-cyan-800 span', text: '20'
+      assert_selector 'button.border-brand-hover span', text: '20'
     end
 
     private

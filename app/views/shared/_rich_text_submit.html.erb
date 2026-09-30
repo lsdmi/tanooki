@@ -1,8 +1,8 @@
 <%# locals: (primary_label:, show_draft: true, unpublish: false, unpublish_confirm: nil, cancel_url: :back) %>
-<div class="mt-8 flex items-center justify-end gap-6 border-t border-gray-200 pt-6 dark:border-gray-700"
+<div class="mt-8 flex items-center justify-end gap-6 border-t border-line pt-6"
      data-controller="<%= 'draft-hotkey' if show_draft %>">
   <%= link_to t('chapters.buttons.cancel'), cancel_url,
-              class: 'text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white' %>
+              class: 'text-sm text-fg-muted transition-colors hover:text-fg' %>
   <div class="flex items-center gap-2">
     <% if show_draft %>
       <%= ui_button(as: :submit, variant: :ghost, label: t('chapters.buttons.save'), size: :md, html: {

@@ -4,15 +4,15 @@
   <section class="mx-auto xl:w-[1300px]">
     <div class="<%= page_gutter %> pb-8 pt-4">
       <section class="my-10">
-      <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
-        Останні <span class="text-cyan-800 dark:text-rose-700">Оновлення</span>
+      <p class="drop-shadow uppercase leading-5 text-fg text-lg sm:text-xl lg:text-2xl font-extrabold mb-4 ">
+        Останні <span class="text-brand-hover">Оновлення</span>
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 gap-y-8 py-2">
         <% @latest.each_with_index do |video, idx| %>
           <div class="<%= idx >= 2 ? 'hidden md:block' : '' %> overflow-hidden">
             <%= link_to youtube_video_path(video), class: 'block w-full aspect-[16/9] mb-2 overflow-hidden rounded-lg shadow-sm' do %>
               <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative">
-                <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
+                <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-surface-strong rounded-md">
                   <!-- Spinner SVG or content here -->
                 </div>
                 <%= image_tag video_thumbnail_url(video.thumbnail),
@@ -26,9 +26,9 @@
               </div>
             <% end %>
             <div class="py-2 px-2">
-              <%= link_to video.title, youtube_video_path(video), class: 'drop-shadow lg:leading-tight text-sm sm:text-xs lg:text-lg font-semibold text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 mb-1 line-clamp-1' %>
-              <p class="drop-shadow text-stone-700 dark:text-gray-300 text-xs lg:text-sm my-2 line-clamp-1">
-                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'inline text-stone-800 dark:text-gray-200 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300' %> •
+              <%= link_to video.title, youtube_video_path(video), class: 'drop-shadow lg:leading-tight text-sm sm:text-xs lg:text-lg font-semibold text-fg line-clamp-1 hover:text-brand transition-colors duration-300 mb-1 line-clamp-1' %>
+              <p class="drop-shadow text-fg-secondary text-xs lg:text-sm my-2 line-clamp-1">
+                <%= link_to video.youtube_channel.title, search_index_path(search: [video.youtube_channel.title]), class: 'inline text-fg line-clamp-1 hover:text-brand transition-colors duration-300' %> •
                 <%= tag.span l(video.published_at, format: :short).downcase, class: 'inline' %>
               </p>
               <% if video.tags? %>
@@ -87,8 +87,8 @@
       <% end %>
 
       <section>
-      <p class="drop-shadow uppercase leading-5 text-gray-900 dark:text-gray-100 text-lg sm:text-xl lg:text-2xl font-extrabold mb-4">
-        Популярні <span class="text-cyan-700 dark:text-rose-700">Відео</span>
+      <p class="drop-shadow uppercase leading-5 text-fg text-lg sm:text-xl lg:text-2xl font-extrabold mb-4">
+        Популярні <span class="text-brand">Відео</span>
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 gap-y-4 lg:gap-y-8">
         <% @popular.each do |video| %>

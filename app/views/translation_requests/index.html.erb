@@ -1,15 +1,15 @@
-<section class="tracking-widest bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 min-h-screen flex flex-col items-center p-8 font-sans relative overflow-hidden">
+<section class="tracking-widest bg-gradient-to-br from-page to-surface min-h-screen flex flex-col items-center p-8 font-sans relative overflow-hidden">
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url(<%= asset_path('request-page.webp') %>);"></div>
-  <div class="absolute inset-0 bg-gray-50/95 dark:bg-gray-900/95"></div>
+  <div class="absolute inset-0 bg-page/95"></div>
 
   <div class="max-w-5xl mx-auto px-4 z-10 relative">
     <div class="p-4 sm:p-8 mb-4">
       <div class="text-center">
-        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-gray-800 dark:text-gray-100 tracking-tight leading-none">
-          Запити на<br><span class="text-gray-600 dark:text-gray-400">Переклад</span>
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-fg tracking-tight leading-none">
+          Запити на<br><span class="text-fg-muted">Переклад</span>
         </h1>
       </div>
-      <p class="text-gray-700 dark:text-gray-300 text-lg sm:text-xl lg:text-2xl font-light mt-4 text-center">
+      <p class="text-fg-secondary text-lg sm:text-xl lg:text-2xl font-light mt-4 text-center">
         Знайдіть досвідчених перекладачів для перекладу улюбленого твору!
       </p>
     </div>
@@ -23,15 +23,15 @@
         <% if @newest_request %>
           <div>
             <div class="flex items-center mb-4">
-              <div class="h-6 w-6 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center mr-2">
-                <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="h-6 w-6 rounded-lg bg-status-success-subtle-bg flex items-center justify-center mr-2">
+                <svg class="h-3 w-3 text-status-success-solid" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 class="text-lg font-extrabold text-gray-700 dark:text-gray-200">Найновіший Запит</h3>
+              <h3 class="text-lg font-extrabold text-fg">Найновіший Запит</h3>
             </div>
 
-            <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden" id="newest-request-section">
+            <div class="border border-line bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden" id="newest-request-section">
               <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" />
@@ -74,7 +74,7 @@
         <!-- Request Form Section -->
         <% if user_signed_in? %>
           <!-- Authenticated User: Show Request Form -->
-          <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+          <div class="border border-line bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" />
@@ -96,15 +96,15 @@
 
             <div class="relative z-10">
               <div class="flex items-center mb-6">
-                <div class="h-8 w-8 rounded-lg bg-cyan-100 dark:bg-rose-900/20 flex items-center justify-center mr-3">
-                  <svg class="h-4 w-4 text-cyan-800 dark:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
+                  <svg class="h-4 w-4 text-fg-brand-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
-                <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200">Додати Запит</h2>
+                <h2 class="text-2xl font-extrabold text-fg">Додати Запит</h2>
               </div>
               <% if @translation_request&.errors&.any? %>
-                <div class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+                <div class="bg-status-danger-subtle-bg border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
                   <div class="flex">
                     <div class="flex-shrink-0">
                       <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -115,7 +115,7 @@
                       <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
                         Помилки у формі:
                       </h3>
-                      <div class="mt-2 text-sm text-red-700 dark:text-red-300">
+                      <div class="mt-2 text-sm text-status-danger-solid">
                         <ul class="list-disc pl-5 space-y-1">
                           <% @translation_request.errors.full_messages.each do |message| %>
                             <li><%= message %></li>
@@ -129,25 +129,25 @@
               <%= form_with model: @translation_request, url: translation_requests_path, method: :post, local: true, class: "space-y-6" do |f| %>
                 <div class="grid grid-cols-1 gap-4">
                   <div>
-                    <%= f.label :title, 'Назва проекту', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
+                    <%= f.label :title, 'Назва проекту', class: 'block text-fg-secondary text-sm font-semibold mb-2' %>
                     <%= f.text_field :title, placeholder: 'Наприклад: Solo Leveling - розділи 100-150',
-                        class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
+                        class: "w-full bg-surface-strong text-fg placeholder-fg-muted border border-line-strong rounded-lg p-3 focus:ring-2 focus:ring-brand focus:border-brand" %>
                   </div>
                   <div>
-                    <%= f.label :author, 'Автор оригіналу', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
+                    <%= f.label :author, 'Автор оригіналу', class: 'block text-fg-secondary text-sm font-semibold mb-2' %>
                     <%= f.text_field :author, placeholder: 'Наприклад: Tatsuki Fujimoto',
-                        class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
+                        class: "w-full bg-surface-strong text-fg placeholder-fg-muted border border-line-strong rounded-lg p-3 focus:ring-2 focus:ring-brand focus:border-brand" %>
                   </div>
                 </div>
                 <div>
-                  <%= f.label :source_url, 'Посилання на оригінал', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
+                  <%= f.label :source_url, 'Посилання на оригінал', class: 'block text-fg-secondary text-sm font-semibold mb-2' %>
                   <%= f.url_field :source_url, placeholder: 'https://example.com/manga-original',
-                      class: "w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
+                      class: "w-full bg-surface-strong text-fg placeholder-fg-muted border border-line-strong rounded-lg p-3 focus:ring-2 focus:ring-brand focus:border-brand" %>
                 </div>
                 <div>
-                  <%= f.label :notes, 'Опис проекту та деталі', class: 'block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2' %>
+                  <%= f.label :notes, 'Опис проекту та деталі', class: 'block text-fg-secondary text-sm font-semibold mb-2' %>
                   <%= f.text_area :notes, rows: 4, placeholder: 'Детально опишіть ваш проект, вимоги до перекладача, особливості роботи, бюджет, терміни, мову оригіналу тощо...',
-                      class: "whitespace-pre-line w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" %>
+                      class: "whitespace-pre-line w-full bg-surface-strong text-fg placeholder-fg-muted border border-line-strong rounded-lg p-3 focus:ring-2 focus:ring-brand focus:border-brand" %>
                 </div>
                 <div class="flex justify-end">
                   <%= ui_button(as: :submit, label: 'Опублікувати Запит', size: :md) %>
@@ -157,7 +157,7 @@
           </div>
         <% else %>
           <!-- Non-authenticated User: Show Login Encouragement -->
-          <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+          <div class="border border-line bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" />
@@ -179,60 +179,60 @@
 
             <div class="relative z-10 text-center">
               <!-- Icon -->
-              <div class="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-rose-900/30 dark:to-rose-800/30 flex items-center justify-center">
-                <svg class="h-8 w-8 text-cyan-800 dark:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-brand-subtle to-brand/20 flex items-center justify-center">
+                <svg class="h-8 w-8 text-fg-brand-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
 
               <!-- Title -->
-              <h2 class="text-2xl font-extrabold text-gray-700 dark:text-gray-200 mb-4">
+              <h2 class="text-2xl font-extrabold text-fg mb-4">
                 Увійдіть до Акаунту
               </h2>
 
               <!-- Description -->
-              <p class="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
+              <p class="text-fg-muted text-lg mb-8 leading-relaxed">
                 Щоб додати запит на переклад, вам потрібно<br>
-                <span class="font-semibold text-gray-700 dark:text-gray-300">увійти до свого акаунту</span> або створити новий.
+                <span class="font-semibold text-fg-secondary">увійти до свого акаунту</span> або створити новий.
               </p>
 
               <!-- Benefits List -->
-              <div class="bg-gray-50/50 dark:bg-gray-700/30 rounded-xl p-6 mb-8">
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+              <div class="bg-surface/50 dark:bg-surface-strong/30 rounded-xl p-6 mb-8">
+                <h3 class="text-lg font-semibold text-fg-secondary mb-4">
                   Після входу ви зможете:
                 </h3>
                 <div class="space-y-3 text-left">
                   <div class="flex items-center gap-3">
-                    <div class="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                      <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="h-5 w-5 rounded-full bg-status-success-subtle-bg flex items-center justify-center flex-shrink-0">
+                      <svg class="h-3 w-3 text-status-success-solid" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-gray-700 dark:text-gray-300">Додавати запити на переклад</span>
+                    <span class="text-fg-secondary">Додавати запити на переклад</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                      <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="h-5 w-5 rounded-full bg-status-success-subtle-bg flex items-center justify-center flex-shrink-0">
+                      <svg class="h-3 w-3 text-status-success-solid" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-gray-700 dark:text-gray-300">Голосувати за цікаві проекти</span>
+                    <span class="text-fg-secondary">Голосувати за цікаві проекти</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                      <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="h-5 w-5 rounded-full bg-status-success-subtle-bg flex items-center justify-center flex-shrink-0">
+                      <svg class="h-3 w-3 text-status-success-solid" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-gray-700 dark:text-gray-300">Редагувати свої запити</span>
+                    <span class="text-fg-secondary">Редагувати свої запити</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                      <svg class="h-3 w-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="h-5 w-5 rounded-full bg-status-success-subtle-bg flex items-center justify-center flex-shrink-0">
+                      <svg class="h-3 w-3 text-status-success-solid" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="text-gray-700 dark:text-gray-300">Брати участь у спільноті перекладачів</span>
+                    <span class="text-fg-secondary">Брати участь у спільноті перекладачів</span>
                   </div>
                 </div>
               </div>
@@ -241,13 +241,13 @@
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <%= ui_button(as: :link, href: new_user_session_path, size: :md, label: 'Увійти') %>
                 <%= link_to register_new_path,
-                    class: 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold py-3 px-8 rounded-lg transition duration-300 border border-gray-400 dark:border-gray-500' do %>
+                    class: 'bg-surface-strong hover:bg-surface-hover text-fg font-semibold py-3 px-8 rounded-lg transition duration-300 border border-line-strong' do %>
                   Створити Акаунт
                 <% end %>
               </div>
 
               <!-- Additional Info -->
-              <p class="text-sm text-gray-600 dark:text-gray-400 mt-6">
+              <p class="text-sm text-fg-muted mt-6">
                 Реєстрація займає менше хвилини
               </p>
             </div>
@@ -257,7 +257,7 @@
     </div>
 
     <!-- Second Row: Full Width Requests List -->
-    <div class="border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+    <div class="border border-line bg-card/80 backdrop-filter backdrop-blur-xl rounded-2xl shadow-2xl p-6 relative overflow-hidden">
       <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="2" />

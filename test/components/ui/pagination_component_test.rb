@@ -27,7 +27,7 @@ module Ui
 
       render_inline(PaginationComponent.new(pagy: pagy, onclick: ->(page) { "loadPage(#{page})" }))
 
-      assert_selector 'span.bg-cyan-700', text: '2'
+      assert_selector 'span.bg-brand', text: '2'
     end
 
     test 'renders onclick prev and next buttons' do
@@ -53,7 +53,7 @@ module Ui
       end
 
       assert_selector 'form[data-turbo-frame="fiction-list-page"]'
-      assert_selector 'span.bg-cyan-700', text: '1'
+      assert_selector 'span.bg-brand', text: '1'
     end
 
     test 'uses explicit form_path for prev button' do

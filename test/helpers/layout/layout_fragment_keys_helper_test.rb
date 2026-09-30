@@ -9,11 +9,11 @@ module Layout
     test 'navbar_fragment_cache_key uses shared namespace' do
       define_singleton_method(:cookies) { {} }
 
-      assert_equal 'navbar/v4/shared', navbar_fragment_cache_key(:brand).first
+      assert_equal 'navbar/v5/shared', navbar_fragment_cache_key(:brand).first
     end
 
     test 'footer_fragment_cache_key uses versioned namespace' do
-      assert_equal 'footer/v3', footer_fragment_cache_key.first
+      assert_equal 'footer/v5', footer_fragment_cache_key.first
     end
 
     test 'navbar_fragment_cache_key includes section name' do

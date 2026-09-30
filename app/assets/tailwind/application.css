@@ -4,6 +4,81 @@
 @source '../../helpers/**/*.rb';
 
 @theme {
+  /* Light values from Figma «03. Scheme». Dark values live in the `.dark` block below. */
+  --color-brand: var(--color-cyan-700);
+  --color-brand-hover: var(--color-cyan-800);
+  --color-brand-subtle: var(--color-cyan-50);
+  --color-main: var(--color-white);
+  --color-page: var(--color-slate-50);
+  --color-reader-bg: var(--color-slate-100);
+  --color-card: var(--color-white);
+  --color-surface: var(--color-slate-50);
+  --color-surface-strong: var(--color-slate-100);
+  --color-surface-hover: var(--color-slate-100);
+  --color-line: var(--color-slate-200);
+  --color-line-muted: var(--color-slate-100);
+  --color-line-strong: var(--color-slate-300);
+  --color-fg: var(--color-slate-800);
+  --color-fg-secondary: var(--color-slate-600);
+  --color-fg-muted: var(--color-slate-500);
+  --color-fg-subtle: var(--color-slate-400);
+  --color-fg-brand: var(--color-cyan-700);
+  --color-fg-brand-hover: var(--color-cyan-800);
+  --color-fg-on-brand: var(--color-white);
+
+  --color-btn-licensed: var(--color-purple-600);
+  --color-btn-licensed-hover: var(--color-purple-700);
+
+  --color-overlay-scrim-40: --alpha(var(--color-zinc-950) / 40%);
+  --color-overlay-scrim-45: --alpha(var(--color-zinc-950) / 45%);
+  --color-overlay-scrim-60: --alpha(var(--color-zinc-950) / 60%);
+  --color-overlay-scrim-85: --alpha(var(--color-zinc-950) / 85%);
+
+  --color-status-danger-solid: var(--color-rose-600);
+  --color-status-danger-subtle-bg: var(--color-rose-50);
+  --color-status-danger-subtle-border: var(--color-rose-200);
+  --color-status-danger-subtle-fg: var(--color-rose-800);
+  --color-status-danger-on-media-bg: --alpha(var(--color-rose-950) / 45%);
+  --color-status-danger-on-media-border: --alpha(var(--color-rose-400) / 60%);
+  --color-status-danger-on-media-fg: var(--color-rose-200);
+  --color-status-danger-on-media-title: var(--color-rose-300);
+
+  --color-status-warning-solid: var(--color-orange-600);
+  --color-status-warning-subtle-bg: var(--color-orange-50);
+  --color-status-warning-subtle-border: var(--color-orange-200);
+  --color-status-warning-subtle-fg: var(--color-orange-800);
+  --color-status-warning-on-media-bg: --alpha(var(--color-orange-950) / 45%);
+  --color-status-warning-on-media-border: --alpha(var(--color-orange-400) / 60%);
+  --color-status-warning-on-media-fg: var(--color-orange-200);
+  --color-status-warning-on-media-title: var(--color-orange-300);
+
+  --color-status-licensed-solid: var(--color-purple-600);
+  --color-status-licensed-subtle-bg: var(--color-purple-50);
+  --color-status-licensed-subtle-border: var(--color-purple-200);
+  --color-status-licensed-subtle-fg: var(--color-purple-800);
+  --color-status-licensed-on-media-bg: --alpha(var(--color-purple-950) / 45%);
+  --color-status-licensed-on-media-border: --alpha(var(--color-purple-400) / 60%);
+  --color-status-licensed-on-media-fg: var(--color-purple-200);
+  --color-status-licensed-on-media-title: var(--color-purple-300);
+
+  --color-status-info-solid: var(--color-cyan-700);
+  --color-status-info-subtle-bg: var(--color-cyan-50);
+  --color-status-info-subtle-border: var(--color-cyan-200);
+  --color-status-info-subtle-fg: var(--color-cyan-800);
+  --color-status-info-on-media-bg: --alpha(var(--color-cyan-950) / 45%);
+  --color-status-info-on-media-border: --alpha(var(--color-cyan-400) / 60%);
+  --color-status-info-on-media-fg: var(--color-cyan-200);
+  --color-status-info-on-media-title: var(--color-cyan-300);
+
+  --color-status-success-solid: var(--color-emerald-600);
+  --color-status-success-subtle-bg: var(--color-emerald-50);
+  --color-status-success-subtle-border: var(--color-emerald-200);
+  --color-status-success-subtle-fg: var(--color-emerald-800);
+  --color-status-success-on-media-bg: --alpha(var(--color-emerald-950) / 45%);
+  --color-status-success-on-media-border: --alpha(var(--color-emerald-400) / 60%);
+  --color-status-success-on-media-fg: var(--color-emerald-200);
+  --color-status-success-on-media-title: var(--color-emerald-300);
+
   --animate-writings-banner-sm: writings-banner-pan-sm 30s ease-in-out infinite;
   --animate-writings-banner-md: writings-banner-pan-md 28s ease-in-out infinite;
   --animate-writings-banner-lg: writings-banner-pan-lg 26s ease-in-out infinite;
@@ -54,6 +129,75 @@
   }
 }
 
+/* Figma has no dark screens: brand and neutrals follow the site's existing dark palette (rose accent, near-black zinc neutrals). */
+@layer base {
+  .dark {
+    --color-brand: var(--color-rose-600);
+    --color-brand-hover: var(--color-rose-700);
+    --color-brand-subtle: --alpha(var(--color-rose-900) / 20%);
+    --color-main: var(--color-zinc-900);
+    --color-page: var(--color-zinc-900);
+    --color-reader-bg: var(--color-zinc-950);
+    --color-card: var(--color-zinc-800);
+    --color-surface: var(--color-zinc-800);
+    --color-surface-strong: var(--color-zinc-700);
+    --color-surface-hover: var(--color-zinc-600);
+    --color-line: var(--color-zinc-700);
+    --color-line-muted: var(--color-zinc-800);
+    --color-line-strong: var(--color-zinc-600);
+    --color-fg: var(--color-zinc-100);
+    --color-fg-secondary: var(--color-zinc-300);
+    --color-fg-muted: var(--color-zinc-400);
+    --color-fg-subtle: var(--color-zinc-500);
+    --color-fg-brand: var(--color-rose-400);
+    --color-fg-brand-hover: var(--color-rose-300);
+
+    --color-btn-licensed: var(--color-purple-500);
+    --color-btn-licensed-hover: var(--color-purple-600);
+
+    --color-status-danger-solid: var(--color-rose-500);
+    --color-status-danger-subtle-bg: var(--color-rose-950);
+    --color-status-danger-subtle-border: var(--color-rose-800);
+    --color-status-danger-subtle-fg: var(--color-rose-200);
+
+    --color-status-warning-solid: var(--color-orange-500);
+    --color-status-warning-subtle-bg: var(--color-orange-950);
+    --color-status-warning-subtle-border: var(--color-orange-800);
+    --color-status-warning-subtle-fg: var(--color-orange-200);
+
+    --color-status-licensed-solid: var(--color-purple-500);
+    --color-status-licensed-subtle-bg: var(--color-purple-950);
+    --color-status-licensed-subtle-border: var(--color-purple-800);
+    --color-status-licensed-subtle-fg: var(--color-purple-200);
+
+    --color-status-info-solid: var(--color-cyan-500);
+    --color-status-info-subtle-bg: var(--color-cyan-950);
+    --color-status-info-subtle-border: var(--color-cyan-800);
+    --color-status-info-subtle-fg: var(--color-cyan-200);
+
+    --color-status-success-solid: var(--color-emerald-500);
+    --color-status-success-subtle-bg: var(--color-emerald-950);
+    --color-status-success-subtle-border: var(--color-emerald-800);
+    --color-status-success-subtle-fg: var(--color-emerald-200);
+  }
+
+  /* The chapter reader keeps warm stone neutrals in light mode; dark mode uses the sitewide zinc. */
+  html:not(.dark) .immersive-reader {
+    --color-page: var(--color-stone-50);
+    --color-reader-bg: var(--color-stone-100);
+    --color-surface: var(--color-stone-50);
+    --color-surface-strong: var(--color-stone-100);
+    --color-surface-hover: var(--color-stone-200);
+    --color-line: var(--color-stone-200);
+    --color-line-muted: var(--color-stone-100);
+    --color-line-strong: var(--color-stone-300);
+    --color-fg: var(--color-stone-800);
+    --color-fg-secondary: var(--color-stone-600);
+    --color-fg-muted: var(--color-stone-500);
+    --color-fg-subtle: var(--color-stone-400);
+  }
+}
+
 @layer components {
   .youtube-show__related-item:nth-child(3) {
     @apply hidden;
@@ -65,4 +209,13 @@
       @apply block;
     }
   }
+}
+
+/* Flowbite hardcodes gray-900 backdrops for modals and drawers; unlayered so it beats the utilities. */
+.bg-gray-900\/50 {
+  background-color: --alpha(var(--color-zinc-900) / 50%);
+}
+
+.dark .dark\:bg-gray-900\/80 {
+  background-color: --alpha(var(--color-zinc-900) / 80%);
 }

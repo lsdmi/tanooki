@@ -16,7 +16,7 @@ end %>
   <% if reader_drawer %>
     <% toggle = drawer_progress.toggleable? %>
     <% if status == :current %>
-      <div class="flex items-center gap-3 border-l-2 border-cyan-700 bg-cyan-50/80 dark:border-rose-500 dark:bg-rose-950/40 <%= toggle ? 'pl-4' : 'px-4 py-3' %>" aria-current="page">
+      <div class="flex items-center gap-3 border-l-2 border-brand bg-brand-subtle <%= toggle ? 'pl-4' : 'px-4 py-3' %>" aria-current="page">
         <span class="min-w-0 flex-1 truncate <%= title_class %><%= ' py-3' if toggle %>">
           <%= chapter.display_title_no_volume %>
         </span>
@@ -54,7 +54,7 @@ end %>
         <%= link_to chapter_path(chapter), turbo_drive_visit_data.merge(class: "block") do %>
           <div class="flex items-center justify-between gap-4">
             <div class="flex min-w-0 flex-1 items-center gap-3">
-              <span class="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-200 text-xs font-medium text-stone-600 dark:bg-gray-600 dark:text-gray-300">
+              <span class="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-hover text-xs font-medium text-fg-secondary">
                 <%= chapter.number %>
               </span>
               <div class="min-w-0 flex-1">
@@ -70,10 +70,10 @@ end %>
               <% if !toggle && status.in?(%i[read in_progress]) %>
                 <%= render 'fictions/reader_chapter_drawer_status', status: status %>
               <% end %>
-              <span class="whitespace-nowrap text-xs text-stone-500 dark:text-gray-400">
+              <span class="whitespace-nowrap text-xs text-fg-muted">
                 <%= l(chapter.public_at, format: :shortest).downcase %>
               </span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-stone-400 group-hover:text-stone-600 dark:text-gray-500 dark:group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-fg-subtle group-hover:text-fg-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </div>
@@ -81,14 +81,14 @@ end %>
         <% end %>
         <% if chapter.scanlators.any? %>
           <div class="-mt-1 pl-9">
-            <p class="text-[0.65rem] leading-snug text-stone-500 dark:text-gray-500">
+            <p class="text-[0.65rem] leading-snug text-fg-muted">
               <%= safe_join(
                     chapter.scanlators.map { |scanlator|
                       link_to(
                         scanlator.title,
                         scanlator_path(scanlator),
                         turbo_drive_visit_data.merge(
-                          class: "text-stone-500 underline-offset-2 hover:text-stone-800 hover:underline dark:text-gray-500 dark:hover:text-gray-300"
+                          class: "text-fg-muted underline-offset-2 hover:text-fg-secondary hover:underline"
                         )
                       )
                     },

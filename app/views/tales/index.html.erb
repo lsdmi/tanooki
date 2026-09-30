@@ -1,7 +1,7 @@
 <div class="mx-auto w-full max-w-screen-xl px-4 py-6 2xl:px-0">
   <header class="mb-6">
-    <h1 class="text-xl font-semibold uppercase tracking-tight text-gray-900 dark:text-gray-100 sm:text-2xl">
-      Новини та <span class="text-cyan-700 dark:text-rose-700">блоги</span>
+    <h1 class="text-xl font-semibold uppercase tracking-tight text-fg sm:text-2xl">
+      Новини та <span class="text-brand">блоги</span>
     </h1>
   </header>
 
@@ -10,7 +10,7 @@
              publication_tag_counts: @publication_tag_counts,
              ad_placement: :tales_index %>
 
-  <section class="<%= 'border-t border-stone-200/70 dark:border-gray-700/50 pt-1' if @highlights.any? %>">
+  <section class="<%= 'border-t border-line/70 dark:border-line/50 pt-1' if @highlights.any? %>">
     <%= render 'publication_tiles',
                publications: @publications,
                publication_tag_counts: @publication_tag_counts,

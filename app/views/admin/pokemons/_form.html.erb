@@ -1,65 +1,65 @@
-<div class="py-4 border-gray-200 sm:py-5">
+<div class="py-4 border-line sm:py-5">
   <div class="lg:grid gap-4 md:gap-6 lg:grid-cols-2">
     <div class="space-y-4 sm:space-y-6">
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
-          <%= f.label :dex_id, 'Номер в Дексі', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :dex_id, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:dex_id].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
-          <%= tag.p pokemon.errors[:dex_id].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:dex_id].any? %>
+          <%= f.label :dex_id, 'Номер в Дексі', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.input :dex_id, input_html: { class: "bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:dex_id].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p pokemon.errors[:dex_id].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid' if pokemon.errors[:dex_id].any? %>
         </div>
         <div class="w-full">
-          <%= f.label :name, "Ім'я", class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :name, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:name].any?}" }, label: false, placeholder: "Додайте ім'я" %>
-          <%= tag.p pokemon.errors[:name].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:name].any? %>
-        </div>
-      </div>
-      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full">
-          <%= f.label :power_level, 'Рівень могуті', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :power_level, options_for_select(Pokemon::POWER_LEVELS.map { |key, value| [I18n.t("activerecord.enum.power_level.#{key}"), value] }, selected: Pokemon::POWER_LEVELS[f.object.power_level&.to_sym]), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
-        </div>
-        <div class="w-full">
-          <%= f.label :rarity, 'Рідкість', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :rarity, options_for_select(Pokemon::RARITY_LEVELS.map { |key, value| [I18n.t("activerecord.enum.rarity.#{key}"), value] }, selected: Pokemon::RARITY_LEVELS[f.object.rarity&.to_sym]), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
+          <%= f.label :name, "Ім'я", class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.input :name, input_html: { class: "bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:name].any?}" }, label: false, placeholder: "Додайте ім'я" %>
+          <%= tag.p pokemon.errors[:name].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid' if pokemon.errors[:name].any? %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
-          <%= f.label :ancestor_id, 'Базова форма', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :ancestor_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.ancestor_id), {}, { data: { controller: 'slim' }, class: ' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+          <%= f.label :power_level, 'Рівень могуті', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.select :power_level, options_for_select(Pokemon::POWER_LEVELS.map { |key, value| [I18n.t("activerecord.enum.power_level.#{key}"), value] }, selected: Pokemon::POWER_LEVELS[f.object.power_level&.to_sym]), {}, { class: "bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
         </div>
         <div class="w-full">
-          <%= f.label :descendant_id, 'Наступна форма', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :descendant_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.descendant_id), {}, { data: { controller: 'slim' }, class: ' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
-        </div>
-        <div class="w-full">
-          <%= f.label :descendant_level, 'Рівень еволюції', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.input :descendant_level, input_html: { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:descendant_level].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
-          <%= tag.p pokemon.errors[:descendant_level].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:descendant_level].any? %>
+          <%= f.label :rarity, 'Рідкість', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.select :rarity, options_for_select(Pokemon::RARITY_LEVELS.map { |key, value| [I18n.t("activerecord.enum.rarity.#{key}"), value] }, selected: Pokemon::RARITY_LEVELS[f.object.rarity&.to_sym]), {}, { class: "bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5" } %>
         </div>
       </div>
       <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
         <div class="w-full">
-          <%= f.label :type_ids, 'Типи', class: 'block mb-2 text-sm font-medium text-gray-900' %>
-          <%= f.select :type_ids, options_for_select(types.pluck(:name, :id), selected: f.object.types.ids), {}, { data: { controller: 'slim' }, multiple: true, class: ' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+          <%= f.label :ancestor_id, 'Базова форма', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.select :ancestor_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.ancestor_id), {}, { data: { controller: 'slim' }, class: ' bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+        </div>
+        <div class="w-full">
+          <%= f.label :descendant_id, 'Наступна форма', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.select :descendant_id, options_for_select(Pokemon.pluck(:name, :id), selected: f.object.descendant_id), {}, { data: { controller: 'slim' }, class: ' bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
+        </div>
+        <div class="w-full">
+          <%= f.label :descendant_level, 'Рівень еволюції', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.input :descendant_level, input_html: { class: "bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-600 focus:border-emerald-600 block w-full p-2.5 #{'border-red-300' if pokemon.errors[:descendant_level].any?}", type: 'number', min: 0 }, label: false, placeholder: '0' %>
+          <%= tag.p pokemon.errors[:descendant_level].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid' if pokemon.errors[:descendant_level].any? %>
+        </div>
+      </div>
+      <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full">
+          <%= f.label :type_ids, 'Типи', class: 'block mb-2 text-sm font-medium text-fg' %>
+          <%= f.select :type_ids, options_for_select(types.pluck(:name, :id), selected: f.object.types.ids), {}, { data: { controller: 'slim' }, multiple: true, class: ' bg-surface border border-line-strong text-fg text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5' } %>
         </div>
       </div>
     </div>
     <div class="mt-4 lg:mt-0 space-y-4 sm:space-y-6">
       <div>
-        <%= f.label :sprite, 'Спрайт', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+        <%= f.label :sprite, 'Спрайт', class: 'block mb-2 text-sm font-medium text-fg' %>
         <div class="flex justify-center items-center w-full">
-          <%= f.label :sprite, class: "flex flex-col justify-center items-center w-full h-80 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer #{'border-red-300' if pokemon.errors[:sprite].any?}" do %>
+          <%= f.label :sprite, class: "flex flex-col justify-center items-center w-full h-80 bg-surface rounded-lg border-2 border-line-strong border-dashed cursor-pointer #{'border-red-300' if pokemon.errors[:sprite].any?}" do %>
             <div class="flex flex-col justify-center items-center pt-5 pb-2">
-              <svg aria-hidden="true" class="mb-3 w-10 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
-              <p class="text-xs text-gray-500">лише GIF</p>
+              <svg aria-hidden="true" class="mb-3 w-10 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
+              <p class="text-xs text-fg-muted">лише GIF</p>
             </div>
             <%= f.file_field :sprite, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-            <%= tag.div f.object.sprite.blob&.filename || nil, id: 'image_name', class: 'text-center text-sm text-gray-500' %>
+            <%= tag.div f.object.sprite.blob&.filename || nil, id: 'image_name', class: 'text-center text-sm text-fg-muted' %>
           <% end %>
         </div>
-        <%= tag.p pokemon.errors[:sprite].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-red-600' if pokemon.errors[:sprite].any? %>
+        <%= tag.p pokemon.errors[:sprite].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid' if pokemon.errors[:sprite].any? %>
       </div>
     </div>
   </div>

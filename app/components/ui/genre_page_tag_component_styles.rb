@@ -5,16 +5,16 @@ module Ui
   module GenrePageTagComponentStyles
     RANK_FEATURED_CLASSES = [
       'absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center',
-      'rounded-lg border border-slate-600/55 bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm',
+      'token-raw rounded-lg border border-slate-600/55 bg-slate-400/45 px-2 text-sm font-bold text-slate-950 shadow-sm',
       'backdrop-blur-[2px] pointer-events-none',
-      'dark:border-slate-300/45 dark:bg-slate-900/55 dark:text-white'
+      'token-raw dark:border-slate-300/45 dark:bg-slate-900/55 dark:text-white'
     ].join(' ').freeze
 
     RANK_THUMB_CLASSES = [
       'absolute left-2 top-2 z-10 flex h-6 min-w-[1.5rem] items-center justify-center',
-      'rounded-lg border border-slate-500/70 bg-white/55 px-1.5 text-xs font-bold text-slate-900 shadow-sm',
+      'token-raw rounded-lg border border-slate-500/70 bg-white/55 px-1.5 text-xs font-bold text-slate-900 shadow-sm',
       'backdrop-blur-[2px] pointer-events-none',
-      'dark:border-slate-400/50 dark:bg-slate-900/55 dark:text-white'
+      'token-raw dark:border-slate-400/50 dark:bg-slate-900/55 dark:text-white'
     ].join(' ').freeze
 
     STAT_VIEWS_CLASSES = [
@@ -32,33 +32,34 @@ module Ui
     ].join(' ').freeze
 
     CHAPTERS_CLASSES = [
-      'shrink-0 rounded-lg border border-slate-400/90 bg-slate-100 px-1.5 py-0.5',
-      'text-xs font-medium tabular-nums text-slate-600',
-      'dark:border-slate-500 dark:bg-slate-700/80 dark:text-slate-200'
+      'token-raw shrink-0 rounded-lg border border-slate-400/90 bg-slate-100 px-1.5 py-0.5',
+      'token-raw text-xs font-medium tabular-nums text-slate-600',
+      'token-raw dark:border-slate-500 dark:bg-slate-700/80 dark:text-slate-200'
     ].join(' ').freeze
 
     STATUS_CLASSES = [
-      'shrink-0 rounded-lg border border-slate-300/90 bg-slate-50 px-1.5 py-0.5',
-      'text-xs font-medium text-slate-600',
-      'dark:border-slate-500 dark:bg-slate-800/60 dark:text-slate-300'
+      'token-raw shrink-0 rounded-lg border border-slate-300/90 bg-slate-50 px-1.5 py-0.5',
+      'token-raw text-xs font-medium text-slate-600',
+      'token-raw dark:border-slate-500 dark:bg-slate-800/60 dark:text-slate-300'
     ].join(' ').freeze
 
     GENRE_CLASSES = [
-      'inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1',
-      'text-xs font-medium text-slate-700',
-      'transition-colors hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
+      'token-raw inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1',
+      'token-raw text-xs font-medium text-slate-700',
+      'token-raw transition-colors hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900',
+      'token-raw focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2',
       'focus-visible:ring-offset-white',
-      'dark:border-slate-500/45 dark:bg-slate-800/85 dark:text-slate-200',
-      'dark:hover:border-slate-400/55 dark:hover:bg-slate-700/90 dark:hover:text-white',
-      'dark:focus-visible:ring-slate-400 dark:focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#0f252c]'
+      'token-raw dark:border-slate-500/45 dark:bg-slate-800/85 dark:text-slate-200',
+      'token-raw dark:hover:border-slate-400/55 dark:hover:bg-slate-700/90 dark:hover:text-white',
+      'token-raw dark:focus-visible:ring-slate-400',
+      'dark:focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
     ADULT_CLASSES = [
-      'inline-flex items-center gap-1 rounded-lg border border-rose-700 bg-rose-200 px-3 py-1',
-      'text-xs font-medium text-rose-800 transition-colors hover:bg-rose-300 hover:text-rose-900',
-      'hover:border-rose-800',
-      'focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2',
+      'token-raw inline-flex items-center gap-1 rounded-lg border border-rose-700 bg-rose-200 px-3 py-1',
+      'token-raw text-xs font-medium text-rose-800 transition-colors hover:bg-rose-300 hover:text-rose-900',
+      'token-raw hover:border-rose-800',
+      'token-raw focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2',
       'focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0f252c]'
     ].join(' ').freeze
 
@@ -73,9 +74,9 @@ module Ui
     # Thumb's translucent white at the featured badge's dimensions, for the popular cover strip.
     RANK_STRIP_CLASSES = [
       'absolute left-2 top-2 z-10 flex h-7 min-w-[1.75rem] items-center justify-center',
-      'rounded-lg border border-slate-500/70 bg-white/55 px-1.5 text-sm font-bold text-slate-900 shadow-sm',
+      'token-raw rounded-lg border border-slate-500/70 bg-white/55 px-1.5 text-sm font-bold text-slate-900 shadow-sm',
       'backdrop-blur-[2px] pointer-events-none',
-      'dark:border-slate-400/50 dark:bg-slate-900/55 dark:text-white'
+      'token-raw dark:border-slate-400/50 dark:bg-slate-900/55 dark:text-white'
     ].join(' ').freeze
 
     RANK_CLASSES = {

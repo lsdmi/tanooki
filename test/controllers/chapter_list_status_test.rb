@@ -5,7 +5,7 @@ require 'test_helper'
 class ChapterListStatusTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  WASH = '.bg-stone-50'
+  WASH = '.bg-surface'
   LABELS = '[data-chapter-drawer-search-labels-value]'
 
   setup do

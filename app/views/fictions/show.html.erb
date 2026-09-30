@@ -8,8 +8,8 @@
 <% cache_if guest_fiction_show_fragment_cacheable?,
             guest_fiction_show_fragment_cache_key(@fiction, @show_presenter),
             expires_in: guest_fiction_show_fragment_expires_in do %>
-<div class="bg-stone-50 dark:bg-gray-800 min-h-screen z-10 relative" style="background-image: url('<%= cover_background %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <div class="absolute inset-0 bg-stone-50/95 dark:bg-gray-800"></div>
+<div class="bg-surface min-h-screen z-10 relative" style="background-image: url('<%= cover_background %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+  <div class="absolute inset-0 bg-surface/95 dark:bg-surface"></div>
   <main class="container mx-auto px-4 py-8 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
@@ -28,7 +28,7 @@
       <!-- Right Column: Chapters, CTA, and Banner -->
       <div class="space-y-8">
         <!-- Chapters List -->
-        <section class="bg-stone-100 dark:bg-gray-700 rounded-lg shadow-md p-6 border border-stone-200 dark:border-gray-700">
+        <section class="bg-surface-strong rounded-lg shadow-md p-6 border border-line">
           <% if fiction_has_listable_chapters?(@fiction, current_user) %>
             <%= turbo_frame_tag 'sort-chapters' do %>
               <%= render 'chapters', fiction: @fiction, order: @show_presenter.order %>
@@ -55,9 +55,9 @@
       </div>
 
       <!-- Comments Section (lazy-loaded) -->
-      <section class="lg:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-8 border border-stone-200 dark:border-gray-700">
+      <section class="lg:col-span-3 bg-card rounded-lg shadow-md p-6 mt-8 border border-line">
         <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy do %>
-          <p class="py-6 text-center text-sm text-stone-500 dark:text-gray-400">Завантаження коментарів…</p>
+          <p class="py-6 text-center text-sm text-fg-muted">Завантаження коментарів…</p>
         <% end %>
       </section>
     </div>

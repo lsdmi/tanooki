@@ -5,18 +5,18 @@
 <section class="mt-10 w-full lg:mb-14 lg:mt-14" aria-labelledby="home-tales">
   <%= tag.div **lazy_decoration_background(
         'writer.webp',
-        html_class: 'home-tales w-full bg-gray-700 bg-cover bg-center bg-no-repeat bg-blend-multiply pt-8 pb-10 lg:pt-14 lg:pb-14 dark:bg-gray-900'
+        html_class: 'token-raw home-tales w-full bg-gray-700 bg-cover bg-center bg-no-repeat bg-blend-multiply pt-8 pb-10 lg:pt-14 lg:pb-14 dark:bg-zinc-900'
       ) do %>
     <div class="mx-auto w-full max-w-[1300px] px-5 md:px-6 lg:px-4">
       <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
-        <div class="w-1.5 shrink-0 rounded-lg bg-cyan-500 dark:bg-rose-500" aria-hidden="true"></div>
+        <div class="w-1.5 shrink-0 rounded-lg bg-brand" aria-hidden="true"></div>
         <div class="flex min-w-0 flex-1 items-center justify-between gap-4">
           <h2 id="home-tales" class="text-xl font-bold leading-snug tracking-tight text-white lg:text-2xl">
-            Новини та <span class="text-cyan-400 dark:text-rose-400">Блоги</span>
+            Новини та <span class="token-raw text-cyan-400 dark:text-rose-400">Блоги</span>
           </h2>
           <%= render 'root/section_more_link',
                      path: tales_path,
-                     link_class: 'text-white hover:text-cyan-300 dark:hover:text-rose-300' %>
+                     link_class: 'token-raw text-white hover:text-cyan-300 dark:hover:text-rose-300' %>
         </div>
       </header>
 

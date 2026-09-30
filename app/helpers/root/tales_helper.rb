@@ -7,10 +7,10 @@ module Root
     EDITORIAL_TALE_LIMIT = EDITORIAL_SIDE_COUNT * 2
 
     TITLE_LINK_CLASS =
-      'rounded-lg font-bold text-white transition-colors hover:text-cyan-300 hover:underline ' \
-      'underline-offset-2 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 ' \
-      'focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ' \
-      'dark:focus-visible:ring-rose-400'
+      'token-raw rounded-lg font-bold text-white transition-colors hover:text-cyan-300 hover:underline ' \
+      'token-raw underline-offset-2 dark:hover:text-rose-300 focus:outline-none focus-visible:ring-2 ' \
+      'token-raw focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ' \
+      'token-raw dark:focus-visible:ring-rose-400'
 
     COVER_IMAGE_CLASS =
       'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-[1.03]'

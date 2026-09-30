@@ -68,8 +68,8 @@ const initializeModeToggler = () => {
         style.setAttribute('data-tinymce-theme', 'true');
         style.textContent = `
           body {
-            background: ${isDark ? '#374151' : '#f9fafb'} !important;
-            color: ${isDark ? '#f9fafb' : '#111827'} !important;
+            background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+            color: ${isDark ? '#fafafa' : '#111827'} !important;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             font-size: 16px;
             line-height: 1.6;
@@ -125,12 +125,12 @@ const initializeModeToggler = () => {
             padding-left: 1em;
             margin: 1.5em 0;
             font-style: italic;
-            color: ${isDark ? '#9ca3af' : '#6b7280'};
+            color: ${isDark ? '#a1a1aa' : '#6b7280'};
           }
           
           /* Code */
           code {
-            background: ${isDark ? '#374151' : '#f3f4f6'};
+            background: ${isDark ? '#3f3f46' : '#f3f4f6'};
             padding: 0.2em 0.4em;
             border-radius: 3px;
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
@@ -139,8 +139,8 @@ const initializeModeToggler = () => {
           }
           
           pre {
-            background: ${isDark ? '#374151' : '#f9fafb'};
-            color: ${isDark ? '#f1f5f9' : '#374151'};
+            background: ${isDark ? '#3f3f46' : '#f9fafb'};
+            color: ${isDark ? '#f4f4f5' : '#374151'};
             padding: 1em;
             border-radius: 6px;
             overflow-x: auto;
@@ -169,20 +169,20 @@ const initializeModeToggler = () => {
           }
           
           th, td {
-            border: 1px solid ${isDark ? '#374151' : '#e5e7eb'};
+            border: 1px solid ${isDark ? '#3f3f46' : '#e5e7eb'};
             padding: 0.75em;
             text-align: left;
           }
           
           th {
-            background: ${isDark ? '#374151' : '#f9fafb'};
+            background: ${isDark ? '#3f3f46' : '#f9fafb'};
             font-weight: 600;
           }
           
           /* Horizontal rules */
           hr {
             border: none;
-            border-top: 2px solid ${isDark ? '#6b7280' : '#e5e7eb'};
+            border-top: 2px solid ${isDark ? '#71717a' : '#e5e7eb'};
             margin: 2em 0;
           }
           
@@ -198,12 +198,12 @@ const initializeModeToggler = () => {
           /* Selection styles */
           ::selection {
             background: ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.3)'};
-            color: ${isDark ? '#f9fafb' : '#111827'};
+            color: ${isDark ? '#fafafa' : '#111827'};
           }
           
           ::-moz-selection {
             background: ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.3)'};
-            color: ${isDark ? '#f9fafb' : '#111827'};
+            color: ${isDark ? '#fafafa' : '#111827'};
           }
         `;
         iframe.contentDocument.head.appendChild(style);
@@ -220,8 +220,8 @@ const initializeModeToggler = () => {
     headerStyle.setAttribute('data-tinymce-header-theme', 'true');
     headerStyle.textContent = `
       .tox-editor-header {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#d1d5db'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
         border-radius: 6px 6px 0 0 !important;
         padding: 8px !important;
       }
@@ -240,8 +240,8 @@ const initializeModeToggler = () => {
       }
       
       .tox-toolbar__overflow {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
         box-shadow: 0 4px 12px ${isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
@@ -249,16 +249,16 @@ const initializeModeToggler = () => {
       .tox-toolbar__overflow .tox-tbtn {
         background: transparent !important;
         border: none !important;
-        color: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-toolbar__overflow .tox-tbtn:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
-        color: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-toolbar__group {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
         border: none !important;
         margin: 0 2px !important;
         padding: 2px !important;
@@ -267,12 +267,12 @@ const initializeModeToggler = () => {
       .tox-editor-header .tox-tbtn {
         background: transparent !important;
         border: none !important;
-        color: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
         transition: color 0.2s ease !important;
       }
       
       .tox-editor-header .tox-tbtn:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
         color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
       }
       
@@ -285,11 +285,11 @@ const initializeModeToggler = () => {
       }
       
       .tox-editor-header .tox-tbtn__select-label {
-        color: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-tbtn__select-chevron svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-editor-header .tox-split-button {
@@ -298,19 +298,19 @@ const initializeModeToggler = () => {
       }
       
       .tox-editor-header .tox-split-button:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
       }
       
       .tox-editor-header .tox-split-button__chevron svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-icon svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-tbtn:hover .tox-icon svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       /* Additional specificity for nested elements */
@@ -320,52 +320,52 @@ const initializeModeToggler = () => {
       }
       
       .tox-toolbar__group .tox-tbtn:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
       }
       
       .tox-tbtn .tox-icon svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-tbtn:hover .tox-icon svg {
-        fill: ${isDark ? '#f1f5f9' : '#374151'} !important;
+        fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       /* Edit area border */
       .tox-edit-area::before {
-        border: 1px solid ${isDark ? '#4b5563' : '#d1d5db'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
       }
       
       /* Dialog styling */
       .tox-dialog {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 8px !important;
         box-shadow: 0 10px 25px ${isDark ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
       
       .tox-dialog__header {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border-bottom: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border-bottom: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 8px 8px 0 0 !important;
         padding: 12px 16px !important;
       }
       
       .tox-dialog__title {
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         font-weight: 600 !important;
         font-size: 16px !important;
       }
       
       .tox-dialog__body {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         padding: 16px !important;
       }
       
       .tox-dialog__footer {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border-top: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border-top: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 0 0 8px 8px !important;
         padding: 12px 16px !important;
       }
@@ -375,9 +375,9 @@ const initializeModeToggler = () => {
       }
       
       .tox-dialog__footer .tox-button {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
-        border: 1px solid ${isDark ? '#6b7280' : '#d1d5db'} !important;
-        color: ${isDark ? '#f9fafb' : '#374151'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+        border: 1px solid ${isDark ? '#71717a' : '#d1d5db'} !important;
+        color: ${isDark ? '#fafafa' : '#374151'} !important;
         border-radius: 6px !important;
         padding: 8px 16px !important;
         font-size: 14px !important;
@@ -386,8 +386,8 @@ const initializeModeToggler = () => {
       }
       
       .tox-dialog__footer .tox-button:hover {
-        background: ${isDark ? '#6b7280' : '#e5e7eb'} !important;
-        border-color: ${isDark ? '#9ca3af' : '#9ca3af'} !important;
+        background: ${isDark ? '#71717a' : '#e5e7eb'} !important;
+        border-color: ${isDark ? '#a1a1aa' : '#9ca3af'} !important;
       }
       
       .tox-dialog__footer .tox-button--primary {
@@ -403,8 +403,8 @@ const initializeModeToggler = () => {
       
       .tox-dialog__footer .tox-button--secondary {
         background: transparent !important;
-        border-color: ${isDark ? '#6b7280' : '#d1d5db'} !important;
-        color: ${isDark ? '#f9fafb' : '#374151'} !important;
+        border-color: ${isDark ? '#71717a' : '#d1d5db'} !important;
+        color: ${isDark ? '#fafafa' : '#374151'} !important;
       }
       
       .tox-dialog__footer .tox-button--secondary:hover {
@@ -420,7 +420,7 @@ const initializeModeToggler = () => {
       
       .tox-dialog__body .tox-form__group__label,
       .tox-dialog__body .tox-label {
-        color: ${isDark ? '#f9fafb' : '#374151'} !important;
+        color: ${isDark ? '#fafafa' : '#374151'} !important;
         font-weight: 500 !important;
         margin-bottom: 4px !important;
         display: block !important;
@@ -428,8 +428,8 @@ const initializeModeToggler = () => {
       
       .tox-dialog__body .tox-textfield,
       .tox-dialog__body .tox-textarea {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         border-radius: 6px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
@@ -444,9 +444,9 @@ const initializeModeToggler = () => {
       }
       
       .tox-dialog__body .tox-selectfield {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#d1d5db'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         border-radius: 6px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
@@ -459,26 +459,26 @@ const initializeModeToggler = () => {
       }
       
       .tox-listboxfield {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#d1d5db'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         border-radius: 6px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
       }
       
       .tox-listbox__select-label {
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
       }
       
       .tox-listboxfield .tox-listbox__select-chevron svg {
-        fill: ${isDark ? '#f9fafb' : '#111827'} !important;
+        fill: ${isDark ? '#fafafa' : '#111827'} !important;
       }
       
       .tox-listbox--select {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#d1d5db'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         border-radius: 6px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
@@ -486,15 +486,15 @@ const initializeModeToggler = () => {
       
       /* Dialog navigation */
       .tox-dialog__body-nav {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border-bottom: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border-bottom: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         padding: 8px 16px !important;
       }
       
       .tox-dialog__body-nav-item {
         background: transparent !important;
         border: none !important;
-        color: ${isDark ? '#9ca3af' : '#6b7280'} !important;
+        color: ${isDark ? '#a1a1aa' : '#6b7280'} !important;
         padding: 8px 12px !important;
         margin-right: 8px !important;
         border-radius: 4px !important;
@@ -502,83 +502,83 @@ const initializeModeToggler = () => {
       }
       
       .tox-dialog__body-nav-item--active {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
       }
       
       .tox-dialog__body-nav-item:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
       }
       
       /* Collection items (dropdowns, menus) */
       .tox-collection__item-label {
-        color: ${isDark ? '#f9fafb' : '#111827'} !important;
+        color: ${isDark ? '#fafafa' : '#111827'} !important;
         font-size: 14px !important;
         margin: 4px !important;
         transition: all 0.2s ease !important;
       }
       
       .tox-collection__item:hover .tox-collection__item-label {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
       }
       
       .tox-menu-nav__js {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 4px !important;
         margin: 4px !important;
         box-shadow: 0 4px 12px ${isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
       
       .tox-collection__item {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
         border: none !important;
         transition: all 0.2s ease !important;
       }
       
       .tox-collection__item:hover {
-        background: ${isDark ? '#4b5563' : '#f3f4f6'} !important;
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
       }
       
       /* Menu and collection styling */
       .tox-menu {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
         box-shadow: 0 4px 12px ${isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
       
       .tox-collection {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
       }
       
       .tox-collection--list {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
       }
       
       .tox-selected-menu {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
         box-shadow: 0 4px 12px ${isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
       
       /* Pop dialog styling */
       .tox-pop__dialog {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border: 1px solid ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border: 1px solid ${isDark ? '#52525b' : '#e5e7eb'} !important;
         border-radius: 6px !important;
         box-shadow: 0 4px 12px ${isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'} !important;
       }
       
       .tox-pop__dialog::before {
-        background: ${isDark ? '#374151' : '#f9fafb'} !important;
-        border-color: ${isDark ? '#4b5563' : '#e5e7eb'} !important;
+        background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
+        border-color: ${isDark ? '#52525b' : '#e5e7eb'} !important;
       }
       
       /* Dialog overlay */
@@ -594,7 +594,7 @@ const initializeModeToggler = () => {
       .tox-dialog__header .tox-dialog__header-end .tox-button {
         background: transparent !important;
         border: none !important;
-        color: ${isDark ? '#9ca3af' : '#6b7280'} !important;
+        color: ${isDark ? '#a1a1aa' : '#6b7280'} !important;
         padding: 4px !important;
         border-radius: 4px !important;
         transition: all 0.2s ease !important;

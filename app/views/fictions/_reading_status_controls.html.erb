@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-stone-200 dark:border-gray-700 p-3 xs:p-4 sm:p-6">
+<div class="bg-card rounded-lg shadow-md border border-line p-3 xs:p-4 sm:p-6">
   <% if show_presenter.reading_progress.present? %>
     <!-- Current Status Display -->
     <div class="text-center">
@@ -19,16 +19,16 @@
           <!-- Status Text -->
           <div class="flex flex-col items-center gap-1 xs:gap-1">
             <div class="flex flex-row xs:flex-col sm:flex-col lg:flex-row items-center gap-2 xs:gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 xs:h-6 xs:w-6 sm:h-8 sm:w-8 text-stone-800 dark:text-gray-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 xs:h-6 xs:w-6 sm:h-8 sm:w-8 text-fg flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= status_icon %>" />
               </svg>
 
-              <h4 class="text-base xs:text-lg sm:text-xl font-bold text-stone-800 dark:text-gray-100">
+              <h4 class="text-base xs:text-lg sm:text-xl font-bold text-fg">
                 <%= status_label_for(show_presenter.reading_status) %>
               </h4>
             </div>
 
-            <p class="text-xs xs:text-sm text-stone-500 dark:text-gray-400 font-medium">
+            <p class="text-xs xs:text-sm text-fg-muted font-medium">
               Закладинка в читальні
             </p>
           </div>
@@ -47,7 +47,7 @@
 
         <% if is_current_state %>
           <!-- Current status indicator -->
-          <div class="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-5 lg:h-5 xl:w-7 xl:h-7 2xl:w-10 2xl:h-10 rounded-xl bg-cyan-700 dark:bg-rose-700 text-white ring-2 ring-cyan-700 dark:ring-rose-800 shadow-md" title="Поточний статус: <%= state[:label] %>">
+          <div class="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-5 lg:h-5 xl:w-7 xl:h-7 2xl:w-10 2xl:h-10 rounded-xl bg-brand text-fg-on-brand ring-2 ring-brand shadow-md" title="Поточний статус: <%= state[:label] %>">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 md:h-4 md:w-4 lg:h-3 lg:w-3 xl:h-4 xl:w-4 2xl:h-5 2xl:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= state[:icon] %>" />
             </svg>
@@ -59,8 +59,8 @@
               class: [
                 "inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-5 lg:h-5 xl:w-7 xl:h-7 2xl:w-10 2xl:h-10 rounded-xl transition-all duration-200",
                 "ring-1 ring-opacity-50 shadow-sm hover:shadow-md",
-                "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 ring-gray-300 dark:ring-gray-600",
-                "hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                "bg-surface-strong text-fg-secondary ring-line-strong",
+                "hover:bg-surface-hover hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
               ].join(' '),
               title: "Змінити статус на '#{state[:label]}'",
               data: {
@@ -81,8 +81,8 @@
           class: [
             "inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-5 lg:h-5 xl:w-7 xl:h-7 2xl:w-10 2xl:h-10 rounded-xl transition-all duration-200",
             "ring-1 ring-opacity-50 shadow-sm hover:shadow-md",
-            "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 ring-gray-300 dark:ring-gray-600",
-            "hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:ring-red-300 dark:hover:ring-red-800 hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+            "bg-surface-strong text-fg-muted ring-line-strong",
+            "hover:bg-status-danger-subtle-bg hover:text-status-danger-solid hover:ring-red-300 dark:hover:ring-red-800 hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
           ].join(' '),
           title: "Видалити з читальні",
           data: {
@@ -99,8 +99,8 @@
     <!-- Add to Library Section -->
     <div class="text-center">
       <div class="mb-2 xs:mb-3 sm:mb-4">
-        <h4 class="leading-tight text-sm xs:text-base sm:text-lg font-semibold text-stone-800 dark:text-gray-200">Додати до Читальні</h4>
-        <p class="text-xs xs:text-sm text-stone-600 dark:text-gray-400 mt-1">Оберіть закладинку для цього твору</p>
+        <h4 class="leading-tight text-sm xs:text-base sm:text-lg font-semibold text-fg">Додати до Читальні</h4>
+        <p class="text-xs xs:text-sm text-fg-muted mt-1">Оберіть закладинку для цього твору</p>
       </div>
       <div class="flex items-center justify-center gap-1 xs:gap-2 sm:gap-3 flex-wrap">
         <% add_states = [
@@ -117,8 +117,8 @@
               class: [
                 "inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-5 lg:h-5 xl:w-7 xl:h-7 2xl:w-10 2xl:h-10 rounded-xl transition-all duration-200",
                 "ring-1 ring-opacity-50 shadow-sm hover:shadow-md",
-                "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 ring-gray-300 dark:ring-gray-600",
-                "hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                "bg-surface-strong text-fg-secondary ring-line-strong",
+                "hover:bg-surface-hover hover:scale-110 active:scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
               ].join(' '),
               title: "Додати до читальні як '#{state[:label]}'",
               data: {

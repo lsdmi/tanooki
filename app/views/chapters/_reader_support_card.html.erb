@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<section class="reader-bottom-card reader-support-card grid h-full w-full min-w-0 grid-cols-[auto_1fr] items-stretch gap-x-2.5 rounded-lg border border-stone-200/90 bg-white/95 p-3 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/95 sm:gap-x-3 sm:rounded-xl sm:p-4 md:p-5 lg:flex lg:gap-4"
+<section class="reader-bottom-card reader-support-card grid h-full w-full min-w-0 grid-cols-[auto_1fr] items-stretch gap-x-2.5 rounded-lg border border-line/90 bg-main/95 p-3 shadow-sm sm:gap-x-3 sm:rounded-xl sm:p-4 md:p-5 lg:flex lg:gap-4"
          aria-labelledby="reader-support-card-title">
   <div class="reader-bottom-card__visual reader-support-card__visual col-start-1 row-start-1 w-12 shrink-0 overflow-hidden sm:w-15 md:w-[4.5rem] lg:w-[5.25rem]">
     <%= image_tag 'mascot.svg',
@@ -23,10 +23,10 @@
   </div>
 
   <div class="reader-bottom-card__body col-start-2 row-start-1 flex min-h-0 min-w-0 flex-col lg:flex-1">
-    <h2 id="reader-support-card-title" class="text-base font-bold leading-snug text-stone-900 dark:text-zinc-50 sm:text-lg md:text-xl">
+    <h2 id="reader-support-card-title" class="text-base font-bold leading-snug text-fg sm:text-lg md:text-xl">
       <%= t('chapters.reader_support_card.title') %>
     </h2>
-    <p class="mt-1 text-xs leading-relaxed text-stone-600 dark:text-zinc-300 sm:text-sm">
+    <p class="mt-1 text-xs leading-relaxed text-fg-secondary sm:text-sm">
       <%= t('chapters.reader_support_card.description') %>
     </p>
 

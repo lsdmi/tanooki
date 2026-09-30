@@ -1,4 +1,4 @@
-<div class="fiction-details bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+<div class="fiction-details bg-main rounded-lg shadow-sm border border-line">
   <!-- Main Content Section (2/3 of the partial) -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
     <!-- Left Column - Main Content (2/3) -->
@@ -6,7 +6,7 @@
       <!-- Book Header Section -->
       <div class="flex flex-col sm:flex-row gap-4 items-start justify-center lg:justify-start">
         <!-- Book Cover Image -->
-        <div class="flex-shrink-0 border border-stone-200 dark:border-gray-700 mx-auto lg:mx-0 relative">
+        <div class="flex-shrink-0 border border-line mx-auto lg:mx-0 relative">
           <%= cover_card_picture_tag(fiction.cover,
                       class: 'w-32 h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 shadow-md flex items-center justify-center object-cover',
                       alt: fiction.cover.blob.filename,
@@ -18,8 +18,8 @@
         </div>
         <!-- Book Info -->
         <div class="mx-auto lg:mx-0 mt-1">
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center lg:text-left line-clamp-1"><%= fiction.title %></h1>
-          <div class="text-sm text-gray-600 dark:text-gray-300 text-center lg:text-left">
+          <h1 class="text-2xl font-bold text-fg mb-2 text-center lg:text-left line-clamp-1"><%= fiction.title %></h1>
+          <div class="text-sm text-fg-secondary text-center lg:text-left">
             <p><span class="font-medium italic line-clamp-1"><%= fiction.alternative_title %></span></p>
             <p><span class="font-medium italic line-clamp-1"><%= fiction.english_title %></span></p>
             <%= render 'shared/author_byline',
@@ -28,7 +28,7 @@
                        wrapper_class: 'mt-4 justify-center lg:justify-start',
                        as_tag: true %>
             <div class="mt-4 flex flex-wrap items-center gap-2 justify-center lg:justify-start">
-              <span class="font-bold text-stone-800 dark:text-gray-200">Перекладач:</span>
+              <span class="font-bold text-fg">Перекладач:</span>
               <% fiction.scanlators.each do |scanlator| %>
                 <% scanlator_label = fiction.scanlators.size > 1 ? scanlator.title.first(10) : scanlator.title.first(20) %>
                 <%= render Ui::TagComponent.new(
@@ -47,32 +47,32 @@
       <!-- Stats Section (2/3 of the partial) -->
       <div class="relative overflow-hidden">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="text-center bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-stone-800 dark:text-white"><%= fiction.chapter_count %></div>
-            <div class="text-sm text-stone-600 dark:text-gray-400">Розділи</div>
+          <div class="text-center bg-surface rounded-lg p-4 border border-line">
+            <div class="text-2xl font-bold text-fg"><%= fiction.chapter_count %></div>
+            <div class="text-sm text-fg-muted">Розділи</div>
           </div>
-          <div class="text-center bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-stone-800 dark:text-white"><%= format_view_count(fiction.views) %></div>
-            <div class="text-sm text-stone-600 dark:text-gray-400">Перегляди</div>
+          <div class="text-center bg-surface rounded-lg p-4 border border-line">
+            <div class="text-2xl font-bold text-fg"><%= format_view_count(fiction.views) %></div>
+            <div class="text-sm text-fg-muted">Перегляди</div>
           </div>
-          <div class="text-center bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-stone-800 dark:text-white" title="<%= fiction.listing_state_label %>">
+          <div class="text-center bg-surface rounded-lg p-4 border border-line">
+            <div class="text-2xl font-bold text-fg" title="<%= fiction.listing_state_label %>">
               <%= fiction.listing_state_label_short %>
             </div>
-            <div class="text-sm text-stone-600 dark:text-gray-400">Статус</div>
+            <div class="text-sm text-fg-muted">Статус</div>
           </div>
-          <div class="text-center bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-2xl font-bold text-stone-800 dark:text-white"><%= show_presenter.bookmarks_total_count %></div>
-            <div class="text-sm text-stone-600 dark:text-gray-400">Закладинки</div>
+          <div class="text-center bg-surface rounded-lg p-4 border border-line">
+            <div class="text-2xl font-bold text-fg"><%= show_presenter.bookmarks_total_count %></div>
+            <div class="text-sm text-fg-muted">Закладинки</div>
           </div>
         </div>
       </div>
 
       <!-- Tags -->
       <% if fiction.genres.any? || fiction.age_labelled? %>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
+        <div class="bg-surface rounded-lg p-4 border border-line relative overflow-hidden">
           <%= render 'shared/jellyfish_ornament' %>
-          <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Теґи</h4>
+          <h4 class="font-semibold text-fg mb-3">Теґи</h4>
           <% fiction_tag_labels = fiction.with_content_rating_tag_labels(fiction.genres.map(&:name)) %>
           <%= render Ui::TagListComponent.new(
                 labels: fiction_tag_labels,
@@ -91,10 +91,10 @@
       <% end %>
 
       <!-- Description Section (2/3 of the partial) -->
-      <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700 relative overflow-hidden">
+      <div class="bg-surface rounded-lg p-4 border border-line relative overflow-hidden">
         <%= render 'shared/decorative_ornament' %>
-        <h3 class="font-semibold text-gray-900 dark:text-white">Опис</h3>
-        <div class="text-sm sm:text-base text-stone-600 dark:text-gray-400 whitespace-pre-line leading-relaxed">
+        <h3 class="font-semibold text-fg">Опис</h3>
+        <div class="text-sm sm:text-base text-fg-muted whitespace-pre-line leading-relaxed">
           <%= fiction.description %>
         </div>
       </div>
@@ -113,7 +113,7 @@
         <% guest = !user_signed_in? %>
         <%= tag.div(data: (guest_continue_data(fiction, show_presenter.first_chapter) if guest)) do %>
           <% read_cta_path = continue_reading ? chapter_path(continue_reading.continue_chapter, resume: (1 if continue_reading.resume?)) : chapter_path(show_presenter.first_chapter) %>
-          <%= link_to read_cta_path, turbo_drive_visit_data(preload: true).deep_merge(class: 'w-full bg-white dark:bg-gray-800 text-stone-800 dark:text-gray-200 font-semibold py-3 px-4 rounded-lg border border-stone-200 dark:border-gray-700 shadow-sm hover:bg-stone-100 dark:hover:bg-gray-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center space-x-2', data: { guest_continue_target: ('link' if guest) }) do %>
+          <%= link_to read_cta_path, turbo_drive_visit_data(preload: true).deep_merge(class: 'w-full bg-card text-fg font-semibold py-3 px-4 rounded-lg border border-line shadow-sm hover:bg-surface-strong transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center space-x-2', data: { guest_continue_target: ('link' if guest) }) do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
             </svg>
@@ -124,7 +124,7 @@
                         chapter_path(show_presenter.first_chapter),
                         data: { turbo_frame: '_top', guest_continue_target: ('fromStart' if guest) },
                         hidden: guest,
-                        class: 'mt-2 block text-center text-sm font-medium text-stone-600 underline-offset-4 hover:text-stone-900 hover:underline dark:text-gray-400 dark:hover:text-gray-200' %>
+                        class: 'mt-2 block text-center text-sm font-medium text-fg-muted underline-offset-4 hover:text-fg hover:underline' %>
           <% end %>
         <% end %>
       <% end %>
@@ -133,7 +133,7 @@
       <%= render 'rating_section', fiction: fiction %>
       <!-- Status Change Section -->
       <% if user_signed_in? %>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg relative overflow-hidden">
+        <div class="bg-surface rounded-lg relative overflow-hidden">
           <%= turbo_frame_tag 'fiction-reading-status' do %>
             <div class="sm:hidden lg:block">
               <%= render 'fictions/reading_status_controls', fiction: fiction, show_presenter: show_presenter %>
@@ -144,34 +144,34 @@
 
       <% if fiction.scanlators.any? %>
         <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(fiction), loading: :lazy, class: 'block' do %>
-          <p class="py-4 text-center text-sm text-stone-500 dark:text-gray-400">Завантаження…</p>
+          <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
         <% end %>
       <% end %>
 
       <!-- Bookmarks Stats -->
       <div class="">
         <div class="grid grid-cols-2 gap-3 text-center">
-          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
+          <div class="bg-surface rounded-lg p-4 border border-line">
             <div class="text-lg font-bold text-blue-600 dark:text-blue-400"><%= show_presenter.bookmark_stats[0] %></div>
-            <div class="text-xs text-gray-600 dark:text-gray-300">Читають</div>
+            <div class="text-xs text-fg-secondary">Читають</div>
           </div>
-          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-lg font-bold text-green-600 dark:text-green-400"><%= show_presenter.bookmark_stats[1] %></div>
-            <div class="text-xs text-gray-600 dark:text-gray-300">Прочитано</div>
+          <div class="bg-surface rounded-lg p-4 border border-line">
+            <div class="text-lg font-bold text-status-success-solid"><%= show_presenter.bookmark_stats[1] %></div>
+            <div class="text-xs text-fg-secondary">Прочитано</div>
           </div>
-          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
+          <div class="bg-surface rounded-lg p-4 border border-line">
             <div class="text-lg font-bold text-yellow-600 dark:text-yellow-400"><%= show_presenter.bookmark_stats[2] %></div>
-            <div class="text-xs text-gray-600 dark:text-gray-300">Відкладено</div>
+            <div class="text-xs text-fg-secondary">Відкладено</div>
           </div>
-          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
-            <div class="text-lg font-bold text-red-600 dark:text-red-400"><%= show_presenter.bookmark_stats[3] %></div>
-            <div class="text-xs text-gray-600 dark:text-gray-300">Покинуто</div>
+          <div class="bg-surface rounded-lg p-4 border border-line">
+            <div class="text-lg font-bold text-status-danger-solid"><%= show_presenter.bookmark_stats[3] %></div>
+            <div class="text-xs text-fg-secondary">Покинуто</div>
           </div>
         </div>
       </div>
 
       <%= turbo_frame_tag 'fiction_sidebar_stats', src: sidebar_stats_fiction_path(fiction), loading: :lazy, class: 'space-y-6 block' do %>
-        <p class="py-4 text-center text-sm text-stone-500 dark:text-gray-400">Завантаження…</p>
+        <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
       <% end %>
     </div>
   </div>

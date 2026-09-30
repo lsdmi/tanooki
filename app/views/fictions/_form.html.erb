@@ -1,68 +1,68 @@
-<div class="bg-stone-100 dark:bg-gray-900 p-8 rounded-xl shadow-xl border border-stone-300 dark:border-gray-700">
-  <h2 class="text-3xl font-bold text-stone-800 dark:text-gray-200 mb-6">Налаштування Твору</h2>
+<div class="bg-page p-8 rounded-xl shadow-xl border border-line">
+  <h2 class="text-3xl font-bold text-fg mb-6">Налаштування Твору</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
       <div class="relative mb-4">
-        <%= f.label :title, 'Заголовок', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :title, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" }, label: false, placeholder: 'Вкажіть заголовок' %>
-        <%= tag.p fiction.errors[:title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:title].any? %>
+        <%= f.label :title, 'Заголовок', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :title, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: 'Вкажіть заголовок' %>
+        <%= tag.p fiction.errors[:title].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:title].any? %>
       </div>
 
       <div class="relative mb-4">
-        <%= f.label :alternative_title, 'Альтернативний заголовок', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :alternative_title, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" }, label: false, placeholder: "Альтернативний заголовок (необов'язково)" %>
-        <%= tag.p fiction.errors[:alternative_title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:alternative_title].any? %>
+        <%= f.label :alternative_title, 'Альтернативний заголовок', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :alternative_title, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: "Альтернативний заголовок (необов'язково)" %>
+        <%= tag.p fiction.errors[:alternative_title].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:alternative_title].any? %>
       </div>
 
       <div class="relative mb-4">
-        <%= f.label :english_title, 'Заголовок англійською', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :english_title, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" }, label: false, placeholder: "Англійський заголовок (необов'язково)" %>
-        <%= tag.p fiction.errors[:english_title].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:english_title].any? %>
+        <%= f.label :english_title, 'Заголовок англійською', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :english_title, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: "Англійський заголовок (необов'язково)" %>
+        <%= tag.p fiction.errors[:english_title].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:english_title].any? %>
       </div>
 
       <div class="relative mb-4">
-        <%= f.label :author, 'Автор', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :author, input_html: { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" }, label: false, placeholder: 'Ім\'я Автора' %>
-        <%= tag.p fiction.errors[:author].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:author].any? %>
+        <%= f.label :author, 'Автор', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :author, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: 'Ім\'я Автора' %>
+        <%= tag.p fiction.errors[:author].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:author].any? %>
       </div>
 
       <div class="relative mb-8">
-        <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.select :scanlator_ids, options_for_select(scanlator_select_options(current_user), selected: f.object.scanlator_ids.presence || f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" } %>
-        <%= tag.p fiction.errors[:scanlator_ids].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:scanlator_ids].any? %>
+        <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.select :scanlator_ids, options_for_select(scanlator_select_options(current_user), selected: f.object.scanlator_ids.presence || f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" } %>
+        <%= tag.p fiction.errors[:scanlator_ids].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:scanlator_ids].any? %>
       </div>
 
-      <div class="bg-stone-50 dark:bg-gray-800 p-6 rounded-lg border border-stone-200 dark:border-gray-700 mb-6">
-        <h3 class="text-xl font-bold text-stone-700 dark:text-gray-200 mb-4">Промо-секція (необов'язково)</h3>
-        <p class="mb-4 text-stone-600 dark:text-gray-400 text-base">
+      <div class="bg-surface p-6 rounded-lg border border-line mb-6">
+        <h3 class="text-xl font-bold text-fg mb-4">Промо-секція (необов'язково)</h3>
+        <p class="mb-4 text-fg-muted text-base">
           Додайте банер і короткий промо-опис, щоб ваш твір міг потрапити у промо-секцію на головній сторінці. Відбір відбувається серед найчитабельніших новинок або нещодавно оновлених чи популярних творів.
         </p>
         <div class="relative mb-4">
-          <%= f.label :banner, 'Банер', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
+          <%= f.label :banner, 'Банер', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
           <div class="relative group">
-            <%= f.label :banner, for: 'fictions_banner', class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
-              <svg class="w-12 h-12 text-stone-600 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-              <span class="text-stone-600 dark:text-gray-400 text-center mx-1">WebP, ширина не менше 1000px, співвідношення сторін банера ~3:1</span>
+            <%= f.label :banner, for: 'fictions_banner', class: "flex flex-col items-center justify-center w-full h-48 bg-surface border-2 border-dashed border-line-strong rounded-lg cursor-pointer hover:bg-surface-strong transition duration-300" do %>
+              <svg class="w-12 h-12 text-fg-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+              <span class="text-fg-muted text-center mx-1">WebP, ширина не менше 1000px, співвідношення сторін банера ~3:1</span>
               <%= f.file_field :banner, id: 'fictions_banner', class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
+              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-fg-muted text-center text-sm' %>
             <% end %>
-            <%= tag.p fiction.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:banner].any? %>
+            <%= tag.p fiction.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:banner].any? %>
           </div>
         </div>
         <div class="relative mb-4">
-          <%= f.label :short_description, 'Короткий промо-опис', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-          <%= f.text_area :short_description, class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3", rows: 2, placeholder: 'Опис для промо (від 25 до 120 символів)' %>
-          <%= tag.p fiction.errors[:short_description].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:short_description].any? %>
+          <%= f.label :short_description, 'Короткий промо-опис', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+          <%= f.text_area :short_description, class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3", rows: 2, placeholder: 'Опис для промо (від 25 до 120 символів)' %>
+          <%= tag.p fiction.errors[:short_description].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:short_description].any? %>
         </div>
       </div>
     </div>
 
     <div>
       <div id="fiction_expected_chapters" class="relative mb-4 scroll-mt-24">
-        <%= f.label :expected_chapters, 'Очікувана кількість розділів', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.input :expected_chapters, input_html: { id: 'fiction_expected_chapters_input', class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600", type: 'number', min: 1 }, label: false, placeholder: '' %>
-        <%= tag.p fiction.errors[:expected_chapters].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:expected_chapters].any? %>
+        <%= f.label :expected_chapters, 'Очікувана кількість розділів', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :expected_chapters, input_html: { id: 'fiction_expected_chapters_input', class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong", type: 'number', min: 1 }, label: false, placeholder: '' %>
+        <%= tag.p fiction.errors[:expected_chapters].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:expected_chapters].any? %>
       </div>
 
       <div class="relative mb-4">
@@ -70,15 +70,15 @@
           <%= hidden_field_tag 'fiction[complete]', '0', id: nil %>
           <%= check_box_tag 'fiction[complete]', '1', fiction.completed_at.present?,
                             id: 'fiction_complete',
-                            class: 'w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 rounded focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2' %>
-          <%= label_tag 'fiction_complete', 'Переклад на Баці завершено', class: 'ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold' %>
+                            class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong rounded focus:ring-line-strong focus:ring-2' %>
+          <%= label_tag 'fiction_complete', 'Переклад на Баці завершено', class: 'ml-2 text-fg-secondary text-lg font-semibold' %>
         </div>
-        <p class="text-stone-600 dark:text-gray-400 text-sm mt-1">Позначте, якщо нових розділів на цій сторінці не буде.</p>
+        <p class="text-fg-muted text-sm mt-1">Позначте, якщо нових розділів на цій сторінці не буде.</p>
       </div>
 
       <div class="relative mb-4">
-        <%= f.label :origin, 'Походження', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.select :origin, options_for_select(Fiction.origins.map { |key, value| value }, selected: Fiction.origins[f.object.origin]), {}, { class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600" } %>
+        <%= f.label :origin, 'Походження', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.select :origin, options_for_select(Fiction.origins.map { |key, value| value }, selected: Fiction.origins[f.object.origin]), {}, { class: "w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" } %>
       </div>
 
       <% content_rating_hints = Fiction.content_ratings.keys.index_with { |band| t("fictions.form.content_rating.hints.#{band}") } %>
@@ -87,16 +87,16 @@
            data-action="change->content-rating-hint#show"
            data-content-rating-hint-hints-value="<%= content_rating_hints.to_json %>">
         <fieldset aria-describedby="fiction_content_rating_hint">
-          <legend class="block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2">
+          <legend class="block text-fg-secondary text-lg font-semibold mb-2">
             <%= t('fictions.form.content_rating.legend') %>
           </legend>
           <div class="flex flex-wrap gap-x-6 gap-y-2">
             <% Fiction.content_ratings.each_key do |band| %>
               <label class="inline-flex items-center cursor-pointer" for="fiction_content_rating_<%= band %>">
                 <%= f.radio_button :content_rating, band,
-                      class: 'w-4 h-4 text-stone-600 bg-stone-200 dark:bg-gray-800 border-stone-300 dark:border-gray-600 focus:ring-stone-500 dark:focus:ring-gray-600 focus:ring-2',
+                      class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong focus:ring-line-strong focus:ring-2',
                       required: true %>
-                <span class="ml-2 text-stone-700 dark:text-gray-300 text-lg font-semibold">
+                <span class="ml-2 text-fg-secondary text-lg font-semibold">
                   <%= t("fictions.form.content_rating.labels.#{band}") %>
                 </span>
               </label>
@@ -104,23 +104,23 @@
           </div>
         </fieldset>
         <p id="fiction_content_rating_hint"
-           class="text-stone-600 dark:text-gray-400 text-sm mt-1"
+           class="text-fg-muted text-sm mt-1"
            data-content-rating-hint-target="hint"
            aria-live="polite">
           <%= t("fictions.form.content_rating.hints.#{fiction.content_rating}") %>
         </p>
-        <%= tag.p fiction.errors[:content_rating].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:content_rating].any? %>
+        <%= tag.p fiction.errors[:content_rating].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:content_rating].any? %>
       </div>
 
       <div id="fiction_genre_ids" class="relative mb-4 scroll-mt-24">
-        <%= f.label :genre_ids, 'Жанри', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genre_ids.presence || f.object.genres.ids), {}, { id: 'fiction_genre_ids_select', data: { controller: 'slim' }, multiple: true, class: 'w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600' } %>
+        <%= f.label :genre_ids, 'Жанри', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genre_ids.presence || f.object.genres.ids), {}, { id: 'fiction_genre_ids_select', data: { controller: 'slim' }, multiple: true, class: 'w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong' } %>
       </div>
 
       <div class="relative mb-4">
-        <%= f.label :description, 'Опис', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
-        <%= f.text_area :description, class: "w-full bg-stone-200 dark:bg-gray-800 text-stone-800 dark:text-gray-200 placeholder-stone-500 dark:placeholder-gray-500 border border-stone-300 dark:border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-stone-500 focus:border-stone-500 dark:focus:ring-gray-600 dark:focus:border-gray-600", rows: 4, placeholder: 'Короткий опис твору' %>
-        <%= tag.p fiction.errors[:description].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:description].any? %>
+        <%= f.label :description, 'Опис', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.text_area :description, class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong", rows: 4, placeholder: 'Короткий опис твору' %>
+        <%= tag.p fiction.errors[:description].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:description].any? %>
       </div>
 
       <div class="mb-4" data-controller="fiction-cover-preview"
@@ -129,11 +129,11 @@
            data-fiction-cover-preview-ideal-aspect-value="<%= CoverImageValidator::IDEAL_ASPECT %>"
            data-fiction-cover-preview-aspect-tolerance-value="<%= CoverImageValidator::ASPECT_TOLERANCE %>"
            data-fiction-cover-preview-max-megabytes-value="<%= CoverImageValidator::MAX_BYTE_SIZE / 1.megabyte %>">
-        <%= f.label :cover, 'Обкладинка', class: 'block text-stone-700 dark:text-gray-300 text-lg font-semibold mb-2' %>
+        <%= f.label :cover, 'Обкладинка', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <div class="relative group">
-          <%= f.label :cover, for: 'fictions_cover', class: "flex flex-col items-center justify-center w-full h-48 bg-stone-200 dark:bg-gray-800 border-2 border-dashed border-stone-400 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-stone-300 dark:hover:bg-gray-700 transition duration-300" do %>
-            <svg class="w-12 h-12 text-stone-600 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-            <span class="text-stone-600 dark:text-gray-400">WebP, AVIF, JPEG або PNG — мін. 600×800px, 3:4, до 2 МБ</span>
+          <%= f.label :cover, for: 'fictions_cover', class: "flex flex-col items-center justify-center w-full h-48 bg-surface border-2 border-dashed border-line-strong rounded-lg cursor-pointer hover:bg-surface-strong transition duration-300" do %>
+            <svg class="w-12 h-12 text-fg-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            <span class="text-fg-muted">WebP, AVIF, JPEG або PNG — мін. 600×800px, 3:4, до 2 МБ</span>
             <%= f.file_field :cover,
                              id: 'fictions_cover',
                              class: 'hidden',
@@ -143,15 +143,15 @@
                                fiction_cover_preview_target: 'input',
                                action: 'change->dropzone#update change->fiction-cover-preview#preview'
                              } %>
-            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'text-stone-600 dark:text-gray-400 text-center text-sm' %>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'text-fg-muted text-center text-sm' %>
           <% end %>
-          <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-red-600' if fiction.errors[:cover].any? %>
+          <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:cover].any? %>
         </div>
 
-        <div data-fiction-cover-preview-target="panel" class="mt-4 hidden rounded-lg border border-stone-200 bg-stone-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-          <p class="mb-3 text-sm font-semibold text-stone-800 dark:text-gray-200">Попередній перегляд</p>
+        <div data-fiction-cover-preview-target="panel" class="mt-4 hidden rounded-lg border border-line bg-surface p-4">
+          <p class="mb-3 text-sm font-semibold text-fg">Попередній перегляд</p>
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
-            <div class="relative aspect-[2/3] w-36 shrink-0 overflow-hidden border border-stone-200 bg-stone-100 shadow-md dark:border-gray-700 dark:bg-gray-900">
+            <div class="relative aspect-[2/3] w-36 shrink-0 overflow-hidden border border-line bg-page shadow-md">
               <img data-fiction-cover-preview-target="previewImage"
                    alt=""
                    class="absolute inset-0 h-full w-full object-cover object-center">
@@ -169,5 +169,5 @@
     </div>
   </div>
 
-  <%= f.submit "Зберегти Налаштування", class: "cursor-pointer w-full bg-stone-700 dark:bg-gray-700 text-stone-100 dark:text-gray-300 font-bold py-3 px-6 rounded-lg hover:bg-stone-600 dark:hover:bg-gray-600 transition duration-300 mt-8" %>
+  <%= f.submit "Зберегти Налаштування", class: "token-raw cursor-pointer w-full bg-stone-700 dark:bg-zinc-700 text-stone-100 dark:text-zinc-300 font-bold py-3 px-6 rounded-lg hover:bg-stone-600 dark:hover:bg-zinc-600 transition duration-300 mt-8" %>
 </div>

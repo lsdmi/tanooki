@@ -4,12 +4,12 @@
   <%= link_to youtube_video_path(video),
               turbo_drive_visit_data.merge(
                 class: [
-                  'group/cover relative block shrink-0 overflow-hidden rounded-xl bg-gray-800',
+                  'token-raw group/cover relative block shrink-0 overflow-hidden rounded-xl bg-zinc-800',
                   mobile ? 'aspect-video w-full' : 'aspect-video w-[38%] max-w-[249px] lg:w-[249px] lg:max-w-none'
                 ].join(' ')
               ) do %>
     <div data-controller="lazy-image" data-lazy-image-image-id="<%= video.id %>" class="relative h-full w-full">
-      <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700" aria-hidden="true"></div>
+      <div id="spinner-<%= video.id %>" class="absolute inset-0 flex items-center justify-center bg-surface-strong" aria-hidden="true"></div>
       <%= image_tag video_thumbnail_url(video.thumbnail),
                     alt: video.title,
                     id: "image-#{video.id}",
@@ -26,7 +26,7 @@
       <%= link_to video.title,
                   youtube_video_path(video),
                   turbo_drive_visit_data.merge(
-                    class: 'line-clamp-2 rounded-lg text-stone-900 transition-colors hover:text-cyan-700 hover:underline underline-offset-2 dark:text-gray-100 dark:hover:text-rose-400'
+                    class: 'line-clamp-2 rounded-lg text-fg transition-colors hover:text-fg-brand hover:underline underline-offset-2'
                   ) %>
     </h3>
 

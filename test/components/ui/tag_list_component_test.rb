@@ -21,8 +21,8 @@ module Ui
       )
 
       assert_selector 'a', count: 2
-      assert_selector 'a.bg-cyan-700', count: 1
-      assert_selector 'a.border-gray-300', count: 1
+      assert_selector 'a.bg-brand', count: 1
+      assert_selector 'a.border-line-strong', count: 1
     end
 
     test 'passes counts to tags' do
@@ -49,7 +49,7 @@ module Ui
 
       assert_selector 'a.bg-rose-200', text: 'BL'
       assert_selector 'a.bg-rose-200 svg'
-      assert_selector 'a.border-gray-300', text: 'Драма'
+      assert_selector 'a.border-line-strong', text: 'Драма'
     end
 
     test 'html gap class replaces the default gap-2' do

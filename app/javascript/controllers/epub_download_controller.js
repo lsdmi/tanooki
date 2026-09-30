@@ -138,13 +138,13 @@ export default class extends Controller {
   disableButton() {
     this.buttonTarget.disabled = true
     this.buttonTarget.classList.add('opacity-50', 'cursor-not-allowed')
-    this.buttonTarget.classList.remove('hover:bg-stone-300', 'dark:hover:bg-gray-600', 'hover:text-stone-800', 'dark:hover:text-white')
+    this.buttonTarget.classList.remove('hover:bg-surface-hover', 'hover:text-fg')
   }
 
   enableButton() {
     this.buttonTarget.disabled = false
     this.buttonTarget.classList.remove('opacity-50', 'cursor-not-allowed')
-    this.buttonTarget.classList.add('hover:bg-stone-300', 'dark:hover:bg-gray-600', 'hover:text-stone-800', 'dark:hover:text-white')
+    this.buttonTarget.classList.add('hover:bg-surface-hover', 'hover:text-fg')
   }
 
   showDownloadingState() {
@@ -185,7 +185,7 @@ export default class extends Controller {
   showErrorState() {
     this.buttonTarget.innerHTML = `
       <div class="flex items-center space-x-1">
-        <svg class="h-4 w-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-4 w-4 text-status-danger-solid" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
         <span class="text-xs">Помилка!</span>

@@ -4,7 +4,7 @@ module Pokemons
   # Type badge colors and battle-experience labels for Pokémon detail UI.
   module StatsHelper
     TYPE_COLORS = {
-      'Звичайний' => 'bg-gray-400 dark:bg-gray-600',
+      'Звичайний' => 'token-raw bg-gray-400 dark:bg-gray-600',
       'Вогняний' => 'bg-red-500 dark:bg-red-700',
       'Водяний' => 'bg-blue-500 dark:bg-blue-700',
       'Електричний' => 'bg-yellow-500 dark:bg-yellow-600',
@@ -16,7 +16,7 @@ module Pokemons
       'Повітряний' => 'bg-blue-400 dark:bg-blue-600',
       'Психічний' => 'bg-purple-400 dark:bg-purple-600',
       'Комашиний' => 'bg-yellow-600 dark:bg-yellow-800',
-      'Скельний' => 'bg-gray-600 dark:bg-gray-800',
+      'Скельний' => 'token-raw bg-gray-600 dark:bg-gray-800',
       'Примарний' => 'bg-purple-300 dark:bg-purple-500',
       'Драконячий' => 'bg-indigo-600 dark:bg-indigo-800'
     }.freeze

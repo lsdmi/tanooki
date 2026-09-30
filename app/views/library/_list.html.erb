@@ -1,5 +1,5 @@
 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0">
-  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-stone-800 dark:text-gray-100 mb-2 sm:mb-0">Читальня</h2>
+  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-fg mb-2 sm:mb-0">Читальня</h2>
   <div class="flex gap-1 sm:gap-2 flex-wrap">
     <% status_filters.each do |label, status| %>
       <%= link_to label,
@@ -8,17 +8,17 @@
             class: [
               "px-2 lg:px-3 py-1 rounded-md text-xs font-semibold shadow-sm ring-1 transition duration-300 whitespace-nowrap",
               "hover:cursor-pointer",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 dark:focus-visible:ring-rose-500",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand",
               status == section ?
-                "bg-cyan-700 dark:bg-rose-700 text-white ring-cyan-700 dark:ring-rose-800 scale-105" :
-                "bg-cyan-50 dark:bg-rose-900 text-cyan-800 dark:text-rose-100 ring-cyan-200 dark:ring-rose-900 hover:bg-cyan-100 dark:hover:bg-rose-800 hover:ring-cyan-300 dark:hover:ring-rose-700 hover:scale-105"
+                "bg-brand text-fg-on-brand ring-brand scale-105" :
+                "bg-brand-subtle text-fg-brand-hover ring-brand/30 hover:bg-brand/15 hover:ring-brand/60 hover:scale-105"
             ].join(' '),
             "aria-pressed": status == section %>
     <% end %>
   </div>
 </div>
 
-<div class="relative p-4 sm:p-6 lg:p-8 bg-stone-100 dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-cyan-700 dark:border-rose-700">
+<div class="relative p-4 sm:p-6 lg:p-8 bg-surface rounded-lg shadow-md overflow-hidden border border-brand">
   <!-- Ornament SVG -->
   <svg class="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 opacity-20 pointer-events-none" viewBox="0 0 100 100" fill="none">
     <circle cx="80" cy="20" r="40" fill="#67e8f9" />
@@ -38,7 +38,7 @@
           html: { class: 'mt-6 sm:mt-8' }
         ) %>
   <% else %>
-    <div class="text-center text-gray-600 dark:text-gray-300 py-8">
+    <div class="text-center text-fg-secondary py-8">
       <p>Тут так порожньо.</p>
       <p>Спробуйте змінити фільтри.</p>
     </div>

@@ -1,21 +1,21 @@
-<section class="relative min-h-screen overflow-hidden bg-stone-50 dark:bg-gray-800 tracking-widest font-sans">
+<section class="relative min-h-screen overflow-hidden bg-surface tracking-widest font-sans">
   <%= tag.div **lazy_decoration_background(
         'psyduck_background.webp',
         html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed'
       ) %>
-  <div class="pointer-events-none absolute inset-0 bg-stone-50/95 dark:bg-gray-800/90"></div>
+  <div class="pointer-events-none absolute inset-0 bg-surface/95 dark:bg-surface/90"></div>
 
   <div class="relative z-10 mx-auto max-w-5xl px-4">
     <div class="p-4 sm:p-8">
       <div class="flex flex-row items-center justify-center">
-        <h1 class="mr-4 text-3xl font-black leading-none tracking-tight text-stone-800 dark:text-gray-100 sm:text-4xl lg:text-6xl">
-          Календар<br><span class="text-stone-600 dark:text-gray-400">Оновлень</span>
+        <h1 class="mr-4 text-3xl font-black leading-none tracking-tight text-fg sm:text-4xl lg:text-6xl">
+          Календар<br><span class="text-fg-muted">Оновлень</span>
         </h1>
         <div class="max-h-64">
           <%= image_tag 'calendar.webp', alt: 'reader', class: 'max-h-64 object-cover', height: 128, width: 128 %>
         </div>
       </div>
-      <p class="mt-4 text-center text-lg font-light text-stone-700 dark:text-gray-300 sm:text-xl lg:text-2xl">
+      <p class="mt-4 text-center text-lg font-light text-fg-secondary sm:text-xl lg:text-2xl">
         <%= "#{l(Date.today - 2, format: '%B %d')} - #{l(Date.today, format: '%B %d')}, #{Date.today.year}" %>
       </p>
     </div>

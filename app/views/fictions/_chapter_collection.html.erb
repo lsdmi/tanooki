@@ -5,19 +5,19 @@
 <% sections = chapter_list_section_index(fiction, order: list_order, viewer: current_user) %>
 <% drawer_accordion_opened = false %>
 <% accordion_shell = if reader_drawer
-  'border-b border-stone-200 last:border-b-0 dark:border-zinc-700'
+  'border-b border-line last:border-b-0'
 else
-  'bg-white dark:bg-gray-800 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg'
+  'bg-card rounded-lg shadow-md transition-shadow duration-300 hover:shadow-md dark:hover:shadow-lg'
 end %>
 <% accordion_head = if reader_drawer
-  'flex cursor-pointer items-center justify-between gap-2 px-4 py-3.5 hover:bg-stone-50 dark:hover:bg-zinc-800/60'
+  'flex cursor-pointer items-center justify-between gap-2 px-4 py-3.5 hover:bg-surface'
 else
-  'bg-gradient-to-r from-stone-100 to-stone-200 dark:from-gray-700 dark:to-gray-600 p-4'
+  'bg-gradient-to-r from-surface-strong to-surface-hover p-4'
 end %>
 <% accordion_body = if reader_drawer
   'border-0 bg-transparent'
 else
-  'rounded-b border border-stone-200 bg-white dark:border-gray-700 dark:bg-gray-900'
+  'rounded-b border border-line bg-main'
 end %>
 <div class="<%= reader_drawer ? 'my-0' : 'my-6 space-y-4' %>" data-controller="chapters-accordion" data-chapters-accordion-root<%= ' data-chapters-accordion-default-open' if reader_drawer %>>
   <% sections.each_with_index do |section, section_index| %>
@@ -32,7 +32,7 @@ end %>
            tabindex="0"
            aria-expanded="<%= preload_section || accordion_open ? 'true' : 'false' %>"
            data-action="click->chapters-accordion#toggle keydown.enter->chapters-accordion#toggle keydown.space->chapters-accordion#toggle">
-        <h3 class="min-w-0 flex-1 truncate text-left text-sm font-medium text-stone-800 dark:text-zinc-100">
+        <h3 class="min-w-0 flex-1 truncate text-left text-sm font-medium text-fg">
           <%= reader_drawer ? reader_drawer_section_title(section) : section[:title] %>
         </h3>
         <div class="flex shrink-0 items-center gap-1">
@@ -42,7 +42,7 @@ end %>
                  data-epub-download-params-value="<%= { chapter_ids: section_chapter_ids, volume_title: section[:epub_title] }.to_json %>">
               <button data-epub-download-target="button"
                       data-action="click->epub-download#download"
-                      class="text-sm bg-stone-200 dark:bg-gray-700 hover:bg-stone-300 dark:hover:bg-gray-600 text-stone-700 dark:text-gray-300 py-1 px-2 rounded"
+                      class="text-sm bg-surface-strong hover:bg-surface-hover text-fg-secondary py-1 px-2 rounded"
                       title="Завантажити EPUB">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -50,7 +50,7 @@ end %>
               </button>
             </div>
           <% end %>
-          <span class="accordion-icon transition-transform duration-200 <%= (preload_section || accordion_open) ? 'rotate-180 ' : '' %><%= reader_drawer ? 'text-stone-500 dark:text-zinc-400' : 'transform text-stone-600 hover:text-stone-800 dark:text-gray-400 dark:hover:text-gray-200' %>" aria-hidden="true">
+          <span class="accordion-icon transition-transform duration-200 <%= (preload_section || accordion_open) ? 'rotate-180 ' : '' %>text-fg-muted<%= ' transform hover:text-fg' unless reader_drawer %>" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" class="<%= reader_drawer ? 'h-5 w-5' : 'h-6 w-6' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
@@ -70,7 +70,7 @@ end %>
           <% lazy_params[:current_chapter_id] = current_chapter_id if current_chapter_id.present? %>
           <div data-chapter-section-url="<%= section_path %>"
                data-chapter-section-params="<%= lazy_params.to_json %>">
-            <p class="px-4 py-3 text-sm text-stone-500 dark:text-zinc-400 chapter-section-placeholder">Натисніть, щоб завантажити розділи…</p>
+            <p class="px-4 py-3 text-sm text-fg-muted chapter-section-placeholder">Натисніть, щоб завантажити розділи…</p>
           </div>
         <% end %>
       </div>

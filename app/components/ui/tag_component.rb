@@ -97,7 +97,7 @@ module Ui
       if solid_variant?
         'bg-white/25 text-white'
       else
-        'bg-cyan-100 text-cyan-700 dark:bg-zinc-600 dark:text-zinc-100'
+        'bg-brand-subtle text-fg-brand dark:bg-surface-hover dark:text-fg'
       end
     end
 

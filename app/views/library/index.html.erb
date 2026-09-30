@@ -1,17 +1,17 @@
 <div class="mt-4 lg:mt-8 max-w-6xl mx-auto px-2 sm:px-4 pb-4 lg:pb-8 z-10 relative tracking-tight">
   <!-- Library Explanation Section -->
   <div class="mb-6 lg:mb-8">
-    <details class="bg-cyan-50 dark:bg-rose-900/20 border border-cyan-200 dark:border-rose-800 rounded-lg overflow-hidden">
-      <summary class="p-4 sm:p-6 text-left hover:bg-cyan-100 dark:hover:bg-rose-900/30 transition-colors duration-200 cursor-pointer list-none">
+    <details class="bg-brand-subtle border border-brand/25 rounded-lg overflow-hidden">
+      <summary class="p-4 sm:p-6 text-left hover:bg-brand-subtle transition-colors duration-200 cursor-pointer list-none">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-700 dark:text-rose-400" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-fg-brand" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
             </svg>
-            <h3 class="text-sm sm:text-base font-semibold text-cyan-800 dark:text-rose-200">Як працює бібліотека</h3>
+            <h3 class="text-sm sm:text-base font-semibold text-fg-brand-hover">Як працює бібліотека</h3>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg"
-               class="h-5 w-5 text-cyan-700 dark:text-rose-400 transition-transform duration-200 group-open:rotate-180"
+               class="h-5 w-5 text-fg-brand transition-transform duration-200 group-open:rotate-180"
                viewBox="0 0 20 20"
                fill="currentColor">
             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -19,8 +19,8 @@
         </div>
       </summary>
 
-      <div class="px-4 sm:px-6 pb-4 sm:pb-6 border-t border-cyan-200 dark:border-rose-800">
-        <div class="text-xs sm:text-sm text-cyan-700 dark:text-rose-300 space-y-1 pt-2">
+      <div class="px-4 sm:px-6 pb-4 sm:pb-6 border-t border-brand/25">
+        <div class="text-xs sm:text-sm text-fg-brand-hover space-y-1 pt-2">
           <p>• <strong>Читаю:</strong> Активні твори, які ви зараз читаєте</p>
           <p>• <strong>Прочитано:</strong> Завершені твори</p>
           <p>• <strong>Відкладено:</strong> Твори, які ви тимчасово призупинили</p>
@@ -51,18 +51,18 @@
         <% if @related_fictions.any? %>
           <div class="mb-4 lg:mb-6">
             <div class="flex flex-row justify-between items-start lg:items-center mb-2">
-              <h2 class="text-lg lg:text-xl font-semibold text-stone-800 dark:text-gray-100 mb-2 lg:mb-0">Також Може Сподобатися</h2>
+              <h2 class="text-lg lg:text-xl font-semibold text-fg mb-2 lg:mb-0">Також Може Сподобатися</h2>
             </div>
-            <div class="border border-cyan-700 dark:border-rose-700"></div>
+            <div class="border border-brand"></div>
           </div>
 
           <ul class="space-y-2 lg:space-y-3">
             <% @related_fictions.each do |fiction| %>
-              <li class="flex items-center gap-2 lg:gap-3 border-b border-cyan-700 dark:border-rose-700 last:border-b-0 pb-2 lg:pb-3 p-1 lg:p-2 hover:scale-[1.015] transition-all duration-300">
+              <li class="flex items-center gap-2 lg:gap-3 border-b border-brand last:border-b-0 pb-2 lg:pb-3 p-1 lg:p-2 hover:scale-[1.015] transition-all duration-300">
                 <%= link_to fiction_path(fiction), class: 'relative block' do %>
                   <%= cover_card_picture_tag(fiction.cover,
                     alt: fiction.cover.blob.filename.to_s,
-                    class: "w-12 h-16 lg:w-16 lg:h-22 rounded object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
+                    class: "w-12 h-16 lg:w-16 lg:h-22 rounded object-cover shadow-sm border border-brand",
                     loading: "lazy",
                     data: {
                       controller: "lazy-image",
@@ -71,8 +71,8 @@
                     } ) %>
                 <% end %>
                 <div class="flex-1 tracking-tight min-w-0">
-                  <%= link_to fiction.title, fiction_path(fiction), class: 'leading-tight text-xs lg:text-sm xl:text-base font-semibold text-stone-900 dark:text-gray-100 line-clamp-2 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
-                  <div class="text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1"><%= fiction.author %></div>
+                  <%= link_to fiction.title, fiction_path(fiction), class: 'leading-tight text-xs lg:text-sm xl:text-base font-semibold text-fg line-clamp-2 hover:text-brand transition-colors duration-300 tracking-tight' %>
+                  <div class="text-xs text-fg-subtle font-light tracking-tight line-clamp-1 mt-1"><%= fiction.author %></div>
                 </div>
               </li>
             <% end %>
@@ -80,22 +80,22 @@
         <% end %>
 
         <section class="mt-4 lg:mt-6">
-          <h2 class="text-lg lg:text-xl font-bold text-stone-800 dark:text-gray-200 mb-3 lg:mb-4">Улюблені Перекладачі</h2>
-          <div class="border border-cyan-700 dark:border-rose-700 mb-3"></div>
+          <h2 class="text-lg lg:text-xl font-bold text-fg mb-3 lg:mb-4">Улюблені Перекладачі</h2>
+          <div class="border border-brand mb-3"></div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
             <% @favourite_translators.each do |translator| %>
-              <div class="hover:scale-[1.015] transition-all duration-300 py-3 lg:py-4 flex flex-col items-center text-white dark:text-gray-300 rounded-md">
+              <div class="token-raw hover:scale-[1.015] transition-all duration-300 py-3 lg:py-4 flex flex-col items-center text-white dark:text-zinc-300 rounded-md">
                 <%= link_to scanlator_path(translator), class: '' do %>
                   <%= image_tag scanlator_avatar_url(translator.avatar),
                     alt: 'translator avatar',
-                    class: "w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-cyan-700 dark:border-rose-700",
+                    class: "w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-brand",
                     loading: "lazy" %>
                 <% end %>
-                <%= link_to translator.title, scanlator_path(translator), class: 'leading-tight text-xs lg:text-sm font-semibold text-stone-900 dark:text-gray-100 line-clamp-1 hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight text-center' %>
+                <%= link_to translator.title, scanlator_path(translator), class: 'leading-tight text-xs lg:text-sm font-semibold text-fg line-clamp-1 hover:text-brand transition-colors duration-300 tracking-tight text-center' %>
                 <% if translator.telegram_id? %>
-                  <%= link_to "@#{translator.telegram_id}", telegram_profile_url(translator.telegram_id), target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-cyan-700 dark:hover:text-rose-700 transition-colors duration-300 tracking-tight' %>
+                  <%= link_to "@#{translator.telegram_id}", telegram_profile_url(translator.telegram_id), target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-fg-subtle font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-brand transition-colors duration-300 tracking-tight' %>
                 <% else %>
-                  <div class="text-xs text-gray-400 font-light tracking-tight line-clamp-1 mt-1 text-center"><%= translator.description %></div>
+                  <div class="text-xs text-fg-subtle font-light tracking-tight line-clamp-1 mt-1 text-center"><%= translator.description %></div>
                 <% end %>
               </div>
             <% end %>
