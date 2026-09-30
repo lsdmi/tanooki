@@ -1,0 +1,78 @@
+<% circle = 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0' %>
+<% icons = {
+  reading: ['M12 7v14', 'M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
+  finished: [circle, 'm9 12 2 2 4-4'],
+  postponed: [circle, 'M12 6v6l4 2'],
+  dropped: [circle, 'm15 9-6 6', 'm9 9 6 6'],
+  remove: ['M3 6h18', 'M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6', 'M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2'],
+  read: ['M20 6 9 17l-5-5'],
+  read_up_to: ['M18 6 7 17l-5-5', 'm22 10-7.5 7.5L13 16'],
+  unread: [circle],
+  more: ['M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2', 'M12 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2', 'M12 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2']
+} %>
+<% icon = lambda do |name, klass = 'size-4'|
+  content_tag(:svg, safe_join(icons.fetch(name).map { |d| tag.path(d:) }),
+              class: klass, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+              'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': true)
+end %>
+<% shelves = [[:reading, 'Читаю'], [:finished, 'Прочитано'], [:postponed, 'Відкладено'], [:dropped, 'Покинуто']] %>
+<div class="space-y-10">
+  <% [['Light', ''], ['Dark', 'dark']].each do |theme, theme_class| %>
+    <section class="<%= theme_class %>">
+      <div class="rounded-xl border border-line bg-main p-8">
+        <p class="mb-6 text-sm font-medium text-fg-muted"><%= theme %> · below 768 px these open as a bottom sheet</p>
+        <div class="flex min-h-96 flex-wrap items-start gap-16">
+          <div class="space-y-2">
+            <p class="text-xs text-fg-subtle">Shelf picker</p>
+            <%= render Ui::BottomSheetComponent.new(title: 'Додати до бібліотеки') do |sheet| %>
+              <% sheet.with_trigger do %>
+                <%= render Ui::ButtonComponent.new(variant: :outline, size: :lg) do %>
+                  <%= icon.(:reading) %><span>Бібліотека: Читаю</span>
+                <% end %>
+              <% end %>
+              <% shelves.each do |key, label| %>
+                <%= render Ui::MenuItemComponent.new(label:, tone: key == :reading ? :selected : :default) do |item| %>
+                  <% item.with_icon { icon.(key) } %>
+                <% end %>
+              <% end %>
+              <div class="py-1" role="separator"><div class="h-px bg-line"></div></div>
+              <%= render Ui::MenuItemComponent.new(label: 'Прибрати з бібліотеки', tone: :destructive) do |item| %>
+                <% item.with_icon { icon.(:remove) } %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-xs text-fg-subtle">Chapter actions (aligned to the end)</p>
+            <%= render Ui::BottomSheetComponent.new(title: 'Розділ 85 — Кабінет лисячих консультацій', align: :end) do |sheet| %>
+              <% sheet.with_trigger do %>
+                <%= render Ui::ButtonComponent.new(label: 'Дії з розділом', variant: :ghost, size: :md, icon_only: true) do %>
+                  <%= icon.(:more) %>
+                <% end %>
+              <% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Позначити прочитаним') do |item| %>
+                <% item.with_icon { icon.(:read) } %>
+              <% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Позначити всі до цього прочитаними') do |item| %>
+                <% item.with_icon { icon.(:read_up_to) } %>
+              <% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Позначити непрочитаним') do |item| %>
+                <% item.with_icon { icon.(:unread) } %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="w-60 space-y-2">
+            <p class="text-xs text-fg-subtle">Menu item states</p>
+            <div class="flex flex-col gap-1 rounded-xl border border-line bg-main p-2 shadow-popover">
+              <%= render Ui::MenuItemComponent.new(label: 'Default') do |item| %><% item.with_icon { icon.(:reading) } %><% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Hover', html: { class: 'bg-surface-hover' }) do |item| %><% item.with_icon { icon.(:reading) } %><% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Selected', tone: :selected) do |item| %><% item.with_icon { icon.(:reading) } %><% end %>
+              <%= render Ui::MenuItemComponent.new(label: 'Destructive', tone: :destructive) do |item| %><% item.with_icon { icon.(:remove) } %><% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

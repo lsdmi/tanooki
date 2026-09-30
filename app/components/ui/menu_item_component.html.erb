@@ -1,0 +1,14 @@
+<% body = capture do %>
+  <% if icon? %><span class="flex size-4 shrink-0 items-center justify-center" aria-hidden="true"><%= icon %></span><% end %>
+  <span class="min-w-0 flex-1 truncate"><%= label %></span>
+  <% if selected? %>
+    <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  <% end %>
+<% end %>
+<% if link? %>
+  <%= link_to body, href, element_attributes %>
+<% else %>
+  <%= button_tag body, type: 'button', **element_attributes %>
+<% end %>

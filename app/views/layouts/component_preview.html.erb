@@ -8,6 +8,7 @@
     <% %w[pagy slimselect actiontext adult_content_disclaimer chapters_reader sweetal2 adsense_slots].each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, 'data-turbo-track': 'reload' %>
     <% end %>
+    <%= javascript_importmap_tags %>
   </head>
   <body class="bg-surface p-8">
     <%= yield %>

@@ -1,0 +1,28 @@
+<% rows = [
+  ['not started', { read: 0, total: 107 }],
+  ['in progress', { read: 87, total: 107 }],
+  ['complete', { read: 107, total: 107 }],
+  ['complete, no check', { read: 107, total: 107, check: false }],
+  ['licensed', { read: 163, total: 163, tone: :licensed }]
+] %>
+<div class="space-y-10">
+  <% [['Light', ''], ['Dark', 'dark']].each do |theme, theme_class| %>
+    <section class="<%= theme_class %>">
+      <div class="rounded-xl border border-line bg-main p-8">
+        <p class="mb-4 text-sm font-medium text-fg-muted"><%= theme %></p>
+        <div class="grid grid-cols-[9rem_4rem_5rem_16rem] items-center gap-x-6 gap-y-4">
+          <span></span>
+          <span class="text-xs text-fg-subtle">32 px</span>
+          <span class="text-xs text-fg-subtle">51 px</span>
+          <span class="text-xs text-fg-subtle">240 px</span>
+          <% rows.each do |name, args| %>
+            <span class="text-sm text-fg"><%= name %></span>
+            <%= render Ui::MiniProgressBarComponent.new(**args) %>
+            <%= render Ui::MiniProgressBarComponent.new(**args, html: { class: 'w-[51px]' }) %>
+            <%= render Ui::MiniProgressBarComponent.new(**args, html: { class: 'w-60' }) %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

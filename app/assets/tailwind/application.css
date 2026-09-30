@@ -31,6 +31,14 @@
   --color-btn-destructive: var(--color-red-500);
   --color-btn-destructive-hover: var(--color-red-600);
 
+  /* Figma `bg-invert`: the undo toast. */
+  --color-invert: var(--color-slate-900);
+  --color-fg-on-invert: var(--color-white);
+  --color-fg-on-invert-action: var(--color-cyan-50);
+
+  --shadow-popover: 0 8px 24px 0 --alpha(var(--color-slate-900) / 12%);
+  --shadow-toast: 0 8px 24px 0 --alpha(var(--color-slate-900) / 20%);
+
   --color-overlay-scrim-40: --alpha(var(--color-zinc-950) / 40%);
   --color-overlay-scrim-45: --alpha(var(--color-zinc-950) / 45%);
   --color-overlay-scrim-60: --alpha(var(--color-zinc-950) / 60%);
@@ -156,6 +164,12 @@
 
     --color-btn-licensed: var(--color-purple-500);
     --color-btn-licensed-hover: var(--color-purple-600);
+
+    --color-invert: var(--color-zinc-100);
+    --color-fg-on-invert: var(--color-zinc-900);
+    --color-fg-on-invert-action: var(--color-rose-600);
+    --shadow-popover: 0 8px 24px 0 --alpha(var(--color-black) / 40%);
+    --shadow-toast: 0 8px 24px 0 --alpha(var(--color-black) / 50%);
 
     --color-status-danger-solid: var(--color-rose-500);
     --color-status-danger-subtle-bg: var(--color-rose-950);

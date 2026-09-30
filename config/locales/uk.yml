@@ -300,6 +300,8 @@ uk:
       last_word_connector: " та "
       two_words_connector: " і "
       words_connector: ", "
+  undo_toast:
+    undo: Скасувати
   time:
     am: до полудня
     formats:

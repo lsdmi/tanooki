@@ -1,0 +1,8 @@
+<%= tag.span(**wrapper_attributes) do %>
+  <span class="block h-1 min-w-8 flex-1 overflow-hidden rounded-full bg-line">
+    <span class="block h-full rounded-full <%= fill_classes %>" style="width: <%= percent %>%"></span>
+  </span>
+  <% if show_check? %>
+    <%= render Ui::ProgressIconComponent.new(state: :read, size: :sm) %>
+  <% end %>
+<% end %>

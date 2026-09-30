@@ -1,0 +1,14 @@
+<%= tag.div(**root_attributes) do %>
+  <svg class="shrink-0 <%= icon_classes %>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <% icon_paths.each do |d| %><path d="<%= d %>" /><% end %>
+  </svg>
+  <div class="<%= text_classes %>">
+    <p class="<%= title_classes %>"><%= title %></p>
+    <% if body_content.present? %>
+      <div class="<%= body_classes %>"><%= body_content %></div>
+    <% end %>
+  </div>
+  <% if action? %>
+    <div class="<%= action_classes %>"><%= action %></div>
+  <% end %>
+<% end %>

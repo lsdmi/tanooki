@@ -1,0 +1,31 @@
+<div class="min-h-96 space-y-6 rounded-xl border border-line bg-main p-8" data-undo-label="<%= t('undo_toast.undo') %>" id="undo-toast-preview">
+  <p class="text-sm text-fg-muted">Shows for 5 s at the bottom (above the safe area on mobile). Hover or focus pauses the timer.</p>
+  <div class="flex flex-wrap gap-3">
+    <%= render Ui::ButtonComponent.new(label: 'Read', variant: :outline, html: { data: { toast_icon: 'read', toast_message: 'Розділ 85 позначено прочитаним' } }) %>
+    <%= render Ui::ButtonComponent.new(label: 'Unread', variant: :outline, html: { data: { toast_icon: 'unread', toast_message: 'Розділ 85 позначено непрочитаним' } }) %>
+    <%= render Ui::ButtonComponent.new(label: 'Bulk', variant: :outline, html: { data: { toast_icon: 'bulk', toast_message: 'Розділи 1–85 позначено прочитаними' } }) %>
+    <%= render Ui::ButtonComponent.new(label: 'Toggle dark', variant: :ghost, html: { data: { toggle_dark: true } }) %>
+  </div>
+  <p class="text-sm text-fg" data-undo-log>Undo clicks: 0</p>
+</div>
+<script>
+  import('flash_toast').then(({ showUndoToast }) => {
+    const root = document.getElementById('undo-toast-preview')
+    const log = root.querySelector('[data-undo-log]')
+    let undos = 0
+
+    root.addEventListener('click', (event) => {
+      const button = event.target.closest('button')
+      if (!button) return
+      if (button.dataset.toggleDark) {
+        document.documentElement.classList.toggle('dark')
+        return
+      }
+      showUndoToast(button.dataset.toastMessage, {
+        icon: button.dataset.toastIcon,
+        undoLabel: root.dataset.undoLabel,
+        onUndo: () => { log.textContent = `Undo clicks: ${++undos}` }
+      })
+    })
+  })
+</script>

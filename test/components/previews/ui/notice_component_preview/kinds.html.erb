@@ -1,0 +1,37 @@
+<% notices = {
+  adult: ['Контент 18+', 'Цей твір містить матеріали для дорослої аудиторії. Продовжуючи читання, ви підтверджуєте, що вам виповнилося 18 років.'],
+  teen: ['Контент 16+', 'Твір містить сцени, які можуть не підходити читачам до 16 років.'],
+  licensed: ['Офіційна ліцензія', 'Твір офіційно ліцензовано в Україні видавництвом «Назва видавництва».'],
+  dropped: ['Переклад зупинено', 'Команда припинила переклад. Опубліковані розділи залишаються доступними, ваш прогрес збережено.'],
+  announced: ['Анонс', 'Переклад стартує незабаром. Додайте твір до бібліотеки, щоб не пропустити перший розділ.'],
+  finished: ['Переклад завершено', 'Усі розділи перекладено. Твір можна читати від початку до кінця.']
+} %>
+<div class="space-y-10">
+  <% [['Light', ''], ['Dark', 'dark']].each do |theme, theme_class| %>
+    <section class="<%= theme_class %> space-y-6">
+      <p class="text-sm font-medium text-fg-muted"><%= theme %></p>
+      <% %i[scrim tinted].each do |style| %>
+        <div class="space-y-3 rounded-xl bg-linear-to-br from-slate-700 via-rose-950 to-zinc-900 p-6 token-raw">
+          <p class="text-xs font-medium uppercase tracking-wide text-fg-on-brand"><%= style %> (on the hero image)</p>
+          <% notices.each do |kind, (title, body)| %>
+            <%= render Ui::NoticeComponent.new(kind:, style:, title:, body:) do |notice| %>
+              <% if kind == :licensed %>
+                <% notice.with_action do %>
+                  <span class="inline-flex rounded-lg bg-main">
+                    <%= render Ui::ButtonComponent.new(label: 'Офіційне видання', variant: :outline, size: :sm, as: :link, href: '#') %>
+                  </span>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="space-y-3 rounded-xl border border-line bg-main py-6">
+        <p class="px-6 text-xs font-medium uppercase tracking-wide text-fg-muted">light (band outside the hero)</p>
+        <% notices.each do |kind, (title, body)| %>
+          <%= render Ui::NoticeComponent.new(kind:, title:, body:) %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+</div>

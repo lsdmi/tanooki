@@ -1,0 +1,23 @@
+<%= tag.div(**root_attributes) do %>
+  <% if trigger? %>
+    <div class="contents" data-bottom-sheet-target="trigger" data-action="click->bottom-sheet#toggle"><%= trigger %></div>
+  <% end %>
+  <div class="fixed inset-0 z-[70] bg-overlay-scrim-60 opacity-0 transition-opacity duration-200 md:hidden"
+       data-bottom-sheet-target="scrim"
+       data-action="click->bottom-sheet#close"
+       aria-hidden="true"
+       hidden></div>
+  <div id="<%= id %>"
+       class="<%= panel_classes %>"
+       data-bottom-sheet-target="panel"
+       role="dialog"
+       aria-labelledby="<%= title_id %>"
+       tabindex="-1"
+       hidden>
+    <div class="flex touch-none flex-col items-center gap-3 pb-2 md:hidden" data-action="pointerdown->bottom-sheet#dragStart">
+      <span class="h-1 w-10 rounded-full bg-line" aria-hidden="true"></span>
+      <p id="<%= title_id %>" class="w-full text-center text-sm text-fg"><%= title %></p>
+    </div>
+    <div class="flex flex-col gap-1" data-action="click->bottom-sheet#select"><%= content %></div>
+  </div>
+<% end %>
