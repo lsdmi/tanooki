@@ -49,7 +49,7 @@ class FictionsGuestIndexCacheTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_nil assigns(:wild_pokemon)
+    assert_nil assigns(:wild_encounter)
     assert_select 'turbo-frame#catch-pokemon', count: 0
   end
 

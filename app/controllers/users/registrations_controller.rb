@@ -34,7 +34,7 @@ module Users
     private
 
     def handle_pokemon_notice
-      return unless params[:pokenotice].present? && session[:caught_pokemon_id].present?
+      return unless params[:pokenotice].present? && Pokemons::AuthCatch.guest_encounter(session)
 
       session[:pokemon_guest_caught] = true
       set_flash_message! :notice, :pokemon_login_error

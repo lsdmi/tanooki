@@ -27,6 +27,7 @@ class User < ApplicationRecord
 
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
+  has_many :pokemon_encounters, dependent: :delete_all
   has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id,
                                   inverse_of: :attacker, dependent: :nullify
   has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id,

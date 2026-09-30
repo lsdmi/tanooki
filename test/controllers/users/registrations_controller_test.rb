@@ -5,6 +5,7 @@ require 'test_helper'
 module Users
   class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    include WildEncounterHelpers
 
     def setup
       @user_params = {
@@ -42,6 +43,28 @@ module Users
       assert_response :unprocessable_entity
       assert_template :new
       assert_equal 'Перевірте та виправте форму реєстрації:', flash[:alert]
+    end
+
+    test 'guest wild encounter transfers to the new account on sign up' do
+      pokemon = pokemons(:two)
+
+      with_guaranteed_encounter(pokemon) { get root_path }
+
+      assert_equal [pokemon.id, nil], PokemonEncounter.last.values_at(:pokemon_id, :user_id)
+
+      get register_path(pokenotice: true)
+
+      assert_equal I18n.t('devise.registrations.pokemon_login_error'), flash[:notice]
+
+      post register_path, params: @user_params
+
+      assert_equal [pokemon.id], User.find_by(email: @user_params[:user][:email]).user_pokemons.pluck(:pokemon_id)
+    end
+
+    test 'pokenotice without a guest encounter shows no pokemon notice' do
+      get register_path(pokenotice: true)
+
+      assert_nil flash[:notice]
     end
 
     test 'rate limits sign up attempts per ip' do

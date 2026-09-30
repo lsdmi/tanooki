@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Session-backed wild encounter: throttled catch chance and rarity-weighted random species.
+  # Wild encounter roll: throttled catch chance and rarity-weighted random species, recorded as a PokemonEncounter.
+  # Guests keep only the encounter id and their guest token in the session; see AuthCatch.guest_encounter.
   class WildCatch
+    ENCOUNTER_GAP = 8.hours
+    ENCOUNTER_CHANCE = 0.02
+
     attr_reader :session, :user
 
     def initialize(session:, user:)
@@ -18,37 +22,44 @@ module Pokemons
       return nil if rand > rate
 
       postcatch_session
-      caught_pokemon
+      encounter
     end
 
     private
 
     def catch_rate
-      last_seen = user&.pokemon_last_catch || session[:pokemon_catch_last_seen]
+      return 0 if user && shown_recently?
 
-      if last_seen < 365.days.ago then 1
-      elsif last_seen < 8.hours.ago then 0.02
-      else
-        0
+      last_seen = user&.pokemon_last_catch || session[:pokemon_catch_last_seen]
+      last_seen < ENCOUNTER_GAP.ago ? ENCOUNTER_CHANCE : 0
+    end
+
+    # Signed-in users are throttled by their last catch, so an ignored pop-up would otherwise reappear on every page.
+    def shown_recently?
+      shown_at = session[:pokemon_catch_last_seen]
+      shown_at.present? && Time.zone.parse(shown_at.to_s) > ENCOUNTER_GAP.ago
+    end
+
+    def encounter
+      pokemon = find_pokemon(WildCatchPool.sample_id)
+      return nil if pokemon.nil?
+
+      user ? PokemonEncounter.roll!(pokemon:, user:) : guest_encounter(pokemon)
+    end
+
+    def guest_encounter(pokemon)
+      session[:pokemon_guest_token] ||= SecureRandom.base58(24)
+      PokemonEncounter.roll!(pokemon:, guest_token: session[:pokemon_guest_token]).tap do |encounter|
+        session[:pokemon_encounter_id] = encounter.id
       end
     end
 
-    def caught_pokemon
-      pokemon_id = caught_pokemon_id
-      session[:caught_pokemon_id] = pokemon_id if user.nil?
-      find_caught_pokemon(pokemon_id)
-    end
-
-    def caught_pokemon_id
-      WildCatchPool.sample_id
-    end
-
-    def find_caught_pokemon(id)
+    def find_pokemon(id)
       Pokemon.includes(sprite_attachment: :blob).find_by(id: id)
     end
 
     def precatch_session
-      session[:pokemon_catch_last_seen] ||= Time.zone.now
+      session[:pokemon_catch_last_seen] ||= Time.zone.now if user.nil?
       session[:pokemon_guest_caught] = nil
     end
 

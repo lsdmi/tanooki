@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
     # (skipped on fictions#index/show, chapters#show, studio).
     return if params[:page].present?
 
-    @wild_pokemon = Pokemons::WildCatch.new(user: current_user, session:).call
+    @wild_encounter = Pokemons::WildCatch.new(user: current_user, session:).call
   end
 
   def latest_comments

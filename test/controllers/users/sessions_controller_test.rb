@@ -5,11 +5,25 @@ require 'test_helper'
 module Users
   class SessionsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    include WildEncounterHelpers
 
     setup do
       @user = users(:user_one)
       @user.update!(password: 'password', password_confirmation: 'password')
       ActionController::Base.cache_store.clear
+    end
+
+    test 'guest wild encounter transfers once on login' do
+      pokemon = pokemons(:two)
+      UserPokemon.where(user: @user, pokemon:).destroy_all
+
+      with_guaranteed_encounter(pokemon) { get root_path }
+      get register_path(pokenotice: true)
+      post user_session_path, params: { user: { email: @user.email, password: 'password' } }
+
+      assert_equal I18n.t('devise.sessions.signed_in_with_pokemon'), flash[:notice]
+      assert UserPokemon.exists?(user: @user, pokemon:)
+      assert_predicate PokemonEncounter.last, :caught?
     end
 
     test 'should create new user session without catch_pokemon' do
@@ -42,7 +56,8 @@ module Users
     setup do
       @user = users(:user_one)
       @controller = Users::SessionsController.new
-      @session = { pokemon_guest_caught: true, caught_pokemon_id: 2 }
+      encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), guest_token: 'guest-token')
+      @session = { pokemon_guest_caught: true, pokemon_encounter_id: encounter.id, pokemon_guest_token: 'guest-token' }
     end
 
     test 'should create user pokemon and update turbo streams' do

@@ -9,10 +9,8 @@ module Pokemons
     end
 
     def perform
-      if @session[:pokemon_guest_caught].nil? || @session[:caught_pokemon_id].nil?
+      unless AuthCatch.transfer_guest_catch!(user: @user, session: @session)
         CollectionUpdater.new(pokemon_id: nil, user_id: @user.id).grant
-      else
-        CollectionUpdater.new(pokemon_id: @session[:caught_pokemon_id], user_id: @user.id).trap
       end
       @user.inactive_message.presence
     end

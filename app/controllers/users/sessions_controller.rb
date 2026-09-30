@@ -31,9 +31,8 @@ module Users
     # end
 
     def catch_pokemon(resource)
-      return unless Pokemons::AuthCatch.guest_catch_pending?(session)
+      return unless Pokemons::AuthCatch.transfer_guest_catch!(user: resource, session: session)
 
-      Pokemons::AuthCatch.transfer_guest_catch!(user: resource, session: session)
       set_flash_message! :notice, :signed_in_with_pokemon
     end
   end

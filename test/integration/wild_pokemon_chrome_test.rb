@@ -55,7 +55,7 @@ class WildPokemonChromeTest < ActionDispatch::IntegrationTest
     Pokemons::WildCatch.stub(:new, ->(*) { raise 'wild catch should be skipped on this surface' }, &)
 
     assert_response :success
-    assert_nil assigns(:wild_pokemon)
+    assert_nil assigns(:wild_encounter)
     assert_select 'turbo-frame#catch-pokemon', count: 0
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_214500) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -228,6 +228,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_190000) do
     t.index ["attacker_id"], name: "index_pokemon_battle_logs_on_attacker_id"
     t.index ["defender_id"], name: "index_pokemon_battle_logs_on_defender_id"
     t.index ["winner_id"], name: "index_pokemon_battle_logs_on_winner_id"
+  end
+
+  create_table "pokemon_encounters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "guest_token", limit: 32
+    t.bigint "pokemon_id", null: false
+    t.boolean "shiny", default: false, null: false
+    t.string "source", limit: 16, default: "browse", null: false
+    t.string "status", limit: 16, default: "open", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["guest_token"], name: "index_pokemon_encounters_on_guest_token"
+    t.index ["pokemon_id"], name: "index_pokemon_encounters_on_pokemon_id"
+    t.index ["user_id", "status"], name: "index_pokemon_encounters_on_user_id_and_status"
   end
 
   create_table "pokemon_type_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -605,6 +620,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_190000) do
   add_foreign_key "pokemon_battle_logs", "users", column: "attacker_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "defender_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "winner_id"
+  add_foreign_key "pokemon_encounters", "pokemons", on_delete: :cascade
+  add_foreign_key "pokemon_encounters", "users", on_delete: :cascade
   add_foreign_key "pokemon_type_relations", "pokemon_types"
   add_foreign_key "pokemon_type_relations", "pokemons"
   add_foreign_key "pokemons", "pokemons", column: "ancestor_id"
