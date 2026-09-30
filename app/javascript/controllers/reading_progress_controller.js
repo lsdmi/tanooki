@@ -297,7 +297,10 @@ export default class extends Controller {
         keepalive: true
       })
         .then((response) => {
-          if (response.status === 200 && payload.event !== "position") Turbo.cache.clear()
+          if (response.status !== 200 || payload.event === "position") return
+
+          Turbo.cache.clear()
+          if (payload.event === "completed") this.dispatch("completed", { detail: { url } })
         })
         .catch(() => {
           // Ignore network errors; reading the chapter again on a later visit retries.

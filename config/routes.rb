@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     resource :read, only: %i[create destroy], module: :chapters
   end
   resources :chapter_images, only: :create
+  resource :guest_reading_merge, only: :create
   resources :fictions, only: [] do
     collection do
       get :alphabetical, to: 'fiction_lists#alphabetical'

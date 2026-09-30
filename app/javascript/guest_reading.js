@@ -47,6 +47,25 @@ export function resumeLocator(record, chapterId, { auto = false } = {}) {
   return locator.percent >= BANNER_MIN_PERCENT && locator.percent < FINISHED_PERCENT ? locator : null
 }
 
+// The server merges at most this many records per request; the rest go on a later page.
+export const MERGE_BATCH = 200
+
+// After sign-in (`guest-reading-merge`): the records to post this time, and the body the server reads.
+// `records` is null when the store can't be read.
+export function mergeBatch(records) {
+  const batch = (records ?? []).slice(0, MERGE_BATCH)
+  const body = {
+    records: batch.map((record) => ({
+      fiction_id: record.fictionId,
+      chapter_id: record.chapterId,
+      resume_at: record.resumeAt,
+      read_chapter_ids: record.readChapterIds,
+      locator: record.locator
+    }))
+  }
+  return { batch, body }
+}
+
 function engage(record, locator, chapter, now) {
   const base = record ?? emptyRecord(chapter)
   if (base.chapterId === chapter.id) {

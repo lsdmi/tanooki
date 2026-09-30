@@ -48,6 +48,8 @@
     </svg>
   </button>
 
+  <%= render 'reader_finish_prompt', chapter: @chapter if reader_finish_prompt?(@chapter, @next_chapter) %>
+
   <% if resume_locator && !reader_resume_auto? %>
     <%= render 'reader_resume_banner', locator: resume_locator %>
   <% elsif !user_signed_in? %>

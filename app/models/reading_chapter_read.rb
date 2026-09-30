@@ -4,9 +4,9 @@
 # Stores the exact translation read; translations sharing [volume_number, number] count as the same chapter.
 class ReadingChapterRead < ApplicationRecord
   # scroll / next come from the reader; manual from the drawer toggle; legacy when a pre-rebuild snapshot is
-  # turned into real reads (see Reading::RemoveRead).
+  # turned into real reads (see Reading::RemoveRead); device when a guest's reads are merged on sign-in.
   EVENT_SOURCES = %w[scroll next].freeze
-  SOURCES = (EVENT_SOURCES + %w[manual legacy]).freeze
+  SOURCES = (EVENT_SOURCES + %w[manual legacy device]).freeze
 
   belongs_to :user
   belongs_to :fiction

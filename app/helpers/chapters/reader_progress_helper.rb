@@ -15,6 +15,14 @@ module Chapters
       data.merge(reader_guest_progress_data(chapter, next_chapter), guest_resume_data(chapter))
     end
 
+    # The latest listable chapter offers to move the fiction to «Прочитано» once this visit completes it
+    # (`reader-finish-prompt`). Only offered, never set, and not when the library already says finished.
+    def reader_finish_prompt?(chapter, next_chapter)
+      return false if next_chapter || !user_signed_in?
+
+      !ReadingProgress.finished.exists?(user: current_user, fiction_id: chapter.fiction_id)
+    end
+
     private
 
     def reader_guest_progress_data(chapter, next_chapter)

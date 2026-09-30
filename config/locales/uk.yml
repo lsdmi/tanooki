@@ -506,6 +506,11 @@ uk:
   reading_progress:
     alerts:
       invalid_status: Невірний статус читання.
+    finish_prompt:
+      text: Це був останній розділ. Перенести твір у «Прочитано»?
+      confirm: Так, прочитано
+      dismiss: Ні, дякую
+      done: Готово, твір у «Прочитано».
   downloads:
     alerts:
       error: Ох, тр*сця! Під час генерування EPUB сталася помилка!

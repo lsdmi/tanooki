@@ -55,6 +55,25 @@ export function readRecord(fictionId) {
   })
 }
 
+export function readAllRecords() {
+  return run("readonly", (store, done) => {
+    const request = store.getAll()
+    request.onsuccess = () => done(request.result)
+  })
+}
+
+// Deletes the given records unless one was written again since it was read (it then stays for the next merge).
+export function deleteRecords(records) {
+  return run("readwrite", (store) => {
+    records.forEach((record) => {
+      const request = store.get(record.fictionId)
+      request.onsuccess = () => {
+        if (request.result && JSON.stringify(request.result) === JSON.stringify(record)) store.delete(record.fictionId)
+      }
+    })
+  })
+}
+
 // Read-modify-write in one transaction. `change` gets the stored record (or null) and returns the new one;
 // returning null leaves the store as it was.
 export function updateRecord(fictionId, change) {

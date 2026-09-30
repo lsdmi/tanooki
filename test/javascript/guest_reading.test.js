@@ -1,6 +1,8 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { applyReadingEvent, continueTarget, resumeLocator } from "../../app/javascript/guest_reading.js"
+import {
+  applyReadingEvent, continueTarget, MERGE_BATCH, mergeBatch, resumeLocator
+} from "../../app/javascript/guest_reading.js"
 
 const NOW = new Date("2026-09-29T12:00:00Z")
 const LATER = new Date("2026-09-29T13:00:00Z")
@@ -111,4 +113,29 @@ test("resume needs the cursor on this chapter and a stored percent", () => {
   assert.equal(resumeLocator(engaged(null, 3), 4, { auto: true }), null)
   assert.equal(resumeLocator(engaged(null, 3, NOW, null), 3, { auto: true }), null)
   assert.equal(resumeLocator(null, 3, { auto: true }), null)
+})
+
+test("the merge body carries the cursor, its place, when it moved and the reads", () => {
+  const record = applyReadingEvent(engaged(null, 3), { event: "completed" }, chapter(3), NOW)
+  const { batch, body } = mergeBatch([record])
+
+  assert.deepEqual(batch, [record])
+  assert.deepEqual(body, {
+    records: [{
+      fiction_id: 7,
+      chapter_id: 3,
+      resume_at: NOW.toISOString(),
+      read_chapter_ids: [3],
+      locator: { ...locator(30), percent: 100 }
+    }]
+  })
+})
+
+test("the merge sends at most one batch, and nothing when the store can't be read", () => {
+  const records = Array.from({ length: MERGE_BATCH + 5 }, (_, i) => ({ ...engaged(null, 3), fictionId: i + 1 }))
+  const { batch, body } = mergeBatch(records)
+
+  assert.equal(batch.length, MERGE_BATCH)
+  assert.equal(body.records[0].fiction_id, 1)
+  assert.deepEqual(mergeBatch(null), { batch: [], body: { records: [] } })
 })
