@@ -3,7 +3,7 @@
     <%= tag.p 'Зареєструйтеся, щоб отримати можливість додавати нові розділи та брати участь у розвитку цього ранобе.',
               class: 'text-sm sm:text-base text-fg-secondary mb-6' %>
     <div class="flex justify-start">
-      <%= ui_button(as: :link, href: register_path, variant: :ghost, size: :md) do %>
+      <%= ui_button(as: :link, href: register_path, variant: :outline, size: :lg) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
         </svg>
@@ -23,7 +23,7 @@
     <%= tag.p 'Це ранобе ще не завершено. Якщо ви є перекладачем або хочете поділитися своїм перекладом, саме час долучитися!',
               class: 'text-sm sm:text-base text-fg-secondary mb-6' %>
     <div class="flex justify-start">
-      <%= ui_button(as: :link, href: new_chapter_path(fiction:), variant: :ghost, size: :md) do %>
+      <%= ui_button(as: :link, href: new_chapter_path(fiction:), variant: :outline, size: :lg) do %>
         <svg class="h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 010-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>

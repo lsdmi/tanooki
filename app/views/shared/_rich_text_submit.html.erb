@@ -5,19 +5,19 @@
               class: 'text-sm text-fg-muted transition-colors hover:text-fg' %>
   <div class="flex items-center gap-2">
     <% if show_draft %>
-      <%= ui_button(as: :submit, variant: :ghost, label: t('chapters.buttons.save'), size: :md, html: {
+      <%= ui_button(as: :submit, variant: :outline, label: t('chapters.buttons.save'), size: :lg, html: {
         name: 'intent',
         value: 'draft',
         title: 'Ctrl/⌘+S',
         data: { draft_hotkey_target: 'draftSubmit' }
       }) %>
     <% elsif unpublish %>
-      <%= ui_button(as: :submit, variant: :ghost, label: t('chapters.buttons.unpublish'), size: :md, html: {
+      <%= ui_button(as: :submit, variant: :outline, label: t('chapters.buttons.unpublish'), size: :lg, html: {
         name: 'intent',
         value: 'draft',
         data: { turbo_confirm: unpublish_confirm }
       }) %>
     <% end %>
-    <%= ui_button(as: :submit, label: primary_label, size: :md, html: { name: 'intent', value: 'publish' }) %>
+    <%= ui_button(as: :submit, label: primary_label, size: :lg, html: { name: 'intent', value: 'publish' }) %>
   </div>
 </div>

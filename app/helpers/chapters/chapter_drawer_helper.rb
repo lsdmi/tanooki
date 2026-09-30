@@ -42,9 +42,12 @@ module Chapters
       drawer_progress.status_for(chapter)
     end
 
-    # Unread stays unlabelled, as in `_reader_chapter_drawer_status`.
-    def reader_chapter_drawer_status_labels
-      %i[read current in_progress].index_with { t("chapters.reader_chapter_drawer.progress_#{it}") }
+    # :current shares the in-progress icon but keeps its own label; unread stays unlabelled.
+    def chapter_progress_icon(status)
+      status = status.to_sym
+      state = %i[read unread].include?(status) ? status : :in_progress
+      label = t("chapters.reader_chapter_drawer.progress_#{status}") unless status == :unread
+      render Ui::ProgressIconComponent.new(state:, label:)
     end
 
     def chapter_row_title_class(status, reader_drawer:)

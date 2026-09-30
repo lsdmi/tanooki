@@ -13,7 +13,7 @@ module Chapters
     end
 
     def reader_outlined_button(href:, title: nil, **html_options, &)
-      ui_button(as: :link, href: href, variant: :ghost, full_width: true,
+      ui_button(as: :link, href: href, variant: :outline, full_width: true,
                 html: reader_outlined_html(title: title, **html_options), &)
     end
 

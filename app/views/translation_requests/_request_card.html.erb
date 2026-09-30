@@ -219,7 +219,7 @@
                   class="token-raw <%= text_size %> bg-gray-500 hover:bg-gray-600 dark:bg-zinc-600 dark:hover:bg-zinc-500 text-white font-medium px-<%= compact ? '3' : '4' %> py-<%= compact ? '1' : '2' %> rounded transition-colors duration-200">
             Скасувати
           </button>
-          <%= ui_button(as: :button, size: compact ? :xs : :md, label: 'Зберегти', html: {
+          <%= ui_button(as: :button, size: compact ? :xs : :lg, label: 'Зберегти', html: {
                 type: 'button',
                 data: { action: 'translation-request-card#saveEdit' }
               }) %>

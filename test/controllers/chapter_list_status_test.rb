@@ -6,7 +6,6 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   WASH = '.bg-surface'
-  LABELS = '[data-chapter-drawer-search-labels-value]'
 
   setup do
     @user = users(:user_one)
@@ -52,12 +51,18 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     assert_select '#chapters-list li[data-chapter-status], #chapters-list li span[role=img]', count: 0
   end
 
-  test 'drawer search results get status labels for screen readers' do
+  test 'drawer search results clone labelled status icons from templates' do
     sign_in @user
     get chapter_url(chapters(:one))
-    labels = JSON.parse(css_select(LABELS).first['data-chapter-drawer-search-labels-value'])
 
-    assert_equal I18n.t('chapters.reader_chapter_drawer.progress_in_progress'), labels['in_progress']
+    assert_includes response.body, %(data-status="in_progress">)
+    %w[read current in_progress].each do |status|
+      assert_match(
+        /data-status="#{status}"><span[^>]*aria-label="#{I18n.t("chapters.reader_chapter_drawer.progress_#{status}")}"/,
+        response.body
+      )
+    end
+    assert_match(/data-status="unread"><span[^>]*aria-hidden="true"/, response.body)
   end
 
   private

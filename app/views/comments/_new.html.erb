@@ -35,22 +35,22 @@
 
   <div class="mt-3 flex <%= drawer_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
     <% if drawer_form %>
-      <%= ui_button(as: :submit, full_width: true, size: :md) do %>
+      <%= ui_button(as: :submit, full_width: true, size: :lg) do %>
         <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
         </svg>
         <span><%= t('chapters.reader_comments_drawer.submit') %></span>
       <% end %>
     <% else %>
-      <%= ui_button(as: :submit, label: 'Надіслати', size: :md, html: { class: 'w-full sm:w-auto' }) %>
+      <%= ui_button(as: :submit, label: 'Надіслати', size: :lg, html: { class: 'w-full sm:w-auto' }) %>
     <% end %>
 
     <% if comment.new_record? && comment.parent_id.present? %>
       <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
         <%= ui_button(as: :link,
                       href: cancel_reply_comment_path(comment.parent_id),
-                      variant: :ghost,
-                      size: :md,
+                      variant: :outline,
+                      size: :lg,
                       full_width: drawer_form,
                       html: { class: (drawer_form ? nil : 'w-full sm:w-auto'), data: { turbo_stream: '' } }) do %>
           <span>Скасувати</span>
@@ -62,8 +62,8 @@
       <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
         <%= ui_button(as: :link,
                       href: cancel_edit_comment_path(comment),
-                      variant: :ghost,
-                      size: :md,
+                      variant: :outline,
+                      size: :lg,
                       full_width: drawer_form,
                       html: { class: (drawer_form ? nil : 'w-full sm:w-auto'), data: { turbo_stream: '' } }) do %>
           <span>Скасувати</span>

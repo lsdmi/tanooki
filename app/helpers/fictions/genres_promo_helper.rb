@@ -69,7 +69,7 @@ module Fictions
         'leading-snug xl:leading-snug'
       ].join(' '),
       button_variant: :primary,
-      button_size: :md,
+      button_size: :lg,
       button_class: [
         'group/btn transition-all duration-200 hover:!shadow-md',
         'lg:!px-4 lg:!py-2 lg:!text-sm',

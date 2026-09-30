@@ -1,4 +1,4 @@
-<%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil, external: true, card_class: "", content_class: "", title_class: "", description_class: "", description_short: nil, description_short_class: "lg:hidden", description_full_class: "hidden lg:inline", button_class: "", button_size: :md, button_variant: :ghost, background_class: "bg-center scale-[1.04]", gradient_class: nil, badge_label: nil, badge_class: "", badge_icon: nil, button_arrow: false, button_arrow_class: "", content_stack: false, content_stack_class: "gap-2 md:gap-4", button_stack_class: "w-fit self-start") %>
+<%# locals: (title:, description:, href:, button_label:, background_image:, button_icon:, banner_class:, visual: nil, external: true, card_class: "", content_class: "", title_class: "", description_class: "", description_short: nil, description_short_class: "lg:hidden", description_full_class: "hidden lg:inline", button_class: "", button_size: :lg, button_variant: :outline, background_class: "bg-center scale-[1.04]", gradient_class: nil, badge_label: nil, badge_class: "", badge_icon: nil, button_arrow: false, button_arrow_class: "", content_stack: false, content_stack_class: "gap-2 md:gap-4", button_stack_class: "w-fit self-start") %>
 <% has_visual = visual.present? %>
 <% card_layout_classes = if has_visual
      'md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-3 md:items-center md:justify-normal'
@@ -19,7 +19,7 @@
 
   <% ghost_on_dark_button_classes = '!border-white/60 !bg-transparent !text-white hover:!border-white hover:!bg-white/10 hover:!text-white dark:!border-white/50 dark:!bg-transparent dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10 mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0 lg:px-5 lg:py-2 lg:text-sm xl:px-6 xl:py-2.5 xl:text-base' %>
   <% stacked_button_classes = [button_class, button_stack_class].compact.join(' ') %>
-  <% default_button_classes = button_variant == :ghost ? [ghost_on_dark_button_classes, button_class] : [button_class, 'mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0'] %>
+  <% default_button_classes = button_variant == :outline ? [ghost_on_dark_button_classes, button_class] : [button_class, 'mt-3 mb-3 w-auto sm:my-3 md:mt-3 md:mb-0'] %>
   <% promo_button_classes = content_stack ? stacked_button_classes : default_button_classes %>
   <% title_classes = title_class.presence || 'text-base font-extrabold leading-tight text-white sm:text-lg md:text-base lg:text-lg lg:leading-snug xl:text-xl' %>
   <% description_classes = description_class.presence || 'token-raw mt-3 text-xs leading-snug text-slate-200/90 sm:text-[0.8125rem] md:text-xs lg:text-sm lg:leading-snug xl:text-[0.9375rem]' %>

@@ -6,14 +6,14 @@
          hidden>
   <%# Both buttons grow from their text width; on the narrowest phones they wrap to two full-width rows. %>
   <div class="flex flex-wrap items-center gap-2">
-    <%= ui_button(size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#resume' } }) do %>
+    <%= ui_button(size: :lg, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#resume' } }) do %>
       <% if locator %>
         <%= t('chapters.reader_resume_banner.resume', percent: locator.percent.round) %>
       <% else %>
         <span data-guest-resume-target="label"></span>
       <% end %>
     <% end %>
-    <%= ui_button(variant: :ghost, size: :md, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#dismiss' } }) do %>
+    <%= ui_button(variant: :outline, size: :lg, html: { class: 'flex-1 whitespace-nowrap max-sm:px-3', data: { action: 'reading-resume#dismiss' } }) do %>
       <%= t('chapters.reader_resume_banner.from_start') %>
     <% end %>
   </div>

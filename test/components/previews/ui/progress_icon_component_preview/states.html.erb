@@ -1,0 +1,21 @@
+<div class="space-y-10">
+  <% [['Light', ''], ['Dark', 'dark']].each do |theme, theme_class| %>
+    <section class="<%= theme_class %>">
+      <div class="rounded-xl border border-line bg-main p-8">
+        <p class="mb-4 text-sm font-medium text-fg-muted"><%= theme %></p>
+        <div class="grid grid-cols-[7rem_repeat(3,3rem)] items-center gap-y-4">
+          <span></span>
+          <% %i[sm md lg].each do |size| %>
+            <span class="text-xs text-fg-subtle"><%= size %></span>
+          <% end %>
+          <% Ui::ProgressIconComponent::STATES.each do |state| %>
+            <span class="text-sm text-fg"><%= state %></span>
+            <% %i[sm md lg].each do |size| %>
+              <%= render Ui::ProgressIconComponent.new(state:, size:, label: state.to_s) %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

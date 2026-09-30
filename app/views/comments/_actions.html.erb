@@ -1,7 +1,7 @@
 <% reply_href = new_comment_path(comment: { parent_id: comment.id, commentable_id: commentable.id, commentable_type: application_record_child(commentable) }) %>
 <%= ui_button(as: :link,
               href: reply_href,
-              variant: :ghost,
+              variant: :outline,
               size: :xs,
               html: { data: { turbo_stream: '' } }) do %>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

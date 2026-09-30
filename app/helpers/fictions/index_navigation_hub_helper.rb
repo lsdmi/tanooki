@@ -33,8 +33,8 @@ module Fictions
 
     HUB_PROMO_CARD_STYLE = {
       external: false,
-      button_variant: :ghost,
-      button_size: :md,
+      button_variant: :outline,
+      button_size: :lg,
       banner_class: HUB_BANNER_CLASS,
       card_class: [
         'group !h-full !min-h-0 !w-full !justify-center !items-start',

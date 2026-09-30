@@ -51,7 +51,7 @@ module Fictions
 
     def guest_fiction_index_etag
       [
-        'fictions/index/v3',
+        'fictions/index/v4',
         I18n.locale,
         cookies[:color_theme].presence || 'light',
         Fictions::IndexVariablesManager.http_cache_fingerprint

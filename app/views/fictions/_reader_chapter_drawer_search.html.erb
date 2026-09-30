@@ -34,6 +34,10 @@
   <% end %>
 </div>
 
+<% %i[read current in_progress unread].each do |status| %>
+  <template data-chapter-drawer-search-target="icon" data-status="<%= status %>"><%= chapter_progress_icon(status) %></template>
+<% end %>
+
 <div data-chapter-drawer-search-target="results" class="hidden">
   <ul data-chapter-drawer-search-target="resultsList" class="divide-y divide-line"></ul>
 </div>

@@ -17,11 +17,11 @@
                   class: 'flex',
                   data: { action: 'turbo:submit-end->reader-finish-prompt#finished' } do %>
       <%= hidden_field_tag :status, 'finished', id: nil %>
-      <%= ui_button(as: :submit, size: :md, html: { class: 'w-full whitespace-nowrap max-sm:px-3' }) do %>
+      <%= ui_button(as: :submit, size: :lg, html: { class: 'w-full whitespace-nowrap max-sm:px-3' }) do %>
         <%= t('reading_progress.finish_prompt.confirm') %>
       <% end %>
     <% end %>
-    <%= ui_button(variant: :ghost, size: :md, html: { class: 'w-full whitespace-nowrap max-sm:px-3', data: { action: 'reader-finish-prompt#hide' } }) do %>
+    <%= ui_button(variant: :outline, size: :lg, html: { class: 'w-full whitespace-nowrap max-sm:px-3', data: { action: 'reader-finish-prompt#hide' } }) do %>
       <%= t('reading_progress.finish_prompt.dismiss') %>
     <% end %>
   </div>

@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 /** Filters the reader chapter list by number or title (full fiction index, not lazy sections only). */
 export default class extends Controller {
-  static targets = ["input", "results", "resultsList", "list", "empty", "row"]
-  static values = { chapters: Array, labels: Object }
+  static targets = ["input", "results", "resultsList", "list", "empty", "row", "icon"]
+  static values = { chapters: Array }
 
   connect() {
     this.filter = this.filter.bind(this)
@@ -134,31 +134,12 @@ export default class extends Controller {
     return "hover:bg-surface dark:hover:bg-surface/60"
   }
 
+  // Icons come from server-rendered <template>s so results match Ui::ProgressIconComponent.
   buildStatusIcon(status) {
-    const icon = document.createElement("span")
-    icon.className = "inline-flex h-5 w-5 shrink-0 items-center justify-center"
-    const label = this.labelsValue[status]
-    if (label) {
-      icon.setAttribute("role", "img")
-      icon.setAttribute("aria-label", label)
-    } else {
-      icon.setAttribute("aria-hidden", "true")
-    }
+    const template =
+      this.iconTargets.find((icon) => icon.dataset.status === status) ||
+      this.iconTargets.find((icon) => icon.dataset.status === "unread")
 
-    if (status === "read") {
-      icon.classList.add("text-emerald-500", "dark:text-emerald-400")
-      icon.innerHTML =
-        '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-    } else if (status === "current" || status === "in_progress") {
-      icon.classList.add("text-fg-brand")
-      icon.innerHTML =
-        '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>'
-    } else {
-      icon.classList.add("text-fg-subtle")
-      icon.innerHTML =
-        '<svg class="h-5 w-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5" /></svg>'
-    }
-
-    return icon
+    return template.content.firstElementChild.cloneNode(true)
   }
 }

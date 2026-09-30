@@ -28,6 +28,8 @@
 
   --color-btn-licensed: var(--color-purple-600);
   --color-btn-licensed-hover: var(--color-purple-700);
+  --color-btn-destructive: var(--color-red-500);
+  --color-btn-destructive-hover: var(--color-red-600);
 
   --color-overlay-scrim-40: --alpha(var(--color-zinc-950) / 40%);
   --color-overlay-scrim-45: --alpha(var(--color-zinc-950) / 45%);
