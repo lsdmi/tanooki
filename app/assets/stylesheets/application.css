@@ -3,6 +3,89 @@
  * sweetal2, adsense_slots) is linked from the layout via Layout::StylesheetsHelper#page_stylesheets.
  */
 
+/* Montserrat variable (300–900), self-hosted Google Fonts subsets. Browsers fetch only subsets the page uses. */
+@font-face {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("montserrat-cyrillic-ext.woff2") format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("montserrat-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("montserrat-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("montserrat-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Local fonts resized to Montserrat's metrics so the swap does not reflow text. */
+@font-face {
+  font-family: "Montserrat Fallback Segoe UI";
+  src: local("Segoe UI");
+  size-adjust: 113.452%;
+  ascent-override: 85.3224%;
+  descent-override: 22.1239%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Montserrat Fallback Helvetica Neue";
+  src: local("Helvetica Neue");
+  size-adjust: 111.778%;
+  ascent-override: 86.6004%;
+  descent-override: 22.4553%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Montserrat Fallback Roboto";
+  src: local("Roboto");
+  size-adjust: 111.96%;
+  ascent-override: 86.46%;
+  descent-override: 22.42%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Montserrat Fallback Arial";
+  src: local("Arial");
+  size-adjust: 112.831%;
+  ascent-override: 85.7923%;
+  descent-override: 22.2457%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Montserrat Fallback Noto Sans";
+  src: local("Noto Sans");
+  size-adjust: 106.118%;
+  ascent-override: 91.2191%;
+  descent-override: 23.6529%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   button:not(:disabled),
   [role="button"]:not(:disabled) {

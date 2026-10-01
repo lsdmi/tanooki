@@ -41,6 +41,8 @@
     <meta name="turbo-refresh-method" content="morph">
     <meta name="turbo-refresh-scroll" content="preserve">
     <%# data-turbo-track="reload" — digested Propshaft assets only; CDN URLs (flatpickr, Google Fonts) omit track %>
+    <%= preload_link_tag 'montserrat-cyrillic.woff2' %>
+    <%= preload_link_tag 'montserrat-latin.woff2' %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <% global_stylesheets.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>

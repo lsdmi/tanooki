@@ -4,6 +4,12 @@
 @source '../../helpers/**/*.rb';
 
 @theme {
+  /* @font-face rules live in stylesheets/application.css (Propshaft digests the font URLs there). */
+  --font-sans:
+    Montserrat, "Montserrat Fallback Segoe UI", "Montserrat Fallback Helvetica Neue", "Montserrat Fallback Roboto",
+    "Montserrat Fallback Arial", "Montserrat Fallback Noto Sans", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
   /* Light values from Figma «03. Scheme». Dark values live in the `.dark` block below. */
   --color-brand: var(--color-cyan-700);
   --color-brand-hover: var(--color-cyan-800);
