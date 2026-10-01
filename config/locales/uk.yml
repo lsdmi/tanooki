@@ -461,6 +461,11 @@ uk:
       finished:
         title: ПЕРЕКЛАД ЗАВЕРШЕНО
         body: Усі розділи перекладено. Твір можна читати від початку до кінця.
+    tabs:
+      label: Сторінка твору
+      about: Про твір
+      chapters: Розділи
+      comments: Коментарі
   chapters:
     notices:
       create_success: Розділ додано.

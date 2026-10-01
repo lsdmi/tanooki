@@ -23,6 +23,17 @@ class FictionShowPresenter
     @reading_progress ||= find_or_fix_reading_progress
   end
 
+  def continue_reading
+    return unless reading_progress
+
+    @continue_reading ||= Library::ContinueReadingPresenter.new(reading_progress, viewer: @current_user)
+  end
+
+  def reading_started? = continue_reading&.started? || false
+
+  # Guests always get About: their page is one cached variant, and a URL hash picks another tab on the client.
+  def default_tab = @current_user && reading_started? ? :chapters : :about
+
   def bookmark_stats
     Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do
       Fictions::ReadingStatusCounts.new(fiction: @fiction).call
@@ -39,9 +50,7 @@ class FictionShowPresenter
     @fiction.related_fictions.limit(3)
   end
 
-  def order
-    @params[:order] || :desc
-  end
+  def order = @params[:order] || :desc
 
   def sorted_chapters_locals
     {

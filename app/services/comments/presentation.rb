@@ -26,7 +26,7 @@ module Comments
       when YoutubeVideo
         youtube_video_path(comment.commentable)
       when Fiction
-        fiction_path(comment.commentable)
+        fiction_path(comment.commentable, anchor: 'comments')
       when Publication
         tale_path(comment.commentable)
       end

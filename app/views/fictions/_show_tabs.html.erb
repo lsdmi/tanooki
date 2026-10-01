@@ -1,0 +1,23 @@
+<%# locals: fiction:, active_tab: %>
+<% tabs = {
+     about: t('fictions.tabs.about'),
+     chapters: "#{t('fictions.tabs.chapters')} · #{fiction.chapter_count}",
+     comments: "#{t('fictions.tabs.comments')} · #{fiction.comments_count}"
+   } %>
+<div class="sticky top-0 z-30 border-b border-line bg-surface/95 backdrop-blur" data-tabs-target="list">
+  <div class="max-w-screen-xl mx-auto px-4 2xl:px-0">
+    <div role="tablist" aria-label="<%= t('fictions.tabs.label') %>" class="grid grid-cols-3 md:flex md:gap-8">
+      <% tabs.each do |id, label| %>
+        <% active = id == active_tab %>
+        <%= tag.a label,
+                  href: "##{id}",
+                  id: "fiction-tab-#{id}",
+                  role: 'tab',
+                  tabindex: (active ? 0 : -1),
+                  aria: { selected: active, controls: "fiction-panel-#{id}" },
+                  data: { tabs_target: 'tab', tab_id: id, action: 'tabs#select keydown->tabs#navigate' },
+                  class: '-mb-px whitespace-nowrap border-b-2 border-transparent px-1 py-3 text-center text-sm font-medium text-fg-secondary transition-colors hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-selected:border-brand aria-selected:font-bold aria-selected:text-fg sm:text-base' %>
+      <% end %>
+    </div>
+  </div>
+</div>

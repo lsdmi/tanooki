@@ -45,12 +45,6 @@
       <!-- Rating Section -->
       <%= render 'rating_section', fiction: fiction %>
 
-      <% if fiction.scanlators.any? %>
-        <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(fiction), loading: :lazy, class: 'block' do %>
-          <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
-        <% end %>
-      <% end %>
-
       <!-- Bookmarks Stats -->
       <div class="">
         <div class="grid grid-cols-2 gap-3 text-center">

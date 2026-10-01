@@ -22,31 +22,16 @@ module Fictions
 
     attr_reader :fiction, :presenter, :user
 
-    delegate :first_chapter, :reading_progress, to: :presenter, private: true
+    delegate :first_chapter, :reading_progress, :continue_reading, :reading_started?, to: :presenter, private: true
 
     def guest?
       user.nil?
     end
 
-    def continue_reading
-      return unless reading_progress
-
-      @continue_reading ||= Library::ContinueReadingPresenter.new(reading_progress, viewer: user)
-    end
-
-    # Putting a fiction on a shelf creates a progress on the first chapter; it counts as started only once a
-    # chapter was opened (resume_at) or read.
-    def started?
-      return @started if defined?(@started)
-
-      @started = continue_reading.present? &&
-                 (reading_progress.resume_at.present? || continue_reading.read_count.positive?)
-    end
-
     def cta_kind
       if continue_reading&.all_read?
         :reread if first_chapter
-      elsif started? && continue_reading.continue_chapter
+      elsif reading_started? && continue_reading.continue_chapter
         :continue
       elsif first_chapter
         :read
@@ -114,7 +99,7 @@ module Fictions
 
     # «востаннє» is the last chapter visit; a shelf change also touches updated_at, so it is not a fallback.
     def progress_line
-      return unless started? && continue_reading.total.positive?
+      return unless reading_started? && continue_reading.total.positive?
 
       counts = { read: continue_reading.read_count, total: continue_reading.total }
       visited_at = reading_progress.resume_at

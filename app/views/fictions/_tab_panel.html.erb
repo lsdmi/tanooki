@@ -1,0 +1,8 @@
+<%# locals: id:, active_tab: %>
+<%= tag.section id: "fiction-panel-#{id}",
+                role: 'tabpanel',
+                hidden: id != active_tab,
+                aria: { labelledby: "fiction-tab-#{id}" },
+                data: { tabs_target: 'panel', tab_id: id } do %>
+  <%= yield %>
+<% end %>

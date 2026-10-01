@@ -17,6 +17,23 @@ class FictionShowPresenterTest < ActiveSupport::TestCase
     assert_same desc, @presenter.send(:ordered_chapters_desc)
   end
 
+  test 'default tab is About for guests' do
+    assert_equal :about, FictionShowPresenter.new(@fiction, nil, {}).default_tab
+  end
+
+  test 'default tab is About when the fiction is shelved but no chapter was opened or read' do
+    reading_progresses(:one).update!(resume_at: nil)
+    ReadingChapterRead.where(user: @user).delete_all
+
+    assert_equal :about, @presenter.default_tab
+  end
+
+  test 'default tab is Chapters once the reader opened a chapter' do
+    reading_progresses(:one).update!(resume_at: 1.hour.ago)
+
+    assert_equal :chapters, @presenter.default_tab
+  end
+
   test 'first and last chapter use memoized ordered relations' do
     assert_equal chapters(:one), @presenter.first_chapter
     assert_equal chapters(:two), @presenter.send(:last_chapter)

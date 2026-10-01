@@ -27,6 +27,14 @@ module Library
       target.chapter
     end
 
+    # Putting a fiction on a shelf creates a progress on the first chapter; it counts as started only once a
+    # chapter was opened (resume_at) or read.
+    def started?
+      return @started if defined?(@started)
+
+      @started = @reading.resume_at.present? || read_count.positive?
+    end
+
     private
 
     def target

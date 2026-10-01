@@ -43,10 +43,10 @@ module Comments
       assert_equal youtube_video_path(comment.commentable), comment_url(comment)
     end
 
-    test 'comment_url returns correct URL for Fiction' do
+    test 'comment_url opens the Comments tab for Fiction' do
       comment = comments(:comment_fiction)
 
-      assert_equal fiction_path(comment.commentable), comment_url(comment)
+      assert_equal fiction_path(comment.commentable, anchor: 'comments'), comment_url(comment)
     end
 
     test 'comment_url returns correct URL for Publication' do

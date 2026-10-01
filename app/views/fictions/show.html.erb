@@ -14,23 +14,42 @@
       <% end %>
     <% end %>
   <% end %>
-  <main class="max-w-screen-xl mx-auto px-4 2xl:px-0 py-8 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Details Section -->
-      <section class="lg:col-span-2 rounded-lg ">
-        <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
+  <% active_tab = @show_presenter.default_tab %>
+  <div data-controller="tabs" data-tabs-active-tab-value="<%= active_tab %>" data-action="hashchange@window->tabs#hashChanged">
+    <%= render 'show_tabs', fiction: @fiction, active_tab: %>
 
-        <section class="fiction-show__ad fiction-show__ad--main mt-8">
-          <%= render "shared/adsense_slot",
-                     placement: :fiction_show,
-                     navigation_key: @fiction.id,
-                     measure_as: "bottom" %>
-        </section>
-      </section>
+    <main class="max-w-screen-xl mx-auto px-4 2xl:px-0 py-8 relative z-10">
+      <%= render layout: 'tab_panel', locals: { id: :about, active_tab: } do %>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <section class="lg:col-span-2 rounded-lg">
+            <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
 
-      <!-- Right Column: Chapters, CTA, and Banner -->
-      <div class="space-y-8">
-        <!-- Chapters List -->
+            <section class="fiction-show__ad fiction-show__ad--main mt-8">
+              <%= render "shared/adsense_slot",
+                         placement: :fiction_show,
+                         navigation_key: @fiction.id,
+                         measure_as: "bottom" %>
+            </section>
+          </section>
+
+          <div class="space-y-8">
+            <%= render 'scanlator_notice', fiction: @fiction %>
+
+            <section class="fiction-show__ad fiction-show__ad--sidebar">
+              <%= render "shared/adsense_slot",
+                         placement: :fiction_show_sidebar,
+                         navigation_key: @fiction.id,
+                         measure_as: "bottom" %>
+            </section>
+
+            <%= render 'epub_disclaimer', fiction: @fiction %>
+
+            <%= render 'add_chapter_cta', fiction: @fiction %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= render layout: 'tab_panel', locals: { id: :chapters, active_tab: } do %>
         <section class="bg-surface-strong rounded-lg shadow-md p-6 border border-line">
           <% if fiction_has_listable_chapters?(@fiction, current_user) %>
             <%= turbo_frame_tag 'sort-chapters' do %>
@@ -40,30 +59,23 @@
             <%= render 'first_chapter_cta', fiction: @fiction %>
           <% end %>
         </section>
+      <% end %>
 
-        <%= render 'scanlator_notice', fiction: @fiction %>
-
-        <section class="fiction-show__ad fiction-show__ad--sidebar">
-          <%= render "shared/adsense_slot",
-                     placement: :fiction_show_sidebar,
-                     navigation_key: @fiction.id,
-                     measure_as: "bottom" %>
+      <%# A lazy frame in a hidden panel never intersects, so comments load when their tab first opens. %>
+      <%= render layout: 'tab_panel', locals: { id: :comments, active_tab: } do %>
+        <section class="bg-card rounded-lg shadow-md p-6 border border-line">
+          <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy do %>
+            <p class="py-6 text-center text-sm text-fg-muted">Завантаження коментарів…</p>
+          <% end %>
         </section>
+      <% end %>
 
-        <!-- EPUB Disclaimer -->
-        <%= render 'epub_disclaimer', fiction: @fiction %>
-
-        <!-- CTA Section -->
-        <%= render 'add_chapter_cta', fiction: @fiction %>
-      </div>
-
-      <!-- Comments Section (lazy-loaded) -->
-      <section class="lg:col-span-3 bg-card rounded-lg shadow-md p-6 mt-8 border border-line">
-        <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy do %>
-          <p class="py-6 text-center text-sm text-fg-muted">Завантаження коментарів…</p>
+      <% if @fiction.scanlators.any? %>
+        <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(@fiction), loading: :lazy, class: 'mt-8 block' do %>
+          <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
         <% end %>
-      </section>
-    </div>
-  </main>
+      <% end %>
+    </main>
+  </div>
 </div>
 <% end %>
