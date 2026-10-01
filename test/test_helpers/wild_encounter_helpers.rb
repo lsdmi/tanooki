@@ -1,16 +1,31 @@
 # frozen_string_literal: true
 
-# Forces the next wild roll to succeed with a given species, so the pop-up renders on the page.
 module WildEncounterHelpers
-  def with_guaranteed_encounter(pokemon, &)
+  # Forces the next wild roll to succeed with a given species, then loads the pop-up frame as the browser would.
+  def with_guaranteed_encounter(pokemon)
     pokemon.sprite.attach(io: file_fixture('cover_valid.webp').open, filename: "#{pokemon.slug}.webp")
-    build = Pokemons::WildCatch.method(:new)
-    certain = lambda { |**kwargs|
-      build.call(**kwargs).tap { |service| service.define_singleton_method(:catch_rate) { 1 } }
-    }
 
     Pokemons::WildCatchPool.stub(:sample_id, pokemon.id) do
-      Pokemons::WildCatch.stub(:new, certain, &)
+      with_winning_rolls(skip_delay: true) do
+        yield
+        get css_select('turbo-frame#catch-pokemon').first['src']
+      end
     end
+  end
+
+  # Every 2% roll wins; skip_delay also ignores the encounter delay (a new guest otherwise waits it).
+  def with_winning_rolls(skip_delay: false, &)
+    build = Pokemons::WildCatch.method(:new)
+    winning = lambda { |**kwargs|
+      build.call(**kwargs).tap do |service|
+        service.define_singleton_method(:rand) { |*| 0.0 }
+        next unless skip_delay
+
+        service.define_singleton_method(:eligible?) { true }
+        service.define_singleton_method(:encountered_recently?) { false }
+      end
+    }
+
+    Pokemons::WildCatch.stub(:new, winning, &)
   end
 end

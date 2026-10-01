@@ -40,7 +40,7 @@ class WildPokemonChromeTest < ActionDispatch::IntegrationTest
     called = false
     Pokemons::WildCatch.stub(:new, lambda { |**|
       called = true
-      Object.new.tap { |o| o.define_singleton_method(:call) { nil } }
+      Object.new.tap { |o| o.define_singleton_method(:roll) { nil } }
     }) do
       get root_path
     end
@@ -55,7 +55,7 @@ class WildPokemonChromeTest < ActionDispatch::IntegrationTest
     Pokemons::WildCatch.stub(:new, ->(*) { raise 'wild catch should be skipped on this surface' }, &)
 
     assert_response :success
-    assert_nil assigns(:wild_encounter)
+    assert_nil assigns(:wild_encounter_ticket)
     assert_select 'turbo-frame#catch-pokemon', count: 0
   end
 end

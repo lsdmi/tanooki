@@ -1,12 +1,15 @@
 <% pokemon = encounter.pokemon %>
-<div class="absolute z-50" style="left: <%= rand(0..100) %>vw; top: <%= rand(0..100) %>vh;">
+<% label = t('pokemons.wild.catch', name: pokemon.name) %>
+<%# Fixed and capped so the button (sprite at most 6rem plus padding) stays on screen; temporary so a back navigation does not restore a used token. %>
+<%= tag.div class: 'fixed z-50', data: { turbo_temporary: true },
+            style: "left: min(#{rand(5..85)}vw, calc(100vw - 8rem)); top: min(#{rand(5..85)}vh, calc(100vh - 8rem));" do %>
   <% if current_user.present? %>
-    <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, data: { turbo_stream: "", "turbo-method": :post } do %>
-      <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'cursor-pointer' %>
+    <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, aria: { label: }, data: { turbo_stream: "", "turbo-method": :post } do %>
+      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'cursor-pointer max-h-24 max-w-24' %>
     <% end %>
   <% else %>
-    <%= link_to register_path(pokenotice: true) do %>
-      <%= image_tag url_for(pokemon.sprite), alt: pokemon.sprite.blob.filename, class: 'cursor-pointer' %>
+    <%= link_to register_path(pokenotice: true), aria: { label: }, data: { turbo_frame: '_top' } do %>
+      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'cursor-pointer max-h-24 max-w-24' %>
     <% end %>
   <% end %>
-</div>
+<% end %>

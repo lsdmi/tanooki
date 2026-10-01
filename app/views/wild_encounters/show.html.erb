@@ -1,0 +1,3 @@
+<%= turbo_frame_tag 'catch-pokemon' do %>
+  <%= render 'shared/pokemon', encounter: @wild_encounter if @wild_encounter %>
+<% end %>

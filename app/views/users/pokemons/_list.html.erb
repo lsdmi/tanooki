@@ -6,12 +6,13 @@
       </svg>
       <h5 class="text-xl font-bold leading-none text-fg">Мої Покемони</h5>
     </div>
-    <div class="grid grid-cols-4 sm:grid-cols-8 gap-4 lg:grid-cols-6 lg:gap-2 2xl:grid-cols-8 2xl:gap-4">
-      <% pokemons.in_groups_of(8).each_with_index do |group, group_index| %>
-        <% group.each_with_index do |user_pokemon, index| %>
+    <div class="grid grid-cols-4 sm:grid-cols-8 gap-4 lg:grid-cols-6 lg:gap-2 2xl:grid-cols-8 2xl:gap-4" data-controller="pokemon-image-click">
+      <% pokemons.in_groups_of(8).each do |group| %>
+        <% group.each do |user_pokemon| %>
           <% if user_pokemon.present? %>
-            <%= button_to pokemon_details_path(pokemon_id: user_pokemon), data: { turbo_stream: "", "turbo-method": :post, controller: 'pokemon-image-click', action: 'click->pokemon-image-click#addSelected' }, remote: true, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if selected_pokemon.id == user_pokemon.id}" do %>
-              <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.sprite.blob.filename, class: 'w-auto cursor-pointer rounded-lg mb-3 transform transition duration-500 hover:scale-110' %>
+            <% selected = selected_pokemon.id == user_pokemon.id %>
+            <%= button_to pokemon_details_path(pokemon_id: user_pokemon), aria: { pressed: selected }, data: { turbo_stream: "", "turbo-method": :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' }, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if selected}" do %>
+              <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.name, class: 'w-auto cursor-pointer rounded-lg mb-3 transform transition duration-500 hover:scale-110' %>
             <% end %>
           <% else %>
             <%= tag.div class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full" do %>

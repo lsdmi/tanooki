@@ -89,9 +89,7 @@
     <% end %>
     <main>
       <%= yield %>
-      <%= turbo_frame_tag 'catch-pokemon' do %>
-        <%= render 'shared/pokemon', encounter: @wild_encounter %>
-      <% end if @wild_encounter %>
+      <%= turbo_frame_tag 'catch-pokemon', src: wild_encounter_path(ticket: @wild_encounter_ticket) if @wild_encounter_ticket %>
     </main>
     <% unless immersive_reader_layout? %>
       <div id="site-footer">
