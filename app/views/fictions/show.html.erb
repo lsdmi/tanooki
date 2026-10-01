@@ -15,10 +15,12 @@
     <% end %>
   <% end %>
   <% active_tab = @show_presenter.default_tab %>
-  <div data-controller="tabs" data-tabs-active-tab-value="<%= active_tab %>" data-action="hashchange@window->tabs#hashChanged">
+  <div class="group/tabs" data-controller="tabs" data-tabs-active-tab-value="<%= active_tab %>" data-action="hashchange@window->tabs#hashChanged">
     <%= render 'show_tabs', fiction: @fiction, active_tab: %>
 
     <main class="max-w-screen-xl mx-auto px-4 2xl:px-0 py-8 relative z-10">
+      <%= render Fictions::TeamToolbarComponent.new(fiction: @fiction, user: current_user) %>
+
       <%= render layout: 'tab_panel', locals: { id: :about, active_tab: } do %>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <section class="lg:col-span-2 rounded-lg">

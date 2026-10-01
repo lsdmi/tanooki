@@ -1,0 +1,21 @@
+<%= tag.section aria: { labelledby: 'fiction-team-toolbar-title' },
+                class: 'mb-6 flex flex-col gap-3 rounded-lg border border-line bg-card p-4 md:flex-row md:items-center md:justify-between group-data-[tabs-active-tab-value=comments]/tabs:hidden' do %>
+  <h2 id="fiction-team-toolbar-title" class="text-sm font-semibold text-fg"><%= t('fictions.team_toolbar.title') %></h2>
+  <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+    <%= render Ui::ButtonComponent.new(label: t('fictions.team_toolbar.add_chapter'), size: :md, as: :link,
+                                       href: new_chapter_path(fiction:)) do %>
+      <%= stroke_icon(:plus) %>
+      <span><%= t('fictions.team_toolbar.add_chapter') %></span>
+    <% end %>
+    <%= render Ui::ButtonComponent.new(label: t('fictions.team_toolbar.chapters'), variant: :outline, size: :md, as: :link,
+                                       href: reading_path(fiction), html: turbo_drive_visit_data) do %>
+      <%= stroke_icon(:list) %>
+      <span><%= t('fictions.team_toolbar.chapters') %></span>
+    <% end %>
+    <%= render Ui::ButtonComponent.new(label: t('fictions.team_toolbar.edit'), variant: :outline, size: :md, as: :link,
+                                       href: edit_fiction_path(fiction), html: turbo_drive_visit_data) do %>
+      <%= stroke_icon(:pencil) %>
+      <span><%= t('fictions.team_toolbar.edit') %></span>
+    <% end %>
+  </div>
+<% end %>

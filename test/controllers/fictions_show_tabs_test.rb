@@ -49,10 +49,47 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     assert_select '#fiction-panel-about[hidden]'
   end
 
+  test 'the team toolbar sits above the tab panels when Chapters opens for a team member' do
+    sign_in_team_member
+    ReadingProgress.create!(user: users(:user_one_one_zero), fiction: @fiction, chapter: chapters(:one),
+                            resume_at: 1.hour.ago)
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-tab-chapters[aria-selected=true]'
+    assert_select 'main > section[aria-labelledby="fiction-team-toolbar-title"] a', text: 'Додати розділ'
+    assert_select 'main > section[aria-labelledby="fiction-team-toolbar-title"] + section#fiction-panel-about'
+  end
+
+  test 'team members do not get the invite-to-translate card' do
+    sign_in_team_member
+
+    get fiction_url(@fiction)
+
+    assert_not_includes response.body, 'Додайте нові розділи!'
+  end
+
+  test 'readers outside the team get the invite card and no team toolbar' do
+    sign_in users(:user_two)
+
+    get fiction_url(@fiction)
+
+    assert_select 'section[aria-labelledby="fiction-team-toolbar-title"]', 0
+    assert_includes response.body, 'Додайте нові розділи!'
+  end
+
   test 'similar fictions sit below the tab panels' do
     get fiction_url(@fiction)
 
     assert_select '[role=tabpanel] turbo-frame#fiction_similar', 0
     assert_select 'main > turbo-frame#fiction_similar'
+  end
+
+  private
+
+  def sign_in_team_member
+    member = users(:user_one_one_zero)
+    ScanlatorUser.create!(user: member, scanlator: scanlators(:one))
+    sign_in member
   end
 end

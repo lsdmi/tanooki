@@ -121,7 +121,7 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
 
     get fiction_url(@fiction)
 
-    assert_select 'a', text: 'Додати розділ', count: 0
+    assert_not_includes response.body, 'Додайте нові розділи!'
     assert_select 'section[aria-labelledby="fiction-title"] [role="note"]', text: /ПЕРЕКЛАД ЗАВЕРШЕНО/
     assert_not_includes response.body, 'Ранобе завершено!'
   end
