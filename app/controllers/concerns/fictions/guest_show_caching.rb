@@ -16,6 +16,9 @@ module Fictions
       return unless guest_fiction_show_http_cacheable?
 
       expires_in Fictions::ShowCacheHelper::GUEST_HTTP_EXPIRY, public: false, must_revalidate: true
+      # Signing in (e.g. «Додати до читальні» → login → back) or switching theme changes the cookies,
+      # so the browser must not answer the same URL with the cached guest page.
+      response.headers['Vary'] = [response.headers['Vary'], 'Cookie'].compact_blank.join(', ')
     end
 
     def guest_fiction_show_http_cacheable?

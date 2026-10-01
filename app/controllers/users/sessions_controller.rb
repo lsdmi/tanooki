@@ -7,10 +7,12 @@ module Users
 
     # before_action :configure_sign_in_params, only: [:create]
 
-    # GET /resource/sign_in
-    # def new
-    #   super
-    # end
+    # GET /resource/sign_in. `return_to` (e.g. the fiction page «Додати до читальні») is where sign-in lands;
+    # Devise keeps only its path, so it can't send the user off-site.
+    def new
+      store_location_for(:user, params[:return_to]) if params[:return_to].present?
+      super
+    end
 
     # POST /resource/sign_in
     def create

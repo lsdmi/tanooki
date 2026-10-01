@@ -6,7 +6,7 @@ import { readRecord } from "guest_reading_store"
 // device's reading record after connect. With no record, or the latest chapter read, it stays «Читати» from the
 // first chapter. Recomputed on every connect, so a Turbo snapshot never shows a stale target.
 export default class extends Controller {
-  static targets = ["link", "label", "fromStart"]
+  static targets = ["link", "label"]
   static values = { fictionId: Number, latestChapterId: Number, readPath: String, readLabel: String, continueLabel: String }
 
   async connect() {
@@ -16,6 +16,5 @@ export default class extends Controller {
     const target = continueTarget(record, { latestChapterId: this.latestChapterIdValue })
     this.linkTarget.href = target ? target.path : this.readPathValue
     this.labelTarget.textContent = target ? this.continueLabelValue : this.readLabelValue
-    if (this.hasFromStartTarget) this.fromStartTarget.hidden = !target
   }
 }

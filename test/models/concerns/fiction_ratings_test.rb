@@ -42,6 +42,22 @@ class FictionRatingsTest < ActiveSupport::TestCase
     assert_queries_count(0) { assert_equal 4, fiction.user_rating(@user) }
   end
 
+  test 'rating_summary returns count and average in one query' do
+    fiction = Fiction.find(@fiction.id)
+
+    assert_queries_count(1) { assert_equal [2, 4.5], fiction.rating_summary }
+  end
+
+  test 'rating_summary uses preloaded association without extra queries' do
+    fiction = Fiction.includes(:fiction_ratings).find(@fiction.id)
+
+    assert_queries_count(0) { assert_equal [2, 4.5], fiction.rating_summary }
+  end
+
+  test 'rating_summary is zero for a fiction without ratings' do
+    assert_equal [0, 0.0], fictions(:two).rating_summary
+  end
+
   test 'average_rating issues database queries when association is not preloaded' do
     fiction = Fiction.find(@fiction.id)
 

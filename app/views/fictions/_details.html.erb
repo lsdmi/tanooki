@@ -3,71 +3,6 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
     <!-- Left Column - Main Content (2/3) -->
     <div class="min-w-0 lg:col-span-2 space-y-6">
-      <!-- Book Header Section -->
-      <div class="flex flex-col sm:flex-row gap-4 items-start justify-center lg:justify-start">
-        <!-- Book Cover Image -->
-        <div class="flex-shrink-0 border border-line mx-auto lg:mx-0 relative">
-          <%= cover_card_picture_tag(fiction.cover,
-                      class: 'w-32 h-48 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 shadow-md flex items-center justify-center object-cover',
-                      alt: fiction.cover.blob.filename,
-                      width: 400,
-                      height: 600,
-                      loading: 'eager',
-                      decoding: 'async',
-                      fetchpriority: 'high' ) %>
-        </div>
-        <!-- Book Info -->
-        <div class="mx-auto lg:mx-0 mt-1">
-          <h1 class="text-2xl font-bold text-fg mb-2 text-center lg:text-left line-clamp-1"><%= fiction.title %></h1>
-          <div class="text-sm text-fg-secondary text-center lg:text-left">
-            <p><span class="font-medium italic line-clamp-1"><%= fiction.alternative_title %></span></p>
-            <p><span class="font-medium italic line-clamp-1"><%= fiction.english_title %></span></p>
-            <%= render 'shared/author_byline',
-                       name: fiction.author,
-                       url: search_index_path(search: [fiction.author]),
-                       wrapper_class: 'mt-4 justify-center lg:justify-start',
-                       as_tag: true %>
-            <div class="mt-4 flex flex-wrap items-center gap-2 justify-center lg:justify-start">
-              <span class="font-bold text-fg">Перекладач:</span>
-              <% fiction.scanlators.each do |scanlator| %>
-                <% scanlator_label = fiction.scanlators.size > 1 ? scanlator.title.first(10) : scanlator.title.first(20) %>
-                <%= render Ui::TagComponent.new(
-                      label: scanlator_label,
-                      variant: :keyword,
-                      size: :sm,
-                      as: :link,
-                      href: scanlator_path(scanlator),
-                      html: turbo_drive_visit_data
-                    ) %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Stats Section (2/3 of the partial) -->
-      <div class="relative overflow-hidden">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="text-center bg-surface rounded-lg p-4 border border-line">
-            <div class="text-2xl font-bold text-fg"><%= fiction.chapter_count %></div>
-            <div class="text-sm text-fg-muted">Розділи</div>
-          </div>
-          <div class="text-center bg-surface rounded-lg p-4 border border-line">
-            <div class="text-2xl font-bold text-fg"><%= format_view_count(fiction.views) %></div>
-            <div class="text-sm text-fg-muted">Перегляди</div>
-          </div>
-          <div class="text-center bg-surface rounded-lg p-4 border border-line">
-            <div class="text-2xl font-bold text-fg" title="<%= fiction.listing_state_label %>">
-              <%= fiction.listing_state_label_short %>
-            </div>
-            <div class="text-sm text-fg-muted">Статус</div>
-          </div>
-          <div class="text-center bg-surface rounded-lg p-4 border border-line">
-            <div class="text-2xl font-bold text-fg"><%= show_presenter.bookmarks_total_count %></div>
-            <div class="text-sm text-fg-muted">Закладинки</div>
-          </div>
-        </div>
-      </div>
-
       <!-- Tags -->
       <% if fiction.genres.any? || fiction.age_labelled? %>
         <div class="bg-surface rounded-lg p-4 border border-line relative overflow-hidden">
@@ -107,40 +42,8 @@
     </div>
     <!-- Right Column - Sidebar (1/3) -->
     <div class="min-w-0 space-y-6">
-      <!-- Start / Continue Reading Button -->
-      <% continue_reading = fiction_continue_reading(show_presenter.reading_progress) %>
-      <% if continue_reading || show_presenter.first_chapter %>
-        <% guest = !user_signed_in? %>
-        <%= tag.div(data: (guest_continue_data(fiction, show_presenter.first_chapter) if guest)) do %>
-          <% read_cta_path = continue_reading ? chapter_path(continue_reading.continue_chapter, resume: (1 if continue_reading.resume?)) : chapter_path(show_presenter.first_chapter) %>
-          <%= link_to read_cta_path, turbo_drive_visit_data(preload: true).deep_merge(class: 'w-full bg-card text-fg font-semibold py-3 px-4 rounded-lg border border-line shadow-sm hover:bg-surface-strong transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center space-x-2', data: { guest_continue_target: ('link' if guest) }) do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-            </svg>
-            <%= tag.span t(continue_reading ? 'fictions.read_cta.continue' : 'fictions.read_cta.read'), data: { guest_continue_target: ('label' if guest) } %>
-          <% end %>
-          <% if (continue_reading || guest) && show_presenter.first_chapter %>
-            <%= link_to t('fictions.read_cta.from_start'),
-                        chapter_path(show_presenter.first_chapter),
-                        data: { turbo_frame: '_top', guest_continue_target: ('fromStart' if guest) },
-                        hidden: guest,
-                        class: 'mt-2 block text-center text-sm font-medium text-fg-muted underline-offset-4 hover:text-fg hover:underline' %>
-          <% end %>
-        <% end %>
-      <% end %>
-
       <!-- Rating Section -->
       <%= render 'rating_section', fiction: fiction %>
-      <!-- Status Change Section -->
-      <% if user_signed_in? %>
-        <div class="bg-surface rounded-lg relative overflow-hidden">
-          <%= turbo_frame_tag 'fiction-reading-status' do %>
-            <div class="sm:hidden lg:block">
-              <%= render 'fictions/reading_status_controls', fiction: fiction, show_presenter: show_presenter %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
 
       <% if fiction.scanlators.any? %>
         <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(fiction), loading: :lazy, class: 'block' do %>

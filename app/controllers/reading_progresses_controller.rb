@@ -65,10 +65,9 @@ class ReadingProgressesController < ApplicationController
   def render_status_update
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
     streams = turbo_stream_list_refresh(
-      turbo_stream.update(
-        'fiction-reading-status',
-        partial: 'fictions/reading_status_controls',
-        locals: { fiction: @fiction, show_presenter: @show_presenter }
+      turbo_stream.replace(
+        Fictions::HeroActionsComponent::DOM_ID,
+        Fictions::HeroActionsComponent.new(fiction: @fiction, presenter: @show_presenter, user: current_user)
       )
     )
     streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?

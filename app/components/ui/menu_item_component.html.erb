@@ -10,5 +10,5 @@
 <% if link? %>
   <%= link_to body, href, element_attributes %>
 <% else %>
-  <%= button_tag body, type: 'button', **element_attributes %>
+  <%= button_tag body, type: button_type, **element_attributes %>
 <% end %>

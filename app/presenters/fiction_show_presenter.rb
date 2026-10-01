@@ -23,13 +23,6 @@ class FictionShowPresenter
     @reading_progress ||= find_or_fix_reading_progress
   end
 
-  def reading_status
-    return :not_started unless reading_progress
-    return :not_started unless last_chapter
-
-    reading_progress.status.to_sym
-  end
-
   def bookmark_stats
     Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do
       Fictions::ReadingStatusCounts.new(fiction: @fiction).call

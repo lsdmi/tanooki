@@ -3,7 +3,7 @@
 module Ui
   # Row in a dropdown or bottom sheet menu (Figma «Menu item», 10147:10715). Pass a 16 px icon through the `icon` slot.
   class MenuItemComponent < ViewComponent::Base
-    ELEMENT_TYPES = %i[button link].freeze
+    ELEMENT_TYPES = %i[button submit link].freeze
 
     BASE_CLASSES = [
       'flex min-h-9 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors',
@@ -39,6 +39,10 @@ module Ui
 
     def selected?
       tone == :selected
+    end
+
+    def button_type
+      @as == :submit ? 'submit' : 'button'
     end
 
     def element_attributes

@@ -33,6 +33,21 @@ module Users
       assert_equal 1, UserPokemon.where(user_id: @user.id).count
     end
 
+    test 'return_to on the sign-in page is where sign-in lands' do
+      fiction_page = fiction_path(fictions(:one))
+      get new_user_session_path(return_to: fiction_page)
+      post user_session_path, params: { user: { email: @user.email, password: 'password' } }
+
+      assert_redirected_to fiction_page
+    end
+
+    test 'return_to keeps only the path of an off-site url' do
+      get new_user_session_path(return_to: 'https://evil.example/fictions/x')
+      post user_session_path, params: { user: { email: @user.email, password: 'password' } }
+
+      assert_redirected_to '/fictions/x'
+    end
+
     test 'rate limits sign in attempts per ip' do
       5.times do
         post user_session_path,

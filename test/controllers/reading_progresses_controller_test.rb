@@ -24,6 +24,16 @@ class ReadingProgressesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'finished', reading_progress.status
   end
 
+  test 'status change re-renders the hero actions with the new shelf' do
+    ReadingProgress.find_by(fiction: @fiction, user: @user).update!(status: :active)
+
+    patch update_status_fiction_reading_progress_path(@fiction), params: { status: :postponed }, as: :turbo_stream
+
+    assert_select 'turbo-stream[action=replace][target=fiction-hero-actions] template' do
+      assert_select 'button span', text: 'Читальня: Відкладено'
+    end
+  end
+
   test 'should create reading progress when none exists' do
     user_without_progress = users(:user_two)
     fiction_without_progress = fictions(:two)

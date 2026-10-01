@@ -50,23 +50,27 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, I18n.t('chapters.reader_support_card.support')
   end
 
-  test 'show uses resized cover in details when variants are available' do
+  test 'show uses resized cover in the hero when variants are available' do
     skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select '.fiction-details picture source[type="image/avif"]'
-    assert_select '.fiction-details picture img[src*="representations"][fetchpriority="high"][loading="eager"]'
+    assert_select 'section[aria-labelledby="fiction-title"] picture source[type="image/avif"]'
+    assert_select 'section[aria-labelledby="fiction-title"] picture ' \
+                  'img[src*="representations"][fetchpriority="high"][loading="eager"]', count: 1
   end
 
-  test 'show preloads cover background with fetchpriority high' do
+  test 'hero backdrop reuses the cover image instead of preloading a separate background' do
     skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select 'link[rel="preload"][as="image"][fetchpriority="high"][href*="representations"]'
+    assert_select 'link[rel="preload"][as="image"]', count: 0
+    cover_sources = css_select('section[aria-labelledby="fiction-title"] picture img').pluck('src')
+
+    assert_equal [cover_sources.first] * 2, cover_sources
   end
 
   test 'show does not load reader-only google fonts' do
@@ -93,23 +97,23 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_select '.reader-support-card [class*="hover:-translate-y-1"]', count: 0
   end
 
-  test 'show chapters tile is live count even when expected is larger' do
+  test 'hero chapter count is the live count even when expected is larger' do
     @fiction.update!(chapter_count: 160, expected_chapters: 2334, last_chapter_at: 3.days.ago)
 
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select '.fiction-details .text-2xl', text: '160'
-    assert_select '.fiction-details', text: '2334', count: 0
+    assert_select 'section[aria-labelledby="fiction-title"] li', text: '160 розділів'
+    assert_select 'section[aria-labelledby="fiction-title"]', text: /2334/, count: 0
   end
 
-  test 'show chapters tile is live count when expected is unknown' do
+  test 'hero chapter count is the live count when expected is unknown' do
     @fiction.update!(chapter_count: 307, expected_chapters: nil, last_chapter_at: nil)
 
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select '.fiction-details .text-2xl', text: '307'
+    assert_select 'section[aria-labelledby="fiction-title"] li', text: '307 розділів'
   end
 
   test 'show hides add-chapter CTA when completed_at is set' do

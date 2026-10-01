@@ -20,6 +20,15 @@ module FictionRatings
     ratings.loaded? ? ratings.size : ratings.count
   end
 
+  # [count, average] in one query, for places that show both.
+  def rating_summary
+    ratings = fiction_ratings
+    return [ratings.size, average_rating_from_loaded(ratings)] if ratings.loaded?
+
+    count, average = ratings.pick(Arel.sql('COUNT(*)'), Arel.sql('AVG(rating)'))
+    [count, average.to_f.round(1)]
+  end
+
   def user_rating(user)
     return nil unless user
 

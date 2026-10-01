@@ -5,7 +5,7 @@ module Ui
   class ButtonComponent < ViewComponent::Base
     include ButtonComponentStyles
 
-    VARIANTS = %i[primary outline ghost destructive licensed].freeze
+    VARIANTS = %i[primary outline ghost destructive licensed on_media].freeze
     SIZES = %i[xs sm md lg fab responsive responsive_banner].freeze
     ELEMENT_TYPES = %i[button link submit].freeze
 

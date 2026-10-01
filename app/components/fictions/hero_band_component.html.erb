@@ -1,0 +1,69 @@
+<section class="<%= ROOT %>" aria-labelledby="fiction-title">
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <%= cover_tag(classes: BACKDROP_IMAGE, alt: '') if cover? %>
+    <div class="<%= SCRIM %>"></div>
+    <div class="<%= DIM %>"></div>
+  </div>
+
+  <div class="<%= CONTAINER %>">
+    <%= notice %>
+
+    <div class="<%= GRID %>">
+      <div class="<%= COVER_CELL %>">
+        <% if cover? %>
+          <%= cover_tag(classes: COVER_IMAGE, alt: fiction.title, fetchpriority: 'high') %>
+        <% else %>
+          <div class="<%= COVER_PLACEHOLDER %>"></div>
+        <% end %>
+      </div>
+
+      <div class="<%= TAGS_CELL %>">
+        <% if fiction.age_labelled? %>
+          <span class="<%= AGE_TAG %>">
+            <%= render Ui::AdultWarningIconComponent.new(class: 'size-4 shrink-0') %>
+            <%= fiction.content_rating_label %>
+          </span>
+        <% end %>
+        <span class="<%= STATUS_TAG %>"><%= fiction.listing_state_label %></span>
+      </div>
+
+      <ul class="<%= STATS_CELL %>">
+        <li class="<%= STAT %>">
+          <%= stroke_icon(:star, RATING_ICON) %>
+          <%= rating_text %>
+        </li>
+        <% stats.each do |icon_name, text| %>
+          <li class="<%= STAT %>">
+            <%= stroke_icon(icon_name, STAT_ICON) %>
+            <%= text %>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="<%= TITLE_CELL %>">
+        <h1 id="fiction-title" class="<%= TITLE %>"><%= fiction.title %></h1>
+        <% if original_title %>
+          <p class="<%= ORIGINAL_TITLE %>"><%= original_title %></p>
+        <% end %>
+      </div>
+
+      <p class="author <%= CREDITS_CELL %>">
+        <% if fiction.author.present? %>
+          <%= t('fictions.hero.author') %>:
+          <%= link_to fiction.author, search_index_path(search: [fiction.author]), rel: 'author', class: CREDIT_LINK %>
+        <% end %>
+        <% if fiction.author.present? && scanlators.any? %>
+          <span class="mx-2" aria-hidden="true">·</span>
+        <% end %>
+        <% if scanlators.any? %>
+          <%= t('fictions.hero.translation') %>:
+          <%= safe_join(scanlators.map { |scanlator| link_to(scanlator.title, scanlator_path(scanlator), class: CREDIT_LINK) }, ', ') %>
+        <% end %>
+      </p>
+
+      <div class="<%= ACTIONS_CELL %>">
+        <%= render Fictions::HeroActionsComponent.new(fiction:, presenter:, user:) %>
+      </div>
+    </div>
+  </div>
+</section>

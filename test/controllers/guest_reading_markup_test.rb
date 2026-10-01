@@ -50,8 +50,7 @@ class GuestReadingMarkupTest < ActionDispatch::IntegrationTest
                   '[data-guest-continue-read-path-value=?][data-guest-continue-continue-label-value=?]',
                   chapter_path(@first), 'Продовжити' do
       assert_select 'a[data-guest-continue-target=link][href=?] span[data-guest-continue-target=label]',
-                    chapter_path(@first), text: 'Читати'
-      assert_select 'a[data-guest-continue-target=fromStart][hidden][href=?]', chapter_path(@first)
+                    chapter_path(@first), text: 'Читати · Розділ 1'
     end
   end
 

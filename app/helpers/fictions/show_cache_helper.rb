@@ -14,7 +14,7 @@ module Fictions
 
     def guest_fiction_show_fragment_cache_key(fiction, show_presenter)
       [
-        'fiction_show/v12/guest',
+        'fiction_show/v13/guest',
         fiction,
         show_presenter.order,
         I18n.locale,

@@ -29,7 +29,15 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_fiction_details_section_html)
-    assert_select '.fiction-details a[data-turbo-frame="_top"][href*="/scanlators/"]'
+  end
+
+  test 'fiction show hero credit links use Turbo Drive' do
+    sign_in users(:user_one)
+    get fiction_url(fictions(:one))
+
+    assert_response :success
+    assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_hero_html)
+    assert_select 'section[aria-labelledby="fiction-title"] a[href*="/scanlators/"]'
   end
 
   test 'fictions index hot novelty details escape turbo frame for fiction show' do
@@ -57,5 +65,9 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
 
   def extract_fiction_details_section_html
     response.body[%r{class="fiction-details.*?</div>\s*</div>\s*</div>}m] || ''
+  end
+
+  def extract_hero_html
+    response.body[%r{<section[^>]*aria-labelledby="fiction-title".*?</section>}m] || ''
   end
 end

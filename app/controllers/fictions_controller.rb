@@ -40,10 +40,7 @@ class FictionsController < ApplicationController
 
   def show
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
-    respond_to do |format|
-      format.html
-      format.turbo_stream { render_sorted_chapters }
-    end
+    respond_to(&:html)
   end
 
   def new

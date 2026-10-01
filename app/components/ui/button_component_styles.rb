@@ -23,7 +23,9 @@ module Ui
       licensed: [
         'border-transparent bg-btn-licensed text-fg-on-brand',
         'hover:bg-btn-licensed-hover focus-visible:ring-btn-licensed'
-      ].join(' ').freeze
+      ].join(' ').freeze,
+      # White in both themes: it sits on the always-dark hero image.
+      on_media: 'token-raw border-transparent bg-white text-slate-900 hover:bg-slate-100 focus-visible:ring-white'
     }.freeze
 
     SIZE_CLASSES = {

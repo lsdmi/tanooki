@@ -334,10 +334,44 @@ uk:
     filters:
       include_eighteen: Показувати 18+
   fictions:
-    read_cta:
-      read: Читати
-      continue: Продовжити
-      from_start: З початку
+    hero:
+      stats:
+        rating: "%{average} (%{ratings})"
+        ratings:
+          one: "%{count} оцінка"
+          few: "%{count} оцінки"
+          many: "%{count} оцінок"
+          other: "%{count} оцінки"
+        views:
+          one: "%{count} перегляд"
+          few: "%{count} перегляди"
+          many: "%{count} переглядів"
+          other: "%{count} перегляду"
+        views_compact: "%{count} переглядів"
+        chapters:
+          one: "%{count} розділ"
+          few: "%{count} розділи"
+          many: "%{count} розділів"
+          other: "%{count} розділу"
+        bookmarks:
+          one: "%{count} закладинка"
+          few: "%{count} закладинки"
+          many: "%{count} закладинок"
+          other: "%{count} закладинки"
+      author: Автор
+      translation: Переклад
+      cta:
+        read: Читати · Розділ %{number}
+        continue: Продовжити · Розділ %{number}
+        continue_guest: Продовжити
+        reread: Читати знову
+      library:
+        current: "Читальня: %{status}"
+        add: Додати до читальні
+        move_to: Перемістити до
+        remove: Прибрати з читальні
+      progress: "%{read} з %{total} прочитано"
+      progress_with_time: "%{read} з %{total} прочитано · востаннє %{time} тому"
     form:
       content_rating:
         legend: Аудиторія

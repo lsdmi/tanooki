@@ -1,20 +1,16 @@
-<% cover_background = cover_background_url(@fiction.cover) if @fiction.cover.attached? %>
-<% if cover_background.present? %>
-  <% content_for :head do %>
-    <%= tag.link rel: "preload", as: "image", href: cover_background, fetchpriority: "high" %>
-  <% end %>
-<% end %>
-
 <% cache_if guest_fiction_show_fragment_cacheable?,
             guest_fiction_show_fragment_cache_key(@fiction, @show_presenter),
             expires_in: guest_fiction_show_fragment_expires_in do %>
-<div class="bg-surface min-h-screen z-10 relative" style="background-image: url('<%= cover_background %>'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
-  <div class="absolute inset-0 bg-surface/95 dark:bg-surface"></div>
-  <main class="container mx-auto px-4 py-8 relative z-10">
+<div class="bg-surface min-h-screen z-10 relative">
+  <%= render Fictions::HeroBandComponent.new(fiction: @fiction, presenter: @show_presenter, user: current_user) do |hero| %>
+    <% if show_age_rating_notice?(@fiction) %>
+      <% hero.with_notice { render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@fiction)) } %>
+    <% end %>
+  <% end %>
+  <main class="max-w-screen-xl mx-auto px-4 2xl:px-0 py-8 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Details Section -->
       <section class="lg:col-span-2 rounded-lg ">
-        <%= render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@fiction)) if show_age_rating_notice?(@fiction) %>
         <%= render 'details', fiction: @fiction, show_presenter: @show_presenter %>
 
         <section class="fiction-show__ad fiction-show__ad--main mt-8">
