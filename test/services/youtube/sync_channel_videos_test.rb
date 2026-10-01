@@ -4,54 +4,75 @@ require 'test_helper'
 
 module Youtube
   class SyncChannelVideosTest < ActiveSupport::TestCase
+    Response = Struct.new(:items)
+    PlaylistItem = Struct.new(:snippet)
+    PlaylistItemSnippet = Struct.new(:resource_id)
+    ResourceId = Struct.new(:video_id)
+    Video = Struct.new(:id, :snippet, :content_details)
+    VideoSnippet = Struct.new(:title, :description, :thumbnails, :tags, :published_at)
+    ContentDetails = Struct.new(:duration)
+    Thumbnails = Struct.new(:maxres)
+    Thumbnail = Struct.new(:url)
+
     setup do
       @channel_id = youtube_channels(:one).channel_id
-
-      resource_id_struct = Struct.new(:video_id)
-      items_struct = Struct.new(:items)
-      maxres_struct = Struct.new(:maxres)
-      snippet_struct = Struct.new(:title, :description, :thumbnails, :tags, :published_at)
-      snippet_mini_struct = Struct.new(:snippet)
-      playlist_item_snippet_struct = Struct.new(:resource_id)
-      content_details_struct = Struct.new(:content_details)
-      content_details_mini_struct = Struct.new(:duration)
-      url_struct = Struct.new(:url)
-
-      @fake_playlist_response = items_struct.new(
-        [snippet_mini_struct.new(playlist_item_snippet_struct.new(resource_id_struct.new('video_id')))]
-      )
-      @thumbnail = maxres_struct.new(url_struct.new('thumbnail_url'))
-      @snippet = snippet_struct.new('Title', 'Description', @thumbnail, %w[tag1 tag2], Time.zone.now)
-      @fake_video_response = items_struct.new([snippet_mini_struct.new(@snippet)])
-      @content_details = content_details_mini_struct.new('PT2M30S')
-      @fake_content_details_response = items_struct.new([content_details_struct.new(@content_details)])
+      @youtube = Google::Apis::YoutubeV3::YouTubeService.new
     end
 
     test 'call creates a YoutubeVideo for a non-short upload' do
-      youtube_service = Google::Apis::YoutubeV3::YouTubeService.new
+      stub_playlist(%w[new_video])
+      lookups = stub_videos([video('new_video', 'PT2M30S')])
 
-      Google::Apis::YoutubeV3::YouTubeService.stub(:new, youtube_service) do
-        youtube_service.stub(
-          :list_playlist_items,
-          @fake_playlist_response,
-          ['snippet', { playlist_id: @channel_id, max_results: 5 }]
-        ) do
-          fake_video_response = @fake_video_response
-          fake_content_details_response = @fake_content_details_response
+      assert_difference('YoutubeVideo.count') { sync }
 
-          youtube_service.define_singleton_method(:list_videos) do |part, _options = {}|
-            if part == 'contentDetails'
-              fake_content_details_response
-            else
-              fake_video_response
-            end
-          end
+      assert_equal [['snippet,contentDetails', 'new_video']], lookups
+      assert_equal youtube_channels(:one), YoutubeVideo.find_by(video_id: 'new_video').youtube_channel
+    end
 
-          assert_difference('YoutubeVideo.count') do
-            SyncChannelVideos.call(@channel_id)
-          end
-        end
+    test 'call skips the video lookup when every upload is already stored' do
+      stub_playlist([youtube_videos(:one).video_id, youtube_videos(:two).video_id])
+      lookups = stub_videos([])
+
+      assert_no_difference('YoutubeVideo.count') { sync }
+
+      assert_empty lookups
+    end
+
+    test 'call looks up only unknown uploads in one request and skips shorts' do
+      stub_playlist([youtube_videos(:one).video_id, 'short_video', 'long_video'])
+      lookups = stub_videos([video('short_video', 'PT45S'), video('long_video', 'PT10M')])
+
+      sync
+
+      assert_equal [['snippet,contentDetails', 'short_video,long_video']], lookups
+      assert YoutubeVideo.exists?(video_id: 'long_video')
+      assert_not YoutubeVideo.exists?(video_id: 'short_video')
+    end
+
+    private
+
+    def sync
+      Google::Apis::YoutubeV3::YouTubeService.stub(:new, @youtube) { SyncChannelVideos.call(@channel_id) }
+    end
+
+    def stub_playlist(video_ids)
+      items = video_ids.map { |id| PlaylistItem.new(PlaylistItemSnippet.new(ResourceId.new(id))) }
+      @youtube.define_singleton_method(:list_playlist_items) { |*_args, **_opts| Response.new(items) }
+    end
+
+    def stub_videos(videos)
+      lookups = []
+      @youtube.define_singleton_method(:list_videos) do |part, id:|
+        lookups << [part, id]
+        Response.new(videos)
       end
+      lookups
+    end
+
+    def video(id, duration)
+      snippet = VideoSnippet.new('Title', 'Description', Thumbnails.new(Thumbnail.new('thumbnail_url')),
+                                 %w[tag1 tag2], Time.zone.now)
+      Video.new(id, snippet, ContentDetails.new(duration))
     end
   end
 end

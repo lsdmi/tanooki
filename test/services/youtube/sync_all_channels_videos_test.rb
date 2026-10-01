@@ -30,5 +30,40 @@ module Youtube
         assert_match(/boom/, result.errors.first[:error])
       end
     end
+
+    test 'call retries a channel once after a YouTube error' do
+      calls = Hash.new(0)
+      flaky_id = YoutubeChannel.order(:id).pick(:channel_id)
+
+      SyncChannelVideos.stub(:call, lambda { |channel_id|
+        calls[channel_id] += 1
+        raise Google::Apis::ClientError, 'forbidden' if channel_id == flaky_id && calls[channel_id] == 1
+      }) do
+        result = sync_without_retry_delay
+
+        assert_empty result.errors
+        assert_equal 2, calls[flaky_id]
+      end
+    end
+
+    test 'call reports a channel whose YouTube error persists after the retry' do
+      failing_id = YoutubeChannel.order(:id).pick(:channel_id)
+
+      SyncChannelVideos.stub(:call, lambda { |channel_id|
+        raise Google::Apis::ClientError, 'forbidden' if channel_id == failing_id
+      }) do
+        result = sync_without_retry_delay
+
+        assert_equal [failing_id], result.errors.pluck(:channel_id)
+        assert_match(/forbidden/, result.errors.first[:error])
+      end
+    end
+
+    private
+
+    def sync_without_retry_delay
+      service = SyncAllChannelsVideos.new
+      service.stub(:sleep, nil) { service.call }
+    end
   end
 end

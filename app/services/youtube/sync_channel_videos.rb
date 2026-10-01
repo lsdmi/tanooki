@@ -17,33 +17,36 @@ module Youtube
 
     def call
       youtube = initialize_youtube_service
-      video_ids = fetch_video_ids(youtube)
-      ActiveRecord::Base.transaction { create_videos_if_not_exists(youtube, video_ids) }
+      video_ids = unknown_video_ids(fetch_video_ids(youtube))
+      return if video_ids.empty?
+
+      videos = fetch_videos(youtube, video_ids).reject { |video| short_video?(video) }
+      youtube_channel = YoutubeChannel.find_by(channel_id: @channel_id)
+      ActiveRecord::Base.transaction { videos.each { |video| create_video(youtube_channel, video) } }
     end
 
     private
 
-    def create_video(youtube, video_id)
-      video_data = video_data(youtube.list_videos('snippet', id: video_id))
+    def create_video(youtube_channel, video)
+      snippet = video.snippet
 
       YoutubeVideo.create(
-        youtube_channel: YoutubeChannel.find_by(channel_id: @channel_id),
-        video_id:,
-        title: video_data.title,
-        description: video_data.description,
-        thumbnail: select_thumbnail(video_data.thumbnails),
-        tags: trimmed_tags(video_data.tags),
-        published_at: video_data.published_at
+        youtube_channel:,
+        video_id: video.id,
+        title: snippet.title,
+        description: snippet.description,
+        thumbnail: select_thumbnail(snippet.thumbnails),
+        tags: trimmed_tags(snippet.tags),
+        published_at: snippet.published_at
       )
     end
 
-    def create_videos_if_not_exists(youtube, video_ids)
-      video_ids.each do |video_id|
-        next if short_video?(youtube, video_id)
-        next if YoutubeVideo.with_deleted.exists?(video_id:)
+    def unknown_video_ids(video_ids)
+      video_ids - YoutubeVideo.with_deleted.where(video_id: video_ids).pluck(:video_id)
+    end
 
-        create_video(youtube, video_id)
-      end
+    def fetch_videos(youtube, video_ids)
+      youtube.list_videos('snippet,contentDetails', id: video_ids.join(',')).items
     end
 
     def fetch_video_ids(youtube)
@@ -59,13 +62,11 @@ module Youtube
       @channel_id.to_s.sub(/\AUC/, 'UU')
     end
 
-    def short_video?(youtube, video_id)
-      response = youtube.list_videos('contentDetails', id: video_id)
-      item = response.items.first
-      return false unless item&.content_details&.duration
+    def short_video?(video)
+      duration = video.content_details&.duration
+      return false unless duration
 
-      duration_seconds = parse_youtube_duration(item.content_details.duration.to_s)
-      duration_seconds <= 60
+      parse_youtube_duration(duration.to_s) <= 60
     end
 
     def initialize_youtube_service
@@ -89,10 +90,6 @@ module Youtube
     def select_thumbnail(thumbnails)
       selected = thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium || thumbnails.default
       selected.url
-    end
-
-    def video_data(response)
-      response.items.first.snippet
     end
 
     def parse_youtube_duration(iso8601_duration)
