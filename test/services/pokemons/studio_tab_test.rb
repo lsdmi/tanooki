@@ -58,6 +58,23 @@ module Pokemons
       end
     end
 
+    test 'with pokemons shows and pins the matchmaker opponent' do
+      user = users(:user_one)
+      tab = StudioTab.new(user)
+
+      assert_equal users(:user_two), tab.opponent
+      assert_equal users(:user_two).id, user.reload.pinned_opponent_id
+    end
+
+    test 'with pokemons offers a reroll until one is used' do
+      user = users(:user_one)
+
+      assert_predicate StudioTab.new(user), :reroll_available?
+      Matchmaker.new(user).reroll!
+
+      assert_not_predicate StudioTab.new(user.reload), :reroll_available?
+    end
+
     test 'with pokemons exposes dex leaderboard' do
       user = users(:user_one)
       tab = StudioTab.new(user)

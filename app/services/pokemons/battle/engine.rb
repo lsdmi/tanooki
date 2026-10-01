@@ -57,18 +57,14 @@ module Pokemons
         @logger.append_outcome(attacker, defender, :victory)
         @defender_side_team.deactivate_pokemon(defender_stats[:id])
         @attacker_side_team.add_tiredness(attacker_stats[:id], tiredness_stat(attacker_stats, defender_stats))
-        apply_victory_character_effects(attacker, defender)
+        CharacterEffects.apply_victory(attacker, defender, @attacker_side_team)
       end
 
       def handle_defeat(attacker, defender, attacker_stats, defender_stats)
         @logger.append_outcome(attacker, defender, :defeat)
         @attacker_side_team.deactivate_pokemon(attacker_stats[:id])
         @defender_side_team.add_tiredness(defender_stats[:id], tiredness_stat(defender_stats, attacker_stats))
-        apply_victory_character_effects(defender, attacker)
-      end
-
-      def apply_victory_character_effects(winner, loser)
-        CharacterEffects.apply_victory(winner, loser, @attacker_side_team)
+        CharacterEffects.apply_victory(defender, attacker, @defender_side_team)
       end
 
       def update_experience(attacker, defender, attacker_experience, defender_experience)

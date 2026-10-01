@@ -27,7 +27,7 @@ class AuthorizationRegressionTest < ActionDispatch::IntegrationTest
   end
 
   test 'guest cannot start pokemon battle' do
-    post battle_start_path, params: { defender: users(:user_one).id }
+    post battle_start_path
 
     assert_redirected_to new_user_session_path
   end

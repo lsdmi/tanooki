@@ -22,6 +22,22 @@ module Pokemons
         assert_equal @attacker.battle_win_rate + 2, User.find(@attacker.id).battle_win_rate
         assert_equal @defender.battle_win_rate - 2, User.find(@defender.id).battle_win_rate
       end
+
+      test 'rating never drops below 0' do
+        @attacker.update!(battle_win_rate: 1)
+        @defender.update!(battle_win_rate: 1)
+        RatingUpdater.new(winner_id: @defender.id, loser_id: @attacker.id).call
+
+        assert_equal 0, @attacker.reload.battle_win_rate
+      end
+
+      test 'rating never rises above 100' do
+        @attacker.update!(battle_win_rate: 99)
+        @defender.update!(battle_win_rate: 99)
+        @service.call
+
+        assert_equal 100, @attacker.reload.battle_win_rate
+      end
     end
   end
 end

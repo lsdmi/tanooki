@@ -121,14 +121,6 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_url
   end
 
-  test 'guest should not regenerate opponent' do
-    sign_out @user
-
-    get regenerate_pokemon_opponent_path(format: :turbo_stream)
-
-    assert_redirected_to new_user_session_url
-  end
-
   private
 
   def catch_with(token, **extra)

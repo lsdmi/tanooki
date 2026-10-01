@@ -13,7 +13,13 @@ module Pokemons
     end
 
     def leaderboard_cooldown?
-      BattleLeaderboardCooldown.call(user)
+      return @leaderboard_cooldown if defined?(@leaderboard_cooldown)
+
+      @leaderboard_cooldown = BattleLeaderboardCooldown.call(user)
+    end
+
+    def reroll_available?
+      @reroll_available
     end
 
     private
@@ -22,14 +28,14 @@ module Pokemons
       @selected_pokemon = @pokemons.first
       @descendant = @selected_pokemon.pokemon.descendant
       @dex_leaderboard = Pokemons::DexLeaderboard.new
-      @opponent = find_opponent
+      assign_opponent
       @battle_history = fetch_battle_history
     end
 
-    def find_opponent
-      Rails.cache.fetch("opponent_for_user:#{user.id}", expires_in: 5.minutes) do
-        dex_leaderboard.opponent_for(user)
-      end
+    def assign_opponent
+      matchmaker = Matchmaker.new(user, leaderboard: dex_leaderboard)
+      @opponent = matchmaker.opponent unless leaderboard_cooldown?
+      @reroll_available = matchmaker.reroll_available?
     end
 
     def fetch_battle_history

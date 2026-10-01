@@ -35,7 +35,8 @@
       <div class="col-span-12 lg:col-span-7 space-y-6">
         <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
           <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: pokemon_show.dex_leaderboard, opponent: pokemon_show.opponent,
-                                                      cooldown: pokemon_show.leaderboard_cooldown? %>
+                                                      cooldown: pokemon_show.leaderboard_cooldown?,
+                                                      can_reroll: pokemon_show.reroll_available? %>
         <% end %>
         <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
       </div>

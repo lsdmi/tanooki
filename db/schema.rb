@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_30_230000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_234500) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -559,6 +559,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_230000) do
     t.string "encrypted_password", default: "", null: false
     t.bigint "latest_read_comment_id"
     t.string "name", null: false
+    t.datetime "opponent_rerolled_at"
+    t.bigint "pinned_opponent_id"
+    t.datetime "pinned_until"
     t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
     t.datetime "pokemon_last_training", default: "2023-11-02 02:58:41"
     t.datetime "reset_password_sent_at"

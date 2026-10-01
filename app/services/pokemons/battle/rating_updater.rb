@@ -54,8 +54,7 @@ module Pokemons
       end
 
       def update_rate(user, rate)
-        new_rate = [user.battle_win_rate + rate, 100].min
-        user.update(battle_win_rate: new_rate)
+        user.update(battle_win_rate: (user.battle_win_rate + rate).clamp(0, 100))
       end
 
       def user_rank(battle_rate)

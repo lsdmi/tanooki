@@ -29,6 +29,10 @@ module Pokemons
       user_at_index(sampled_index)
     end
 
+    def on_leaderboard?(user)
+      self.class.leader_scope.exists?(id: user.id)
+    end
+
     def self.leader_scope
       User.joins(:user_pokemons)
     end
@@ -41,10 +45,6 @@ module Pokemons
     end
 
     private
-
-    def on_leaderboard?(user)
-      self.class.leader_scope.exists?(id: user.id)
-    end
 
     def higher_ranked_count(user)
       self.class.leader_scope.where(

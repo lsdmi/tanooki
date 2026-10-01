@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
-# Handles authenticated Pokemon catching, training, and opponent refreshes.
+# Handles authenticated Pokemon catching, training, and opponent rerolls.
 class UserPokemonsController < ApplicationController
+  include Pokemons::GameActions
+
   helper Pokemons::DexHelper,
          Pokemons::StatsHelper
 
   before_action :authenticate_user!
+  pokemon_rate_limit to: 10, only: :create
+  pokemon_rate_limit to: 10, only: :training
+  pokemon_rate_limit to: 5, only: :regenerate_opponent
 
   def create
     encounter = claim_encounter if pokemon_catch_permitted?
@@ -30,16 +35,11 @@ class UserPokemonsController < ApplicationController
   end
 
   def regenerate_opponent
-    Rails.cache.delete("opponent_for_user:#{current_user.id}")
-    @pokemon_show = Pokemons::StudioTab.new(current_user)
-    render turbo_stream: turbo_stream_list_refresh(
-      turbo_stream.update(
-        'pokemon-leaderboard-screen',
-        partial: 'users/pokemons/dex_leaderboard',
-        locals: { dex_leaderboard: @pokemon_show.dex_leaderboard, opponent: @pokemon_show.opponent,
-                  cooldown: @pokemon_show.leaderboard_cooldown? }
-      )
-    )
+    if Pokemons::Matchmaker.new(current_user).reroll!
+      render turbo_stream: turbo_stream_list_refresh(refresh_leaderboard_card)
+    else
+      render turbo_stream: [refresh_leaderboard_card, *turbo_stream_alert(t('pokemons.alerts.reroll_used'))]
+    end
   end
 
   private
