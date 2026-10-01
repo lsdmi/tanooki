@@ -4,15 +4,8 @@ module Chapters
   # View helpers for chapter list accordion sections.
   module ListSectionsHelper
     def chapter_list_section_index(fiction, order:, viewer: current_user)
-      scope = Library::ChapterCatalog.chapters_scope_for_list(fiction, viewer)
-      ListSectionIndex.new(scope, order: order).call
+      ListSectionIndex.new(Library::ChapterCatalog.listed_chapters(fiction, viewer:), order:).call
     end
-
-    def chapter_list_sections(chapters, order: :asc)
-      ListSections.new(chapters, order: order).call
-    end
-
-    delegate :volume_section_key, :range_section_key, to: ListSections
 
     def fiction_chapter_section_path(fiction, section_key, order:)
       chapter_section_fiction_path(fiction, section: section_key, order: order)

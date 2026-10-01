@@ -67,18 +67,6 @@ module Library
       Arel.sql("#{draft_first}, COALESCE(volume_number, 0) DESC, number DESC, #{Chapter::PUBLIC_TIME_SQL} DESC")
     end
 
-    def group_by_number_range(chapters)
-      chapters.group_by do |chapter|
-        if chapter.number.to_i.zero?
-          '1-100'
-        else
-          range_start = (((chapter.number.to_i - 1) / 100) * 100) + 1
-          range_end = range_start + 99
-          "#{range_start}-#{range_end}"
-        end
-      end
-    end
-
     # Guests: only chapters already public. Team on this fiction: also scheduled rows they scanlate.
     # Drafts stay off this list (they belong on readings#show via ordered_user_chapters_desc).
     def chapters_scope_by_visibility(fiction, viewer)

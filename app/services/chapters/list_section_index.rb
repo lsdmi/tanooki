@@ -1,96 +1,62 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Builds accordion section metadata for chapter lists without loading every chapter row.
+  # Accordion section metadata for a fiction's chapter list: volumes first, then numeric ranges of unnumbered
+  # chapters. Groups loaded chapters in memory (the request's shared list), so it never queries.
   class ListSectionIndex
-    RANGE_KEY_SQL = <<~SQL.squish
-      CASE
-        WHEN FLOOR(chapters.number) = 0 THEN '1-100'
-        ELSE CONCAT(
-          ((FLOOR(chapters.number) - 1) DIV 100) * 100 + 1,
-          '-',
-          ((FLOOR(chapters.number) - 1) DIV 100) * 100 + 100
-        )
-      END
-    SQL
+    RANGE_SIZE = 100
 
-    CHAPTER_IDS_SQL = 'GROUP_CONCAT(chapters.id ORDER BY chapters.number, chapters.id)'
+    def self.volume_section_key(volume_number) = "v-#{volume_number}"
 
-    def initialize(scope, order: :asc)
-      @scope = scope
-      @order = order
+    def self.range_section_key(range_label) = "r-#{range_label}"
+
+    # Chapters below 1 (prologues, 0.5) belong to the first range.
+    def self.range_label(number)
+      start = ([number.to_i, 1].max - 1) / RANGE_SIZE * RANGE_SIZE
+      "#{start + 1}-#{start + RANGE_SIZE}"
+    end
+
+    def initialize(chapters, order: :asc)
+      @chapters = chapters.to_a
+      @descending = order.to_sym == :desc
     end
 
     def call
-      descending = @order.to_sym == :desc
-      volume_sections = volume_section_rows(descending)
-      unnumbered = base_scope.where(volume_number: nil)
-      return volume_sections unless unnumbered.exists?
-
-      volume_sections + range_section_rows(unnumbered, volume_sections.any?, descending)
+      with_volume, without_volume = @chapters.partition(&:volume_number)
+      volume_sections(with_volume) + range_sections(without_volume)
     end
 
     private
 
-    def base_scope
-      @scope.unscope(:order)
+    def volume_sections(chapters)
+      groups = chapters.group_by(&:volume_number).sort_by { |volume_number, _| volume_number.to_f }
+      in_list_order(groups).map do |volume_number, grouped|
+        title = "Том #{Formatting.format_decimal(volume_number)}"
+        section(:volume, self.class.volume_section_key(volume_number), title, grouped, volume_number:)
+      end
     end
 
-    def volume_section_rows(descending)
-      rows = base_scope.where.not(volume_number: nil)
-                       .group(:volume_number)
-                       .pluck(:volume_number, Arel.sql(CHAPTER_IDS_SQL))
-
-      rows.sort_by! { |volume_number, _| volume_number.to_f }
-      rows.reverse! if descending
-
-      rows.map { |volume_number, ids_concat| volume_metadata(volume_number, ids_concat) }
+    def range_sections(chapters)
+      groups = chapters.group_by { |chapter| self.class.range_label(chapter.number) }
+                       .sort_by { |range, _| range.to_i }
+      in_list_order(groups).map do |range, grouped|
+        section(:range, self.class.range_section_key(range), "Розділи #{range}", grouped, range:)
+      end
     end
 
-    def range_section_rows(unnumbered_scope, volumes_exist, descending)
-      source = volumes_exist ? unnumbered_scope : base_scope.where(volume_number: nil)
-      rows = source.group(Arel.sql(RANGE_KEY_SQL))
-                   .pluck(Arel.sql(RANGE_KEY_SQL), Arel.sql(CHAPTER_IDS_SQL))
-
-      rows.sort_by! { |range, _| range_sort_key(range) }
-      rows.reverse! if descending
-
-      rows.map { |range, ids_concat| range_metadata(range, ids_concat) }
+    def in_list_order(groups)
+      @descending ? groups.reverse : groups
     end
 
-    def volume_metadata(volume_number, ids_concat)
-      formatted = Formatting.format_decimal(volume_number)
-      title = "Том #{formatted}"
-
+    def section(kind, section_key, title, chapters, **extra)
       {
-        kind: :volume,
-        section_key: ListSections.volume_section_key(volume_number),
-        volume_number: volume_number,
-        title: title,
+        kind:,
+        section_key:,
+        **extra,
+        title:,
         epub_title: title,
-        chapter_ids: parse_ids(ids_concat)
+        chapter_ids: chapters.sort_by { |chapter| [chapter.number, chapter.id] }.map(&:id)
       }
-    end
-
-    def range_metadata(range, ids_concat)
-      title = "Розділи #{range}"
-
-      {
-        kind: :range,
-        section_key: ListSections.range_section_key(range),
-        range: range,
-        title: title,
-        epub_title: title,
-        chapter_ids: parse_ids(ids_concat)
-      }
-    end
-
-    def parse_ids(concat)
-      concat.to_s.split(',').filter_map { |id| Integer(id, 10, exception: false) }
-    end
-
-    def range_sort_key(range_label)
-      range_label.to_s.split('-').first.to_i
     end
   end
 end
