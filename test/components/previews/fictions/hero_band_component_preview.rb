@@ -13,12 +13,14 @@ module Fictions
       render hero(user: sample_progress&.user || User.first)
     end
 
-    # @label With notice
+    # @label With notices (16+ over «no new chapters»)
     def with_notice
       render(hero(user: nil)) do |component|
         component.with_notice do
-          Ui::NoticeComponent.new(kind: :adult, style: :scrim, title: 'Контент 18+',
-                                  body: 'Цей твір містить матеріали для дорослої аудиторії.').render_in(component)
+          component.helpers.safe_join(%i[teen dropped].map do |kind|
+            Ui::NoticeComponent.new(style: :scrim, html: { class: 'mb-2' }, **Fictions::NoticeZone.notice(kind).to_h)
+                               .render_in(component)
+          end)
         end
       end
     end

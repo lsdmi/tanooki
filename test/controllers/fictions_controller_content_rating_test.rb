@@ -75,25 +75,25 @@ class FictionsControllerContentRatingTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_includes response.body, I18n.t('fictions.age_rating_notice.sixteen.title')
+    assert_select '[role="note"]', text: /#{Regexp.escape(I18n.t('fictions.notice_zone.teen.title'))}/
     assert_select 'span.bg-amber-200', text: '16+'
   end
 
-  test 'sixteen show notice skips the adult disclaimer hook' do
+  test 'show page age notice is informational, without the reader dismiss hook' do
     @fiction.update!(content_rating: :sixteen)
     get fiction_url(@fiction)
 
-    assert_select '[data-age-rating-notice-rating-value=sixteen]'
-    assert_no_match I18n.t('fictions.age_rating_notice.eighteen.title'), response.body
+    assert_select '[data-controller="age-rating-notice"]', count: 0
+    assert_no_match I18n.t('fictions.notice_zone.adult.title'), response.body
   end
 
-  test 'eighteen show page keeps the gate and rose pill' do
+  test 'eighteen show page shows the 18+ notice and rose pill' do
     @fiction.update!(content_rating: :eighteen)
     get fiction_url(@fiction)
 
-    assert_includes response.body, I18n.t('fictions.age_rating_notice.eighteen.title')
+    assert_select '[role="note"]', text: /#{Regexp.escape(I18n.t('fictions.notice_zone.adult.title'))}/
     assert_select 'span.bg-rose-200', text: '18+'
-    assert_select 'section.adult-content-disclaimer'
+    assert_select 'section.adult-content-disclaimer', count: 0
   end
 
   test 'sixteen chapter shows notice without locking the body' do

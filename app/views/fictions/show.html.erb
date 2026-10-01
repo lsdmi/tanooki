@@ -3,8 +3,15 @@
             expires_in: guest_fiction_show_fragment_expires_in do %>
 <div class="bg-surface min-h-screen z-10 relative">
   <%= render Fictions::HeroBandComponent.new(fiction: @fiction, presenter: @show_presenter, user: current_user) do |hero| %>
-    <% if show_age_rating_notice?(@fiction) %>
-      <% hero.with_notice { render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@fiction)) } %>
+    <% notices = Fictions::NoticeZone.for(@fiction, age: show_age_rating_notice?(@fiction)) %>
+    <% if notices.any? %>
+      <% hero.with_notice do %>
+        <div class="flex flex-col gap-2">
+          <% notices.each do |notice| %>
+            <%= render Ui::NoticeComponent.new(style: :scrim, **notice.to_h) %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
   <main class="max-w-screen-xl mx-auto px-4 2xl:px-0 py-8 relative z-10">

@@ -9,10 +9,12 @@ module FictionListingProgress
 
   LISTING_STATE_LABELS = {
     finished: 'Завершено',
-    stale: 'Покинуто',
+    stale: 'Без оновлень',
     announced: 'Анонсовано',
     ongoing: 'Видається'
   }.freeze
+  # Cutting «Без оновлень» to six letters leaves «Без он.».
+  LISTING_STATE_SHORT_LABELS = { stale: 'Без онов.' }.freeze
 
   included do
     before_validation :normalize_expected_chapters
@@ -49,6 +51,8 @@ module FictionListingProgress
   end
 
   def listing_state_label_short
+    return LISTING_STATE_SHORT_LABELS[listing_state] if LISTING_STATE_SHORT_LABELS.key?(listing_state)
+
     label = listing_state_label
     label.length > 6 ? "#{label[0, 6]}." : label
   end

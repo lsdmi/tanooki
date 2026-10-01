@@ -116,13 +116,31 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_select 'section[aria-labelledby="fiction-title"] li', text: '307 розділів'
   end
 
-  test 'show hides add-chapter CTA when completed_at is set' do
+  test 'a finished fiction shows the finished notice instead of the add-chapter CTA' do
     @fiction.update!(completed_at: Time.current)
 
     get fiction_url(@fiction)
 
-    assert_response :success
     assert_select 'a', text: 'Додати розділ', count: 0
-    assert_includes response.body, 'Ранобе завершено!'
+    assert_select 'section[aria-labelledby="fiction-title"] [role="note"]', text: /ПЕРЕКЛАД ЗАВЕРШЕНО/
+    assert_not_includes response.body, 'Ранобе завершено!'
+  end
+
+  test 'a stale fiction shows the no-new-chapters notice under a 16+ notice' do
+    @fiction.update!(content_rating: :sixteen, chapter_count: 3, last_chapter_at: 4.months.ago, completed_at: nil)
+
+    get fiction_url(@fiction)
+
+    titles = css_select('section[aria-labelledby="fiction-title"] [role="note"] p.font-semibold').map(&:text)
+
+    assert_equal ['Контент 16+', 'НОВИХ РОЗДІЛІВ НЕМАЄ ПОНАД 3 МІСЯЦІ'], titles
+  end
+
+  test 'an ongoing everyone-rated fiction shows no notices' do
+    @fiction.update!(content_rating: :everyone, chapter_count: 3, last_chapter_at: 1.day.ago, completed_at: nil)
+
+    get fiction_url(@fiction)
+
+    assert_select '[role="note"]', count: 0
   end
 end

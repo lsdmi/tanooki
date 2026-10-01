@@ -73,7 +73,8 @@ class FictionListingProgressTest < ActiveSupport::TestCase
     @fiction.last_chapter_at = (FictionListingProgress::STALE_AFTER + 1.day).ago
 
     assert_equal :stale, @fiction.listing_state
-    assert_equal 'Покинуто', @fiction.listing_state_label
+    assert_equal 'Без оновлень', @fiction.listing_state_label
+    assert_equal 'Без онов.', @fiction.listing_state_label_short
   end
 
   test 'listing_state is ongoing when last_chapter_at is recent' do

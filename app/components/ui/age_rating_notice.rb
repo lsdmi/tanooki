@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Ui
-  # 16+ info banner or 18+ hard gate on fiction show and the chapter reader.
+  # 16+ info banner or 18+ hard gate in the chapter reader (fiction show uses the notice zone instead).
   class AgeRatingNotice < ViewComponent::Base
     include AgeRatingNoticeStyles
 

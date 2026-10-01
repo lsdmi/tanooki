@@ -12,18 +12,21 @@ module Ui
       assert_selector 'div.text-fg-secondary', text: 'Лише для дорослих.'
     end
 
-    test 'scrim style sits on the hero image with on-media colors' do
+    test 'scrim style is a light glass card in light theme and on-media glass in dark' do
       render_inline(NoticeComponent.new(kind: :licensed, style: :scrim, title: 'Офіційна ліцензія', body: 'Текст'))
 
-      assert_selector 'div.bg-overlay-scrim-45.backdrop-blur-lg.border-status-licensed-on-media-border svg.md\\:size-6'
-      assert_selector 'p.text-status-licensed-on-media-title', text: 'Офіційна ліцензія'
-      assert_selector 'div.text-status-licensed-on-media-fg', text: 'Текст'
+      assert_selector 'div.bg-card\\/80.dark\\:bg-overlay-scrim-45.backdrop-blur-lg' \
+                      '.border-status-licensed-subtle-border.dark\\:border-status-licensed-on-media-border ' \
+                      'svg.md\\:size-6'
+      assert_selector 'p.text-status-licensed-solid.dark\\:text-status-licensed-on-media-title',
+                      text: 'Офіційна ліцензія'
+      assert_selector 'div.text-fg-secondary.dark\\:text-status-licensed-on-media-fg', text: 'Текст'
     end
 
-    test 'tinted style uses the family on-media background' do
+    test 'tinted style uses the family subtle background in light and on-media in dark' do
       render_inline(NoticeComponent.new(kind: :teen, style: :tinted, title: 'Контент 16+'))
 
-      assert_selector 'div.bg-status-warning-on-media-bg.border-status-warning-on-media-border'
+      assert_selector 'div.bg-status-warning-subtle-bg\\/80.dark\\:bg-status-warning-on-media-bg'
       assert_no_selector 'div.bg-overlay-scrim-45'
     end
 
