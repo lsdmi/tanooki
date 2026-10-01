@@ -8,7 +8,7 @@ module Pokemons
 
     def initialize(user)
       @user = user
-      @pokemons = pokemons_cache
+      @pokemons = UserPokemonListQuery.new(user).call.load
       assign_pokemon_details if @pokemons.any?
     end
 
@@ -26,7 +26,7 @@ module Pokemons
 
     def assign_pokemon_details
       @selected_pokemon = @pokemons.first
-      @descendant = @selected_pokemon.pokemon.descendant
+      @descendant = Pokemon.find_by(id: @selected_pokemon.pokemon.descendant_id)
       @dex_leaderboard = Pokemons::DexLeaderboard.new
       assign_opponent
       @battle_history = fetch_battle_history
@@ -41,12 +41,6 @@ module Pokemons
     def fetch_battle_history
       Rails.cache.fetch("user:#{user.id}:battle_history", expires_in: 5.minutes) do
         user.latest_battle_log
-      end
-    end
-
-    def pokemons_cache
-      Rails.cache.fetch("user:#{user.id}:pokemons", expires_in: 5.minutes) do
-        UserPokemonListQuery.new(user).call
       end
     end
   end

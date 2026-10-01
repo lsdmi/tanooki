@@ -96,6 +96,13 @@ attachment_nineteen:
   blob_id: 19
   created_at: <%= Time.now %>
 
+pokemon_three_sprite:
+  name: sprite
+  record_type: Pokemon
+  record_id: 3
+  blob_id: 19
+  created_at: <%= Time.now %>
+
 attachment_twenty:
   name: avatar
   record_type: Scanlator

@@ -75,6 +75,14 @@ module Pokemons
       assert_not_predicate StudioTab.new(user.reload), :reroll_available?
     end
 
+    test 'a fresh catch shows up in the party right away' do
+      user = users(:user_one)
+      StudioTab.new(user)
+      CollectionUpdater.new(pokemon_id: pokemons(:three).id, user_id: user.id).trap
+
+      assert_includes StudioTab.new(user).pokemons.map(&:pokemon), pokemons(:three)
+    end
+
     test 'with pokemons exposes dex leaderboard' do
       user = users(:user_one)
       tab = StudioTab.new(user)

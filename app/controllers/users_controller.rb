@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def pokemon_details
-    result = Pokemons::UserPokemonDetails.new(params[:pokemon_id]).call
+    result = Pokemons::UserPokemonDetails.new(current_user, params[:pokemon_id]).call
     render turbo_stream: turbo_stream_list_refresh(update_pokemon_details(result.data))
   end
 

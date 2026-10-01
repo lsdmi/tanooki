@@ -20,3 +20,15 @@ two:
   descendant_level: 0
   dex_id: 2
 
+# Evolved forms are rarity 5, which keeps them out of the wild pool. Tests make it stage 3 by pointing two at it.
+three:
+  id: 3
+  slug: 'three'
+  name: 'Third'
+  power_level: 3
+  rarity: 5
+  ancestor_id: 1
+  descendant_id: 3
+  descendant_level: 0
+  dex_id: 3
+

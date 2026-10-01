@@ -7,7 +7,7 @@ module Pokemons
     def setup
       @user_pokemon = user_pokemons(:one)
       @pokemon = pokemons(:one)
-      @service = UserPokemonDetails.new(@user_pokemon.id)
+      @service = UserPokemonDetails.new(@user_pokemon.user, @user_pokemon.id)
     end
 
     test 'initializes with pokemon_id' do
@@ -61,11 +61,17 @@ module Pokemons
     end
 
     test 'call with non-existent pokemon_id handles gracefully' do
-      service = UserPokemonDetails.new(99_999)
+      service = UserPokemonDetails.new(@user_pokemon.user, 99_999)
 
       assert_raises(ActiveRecord::RecordNotFound) do
         service.call
       end
+    end
+
+    test "someone else's pokemon is not found" do
+      service = UserPokemonDetails.new(users(:user_two), @user_pokemon.id)
+
+      assert_raises(ActiveRecord::RecordNotFound) { service.call }
     end
 
     test 'data structure contains all expected keys' do
@@ -79,7 +85,8 @@ module Pokemons
     test 'descendant logic works with pokemon that has different descendant' do
       pokemons(:one)
       user_pokemon_with_descendant = user_pokemons(:one)
-      service_with_descendant = UserPokemonDetails.new(user_pokemon_with_descendant.id)
+      service_with_descendant = UserPokemonDetails.new(user_pokemon_with_descendant.user,
+                                                       user_pokemon_with_descendant.id)
 
       descendant = service_with_descendant.send(:descendant)
 

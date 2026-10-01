@@ -45,6 +45,14 @@ class AuthorizationRegressionTest < ActionDispatch::IntegrationTest
     assert_not UserPokemon.exists?(user_id: other_user.id, pokemon_id: 2)
   end
 
+  test "user cannot open another account's pokemon details" do
+    sign_in users(:user_one)
+
+    post pokemon_details_path(pokemon_id: user_pokemons(:two).id, format: :turbo_stream)
+
+    assert_response :not_found
+  end
+
   test 'user without scanlator cannot create fiction' do
     sign_in User.find(101) # users fixture user_101: no scanlator membership
 

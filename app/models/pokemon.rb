@@ -62,4 +62,9 @@ class Pokemon < ApplicationRecord
   def types
     pokemon_types
   end
+
+  # Final forms point to themselves with level 0.
+  def evolves_at?(level)
+    descendant_id != id && descendant_level.positive? && level >= descendant_level
+  end
 end
