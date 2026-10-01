@@ -90,6 +90,21 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#more_tails asks the search for one more tale than it shows' do
+    @controller.instance_variable_set(:@publication, @tale)
+    options = nil
+    search = lambda do |_query, **opts|
+      options = opts
+      Publication.all
+    end
+
+    Publication.stub :search, search do
+      @controller.send(:more_tails)
+    end
+
+    assert_equal TalesController::MORE_TALES_LIMIT + 1, options[:limit]
+  end
+
   test '#more_tails falls back when OpenSearch is unavailable' do
     @controller.instance_variable_set(:@publication, @tale)
 

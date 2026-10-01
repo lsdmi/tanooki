@@ -58,7 +58,7 @@ module Search
         params[:search],
         fields: ['tags^10', 'title^5', 'description'],
         boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-      ).includes(:rich_text_description, :cover_attachment)
+      ).includes(:cover_attachment)
     end
 
     def video_search

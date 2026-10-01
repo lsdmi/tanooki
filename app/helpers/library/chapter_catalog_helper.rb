@@ -9,10 +9,6 @@ module Library
       ChapterCatalog.ordered_chapters(fiction, viewer: viewer)
     end
 
-    def ordered_chapters_desc(fiction, viewer: nil)
-      ChapterCatalog.ordered_chapters_desc(fiction, viewer: viewer)
-    end
-
     def chapters_size(fiction, viewer: nil)
       ChapterCatalog.chapters_size(fiction, viewer: viewer)
     end

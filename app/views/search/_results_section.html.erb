@@ -39,7 +39,7 @@
               <%= tag.h2 class: 'line-clamp-2 my-2 text-2xl font-bold tracking-tight leading-tight text-fg hover:underline hover:text-brand' do %>
                 <%= link_to featured_result.title, tale_path(featured_result), turbo_drive_visit_data %>
               <% end %>
-              <%= tag.p featured_result.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-fg-muted tracking-tight' %>
+              <%= tag.p featured_result.excerpt || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-fg-muted tracking-tight' %>
             </article>
           <% end %>
         </div>
@@ -51,7 +51,7 @@
               <%= tag.h2 class: 'line-clamp-3 leading-tight mb-2 text-xl font-bold tracking-tight text-fg hover:underline hover:text-brand' do %>
                 <%= link_to publication.title, tale_path(publication), turbo_drive_visit_data %>
               <% end %>
-              <%= tag.p publication.description&.to_plain_text || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-fg-muted text-base' %>
+              <%= tag.p publication.excerpt || "Цікава стаття про світ аніме та манги.", class: 'line-clamp-3 mb-4 font-light text-fg-muted text-base' %>
             </article>
           <% end %>
         </div>

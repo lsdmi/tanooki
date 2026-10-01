@@ -21,5 +21,11 @@ module Pagination
 
       assert_equal "#{tales_path}?page=2", pagy_next_page_src(pagy)
     end
+
+    test 'next page frame waits until the reader scrolls to it' do
+      render partial: 'home/next_page', locals: { pagy: Pagy.new(count: 34, page: 1, limit: 17) }
+
+      assert_select 'turbo-frame#publications-page-2[loading=lazy][src=?]', "#{tales_path}?page=2"
+    end
   end
 end

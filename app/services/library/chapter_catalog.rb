@@ -13,15 +13,30 @@ module Library
       chapters_scope_for_list(fiction, viewer).order(order_clause_desc)
     end
 
+    # Loaded rows, shared by every caller in the request. Freshly changed chapters need ordered_chapters.
+    def listed_chapters(fiction, viewer: nil, order: :desc)
+      descending = order.to_sym == :desc
+      RequestMemo.remember(:listed_chapters, fiction.id, viewer&.id, descending) do
+        scope = descending ? ordered_chapters_desc(fiction, viewer:) : ordered_chapters(fiction, viewer:)
+        scope.to_a.freeze
+      end
+    end
+
+    def listed_chapters_with_scanlators(fiction, viewer: nil)
+      listed_chapters(fiction, viewer:).tap do |list|
+        ActiveRecord::Associations::Preloader.new(records: list, associations: :scanlators).call
+      end
+    end
+
     def ordered_user_chapters_desc(fiction, user)
       base = fiction.chapters.order(user_chapters_order_clause)
       return base if user.admin?
 
-      base.joins(:scanlators).where(scanlators: { id: user.scanlators.ids }).distinct
+      base.joins(:scanlators).where(scanlators: { id: viewer_scanlator_ids(user) }).distinct
     end
 
     def chapters_size(fiction, viewer: nil)
-      ChapterNavigation.unique_chapters(ordered_chapters(fiction, viewer:)).size
+      ChapterNavigation.unique_chapters(listed_chapters(fiction, viewer:)).size
     end
 
     def fiction_has_listable_chapters?(fiction, viewer)
@@ -71,14 +86,22 @@ module Library
       released_sql = visible_to_everyone_sql_fragment
       return fiction.chapters.where(released_sql, now) if guest_or_no_team_overlap?(fiction, viewer)
 
-      fiction.chapters.where(sql_visible_now_or_future_for_team(released_sql), now, now, viewer.scanlators.ids)
+      fiction.chapters.where(sql_visible_now_or_future_for_team(released_sql), now, now, viewer_scanlator_ids(viewer))
     end
     module_function :chapters_scope_by_visibility
 
     def guest_or_no_team_overlap?(fiction, viewer)
-      viewer.nil? || !viewer.scanlators.ids.intersect?(fiction.scanlators.ids)
+      return true if viewer.nil?
+
+      fiction_ids = RequestMemo.remember(:fiction_scanlator_ids, fiction.id) { fiction.scanlators.ids }
+      !viewer_scanlator_ids(viewer).intersect?(fiction_ids)
     end
     module_function :guest_or_no_team_overlap?
+
+    def viewer_scanlator_ids(viewer)
+      RequestMemo.remember(:viewer_scanlator_ids, viewer.id) { viewer.scanlators.ids }
+    end
+    module_function :viewer_scanlator_ids
 
     def visible_to_everyone_sql_fragment
       "(#{published_status_sql} AND (chapters.published_at IS NULL OR chapters.published_at <= ?))"

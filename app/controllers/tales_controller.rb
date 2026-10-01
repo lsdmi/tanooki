@@ -4,6 +4,7 @@
 class TalesController < ApplicationController
   HIGHLIGHTS_LIMIT = Publications::PublicCache::HIGHLIGHTS_LIMIT
   PUBLICATIONS_PER_PAGE = 16
+  MORE_TALES_LIMIT = 5
   OPENSEARCH_CONNECTION_ERRORS = [
     Faraday::Error,
     Errno::ECONNREFUSED,
@@ -43,26 +44,25 @@ class TalesController < ApplicationController
   private
 
   def more_tails
-    related = if base_search.size > 5
-                base_search.excluding(@publication).first(5)
-              else
-                (
-                  base_search.to_a + catalog_publications.first(6)
-                ).excluding(@publication).uniq.first(5)
-              end
-    Array(related).select(&:published?)
+    related = related_by_tags.excluding(@publication)
+    return related.first(MORE_TALES_LIMIT).select(&:published?) if related.size >= MORE_TALES_LIMIT
+
+    (related | catalog_publications.excluding(@publication).limit(MORE_TALES_LIMIT))
+      .first(MORE_TALES_LIMIT).select(&:published?)
   end
 
-  def base_search
-    @base_search ||= Publication.search(
+  # Searchkick returns up to 10,000 hits by default; one extra covers the current tale.
+  def related_by_tags
+    Publication.search(
       @publication.tags.pluck(:name).join(' '),
       fields: ['tags^10', 'title^5', 'description'],
       boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } },
-      operator: 'or'
-    ).includes([{ cover_attachment: :blob }, :rich_text_description])
+      operator: 'or',
+      limit: MORE_TALES_LIMIT + 1
+    ).includes(cover_attachment: :blob).to_a
   rescue *OPENSEARCH_CONNECTION_ERRORS => e
     Rails.logger.warn("[tales] OpenSearch unavailable for more_tails: #{e.class}: #{e.message}")
-    Publication.none
+    []
   end
 
   def set_tale
@@ -73,31 +73,25 @@ class TalesController < ApplicationController
     track_visit(@publication)
   end
 
-  def all_publications
-    catalog_publications.includes(:tags)
-  end
-
   def catalog_publications
-    Publication.published.includes([{ cover_attachment: :blob }, :rich_text_description]).order(created_at: :desc)
+    Publication.published.includes(cover_attachment: :blob).order(created_at: :desc)
   end
 
   def highlights
-    Publication.published.includes(%i[cover_attachment rich_text_description
-                                      tags]).where(id: highlight_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment tags]).where(id: highlight_ids).order(created_at: :desc)
   end
 
   def publications
     cached_ids = Rails.cache.fetch(Publications::PublicCache::EXCLUDING_HIGHLIGHTS_KEY,
                                    expires_in: Publications::PublicCache::LIST_TTL) do
-      all_publications.where.not(id: highlight_ids).map(&:id)
+      Publication.published.where.not(id: highlight_ids).order(created_at: :desc).pluck(:id)
     end
-    Publication.published.includes(%i[cover_attachment rich_text_description
-                                      tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment tags]).where(id: cached_ids).order(created_at: :desc)
   end
 
   def highlight_ids
     Rails.cache.fetch(Publications::PublicCache::HIGHLIGHTS_KEY, expires_in: Publications::PublicCache::LIST_TTL) do
-      all_publications.first(HIGHLIGHTS_LIMIT).map(&:id)
+      Publication.published.order(created_at: :desc).limit(HIGHLIGHTS_LIMIT).pluck(:id)
     end
   end
 

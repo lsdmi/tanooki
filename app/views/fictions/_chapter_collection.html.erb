@@ -36,7 +36,7 @@ end %>
           <%= reader_drawer ? reader_drawer_section_title(section) : section[:title] %>
         </h3>
         <div class="flex shrink-0 items-center gap-1">
-          <% if !reader_drawer && epub_download_available_for_section?(section_chapter_ids) %>
+          <% if !reader_drawer && epub_download_available_for_section?(fiction, section_chapter_ids) %>
             <div data-controller="epub-download"
                  data-epub-download-url-value="<%= epub_multiple_downloads_path %>"
                  data-epub-download-params-value="<%= { chapter_ids: section_chapter_ids, volume_title: section[:epub_title] }.to_json %>">

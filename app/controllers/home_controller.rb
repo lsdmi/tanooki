@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
   def tales
     scope = Publication.published
-                       .includes(:rich_text_description, cover_attachment: :blob)
+                       .includes(cover_attachment: :blob)
                        .order(created_at: :desc)
     scope = scope.where.not(id: @top_tale.id) if @top_tale
     scope.limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
@@ -49,7 +49,7 @@ class HomeController < ApplicationController
   end
 
   def published_catalog
-    Publication.published.includes({ cover_attachment: :blob }, :rich_text_description)
+    Publication.published.includes(cover_attachment: :blob)
   end
 
   def videos

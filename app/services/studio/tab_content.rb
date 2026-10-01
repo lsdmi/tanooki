@@ -30,7 +30,7 @@ module Studio
     attr_reader :user, :active_tab, :params
 
     def blogs_content_loader
-      @pagy, @publications = pagy(user.publications.includes(:rich_text_description).order(created_at: :desc), limit: 8)
+      @pagy, @publications = pagy(user.publications.order(created_at: :desc), limit: 8)
     end
 
     def pokemons_content_loader

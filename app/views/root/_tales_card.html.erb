@@ -19,7 +19,7 @@
     </h3>
     <p class="<%= featured ? 'mt-2 line-clamp-2 text-sm' : 'mt-1 line-clamp-2 text-xs' %> leading-relaxed text-fg-subtle"
        data-tale-card-text-target="description">
-      <%= publication.description.to_plain_text %>
+      <%= publication.excerpt %>
     </p>
     <p class="<%= featured ? 'mt-3 text-sm' : 'mt-2 text-xs sm:text-sm' %> token-raw text-cyan-300 dark:text-rose-300">
       <%= tale_published_date(publication) %>

@@ -1,7 +1,7 @@
 <% if pagy.next.present? %>
   <%= turbo_frame_tag(
         "publications-page-#{pagy.next}",
-        loading: :defer,
+        loading: :lazy,
         src: pagy_next_page_src(pagy),
         target: "_top"
       ) %>

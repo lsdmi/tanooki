@@ -22,15 +22,12 @@ module Library
     end
 
     def find_adjacent_chapter(fiction, chapter, direction, viewer: nil)
-      chapters = unique_chapters(ChapterCatalog.ordered_chapters_desc(fiction, viewer:))
-      index = chapter_index(chapters, chapter)
-
-      return nil if index.nil?
-
-      adjacent_index = calculate_adjacent_index(index, direction)
+      listed = ChapterCatalog.listed_chapters(fiction, viewer:)
+      chapters = unique_chapters(listed)
+      adjacent_index = calculate_adjacent_index(chapter_index(chapters, chapter), direction)
       return nil if invalid_index?(adjacent_index, chapters.size)
 
-      find_matching_chapter(fiction, chapters[adjacent_index], chapter.user_id, viewer:)
+      find_matching_chapter(listed, chapters[adjacent_index], chapter.user_id)
     end
     module_function :find_adjacent_chapter
 
@@ -44,12 +41,13 @@ module Library
     end
     module_function :invalid_index?
 
-    def find_matching_chapter(fiction, adjacent_chapter, user_id, viewer: nil)
-      ChapterCatalog.ordered_chapters_desc(fiction, viewer:).find_by(
-        number: adjacent_chapter.number,
-        volume_number: adjacent_chapter.volume_number,
-        user_id:
-      ) || adjacent_chapter
+    # Same translator as the current chapter when they also posted the adjacent one.
+    def find_matching_chapter(listed, adjacent_chapter, user_id)
+      listed.find do |chapter|
+        chapter.number == adjacent_chapter.number &&
+          chapter.volume_number == adjacent_chapter.volume_number &&
+          chapter.user_id == user_id
+      end || adjacent_chapter
     end
     module_function :find_matching_chapter
   end

@@ -26,7 +26,7 @@
       <%= link_to publication.title, tale_path(publication), turbo_drive_visit_data.merge(class: 'hover:text-brand transition-colors') %>
     </h2>
 
-    <%= tag.p publication.description.to_plain_text,
+    <%= tag.p publication.excerpt,
               class: 'mt-0.5 overflow-hidden text-xs leading-tight text-fg-muted line-clamp-3' %>
   </div>
 </article>

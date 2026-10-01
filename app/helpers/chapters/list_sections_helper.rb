@@ -37,11 +37,12 @@ module Chapters
       chapter_list_section_ids(section).include?(current_chapter_id)
     end
 
-    def epub_download_available_for_section?(chapter_ids)
+    def epub_download_available_for_section?(fiction, chapter_ids)
       return false unless user_signed_in? && chapter_ids.present?
 
-      chapters = Chapter.where(id: chapter_ids).not_draft.includes(:scanlators)
-      chapters_allow_epub_download?(chapters)
+      ids = chapter_ids.to_set
+      listed = Library::ChapterCatalog.listed_chapters_with_scanlators(fiction, viewer: current_user)
+      chapters_allow_epub_download?(listed.select { |chapter| ids.include?(chapter.id) })
     end
   end
 end

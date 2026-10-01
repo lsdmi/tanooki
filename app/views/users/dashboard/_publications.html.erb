@@ -30,7 +30,7 @@
                   <%= render 'shared/draft_badge', record: publication, compact: true %>
                 </div>
                 <p class="text-xs text-fg-muted mt-1">
-                  <%= publication.description.to_plain_text.truncate(60) || "Без опису" %>
+                  <%= publication.excerpt&.truncate(60) || "Без опису" %>
                 </p>
               </div>
             </div>
@@ -110,7 +110,7 @@
             <%= render 'shared/draft_badge', record: publication, compact: true %>
           </div>
           <p class="text-xs text-fg-muted mt-1">
-            <%= publication.description.to_plain_text.truncate(80) || "Без опису" %>
+            <%= publication.excerpt&.truncate(80) || "Без опису" %>
           </p>
         </div>
       </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_30_214500) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_230000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -290,6 +290,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_214500) do
     t.integer "comments_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
+    t.string "excerpt", limit: 300
     t.boolean "highlight", default: false
     t.string "slug", null: false
     t.string "status", limit: 16, default: "published", null: false

@@ -34,9 +34,7 @@ module Library
     end
 
     def listable
-      @listable ||= ChapterNavigation.unique_chapters(
-        ChapterCatalog.ordered_chapters_desc(@reading.fiction, viewer: @viewer)
-      )
+      @listable ||= ChapterNavigation.unique_chapters(ChapterCatalog.listed_chapters(@reading.fiction, viewer: @viewer))
     end
 
     def read_keys

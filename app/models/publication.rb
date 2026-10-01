@@ -17,6 +17,8 @@ class Publication < ApplicationRecord
   searchkick callbacks: SearchkickCallbacks.mode
   extend Pagy::Searchkick
 
+  EXCERPT_LENGTH = 300
+
   attr_accessor :tag_ids
 
   belongs_to :user
@@ -33,10 +35,16 @@ class Publication < ApplicationRecord
 
   validate :cover_format
 
+  before_save :refresh_excerpt, if: :description_loaded?
+
   scope :highlights, -> { where(highlight: true) }
   scope :weekly, -> { where(created_at: 7.days.ago..) }
   scope :popular, -> { order(views: :desc) }
   scope :recent, -> { order(created_at: :desc) }
+
+  def self.excerpt_from(rich_text)
+    rich_text&.to_plain_text.to_s.squish.truncate(EXCERPT_LENGTH).presence
+  end
 
   def should_index?
     deleted_at.nil? && published?
@@ -71,5 +79,16 @@ class Publication < ApplicationRecord
 
   def username
     user.name
+  end
+
+  private
+
+  # Unloaded means untouched this save; checking must not load the body.
+  def description_loaded?
+    association(:rich_text_description).loaded?
+  end
+
+  def refresh_excerpt
+    self.excerpt = self.class.excerpt_from(rich_text_description)
   end
 end

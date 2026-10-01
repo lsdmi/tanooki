@@ -60,18 +60,10 @@ module Chapters
     end
 
     def reader_chapter_drawer_search_index(fiction, order:, current_chapter: nil, viewer: current_user)
-      chapters = drawer_chapters_for_order(fiction, order:, viewer:)
+      chapters = Library::ChapterCatalog.listed_chapters(fiction, viewer:, order:)
       drawer_progress = reader_chapter_drawer_progress(fiction, current_chapter:, viewer:)
 
       chapters.map { |chapter| drawer_chapter_entry(chapter, drawer_progress) }
-    end
-
-    def drawer_chapters_for_order(fiction, order:, viewer:)
-      if order.to_sym == :desc
-        ordered_chapters_desc(fiction, viewer: viewer)
-      else
-        ordered_chapters(fiction, viewer: viewer)
-      end
     end
 
     def drawer_chapter_entry(chapter, drawer_progress)
