@@ -21,10 +21,8 @@ production:
   workers:
     # One thread: memory-heavy jobs (EPUB builds, chapter image extraction) run one at a
     # time so two vips jobs never share the worker's memory.
-    # production_epub: drain jobs enqueued before the rename; remove once empty.
     - queues:
         - production_heavy
-        - production_epub
       threads: 1
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 1
