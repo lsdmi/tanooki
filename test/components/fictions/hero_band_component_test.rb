@@ -27,16 +27,25 @@ module Fictions
       @fiction.scanlators.each { |scanlator| assert_selector "a[href='/scanlators/#{scanlator.slug}']" }
     end
 
-    test 'age tag only for age-labelled works' do
+    test 'age tag is rose for 18+' do
       @fiction.update!(content_rating: :eighteen)
       render_hero
 
       assert_selector 'span.bg-rose-600', text: '18+'
+    end
 
+    test 'age tag is orange for 16+' do
+      @fiction.update!(content_rating: :sixteen)
+      render_hero
+
+      assert_selector 'span.bg-orange-700', text: '16+'
+    end
+
+    test 'no age tag for works without an age rating' do
       @fiction.update!(content_rating: :everyone)
       render_hero
 
-      assert_no_selector 'span.bg-rose-600'
+      assert_no_selector 'span.bg-rose-600, span.bg-orange-700'
     end
 
     test 'stats line pluralizes and compacts large view counts' do

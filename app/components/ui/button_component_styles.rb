@@ -24,8 +24,11 @@ module Ui
         'border-transparent bg-btn-licensed text-fg-on-brand',
         'hover:bg-btn-licensed-hover focus-visible:ring-btn-licensed'
       ].join(' ').freeze,
-      # White in both themes: it sits on the always-dark hero image.
-      on_media: 'token-raw border-transparent bg-white text-slate-900 hover:bg-slate-100 focus-visible:ring-white'
+      # Over washed-out hero art, so it doesn't melt into the art: a solid fill in light, a faint glassy one in dark.
+      on_media: [
+        'border-line-strong bg-card text-fg hover:bg-surface focus-visible:ring-line-strong',
+        'dark:border-fg/15 dark:bg-fg/8 dark:hover:bg-fg/12'
+      ].join(' ').freeze
     }.freeze
 
     SIZE_CLASSES = {

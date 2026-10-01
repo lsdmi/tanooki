@@ -1,8 +1,7 @@
 <section class="<%= ROOT %>" aria-labelledby="fiction-title">
-  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="<%= BACKDROP %>" aria-hidden="true">
     <%= cover_tag(classes: BACKDROP_IMAGE, alt: '') if cover? %>
-    <div class="<%= SCRIM %>"></div>
-    <div class="<%= DIM %>"></div>
+    <div class="<%= WASH %>"></div>
   </div>
 
   <div class="<%= CONTAINER %>">
@@ -19,7 +18,7 @@
 
       <div class="<%= TAGS_CELL %>">
         <% if fiction.age_labelled? %>
-          <span class="<%= AGE_TAG %>">
+          <span class="<%= AGE_TAG %> <%= AGE_TAG_TONES.fetch(fiction.content_rating) %>">
             <%= render Ui::AdultWarningIconComponent.new(class: 'size-4 shrink-0') %>
             <%= fiction.content_rating_label %>
           </span>

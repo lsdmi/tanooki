@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Top of fiction#show (Figma «Hero band» 10088:10422): a cropped copy of the cover under a scrim as the backdrop,
-  # with the cover, badges, title, stats, credits and the main action on top. Logged-in vs logged-out only changes
-  # the actions (Fictions::HeroActionsComponent). The status notice goes in the `notice` slot above the cover.
+  # Top of fiction#show (Figma «Hero band» 10088:10422): a cropped copy of the cover, washed out and fading into the
+  # page, as the backdrop, with the cover, badges, title, stats, credits and the main action on top. Logged-in vs
+  # logged-out only changes the actions (Fictions::HeroActionsComponent). The status notice goes in the `notice` slot
+  # above the cover.
   class HeroBandComponent < ViewComponent::Base
     include Fictions::FormattingHelper
     include Meta::CoverUrlsHelper
