@@ -4,15 +4,15 @@ module Pokemons
   # Dex leaderboard rank labels and training/battle cooldown copy for the dex UI.
   module DexHelper
     def training_cooldown?(user)
-      user.pokemon_last_training > 4.hours.ago
+      user.pokemon_training_on_cooldown?
     end
 
     def training_cooldown_reason(user)
-      cooldown_message_for(user.pokemon_last_training)
+      cooldown_message_for(user.pokemon_last_training, Balance::TRAINING_COOLDOWN)
     end
 
     def reason_for_cooldown(current_user)
-      cooldown_message_for(current_user.last_battle_at || 1.year.ago)
+      cooldown_message_for(current_user.last_battle_at || 1.year.ago, Balance::BATTLE_COOLDOWN)
     end
 
     def dex_title(rate)
@@ -28,12 +28,11 @@ module Pokemons
 
     private
 
-    def cooldown_message_for(time)
-      remaining_cooldown_seconds = 4.hours.to_i - (Time.current - time)
-      remaining_cooldown_hours = (remaining_cooldown_seconds / 1.minute).floor
-      remaining_cooldown_hours = 240 if remaining_cooldown_hours.negative?
+    def cooldown_message_for(time, cooldown)
+      remaining_minutes = ((cooldown.to_i - (Time.current - time)) / 1.minute).floor
+      remaining_minutes = cooldown.in_minutes.to_i if remaining_minutes.negative?
 
-      "#{remaining_cooldown_hours} хв"
+      "#{remaining_minutes} хв"
     end
   end
 end

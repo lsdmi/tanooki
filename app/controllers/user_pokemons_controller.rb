@@ -13,24 +13,18 @@ class UserPokemonsController < ApplicationController
   pokemon_rate_limit to: 5, only: :regenerate_opponent
 
   def create
-    encounter = claim_encounter if pokemon_catch_permitted?
-
-    if encounter
-      current_user.update(pokemon_last_catch: Time.current)
-      Pokemons::CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: current_user.id).trap
-      render turbo_stream: [remove_pokemon, *update_notice(UserPokemon::SUCCESS_MESSSAGE)]
-    else
-      render turbo_stream: [remove_pokemon, *update_notice(UserPokemon::FAILURE_MESSSAGE)]
-    end
+    caught = Pokemons::Catch.new(current_user, params[:encounter]).call
+    message = caught ? UserPokemon::SUCCESS_MESSSAGE : UserPokemon::FAILURE_MESSSAGE
+    render turbo_stream: [remove_pokemon, *update_notice(message)]
   end
 
   def training
-    if current_user.pokemon_training_on_cooldown?
-      render turbo_stream: refresh_error_screen
+    alert = Pokemons::Training.new(current_user, params.expect(:user_pokemon_id)).call
+
+    if alert
+      render turbo_stream: [refresh_screen, *update_notice(alert)]
     else
-      train_pokemon
-      current_user.update(pokemon_last_training: Time.current)
-      render turbo_stream: [refresh_screen, *update_notice(@alert)]
+      render turbo_stream: refresh_error_screen
     end
   end
 
@@ -43,15 +37,6 @@ class UserPokemonsController < ApplicationController
   end
 
   private
-
-  def pokemon_catch_permitted?
-    current_user.pokemon_catch_permitted?
-  end
-
-  def claim_encounter
-    encounter = current_user.pokemon_encounters.for_catch_token(params[:encounter].to_s)
-    encounter if encounter&.claim!
-  end
 
   def pokemons
     UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
@@ -73,10 +58,6 @@ class UserPokemonsController < ApplicationController
 
   def remove_pokemon
     turbo_stream.remove('catch-pokemon')
-  end
-
-  def train_pokemon
-    @alert = current_user.user_pokemons.find(params.expect(:user_pokemon_id)).train![:alert]
   end
 
   def update_notice(message)

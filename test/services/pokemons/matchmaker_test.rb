@@ -56,7 +56,7 @@ module Pokemons
     end
 
     test 'reroll is available again after the window' do
-      @user.update!(opponent_rerolled_at: (Matchmaker::REROLL_COOLDOWN + 1.minute).ago)
+      @user.update!(opponent_rerolled_at: (Balance::BATTLE_COOLDOWN + 1.minute).ago)
 
       assert Matchmaker.new(@user).reroll!
     end

@@ -4,7 +4,6 @@ module Pokemons
   # Wild encounter roll: throttled catch chance and rarity-weighted random species, recorded as a PokemonEncounter.
   # Guests keep only the encounter id and their guest token in the session; see AuthCatch.guest_encounter.
   class WildCatch
-    ENCOUNTER_GAP = 8.hours
     ENCOUNTER_CHANCE = 0.02
 
     attr_reader :session, :user
@@ -31,13 +30,13 @@ module Pokemons
       return 0 if user && shown_recently?
 
       last_seen = user&.pokemon_last_catch || session[:pokemon_catch_last_seen]
-      last_seen < ENCOUNTER_GAP.ago ? ENCOUNTER_CHANCE : 0
+      last_seen < Balance::ENCOUNTER_DELAY.ago ? ENCOUNTER_CHANCE : 0
     end
 
     # Signed-in users are throttled by their last catch, so an ignored pop-up would otherwise reappear on every page.
     def shown_recently?
       shown_at = session[:pokemon_catch_last_seen]
-      shown_at.present? && Time.zone.parse(shown_at.to_s) > ENCOUNTER_GAP.ago
+      shown_at.present? && Time.zone.parse(shown_at.to_s) > Balance::ENCOUNTER_DELAY.ago
     end
 
     def encounter

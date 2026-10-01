@@ -4,7 +4,6 @@ module Pokemons
   # Pins one battle opponent per user, so the battle endpoint fights whoever the page showed, never an id from the form.
   class Matchmaker
     PIN_TTL = 24.hours
-    REROLL_COOLDOWN = 4.hours
     REROLL_ATTEMPTS = 3
 
     def initialize(user, leaderboard: DexLeaderboard.new)
@@ -28,7 +27,7 @@ module Pokemons
     def reroll_available?
       return false if BattleLeaderboardCooldown.call(user)
 
-      user.opponent_rerolled_at.nil? || user.opponent_rerolled_at <= REROLL_COOLDOWN.ago
+      user.opponent_rerolled_at.nil? || user.opponent_rerolled_at <= Balance::BATTLE_COOLDOWN.ago
     end
 
     # True when the reroll was spent; false when it was already used this window or the team is resting.

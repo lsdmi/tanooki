@@ -98,10 +98,10 @@ class User < ApplicationRecord
   end
 
   def pokemon_catch_permitted?
-    pokemon_last_catch < 4.hours.ago
+    pokemon_last_catch < Pokemons::Balance::CATCH_COOLDOWN.ago
   end
 
   def pokemon_training_on_cooldown?
-    pokemon_last_training > 4.hours.ago
+    pokemon_last_training > Pokemons::Balance::TRAINING_COOLDOWN.ago
   end
 end

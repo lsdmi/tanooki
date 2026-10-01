@@ -47,14 +47,14 @@ module Pokemons
       roll(user: @user)
 
       assert_no_difference('PokemonEncounter.count') do
-        travel(WildCatch::ENCOUNTER_GAP - 1.minute) { assert_nil roll(user: @user) }
+        travel(Balance::ENCOUNTER_DELAY - 1.minute) { assert_nil roll(user: @user) }
       end
     end
 
     test 'signed-in user can get a new pop-up once the gap has passed' do
       roll(user: @user)
 
-      travel(WildCatch::ENCOUNTER_GAP + 1.minute) do
+      travel(Balance::ENCOUNTER_DELAY + 1.minute) do
         assert_difference('PokemonEncounter.count') { roll(user: @user) }
       end
     end
@@ -87,7 +87,7 @@ module Pokemons
     end
 
     test 'a guest gets the 2% chance after the gap' do
-      @session[:pokemon_catch_last_seen] = (WildCatch::ENCOUNTER_GAP + 1.minute).ago
+      @session[:pokemon_catch_last_seen] = (Balance::ENCOUNTER_DELAY + 1.minute).ago
 
       assert_nil roll(user: nil, dice: WildCatch::ENCOUNTER_CHANCE + 0.01)
     end
