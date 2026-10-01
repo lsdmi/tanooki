@@ -36,20 +36,35 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'rate limits search requests per ip' do
-    with_stubbed_tag_counts do
+  test 'rate limits full-page searches per visitor ip behind Cloudflare' do
+    statuses = with_stubbed_tag_counts do
       with_stubbed_search(Fiction, Publication, YoutubeVideo) do
-        30.times do
-          get search_index_url, params: { search: ['test'] }, env: { 'REMOTE_ADDR' => '203.0.113.13' }
-
-          assert_response :success
-        end
-
-        get search_index_url, params: { search: ['test'] }, env: { 'REMOTE_ADDR' => '203.0.113.13' }
-
-        assert_response :too_many_requests
+        Array.new(11) { search_status('203.0.113.13') }
       end
     end
+
+    assert_equal ([200] * 10) + [429], statuses
+  end
+
+  test 'visitors sharing a Cloudflare edge address get separate search limits' do
+    statuses = with_stubbed_tag_counts do
+      with_stubbed_search(Fiction, Publication, YoutubeVideo) do
+        10.times { search_status('203.0.113.13') }
+        [search_status('203.0.113.13'), search_status('198.51.100.7')]
+      end
+    end
+
+    assert_equal [429, 200], statuses
+  end
+
+  test 'in-page turbo frame searches only count toward the overall limit' do
+    statuses = with_stubbed_tag_counts do
+      with_stubbed_search(Fiction, Publication, YoutubeVideo) do
+        Array.new(31) { search_status('203.0.113.13', 'Turbo-Frame' => 'fictions-section') }
+      end
+    end
+
+    assert_equal ([200] * 30) + [429], statuses
   end
 
   test 'fiction search passes page and per_page to Searchkick' do
@@ -100,5 +115,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
         video: assigns(:pagy_videos).count
       }
     )
+  end
+
+  private
+
+  def search_status(visitor_ip, headers = {})
+    get search_index_url, params: { search: ['test'] },
+                          headers: headers.merge('CF-Connecting-IP' => visitor_ip),
+                          env: { 'REMOTE_ADDR' => '172.71.164.138' }
+    response.status
   end
 end

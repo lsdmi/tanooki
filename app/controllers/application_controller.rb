@@ -68,6 +68,12 @@ class ApplicationController < ActionController::Base
     request.headers['X-Sec-Purpose'] == 'prefetch'
   end
 
+  # Production traffic arrives through Cloudflare, so remote_ip is a Cloudflare edge address shared by
+  # unrelated visitors; Cloudflare puts the visitor's address in CF-Connecting-IP (and overwrites any sent).
+  def client_ip
+    request.headers['CF-Connecting-IP'].presence || request.remote_ip
+  end
+
   def verify_user_permissions
     redirect_to root_path unless current_user.admin?
   end
