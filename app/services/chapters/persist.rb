@@ -48,6 +48,11 @@ module Chapters
       SyncImages.call(chapter)
       sync_scanlators
       Catalog::RefreshChapterStats.call(chapter.fiction.reload)
+      refresh_stats_on_release if chapter.scheduled?
+    end
+
+    def refresh_stats_on_release
+      Catalog::RefreshChapterStatsJob.set(wait_until: chapter.published_at).perform_later(chapter.fiction_id)
     end
 
     def rollback_status(previous_status)
