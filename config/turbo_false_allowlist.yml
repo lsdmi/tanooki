@@ -7,8 +7,8 @@ allowed:
   - app/views/fictions/new.html.erb:3
   - app/views/scanlators/edit.html.erb:11
   - app/views/scanlators/new.html.erb:11
-  - app/views/chapters/edit.html.erb:10
-  - app/views/chapters/new.html.erb:10
+  - app/views/chapters/edit.html.erb:11
+  - app/views/chapters/new.html.erb:11
   - app/views/publications/_edit.html.erb:14
   - app/views/publications/_new.html.erb:11
   - app/views/bookshelves/_form.html.erb:1

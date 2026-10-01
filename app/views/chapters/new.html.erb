@@ -3,12 +3,13 @@
     <%= render 'chapters/composer_header',
                title: 'Додати Розділ',
                subtitle: 'Додайте новий розділ до вашого твору - заголовок, номер та текст історії!',
-               chapter: @chapter %>
+               chapter: @chapter,
+               back_path: chapter_composer_back_path(@chapter.fiction || @fiction) %>
 
     <!-- Form Container -->
     <div class="bg-card rounded-2xl border border-line shadow-lg p-2 sm:p-8">
       <%= simple_form_for @chapter, as: :chapter, url: chapters_path, method: :post, html: { class: "form", multipart: true }, data: { turbo: false } do |f| %>
-        <%= render 'form', chapter: @chapter, f: f %>
+        <%= render 'form', chapter: @chapter, f: f, cancel_url: chapter_composer_back_path(@chapter.fiction || @fiction) %>
       <% end %>
     </div>
   </div>

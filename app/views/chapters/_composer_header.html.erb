@@ -1,4 +1,12 @@
-<%# locals: (title:, subtitle:, chapter:) %>
+<%# locals: (title:, subtitle:, chapter:, back_path:) %>
+<div class="mb-4">
+  <%= link_to back_path, turbo_drive_visit_data.merge(class: "inline-flex items-center text-sm text-fg-muted hover:text-fg-brand transition-colors duration-200") do %>
+    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
+    <%= t('chapters.buttons.back_to_chapters') %>
+  <% end %>
+</div>
 <div class="mb-8 text-center">
   <div class="mb-3 flex flex-wrap items-center justify-center gap-3">
     <h1 class="text-3xl font-bold text-fg"><%= title %></h1>

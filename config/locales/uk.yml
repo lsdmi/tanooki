@@ -453,6 +453,7 @@ uk:
       draft_saved: Начерк збережено.
       unpublished: Повернуто в начерк.
     buttons:
+      back_to_chapters: Назад до розділів
       cancel: Скасувати
       save: Зберегти
       unpublish: Повернути в начерк

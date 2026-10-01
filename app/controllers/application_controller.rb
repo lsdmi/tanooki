@@ -6,8 +6,9 @@ class ApplicationController < ActionController::Base
   include TurboFlashStream
   include TurboFlashStreamResponse
 
+  # Handlers declared later win, so the catch-all must come first or every missing record becomes a 500.
+  rescue_from StandardError, with: :handle_error
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  rescue_from StandardError, with: :handle_error if Rails.env.production?
 
   # Layout helpers (trending_tags, recent_ranobe, etc.) are fragment-cached in navbar/footer;
   # avoid adding uncached per-request queries to ApplicationController without a similar cache.
@@ -17,10 +18,9 @@ class ApplicationController < ActionController::Base
   helper Adsense::PlacementsHelper
 
   def handle_error(error)
-    Rails.logger.error(
-      "[handle_error] #{request.method} #{request.path} #{error.class}: #{error.message}\n" \
-      "#{Rails.backtrace_cleaner.clean(error.backtrace.to_a).first(15).join("\n")}"
-    )
+    raise error unless Rails.env.production?
+
+    log_handled_error(error)
     Rails.error.report(error, handled: true)
     render :error, status: :internal_server_error
   end
@@ -30,6 +30,13 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def log_handled_error(error)
+    Rails.logger.error(
+      "[handle_error] #{request.method} #{request.path} #{error.class}: #{error.message}\n" \
+      "#{Rails.backtrace_cleaner.clean(error.backtrace.to_a).first(15).join("\n")}"
+    )
+  end
 
   def pokemon_appearance
     # Opt-in via before_action on browse/discovery only — never a global filter

@@ -58,6 +58,26 @@ class ChaptersControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'p', text: I18n.t('chapters.hints.scheduled_vs_draft')
   end
 
+  test 'new chapter form links back to the fiction chapter list' do
+    get new_chapter_url(fiction: 'one')
+
+    back_path = reading_path(fictions(:one))
+
+    assert_select 'a[href=?]', back_path, text: I18n.t('chapters.buttons.back_to_chapters')
+    assert_select 'a[href=?]', back_path, text: I18n.t('chapters.buttons.cancel')
+  end
+
+  test 'edit form links back to the originating chapter list page after a draft save' do
+    @chapter.update!(status: :draft, scanlator_ids: @chapter.scanlators.ids)
+    put chapter_url(@chapter, page: 2), params: { intent: 'draft', chapter: { title: 'Draft edit' } }
+    follow_redirect!
+
+    back_path = reading_path(@chapter.fiction, page: 2)
+
+    assert_select 'a[href=?]', back_path, text: I18n.t('chapters.buttons.back_to_chapters')
+    assert_select 'a[href=?]', back_path, text: I18n.t('chapters.buttons.cancel')
+  end
+
   test 'edit live chapter does not prefill a past published_at as a schedule' do
     @chapter.published_at = 1.hour.ago
     @chapter.save(validate: false)

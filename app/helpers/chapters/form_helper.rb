@@ -18,6 +18,13 @@ module Chapters
       chapter.new_record? || chapter.draft?
     end
 
+    # A draft save redirects back to the edit page, so a referer-based :back would loop there.
+    def chapter_composer_back_path(fiction, page: nil)
+      return studio_index_path(tab: 'writings') unless fiction && current_user.manages_fiction?(fiction)
+
+      reading_path(fiction, page:)
+    end
+
     def show_chapter_unpublish?(chapter)
       chapter.persisted? && chapter.published?
     end
