@@ -14,6 +14,8 @@ module Tanooki
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
+    # Set on the job worker only if its [MemoryGuard] log shows YJIT costing more than its speed is worth there.
+    config.yjit = ENV['DISABLE_YJIT'].blank?
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

@@ -39,8 +39,17 @@ module Library
       ChapterNavigation.unique_chapters(listed_chapters(fiction, viewer:)).size
     end
 
+    # The fiction and reader pages render the list right after this check, so it costs no extra query.
     def fiction_has_listable_chapters?(fiction, viewer)
-      chapters_scope_for_list(fiction, viewer).exists?
+      listed_chapters(fiction, viewer:).any?
+    end
+
+    # Within one volume or number range the ascending order is the descending one reversed.
+    def listed_section_chapters(fiction, chapter_ids, viewer: nil, order: :desc, scanlators: false)
+      ids = chapter_ids.to_set
+      chapters = listed_chapters(fiction, viewer:).select { |chapter| ids.include?(chapter.id) }
+      ActiveRecord::Associations::Preloader.new(records: chapters, associations: :scanlators).call if scanlators
+      order.to_sym == :desc ? chapters : chapters.reverse
     end
 
     def chapters_scope_for_list(fiction, viewer)

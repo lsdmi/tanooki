@@ -57,6 +57,24 @@ module Fictions
       chapter&.destroy
     end
 
+    test 'range sections hold the same chapters the section index puts in them' do
+      fiction = fictions(:one)
+      chapters = [0.5, 1, 100, 100.5, 101, 200.99].map do |number|
+        Chapter.create!(fiction:, user: users(:user_one), title: "No. #{number}", number:, content: 'x' * 500,
+                        scanlator_ids: [scanlators(:one).id])
+      end
+
+      %w[1-100 101-200].each do |range|
+        loaded = ChapterSectionLoader.new(fiction:, viewer: users(:user_one), section_key: "r-#{range}",
+                                          order: :asc).call
+        expected = chapters.select { |chapter| Chapters::ListSectionIndex.range_label(chapter.number) == range }
+
+        assert_equal expected.map(&:id).sort, (loaded.map(&:id) & chapters.map(&:id)).sort, range
+      end
+    ensure
+      chapters&.each(&:destroy)
+    end
+
     test 'loads chapters by chapter_ids when provided' do
       fiction = fictions(:one)
       chapter_ids = fiction.chapters.pluck(:id)

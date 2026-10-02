@@ -1,0 +1,7909 @@
+[
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 77,
+        "types": [
+          "Примарний",
+          "Трав'яний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 115,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 1,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1000,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "191.75353837148555",
+          "909.2499314751119"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        79
+      ],
+      "defender": [
+        115,
+        1
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 17,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 130,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 3,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 5,
+        "types": [
+          "Ґрунтовий",
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1001,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "465.93427949947846",
+          "214.15292273062732"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "540.2136573906997",
+          "190.64874553869902"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        17,
+        130
+      ],
+      "defender": [
+        5,
+        7
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 0,
+        "types": [
+          "Льодовий",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 116,
+        "types": [
+          "Драконячий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 130,
+        "types": [
+          "Звичайний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 115,
+        "types": [
+          "Драконячий",
+          "Скельний"
+        ]
+      }
+    ],
+    "seed": 1002,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "496.1156188302566",
+          "604.6875"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        2,
+        116,
+        130
+      ],
+      "defender": [
+        115
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 116,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 100,
+        "types": [
+          "Драконячий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 9,
+        "types": [
+          "Вогняний",
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 13,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 1,
+        "types": [
+          "Трав'яний"
+        ]
+      }
+    ],
+    "seed": 1003,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "540.0",
+          "334.6650203142201"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "664.785320273059",
+          "210.77028137487736"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        116,
+        100,
+        9
+      ],
+      "defender": [
+        15,
+        5
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 5,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 101,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 63,
+        "types": [
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 60,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 48,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1004,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "644.7441321075094",
+          "663.9169627171526"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "682.9532227295597",
+          "393.43227420275707"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "252.60252582533838",
+          "343.1977313712364"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        9,
+        101,
+        63
+      ],
+      "defender": [
+        64,
+        48
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 106,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 1,
+        "types": [
+          "Повітряний",
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 67,
+        "types": [
+          "Льодовий",
+          "Трав'яний"
+        ]
+      }
+    ],
+    "seed": 1005,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "1045.6388973393516",
+          "315.0946971566821"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        106,
+        3
+      ],
+      "defender": [
+        67
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "confident",
+        "battle_experience": 118,
+        "types": [
+          "Скельний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 1,
+        "types": [
+          "Вогняний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "seed": 1006,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "617.3891780888806",
+          "227.52225734851845"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        118
+      ],
+      "defender": [
+        3
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 9,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 89,
+        "types": [
+          "Водяний",
+          "Льодовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 0,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "independent",
+        "battle_experience": 130,
+        "types": [
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1007,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "614.4048582069087",
+          "371.9603323254766"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "534.2650940929641",
+          "190.58224929666034"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        9,
+        91
+      ],
+      "defender": [
+        4,
+        130
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 110,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 116,
+        "types": [
+          "Льодовий",
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 77,
+        "types": [
+          "Примарний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "seed": 1008,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "447.95350950738793",
+          "192.0526020458548"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        52,
+        110,
+        116
+      ],
+      "defender": [
+        77
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 5,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 100,
+        "types": [
+          "Бойовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 85,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 50,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 32,
+        "types": [
+          "Льодовий",
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1009,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "421.875",
+          "531.7538715693918"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "192.375",
+          "212.7015486277567"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        5,
+        100,
+        85
+      ],
+      "defender": [
+        50,
+        36
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 9,
+        "types": [
+          "Драконячий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 50,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 59,
+        "types": [
+          "Драконячий",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 130,
+        "types": [
+          "Водяний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "seed": 1010,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "611.7820601449323",
+          "367.48532280767336"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        11
+      ],
+      "defender": [
+        50,
+        60,
+        130
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 98,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 113,
+        "types": [
+          "Психічний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 42,
+        "types": [
+          "Електричний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 114,
+        "types": [
+          "Ґрунтовий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 101,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1011,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "268.65",
+          "543.4191314819096"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "191.70000000000002",
+          "324.53213086297774"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        101,
+        113
+      ],
+      "defender": [
+        42,
+        114,
+        101
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 50,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "patient",
+        "battle_experience": 114,
+        "types": [
+          "Вогняний",
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 116,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1012,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "347.0492508443896",
+          "164.0195572810084"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        52,
+        114
+      ],
+      "defender": [
+        116
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 0,
+        "types": [
+          "Звичайний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 31,
+        "types": [
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1013,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "182.206834470306",
+          "354.7925563714278"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        3
+      ],
+      "defender": [
+        31
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 116,
+        "types": [
+          "Трав'яний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 101,
+        "types": [
+          "Електричний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 117,
+        "types": [
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1014,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "744.9567979833087",
+          "471.66117235192763"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        116
+      ],
+      "defender": [
+        101,
+        117
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 50,
+        "types": [
+          "Скельний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 114,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 9,
+        "types": [
+          "Примарний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 114,
+        "types": [
+          "Ґрунтовий",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 101,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 34,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "seed": 1015,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "679.5821746011643",
+          "659.3964896447297"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "326.19944380855884",
+          "243.78249864145204"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "362.4438264539543",
+          "300.10684465150223"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        50,
+        114,
+        9
+      ],
+      "defender": [
+        114,
+        105,
+        36
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 116,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 116,
+        "types": [
+          "Льодовий",
+          "Трав'яний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 9,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 115,
+        "types": [
+          "Комашиний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 1,
+        "types": [
+          "Ґрунтовий",
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1016,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "200.28458337467163",
+          "454.4425306993464"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "232.76695612241022",
+          "151.74428851178175"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "147.9303569399408",
+          "158.0189983747547"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        116,
+        116
+      ],
+      "defender": [
+        11,
+        115,
+        1
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 120,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 91,
+        "types": [
+          "Бойовий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 114,
+        "types": [
+          "Льодовий",
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1017,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "346.90911123186333",
+          "303.75"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        120
+      ],
+      "defender": [
+        91,
+        52,
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 9,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 14,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 22,
+        "types": [
+          "Психічний",
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1018,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "85.89314060979798",
+          "372.5491674642629"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        11
+      ],
+      "defender": [
+        14,
+        23
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 1,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 96,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 113,
+        "types": [
+          "Психічний",
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 1,
+        "types": [
+          "Льодовий",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 101,
+        "types": [
+          "Водяний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 9,
+        "types": [
+          "Примарний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "seed": 1019,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 2,
+        "scores": [
+          "576.9579849128862",
+          "537.9947497812257"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "627.1282444705286",
+          "261.21851145271324"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "480.79832076073865",
+          "240.66389646494045"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        1,
+        96,
+        113
+      ],
+      "defender": [
+        3,
+        101,
+        11
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 130,
+        "types": [
+          "Льодовий",
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 28,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "confident",
+        "battle_experience": 5,
+        "types": [
+          "Примарний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 22,
+        "types": [
+          "Скельний",
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1020,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "627.0920209691442",
+          "236.6504643889426"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        130
+      ],
+      "defender": [
+        31,
+        5,
+        22
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 98,
+        "types": [
+          "Трав'яний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 78,
+        "types": [
+          "Трав'яний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 1,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 113,
+        "types": [
+          "Психічний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "seed": 1021,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "401.28358813081275",
+          "604.2601551405892"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        100
+      ],
+      "defender": [
+        78,
+        1,
+        113
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 38,
+        "types": [
+          "Водяний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 130,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 20,
+        "types": [
+          "Повітряний",
+          "Примарний"
+        ]
+      }
+    ],
+    "seed": 1022,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "92.73606961973721",
+          "302.3046884672172"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        38
+      ],
+      "defender": [
+        130,
+        22
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 97,
+        "types": [
+          "Звичайний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 55,
+        "types": [
+          "Водяний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 99,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 9,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "seed": 1023,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "304.72623013474566",
+          "347.625"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "232.1977618863111",
+          "247.82641390501294"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        97,
+        55
+      ],
+      "defender": [
+        99,
+        13
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 1,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 128,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 116,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 114,
+        "types": [
+          "Повітряний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 98,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 95,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "persistent",
+        "battle_experience": 113,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 1,
+        "types": [
+          "Льодовий",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 1,
+        "types": [
+          "Комашиний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 9,
+        "types": [
+          "Трав'яний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 55,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 22,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 116,
+        "types": [
+          "Звичайний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 23,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 115,
+        "types": [
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1024,
+    "rounds": [
+      {
+        "attacker": 4,
+        "defender": 7,
+        "scores": [
+          "681.5333044186543",
+          "634.1839204786372"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 0,
+        "scores": [
+          "545.2266435349235",
+          "470.855702836343"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 4,
+        "scores": [
+          "353.3707427480927",
+          "395.5554296511921"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "319.4563266470819",
+          "252.98132902361158"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "509.9063474015673",
+          "398.5889254437759"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "351.65954993211534",
+          "211.34701147395606"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 5,
+        "scores": [
+          "322.68315822937564",
+          "68.24963052538254"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        1,
+        128,
+        116,
+        114,
+        100,
+        95,
+        113,
+        50
+      ],
+      "defender": [
+        4,
+        3,
+        9,
+        57,
+        26,
+        116,
+        23,
+        115
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 99,
+        "types": [
+          "Психічний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Електричний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 5,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "independent",
+        "battle_experience": 31,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "persistent",
+        "battle_experience": 35,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 5,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 50,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 77,
+        "types": [
+          "Водяний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "seed": 1025,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "596.8008901132578",
+          "524.8550946807874"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "387.0847076748597",
+          "398.2019252273548"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "102.04497181883374",
+          "398.2019252273548"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        99,
+        50
+      ],
+      "defender": [
+        7,
+        31,
+        35,
+        9,
+        50,
+        77
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 128,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 100,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 115,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 114,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 130,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 88,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "prideful",
+        "battle_experience": 98,
+        "types": [
+          "Отруйний",
+          "Скельний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 115,
+        "types": [
+          "Бойовий",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 9,
+        "types": [
+          "Примарний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 130,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 47,
+        "types": [
+          "Примарний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 100,
+        "types": [
+          "Трав'яний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 1,
+        "types": [
+          "Повітряний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 100,
+        "types": [
+          "Психічний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 50,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "seed": 1026,
+    "rounds": [
+      {
+        "attacker": 5,
+        "defender": 4,
+        "scores": [
+          "866.6719614688809",
+          "513.1291662387478"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 6,
+        "scores": [
+          "602.9022340653084",
+          "609.2271729644859"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 6,
+        "scores": [
+          "263.6200077537626",
+          "761.5339662056074"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 6,
+        "scores": [
+          "457.16675736896286",
+          "385.7142857142857"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "116.4395264274411",
+          "180.45000000000002"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 1,
+        "scores": [
+          "233.43622649906627",
+          "246.0531944760215"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 6,
+        "defender": 1,
+        "scores": [
+          "146.00831523475367",
+          "228.51051301800888"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "195.60566665944575",
+          "234.33637569144906"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        128,
+        104,
+        115,
+        114,
+        130,
+        92,
+        98
+      ],
+      "defender": [
+        115,
+        17,
+        130,
+        47,
+        100,
+        1,
+        100,
+        50
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 1,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 5,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 114,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 78,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 65,
+        "types": [
+          "Драконячий",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 130,
+        "types": [
+          "Трав'яний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 17,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 3,
+        "types": [
+          "Звичайний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 0,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 114,
+        "types": [
+          "Отруйний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 99,
+        "types": [
+          "Комашиний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 5,
+        "types": [
+          "Комашиний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 130,
+        "types": [
+          "Драконячий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 98,
+        "types": [
+          "Психічний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 98,
+        "types": [
+          "Психічний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 101,
+        "types": [
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1027,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "613.0125443252972",
+          "801.2873287694595"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 4,
+        "scores": [
+          "733.5371999015422",
+          "834.6743008015203"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 4,
+        "scores": [
+          "658.3327280656347",
+          "572.3480919781854"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 3,
+        "defender": 7,
+        "scores": [
+          "421.3329459620062",
+          "564.3744248767503"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 7,
+        "scores": [
+          "346.6171045580009",
+          "470.31202073062525"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 5,
+        "defender": 7,
+        "scores": [
+          "337.19195417977073",
+          "377.9293023728238"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 7,
+        "defender": 7,
+        "scores": [
+          "391.1935299518005",
+          "342.0451059859093"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 7,
+        "defender": 2,
+        "scores": [
+          "391.1935299518005",
+          "403.1357737108232"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        1,
+        9,
+        115,
+        82,
+        69,
+        130,
+        17,
+        7
+      ],
+      "defender": [
+        0,
+        114,
+        99,
+        5,
+        130,
+        98,
+        98,
+        105
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 5,
+        "types": [
+          "Електричний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "independent",
+        "battle_experience": 99,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 3,
+        "types": [
+          "Трав'яний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 5,
+        "types": [
+          "Водяний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 9,
+        "types": [
+          "Ґрунтовий",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 50,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 114,
+        "types": [
+          "Комашиний",
+          "Електричний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 116,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "decisive",
+        "battle_experience": 98,
+        "types": [
+          "Бойовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 9,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 101,
+        "types": [
+          "Скельний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 1,
+        "types": [
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1028,
+    "rounds": [
+      {
+        "attacker": 7,
+        "defender": 0,
+        "scores": [
+          "463.3614951401529",
+          "453.22754918393673"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 7,
+        "defender": 1,
+        "scores": [
+          "278.01689708409174",
+          "408.6325961719387"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 6,
+        "defender": 1,
+        "scores": [
+          "321.2674183033515",
+          "340.5271634766156"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "371.55879420616236",
+          "404.3227165248473"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "468.58016105017157",
+          "320.49615386034407"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "243.52248425544408",
+          "677.2046409074799"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "441.58607160419524",
+          "270.79771376299686"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "367.98839300349607",
+          "190.62534837675548"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "334.0945364593294",
+          "192.73783414620524"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        11,
+        101,
+        5,
+        5,
+        9,
+        50,
+        52,
+        114
+      ],
+      "defender": [
+        116,
+        100,
+        13,
+        101,
+        3
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "independent",
+        "battle_experience": 72,
+        "types": [
+          "Комашиний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 116,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 114,
+        "types": [
+          "Водяний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 99,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 115,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 101,
+        "types": [
+          "Трав'яний",
+          "Отруйний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 98,
+        "types": [
+          "Вогняний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Вогняний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 122,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 114,
+        "types": [
+          "Скельний"
+        ]
+      }
+    ],
+    "seed": 1029,
+    "rounds": [
+      {
+        "attacker": 6,
+        "defender": 2,
+        "scores": [
+          "723.4383843508964",
+          "420.5679053309012"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 6,
+        "defender": 0,
+        "scores": [
+          "442.3196643449774",
+          "451.59598076910873"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "753.06949393112",
+          "235.61529431431765"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "523.8744305607792",
+          "162.67761804360433"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "537.9067813793714",
+          "93.74688796768818"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        72,
+        5,
+        116,
+        114,
+        99,
+        115,
+        101
+      ],
+      "defender": [
+        100,
+        52,
+        122,
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 27,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 1,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 0,
+        "types": [
+          "Скельний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 9,
+        "types": [
+          "Драконячий",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 54,
+        "types": [
+          "Примарний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 52,
+        "types": [
+          "Примарний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 98,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 1,
+        "types": [
+          "Примарний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 26,
+        "types": [
+          "Психічний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 98,
+        "types": [
+          "Трав'яний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 99,
+        "types": [
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1030,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "568.6169087423013",
+          "508.6059553948893"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "710.7711359278767",
+          "264.2261257846515"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "406.15493481592955",
+          "170.68152955571097"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "366.84961854342026",
+          "94.00643975464881"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        33,
+        1,
+        0,
+        9,
+        54,
+        52,
+        50,
+        98
+      ],
+      "defender": [
+        3,
+        28,
+        98,
+        99
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 100,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 50,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 1,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 73,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 0,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 119,
+        "types": [
+          "Ґрунтовий",
+          "Повітряний"
+        ]
+      }
+    ],
+    "seed": 1031,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "270.5026370730373",
+          "157.3526741335666"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "450.8377284550622",
+          "252.21329672748524"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        100,
+        54,
+        1,
+        73
+      ],
+      "defender": [
+        2,
+        119
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 65,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 0,
+        "types": [
+          "Льодовий",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "independent",
+        "battle_experience": 100,
+        "types": [
+          "Психічний",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 80,
+        "types": [
+          "Електричний",
+          "Скельний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 130,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 114,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 15,
+        "types": [
+          "Вогняний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 32,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 9,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 0,
+        "types": [
+          "Отруйний",
+          "Льодовий"
+        ]
+      }
+    ],
+    "seed": 1032,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 5,
+        "scores": [
+          "369.3332742353849",
+          "764.7584584089986"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 5,
+        "scores": [
+          "307.5104137782768",
+          "367.08406003631933"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 5,
+        "scores": [
+          "162.53049766032512",
+          "493.14325704931747"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 5,
+        "scores": [
+          "354.9110658028194",
+          "245.45454545454547"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 3,
+        "defender": 2,
+        "scores": [
+          "369.69902687793683",
+          "347.625"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 3,
+        "defender": 3,
+        "scores": [
+          "146.85975136668387",
+          "345.6"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        65,
+        2,
+        100,
+        80
+      ],
+      "defender": [
+        130,
+        114,
+        17,
+        34,
+        9,
+        8
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 0,
+        "types": [
+          "Ґрунтовий",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 105,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 114,
+        "types": [
+          "Вогняний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 130,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 113,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 96,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 99,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 94,
+        "types": [
+          "Скельний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 98,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 122,
+        "types": [
+          "Звичайний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 9,
+        "types": [
+          "Психічний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 114,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 114,
+        "types": [
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1033,
+    "rounds": [
+      {
+        "attacker": 4,
+        "defender": 7,
+        "scores": [
+          "884.6849910923661",
+          "670.7421306679792"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 1,
+        "scores": [
+          "585.2060398689821",
+          "471.3628791516727"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 6,
+        "scores": [
+          "393.1933293743849",
+          "755.7306696718495"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 6,
+        "scores": [
+          "374.9903591872357",
+          "396.88378859768784"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 6,
+        "scores": [
+          "349.20966325712175",
+          "323.8845727165069"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "438.9546256320758",
+          "517.7341581145846"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "229.54990725557084",
+          "248.5123958950006"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "75.25561444671433",
+          "194.1503092929692"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        4,
+        109,
+        114,
+        130,
+        113
+      ],
+      "defender": [
+        96,
+        101,
+        94,
+        100,
+        122,
+        9,
+        115,
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "independent",
+        "battle_experience": 50,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 98,
+        "types": [
+          "Комашиний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 98,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 1,
+        "types": [
+          "Драконячий",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 113,
+        "types": [
+          "Драконячий",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 98,
+        "types": [
+          "Комашиний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 99,
+        "types": [
+          "Електричний",
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 115,
+        "types": [
+          "Електричний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 116,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 130,
+        "types": [
+          "Отруйний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 34,
+        "types": [
+          "Ґрунтовий",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 100,
+        "types": [
+          "Трав'яний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 110,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1034,
+    "rounds": [
+      {
+        "attacker": 4,
+        "defender": 5,
+        "scores": [
+          "503.0379238469167",
+          "583.5093625725477"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 5,
+        "scores": [
+          "448.6990010342046",
+          "305.47657612958733"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "346.7534783881025",
+          "286.7538460163362"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 4,
+        "scores": [
+          "382.55398964178346",
+          "388.1370775076488"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 5,
+        "defender": 4,
+        "scores": [
+          "549.8640276464494",
+          "443.95437631663987"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 2,
+        "scores": [
+          "244.92086791208052",
+          "303.07168990347077"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 2,
+        "scores": [
+          "407.9736439643283",
+          "431.0352923071584"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "278.5586783145249",
+          "359.196076922632"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 6,
+        "defender": 2,
+        "scores": [
+          "84.48098837391115",
+          "382.46682885130485"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        52,
+        100,
+        101,
+        1,
+        113,
+        106,
+        101
+      ],
+      "defender": [
+        115,
+        116,
+        130,
+        36,
+        100,
+        110
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 1,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 100,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 99,
+        "types": [
+          "Комашиний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "persistent",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 123,
+        "types": [
+          "Психічний",
+          "Звичайний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 101,
+        "types": [
+          "Психічний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 9,
+        "types": [
+          "Трав'яний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "persistent",
+        "battle_experience": 0,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 87,
+        "types": [
+          "Отруйний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 20,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 0,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "independent",
+        "battle_experience": 121,
+        "types": [
+          "Скельний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 60,
+        "types": [
+          "Скельний",
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1035,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "628.7401451766679",
+          "480.72159159624323"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 7,
+        "scores": [
+          "247.9529710783046",
+          "617.0308051807966"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 7,
+        "scores": [
+          "267.02029962144655",
+          "321.9291157465026"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 7,
+        "scores": [
+          "178.58996770470813",
+          "287.7226964131999"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 7,
+        "scores": [
+          "141.86674981927632",
+          "231.38655194279872"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 7,
+        "scores": [
+          "221.73880820497138",
+          "112.56643067487506"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 3,
+        "defender": 6,
+        "scores": [
+          "106.2970779795224",
+          "434.02081192744066"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        5,
+        101,
+        103,
+        56,
+        123
+      ],
+      "defender": [
+        101,
+        9,
+        0,
+        87,
+        20,
+        0,
+        121,
+        66
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 115,
+        "types": [
+          "Льодовий",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 24,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 5,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 115,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 0,
+        "types": [
+          "Драконячий",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 9,
+        "types": [
+          "Трав'яний",
+          "Водяний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 114,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 121,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 45,
+        "types": [
+          "Драконячий",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 98,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 9,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 1,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 101,
+        "types": [
+          "Ґрунтовий",
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1036,
+    "rounds": [
+      {
+        "attacker": 4,
+        "defender": 3,
+        "scores": [
+          "635.2380003267592",
+          "527.1850201443813"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 2,
+        "scores": [
+          "496.2796877552807",
+          "446.12025902313417"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 1,
+        "scores": [
+          "536.2217301236806",
+          "310.450606884909"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 6,
+        "scores": [
+          "397.02375020422454",
+          "292.3531021885538"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 0,
+        "scores": [
+          "345.5651149685942",
+          "555.668333913438"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "458.17005048721325",
+          "289.91391334614156"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 5,
+        "scores": [
+          "555.3576369541979",
+          "401.0786195452431"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        115,
+        24,
+        5,
+        115,
+        10,
+        9
+      ],
+      "defender": [
+        114,
+        121,
+        45,
+        98,
+        9,
+        4,
+        101
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 100,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 50,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "persistent",
+        "battle_experience": 60,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 101,
+        "types": [
+          "Отруйний",
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 115,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 1,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "hardy",
+        "battle_experience": 23,
+        "types": [
+          "Електричний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 130,
+        "types": [
+          "Льодовий",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Драконячий",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 130,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1037,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "524.5870110620635",
+          "640.5113651217677"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 4,
+        "scores": [
+          "374.1155683895231",
+          "533.7594709348064"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 4,
+        "scores": [
+          "301.06183008323256",
+          "457.50811794411976"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "114.23851213862025",
+          "400.3196032011048"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        100,
+        50,
+        61,
+        101
+      ],
+      "defender": [
+        115,
+        1,
+        23,
+        130,
+        13,
+        130
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 100,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 76,
+        "types": [
+          "Комашиний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 113,
+        "types": [
+          "Отруйний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 5,
+        "types": [
+          "Примарний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 99,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 9,
+        "types": [
+          "Психічний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 101,
+        "types": [
+          "Примарний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 88,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 47,
+        "types": [
+          "Трав'яний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 107,
+        "types": [
+          "Драконячий",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 66,
+        "types": [
+          "Примарний"
+        ]
+      }
+    ],
+    "seed": 1038,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "638.5605963069477",
+          "508.79461187685206"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "435.86119518471645",
+          "96.12106945387924"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "290.5741301231443",
+          "125.43234905464026"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        100,
+        79,
+        113,
+        5,
+        99,
+        9,
+        101,
+        88
+      ],
+      "defender": [
+        49,
+        107,
+        68
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 102,
+        "types": [
+          "Примарний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 100,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 113,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 5,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 98,
+        "types": [
+          "Скельний",
+          "Драконячий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 50,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 0,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 98,
+        "types": [
+          "Трав'яний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 9,
+        "types": [
+          "Електричний",
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1039,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "649.4279757116202",
+          "512.7595322075754"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "541.1899797596835",
+          "254.8354199883624"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "335.9110219198036",
+          "261.18657066374243"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "234.0978219308647",
+          "114.74294248006657"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        102,
+        100,
+        113,
+        5,
+        98
+      ],
+      "defender": [
+        52,
+        2,
+        100,
+        11
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 115,
+        "types": [
+          "Ґрунтовий",
+          "Електричний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 113,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 98,
+        "types": [
+          "Комашиний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 98,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 5,
+        "types": [
+          "Повітряний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 130,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 114,
+        "types": [
+          "Вогняний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 130,
+        "types": [
+          "Водяний",
+          "Примарний"
+        ]
+      }
+    ],
+    "seed": 1040,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 6,
+        "scores": [
+          "133.25680364369208",
+          "406.0220190718006"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        115
+      ],
+      "defender": [
+        113,
+        98,
+        98,
+        5,
+        130,
+        114,
+        130
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 72,
+        "types": [
+          "Звичайний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 101,
+        "types": [
+          "Бойовий",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 76,
+        "types": [
+          "Бойовий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 99,
+        "types": [
+          "Комашиний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 17,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 69,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 9,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 98,
+        "types": [
+          "Повітряний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 113,
+        "types": [
+          "Електричний",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 116,
+        "types": [
+          "Льодовий",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 116,
+        "types": [
+          "Комашиний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 50,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 114,
+        "types": [
+          "Психічний"
+        ]
+      }
+    ],
+    "seed": 1041,
+    "rounds": [
+      {
+        "attacker": 5,
+        "defender": 6,
+        "scores": [
+          "412.0002305933785",
+          "635.1077027455977"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 6,
+        "scores": [
+          "686.3202133700253",
+          "441.8140540838941"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "275.68614130434787",
+          "150.84914011821155"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "76.25780148555837",
+          "357.88809014297533"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 3,
+        "defender": 2,
+        "scores": [
+          "292.04066451547715",
+          "311.2070349069351"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 2,
+        "scores": [
+          "417.6538062987951",
+          "71.1637854333298"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 5,
+        "scores": [
+          "567.4644107320586",
+          "59.6776039287103"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 7,
+        "scores": [
+          "321.27215869138087",
+          "91.04296370220172"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 4,
+        "scores": [
+          "288.03710779227254",
+          "130.11820382398116"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        72,
+        104,
+        76,
+        101,
+        25,
+        69
+      ],
+      "defender": [
+        9,
+        5,
+        100,
+        113,
+        116,
+        116,
+        54,
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 115,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 70,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 107,
+        "types": [
+          "Скельний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 9,
+        "types": [
+          "Вогняний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 9,
+        "types": [
+          "Повітряний",
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1042,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "506.45451515887476",
+          "440.3556810277972"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        115
+      ],
+      "defender": [
+        70,
+        111,
+        9,
+        9
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 119,
+        "types": [
+          "Електричний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 113,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 101,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 99,
+        "types": [
+          "Ґрунтовий",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 32,
+        "types": [
+          "Звичайний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 129,
+        "types": [
+          "Скельний",
+          "Примарний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 101,
+        "types": [
+          "Льодовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 8,
+        "types": [
+          "Скельний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 98,
+        "types": [
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1043,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "606.1542448162305",
+          "163.9340471811729"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "533.1499846746254",
+          "252.21747213325696"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "603.6898288008067",
+          "179.16846678484345"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        119,
+        113,
+        101,
+        99,
+        32,
+        129
+      ],
+      "defender": [
+        101,
+        12,
+        100
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "prideful",
+        "battle_experience": 9,
+        "types": [
+          "Бойовий",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 53,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 9,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 84,
+        "types": [
+          "Водяний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 116,
+        "types": [
+          "Примарний",
+          "Психічний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 114,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 126,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 115,
+        "types": [
+          "Повітряний",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 96,
+        "types": [
+          "Бойовий",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 50,
+        "types": [
+          "Отруйний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 101,
+        "types": [
+          "Ґрунтовий",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 79,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1044,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 2,
+        "scores": [
+          "764.1348585997492",
+          "491.5959885569066"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "425.2576604381213",
+          "557.7836563886472"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 5,
+        "defender": 1,
+        "scores": [
+          "469.6084105476411",
+          "464.81971365720597"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 5,
+        "scores": [
+          "375.6867284381129",
+          "381.5486954175762"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 5,
+        "scores": [
+          "517.6069614038375",
+          "232.55271721933815"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 4,
+        "scores": [
+          "450.0930099163805",
+          "244.48378529834946"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "318.52736086390007",
+          "209.63677638858815"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "240.60000000000005",
+          "108.17477289760711"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        9,
+        61,
+        17,
+        84,
+        50,
+        116
+      ],
+      "defender": [
+        114,
+        126,
+        115,
+        96,
+        52,
+        103,
+        79
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 0,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 98,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 9,
+        "types": [
+          "Повітряний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 1,
+        "types": [
+          "Вогняний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 69,
+        "types": [
+          "Примарний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 100,
+        "types": [
+          "Скельний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 25,
+        "types": [
+          "Льодовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 130,
+        "types": [
+          "Ґрунтовий",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 115,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1045,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "654.8463717364745",
+          "562.2440375008201"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 4,
+        "scores": [
+          "419.10167791134364",
+          "682.4930852319882"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "297.8363560921653",
+          "268.31948488096407"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "297.8363560921653",
+          "357.9804164713742"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "151.0527732998038",
+          "549.6396068134603"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        2,
+        100,
+        13
+      ],
+      "defender": [
+        1,
+        69,
+        100,
+        25,
+        130,
+        115
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "ambitious",
+        "battle_experience": 99,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 5,
+        "types": [
+          "Повітряний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 113,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 113,
+        "types": [
+          "Вогняний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 113,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 114,
+        "types": [
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "seed": 1046,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "556.3046340908073",
+          "372.6"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        101,
+        5,
+        113,
+        113,
+        113
+      ],
+      "defender": [
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 113,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 8,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 114,
+        "types": [
+          "Звичайний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 27,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 50,
+        "types": [
+          "Льодовий",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 64,
+        "types": [
+          "Бойовий",
+          "Звичайний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 36,
+        "types": [
+          "Скельний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 9,
+        "types": [
+          "Електричний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "ambitious",
+        "battle_experience": 11,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 130,
+        "types": [
+          "Повітряний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 115,
+        "types": [
+          "Водяний",
+          "Вогняний"
+        ]
+      }
+    ],
+    "seed": 1047,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "830.4626826335026",
+          "503.9547166217856"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "479.7391304347827",
+          "400.2994217489055"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "355.9125782715011",
+          "483.0478234975212"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "484.4227910101454",
+          "547.1888253470427"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 1,
+        "scores": [
+          "778.5844497747332",
+          "234.78683398469968"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 4,
+        "scores": [
+          "304.66348034663474",
+          "118.04198317962964"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 0,
+        "scores": [
+          "269.12174222558366",
+          "109.04525802060118"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        113,
+        8,
+        114,
+        27,
+        52,
+        64
+      ],
+      "defender": [
+        38,
+        15,
+        13,
+        130,
+        115
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "confident",
+        "battle_experience": 116,
+        "types": [
+          "Водяний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 115,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 99,
+        "types": [
+          "Бойовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 5,
+        "types": [
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "agile",
+        "battle_experience": 130,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 114,
+        "types": [
+          "Драконячий",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 130,
+        "types": [
+          "Електричний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 17,
+        "types": [
+          "Примарний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 100,
+        "types": [
+          "Вогняний"
+        ]
+      }
+    ],
+    "seed": 1048,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "657.3113484509365",
+          "697.4119329693652"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        116,
+        115,
+        101,
+        5,
+        130,
+        114,
+        130,
+        17
+      ],
+      "defender": [
+        100
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 99,
+        "types": [
+          "Льодовий",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 100,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 1,
+        "types": [
+          "Комашиний",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 83,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 50,
+        "types": [
+          "Електричний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 1,
+        "types": [
+          "Бойовий"
+        ]
+      }
+    ],
+    "seed": 1049,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "639.2676753304438",
+          "254.24628375975243"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        99,
+        100,
+        1,
+        83,
+        50
+      ],
+      "defender": [
+        3
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 30,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 5,
+        "types": [
+          "Звичайний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 100,
+        "types": [
+          "Повітряний",
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "prideful",
+        "battle_experience": 119,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 101,
+        "types": [
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 101,
+        "types": [
+          "Водяний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "agile",
+        "battle_experience": 5,
+        "types": [
+          "Водяний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 14,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "seed": 1050,
+    "rounds": [
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "271.3450114968882",
+          "295.32929059930973"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "191.88442674184574",
+          "420.0238799634627"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "153.47166773038973",
+          "348.51546584934596"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        32,
+        7,
+        100
+      ],
+      "defender": [
+        119,
+        101,
+        101,
+        5,
+        14
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "friendly",
+        "battle_experience": 101,
+        "types": [
+          "Вогняний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 42,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 130,
+        "types": [
+          "Трав'яний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 0,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 99,
+        "types": [
+          "Скельний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "seed": 1051,
+    "rounds": [
+      {
+        "attacker": 3,
+        "defender": 0,
+        "scores": [
+          "312.387888357746",
+          "149.31563183033904"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        101,
+        42,
+        130,
+        2
+      ],
+      "defender": [
+        99
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 103,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 117,
+        "types": [
+          "Вогняний",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "friendly",
+        "battle_experience": 8,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "ambitious",
+        "battle_experience": 5,
+        "types": [
+          "Отруйний",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 130,
+        "types": [
+          "Примарний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 5,
+        "types": [
+          "Льодовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 57,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 101,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 5,
+        "types": [
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 116,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "brave",
+        "battle_experience": 5,
+        "types": [
+          "Психічний",
+          "Отруйний"
+        ]
+      }
+    ],
+    "seed": 1052,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "588.6384833001166",
+          "602.1482596799402"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "420.8668213495115",
+          "354.240558101868"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "336.6934570796092",
+          "632.1844388361418"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "364.80717329894935",
+          "338.20823958532907"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "233.4765909113276",
+          "217.02650719763045"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "194.56382575943965",
+          "176.3248362918428"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 5,
+        "scores": [
+          "208.4612418851139",
+          "227.53770030371493"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 5,
+        "scores": [
+          "435.119189603196",
+          "136.52262018222896"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        103,
+        117,
+        12,
+        5,
+        130
+      ],
+      "defender": [
+        9,
+        59,
+        101,
+        5,
+        116,
+        9
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 98,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 25,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 15,
+        "types": [
+          "Електричний",
+          "Звичайний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 116,
+        "types": [
+          "Бойовий",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "confident",
+        "battle_experience": 70,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 5,
+        "types": [
+          "Комашиний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 99,
+        "types": [
+          "Трав'яний",
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1053,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "430.02947737375354",
+          "215.74535958280615"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "447.6520462615846",
+          "322.21686466316834"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "381.3332245932017",
+          "293.1296396860917"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        98,
+        29,
+        15
+      ],
+      "defender": [
+        116,
+        70,
+        8,
+        99
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "friendly",
+        "battle_experience": 7,
+        "types": [
+          "Ґрунтовий",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 9,
+        "types": [
+          "Примарний",
+          "Звичайний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 99,
+        "types": [
+          "Трав'яний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 98,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "brave",
+        "battle_experience": 0,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 101,
+        "types": [
+          "Комашиний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 99,
+        "types": [
+          "Льодовий"
+        ]
+      }
+    ],
+    "seed": 1054,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 5,
+        "scores": [
+          "535.0652361923801",
+          "679.0194719189633"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 5,
+        "scores": [
+          "104.8557249862206",
+          "452.67964794597555"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        9,
+        11
+      ],
+      "defender": [
+        99,
+        98,
+        0,
+        5,
+        101,
+        99
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 116,
+        "types": [
+          "Примарний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "ambitious",
+        "battle_experience": 5,
+        "types": [
+          "Звичайний",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "hardy",
+        "battle_experience": 14,
+        "types": [
+          "Трав'яний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 99,
+        "types": [
+          "Ґрунтовий",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 100,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 48,
+        "types": [
+          "Вогняний",
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 66,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 113,
+        "types": [
+          "Звичайний"
+        ]
+      }
+    ],
+    "seed": 1055,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "554.3015826371784",
+          "329.40000000000003"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "482.0013762062421",
+          "209.70000000000002"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        116,
+        9,
+        14,
+        99,
+        100,
+        48
+      ],
+      "defender": [
+        66,
+        113
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Психічний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 5,
+        "types": [
+          "Водяний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 113,
+        "types": [
+          "Скельний",
+          "Електричний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 98,
+        "types": [
+          "Трав'яний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 102,
+        "types": [
+          "Примарний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 116,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 50,
+        "types": [
+          "Повітряний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "hardy",
+        "battle_experience": 1,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "confident",
+        "battle_experience": 91,
+        "types": [
+          "Драконячий",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 43,
+        "types": [
+          "Електричний",
+          "Повітряний"
+        ]
+      }
+    ],
+    "seed": 1056,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "256.9732815885935",
+          "498.5230881209693"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "245.60094723941316",
+          "377.5911387747586"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "94.62142959548467",
+          "246.18424104739228"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        52,
+        7,
+        113
+      ],
+      "defender": [
+        98,
+        102,
+        116,
+        50,
+        1,
+        91,
+        43
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "lucky",
+        "battle_experience": 56,
+        "types": [
+          "Ґрунтовий",
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "patient",
+        "battle_experience": 5,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 0,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 101,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Скельний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 52,
+        "types": [
+          "Повітряний",
+          "Примарний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "prideful",
+        "battle_experience": 9,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 1,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 116,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 9,
+        "types": [
+          "Електричний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 101,
+        "types": [
+          "Електричний",
+          "Трав'яний"
+        ]
+      }
+    ],
+    "seed": 1057,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "615.8702254691726",
+          "256.9272822715156"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 2,
+        "scores": [
+          "525.5425924003606",
+          "299.33227003199283"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "162.85714285714286",
+          "193.16308913407735"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 1,
+        "scores": [
+          "432.0",
+          "154.53047130726188"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "282.07370518251497",
+          "110.90800745445613"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "240.00000000000003",
+          "137.5896614202557"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        60,
+        5,
+        6,
+        101,
+        5,
+        52
+      ],
+      "defender": [
+        11,
+        5,
+        116,
+        11,
+        101
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "patient",
+        "battle_experience": 25,
+        "types": [
+          "Психічний",
+          "Водяний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 2,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "independent",
+        "battle_experience": 5,
+        "types": [
+          "Електричний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "friendly",
+        "battle_experience": 50,
+        "types": [
+          "Примарний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "ambitious",
+        "battle_experience": 125,
+        "types": [
+          "Водяний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 9,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "persistent",
+        "battle_experience": 9,
+        "types": [
+          "Водяний",
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "seed": 1058,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "220.4704078419644",
+          "472.2343138152287"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        25
+      ],
+      "defender": [
+        2,
+        5,
+        50,
+        125,
+        11,
+        9
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 9,
+        "types": [
+          "Водяний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "confident",
+        "battle_experience": 113,
+        "types": [
+          "Трав'яний",
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 103,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 130,
+        "types": [
+          "Водяний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 116,
+        "types": [
+          "Трав'яний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 98,
+        "types": [
+          "Повітряний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 23,
+        "types": [
+          "Льодовий",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 62,
+        "types": [
+          "Комашиний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 3,
+        "character": "persistent",
+        "battle_experience": 115,
+        "types": [
+          "Скельний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "agile",
+        "battle_experience": 50,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "brave",
+        "battle_experience": 43,
+        "types": [
+          "Отруйний",
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 4,
+        "types": [
+          "Повітряний",
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "ambitious",
+        "battle_experience": 116,
+        "types": [
+          "Трав'яний"
+        ]
+      }
+    ],
+    "seed": 1059,
+    "rounds": [
+      {
+        "attacker": 3,
+        "defender": 4,
+        "scores": [
+          "425.25",
+          "596.5606299608353"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 4,
+        "scores": [
+          "402.29999999999995",
+          "298.28031498041764"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 1,
+        "scores": [
+          "391.99892664042676",
+          "536.4157208240542"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "543.5532111764828",
+          "447.0131006867119"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "377.46750776144637",
+          "278.40276605622216"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 2,
+        "scores": [
+          "318.4882096737204",
+          "212.31074722374464"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "120.78960248366286",
+          "123.33997840163082"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "307.9997405154988",
+          "93.60000000000001"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        9,
+        117,
+        103,
+        130,
+        116,
+        98,
+        23,
+        62
+      ],
+      "defender": [
+        115,
+        54,
+        45,
+        8,
+        116
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 115,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 114,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "confident",
+        "battle_experience": 99,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 101,
+        "types": [
+          "Звичайний",
+          "Водяний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "decisive",
+        "battle_experience": 98,
+        "types": [
+          "Вогняний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 95,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 113,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 5,
+        "types": [
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 100,
+        "types": [
+          "Трав'яний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 109,
+        "types": [
+          "Електричний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 5,
+        "types": [
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "seed": 1060,
+    "rounds": [
+      {
+        "attacker": 1,
+        "defender": 0,
+        "scores": [
+          "644.2072431393723",
+          "587.1140991041394"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 3,
+        "scores": [
+          "515.3657945114978",
+          "510.12366038318805"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 6,
+        "scores": [
+          "429.47149542624817",
+          "215.44608965456277"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 1,
+        "defender": 1,
+        "scores": [
+          "488.03579025710025",
+          "317.43974079313404"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        115,
+        114,
+        99,
+        101
+      ],
+      "defender": [
+        100,
+        97,
+        113,
+        7,
+        100,
+        109,
+        7
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 2,
+        "character": "decisive",
+        "battle_experience": 9,
+        "types": [
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "prideful",
+        "battle_experience": 72,
+        "types": [
+          "Бойовий",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 86,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "hardy",
+        "battle_experience": 116,
+        "types": [
+          "Отруйний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "decisive",
+        "battle_experience": 46,
+        "types": [
+          "Вогняний",
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "agile",
+        "battle_experience": 100,
+        "types": [
+          "Ґрунтовий",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 100,
+        "types": [
+          "Бойовий"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "persistent",
+        "battle_experience": 108,
+        "types": [
+          "Вогняний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 1,
+        "character": "decisive",
+        "battle_experience": 130,
+        "types": [
+          "Примарний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "patient",
+        "battle_experience": 125,
+        "types": [
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "persistent",
+        "battle_experience": 113,
+        "types": [
+          "Бойовий",
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "prideful",
+        "battle_experience": 116,
+        "types": [
+          "Примарний",
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "lucky",
+        "battle_experience": 1,
+        "types": [
+          "Примарний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "decisive",
+        "battle_experience": 69,
+        "types": [
+          "Отруйний",
+          "Примарний"
+        ]
+      }
+    ],
+    "seed": 1061,
+    "rounds": [
+      {
+        "attacker": 7,
+        "defender": 1,
+        "scores": [
+          "501.018326321767",
+          "727.3247619661861"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 5,
+        "defender": 1,
+        "scores": [
+          "775.0245022674042",
+          "474.342236064904"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 5,
+        "scores": [
+          "673.9343497977428",
+          "372.35150984604905"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 3,
+        "scores": [
+          "280.06588888169506",
+          "293.9186537700354"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 2,
+        "defender": 3,
+        "scores": [
+          "686.2605628471259",
+          "204.11017622919124"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 2,
+        "scores": [
+          "469.9612357096363",
+          "142.48611799483828"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 0,
+        "scores": [
+          "519.6686741020018",
+          "308.94799611315074"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 2,
+        "defender": 4,
+        "scores": [
+          "465.90984574662224",
+          "296.01560873602165"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        9,
+        72,
+        92,
+        116,
+        46,
+        100,
+        100,
+        109
+      ],
+      "defender": [
+        130,
+        125,
+        114,
+        116,
+        3,
+        71
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 5,
+        "character": "brave",
+        "battle_experience": 130,
+        "types": [
+          "Звичайний",
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "friendly",
+        "battle_experience": 114,
+        "types": [
+          "Ґрунтовий"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "independent",
+        "battle_experience": 113,
+        "types": [
+          "Вогняний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "brave",
+        "battle_experience": 50,
+        "types": [
+          "Повітряний",
+          "Електричний"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 5,
+        "character": "independent",
+        "battle_experience": 0,
+        "types": [
+          "Отруйний",
+          "Драконячий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "lucky",
+        "battle_experience": 5,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "lucky",
+        "battle_experience": 113,
+        "types": [
+          "Повітряний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "confident",
+        "battle_experience": 113,
+        "types": [
+          "Примарний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 4,
+        "character": "prideful",
+        "battle_experience": 114,
+        "types": [
+          "Отруйний",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 2,
+        "character": "prideful",
+        "battle_experience": 114,
+        "types": [
+          "Вогняний"
+        ]
+      }
+    ],
+    "seed": 1062,
+    "rounds": [
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "925.403118853739",
+          "657.6474750952675"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 4,
+        "scores": [
+          "749.3917724182536",
+          "469.48986414217273"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 1,
+        "scores": [
+          "569.4788423715318",
+          "332.35432042537224"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 0,
+        "defender": 3,
+        "scores": [
+          "255.28361899413494",
+          "206.5064456473733"
+        ],
+        "winner": "attacker"
+      }
+    ],
+    "winner": "attacker",
+    "experience": {
+      "attacker": [
+        130,
+        114,
+        113,
+        50
+      ],
+      "defender": [
+        2,
+        7,
+        113,
+        117,
+        114,
+        114
+      ]
+    }
+  },
+  {
+    "attacker": [
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 1,
+        "types": [
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "agile",
+        "battle_experience": 41,
+        "types": [
+          "Отруйний",
+          "Водяний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 0,
+        "types": [
+          "Повітряний",
+          "Електричний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "ambitious",
+        "battle_experience": 100,
+        "types": [
+          "Вогняний",
+          "Льодовий"
+        ]
+      },
+      {
+        "power_level": 3,
+        "character": "decisive",
+        "battle_experience": 121,
+        "types": [
+          "Комашиний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "ambitious",
+        "battle_experience": 101,
+        "types": [
+          "Електричний",
+          "Скельний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "hardy",
+        "battle_experience": 5,
+        "types": [
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "defender": [
+      {
+        "power_level": 4,
+        "character": "patient",
+        "battle_experience": 99,
+        "types": [
+          "Повітряний",
+          "Трав'яний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "independent",
+        "battle_experience": 101,
+        "types": [
+          "Драконячий",
+          "Звичайний"
+        ]
+      },
+      {
+        "power_level": 5,
+        "character": "lucky",
+        "battle_experience": 115,
+        "types": [
+          "Психічний"
+        ]
+      },
+      {
+        "power_level": 1,
+        "character": "patient",
+        "battle_experience": 1,
+        "types": [
+          "Льодовий",
+          "Ґрунтовий"
+        ]
+      }
+    ],
+    "seed": 1063,
+    "rounds": [
+      {
+        "attacker": 3,
+        "defender": 2,
+        "scores": [
+          "590.6965755233823",
+          "615.0"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 4,
+        "defender": 2,
+        "scores": [
+          "574.1275947362649",
+          "546.928856157743"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 4,
+        "defender": 0,
+        "scores": [
+          "344.47655684175896",
+          "467.9982632855283"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 0,
+        "defender": 0,
+        "scores": [
+          "379.4771952676984",
+          "415.99845625380294"
+        ],
+        "winner": "defender"
+      },
+      {
+        "attacker": 5,
+        "defender": 0,
+        "scores": [
+          "221.02178878939378",
+          "217.77478448275863"
+        ],
+        "winner": "attacker"
+      },
+      {
+        "attacker": 5,
+        "defender": 1,
+        "scores": [
+          "113.16315586016962",
+          "149.175"
+        ],
+        "winner": "defender"
+      }
+    ],
+    "winner": "defender",
+    "experience": {
+      "attacker": [
+        3,
+        41,
+        0,
+        100,
+        121,
+        101,
+        5
+      ],
+      "defender": [
+        101,
+        101,
+        115,
+        1
+      ]
+    }
+  }
+]

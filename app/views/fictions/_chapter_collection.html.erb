@@ -60,7 +60,7 @@ end %>
       <div class="accordion-content <%= preload_section ? '' : 'hidden' %> <%= reader_drawer ? '' : 'max-h-96 overflow-y-auto' %> <%= accordion_body %>">
         <% if preload_section %>
           <%= render 'fictions/chapter_section_items',
-                     chapters: fiction_section_chapters(fiction, section[:section_key], order: list_order),
+                     chapters: fiction_section_chapters(fiction, section, order: list_order, scanlators: !reader_drawer),
                      reader_drawer: reader_drawer,
                      current_chapter: local_assigns[:current_chapter],
                      drawer_progress: local_assigns[:drawer_progress] %>

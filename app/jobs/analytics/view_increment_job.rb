@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Analytics
-  # Persists a single view count increment off the request path (fiction/chapter show TTFB).
+  # Persists a single view count increment. Views now go through Analytics::ViewCounter; this stays only for jobs
+  # enqueued (or failed and retried by triage) before that deploy.
   class ViewIncrementJob < ApplicationJob
     queue_as :default
 

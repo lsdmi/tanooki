@@ -63,16 +63,14 @@ module Fictions
       end
     end
 
+    # Same buckets as Chapters::ListSectionIndex.range_label (everything below 1 joins the first range), as a plain
+    # range on number so index_chapters_on_fiction_volume_number can narrow it.
     def range_chapters(scope, range_label)
       start_num, end_num = parse_range_bounds(range_label)
       return Chapter.none unless start_num && end_num
 
-      base = scope.where(volume_number: nil)
-      if start_num == 1
-        base.where('FLOOR(number) = 0 OR FLOOR(number) BETWEEN ? AND ?', start_num, end_num)
-      else
-        base.where('FLOOR(number) BETWEEN ? AND ?', start_num, end_num)
-      end
+      base = scope.where(volume_number: nil, number: ...(end_num + 1))
+      start_num == 1 ? base : base.where(number: start_num..)
     end
 
     def parse_range_bounds(range_label)

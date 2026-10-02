@@ -20,7 +20,9 @@
       </div>
     </div>
 
-    <% if cooldown %>
+    <% if dex_leaderboard.nil? %>
+      <p class="rounded-xl border border-line p-6 text-center text-sm text-fg-muted"><%= t('pokemons.opponent.no_party') %></p>
+    <% elsif cooldown %>
       <%= render 'users/pokemons/cooldown', dex_leaderboard: %>
     <% elsif opponent %>
       <%= render 'users/pokemons/leaderboard_record', dex_leaderboard:, opponent: %>

@@ -7,17 +7,20 @@ module Analytics
     setup do
       @fiction = fictions(:one)
       @session = {}
+      ViewCounter.default.clear
     end
 
-    test 'remembers session and increments views via background job' do
+    test 'remembers session and counts the view for the next write' do
       @fiction.update!(views: 0)
 
-      ViewIncrement.new(@fiction, @session).call
+      ViewIncrementJob.stub(:perform_later, ->(*) { flunk 'enqueued a job per view' }) do
+        ViewIncrement.new(@fiction, @session).call
+      end
 
       assert_equal [@fiction.slug], @session[:viewed]
       assert_equal 0, @fiction.reload.views
 
-      ViewIncrementJob.perform_now('Fiction', @fiction.id)
+      ViewCounter.default.flush
 
       assert_equal 1, @fiction.reload.views
     end

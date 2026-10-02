@@ -12,7 +12,7 @@ module Pokemons
     end
 
     def size
-      @size ||= self.class.leader_scope.pick(Arel.sql('COUNT(DISTINCT users.id)')).to_i
+      @size ||= self.class.leader_scope.count
     end
 
     def user_at_index(index)
@@ -33,15 +33,13 @@ module Pokemons
       self.class.leader_scope.exists?(id: user.id)
     end
 
+    # EXISTS, not a join: a join repeats each user once per Pokémon, so every count needed DISTINCT or GROUP BY.
     def self.leader_scope
-      User.joins(:user_pokemons)
+      User.where(UserPokemon.where('user_pokemons.user_id = users.id').arel.exists)
     end
 
     def self.ranked_scope
-      leader_scope
-        .includes(avatar: :image_attachment)
-        .group(:user_id)
-        .order(ORDER)
+      leader_scope.includes(avatar: :image_attachment).order(ORDER)
     end
 
     private
@@ -51,7 +49,7 @@ module Pokemons
         'users.battle_win_rate > :rate OR (users.battle_win_rate = :rate AND users.id < :id)',
         rate: user.battle_win_rate,
         id: user.id
-      ).distinct.count
+      ).count
     end
   end
 end

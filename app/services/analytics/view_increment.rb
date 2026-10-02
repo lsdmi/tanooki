@@ -2,7 +2,7 @@
 
 module Analytics
   # Records a view once per content identifier in the current session (rolling last 10).
-  # Session dedup runs synchronously; the DB increment is enqueued to avoid blocking HTML TTFB.
+  # Session dedup runs synchronously; ViewCounter writes the count later, off the request path.
   class ViewIncrement
     def initialize(object, session)
       @object = object
@@ -14,7 +14,7 @@ module Analytics
       return if already_viewed?
 
       remember_view
-      ViewIncrementJob.perform_later(@object.class.name, @object.id)
+      ViewCounter.default.add(@object)
     end
 
     private

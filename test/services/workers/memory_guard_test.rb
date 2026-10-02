@@ -41,6 +41,17 @@ module Workers
       assert_equal 0, @stops
     end
 
+    test 'logs the memory YJIT uses, or off' do
+      @guard.stub(:rss_mb, 400) do
+        @guard.stub(:yjit_mb, 42) { @guard.check(now: 0) }
+        @guard.stub(:yjit_mb, nil) { @guard.check(now: MemoryGuard::LOG_EVERY) }
+      end
+
+      assert_includes @log.string, 'rss=400MB'
+      assert_includes @log.string, 'yjit=42MB'
+      assert_includes @log.string, 'yjit=off'
+    end
+
     test 'reads VmRSS from proc status in megabytes' do
       File.stub(:foreach, ["Name:\truby\n", "VmRSS:\t  524288 kB\n"].each) do
         assert_equal 512, @guard.rss_mb

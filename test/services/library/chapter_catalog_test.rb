@@ -42,6 +42,21 @@ module Library
       end
     end
 
+    test 'fiction_has_listable_chapters? answers from the loaded list' do
+      ChapterCatalog.listed_chapters(@fiction, viewer: nil)
+
+      assert_no_queries { assert ChapterCatalog.fiction_has_listable_chapters?(@fiction, nil) }
+    end
+
+    test 'listed_section_chapters picks the given ids in list order' do
+      ids = [@chapter_one.id, @chapter_two.id]
+      desc = ChapterCatalog.listed_chapters(@fiction).select { |chapter| ids.include?(chapter.id) }
+
+      assert_equal desc, ChapterCatalog.listed_section_chapters(@fiction, ids, order: :desc)
+      assert_equal desc.reverse, ChapterCatalog.listed_section_chapters(@fiction, ids, order: :asc)
+      assert_equal [@chapter_two], ChapterCatalog.listed_section_chapters(@fiction, [@chapter_two.id])
+    end
+
     test 'ordered_chapters for guest excludes drafts' do
       mark_draft!(@chapter_one)
       visible = ChapterCatalog.ordered_chapters(@fiction, viewer: nil).to_a

@@ -20,7 +20,6 @@ class UserPokemon < ApplicationRecord
     prideful: 'Гордівливий'
   }
 
-  DEFAULT_TEAM_SIZE = 6
   # Gen 1 lines have at most two evolutions; the cap also stops a descendant cycle from looping forever.
   MAX_EVOLUTION_STEPS = 3
 

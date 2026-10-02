@@ -11,13 +11,10 @@ module Chapters
       chapter_section_fiction_path(fiction, section: section_key, order: order)
     end
 
-    def fiction_section_chapters(fiction, section_key, order:, viewer: current_user)
-      Fictions::ChapterSectionLoader.new(
-        fiction: fiction,
-        viewer: viewer,
-        section_key: section_key,
-        order: order
-      ).call
+    # Only the fiction page list shows scanlator names; the reader drawer does not.
+    def fiction_section_chapters(fiction, section, order:, viewer: current_user, scanlators: true)
+      ids = chapter_list_section_ids(section)
+      Library::ChapterCatalog.listed_section_chapters(fiction, ids, viewer:, order:, scanlators:)
     end
 
     def chapter_list_section_ids(section)

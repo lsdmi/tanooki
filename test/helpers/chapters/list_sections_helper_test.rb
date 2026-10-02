@@ -21,6 +21,34 @@ module Chapters
                    chapter_list_section_index(fiction, order: :asc, viewer: users(:user_one))
     end
 
+    test 'fiction_section_chapters matches the section query in both orders' do
+      fiction = fictions(:one)
+
+      %i[asc desc].each do |order|
+        chapter_list_section_index(fiction, order:, viewer: nil).each do |section|
+          expected = Fictions::ChapterSectionLoader.new(fiction:, viewer: nil, section_key: section[:section_key],
+                                                        order:).call.map(&:id)
+
+          assert_equal expected, fiction_section_chapters(fiction, section, order:, viewer: nil).map(&:id)
+        end
+      end
+    end
+
+    test 'fiction_section_chapters reuses the loaded list' do
+      fiction = fictions(:one)
+      section = chapter_list_section_index(fiction, order: :desc, viewer: nil).first
+
+      assert_no_queries { fiction_section_chapters(fiction, section, order: :desc, viewer: nil, scanlators: false) }
+    end
+
+    test 'fiction_section_chapters preloads scanlators for the section only' do
+      fiction = fictions(:one)
+      section = chapter_list_section_index(fiction, order: :desc, viewer: nil).first
+      chapters = fiction_section_chapters(fiction, section, order: :desc, viewer: nil)
+
+      assert(chapters.all? { |chapter| chapter.association(:scanlators).loaded? })
+    end
+
     test 'chapter_list_section_index hides chapters guests cannot see yet' do
       fiction = fictions(:one)
 

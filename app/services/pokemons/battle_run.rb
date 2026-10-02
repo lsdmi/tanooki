@@ -1,41 +1,25 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Runs one trainer-vs-trainer battle: team build, +Pokemons::Battle::Engine+ rounds, log lines, winner/loser ids.
+  # Runs one trainer-vs-trainer battle: snapshots both teams, simulates it with +Engine::Simulator+, then saves the
+  # experience and renders the log. Every database write happens after the simulation.
   class BattleRun
-    attr_reader :attacker_pokemons, :defender_pokemons, :attacker_id, :defender_id, :battle_log, :winner_id, :loser_id,
-                :outcome_blocks
+    attr_reader :attacker_id, :defender_id, :seed, :winner_id, :loser_id, :outcome_blocks
 
-    def initialize(attacker_pokemons:, defender_pokemons:, attacker_id:, defender_id:)
-      @attacker_pokemons = attacker_pokemons
-      @defender_pokemons = defender_pokemons
+    def initialize(attacker_pokemons:, defender_pokemons:, attacker_id:, defender_id:, seed: Random.new_seed)
+      @teams = { attacker: preload(attacker_pokemons), defender: preload(defender_pokemons) }
       @attacker_id = attacker_id
       @defender_id = defender_id
-      @battle_log = ''
-      @winner_id = nil
-      @loser_id = nil
+      @seed = seed
       @outcome_blocks = []
-      @start_message = nil
-      @conclusion_message = nil
     end
 
     def append_log(message, type = :outcome)
       case type
-      when :start
-        @start_message = message
-      when :conclusion
-        @conclusion_message = message
-      else
-        @outcome_blocks << message
+      when :start then @start_message = message
+      when :conclusion then @conclusion_message = message
+      else @outcome_blocks << message
       end
-    end
-
-    def assign_winner(id)
-      @winner_id = id
-    end
-
-    def assign_loser(id)
-      @loser_id = id
     end
 
     def fight_details
@@ -43,43 +27,47 @@ module Pokemons
     end
 
     def start_battle
-      logger = Battle::LogRenderer.new(attacker_id, defender_id, self)
-      append_log(logger.start, :start)
-
-      attacker_team = initialize_team(@attacker_pokemons)
-      defender_team = initialize_team(@defender_pokemons)
-
-      battle_engine = Battle::Engine.new(attacker_team, defender_team, logger)
-
-      battle_engine.execute_round while battle_engine.battle_continues?
-
-      conclude_battle(battle_engine, logger)
+      result = Engine::Simulator.call(attacker: snapshot(:attacker, attacker_id),
+                                      defender: snapshot(:defender, defender_id), rng: Random.new(seed))
+      save_experience(result.experience)
+      @winner_id, @loser_id = result.attacker_won? ? [attacker_id, defender_id] : [defender_id, attacker_id]
+      render_log(result)
     end
 
     private
 
-    def conclude_battle(battle_engine, logger)
-      result = battle_engine.attacker_won? ? :victory : :defeat
-      append_log(logger.conclusion(result), :conclusion)
-      assign_winner_and_loser(result)
+    def preload(pokemons)
+      pokemons.includes(pokemon: [:pokemon_types, { sprite_attachment: :blob }]).order(:id).to_a
     end
 
-    def assign_winner_and_loser(result)
-      if result == :victory
-        assign_winner(attacker_id)
-        assign_loser(defender_id)
-      else
-        assign_winner(defender_id)
-        assign_loser(attacker_id)
+    def records
+      @records ||= @teams.values.flatten.index_by(&:id)
+    end
+
+    def snapshot(side, trainer_id)
+      Engine::TeamSnapshot.new(trainer_id:, combatants: @teams[side].map do |record|
+        Engine::Combatant.new(id: record.id, character: record.character,
+                              power_level: record.pokemon.read_attribute(:power_level),
+                              battle_experience: record.battle_experience, types: record.pokemon.types.map(&:name))
+      end)
+    end
+
+    def save_experience(experience)
+      experience.each { |id, battle_experience| records.fetch(id).update!(battle_experience:) }
+    end
+
+    def render_log(result)
+      logger = Battle::LogRenderer.new(attacker_id, defender_id, self)
+      append_log(logger.start, :start)
+      rounds(result).each { |attacker, defender, outcome| logger.append_outcome(attacker, defender, outcome) }
+      append_log(logger.conclusion(result.attacker_won? ? :victory : :defeat), :conclusion)
+    end
+
+    def rounds(result)
+      result.events_of(:round_started).zip(result.events_of(:fainted)).map do |start, fainted|
+        attacker, defender = start.data.values_at(:attacker, :defender).map { |id| records.fetch(id) }
+        [attacker, defender, fainted.data[:side] == :defender ? :victory : :defeat]
       end
-    end
-
-    def pokemon_limit
-      [UserPokemon::DEFAULT_TEAM_SIZE, @attacker_pokemons.size, @defender_pokemons.size].min
-    end
-
-    def initialize_team(pokemon_list)
-      Battle::RosterBuilder.new(pokemon_list, pokemon_limit).build
     end
   end
 end

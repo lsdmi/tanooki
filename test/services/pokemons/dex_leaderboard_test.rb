@@ -48,5 +48,16 @@ module Pokemons
     test 'size returns distinct leaderboard count' do
       assert_equal 3, @leaderboard.size
     end
+
+    test 'counts and orders a user with several Pokémon once' do
+      2.times do
+        UserPokemon.create!(pokemon_id: pokemons(:one).id, user: @first, current_level: 1, battle_experience: 1,
+                            character: 'Таланистий')
+      end
+
+      assert_equal 3, DexLeaderboard.new.size
+      assert_equal 3, DexLeaderboard.new.rank_for(@third)
+      assert_equal([@first, @second, @third], (0..2).map { |index| @leaderboard.user_at_index(index) })
+    end
   end
 end

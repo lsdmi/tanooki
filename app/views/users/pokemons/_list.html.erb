@@ -22,6 +22,11 @@
         <% end %>
       <% end %>
     </div>
+    <% if selected_pokemon.nil? %>
+      <p class="rounded-xl border border-line p-6 text-center text-sm text-fg-muted"><%= t('pokemons.party.empty') %></p>
+    <% end %>
   </div>
-  <%= render 'users/pokemons/details', selected_pokemon:, descendant: %>
+  <% if selected_pokemon %>
+    <%= render 'users/pokemons/details', selected_pokemon:, descendant: %>
+  <% end %>
 </div>

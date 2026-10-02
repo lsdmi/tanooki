@@ -34,8 +34,9 @@ class TalesControllerTest < ActionDispatch::IntegrationTest
     @controller.stub(:session, session) do
       @controller.instance_variable_set(:@publication, @tale)
       @tale.update(views: 0)
+      Analytics::ViewCounter.default.clear
       @controller.send(:track_visit, @tale)
-      Analytics::ViewIncrementJob.perform_now('Publication', @tale.id)
+      Analytics::ViewCounter.default.flush
 
       assert_equal 1, @tale.reload.views
     end

@@ -56,6 +56,14 @@ module Workers
       path && (File.read(path).to_i / 1024 / 1024)
     end
 
+    # Compiled code plus YJIT's own metadata, to weigh it against DISABLE_YJIT (config/application.rb).
+    def yjit_mb
+      return unless defined?(RubyVM::YJIT) && RubyVM::YJIT.enabled?
+
+      (RubyVM::YJIT.runtime_stats(:code_region_size).to_i + RubyVM::YJIT.runtime_stats(:yjit_alloc_size).to_i) /
+        1024 / 1024
+    end
+
     private
 
     def run
@@ -70,7 +78,9 @@ module Workers
 
     def log(rss, now)
       @last_logged_at = now
-      @logger.info("[MemoryGuard] rss=#{rss}MB cgroup=#{cgroup_mb || '-'}MB limit=#{@limit_mb}MB")
+      yjit = yjit_mb
+      @logger.info("[MemoryGuard] rss=#{rss}MB cgroup=#{cgroup_mb || '-'}MB yjit=#{yjit ? "#{yjit}MB" : 'off'} " \
+                   "limit=#{@limit_mb}MB")
     end
 
     def stop_worker(rss)
