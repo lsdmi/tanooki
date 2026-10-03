@@ -19,14 +19,6 @@ class UserBattleHistoryTest < ActiveSupport::TestCase
     assert_equal legacy, @user.latest_battle
   end
 
-  test 'unconverted logs are not read' do
-    PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
-
-    assert_nil @user.latest_battle
-    assert_nil @user.last_battle_at
-    assert_equal [0, 0], [@user.battle_victory_count, @user.battle_total_count]
-  end
-
   test 'victories and totals count legacy rows' do
     create_pokemon_battle(attacker: @user, defender: @rival, engine_version: PokemonBattle::LEGACY_VERSION)
     create_pokemon_battle(attacker: @rival, defender: @user, winner: @rival)
@@ -35,14 +27,13 @@ class UserBattleHistoryTest < ActiveSupport::TestCase
     assert_equal [2, 3], [@user.battle_victory_count, @user.battle_total_count]
   end
 
-  test 'destroying a user removes their battle logs and battles' do
+  test 'destroying a user removes their battles' do
     trainer = User.find(105) # users fixture user_105: no chapters or teams to block destroy
-    PokemonBattleLog.create!(attacker: @rival, defender: trainer, winner: @rival)
     create_pokemon_battle(attacker: trainer, defender: @rival)
+    create_pokemon_battle(attacker: @rival, defender: trainer, winner: @rival)
 
     trainer.destroy!
 
-    assert_equal [0, 0], [PokemonBattleLog.where(defender_id: trainer.id).count,
-                          PokemonBattle.involving(trainer).count]
+    assert_equal 0, PokemonBattle.involving(trainer).count
   end
 end
