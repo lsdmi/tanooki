@@ -2,7 +2,7 @@
   <%= render Ui::ButtonComponent.new(label: label(:action), variant: :on_media, size: :sm, as: :link, href:,
                                      html: turbo_drive_visit_data) %>
 <% else %>
-  <p class="mt-6 border-t border-line pt-4 text-sm/5 text-fg-muted">
+  <p class="text-sm/5 text-fg-muted">
     <%= t('fictions.continue_translation.prompt') %>
     <%= link_to label(:add_chapter), href, turbo_drive_visit_data.merge(class: LINK_CLASS) %>
   </p>

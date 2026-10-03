@@ -10,15 +10,16 @@ module Fictions
     STAR_ON = 'fill-amber-400 text-amber-400'
     STAR_OFF = 'fill-transparent text-amber-400'
 
-    def initialize(fiction:, user:)
+    def initialize(fiction:, user:, heading_id: 'fiction-rating-title')
       super()
       @fiction = fiction
       @user = user
+      @heading_id = heading_id
     end
 
     private
 
-    attr_reader :fiction, :user
+    attr_reader :fiction, :user, :heading_id
 
     def summary
       @summary ||= fiction.rating_summary

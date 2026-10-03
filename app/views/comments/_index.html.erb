@@ -2,16 +2,14 @@
   <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-fg mb-4 sm:mb-6 pb-2 border-b border-line">Коментарі</h2>
 
   <% if current_user || comments.any? %>
-    <div class="space-y-4 sm:space-y-6">
-      <!-- Comment Form -->
-      <%= turbo_frame_tag "new_comment" do %>
+    <div class="flex flex-col gap-6">
+      <%= turbo_frame_tag "new_comment", class: 'block' do %>
         <%= simple_form_for comment, url: comments_path, method: :post do |f| %>
           <%= render "comments/new", comment: comment, commentable: commentable, f: f %>
         <% end %>
       <% end if current_user %>
 
-      <!-- Comment List -->
-      <%= turbo_frame_tag "comments" do %>
+      <%= turbo_frame_tag "comments", class: 'flex flex-col gap-3' do %>
         <%= render partial: 'comments/comment', collection: comments, as: :comment, locals: { commentable: commentable } %>
       <% end %>
     </div>

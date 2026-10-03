@@ -479,6 +479,39 @@ uk:
       about: Про твір
       chapters: Розділи
       comments: Коментарі
+    chapters_tab:
+      count:
+        one: "%{count} розділ"
+        few: "%{count} розділи"
+        many: "%{count} розділів"
+        other: "%{count} розділу"
+      latest: "Останній розділ: %{number} · %{date}"
+      newest: Новіші
+      oldest: Старіші
+      show_oldest: Показати від першого розділу
+      show_newest: Показати від останнього розділу
+    comments:
+      count:
+        one: "%{count} коментар"
+        few: "%{count} коментарі"
+        many: "%{count} коментарів"
+        other: "%{count} коментаря"
+      show_oldest: Показати спершу старіші
+      show_newest: Показати спершу новіші
+      loading: Завантаження коментарів…
+      guest_title: Увійдіть, щоб залишити коментар
+      guest_body: Читати обговорення можна без акаунта.
+      guest_action: Увійти
+      empty_title: Ще немає коментарів
+      empty_body: Станьте першим, хто поділиться враженням
+      more: Показати ще коментарі
+      rules:
+        title: Правила коментарів
+        spoilers: 'Попереджайте про спойлери: не всі дочитали до того ж розділу.'
+        respect: Критикуйте переклад, а не людей. Без образ і нецензурної лексики.
+        language: Пишіть українською. Коментарі російською видаляємо.
+        spam: Без спаму й реклами інших сайтів.
+        all: Усі правила спільноти
     team_menu:
       label: Керування
       title: Керування перекладом
@@ -530,6 +563,14 @@ uk:
       similar: Схожі твори
       similar_views: Перегляди
       similar_rating: Рейтинг
+  comments:
+    placeholder: Напишіть коментар…
+    team_tag: Команда
+    more_replies:
+      one: Показати ще %{count} відповідь
+      few: Показати ще %{count} відповіді
+      many: Показати ще %{count} відповідей
+      other: Показати ще %{count} відповіді
   chapters:
     notices:
       create_success: Розділ додано.

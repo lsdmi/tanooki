@@ -1,0 +1,10 @@
+<%# locals: (fiction:, presenter:) %>
+<%= render partial: 'comments/comment', collection: presenter.comments, as: :comment, locals: { commentable: fiction } %>
+<% if presenter.more_comments? %>
+  <% next_page = presenter.comments_page + 1 %>
+  <%= turbo_frame_tag "comments_page_#{next_page}", class: 'flex flex-col gap-3 pt-3' do %>
+    <%= ui_button(as: :link, variant: :outline, size: :lg, label: t('fictions.comments.more'),
+                  href: comments_fiction_path(fiction, order: presenter.comments_order, page: next_page),
+                  html: { class: 'w-full md:w-auto md:self-start' }) %>
+  <% end %>
+<% end %>

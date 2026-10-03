@@ -18,9 +18,18 @@
     </div>
   </section>
 <% else %>
-  <section class="">
-    <div class="flex flex-wrap items-end justify-between gap-y-2 gap-x-3 mb-4 sm:mb-6">
-      <h3 class="text-xl sm:text-2xl font-bold text-fg">Розділи</h3>
+  <% latest = listed_chapters(fiction, viewer: current_user).first %>
+  <% newest_first = order.to_sym == :desc %>
+  <section class="flex flex-col gap-6 md:gap-5">
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex min-w-0 flex-col gap-1">
+        <p class="text-base/6 font-semibold text-fg"><%= t('fictions.chapters_tab.count', count: chapters_size(fiction, viewer: current_user)) %></p>
+        <% if latest %>
+          <p class="text-sm/5 text-fg-muted">
+            <%= t('fictions.chapters_tab.latest', number: Chapters::Formatting.format_decimal(latest.number), date: l(latest.public_at, format: :shortest)) %>
+          </p>
+        <% end %>
+      </div>
       <%= button_to toggle_order_fiction_path(fiction, order: order),
                     data: {
                       turbo_stream: '',
@@ -29,11 +38,12 @@
                       action: 'click->fictions-order-toggle#spin'
                     },
                     id: toggle_btn_id,
-                    class: 'fictions-order-toggle bg-surface hover:bg-surface-strong text-fg-secondary py-2 px-3 sm:px-4 rounded-full transition duration-300 flex items-center space-x-2 group shrink-0' do %>
-        <span class="sr-only"><%= order.to_sym == :desc ? 'Показати від першого розділу' : 'Показати від останнього розділу' %></span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-        </svg>
+                    title: t(newest_first ? 'fictions.chapters_tab.show_oldest' : 'fictions.chapters_tab.show_newest'),
+                    class: 'fictions-order-toggle group inline-flex shrink-0 items-center gap-2 rounded-lg bg-main px-4 py-2.5 text-sm/5 font-medium text-fg ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover' do %>
+        <span class="flex transition-transform duration-300 group-hover:rotate-180" data-fictions-order-toggle-target="icon">
+          <%= stroke_icon(:arrow_down_up) %>
+        </span>
+        <%= t(newest_first ? 'fictions.chapters_tab.newest' : 'fictions.chapters_tab.oldest') %>
       <% end %>
     </div>
 

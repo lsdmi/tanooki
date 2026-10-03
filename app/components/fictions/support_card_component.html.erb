@@ -1,11 +1,11 @@
-<section class="flex flex-col gap-4 rounded-xl bg-main p-4 ring-1 ring-inset ring-line" aria-labelledby="fiction-support-title">
+<section class="flex flex-col gap-4 rounded-xl bg-main p-4 ring-1 ring-inset ring-line" aria-labelledby="<%= heading_id %>">
   <div class="flex items-center gap-4">
     <%= image_tag 'mascot.svg', alt: t('chapters.reader_support_card.mascot_alt'), loading: 'lazy',
                                 class: 'size-21 shrink-0 select-none rounded-full border border-line dark:hidden' %>
     <%= image_tag 'mascot-dark.svg', alt: '', loading: 'lazy', aria: { hidden: true },
                                      class: 'hidden size-21 shrink-0 select-none rounded-full border border-line dark:block' %>
     <div class="flex min-w-0 flex-col gap-2">
-      <h2 id="fiction-support-title" class="text-base/6 font-semibold text-fg"><%= t('chapters.reader_support_card.title') %></h2>
+      <h2 id="<%= heading_id %>" class="text-base/6 font-semibold text-fg"><%= t('chapters.reader_support_card.title') %></h2>
       <p class="text-xs/5 text-fg-muted"><%= t('chapters.reader_support_card.description') %></p>
     </div>
   </div>

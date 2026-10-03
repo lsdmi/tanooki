@@ -8,9 +8,10 @@ module Fictions
     include ExternalUrls::UrlsHelper
     include Chapters::ReaderBottomHelper
 
-    def initialize(fiction:)
+    def initialize(fiction:, heading_id: 'fiction-support-title')
       super()
       @fiction = fiction
+      @heading_id = heading_id
     end
 
     def render?
@@ -19,7 +20,7 @@ module Fictions
 
     private
 
-    attr_reader :fiction
+    attr_reader :fiction, :heading_id
 
     def href
       fiction_reader_support_url(fiction)

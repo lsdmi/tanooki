@@ -1,6 +1,6 @@
 <% drawer = @comment.chapter_comment? %>
 <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-  <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: "comment form#{' mb-6' unless drawer}" } do |f| %>
+  <%= simple_form_for @comment, url: comment_path(@comment), method: :put, html: { class: 'comment form' } do |f| %>
     <%= render "comments/new", comment: @comment, commentable: @commentable, f: f, drawer: drawer %>
   <% end %>
 <% end %>

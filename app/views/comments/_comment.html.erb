@@ -1,14 +1,32 @@
-<%= turbo_frame_tag comment do %>
-  <div data-controller="flowbite" class="<%= local_assigns[:drawer] ? 'space-y-4' : 'space-y-6' %>">
-    <% if local_assigns[:drawer] %>
+<% if local_assigns[:drawer] %>
+  <%= turbo_frame_tag comment do %>
+    <div data-controller="flowbite" class="space-y-4">
       <%= render 'comments/comment_drawer_body', comment: comment, commentable: commentable %>
-    <% else %>
-      <%= render 'comments/comment_body', comment: comment %>
-    <% end %>
-    <%= turbo_frame_tag "replies-#{comment.id}" do %>
-      <% comment.replies.each do |reply| %>
-        <%= render 'comments/reply', reply:, commentable: commentable, drawer: local_assigns[:drawer] %>
+      <%= turbo_frame_tag "replies-#{comment.id}" do %>
+        <% comment.replies.each do |reply| %>
+          <%= render 'comments/reply', reply:, commentable: commentable, drawer: true %>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+<% else %>
+  <% replies = comment.replies.sort_by { |reply| [reply.created_at, reply.id] } %>
+  <% hidden_replies = [replies.size - Comments::PresentationHelper::REPLIES_PREVIEW, 0].max %>
+  <%= turbo_frame_tag comment, class: 'flex flex-col gap-3' do %>
+    <%= render 'comments/comment_body', comment:, commentable: %>
+    <%# Hidden until a reply exists, including one appended by turbo_stream. %>
+    <div class="ml-11 flex flex-col gap-2 border-l-2 border-line pl-4 [&:not(:has(article))]:hidden" data-controller="reveal">
+      <%= turbo_frame_tag "replies-#{comment.id}", class: 'flex flex-col gap-2' do %>
+        <% replies.each_with_index do |reply, index| %>
+          <%= render 'comments/reply', reply:, commentable:, hidden: index >= Comments::PresentationHelper::REPLIES_PREVIEW %>
+        <% end %>
+      <% end %>
+      <% if hidden_replies.positive? %>
+        <button type="button" class="self-start rounded-sm text-sm/5 font-medium text-fg-brand hover:text-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                data-action="reveal#show" data-reveal-target="trigger">
+          <%= t('comments.more_replies', count: hidden_replies) %>
+        </button>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>

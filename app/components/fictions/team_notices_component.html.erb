@@ -4,7 +4,7 @@
     <% teams.each do |team| %>
       <li class="flex gap-2 rounded-xl bg-surface p-3 ring-1 ring-inset ring-line md:gap-3 md:p-4">
         <%= image_tag scanlator_avatar_url(team.avatar), alt: '', loading: 'lazy',
-                                                          class: 'size-12 shrink-0 rounded-lg object-cover' %>
+                                                          class: 'size-12 shrink-0 rounded-full object-cover' %>
         <div class="flex min-w-0 flex-1 flex-col gap-1">
           <p class="whitespace-pre-line text-base/6 font-semibold text-fg"><%= linkify_urls(team.notice, link_class: LINK_CLASS) %></p>
           <p class="flex flex-wrap items-center gap-x-2 text-xs/5">

@@ -1,39 +1,44 @@
-<div class="<%= comment.parent_id.present? ? 'ml-6 sm:ml-12 border-l-2 border-line pl-3 sm:pl-4' : '' %> bg-card shadow-sm border border-line rounded-lg p-3 sm:p-4 my-3 sm:my-4 transition duration-300 hover:shadow-md">
-  <div class="flex items-start space-x-2 sm:space-x-4">
-    <!-- Avatar -->
-    <%= image_tag avatar_image_url(comment.user.avatar.image), alt: comment.user.avatar.blob.filename.to_s, class: 'w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm flex-shrink-0', height: '40', width: '40' %>
-
-    <div class="flex-grow min-w-0">
-      <div class="flex items-start sm:items-center justify-between mb-2 gap-2">
-        <div class="min-w-0 flex-1">
-          <!-- Username and timestamp -->
-          <%= link_to comment.username, profile_path(comment.user.sqid), turbo_drive_visit_data.merge(class: "text-fg font-semibold text-sm sm:text-base hover:text-fg-brand hover:underline transition-all duration-200 block truncate") %>
-          <%= tag.p l(comment.created_at, format: :short).downcase, class: "text-fg-subtle text-xs mt-1" %>
-        </div>
-
-        <!-- Edit and Delete icons -->
-        <div class="flex space-x-1 sm:space-x-2 flex-shrink-0">
-          <%= link_to edit_comment_path(comment), data: { turbo_stream: "" }, class: "text-fg-subtle hover:text-fg-secondary transition duration-300 p-1" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-            </svg>
-          <% end if current_user&.id == comment.user_id %>
-          <%= link_to comment_path(comment), data: { "turbo-method": :delete, turbo_stream: "" }, class: "text-fg-subtle hover:text-fg-secondary transition duration-300 p-1" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-            </svg>
-          <% end if current_user&.id == comment.user_id %>
-        </div>
-      </div>
-
-      <!-- Comment content -->
-      <%= turbo_frame_tag "comment-content-#{comment.id}" do %>
-        <%= tag.p comment.content, class: "whitespace-pre-line text-fg-secondary text-sm leading-relaxed pr-2 sm:pr-4 pb-2 break-words" %>
-      <% end %>
-
-      <%= turbo_frame_tag "comment-reply-#{comment.id}" do %>
-        <%= render 'comments/actions', comment:, commentable: @commentable %>
-      <% end if current_user && !comment.parent_id.present? %>
+<%# locals: (comment:, commentable: comment.commentable) %>
+<article class="flex flex-col gap-4 rounded-[14px] bg-main p-3 ring-1 ring-inset ring-line">
+  <header class="flex items-center gap-2">
+    <%= image_tag avatar_image_url(comment.user.avatar.image), alt: '', class: 'size-8 shrink-0 rounded-full object-cover', height: '32', width: '32' %>
+    <div class="min-w-0 flex-1">
+      <p class="truncate text-sm/5 font-medium text-fg">
+        <%= link_to comment.username, profile_path(comment.user.sqid), turbo_drive_visit_data.merge(class: 'hover:text-fg-brand hover:underline') %>
+        <% if comment_by_fiction_team?(comment, commentable) %>
+          <span>· <%= t('comments.team_tag') %></span>
+        <% end %>
+      </p>
+      <%= tag.p comment_posted_ago(comment), class: 'text-[10px]/4 text-fg-secondary' %>
     </div>
-  </div>
-</div>
+
+    <% if current_user&.id == comment.user_id %>
+      <div class="flex shrink-0 gap-1">
+        <%= link_to edit_comment_path(comment), data: { turbo_stream: '' }, class: 'rounded p-1 text-fg-subtle transition-colors hover:text-fg-secondary', aria: { label: t('chapters.reader_comments_drawer.edit') } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+          </svg>
+        <% end %>
+        <%= link_to comment_path(comment), data: { turbo_method: :delete, turbo_stream: '' }, class: 'rounded p-1 text-fg-subtle transition-colors hover:text-fg-secondary', aria: { label: t('chapters.reader_comments_drawer.delete') } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+      </div>
+    <% end %>
+  </header>
+
+  <%= turbo_frame_tag "comment-content-#{comment.id}", class: 'block' do %>
+    <%= tag.p comment.content, class: Comments::PresentationHelper::COMMENT_TEXT_CLASS %>
+  <% end %>
+
+  <% if current_user %>
+    <%= turbo_frame_tag "comment-reply-#{comment.id}", class: 'flex [&>form]:w-full' do %>
+      <%= render 'comments/actions', comment:, commentable: %>
+    <% end %>
+  <% else %>
+    <div class="flex">
+      <%= render 'comments/reply_button', href: comment_login_path(commentable), html: turbo_drive_visit_data %>
+    </div>
+  <% end %>
+</article>

@@ -1,0 +1,8 @@
+<%# locals: (href:, html: {}) %>
+<%= link_to href, **html.deep_merge(class: 'inline-flex items-center gap-1 rounded-sm text-xs/5 font-medium text-fg-muted transition-colors hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong') do %>
+  <svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="m9 17-5-5 5-5" />
+    <path d="M20 18v-2a4 4 0 0 0-4-4H4" />
+  </svg>
+  <%= t('chapters.reader_comments_drawer.reply') %>
+<% end %>

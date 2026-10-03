@@ -1,9 +1,11 @@
-<%= turbo_frame_tag "reply-#{reply.id}" do %>
-  <div data-controller="flowbite" class="<%= local_assigns[:drawer] ? 'ml-4 border-l-2 border-line pl-3 sm:ml-6 sm:pl-4' : '' %>">
-    <% if local_assigns[:drawer] %>
+<% if local_assigns[:drawer] %>
+  <%= turbo_frame_tag "reply-#{reply.id}" do %>
+    <div data-controller="flowbite" class="ml-4 border-l-2 border-line pl-3 sm:ml-6 sm:pl-4">
       <%= render 'comments/comment_drawer_body', comment: reply, commentable: commentable %>
-    <% else %>
-      <%= render 'comments/comment_body', comment: reply %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+<% else %>
+  <%= turbo_frame_tag "reply-#{reply.id}", class: 'block', hidden: local_assigns[:hidden], data: { reveal_target: 'item' } do %>
+    <%= render 'comments/comment_body', comment: reply, commentable: %>
+  <% end %>
 <% end %>

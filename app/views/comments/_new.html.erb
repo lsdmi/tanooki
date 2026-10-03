@@ -1,74 +1,91 @@
-<div class="<%= local_assigns.fetch(:drawer, false) || (commentable.is_a?(Chapter) && immersive_comments_drawer_form?) ? 'mb-0' : 'mb-4' %>">
-  <% if comment.errors.any? %>
-    <div class="bg-red-50 dark:bg-red-900 border-l-4 border-red-400 p-3 mb-4">
-      <div class="flex items-center">
-        <div class="flex-shrink-0 mr-2">
-          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
-            <%= comment.errors.messages[:content].to_sentence %>
-          </h3>
+<% drawer_form = local_assigns.fetch(:drawer, false) || (commentable.is_a?(Chapter) && immersive_comments_drawer_form?) %>
+<% content_error = comment.errors[:content].any? %>
+<%= f.hidden_field :commentable_id, value: commentable.id %>
+<%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
+<%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
+<% if drawer_form %>
+  <div class="mb-0">
+    <% if comment.errors.any? %>
+      <div class="bg-red-50 dark:bg-red-900 border-l-4 border-red-400 p-3 mb-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 mr-2">
+            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+              <%= comment.errors.messages[:content].to_sentence %>
+            </h3>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <%= f.hidden_field :commentable_id, value: commentable.id %>
-  <%= f.hidden_field :commentable_type, value: application_record_child(commentable) %>
-  <%= f.hidden_field :parent_id, value: comment.parent_id if comment.parent_id.present? %>
+    <%= f.text_area :content,
+        id: "comment-field-#{comment.id || 'new'}",
+        rows: 3,
+        class: "reader-comments-drawer__input w-full resize-none rounded-lg border border-line bg-card p-3 text-sm text-fg placeholder-fg-subtle transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 #{'border-red-500 dark:border-red-700' if content_error}",
+        placeholder: t('chapters.reader_comments_drawer.placeholder'),
+        required: true %>
 
-  <% drawer_form = local_assigns.fetch(:drawer, false) || (commentable.is_a?(Chapter) && immersive_comments_drawer_form?) %>
-  <% comment_field_class = if drawer_form
-    "reader-comments-drawer__input w-full resize-none rounded-lg border border-line bg-card p-3 text-sm text-fg placeholder-fg-subtle transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
-  else
-    "w-full p-3 border border-line-strong rounded-lg focus:ring-2 focus:ring-line-strong focus:border-transparent transition duration-300 bg-card text-fg placeholder-fg-subtle #{'border-red-500 dark:border-red-700' if comment.errors[:content].any?}"
-  end %>
-  <%= f.text_area :content,
-      id: drawer_form ? "comment-field-#{comment.id || 'new'}" : 'comment',
-      rows: 3,
-      class: comment_field_class,
-      placeholder: drawer_form ? t('chapters.reader_comments_drawer.placeholder') : 'Лишіть коментар...',
-      required: true %>
-
-  <div class="mt-3 flex <%= drawer_form ? 'flex-col space-y-2' : 'flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3' %> justify-end">
-    <% if drawer_form %>
+    <div class="mt-3 flex flex-col space-y-2 justify-end">
       <%= ui_button(as: :submit, full_width: true, size: :lg) do %>
         <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
         </svg>
         <span><%= t('chapters.reader_comments_drawer.submit') %></span>
       <% end %>
-    <% else %>
-      <%= ui_button(as: :submit, label: 'Надіслати', size: :lg, html: { class: 'w-full sm:w-auto' }) %>
-    <% end %>
 
-    <% if comment.new_record? && comment.parent_id.present? %>
-      <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
-        <%= ui_button(as: :link,
-                      href: cancel_reply_comment_path(comment.parent_id),
-                      variant: :outline,
-                      size: :lg,
-                      full_width: drawer_form,
-                      html: { class: (drawer_form ? nil : 'w-full sm:w-auto'), data: { turbo_stream: '' } }) do %>
-          <span>Скасувати</span>
+      <% if comment.new_record? && comment.parent_id.present? %>
+        <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
+          <%= ui_button(as: :link, href: cancel_reply_comment_path(comment.parent_id), variant: :outline, size: :lg,
+                        full_width: true, html: { data: { turbo_stream: '' } }) do %>
+            <span>Скасувати</span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
 
-    <% if comment.persisted? %>
-      <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
-        <%= ui_button(as: :link,
-                      href: cancel_edit_comment_path(comment),
-                      variant: :outline,
-                      size: :lg,
-                      full_width: drawer_form,
-                      html: { class: (drawer_form ? nil : 'w-full sm:w-auto'), data: { turbo_stream: '' } }) do %>
-          <span>Скасувати</span>
+      <% if comment.persisted? %>
+        <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
+          <%= ui_button(as: :link, href: cancel_edit_comment_path(comment), variant: :outline, size: :lg,
+                        full_width: true, html: { data: { turbo_stream: '' } }) do %>
+            <span>Скасувати</span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
-</div>
+<% else %>
+  <%# Figma «Comment composer»: the field grows with the text and the actions sit inside the outline. %>
+  <div class="flex flex-col gap-3 rounded-xl bg-main p-3 ring-1 ring-inset transition-shadow focus-within:ring-brand <%= content_error ? 'ring-status-danger-solid' : 'ring-line' %>">
+    <%= f.text_area :content,
+        id: comment.persisted? ? "comment-field-#{comment.id}" : (comment.parent_id.present? ? "comment-reply-field-#{comment.parent_id}" : 'comment'),
+        rows: 1,
+        class: 'block max-h-60 min-h-5 w-full resize-none border-0 bg-transparent p-0 text-sm/5 text-fg placeholder-fg-muted field-sizing-content focus:outline-none focus:ring-0 not-supports-[field-sizing:content]:min-h-20',
+        placeholder: t('comments.placeholder'),
+        aria: { label: t('comments.placeholder'), invalid: content_error || nil },
+        required: true %>
+    <% if content_error %>
+      <p class="text-xs/5 text-status-danger-subtle-fg"><%= comment.errors.messages[:content].to_sentence %></p>
+    <% end %>
+
+    <div class="flex flex-wrap items-center justify-end gap-2">
+      <% if comment.new_record? && comment.parent_id.present? %>
+        <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
+          <%= ui_button(as: :link, href: cancel_reply_comment_path(comment.parent_id), variant: :ghost, size: :sm,
+                        label: 'Скасувати', html: { data: { turbo_stream: '' } }) %>
+        <% end %>
+      <% end %>
+
+      <% if comment.persisted? %>
+        <%= turbo_frame_tag "cancel-edit-comment-#{comment.id}" do %>
+          <%= ui_button(as: :link, href: cancel_edit_comment_path(comment), variant: :ghost, size: :sm,
+                        label: 'Скасувати', html: { data: { turbo_stream: '' } }) %>
+        <% end %>
+      <% end %>
+
+      <%= ui_button(as: :submit, label: 'Надіслати', size: :sm) %>
+    </div>
+  </div>
+<% end %>

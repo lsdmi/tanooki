@@ -29,7 +29,7 @@
       <% end %>
 
       <%= render layout: 'tab_panel', locals: { id: :chapters, active_tab: } do %>
-        <section class="bg-surface-strong rounded-lg shadow-md p-6 border border-line">
+        <section class="flex flex-col gap-6 md:gap-5">
           <% if fiction_has_listable_chapters?(@fiction, current_user) %>
             <%= turbo_frame_tag 'sort-chapters' do %>
               <%= render 'chapters', fiction: @fiction, order: @show_presenter.order %>
@@ -43,11 +43,16 @@
 
       <%# A lazy frame in a hidden panel never intersects, so comments load when their tab first opens. %>
       <%= render layout: 'tab_panel', locals: { id: :comments, active_tab: } do %>
-        <section class="bg-card rounded-lg shadow-md p-6 border border-line">
-          <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy do %>
-            <p class="py-6 text-center text-sm text-fg-muted">Завантаження коментарів…</p>
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-10 xl:grid-cols-[minmax(0,1fr)_25rem]">
+          <%= turbo_frame_tag 'fiction_comments', src: comments_fiction_path(@fiction), loading: :lazy, class: 'flex min-w-0 flex-col gap-6' do %>
+            <p class="py-6 text-center text-sm text-fg-muted"><%= t('fictions.comments.loading') %></p>
           <% end %>
-        </section>
+          <aside class="hidden min-w-0 flex-col gap-6 lg:flex">
+            <%= render Fictions::RatingCardComponent.new(fiction: @fiction, user: current_user, heading_id: 'fiction-comments-rating-title') %>
+            <%= render Fictions::SupportCardComponent.new(fiction: @fiction, heading_id: 'fiction-comments-support-title') %>
+            <%= render 'comment_rules' %>
+          </aside>
+        </div>
       <% end %>
 
       <% if @fiction.scanlators.any? %>

@@ -1,6 +1,60 @@
-<%= turbo_frame_tag 'fiction_comments' do %>
-  <%= render 'comments/index',
-             comments: @show_presenter.comments,
-             comment: @show_presenter.new_comment,
-             commentable: @commentable %>
+<% presenter = @show_presenter %>
+<% if presenter.comments_page > 1 %>
+  <%= turbo_frame_tag "comments_page_#{presenter.comments_page}" do %>
+    <%= render 'fictions/comments_page', fiction: @fiction, presenter: %>
+  <% end %>
+<% else %>
+  <%= turbo_frame_tag 'fiction_comments' do %>
+    <div class="flex items-center justify-between gap-3">
+      <h2 class="text-base/6 font-semibold text-fg"><%= t('fictions.comments.count', count: @fiction.comments_count) %></h2>
+      <% if presenter.comments.size > 1 || presenter.more_comments? %>
+        <% newest_first = presenter.comments_order == :desc %>
+        <%= ui_button(as: :link, variant: :outline, size: :lg,
+                      href: comments_fiction_path(@fiction, order: (newest_first ? :asc : :desc)),
+                      html: { title: t(newest_first ? 'fictions.comments.show_oldest' : 'fictions.comments.show_newest'),
+                              class: 'shrink-0' }) do %>
+          <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 16 4 4 4-4" /><path d="M7 20V4" /><path d="m21 8-4-4-4 4" /><path d="M17 4v16" />
+          </svg>
+          <%= t(newest_first ? 'fictions.chapters_tab.newest' : 'fictions.chapters_tab.oldest') %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if current_user %>
+      <div class="flex gap-3">
+        <%= image_tag avatar_image_url(current_user.avatar.image), alt: '', class: 'hidden size-10 shrink-0 rounded-full object-cover md:block', height: '40', width: '40' %>
+        <%= turbo_frame_tag 'new_comment', class: 'block min-w-0 flex-1' do %>
+          <%= simple_form_for presenter.new_comment, url: comments_path, method: :post, html: { class: 'comment form' } do |f| %>
+            <%= render 'comments/new', comment: presenter.new_comment, commentable: @fiction, f: %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="flex flex-col gap-3 rounded-xl bg-main p-4 ring-1 ring-inset ring-line md:flex-row md:items-center md:gap-4">
+        <div class="flex min-w-0 flex-1 flex-col gap-1">
+          <p class="text-sm/5 font-medium text-fg"><%= t('fictions.comments.guest_title') %></p>
+          <p class="text-sm/5 text-fg-secondary"><%= t('fictions.comments.guest_body') %></p>
+        </div>
+        <%= ui_button(as: :link, size: :sm, label: t('fictions.comments.guest_action'),
+                      href: comment_login_path(@fiction),
+                      html: turbo_drive_visit_data.merge(class: 'w-full shrink-0 md:w-auto')) %>
+      </div>
+    <% end %>
+
+    <%# The list frame exists even when empty: the first new comment is prepended into it. %>
+    <%= turbo_frame_tag 'comments', class: 'peer flex flex-col gap-3 [&:not(:has(article))]:hidden' do %>
+      <%= render 'fictions/comments_page', fiction: @fiction, presenter: %>
+    <% end %>
+
+    <div class="flex flex-col items-center gap-3 rounded-xl bg-surface px-6 py-8 text-center ring-1 ring-inset ring-brand peer-has-[article]:hidden md:py-12">
+      <span class="flex size-12 items-center justify-center rounded-full bg-brand-subtle text-fg-brand">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+        </svg>
+      </span>
+      <p class="text-2xl/8 font-bold text-fg"><%= t('fictions.comments.empty_title') %></p>
+      <p class="text-sm/5 text-fg-secondary"><%= t('fictions.comments.empty_body') %></p>
+    </div>
+  <% end %>
 <% end %>

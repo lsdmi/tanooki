@@ -25,7 +25,8 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    if (event.target.closest("[data-epub-download-target]")) return
+    // The EPUB button swaps its own markup on click, so by now event.target may be detached and closest() misses it.
+    if (event.composedPath().some((node) => node instanceof Element && node.matches("[data-epub-download-target]"))) return
 
     const container = event.currentTarget.closest(".accordion")
     if (!container) return

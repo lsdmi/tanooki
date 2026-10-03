@@ -1,0 +1,14 @@
+<section class="flex flex-col gap-3 rounded-xl bg-main p-4 ring-1 ring-inset ring-line" aria-labelledby="fiction-comment-rules-title">
+  <div class="flex items-center gap-2">
+    <svg class="size-5 shrink-0 text-fg-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0" /><path d="M12 16v-4" /><path d="M12 8h.01" />
+    </svg>
+    <h2 id="fiction-comment-rules-title" class="text-base/6 font-semibold text-fg"><%= t('fictions.comments.rules.title') %></h2>
+  </div>
+  <ul class="flex list-outside list-disc flex-col gap-2 pl-5 text-sm/5 text-fg-secondary marker:text-fg-muted">
+    <% %i[spoilers respect language spam].each do |rule| %>
+      <li><%= t(rule, scope: 'fictions.comments.rules') %></li>
+    <% end %>
+  </ul>
+  <%= link_to t('fictions.comments.rules.all'), rules_path, class: 'self-start rounded-sm text-sm/5 font-medium text-fg-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' %>
+</section>

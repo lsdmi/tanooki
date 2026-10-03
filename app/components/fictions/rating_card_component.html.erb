@@ -1,8 +1,8 @@
-<%= tag.section class: RATING_CARD, aria: { labelledby: 'fiction-rating-title' },
+<%= tag.section class: RATING_CARD, aria: { labelledby: heading_id },
                 data: ({ controller: 'rating', rating_url_value: fiction_fiction_ratings_path(fiction.id),
                          rating_on_class: STAR_ON, rating_off_class: STAR_OFF } if user) do %>
   <div class="flex items-center justify-between gap-2">
-    <h2 id="fiction-rating-title" class="<%= SMALL_TITLE %>"><%= t('fictions.about.rating.title') %></h2>
+    <h2 id="<%= heading_id %>" class="<%= SMALL_TITLE %>"><%= t('fictions.about.rating.title') %></h2>
     <%= render Ui::InfoHintComponent.new(label: t('fictions.about.rating.info'), text: t('fictions.about.rating.info_text'),
                                          icon_only: true, align: :end) %>
   </div>

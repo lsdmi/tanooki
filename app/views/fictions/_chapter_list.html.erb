@@ -3,7 +3,7 @@
 <%# Guests on the fiction page get plain rows; the drawer always has progress (current chapter, toggles). %>
 <% drawer_progress = reader_chapter_drawer_progress(fiction, current_chapter: local_assigns[:current_chapter]) if reader_drawer || user_signed_in? %>
 <div class="<%= reader_drawer ? '' : 'rounded-lg' %>">
-  <div id="chapters-list" class="<%= reader_drawer ? '' : 'space-y-6' %>">
+  <div id="chapters-list">
     <%= render 'fictions/chapter_collection',
                fiction: fiction,
                order: order,
