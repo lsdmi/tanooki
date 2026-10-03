@@ -9,15 +9,13 @@ module Pokemons
     self.use_transactional_tests = false
 
     setup do
-      # Draw the lazily loaded routes before two threads render battle logs that need them at the same moment.
-      Rails.application.routes.url_helpers.root_path
       @user = users(:user_one)
       @user.update!(pokemon_last_catch: 5.hours.ago, pokemon_last_training: 5.hours.ago)
     end
 
     teardown do
       PokemonEncounter.where(user_id: @user.id).delete_all
-      PokemonBattleLog.where(attacker_id: @user.id).find_each(&:destroy)
+      PokemonBattle.where(attacker_id: @user.id).delete_all
       # Fixture rows were changed outside a transaction; make the next test class reload them.
       ActiveRecord::FixtureSet.reset_cache
     end
@@ -53,7 +51,7 @@ module Pokemons
       results = race { BattleStart.new(fresh_user).call }
 
       assert_equal 1, results.count(:fought)
-      assert_equal 1, PokemonBattleLog.where(attacker_id: @user.id).count
+      assert_equal 1, PokemonBattle.where(attacker_id: @user.id).count
     end
 
     private

@@ -38,6 +38,13 @@ module Pokemons
 
         assert_equal 100, @attacker.reload.battle_win_rate
       end
+
+      test 'returns the change each side actually got' do
+        @attacker.update!(battle_win_rate: 99)
+        @defender.update!(battle_win_rate: 99)
+
+        assert_equal({ @attacker.id => 1, @defender.id => -2 }, @service.call)
+      end
     end
   end
 end

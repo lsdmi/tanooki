@@ -49,7 +49,7 @@ module Pokemons
     test 'with pokemons sets battle history from the user' do
       user = users(:user_one)
       tab = StudioTab.new(user)
-      log = user.latest_battle_log
+      log = user.latest_battle
 
       if log.nil?
         assert_nil tab.battle_history

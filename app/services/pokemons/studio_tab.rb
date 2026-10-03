@@ -40,7 +40,7 @@ module Pokemons
 
     def fetch_battle_history
       Rails.cache.fetch("user:#{user.id}:battle_history", expires_in: 5.minutes) do
-        user.latest_battle_log
+        user.latest_battle
       end
     end
   end

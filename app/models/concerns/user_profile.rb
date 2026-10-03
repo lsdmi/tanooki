@@ -41,12 +41,11 @@ module UserProfile
   end
 
   def battle_victory_count
-    attacker_battle_logs.where(winner: self).count +
-      defender_battle_logs.where(winner: self).count
+    PokemonBattle.where(winner_id: id).count + PokemonBattleLog.where(winner_id: id).count
   end
 
   def battle_total_count
-    attacker_battle_logs.count + defender_battle_logs.count
+    PokemonBattle.involving(self).count + legacy_battle_logs.count
   end
 
   def dex_leader_rank

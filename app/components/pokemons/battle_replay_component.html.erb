@@ -1,0 +1,50 @@
+<div class="relative mx-auto overflow-hidden">
+  <div class="flex flex-col items-center px-4 sm:px-10 py-8 text-center relative z-10">
+    <h1 class="text-lg font-extrabold tracking-tight text-fg uppercase mb-2">
+      Вітаємо на Арені!
+    </h1>
+    <p class="text-xs sm:text-sm text-fg-secondary font-medium">
+      На вас чекає <span class="token-raw text-cyan-700 dark:text-cyan-400 font-semibold">епічне протистояння</span> між
+      <span class="text-sm sm:text-base font-semibold text-fg"><%= battle.attacker.name %></span>
+      та
+      <span class="text-sm sm:text-base font-semibold text-fg"><%= battle.defender.name %></span>
+    </p>
+  </div>
+</div>
+<% result = capture do %>
+  <div class="px-8 py-5 rounded-xl shadow text-center inline-block border border-line">
+    <h2 class="text-sm sm:text-base font-extrabold text-fg mb-2 uppercase tracking-wide">
+      Бій завершено!
+    </h2>
+    <p class="text-xs sm:text-sm text-fg-secondary font-medium">
+      Останній покемон
+      <span class="font-semibold text-status-danger-solid"><%= loser_name %></span>
+      вибуває з гри —
+      <span class="token-raw font-semibold text-cyan-700 dark:text-cyan-400"><%= winner_name %></span>
+      здобуває перемогу у цьому поєдинку!
+    </p>
+  </div>
+<% end %>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
+  <% rounds.each do |round| %>
+    <div class="flex justify-center text-center">
+      <div class="mb-1 px-2 py-2 border border-line rounded-lg shadow dark:shadow-lg grid grid-cols-3 gap-1 items-center max-w-xs relative">
+        <span class="absolute top-1 left-2 text-[6px] sm:text-[10px] text-fg-subtle font-semibold bg-main/80 px-1 rounded">
+          Раунд <%= round.number %>
+        </span>
+        <%= avatar(round.attacker) %>
+        <div class="flex flex-col items-center justify-center px-1">
+          <span class="text-[10px] sm:text-xs font-semibold mb-0.5 uppercase tracking-wide <%= round.victory ? 'token-raw text-cyan-700 dark:text-cyan-400' : 'text-status-danger-solid' %>">
+            <%= round.victory ? 'Перемога' : 'Поразка' %>
+          </span>
+          <span class="text-[6px] sm:text-[10px] text-fg-secondary font-light leading-tight">
+            <%= round.victory ? "ваш #{round.attacker&.name} святкує успіх" : "ваш #{round.attacker&.name} вибуває з бою" %>
+          </span>
+        </div>
+        <%= avatar(round.defender) %>
+      </div>
+    </div>
+  <% end %>
+  <%= result if result_in_grid? %>
+</div>
+<%= result unless result_in_grid? %>

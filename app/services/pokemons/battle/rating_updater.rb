@@ -20,11 +20,13 @@ module Pokemons
         @loser_id = loser_id
       end
 
+      # Returns the change each user got, by id (after clamping to 0..100).
       def call
-        winner = User.find(winner_id)
-        loser = User.find(loser_id)
+        users = [User.find(winner_id), User.find(loser_id)]
+        before = users.map(&:battle_win_rate)
 
-        update_battle_rates(winner, loser)
+        update_battle_rates(*users)
+        users.zip(before).to_h { |user, rate| [user.id, user.battle_win_rate - rate] }
       end
 
       private

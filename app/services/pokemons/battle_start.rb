@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # One PvP battle against the attacker's pinned opponent. Experience, log, ratings, and pin release commit together.
+  # One PvP battle against the attacker's pinned opponent. Simulated first; then experience, the battle row, ratings,
+  # and the pin release commit together.
   class BattleStart
     def initialize(attacker)
       @attacker = attacker
@@ -27,17 +28,18 @@ module Pokemons
     end
 
     def fight(defender)
-      run = run_battle(defender)
-      PokemonBattleLog.create!(attacker_id: @attacker.id, defender_id: defender.id, winner_id: run.winner_id,
-                               details: run.fight_details)
-      Battle::RatingUpdater.new(winner_id: run.winner_id, loser_id: run.loser_id).call
+      teams = BattleTeams.new(@attacker, defender)
+      seed = PokemonBattle.new_seed
+      result = Engine.simulate(attacker: teams.snapshot(:attacker), defender: teams.snapshot(:defender), seed:)
+      teams.save_experience(result.experience)
+      PokemonBattle.record!(teams:, seed:, result:, rating_deltas: update_ratings(result, defender))
       Matchmaker.new(@attacker).release!
       :fought
     end
 
-    def run_battle(defender)
-      BattleRun.new(attacker_pokemons: @attacker.user_pokemons, defender_pokemons: defender.user_pokemons,
-                    attacker_id: @attacker.id, defender_id: defender.id).tap(&:start_battle)
+    def update_ratings(result, defender)
+      winner, loser = result.attacker_won? ? [@attacker, defender] : [defender, @attacker]
+      Battle::RatingUpdater.new(winner_id: winner.id, loser_id: loser.id).call
     end
   end
 end

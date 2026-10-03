@@ -8,7 +8,7 @@
     </div>
     <% if battle_history.present? %>
       <%= turbo_frame_tag "pokemon-history-list" do %>
-        <%= render 'users/pokemons/history_record', battle_log: battle_history %>
+        <%= render 'users/pokemons/history_record', battle: battle_history %>
       <% end %>
     <% else %>
       <%= turbo_frame_tag "pokemon-history-list" do %>

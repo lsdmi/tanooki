@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_02_150100) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_03_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -229,6 +229,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150100) do
     t.index ["attacker_id"], name: "index_pokemon_battle_logs_on_attacker_id"
     t.index ["defender_id"], name: "index_pokemon_battle_logs_on_defender_id"
     t.index ["winner_id"], name: "index_pokemon_battle_logs_on_winner_id"
+  end
+
+  create_table "pokemon_battles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "attacker_id", null: false
+    t.json "attacker_team", null: false
+    t.datetime "created_at", null: false
+    t.bigint "defender_id", null: false
+    t.json "defender_team", null: false
+    t.integer "engine_version", limit: 2, null: false
+    t.json "events", null: false
+    t.integer "rating_delta_attacker", limit: 1, null: false
+    t.integer "rating_delta_defender", limit: 1, null: false
+    t.bigint "seed", null: false
+    t.bigint "winner_id", null: false
+    t.index ["attacker_id", "created_at"], name: "index_pokemon_battles_on_attacker_id_and_created_at"
+    t.index ["defender_id", "created_at"], name: "index_pokemon_battles_on_defender_id_and_created_at"
+    t.index ["winner_id"], name: "index_pokemon_battles_on_winner_id"
   end
 
   create_table "pokemon_encounters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -626,6 +643,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150100) do
   add_foreign_key "pokemon_battle_logs", "users", column: "attacker_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "defender_id"
   add_foreign_key "pokemon_battle_logs", "users", column: "winner_id"
+  add_foreign_key "pokemon_battles", "users", column: "attacker_id", on_delete: :cascade
+  add_foreign_key "pokemon_battles", "users", column: "defender_id", on_delete: :cascade
+  add_foreign_key "pokemon_battles", "users", column: "winner_id", on_delete: :cascade
   add_foreign_key "pokemon_encounters", "pokemons", on_delete: :cascade
   add_foreign_key "pokemon_encounters", "users", on_delete: :cascade
   add_foreign_key "pokemon_type_relations", "pokemon_types"

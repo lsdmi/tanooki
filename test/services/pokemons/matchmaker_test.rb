@@ -4,6 +4,8 @@ require 'test_helper'
 
 module Pokemons
   class MatchmakerTest < ActiveSupport::TestCase
+    include PokemonBattleHelpers
+
     setup do
       @user = users(:user_one)
       @rival = users(:user_two)
@@ -62,7 +64,7 @@ module Pokemons
     end
 
     test 'reroll is refused while the team rests after a battle' do
-      PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
+      create_pokemon_battle(attacker: @user, defender: @rival)
 
       assert_not Matchmaker.new(@user).reroll!
       assert_nil @user.reload.opponent_rerolled_at

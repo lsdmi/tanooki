@@ -4,26 +4,33 @@ require 'test_helper'
 
 module Pokemons
   class BattleLeaderboardCooldownTest < ActiveSupport::TestCase
-    test 'call returns boolean for a user' do
-      result = BattleLeaderboardCooldown.call(users(:user_one))
+    include PokemonBattleHelpers
 
-      assert_includes [true, false], result
+    setup do
+      @user = users(:user_one)
+      @rival = users(:user_two)
     end
 
-    test 'call is true after a new battle even when battle_logs were already loaded' do
-      user = users(:user_one)
-      defender = users(:user_two)
+    test 'off without a recent battle' do
+      assert_not BattleLeaderboardCooldown.call(@user)
+    end
 
-      user.attacker_battle_logs.to_a
-      user.defender_battle_logs.to_a
+    test 'on right after a battle, on either side' do
+      create_pokemon_battle(attacker: @rival, defender: @user)
 
-      PokemonBattleLog.create!(
-        attacker: user,
-        defender:,
-        winner: user
-      )
+      assert BattleLeaderboardCooldown.call(@user)
+    end
 
-      assert BattleLeaderboardCooldown.call(user)
+    test 'off once the cooldown has passed' do
+      create_pokemon_battle(attacker: @user, defender: @rival, created_at: (Balance::BATTLE_COOLDOWN + 1.minute).ago)
+
+      assert_not BattleLeaderboardCooldown.call(@user)
+    end
+
+    test 'a battle from before pokemon_battles still counts' do
+      PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
+
+      assert BattleLeaderboardCooldown.call(@user)
     end
   end
 end

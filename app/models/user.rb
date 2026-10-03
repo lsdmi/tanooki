@@ -60,19 +60,18 @@ class User < ApplicationRecord
     )
   end
 
+  # Battles before pokemon_battles live in pokemon_battle_logs until Phase 2.4 converts them; reads cover both.
   def last_battle_at
-    PokemonBattleLog
-      .where(attacker_id: id)
-      .or(PokemonBattleLog.where(defender_id: id))
-      .maximum(:updated_at)
+    [PokemonBattle.involving(self).maximum(:created_at), legacy_battle_logs.maximum(:updated_at)].compact.max
   end
 
-  def latest_battle_log
-    logs = PokemonBattleLog
-           .includes(:rich_text_details, :attacker, :defender, :winner)
-           .where('attacker_id = :user_id OR defender_id = :user_id', user_id: id)
-           .order(created_at: :desc)
-    logs.first
+  def latest_battle
+    PokemonBattle.involving(self).includes(:attacker, :defender, :winner).order(created_at: :desc, id: :desc).first ||
+      legacy_battle_logs.includes(:rich_text_details, :attacker, :defender, :winner).order(created_at: :desc).first
+  end
+
+  def legacy_battle_logs
+    PokemonBattleLog.where(attacker_id: id).or(PokemonBattleLog.where(defender_id: id))
   end
 
   def manages_chapter?(chapter)

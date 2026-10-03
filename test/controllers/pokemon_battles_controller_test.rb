@@ -18,7 +18,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     post battle_start_path
 
     assert_response :success
-    assert_equal [@attacker.id, @defender.id], PokemonBattleLog.last.values_at(:attacker_id, :defender_id)
+    assert_equal [@attacker.id, @defender.id], PokemonBattle.last.values_at(:attacker_id, :defender_id)
   end
 
   test 'starting a battle ignores a defender id from the form' do
@@ -26,7 +26,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
 
     post battle_start_path, params: { defender: User.find(101).id }
 
-    assert_equal @defender.id, PokemonBattleLog.last.defender_id
+    assert_equal @defender.id, PokemonBattle.last.defender_id
   end
 
   test 'starting a battle releases the pin' do
@@ -48,11 +48,11 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'battle without a pinned opponent is refused' do
-    assert_no_difference('PokemonBattleLog.count') do
+    assert_no_difference('PokemonBattle.count') do
       post battle_start_path(format: :turbo_stream), params: { defender: @defender.id }
     end
 
-    assert_includes @response.body, PokemonBattleLog::POTENTIAL_FRAUD_ALERT
+    assert_includes @response.body, PokemonBattle::POTENTIAL_FRAUD_ALERT
   end
 
   test 'second battle inside the cooldown is refused' do
@@ -60,7 +60,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     post battle_start_path
     pin_opponent
 
-    assert_no_difference('PokemonBattleLog.count') do
+    assert_no_difference('PokemonBattle.count') do
       post battle_start_path(format: :turbo_stream)
     end
   end
@@ -76,7 +76,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
   test 'guest should not start a battle' do
     sign_out @attacker
 
-    assert_no_difference('PokemonBattleLog.count') do
+    assert_no_difference('PokemonBattle.count') do
       post battle_start_path(format: :turbo_stream)
     end
 
