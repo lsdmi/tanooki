@@ -1,177 +1,177 @@
 blob_one:
   id: 1
   key: blob_one
-  filename: <%= Faker::Book.title %>
+  filename: blob_one.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_one_checksum
   created_at: <%= Time.now %>
 
 blob_two:
   id: 2
   key: blob_two
-  filename: <%= Faker::Book.title %>
+  filename: blob_two.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_two_checksum
   created_at: <%= Time.now %>
 
 blob_four:
   id: 4
   key: blob_four
-  filename: <%= Faker::Book.title %>
+  filename: blob_four.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_four_checksum
   created_at: <%= Time.now %>
 
 blob_five:
   id: 5
   key: blob_five
-  filename: <%= Faker::Book.title %>
+  filename: blob_five.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_five_checksum
   created_at: <%= Time.now %>
 
 blob_six:
   id: 6
   key: blob_six
-  filename: <%= Faker::Book.title %>
+  filename: blob_six.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_six_checksum
   created_at: <%= Time.now %>
 
 blob_eight:
   id: 8
   key: blob_eight
-  filename: <%= Faker::Book.title %>
+  filename: blob_eight.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_eight_checksum
   created_at: <%= Time.now %>
 
 blob_thirteen:
   id: 13
   key: blob_thirteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_thirteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_thirteen_checksum
   created_at: <%= Time.now %>
 
 blob_fourteen:
   id: 14
   key: blob_fourteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_fourteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_fourteen_checksum
   created_at: <%= Time.now %>
 
 blob_fifteen:
   id: 15
   key: blob_fifteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_fifteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_fifteen_checksum
   created_at: <%= Time.now %>
 
 blob_sixteen:
   id: 16
   key: blob_sixteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_sixteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_sixteen_checksum
   created_at: <%= Time.now %>
 
 blob_seventeen:
   id: 17
   key: blob_seventeen
-  filename: <%= Faker::Book.title %>
+  filename: blob_seventeen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_seventeen_checksum
   created_at: <%= Time.now %>
 
 blob_eighteen:
   id: 18
   key: blob_eighteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_eighteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_eighteen_checksum
   created_at: <%= Time.now %>
 
 blob_nineteen:
   id: 19
   key: blob_nineteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_nineteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_nineteen_checksum
   created_at: <%= Time.now %>
 
 blob_twenty:
   id: 20
   key: blob_twenty
-  filename: <%= Faker::Book.title %>
+  filename: blob_twenty.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_twenty_checksum
   created_at: <%= Time.now %>
 
 blob_twenty_one:
   id: 21
   key: blob_twenty_one
-  filename: <%= Faker::Book.title %>
+  filename: blob_twenty_one.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_twenty_one_checksum
   created_at: <%= Time.now %>
 
 blob_fiction_eighteen:
   id: 22
   key: blob_fiction_eighteen
-  filename: <%= Faker::Book.title %>
+  filename: blob_fiction_eighteen.png
   content_type: image/png
-  metadata: <%= Faker::Book.title %>
+  metadata: '{}'
   service_name: local
   byte_size: 44040
-  checksum: <%= Faker::Book.title %>
+  checksum: blob_fiction_eighteen_checksum
   created_at: <%= Time.now %>
 
 

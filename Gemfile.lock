@@ -186,8 +186,6 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    faker (3.8.0)
-      i18n (>= 1.8.11, < 2)
     faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -598,7 +596,6 @@ DEPENDENCIES
   devise
   dotenv-rails
   erb_lint
-  faker
   fastimage
   friendly_id
   gepub

@@ -2,7 +2,7 @@ tale_approved_one:
   id: 1
   slug: tale_approved_one
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Highlighted Tale Number One
   highlight: true
   user_id: 1
   created_at: <%= 1.hour.ago %>
@@ -12,7 +12,7 @@ tale_created_one:
   id: 2
   slug: tale_created_one
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Two
   highlight: false
   user_id: 1
   created_at: <%= 2.hours.ago %>
@@ -22,7 +22,7 @@ three:
   id: 3
   slug: tale_created_three
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Three
   highlight: false
   user_id: 1
   created_at: <%= 3.hours.ago %>
@@ -32,7 +32,7 @@ four:
   id: 4
   slug: tale_created_four
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Four
   highlight: false
   user_id: 1
   created_at: <%= 4.hours.ago %>
@@ -42,7 +42,7 @@ five:
   id: 5
   slug: tale_created_five
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Five
   highlight: false
   user_id: 1
   created_at: <%= 5.hours.ago %>
@@ -52,7 +52,7 @@ six:
   id: 6
   slug: tale_created_six
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Six
   highlight: false
   user_id: 1
   created_at: <%= 6.hours.ago %>
@@ -62,7 +62,7 @@ seven:
   id: 7
   slug: tale_created_seven
   type: Tale
-  title: <%= Faker::Book.title %>
+  title: Created Tale Number Seven
   highlight: false
   user_id: 1
   created_at: <%= 7.hours.ago %>

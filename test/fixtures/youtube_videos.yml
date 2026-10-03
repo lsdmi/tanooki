@@ -3,8 +3,8 @@ one:
   slug: one
   youtube_channel_id: 1
   video_id: one
-  title: <%= Faker::Book.title %>
-  thumbnail: <%= Faker::Internet.url %>
+  title: Video One Title
+  thumbnail: https://example.com/videos/one.jpg
   tags: one
   views: 400
   published_at: <%= Time.zone.now %>
@@ -16,8 +16,8 @@ two:
   slug: two
   youtube_channel_id: 1
   video_id: two
-  title: <%= Faker::Book.title %>
-  thumbnail: <%= Faker::Internet.url %>
+  title: Video Two Title
+  thumbnail: https://example.com/videos/two.jpg
   tags: two
   views: 300
   published_at: <%= 2.weeks.ago %>
@@ -29,8 +29,8 @@ three:
   slug: three
   youtube_channel_id: 1
   video_id: three
-  title: <%= Faker::Book.title %>
-  thumbnail: <%= Faker::Internet.url %>
+  title: Video Three Title
+  thumbnail: https://example.com/videos/three.jpg
   tags: three
   views: 200
   published_at: <%= 2.weeks.ago %>
@@ -42,8 +42,8 @@ four:
   slug: four
   youtube_channel_id: 1
   video_id: four
-  title: <%= Faker::Book.title %>
-  thumbnail: <%= Faker::Internet.url %>
+  title: Video Four Title
+  thumbnail: https://example.com/videos/four.jpg
   tags: four
   views: 100
   published_at: <%= 2.weeks.ago %>
