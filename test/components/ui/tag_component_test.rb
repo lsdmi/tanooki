@@ -54,6 +54,13 @@ module Ui
       assert_selector 'span.bg-amber-200 svg'
     end
 
+    test 'snug size is a 14 px label in a 24 px pill with a 12 px warning icon' do
+      render_inline(TagComponent.new(label: '18+', variant: :eighteen, size: :snug))
+
+      assert_selector 'span.px-3.py-px.text-sm\\/5'
+      assert_selector 'span svg.h-3.w-3'
+    end
+
     test 'rejects count on adult variant' do
       assert_raises(ArgumentError) do
         TagComponent.new(label: '18+', variant: :adult, count: 3)

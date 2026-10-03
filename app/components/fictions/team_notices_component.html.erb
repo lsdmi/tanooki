@@ -1,0 +1,19 @@
+<section class="flex flex-col gap-6 md:gap-8" aria-labelledby="fiction-notices-title">
+  <%= render Ui::SectionHeadingComponent.new(title: t('fictions.about.notices.title'), id: 'fiction-notices-title') %>
+  <ul class="flex flex-col gap-4">
+    <% teams.each do |team| %>
+      <li class="flex gap-2 rounded-xl bg-surface p-3 ring-1 ring-inset ring-line md:gap-3 md:p-4">
+        <%= image_tag scanlator_avatar_url(team.avatar), alt: '', loading: 'lazy',
+                                                          class: 'size-12 shrink-0 rounded-lg object-cover' %>
+        <div class="flex min-w-0 flex-1 flex-col gap-1">
+          <p class="whitespace-pre-line text-base/6 font-semibold text-fg"><%= linkify_urls(team.notice, link_class: LINK_CLASS) %></p>
+          <p class="flex flex-wrap items-center gap-x-2 text-xs/5">
+            <%= link_to team.title, scanlator_path(team), class: 'font-medium text-fg hover:text-fg-brand' %>
+            <span class="text-fg-muted" aria-hidden="true">·</span>
+            <span class="text-fg-muted"><%= t('fictions.about.notices.role') %></span>
+          </p>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</section>

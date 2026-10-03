@@ -31,19 +31,33 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
   test 'should create scanlator' do
     sign_in users(:user_one)
     assert_difference('Scanlator.count') do
-      post scanlators_url, params: {
-        scanlator: {
-          avatar: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
-                                               'image/svg'),
-          banner: Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'),
-                                               'image/svg'),
-          member_ids: [users(:user_one).id],
-          title: 'New Scanlator'
-        }
-      }
+      post scanlators_url, params: { scanlator: new_scanlator_params }
     end
 
     assert_redirected_to scanlator_path(Scanlator.last)
+  end
+
+  test 'coming from a chapter form, new explains why a team is needed and keeps the way back' do
+    sign_in User.find(101)
+    get new_scanlator_url(return_to: '/chapters/new?fiction=one')
+
+    assert_select '[role="note"]', text: /потрібна команда/
+    assert_select 'input[type="hidden"][name="return_to"][value="/chapters/new?fiction=one"]'
+  end
+
+  test 'new ignores a return_to that is not a chapter form' do
+    sign_in User.find(101)
+    get new_scanlator_url(return_to: 'https://evil.example/chapters/new?fiction=one')
+
+    assert_select 'input[name="return_to"]', count: 0
+  end
+
+  test 'create returns to the chapter form it came from' do
+    sign_in User.find(101)
+    post scanlators_url, params: { return_to: '/chapters/new?fiction=one',
+                                   scanlator: new_scanlator_params(member_ids: [101]) }
+
+    assert_redirected_to '/chapters/new?fiction=one'
   end
 
   test 'should not create scanlator with invalid data' do
@@ -109,5 +123,9 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
 
   def uploaded_svg
     Rack::Test::UploadedFile.new(Rails.root.join('app/assets/images/logo-default.svg'), 'image/svg+xml')
+  end
+
+  def new_scanlator_params(member_ids: [users(:user_one).id])
+    { avatar: uploaded_svg, banner: uploaded_svg, member_ids:, title: 'New Scanlator' }
   end
 end

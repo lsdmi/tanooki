@@ -8,7 +8,7 @@ module Ui
     include TagComponentStyles
 
     VARIANTS = %i[keyword genre status filter adult sixteen eighteen].freeze
-    SIZES = %i[sm md].freeze
+    SIZES = %i[sm snug md].freeze
     WARNING_VARIANTS = %i[adult sixteen eighteen].freeze
 
     def initialize(label:, variant: :keyword, size: :sm, **options)
@@ -52,7 +52,7 @@ module Ui
     end
 
     def warning_icon_classes
-      size == :md ? 'h-4 w-4 shrink-0' : 'h-3.5 w-3.5 shrink-0'
+      { md: 'h-4 w-4 shrink-0', snug: 'h-3 w-3 shrink-0' }.fetch(size, 'h-3.5 w-3.5 shrink-0')
     end
 
     def button?

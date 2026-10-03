@@ -1,0 +1,7 @@
+<details class="relative">
+  <summary class="inline-flex cursor-pointer list-none items-center gap-1 rounded-sm text-xs/5 font-medium text-fg-muted transition-colors hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden">
+    <%= stroke_icon(:info) %>
+    <%= tag.span label, class: ('sr-only' if icon_only) %>
+  </summary>
+  <p class="<%= popover_classes %>"><%= text %></p>
+</details>

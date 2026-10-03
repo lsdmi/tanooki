@@ -24,6 +24,14 @@ export default class extends Controller {
     this.show(event.currentTarget.dataset.tabId);
   }
 
+  // An in-page link to another tab (the About EPUB card → Chapters). Turbo turns same-page anchor clicks into
+  // pushState without `hashchange`, so the link switches the tab itself.
+  jump(event) {
+    event.preventDefault();
+    this.show(event.params.tab);
+    this.revealList();
+  }
+
   navigate(event) {
     const tabs = this.tabTargets;
     const index = tabs.indexOf(event.currentTarget);
@@ -73,11 +81,11 @@ export default class extends Controller {
   }
 
   // A link to a non-default tab (comment notification, the reader's «back») is for that panel, so bring it up
-  // when most of the screen is still above it.
+  // when most of the screen is still above it, or when it has scrolled away above.
   revealList() {
     if (!this.hasListTarget) return;
 
-    const { bottom } = this.listTarget.getBoundingClientRect();
-    if (bottom > window.innerHeight * 0.6) this.listTarget.scrollIntoView({ block: "start" });
+    const { top, bottom } = this.listTarget.getBoundingClientRect();
+    if (top < 0 || bottom > window.innerHeight * 0.6) this.listTarget.scrollIntoView({ block: "start" });
   }
 }

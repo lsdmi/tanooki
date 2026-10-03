@@ -27,6 +27,19 @@ module Fictions
       @fiction.scanlators.each { |scanlator| assert_selector "a[href='/scanlators/#{scanlator.slug}']" }
     end
 
+    test 'stats name the original language as a fact about the work, not the translation' do
+      @fiction.origin = :korean
+      render_hero
+
+      assert_selector "li[title='Мова оригіналу']", text: /Мова оригіналу:\s+Корейська/
+      assert_selector 'p.author', text: /Переклад:/
+
+      @fiction.origin = :nknown
+      render_hero
+
+      assert_no_selector "li[title='Мова оригіналу']"
+    end
+
     test 'age tag is rose for 18+' do
       @fiction.update!(content_rating: :eighteen)
       render_hero

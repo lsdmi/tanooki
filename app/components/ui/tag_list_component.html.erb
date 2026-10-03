@@ -1,7 +1,7 @@
 <div class="<%= wrapper_classes %>">
   <% tag_groups.each do |group| %>
     <% if group[:type] == :adult_cluster %>
-      <div class="inline-flex flex-nowrap items-center gap-1">
+      <div class="inline-flex flex-nowrap items-center <%= gap_classes %>">
         <% group[:labels].each do |label| %>
           <%= render_tag(label) %>
         <% end %>

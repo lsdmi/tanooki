@@ -7,7 +7,8 @@ class FictionsController < ApplicationController
          Fictions::ShowCacheHelper,
          Library::ChapterCatalogHelper,
          Library::ReadingStateHelper,
-         Scanlators::SelectOptionsHelper
+         Scanlators::SelectOptionsHelper,
+         Ui::StrokeIconHelper
   include FictionQuery
   include Fictions::ChapterSectionRendering
   include Fictions::DashboardListing

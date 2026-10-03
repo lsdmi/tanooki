@@ -1,0 +1,23 @@
+<section class="<%= HONORS_CARD %>" aria-labelledby="fiction-honors-title">
+  <%= render 'shared/jellyfish_ornament' %>
+  <h2 id="fiction-honors-title" class="relative <%= TITLE %>"><%= t('fictions.about.honors.title') %></h2>
+  <%# One centered row: a 72 px column per badge (at most four), shrinking rather than wrapping on narrow cards. %>
+  <ul class="relative grid auto-cols-[minmax(0,4.5rem)] grid-flow-col justify-center gap-3 md:gap-5 lg:gap-3 xl:gap-5">
+    <% badges.each do |genre_name, rank, slug| %>
+      <li class="min-w-0">
+        <%= link_to fiction_genre_fictions_path(slug),
+                    turbo_drive_visit_data.merge(class: 'group flex flex-col items-center gap-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong') do %>
+          <span class="relative block size-14">
+            <%= image_tag asset_path("badges/#{slug}.webp"), alt: '', loading: 'lazy',
+                                                              class: 'size-13 m-0.5 rounded-full border-2 border-white object-cover shadow-[0_4px_12px_rgb(15_23_41/0.18)] transition-transform group-hover:-translate-y-0.5' %>
+            <span class="<%= rank_classes(rank) %>">#<%= rank %></span>
+          </span>
+          <span class="w-full truncate text-center text-xs/5 font-medium text-fg-secondary group-hover:text-fg"><%= genre_name %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  <div class="relative flex justify-center">
+    <%= render Ui::InfoHintComponent.new(label: t('fictions.about.honors.how'), text: t('fictions.about.honors.how_text'), align: :center) %>
+  </div>
+</section>

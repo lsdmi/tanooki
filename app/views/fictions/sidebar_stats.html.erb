@@ -1,8 +1,3 @@
 <%= turbo_frame_tag 'fiction_sidebar_stats' do %>
-  <% if @show_presenter.monthly_reads_stats? %>
-    <%= render 'sidebar_monthly_reads', show_presenter: @show_presenter %>
-  <% end %>
-  <% if @show_presenter.ranks.any? %>
-    <%= render 'sidebar_ranks', show_presenter: @show_presenter %>
-  <% end %>
+  <%= render Fictions::HonorsCardComponent.new(ranks: @show_presenter.ranks) %>
 <% end %>

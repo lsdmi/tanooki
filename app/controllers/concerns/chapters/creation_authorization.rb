@@ -24,7 +24,9 @@ module Chapters
     end
 
     def chapter_creation_denied_path
-      current_user.scanlators.any? ? root_path : new_scanlator_path
+      return root_path if current_user.scanlators.any?
+
+      new_scanlator_path(return_to: (request.fullpath if request.get?))
     end
 
     def fiction_for_chapter_create

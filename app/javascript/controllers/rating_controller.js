@@ -1,150 +1,48 @@
 import { Controller } from "@hotwired/stimulus"
 
+// «Якість перекладу» card: the stars show the reader's own rating; the average and count come back from the server.
 export default class extends Controller {
-  static targets = ["star"]
+  static targets = ["star", "average", "summary"]
+  static values = { url: String }
+  static classes = ["on", "off"]
 
-  disconnect() {
-    if (this._revertTimeout) {
-      clearTimeout(this._revertTimeout)
-      this._revertTimeout = null
-    }
+  connect() {
+    this.rating = this.starTargets.filter((star) => star.querySelector("svg").classList.contains(this.onClasses[0])).length
   }
 
-  setRating(event) {
-    const rating = parseInt(event.currentTarget.dataset.starValue)
-    const fictionId = event.currentTarget.dataset.fictionId
+  async rate(event) {
+    const previous = this.rating
+    const rating = Number(event.currentTarget.dataset.starValue)
+    this.paint(rating)
 
-    // Update visual state immediately with user's rating
-    this.updateStarDisplay(rating)
-
-    // Send rating to server and update stats with server response
-    this.submitRating(fictionId, rating)
-  }
-
-  updateStarDisplay(rating) {
-    this.starTargets.forEach((star, index) => {
-      const starValue = parseInt(star.dataset.starValue)
-      if (starValue <= rating) {
-        star.classList.remove('text-fg-subtle')
-        star.classList.add('text-brand')
-      } else {
-        star.classList.remove('text-brand')
-        star.classList.add('text-fg-subtle')
-      }
-    })
-    
-    // Update the fish label immediately when user clicks
-    this.updateFishLabelForUser(rating)
-  }
-
-  updateFishLabelForUser(userRating) {
-    // Find the fish label and update it with the user's rating
-    const fishLabel = document.querySelector('[data-rating-label]')
-    if (fishLabel) {
-      fishLabel.textContent = `Ваша оцінка (${userRating})`
-    }
-  }
-
-  async submitRating(fictionId, rating) {
     try {
-      const response = await fetch(`/fictions/${fictionId}/fiction_ratings`, {
-        method: 'POST',
+      const response = await fetch(this.urlValue, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
         },
-        body: JSON.stringify({ rating: rating })
+        body: JSON.stringify({ rating })
       })
+      if (!response.ok) throw new Error(`rating failed: ${response.status}`)
 
-      if (response.ok) {
-        const data = await response.json()
-        this.updateRatingStats(data.average_rating, data.rating_count)
-        // Keep showing user's individual rating, not average
-        // this.updateStarDisplay(data.average_rating) // Removed - fish show user rating
-      } else {
-        console.error('Failed to submit rating')
-        // Revert visual state on error
-        this.revertStarDisplay()
-      }
+      const data = await response.json()
+      this.rating = rating
+      this.averageTarget.textContent = data.rating_count > 0 ? Number(data.average_rating).toFixed(1) : "—"
+      this.summaryTarget.textContent = data.summary
     } catch (error) {
-      console.error('Error submitting rating:', error)
-      this.revertStarDisplay()
+      console.error(error)
+      this.paint(previous)
     }
   }
 
-  updateRatingStats(averageRating, ratingCount) {
-    // Update the rating statistics display
-    const ratingDisplay = document.querySelector('[data-rating-stats]')
-    if (ratingDisplay) {
-      const averageElement = ratingDisplay.querySelector('.average-rating')
-      const countElement = ratingDisplay.querySelector('.rating-count')
-
-      if (averageElement) {
-        averageElement.textContent = averageRating > 0 ? averageRating : '—'
-      }
-
-      if (countElement) {
-        countElement.textContent = `${ratingCount} оцінок`
-      }
-
-      // Update non-logged-in fish display to show rounded up average
-      const staticFish = ratingDisplay.parentElement.querySelectorAll('span[class*="w-8 h-8"]')
-      if (staticFish.length > 0) {
-        const roundedRating = Math.ceil(averageRating)
-        staticFish.forEach((fish, index) => {
-          const fishValue = index + 1
-          if (fishValue <= roundedRating) {
-            fish.classList.remove('text-fg-subtle')
-            fish.classList.add('text-brand')
-          } else {
-            fish.classList.remove('text-brand')
-            fish.classList.add('text-fg-subtle')
-          }
-        })
-      }
-    }
-
-    // Update the fish label with new average rating
-    this.updateFishLabel(averageRating)
-  }
-
-  updateFishLabel(averageRating) {
-    // Find the fish label and update it with the new average
-    const fishLabel = document.querySelector('[data-rating-label]')
-    if (fishLabel) {
-      // Check if user is logged in by looking for interactive fish buttons
-      const interactiveFish = document.querySelectorAll('button[data-rating-target="star"]')
-      if (interactiveFish.length > 0) {
-        // User is logged in - show their individual rating
-        // We need to get the current user's rating from the active fish
-        let userRating = 0
-        interactiveFish.forEach(fish => {
-          if (fish.classList.contains('text-brand')) {
-            userRating = Math.max(userRating, parseInt(fish.dataset.starValue))
-          }
-        })
-        fishLabel.textContent = `Ваша оцінка (${userRating})`
-      } else {
-        // User is not logged in - show community average
-        fishLabel.textContent = `Середня оцінка (${averageRating})`
-      }
-    }
-  }
-
-  revertStarDisplay() {
-    // Revert to original state - this would need the original rating
-    // For now, we'll just show a brief error state
-    if (this._revertTimeout) clearTimeout(this._revertTimeout)
-
-    this.starTargets.forEach(star => {
-      star.classList.add('text-red-400')
+  paint(rating) {
+    this.starTargets.forEach((star) => {
+      const icon = star.querySelector("svg")
+      const on = Number(star.dataset.starValue) <= rating
+      icon.classList.remove(...(on ? this.offClasses : this.onClasses))
+      icon.classList.add(...(on ? this.onClasses : this.offClasses))
     })
-
-    this._revertTimeout = setTimeout(() => {
-      this.starTargets.forEach(star => {
-        star.classList.remove('text-red-400')
-      })
-      this._revertTimeout = null
-    }, 1000)
   }
 }

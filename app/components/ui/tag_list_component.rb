@@ -92,6 +92,11 @@ module Ui
       ['flex items-center', gap, wrap, extra.presence].compact.join(' ')
     end
 
+    # The age / explicit cluster keeps the list's spacing, so «16+ BL» sits as far apart as any two genres.
+    def gap_classes
+      html[:class].to_s.split.grep(/(?:\A|:)gap-/).join(' ').presence || 'gap-2'
+    end
+
     def href_for(label)
       return unless href_builder
 

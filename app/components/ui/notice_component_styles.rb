@@ -5,15 +5,17 @@ module Ui
   module NoticeComponentStyles
     # scrim / tinted sit on the hero image; light is the band outside the hero.
     # The hero follows the theme, so on-media colors (dark glass, light text) apply in dark only.
+    # Outlined with an inset ring, like the Figma inside stroke: a border would make the notice 2 px taller.
     STYLE_CLASSES = {
-      scrim: 'rounded-[10px] border bg-card/80 p-3 backdrop-blur-lg md:rounded-lg md:px-4 dark:bg-overlay-scrim-45',
-      tinted: 'rounded-[10px] border p-3 backdrop-blur-lg md:rounded-lg md:px-4',
+      scrim: 'rounded-[10px] ring-1 ring-inset bg-card/80 p-3 backdrop-blur-lg md:rounded-lg md:px-4 ' \
+             'dark:bg-overlay-scrim-45',
+      tinted: 'rounded-[10px] ring-1 ring-inset p-3 backdrop-blur-lg md:rounded-lg md:px-4',
       light: 'px-4 py-3'
     }.freeze
 
     FAMILY_CLASSES = {
       danger: {
-        media: 'border-status-danger-subtle-border dark:border-status-danger-on-media-border',
+        media: 'ring-status-danger-subtle-border dark:ring-status-danger-on-media-border',
         media_title: 'text-status-danger-solid dark:text-status-danger-on-media-title',
         media_body: 'text-fg-secondary dark:text-status-danger-on-media-fg',
         tinted_bg: 'bg-status-danger-subtle-bg/80 dark:bg-status-danger-on-media-bg',
@@ -21,7 +23,7 @@ module Ui
         light_title: 'text-status-danger-solid'
       },
       warning: {
-        media: 'border-status-warning-subtle-border dark:border-status-warning-on-media-border',
+        media: 'ring-status-warning-subtle-border dark:ring-status-warning-on-media-border',
         media_title: 'text-status-warning-solid dark:text-status-warning-on-media-title',
         media_body: 'text-fg-secondary dark:text-status-warning-on-media-fg',
         tinted_bg: 'bg-status-warning-subtle-bg/80 dark:bg-status-warning-on-media-bg',
@@ -29,7 +31,7 @@ module Ui
         light_title: 'text-status-warning-solid'
       },
       licensed: {
-        media: 'border-status-licensed-subtle-border dark:border-status-licensed-on-media-border',
+        media: 'ring-status-licensed-subtle-border dark:ring-status-licensed-on-media-border',
         media_title: 'text-status-licensed-solid dark:text-status-licensed-on-media-title',
         media_body: 'text-fg-secondary dark:text-status-licensed-on-media-fg',
         tinted_bg: 'bg-status-licensed-subtle-bg/80 dark:bg-status-licensed-on-media-bg',
@@ -37,7 +39,7 @@ module Ui
         light_title: 'text-status-licensed-solid'
       },
       info: {
-        media: 'border-status-info-subtle-border dark:border-status-info-on-media-border',
+        media: 'ring-status-info-subtle-border dark:ring-status-info-on-media-border',
         media_title: 'text-status-info-solid dark:text-status-info-on-media-title',
         media_body: 'text-fg-secondary dark:text-status-info-on-media-fg',
         tinted_bg: 'bg-status-info-subtle-bg/80 dark:bg-status-info-on-media-bg',
@@ -45,7 +47,7 @@ module Ui
         light_title: 'text-status-info-solid'
       },
       success: {
-        media: 'border-status-success-subtle-border dark:border-status-success-on-media-border',
+        media: 'ring-status-success-subtle-border dark:ring-status-success-on-media-border',
         media_title: 'text-status-success-solid dark:text-status-success-on-media-title',
         media_body: 'text-fg-secondary dark:text-status-success-on-media-fg',
         tinted_bg: 'bg-status-success-subtle-bg/80 dark:bg-status-success-on-media-bg',

@@ -89,41 +89,6 @@
   -webkit-user-select: none;
 }
 
-/* Fiction show: no stretched reader-grid height; match page gray palette in dark mode */
-.fiction-support-card .reader-support-card {
-  height: auto;
-}
-
-.dark .fiction-support-card .reader-support-card {
-  border-color: rgb(63 63 70);
-  background-color: rgb(39 39 42);
-}
-
-.dark .fiction-support-card .reader-support-card-title,
-.dark .fiction-support-card #reader-support-card-title {
-  color: rgb(255 255 255);
-}
-
-.dark .fiction-support-card .reader-bottom-card__body > p {
-  color: rgb(161 161 170);
-}
-
-.dark .fiction-support-card .reader-outlined-btn {
-  border-color: rgb(63 63 70);
-  background-color: rgb(39 39 42);
-  color: rgb(212 212 216);
-}
-
-.dark .fiction-support-card .reader-outlined-btn:hover {
-  border-color: rgb(82 82 91);
-  background-color: rgb(63 63 70);
-}
-
-.dark .fiction-support-card .reader-outlined-btn:focus-visible {
-  --tw-ring-color: rgb(113 113 122);
-  --tw-ring-offset-color: rgb(39 39 42);
-}
-
 /* Reader toolbar: slide off on scroll down; reappear instantly on scroll up (see reader_toolbar_controller.js) */
 @media (prefers-reduced-motion: reduce) {
   .immersive-reader .reader-toolbar {

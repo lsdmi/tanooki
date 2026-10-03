@@ -37,6 +37,13 @@
             <%= text %>
           </li>
         <% end %>
+        <% if origin_language %>
+          <li class="<%= STAT %>" title="<%= t('fictions.hero.origin') %>">
+            <%= stroke_icon(:globe, STAT_ICON) %>
+            <span class="sr-only"><%= t('fictions.hero.origin') %>:</span>
+            <%= origin_language %>
+          </li>
+        <% end %>
       </ul>
 
       <div class="<%= TITLE_CELL %>">

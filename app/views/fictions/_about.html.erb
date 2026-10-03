@@ -1,0 +1,64 @@
+<%# locals: (fiction:, show_presenter:) %>
+<%# DOM order is the mobile order: main blocks, sidebar blocks, then the ad. From lg the ad joins the main column. %>
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:grid-rows-[auto_1fr] lg:gap-x-10 xl:grid-cols-[minmax(0,1fr)_25rem]">
+  <div class="flex min-w-0 flex-col gap-8 lg:col-start-1 lg:row-start-1">
+    <%= render Ui::TagListComponent.new(
+          labels: fiction.with_content_rating_tag_labels(fiction.genres.map(&:name)),
+          variant: :genre,
+          sort_adult_first: true,
+          genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
+          size: :snug,
+          href_builder: ->(name) {
+            next if Genre.rating_tag?(name)
+
+            genre = fiction.genres.find { |g| g.name == name }
+            fiction_genre_fictions_path(genre) if genre
+          }
+        ) %>
+
+    <section class="flex flex-col gap-6 md:gap-8" aria-labelledby="fiction-description-title"
+             data-controller="clamp" data-clamp-clamped-class="line-clamp-6"
+             data-clamp-expand-label-value="<%= t('fictions.about.description.expand') %>"
+             data-clamp-collapse-label-value="<%= t('fictions.about.description.collapse') %>">
+      <%= render Ui::SectionHeadingComponent.new(title: t('fictions.about.description.title'), id: 'fiction-description-title') %>
+      <div class="flex flex-col items-start gap-4">
+        <div id="fiction-description" class="line-clamp-6 whitespace-pre-line text-base/6 text-fg-secondary" data-clamp-target="content"><%= fiction.description %></div>
+        <button type="button" class="inline-flex items-center gap-1 rounded-sm text-sm/5 font-medium text-fg-brand hover:text-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                aria-controls="fiction-description" aria-expanded="false" hidden
+                data-clamp-target="toggle" data-action="clamp#toggle">
+          <span data-clamp-target="label"><%= t('fictions.about.description.expand') %></span>
+          <svg class="size-4 transition-transform" data-clamp-target="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+      </div>
+    </section>
+
+    <%= render Fictions::TeamNoticesComponent.new(fiction:) %>
+  </div>
+
+  <aside class="flex min-w-0 flex-col gap-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:gap-6">
+    <%# Lazy and empty until loaded; the negative margin cancels its gap so an empty frame leaves no space. %>
+    <%= turbo_frame_tag 'fiction_sidebar_stats', src: sidebar_stats_fiction_path(fiction), loading: :lazy,
+                                                 class: 'block [&:not(:has(section))]:-mb-8 lg:[&:not(:has(section))]:-mb-6' %>
+
+    <section class="<%= Fictions::AboutCardStyles::SHELVES_CARD %>" aria-labelledby="fiction-shelves-title">
+      <h2 id="fiction-shelves-title" class="<%= Fictions::AboutCardStyles::SMALL_TITLE %>"><%= t('fictions.about.shelves.title') %></h2>
+      <dl class="grid grid-cols-4 gap-1 sm:gap-2">
+        <% %i[active finished postponed dropped].zip(show_presenter.bookmark_stats).each do |status, count| %>
+          <div class="flex min-w-0 flex-col items-center gap-1 text-center">
+            <dt class="order-2 w-full text-[10px]/4 text-fg-muted md:text-xs/5"><%= t(status, scope: 'fictions.about.shelves') %></dt>
+            <dd class="order-1 text-lg/7 font-bold text-fg md:text-2xl/8"><%= count.to_i %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </section>
+
+    <%= render Fictions::RatingCardComponent.new(fiction:, user: current_user) %>
+    <%= render Fictions::EpubCardComponent.new(fiction:, user: current_user) %>
+
+    <%= render Fictions::SupportCardComponent.new(fiction:) %>
+  </aside>
+
+  <section class="fiction-show__ad fiction-show__ad--main min-w-0 lg:col-start-1 lg:row-start-2">
+    <%= render 'shared/adsense_slot', placement: :fiction_show, navigation_key: fiction.id, measure_as: 'bottom' %>
+  </section>
+</div>

@@ -37,6 +37,13 @@ module Fictions
       [fiction.english_title, fiction.alternative_title].compact_blank.uniq.join(' · ').presence
     end
 
+    # The language the work was written in, not the one the team translates from (often an English translation).
+    def origin_language
+      return if fiction.origin.blank? || fiction.nknown?
+
+      t(fiction.origin, scope: 'fictions.hero.origins')
+    end
+
     def rating_text
       count, average = fiction.rating_summary
       return '—' if count.zero?

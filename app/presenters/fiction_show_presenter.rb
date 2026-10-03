@@ -47,7 +47,7 @@ class FictionShowPresenter
   end
 
   def related_fictions
-    @fiction.related_fictions.limit(3)
+    @related_fictions ||= @fiction.related_fictions.includes(:fiction_ratings).limit(8).to_a
   end
 
   def order = @params[:order] || :desc
@@ -61,29 +61,6 @@ class FictionShowPresenter
 
   def bookmarks_total_count
     bookmark_stats.sum
-  end
-
-  def monthly_reads_counts
-    @monthly_reads_counts ||= Fictions::IndexVariablesManager.hot_updates_counts
-  end
-
-  def monthly_reads_count
-    monthly_reads_counts[@fiction.id].to_i
-  end
-
-  def monthly_reads_fiction_count
-    monthly_reads_counts.size
-  end
-
-  def monthly_reads_rank
-    return nil if monthly_reads_fiction_count.zero?
-
-    sorted = monthly_reads_counts.values.sort.reverse
-    sorted.index(monthly_reads_count)&.+(1) || monthly_reads_fiction_count
-  end
-
-  def monthly_reads_stats?
-    monthly_reads_fiction_count.positive?
   end
 
   def first_chapter

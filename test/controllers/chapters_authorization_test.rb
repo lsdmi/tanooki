@@ -95,7 +95,7 @@ class ChaptersAuthorizationTest < ActionDispatch::IntegrationTest
 
     get new_chapter_url(fiction: fictions(:one).slug)
 
-    assert_redirected_to new_scanlator_path
+    assert_redirected_to new_scanlator_path(return_to: "/chapters/new?fiction=#{fictions(:one).slug}")
   end
 
   test 'user without scanlator cannot create chapter' do

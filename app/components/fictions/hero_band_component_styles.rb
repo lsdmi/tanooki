@@ -37,8 +37,9 @@ module Fictions
       'eighteen' => 'token-raw bg-rose-600',
       'sixteen' => 'bg-orange-700'
     }.freeze
-    STATUS_TAG = 'inline-flex items-center rounded-md border border-line-strong bg-card px-3 py-1 text-sm/5 ' \
-                 'font-medium text-fg dark:border-fg/15 dark:bg-fg/8'
+    # An inset ring, not a border, so it is as tall as the age tag beside it.
+    STATUS_TAG = 'inline-flex items-center rounded-md bg-card px-3 py-1 text-sm/5 font-medium text-fg ring-1 ' \
+                 'ring-inset ring-line-strong dark:bg-fg/8 dark:ring-fg/15'
 
     STATS_CELL = [
       'col-start-2 row-start-2 mt-3 flex flex-col gap-2 self-start',

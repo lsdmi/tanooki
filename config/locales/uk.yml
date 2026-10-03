@@ -360,6 +360,19 @@ uk:
           other: "%{count} закладинки"
       author: Автор
       translation: Переклад
+      origin: Мова оригіналу
+      origins:
+        english: Англійська
+        bosnian: Боснійська
+        italian: Італійська
+        chinese: Китайська
+        korean: Корейська
+        dutch: Нідерландська
+        polish: Польська
+        thai: Тайська
+        ukrainian: Українська
+        french: Французька
+        japanese: Японська
       cta:
         read: Читати · Розділ %{number}
         continue: Продовжити · Розділ %{number}
@@ -466,11 +479,57 @@ uk:
       about: Про твір
       chapters: Розділи
       comments: Коментарі
-    team_toolbar:
+    team_menu:
+      label: Керування
       title: Керування перекладом
       add_chapter: Додати розділ
       chapters: Керувати розділами
       edit: Редагувати твір
+    continue_translation:
+      action: Продовжити переклад
+      guest_action: Увійдіть, щоб продовжити переклад
+      prompt: Перекладаєте цей твір?
+      add_chapter: Додати розділ
+      guest_add_chapter: Увійдіть, щоб додати розділ
+    about:
+      description:
+        title: Опис
+        expand: Розгорнути
+        collapse: Згорнути
+      notices:
+        title: Оголошення
+        role: Команда
+      honors:
+        title: Відзнаки та нагороди
+        how: Як формується рейтинг?
+        how_text: Місце твору серед найпопулярніших у жанрі за кількістю додавань у читальні за останній рік. Показуємо жанри, де твір у першій десятці.
+      shelves:
+        title: У читальнях
+        active: Читають
+        finished: Прочитано
+        postponed: Відкладено
+        dropped: Покинуто
+      rating:
+        title: Якість перекладу
+        info: Про оцінку
+        info_text: Середня оцінка читачів за якість перекладу, від 1 до 5 зірок.
+        summary: з 5 · %{ratings}
+        hint: Натисніть на зірку, щоб поставити свою оцінку
+        login: Увійдіть,
+        login_hint: щоб оцінити переклад
+        star:
+          one: Оцінити на %{count} зірку
+          few: Оцінити на %{count} зірки
+          many: Оцінити на %{count} зірок
+          other: Оцінити на %{count} зірки
+      epub:
+        title: Завантаження EPUB
+        hint: По томах у вкладці «Розділи»
+        login_hint: Увійдіть, щоб завантажити
+        login: Увійти
+      similar: Схожі твори
+      similar_views: Перегляди
+      similar_rating: Рейтинг
   chapters:
     notices:
       create_success: Розділ додано.
@@ -585,8 +644,6 @@ uk:
       image_processing_unavailable: На сервері недоступна обробка зображень для цього EPUB. Зверніться до підтримки.
       too_large: Цей том занадто великий для EPUB-завантаження. Спробуйте окремі розділи або зверніться до підтримки.
       login_link_text: Увійти
-      login_required_fiction_all: Це ранобе підтримує завантаження в форматі EPUB. %{login_link}, щоб завантажити файли.
-      login_required_fiction_mixed: Частину розділів можна завантажити в EPUB. %{login_link}, щоб завантажити файли.
   admin:
     pokemons:
       notices:
@@ -625,8 +682,11 @@ uk:
     alerts:
       not_yet_public: Цей допис ще недоступний для читання.
   scanlators:
+    new:
+      chapter_hint: Щоб додавати розділи, потрібна команда — навіть якщо ви перекладаєте самі. Після створення команди ви повернетеся до нового розділу.
     notices:
       create_success: Команду додано, час додати ваші твори.
+      create_success_chapter: Команду додано. Тепер можна додати розділ.
       update_success: Команду оновлено.
       destroy_success: Команду видалено.
   translation_requests:

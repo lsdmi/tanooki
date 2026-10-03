@@ -28,8 +28,8 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_includes response.body, 'reader-support-card'
-    assert_includes response.body, 'reader-outlined-btn'
+    assert_select 'aside section[aria-labelledby="fiction-support-title"] ' \
+                  'a[href="https://send.monobank.ua/jar/example"][target="_blank"]'
   end
 
   test 'show chapter order toggle uses fictions-order-toggle stimulus controller' do
@@ -86,15 +86,6 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '[data-controller="chapters-accordion"]'
     assert_select '.accordion-header[data-action*="chapters-accordion#toggle"]'
-  end
-
-  test 'show support card does not use legacy hover animation classes' do
-    @fiction.scanlators.first.update!(bank_url: 'https://send.monobank.ua/jar/example')
-    Rails.cache.delete("fiction_#{@fiction.id}")
-
-    get fiction_url(@fiction)
-
-    assert_select '.reader-support-card [class*="hover:-translate-y-1"]', count: 0
   end
 
   test 'hero chapter count is the live count even when expected is larger' do

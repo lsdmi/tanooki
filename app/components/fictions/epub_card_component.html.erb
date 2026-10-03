@@ -1,0 +1,16 @@
+<%= link_to href, data: link_data, class: 'group flex items-center gap-3 rounded-xl bg-main p-4 ring-1 ring-inset ring-line transition-shadow hover:ring-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+  <span class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-line text-fg-secondary">
+    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" />
+    </svg>
+  </span>
+  <span class="flex min-w-0 flex-1 flex-col gap-1">
+    <span class="text-sm/5 font-semibold text-fg group-hover:text-fg-brand"><%= t('fictions.about.epub.title') %></span>
+    <span class="text-xs/5 text-fg-muted"><%= hint %></span>
+  </span>
+  <% if user %>
+    <%= stroke_icon(:chevron_down, 'size-4 shrink-0 -rotate-90 text-fg-muted') %>
+  <% else %>
+    <span class="inline-flex h-8 shrink-0 items-center rounded-lg border border-line px-3 text-sm/5 font-medium text-fg shadow-xs"><%= t('fictions.about.epub.login') %></span>
+  <% end %>
+<% end %>

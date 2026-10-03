@@ -1,0 +1,22 @@
+<%= render Ui::BottomSheetComponent.new(title: t('fictions.team_menu.title'), id: 'fiction-team-menu',
+                                        html: { class: 'w-full md:w-auto' }) do |sheet| %>
+  <% sheet.with_trigger do %>
+    <%= render Ui::ButtonComponent.new(label: t('fictions.team_menu.label'), variant: :on_media, full_width: true) do %>
+      <%= stroke_icon(:sliders) %>
+      <span><%= t('fictions.team_menu.label') %></span>
+      <%= stroke_icon(:chevron_down) %>
+    <% end %>
+  <% end %>
+  <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.add_chapter'), as: :link,
+                                       href: new_chapter_path(fiction:)) do |item| %>
+    <% item.with_icon { stroke_icon(:plus) } %>
+  <% end %>
+  <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.chapters'), as: :link, href: reading_path(fiction),
+                                       html: turbo_drive_visit_data) do |item| %>
+    <% item.with_icon { stroke_icon(:list) } %>
+  <% end %>
+  <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.edit'), as: :link, href: edit_fiction_path(fiction),
+                                       html: turbo_drive_visit_data) do |item| %>
+    <% item.with_icon { stroke_icon(:pencil) } %>
+  <% end %>
+<% end %>

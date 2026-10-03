@@ -1,0 +1,36 @@
+<%= tag.section class: RATING_CARD, aria: { labelledby: 'fiction-rating-title' },
+                data: ({ controller: 'rating', rating_url_value: fiction_fiction_ratings_path(fiction.id),
+                         rating_on_class: STAR_ON, rating_off_class: STAR_OFF } if user) do %>
+  <div class="flex items-center justify-between gap-2">
+    <h2 id="fiction-rating-title" class="<%= SMALL_TITLE %>"><%= t('fictions.about.rating.title') %></h2>
+    <%= render Ui::InfoHintComponent.new(label: t('fictions.about.rating.info'), text: t('fictions.about.rating.info_text'),
+                                         icon_only: true, align: :end) %>
+  </div>
+  <div class="flex items-center gap-4">
+    <%= tag.p average_text, class: 'text-[58px]/11 font-bold text-fg md:text-[64px]/12', data: ({ rating_target: 'average' } if user) %>
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center gap-1">
+        <% (1..5).each do |star| %>
+          <% if user %>
+            <%= tag.button type: 'button', class: 'rounded-sm transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                           aria: { label: t('fictions.about.rating.star', count: star) },
+                           data: { rating_target: 'star', star_value: star, action: 'rating#rate' } do %>
+              <%= stroke_icon(:star, star_classes(star)) %>
+            <% end %>
+          <% else %>
+            <%= stroke_icon(:star, star_classes(star)) %>
+          <% end %>
+        <% end %>
+      </div>
+      <%= tag.p summary_text, class: 'text-xs/5 text-fg-muted', data: ({ rating_target: 'summary' } if user) %>
+    </div>
+  </div>
+  <% if user %>
+    <p class="text-xs/5 text-fg-muted"><%= t('fictions.about.rating.hint') %></p>
+  <% else %>
+    <p class="text-xs/5 text-fg-muted">
+      <%= link_to t('fictions.about.rating.login'), login_path, class: 'font-semibold text-fg-brand hover:text-brand-hover' %>
+      <%= t('fictions.about.rating.login_hint') %>
+    </p>
+  <% end %>
+<% end %>

@@ -1,32 +1,49 @@
 <%# locals: show_presenter: %>
-<div class="bg-surface rounded-lg p-4 border border-line">
-  <h3 class="font-semibold text-fg mb-3">Також може сподобатися</h3>
-  <div class="grid gap-3 sm:grid-cols-3">
+<%# Figma «Novel Card» 6037:1518 (desktop 256 px) / 6037:1513 (mobile 148 px) in a scrolling row. %>
+<%# On mobile the row bleeds past the right gutter so the cut-off card shows it scrolls. %>
+<% stat_class = 'inline-flex h-5 min-w-0 items-center gap-1 rounded-lg bg-black/40 px-2 text-sm/4 font-medium text-white ring-1 ring-white/15 backdrop-blur-[2px]' %>
+<section class="flex flex-col gap-4 md:gap-6" aria-labelledby="fiction-similar-title">
+  <%= render Ui::SectionHeadingComponent.new(title: t('fictions.about.similar'), id: 'fiction-similar-title') %>
+  <div class="-mr-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain md:mr-0 md:gap-4 md:snap-proximity"
+       role="region" aria-labelledby="fiction-similar-title">
     <% show_presenter.related_fictions.each do |similar_fiction| %>
-      <div class="flex items-center gap-3">
-        <%= link_to fiction_path(similar_fiction), turbo_drive_visit_data do %>
-          <%= image_tag cover_thumbnail_url(similar_fiction.cover),
-                        alt: similar_fiction.title,
-                        class: 'object-cover w-12 h-16 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded flex items-center justify-center text-lg' %>
-        <% end %>
-        <div class="flex-1 min-w-0">
-          <%= link_to similar_fiction.title,
-                      fiction_path(similar_fiction),
-                      turbo_drive_visit_data.merge(class: 'font-medium text-sm text-fg truncate line-clamp-1') %>
-          <div class="text-xs text-fg-secondary min-w-0 line-clamp-1">
-            <%= safe_join(
-                  similar_fiction.genres.sample(2).map { |genre|
-                    link_to genre.name,
-                            fiction_genre_fictions_path(genre),
-                            turbo_drive_visit_data.merge(
-                              class: 'text-inherit hover:text-fg-brand underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong rounded-sm'
-                            )
-                  },
-                  ', '
-                ) %>
+      <% card = popular_fiction_card_stats(similar_fiction) %>
+      <article class="flex w-37 shrink-0 snap-start flex-col gap-2 md:w-64 md:gap-3">
+        <%= link_to fiction_path(similar_fiction), turbo_drive_visit_data.merge(class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-line-strong') do %>
+          <%= cover_card_picture_tag(similar_fiction.cover, alt: similar_fiction.title, loading: 'lazy',
+                                                            class: 'absolute inset-0 size-full object-cover transition-transform duration-300 ease-out group-hover/cover:scale-[1.03]') %>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-linear-to-t from-black/80 via-black/40 to-transparent p-2 pt-10 md:p-3 md:pt-10">
+            <span class="<%= stat_class %>">
+              <%= stroke_icon(:eye, 'size-3 shrink-0 text-white/90') %>
+              <span class="sr-only"><%= t('fictions.about.similar_views') %>:</span>
+              <span class="truncate"><%= card[:views] %></span>
+            </span>
+            <span class="<%= stat_class %> shrink-0">
+              <%= stroke_icon(:star, 'size-3 shrink-0 fill-amber-300 text-amber-300') %>
+              <span class="sr-only"><%= t('fictions.about.similar_rating') %>:</span>
+              <%= card[:rating] %>
+            </span>
           </div>
+        <% end %>
+        <div class="flex min-w-0 flex-col gap-1">
+          <%= link_to similar_fiction.title, fiction_path(similar_fiction),
+                      turbo_drive_visit_data.merge(class: 'line-clamp-1 text-sm/5 font-semibold text-fg hover:text-fg-brand md:text-base/6') %>
+          <% if card[:genres].present? %>
+            <% genre_slugs = card[:genres].to_h { |genre| [genre[:name], genre[:slug]] } %>
+            <%= render Ui::TagListComponent.new(
+                  labels: genre_slugs.keys,
+                  variant: :genre,
+                  size: :snug,
+                  max: 2,
+                  sort_adult_first: true,
+                  genre_slugs:,
+                  href_builder: ->(name) { fiction_genre_fictions_path(genre_slugs[name]) if genre_slugs[name].present? },
+                  tag_html: turbo_drive_visit_data,
+                  html: { class: 'gap-1 nowrap overflow-hidden' }
+                ) %>
+          <% end %>
         </div>
-      </div>
+      </article>
     <% end %>
   </div>
-</div>
+</section>

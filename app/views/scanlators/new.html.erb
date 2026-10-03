@@ -6,9 +6,14 @@
       <p class="text-lg text-fg-muted max-w-2xl mx-auto">Додайте профіль вашої команди перекладачів!</p>
     </div>
 
+    <% if @return_to %>
+      <%= render Ui::NoticeComponent.new(kind: :announced, title: t('scanlators.new.chapter_hint'), html: { class: 'mb-6 rounded-xl' }) %>
+    <% end %>
+
     <!-- Form Container -->
     <div class="bg-card rounded-2xl border border-line shadow-lg p-8">
       <%= simple_form_for @scanlator, as: :scanlator, url: scanlators_path, method: :post, html: { class: "form", multipart: true }, data: { turbo: false } do |f| %>
+        <%= hidden_field_tag :return_to, @return_to if @return_to %>
         <%= render 'form', scanlator: @scanlator, f: f %>
       <% end %>
     </div>

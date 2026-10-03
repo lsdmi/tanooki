@@ -54,7 +54,7 @@ module Ui
         )
       )
 
-      assert_selector 'div.inline-flex.flex-nowrap.items-center.gap-1', count: 1
+      assert_selector 'div.inline-flex.flex-nowrap.items-center.gap-2', count: 1
       assert_selector 'div.inline-flex.flex-nowrap a.bg-rose-200', count: 2
     end
 

@@ -49,33 +49,49 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     assert_select '#fiction-panel-about[hidden]'
   end
 
-  test 'the team toolbar sits above the tab panels when Chapters opens for a team member' do
-    sign_in_team_member
-    ReadingProgress.create!(user: users(:user_one_one_zero), fiction: @fiction, chapter: chapters(:one),
-                            resume_at: 1.hour.ago)
-
-    get fiction_url(@fiction)
-
-    assert_select '#fiction-tab-chapters[aria-selected=true]'
-    assert_select 'main > section[aria-labelledby="fiction-team-toolbar-title"] a', text: 'Додати розділ'
-    assert_select 'main > section[aria-labelledby="fiction-team-toolbar-title"] + section#fiction-panel-about'
-  end
-
-  test 'team members do not get the invite-to-translate card' do
+  test 'the team menu sits in the hero actions, outside the tab panels' do
     sign_in_team_member
 
     get fiction_url(@fiction)
 
-    assert_not_includes response.body, 'Додайте нові розділи!'
+    assert_select '#fiction-hero-actions #fiction-team-menu a', text: 'Додати розділ'
+    assert_select '[role=tabpanel] #fiction-team-menu', 0
   end
 
-  test 'readers outside the team get the invite card and no team toolbar' do
+  test 'About holds the description and notices, then the sidebar, then the ad' do
+    scanlators(:one).update!(notice: 'Нові розділи щосуботи')
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-panel-about #fiction-description.line-clamp-6', text: @fiction.description
+    assert_equal %w[fiction-description-title fiction-notices-title fiction-shelves-title fiction-rating-title],
+                 css_select('#fiction-panel-about h2[id]').pluck('id')
+  end
+
+  test 'the main ad follows the sidebar in the markup so it comes last on mobile' do
+    get fiction_url(@fiction)
+
+    blocks = css_select('#fiction-panel-about > div > *').map { |node| node['class'].to_s }
+
+    assert_match(/fiction-show__ad--main/, blocks.last)
+    assert(blocks.any? { |classes| classes.include?('lg:row-span-2') })
+  end
+
+  test 'the old invite and monthly reads cards are gone' do
     sign_in users(:user_two)
 
     get fiction_url(@fiction)
 
-    assert_select 'section[aria-labelledby="fiction-team-toolbar-title"]', 0
-    assert_includes response.body, 'Додайте нові розділи!'
+    assert_not_includes response.body, 'Додайте нові розділи!'
+    assert_not_includes response.body, 'Славомір'
+  end
+
+  test 'readers outside the team get no team menu' do
+    sign_in users(:user_two)
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-team-menu', 0
   end
 
   test 'similar fictions sit below the tab panels' do

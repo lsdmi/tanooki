@@ -91,6 +91,15 @@ class FictionRatingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test 'returns the count line for the rating card' do
+    fiction_two = fictions(:two)
+    fiction_two.fiction_ratings.delete_all
+
+    post fiction_fiction_ratings_url(fiction_two.id), params: { rating: 5 }
+
+    assert_equal 'з 5 · 1 оцінка', response.parsed_body['summary']
+  end
+
   # Removed mocking test as it requires additional setup and isn't essential for basic functionality
 
   private

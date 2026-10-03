@@ -6,7 +6,7 @@ allowed:
   - app/views/fictions/edit.html.erb:5
   - app/views/fictions/new.html.erb:3
   - app/views/scanlators/edit.html.erb:11
-  - app/views/scanlators/new.html.erb:11
+  - app/views/scanlators/new.html.erb:15
   - app/views/chapters/edit.html.erb:11
   - app/views/chapters/new.html.erb:11
   - app/views/publications/_edit.html.erb:14

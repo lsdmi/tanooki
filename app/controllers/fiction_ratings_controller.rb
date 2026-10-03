@@ -46,10 +46,12 @@ class FictionRatingsController < ApplicationController
   end
 
   def fiction_rating_summary(rating)
+    count = @fiction.reload.rating_count
     {
-      average_rating: @fiction.reload.average_rating,
-      rating_count: @fiction.rating_count,
-      user_rating: rating
+      average_rating: @fiction.average_rating,
+      rating_count: count,
+      user_rating: rating,
+      summary: t('fictions.about.rating.summary', ratings: t('fictions.hero.stats.ratings', count:))
     }
   end
 end

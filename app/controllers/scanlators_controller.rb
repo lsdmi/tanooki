@@ -10,6 +10,7 @@ class ScanlatorsController < ApplicationController
   before_action :set_scanlator, only: %i[show edit update destroy]
   before_action :verify_permissions, only: %i[edit update destroy]
   before_action :pokemon_appearance, only: [:show]
+  before_action :set_chapter_return_path, only: %i[new create]
 
   def index
     session[:studio_tab] = 'teams'
@@ -35,7 +36,7 @@ class ScanlatorsController < ApplicationController
       Scanlators::SyncMembers.new(
         scanlator_params[:member_ids], @scanlator, user: current_user, initial: true
       ).call
-      redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.create_success')
+      redirect_after_create
     else
       render 'new', status: :unprocessable_content
     end
@@ -71,6 +72,20 @@ class ScanlatorsController < ApplicationController
         { member_ids: [] }
       ]
     )
+  end
+
+  def redirect_after_create
+    if @return_to
+      redirect_to @return_to, notice: t('scanlators.notices.create_success_chapter')
+    else
+      redirect_to scanlator_path(@scanlator), notice: t('scanlators.notices.create_success')
+    end
+  end
+
+  # Only the new chapter form, so `return_to` can't become an open redirect.
+  def set_chapter_return_path
+    path = params[:return_to].to_s
+    @return_to = path if path.match?(%r{\A/chapters/new\?fiction=[\w-]+\z})
   end
 
   def refresh_list

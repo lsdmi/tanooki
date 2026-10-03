@@ -14,7 +14,6 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_sidebar_stats[loading="lazy"][src=?]', sidebar_stats_fiction_path(@fiction)
-    assert_not_includes response.body, 'Славомір'
     assert_not_includes response.body, 'Відзнаки та нагороди'
   end
 
@@ -22,27 +21,36 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_similar[loading="lazy"][src=?]', similar_fictions_fiction_path(@fiction)
-    assert_not_includes response.body, 'Також може сподобатися'
+    assert_select '#fiction-similar-title', 0
   end
 
-  test 'sidebar_stats frame renders monthly reads and ranks when present' do
-    Rails.cache.write('hot_updates_counts', { @fiction.id => 5, fictions(:two).id => 10 }, expires_in: 1.hour)
+  test 'sidebar_stats frame renders honors for ranked genres with badge artwork' do
+    Genre.create!(name: 'Комедія', slug: 'comedy')
+    Rails.cache.write("fiction-#{@fiction.slug}-ranks", { 'Комедія' => 1, 'Жанр Альфа' => 2 })
 
     get sidebar_stats_fiction_url(@fiction)
 
-    assert_response :success
-    assert_select 'turbo-frame#fiction_sidebar_stats'
-    assert_includes response.body, 'Славомір'
+    assert_select 'turbo-frame#fiction_sidebar_stats #fiction-honors-title', text: 'Відзнаки та нагороди'
+    assert_select '#fiction_sidebar_stats a[href="/fictions/genres/comedy"]', text: /#1/
   ensure
-    Rails.cache.delete('hot_updates_counts')
+    Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
+  end
+
+  test 'sidebar_stats frame stays empty without ranks' do
+    Rails.cache.write("fiction-#{@fiction.slug}-ranks", {})
+
+    get sidebar_stats_fiction_url(@fiction)
+
+    assert_select 'turbo-frame#fiction_sidebar_stats section', 0
+  ensure
+    Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
   end
 
   test 'similar_fictions frame renders recommendations' do
     get similar_fictions_fiction_url(@fiction)
 
     assert_response :success
-    assert_select 'turbo-frame#fiction_similar'
-    assert_includes response.body, 'Також може сподобатися'
+    assert_select 'turbo-frame#fiction_similar #fiction-similar-title', text: 'Схожі твори'
   end
 
   test 'similar_fictions frame links to related titles' do

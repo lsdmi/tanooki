@@ -16,7 +16,7 @@ module Ui
       render_inline(NoticeComponent.new(kind: :licensed, style: :scrim, title: 'Офіційна ліцензія', body: 'Текст'))
 
       assert_selector 'div.bg-card\\/80.dark\\:bg-overlay-scrim-45.backdrop-blur-lg' \
-                      '.border-status-licensed-subtle-border.dark\\:border-status-licensed-on-media-border ' \
+                      '.ring-inset.ring-status-licensed-subtle-border.dark\\:ring-status-licensed-on-media-border ' \
                       'svg.md\\:size-6'
       assert_selector 'p.text-status-licensed-solid.dark\\:text-status-licensed-on-media-title',
                       text: 'Офіційна ліцензія'

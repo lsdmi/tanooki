@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Management links on fiction#show for the fiction's teams and admins, above the About and Chapters panels.
-  # Hidden on Comments through the tabs root's `group/tabs`, since the tab switches on the client.
-  class TeamToolbarComponent < ViewComponent::Base
+  # «Керування» menu in the hero actions for the fiction's teams and admins: add a chapter, manage chapters, edit.
+  # Lives in the hero so it stays reachable on every tab.
+  class TeamMenuComponent < ViewComponent::Base
     include Layout::TurboDriveHelper
     include Ui::StrokeIconHelper
 

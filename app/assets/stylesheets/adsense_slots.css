@@ -171,6 +171,13 @@ html.adblock-likely .scanlator-show__ad--full,
   font-family: ui-monospace, monospace;
 }
 
+/* Fiction show: the About grid gap already spaces the slot */
+.fiction-show__ad .reader-ad-slot.reader-ad-slot--preview,
+.fiction-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 /* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */
 .bookshelf-show__ad .reader-ad-slot__adsense iframe {
   width: 100% !important;

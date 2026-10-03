@@ -15,7 +15,7 @@ class FictionsShowAdsenseTest < ActionDispatch::IntegrationTest
     assert_select '.fiction-show__ad .reader-ad-slot', count: 0
   end
 
-  test 'show renders main and sidebar adsense slot previews in development when slot ids are unset' do
+  test 'show renders only the main adsense slot preview in development when slot ids are unset' do
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
       get fiction_url(@fiction)
     end
@@ -23,8 +23,7 @@ class FictionsShowAdsenseTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.fiction-show__ad--main #adsense-slot-fiction_show-' \
                   "#{@fiction.id}.reader-ad-slot--preview", count: 1
-    assert_select '.fiction-show__ad--sidebar #adsense-slot-fiction_show_sidebar-' \
-                  "#{@fiction.id}.reader-ad-slot--preview", count: 1
+    assert_select '.fiction-show__ad .reader-ad-slot', count: 1
   end
 
   test 'production omits adsense on copyright-excluded fiction show' do

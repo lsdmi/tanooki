@@ -24,8 +24,10 @@ module Ui
       'focus-visible:ring-amber-700'
     ].join(' ').freeze
 
+    # snug: the 14 px label in a 24 px pill of the novel page (Figma «Keywords and Genre Tags» 8094:13866).
     SIZE_CLASSES = {
       sm: 'rounded-lg px-2.5 py-0.5 text-xs font-normal',
+      snug: 'rounded-lg px-3 py-px text-sm/5 font-normal',
       md: 'rounded-lg px-3 py-1 text-sm font-normal md:rounded-xl'
     }.freeze
 
@@ -36,6 +38,7 @@ module Ui
 
     COUNT_SIZE_CLASSES = {
       sm: 'min-w-[1.25rem] px-1 py-px text-[10px] leading-4',
+      snug: 'min-w-[1.25rem] px-1 py-px text-[10px] leading-4',
       md: 'min-w-[1.5rem] px-1.5 py-0.5 text-xs leading-4'
     }.freeze
   end

@@ -15,8 +15,15 @@ module Ui
         )
       )
 
-      assert_selector 'div.inline-flex.flex-nowrap.items-center.gap-1', count: 1
+      assert_selector 'div.inline-flex.flex-nowrap.items-center.gap-2', count: 1
       assert_selector 'div.inline-flex.flex-nowrap a.bg-rose-200', count: 2
+    end
+
+    test 'the adult cluster takes the list gap' do
+      render_inline(TagListComponent.new(labels: %w[BL Драма], variant: :genre, genre_slugs: { 'BL' => 'bl' },
+                                         html: { class: 'mt-2 gap-1.5 sm:gap-3' }))
+
+      assert_selector 'div.inline-flex.flex-nowrap.gap-1\.5.sm\:gap-3', count: 1
     end
 
     test 'max prioritizes adult tags before regular genres' do
