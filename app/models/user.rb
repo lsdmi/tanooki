@@ -29,9 +29,9 @@ class User < ApplicationRecord
   has_many :pokemons, through: :user_pokemons
   has_many :pokemon_encounters, dependent: :delete_all
   has_many :attacker_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :attacker_id,
-                                  inverse_of: :attacker, dependent: :nullify
+                                  inverse_of: :attacker, dependent: :delete_all
   has_many :defender_battle_logs, class_name: 'PokemonBattleLog', foreign_key: :defender_id,
-                                  inverse_of: :defender, dependent: :nullify
+                                  inverse_of: :defender, dependent: :delete_all
 
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
@@ -60,18 +60,12 @@ class User < ApplicationRecord
     )
   end
 
-  # Battles before pokemon_battles live in pokemon_battle_logs until Phase 2.4 converts them; reads cover both.
   def last_battle_at
-    [PokemonBattle.involving(self).maximum(:created_at), legacy_battle_logs.maximum(:updated_at)].compact.max
+    PokemonBattle.involving(self).maximum(:created_at)
   end
 
   def latest_battle
-    PokemonBattle.involving(self).includes(:attacker, :defender, :winner).order(created_at: :desc, id: :desc).first ||
-      legacy_battle_logs.includes(:rich_text_details, :attacker, :defender, :winner).order(created_at: :desc).first
-  end
-
-  def legacy_battle_logs
-    PokemonBattleLog.where(attacker_id: id).or(PokemonBattleLog.where(defender_id: id))
+    PokemonBattle.involving(self).includes(:attacker, :defender, :winner).order(created_at: :desc, id: :desc).first
   end
 
   def manages_chapter?(chapter)

@@ -3,7 +3,7 @@
 module Pokemons
   # The battle log rendered from a PokemonBattle's stored events: the arena header, one card per round in a two-column
   # grid, and the result (in the grid's last cell when the round count is odd). Species come from the stored teams, so
-  # a Pokémon that evolved later still shows as it fought.
+  # a Pokémon that evolved later still shows as it fought. A legacy battle has no events: header and result only.
   class BattleReplayComponent < ViewComponent::Base
     Round = Data.define(:number, :attacker, :defender, :victory)
     NAME_LENGTH = 7

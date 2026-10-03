@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-# Until Phase 2.4 converts them, battles before pokemon_battles stay in pokemon_battle_logs; reads cover both.
+# Battle history reads pokemon_battles only; battles from pokemon_battle_logs were converted to legacy rows.
 class UserBattleHistoryTest < ActiveSupport::TestCase
   include PokemonBattleHelpers
 
@@ -11,32 +11,38 @@ class UserBattleHistoryTest < ActiveSupport::TestCase
     @rival = users(:user_two)
   end
 
-  test 'the latest battle prefers pokemon_battles over older logs' do
-    PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user, created_at: 1.day.ago)
-    battle = create_pokemon_battle(attacker: @rival, defender: @user, created_at: 2.days.ago)
+  test 'the latest battle is the newest row, legacy or not' do
+    create_pokemon_battle(attacker: @rival, defender: @user, created_at: 2.days.ago)
+    legacy = create_pokemon_battle(attacker: @user, defender: @rival, engine_version: PokemonBattle::LEGACY_VERSION,
+                                   created_at: 1.day.ago)
 
-    assert_equal battle, @user.latest_battle
+    assert_equal legacy, @user.latest_battle
   end
 
-  test 'falls back to the latest log when there is no new battle' do
-    log = PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
-
-    assert_equal log, @user.latest_battle
-  end
-
-  test 'the last battle time is the newest from either table' do
-    PokemonBattleLog.create!(attacker: @user, defender: User.find(101), winner: @user, updated_at: 1.hour.ago)
-    battle = create_pokemon_battle(attacker: @rival, defender: @user, created_at: 3.hours.ago)
-
-    assert_in_delta 1.hour.ago, @user.last_battle_at, 1.second
-    assert_in_delta battle.created_at, @rival.last_battle_at, 1.second
-  end
-
-  test 'victories and totals add both tables' do
+  test 'unconverted logs are not read' do
     PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
+
+    assert_nil @user.latest_battle
+    assert_nil @user.last_battle_at
+    assert_equal [0, 0], [@user.battle_victory_count, @user.battle_total_count]
+  end
+
+  test 'victories and totals count legacy rows' do
+    create_pokemon_battle(attacker: @user, defender: @rival, engine_version: PokemonBattle::LEGACY_VERSION)
     create_pokemon_battle(attacker: @rival, defender: @user, winner: @rival)
     create_pokemon_battle(attacker: @user, defender: @rival, winner: @user)
 
     assert_equal [2, 3], [@user.battle_victory_count, @user.battle_total_count]
+  end
+
+  test 'destroying a user removes their battle logs and battles' do
+    trainer = User.find(105) # users fixture user_105: no chapters or teams to block destroy
+    PokemonBattleLog.create!(attacker: @rival, defender: trainer, winner: @rival)
+    create_pokemon_battle(attacker: trainer, defender: @rival)
+
+    trainer.destroy!
+
+    assert_equal [0, 0], [PokemonBattleLog.where(defender_id: trainer.id).count,
+                          PokemonBattle.involving(trainer).count]
   end
 end

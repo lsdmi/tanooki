@@ -27,8 +27,8 @@ module Pokemons
       assert_not BattleLeaderboardCooldown.call(@user)
     end
 
-    test 'a battle from before pokemon_battles still counts' do
-      PokemonBattleLog.create!(attacker: @user, defender: @rival, winner: @user)
+    test 'a battle converted from the legacy logs still counts' do
+      create_pokemon_battle(attacker: @user, defender: @rival, engine_version: PokemonBattle::LEGACY_VERSION)
 
       assert BattleLeaderboardCooldown.call(@user)
     end

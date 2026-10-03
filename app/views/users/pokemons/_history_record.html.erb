@@ -54,10 +54,6 @@
 
   <!-- Battle Details -->
   <div class="px-4 pb-4 text-center text-xs text-fg-secondary uppercase tracking-widest relative">
-    <% if battle.is_a?(PokemonBattle) %>
-      <%= render Pokemons::BattleReplayComponent.new(battle:) %>
-    <% else %>
-      <%= battle.details.body %>
-    <% end %>
+    <%= render Pokemons::BattleReplayComponent.new(battle:) %>
   </div>
 </div>

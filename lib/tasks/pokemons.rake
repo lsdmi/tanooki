@@ -16,4 +16,15 @@ namespace :pokemons do
     report = Pokemons::BalanceReport.new(battles: Integer(args[:battles] || 1000), seed: Integer(args[:seed] || 2026))
     puts Pokemons::BalanceReport::Markdown.render(report)
   end
+
+  desc 'Delete the Action Text bodies of legacy battle logs in batches (BATCH=500, PAUSE=1 seconds, DRY_RUN=1 to count)'
+  task purge_legacy_logs: :environment do
+    purge = Pokemons::LegacyBattleLogPurge.new(batch_size: Integer(ENV.fetch('BATCH', 500)),
+                                               pause: Float(ENV.fetch('PAUSE', 1)))
+    puts "bodies=#{purge.remaining} unconverted_logs=#{purge.unconverted}"
+    next if ENV['DRY_RUN'].present?
+
+    total = purge.call { |deleted| puts "deleted=#{deleted}" }
+    puts "done: deleted=#{total} bodies=#{purge.remaining}"
+  end
 end

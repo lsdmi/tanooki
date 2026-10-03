@@ -25,6 +25,9 @@
     </p>
   </div>
 <% end %>
+<% if battle.legacy? %>
+  <p class="mb-4 text-[10px] sm:text-xs text-fg-subtle">Раунди цього бою не збереглися</p>
+<% end %>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
   <% rounds.each do |round| %>
     <div class="flex justify-center text-center">

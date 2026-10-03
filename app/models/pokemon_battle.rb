@@ -7,10 +7,13 @@ class PokemonBattle < ApplicationRecord
   belongs_to :defender, class_name: 'User'
   belongs_to :winner, class_name: 'User'
 
-  scope :involving, ->(user) { where(attacker_id: user.id).or(where(defender_id: user.id)) }
-
   POTENTIAL_FRAUD_ALERT = 'Ця сутичка наразі неможлива. Спробуйте пізніше чи оберіть іншого опонента.'
   FLOAT_DIGITS = 4
+  # Converted from pokemon_battle_logs: who fought, who won and when, nothing to replay.
+  LEGACY_VERSION = 0
+
+  scope :involving, ->(user) { where(attacker_id: user.id).or(where(defender_id: user.id)) }
+  scope :legacy, -> { where(engine_version: LEGACY_VERSION) }
 
   # Fits the signed BIGINT column.
   def self.new_seed
@@ -60,5 +63,9 @@ class PokemonBattle < ApplicationRecord
 
   def attacker_won?
     winner_id == attacker_id
+  end
+
+  def legacy?
+    engine_version == LEGACY_VERSION
   end
 end

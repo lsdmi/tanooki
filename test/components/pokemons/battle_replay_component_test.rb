@@ -59,6 +59,23 @@ module Pokemons
       assert_no_selector 'img'
     end
 
+    test 'a legacy battle shows the header and the result without rounds' do
+      battle = create_pokemon_battle(attacker: @attacker, defender: @defender, winner: @defender,
+                                     engine_version: PokemonBattle::LEGACY_VERSION)
+
+      render_inline(BattleReplayComponent.new(battle:))
+
+      assert_text 'Раунди цього бою не збереглися'
+      assert_no_selector 'span', text: 'Раунд'
+      assert_selector 'h2 + p span.text-status-danger-solid', text: @attacker.name
+    end
+
+    test 'a new battle has no legacy note' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle))
+
+      assert_no_text 'Раунди цього бою не збереглися'
+    end
+
     private
 
     def fought_battle
