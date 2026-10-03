@@ -19,6 +19,11 @@ require 'minitest/autorun'
 require 'minitest/mock'
 require 'view_component/test_helpers'
 
+# Routes load lazily on the first request. Draw them now, before workers fork: a test that stubs Rails.env to
+# development around its first request would otherwise draw them with the Lookbook mount, which fails under test and
+# breaks every later test in that worker.
+Rails.application.reload_routes_unless_loaded
+
 Rails.root.glob('test/test_helpers/**/*.rb').each { |path| require path }
 
 module ActiveSupport
