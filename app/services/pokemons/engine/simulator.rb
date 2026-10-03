@@ -78,9 +78,10 @@ module Pokemons
       # Added one at a time, in this order (not Array#sum, which compensates rounding), to keep version 1's floats.
       def tire(side, winner, loser, round)
         deltas = [balance.tiredness_for(winner.score - loser.score), *trait_tiredness(winner, loser, round)]
-        update(side, winner.id) do |fighter|
-          deltas.reduce(fighter) { |tired, delta| tired.with(tiredness: tired.tiredness + delta) }
+        tired = update(side, winner.id) do |fighter|
+          deltas.reduce(fighter) { |total, delta| total.with(tiredness: total.tiredness + delta) }
         end
+        emit(:tired, round, combatant: winner.id, tiredness: tired.tiredness)
       end
 
       def trait_tiredness(winner, loser, round)
@@ -100,7 +101,9 @@ module Pokemons
       end
 
       def update(side, id)
-        @teams[side] = @teams[side].map { |fighter| fighter.id == id ? yield(fighter) : fighter }
+        team = @teams[side]
+        index = team.index { |fighter| fighter.id == id }
+        team[index] = yield(team[index])
       end
 
       def changed_experience

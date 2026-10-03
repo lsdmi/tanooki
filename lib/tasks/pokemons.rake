@@ -10,4 +10,10 @@ namespace :pokemons do
     end
     puts "#{rows.size} overdue; #{apply ? 'evolved' : 'dry run, nothing written (APPLY=1 to evolve)'}"
   end
+
+  desc 'Simulate N battles per table between random teams of real species: win rates by trait, type, rarity, power'
+  task :simulate, %i[battles seed] => :environment do |_task, args|
+    report = Pokemons::BalanceReport.new(battles: Integer(args[:battles] || 1000), seed: Integer(args[:seed] || 2026))
+    puts Pokemons::BalanceReport::Markdown.render(report)
+  end
 end

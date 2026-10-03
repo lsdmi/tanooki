@@ -7,6 +7,7 @@ module Pokemons
     # - trait_triggered: combatant, trait
     # - round_resolved: attacker_score, defender_score
     # - fainted: combatant, side
+    # - tired: combatant (the round winner), tiredness (its new value)
     # - battle_won: side
     Event = Data.define(:type, :round, :data) do
       def initialize(type:, round:, data: {})
