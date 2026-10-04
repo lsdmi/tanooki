@@ -1,0 +1,8 @@
+<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil %>
+<% chapters.each do |chapter| %>
+  <%= render 'fictions/chapter_item',
+             chapter: chapter,
+             reader_drawer: local_assigns.fetch(:reader_drawer, false),
+             current_chapter: local_assigns[:current_chapter],
+             drawer_progress: local_assigns[:drawer_progress] %>
+<% end %>

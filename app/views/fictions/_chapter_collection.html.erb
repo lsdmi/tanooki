@@ -4,6 +4,11 @@
 <% current_chapter_id = local_assigns[:current_chapter]&.id %>
 <% sections = chapter_list_section_index(fiction, order: list_order, viewer: current_user) %>
 <% drawer_accordion_opened = false %>
+<% lazy_page_sizes = {} %>
+<% unless reader_drawer %>
+  <% lazy_page_sizes = { chapter_section_page_size: Fictions::ChapterSectionLoader::PAGE_SIZE, chapter_section_mobile_page_size: Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE } %>
+  <% lazy_skeleton_rows = safe_join([render('fictions/chapter_row_skeleton')] * 4) %>
+<% end %>
 <% accordion_shell = if reader_drawer
   'border-b border-line last:border-b-0'
 else
@@ -71,20 +76,33 @@ end %>
           </span>
         </div>
       </div>
-      <div class="accordion-content <%= preload_section ? '' : 'hidden' %> <%= reader_drawer ? '' : 'max-h-96 overflow-y-auto' %> <%= accordion_body %>">
+      <div class="accordion-content <%= preload_section ? '' : 'hidden' %> <%= accordion_body %>">
         <% if preload_section %>
           <%= render 'fictions/chapter_section_items',
-                     chapters: fiction_section_chapters(fiction, section, order: list_order, scanlators: !reader_drawer),
+                     chapters: if reader_drawer
+                                 fiction_section_chapters(fiction, section, order: list_order, scanlators: false)
+                               else
+                                 fiction_section_first_page(fiction, section, order: list_order)
+                               end,
                      reader_drawer: reader_drawer,
                      current_chapter: local_assigns[:current_chapter],
-                     drawer_progress: local_assigns[:drawer_progress] %>
+                     drawer_progress: local_assigns[:drawer_progress],
+                     total: section_chapter_ids.size,
+                     section_url: section_path %>
         <% else %>
           <% lazy_params = {} %>
           <% lazy_params[:reader_drawer] = true if reader_drawer %>
           <% lazy_params[:current_chapter_id] = current_chapter_id if current_chapter_id.present? %>
           <div data-chapter-section-url="<%= section_path %>"
-               data-chapter-section-params="<%= lazy_params.to_json %>">
-            <p class="px-4 py-3 text-sm text-fg-muted chapter-section-placeholder">Натисніть, щоб завантажити розділи…</p>
+               data-chapter-section-params="<%= lazy_params.to_json %>"
+               <%= tag.attributes(data: lazy_page_sizes) %>>
+            <% if reader_drawer %>
+              <p class="px-4 py-3 text-sm text-fg-muted chapter-section-placeholder">Натисніть, щоб завантажити розділи…</p>
+            <% else %>
+              <ul class="chapter-section-placeholder grid grid-cols-1 gap-2 p-3 md:grid-cols-2" aria-busy="true" aria-label="<%= t('fictions.chapters_tab.pager.loading') %>">
+                <%= lazy_skeleton_rows %>
+              </ul>
+            <% end %>
           </div>
         <% end %>
       </div>

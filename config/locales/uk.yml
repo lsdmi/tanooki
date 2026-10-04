@@ -500,6 +500,16 @@ uk:
         in_progress: Читаю зараз
         read: Прочитаний
         hint: Натисніть на статус, щоб змінити його вручну
+      pager:
+        more: Показати ще %{count}
+        remaining:
+          one: ще %{count} розділ
+          few: ще %{count} розділи
+          many: ще %{count} розділів
+          other: ще %{count} розділу
+        all: Показати всі
+        loading: Завантаження розділів…
+        failed: Не вдалося завантажити розділи. Спробуйте ще раз.
     comments:
       count:
         one: "%{count} коментар"

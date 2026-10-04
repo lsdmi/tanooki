@@ -3,6 +3,10 @@
 module Fictions
   # Loads chapters for one fiction TOC accordion section (volume or numeric range).
   class ChapterSectionLoader
+    # The fiction page shows a group a page at a time; the reader drawer always gets the whole group.
+    PAGE_SIZE = 20
+    MOBILE_PAGE_SIZE = 10
+
     def initialize(fiction:, viewer:, section_key:, order:, chapter_ids: nil)
       @fiction = fiction
       @viewer = viewer
@@ -11,11 +15,12 @@ module Fictions
       @chapter_ids = parse_chapter_ids(chapter_ids)
     end
 
-    def call
-      Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer)
-                             .then { |scope| filter_scope(scope) }
-                             .includes(:scanlators)
-                             .reorder(list_order_sql)
+    def call(offset: 0, limit: nil)
+      scope.includes(:scanlators).reorder(list_order_sql).offset(offset.to_i.clamp(0..).nonzero?).limit(limit)
+    end
+
+    def total
+      scope.count
     end
 
     def self.parse_section_key(key)
@@ -28,6 +33,10 @@ module Fictions
     end
 
     private
+
+    def scope
+      @scope ||= filter_scope(Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer))
+    end
 
     def filter_scope(scope)
       return scope.where(id: @chapter_ids) if @chapter_ids.present?

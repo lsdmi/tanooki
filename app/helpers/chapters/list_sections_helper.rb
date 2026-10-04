@@ -17,6 +17,14 @@ module Chapters
       Library::ChapterCatalog.listed_section_chapters(fiction, ids, viewer:, order:, scanlators:)
     end
 
+    # The fiction page opens a group on its first page; «Показати ще» fetches the rest.
+    def fiction_section_first_page(fiction, section, order:, viewer: current_user)
+      chapters = fiction_section_chapters(fiction, section, order:, viewer:, scanlators: false)
+                 .first(Fictions::ChapterSectionLoader::PAGE_SIZE)
+      ActiveRecord::Associations::Preloader.new(records: chapters, associations: :scanlators).call
+      chapters
+    end
+
     def chapter_list_section_ids(section)
       Array(section[:chapter_ids])
     end

@@ -75,10 +75,26 @@ export default class extends Controller {
       extraParams = {}
     }
 
+    const { chapterSectionPageSize, chapterSectionMobilePageSize } = container.dataset
+    if (chapterSectionPageSize) {
+      extraParams.limit = window.matchMedia("(min-width: 768px)").matches ? chapterSectionPageSize : chapterSectionMobilePageSize
+    }
+
     const url = this.buildChapterSectionUrl(baseUrl, extraParams)
-    const placeholder = container.querySelector(".chapter-section-placeholder")
-    if (placeholder) {
+    let placeholder = container.querySelector(".chapter-section-placeholder")
+    // The fiction page shows skeleton rows instead; only the drawer's text placeholder needs a loading message.
+    if (placeholder?.tagName === "P") {
       placeholder.textContent = "Завантаження…"
+    }
+    const showMessage = (text) => {
+      if (!placeholder) return
+      if (placeholder.tagName !== "P") {
+        const message = document.createElement("p")
+        message.className = "px-4 py-3 text-sm text-fg-muted chapter-section-placeholder"
+        placeholder.replaceWith(message)
+        placeholder = message
+      }
+      placeholder.textContent = text
     }
 
     this.abortPendingSectionFetch()
@@ -91,16 +107,12 @@ export default class extends Controller {
         signal: this.sectionAbortController.signal,
       })
       if (!response.ok) {
-        if (placeholder) {
-          placeholder.textContent = "Не вдалося завантажити розділи. Спробуйте ще раз."
-        }
+        showMessage("Не вдалося завантажити розділи. Спробуйте ще раз.")
         return
       }
       const html = await response.text()
       if (!html.includes("<li")) {
-        if (placeholder) {
-          placeholder.textContent = "Розділів не знайдено."
-        }
+        showMessage("Розділів не знайдено.")
         return
       }
       container.innerHTML = html
@@ -108,9 +120,7 @@ export default class extends Controller {
     } catch (error) {
       if (error.name === "AbortError") return
 
-      if (placeholder) {
-        placeholder.textContent = "Не вдалося завантажити розділи. Спробуйте ще раз."
-      }
+      showMessage("Не вдалося завантажити розділи. Спробуйте ще раз.")
     } finally {
       delete container.dataset.chapterSectionLoading
       this.sectionAbortController = null

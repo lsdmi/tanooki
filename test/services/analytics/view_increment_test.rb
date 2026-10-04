@@ -13,9 +13,7 @@ module Analytics
     test 'remembers session and counts the view for the next write' do
       @fiction.update!(views: 0)
 
-      ViewIncrementJob.stub(:perform_later, ->(*) { flunk 'enqueued a job per view' }) do
-        ViewIncrement.new(@fiction, @session).call
-      end
+      ViewIncrement.new(@fiction, @session).call
 
       assert_equal [@fiction.slug], @session[:viewed]
       assert_equal 0, @fiction.reload.views

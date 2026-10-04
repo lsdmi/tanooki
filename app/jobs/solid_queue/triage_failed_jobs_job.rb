@@ -4,7 +4,6 @@ module SolidQueue
   # Hourly cleanup: unblock stale EPUB exports, retry safe recent failures, purge old dead jobs.
   class TriageFailedJobsJob < ApplicationJob
     RETRYABLE_JOB_CLASSES = %w[
-      Analytics::ViewIncrementJob
       Books::GenerateEpubJob
       Books::PurgeExpiredEpubExportsJob
       Fictions::WarmIndexCacheJob

@@ -104,6 +104,13 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [:id]
 
+  # Tag each SQL statement with the controller and action or job that ran it. MySQL drops comments when grouping
+  # digests and keeps them in query_sample_text, which it cuts at 1024 bytes, so the comment goes first.
+  config.active_record.query_log_tags_enabled = true
+  config.active_record.query_log_tags = %i[controller action job]
+  config.active_record.query_log_tags_prepend_comment = true
+  config.active_record.cache_query_log_tags = true
+
   # Prefer platform env (Render/DO); fall back to credentials for local `bin/prod-db runner`.
   config.secret_key_base = ENV['SECRET_KEY_BASE'].presence || Rails.application.credentials.secret_key_base
 

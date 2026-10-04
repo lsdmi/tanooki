@@ -1,11 +1,41 @@
-<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil %>
+<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil, total: nil, section_url: nil %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
-<ul class="<%= reader_drawer ? 'divide-y divide-line-muted' : 'grid grid-cols-1 gap-2 p-3 md:grid-cols-2' %>">
-  <% chapters.each do |chapter| %>
-    <%= render 'fictions/chapter_item',
-               chapter: chapter,
-               reader_drawer: reader_drawer,
-               current_chapter: current_chapter,
-               drawer_progress: local_assigns[:drawer_progress] %>
-  <% end %>
-</ul>
+<% if reader_drawer %>
+  <ul class="divide-y divide-line-muted">
+    <%= render 'fictions/chapter_section_rows', chapters:, reader_drawer:, current_chapter: local_assigns[:current_chapter], drawer_progress: local_assigns[:drawer_progress] %>
+  </ul>
+<% else %>
+  <% total = local_assigns[:total] || chapters.size %>
+  <% page_size = Fictions::ChapterSectionLoader::PAGE_SIZE %>
+  <% remaining = total - chapters.size %>
+  <% pager_labels = {
+       more: t('fictions.chapters_tab.pager.more'),
+       remaining: t('fictions.chapters_tab.pager.remaining'),
+       failed: t('fictions.chapters_tab.pager.failed')
+     } %>
+  <div class="flex flex-col gap-2 p-3"
+       data-controller="chapter-group-pager"
+       data-chapter-group-pager-url-value="<%= local_assigns[:section_url] %>"
+       data-chapter-group-pager-total-value="<%= total %>"
+       data-chapter-group-pager-page-size-value="<%= page_size %>"
+       data-chapter-group-pager-mobile-page-size-value="<%= Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE %>"
+       data-chapter-group-pager-labels-value="<%= pager_labels.to_json %>">
+    <%# Until the pager connects, phones see only their first page of the server-rendered rows. %>
+    <ul class="grid grid-cols-1 gap-2 md:grid-cols-2 max-md:[&>li:nth-child(n+11)]:hidden" data-chapter-group-pager-target="list">
+      <%= render 'fictions/chapter_section_rows', chapters:, current_chapter: local_assigns[:current_chapter], drawer_progress: local_assigns[:drawer_progress] %>
+    </ul>
+    <div class="flex flex-wrap items-center justify-center gap-3 py-2<%= ' hidden' unless remaining.positive? %>" data-chapter-group-pager-target="footer">
+      <%= ui_button(variant: :outline, size: :sm, html: { data: { action: 'chapter-group-pager#more', chapter_group_pager_target: 'more' } }) do %>
+        <span data-chapter-group-pager-target="moreLabel"><%= t('fictions.chapters_tab.pager.more', count: [remaining, page_size].min) %></span>
+        <%= stroke_icon(:chevron_down) %>
+      <% end %>
+      <span class="text-xs/5 text-fg-muted<%= ' hidden' unless remaining > page_size %>" data-chapter-group-pager-target="remaining"><%= t('fictions.chapters_tab.pager.remaining', count: remaining) %></span>
+      <button type="button"
+              class="rounded-sm text-xs/5 text-fg-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong<%= ' hidden' unless remaining > page_size %>"
+              data-action="chapter-group-pager#all"
+              data-chapter-group-pager-target="all"><%= t('fictions.chapters_tab.pager.all') %></button>
+    </div>
+    <p class="hidden text-center text-xs/5 text-fg-muted" role="alert" data-chapter-group-pager-target="error"></p>
+    <template data-chapter-group-pager-target="skeleton"><%= render 'fictions/chapter_row_skeleton' %></template>
+  </div>
+<% end %>

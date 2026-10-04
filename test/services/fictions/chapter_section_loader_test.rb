@@ -89,5 +89,13 @@ module Fictions
 
       assert_equal chapter_ids.sort, loaded.pluck(:id).sort
     end
+
+    test 'pages through a section and counts all of it' do
+      fiction = fictions(:one)
+      loader = ChapterSectionLoader.new(fiction:, viewer: nil, section_key: 'r-1-100', order: :asc)
+
+      assert_equal [chapters(:two)], loader.call(offset: 1, limit: 1).to_a
+      assert_equal 2, loader.total
+    end
   end
 end
