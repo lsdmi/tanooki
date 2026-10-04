@@ -4,7 +4,9 @@ module Fictions
   # Tailwind class strings for Fictions::HeroBandComponent (layout: Figma «Hero band» 10088:10422).
   # The band follows the theme: the cover is washed out in the page background color, so text uses the fg tokens.
   module HeroBandComponentStyles
-    ROOT = 'relative z-20 isolate text-fg'
+    # Below the sticky tabs (z-30) so the backdrop never covers them, but above them while a shelf or team menu is
+    # open: the menu cannot escape this stacking context on its own.
+    ROOT = 'relative z-20 isolate text-fg has-[[role=dialog]:not([hidden])]:z-40'
     # A fixed-height strip at the top, so long content runs past the art onto the plain page background.
     BACKDROP = 'absolute inset-x-0 top-0 h-[26rem] overflow-hidden'
     # Cropped toward the top. Only a light blur: more turns the art to mush under the wash. scale-105 hides the soft

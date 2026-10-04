@@ -37,7 +37,21 @@ module Reading
     end
 
     def read?(chapter)
-      @finished || @read_keys.include?(ReadingChapterRead.chapter_key(chapter))
+      read_key?(ReadingChapterRead.chapter_key(chapter))
+    end
+
+    def read_key?(key)
+      @finished || @read_keys.include?(key)
+    end
+
+    # Translations of one chapter share a key, so `keys` counts chapters, not rows.
+    def read_count(keys)
+      keys.count { |key| read_key?(key) }
+    end
+
+    # Counts are shown once something is read; a shelf alone puts the progress on the first chapter.
+    def started?
+      @finished || @read_keys.any?
     end
 
     # A finished fiction shows every chapter read regardless of the read set, so a toggle would do nothing visible.

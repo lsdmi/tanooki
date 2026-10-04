@@ -49,57 +49,38 @@ end %>
     <% end %>
   <% else %>
     <% toggle = drawer_progress&.toggleable? %>
-    <div class="flex transition duration-150 ease-in-out <%= row_class %>">
-      <div class="min-w-0 flex-1 p-3<%= ' pr-0' if toggle %>">
-        <%= link_to chapter_path(chapter), turbo_drive_visit_data.merge(class: "block") do %>
-          <div class="flex items-center justify-between gap-4">
-            <div class="flex min-w-0 flex-1 items-center gap-3">
-              <span class="mt-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-hover text-xs font-medium text-fg-secondary">
-                <%= chapter.number %>
-              </span>
-              <div class="min-w-0 flex-1">
-                <span class="block truncate <%= title_class %>">
-                  <%= chapter.display_title_no_volume %>
-                </span>
-                <% if toggle && status == :in_progress %>
-                  <span class="sr-only"><%= t('chapters.reader_chapter_drawer.progress_in_progress') %></span>
-                <% end %>
-              </div>
-            </div>
-            <div class="flex shrink-0 items-center gap-2">
-              <% if !toggle && status.in?(%i[read in_progress]) %>
-                <%= chapter_progress_icon(status) %>
-              <% end %>
-              <span class="whitespace-nowrap text-xs text-fg-muted">
-                <%= l(chapter.public_at, format: :shortest).downcase %>
-              </span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-fg-subtle group-hover:text-fg-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
+    <% continue_row = status == :in_progress %>
+    <% mobile_title, desktop_title = chapter_list_row_titles(chapter) %>
+    <%# The title link stretches over the row; team links and the toggle sit above it. %>
+    <div class="relative flex items-center gap-3 rounded-lg p-3 transition-colors <%= row_class %>">
+      <span class="flex h-11 min-w-11 shrink-0 items-center justify-center rounded-md bg-surface px-2 text-xs/5 font-medium text-fg-secondary ring-1 ring-inset ring-line transition-colors md:min-w-13 <%= 'group-hover:bg-main' unless continue_row %>">
+        <%= Chapters::Formatting.format_decimal(chapter.number) %>
+      </span>
+      <div class="flex min-w-0 flex-1 flex-col gap-1">
+        <%= link_to chapter_path(chapter), turbo_drive_visit_data.merge(class: "truncate rounded-sm text-sm/5 font-medium after:absolute after:inset-0 after:rounded-lg focus:outline-none focus-visible:after:ring-2 focus-visible:after:ring-line-strong #{title_class}") do %>
+          <span class="md:hidden"><%= mobile_title %></span><span class="hidden md:inline"><%= desktop_title %></span>
+          <% if toggle && continue_row %>
+            <span class="sr-only"><%= t('chapters.reader_chapter_drawer.progress_in_progress') %></span>
+          <% end %>
         <% end %>
-        <% if chapter.scanlators.any? %>
-          <div class="-mt-1 pl-9">
-            <p class="text-[0.65rem] leading-snug text-fg-muted">
-              <%= safe_join(
-                    chapter.scanlators.map { |scanlator|
-                      link_to(
-                        scanlator.title,
-                        scanlator_path(scanlator),
-                        turbo_drive_visit_data.merge(
-                          class: "text-fg-muted underline-offset-2 hover:text-fg-secondary hover:underline"
-                        )
-                      )
-                    },
-                    ', '
-                  ) %>
-            </p>
-          </div>
+        <p class="truncate text-xs/5 text-fg-muted<%= ' hidden md:block' if continue_row %>">
+          <% if chapter.scanlators.any? %>
+            <%= safe_join(chapter.scanlators.map { |scanlator| link_to(scanlator.title, scanlator_path(scanlator), turbo_drive_visit_data.merge(class: 'relative rounded-sm underline-offset-2 hover:text-fg-secondary hover:underline')) }, ', ') %>
+            ·
+          <% end %>
+          <%= l(chapter.public_at, format: :shortest) %>
+        </p>
+        <% if continue_row %>
+          <p class="text-xs/5 font-semibold text-fg-brand md:hidden" aria-hidden="true"><%= t('fictions.chapters_tab.continue_mobile') %></p>
         <% end %>
       </div>
+      <% if continue_row %>
+        <span class="hidden shrink-0 rounded-md bg-brand px-3 py-1 text-xs/5 font-semibold text-fg-on-brand md:inline-flex" aria-hidden="true"><%= t('fictions.chapters_tab.continue') %></span>
+      <% end %>
       <% if toggle %>
         <%= render 'fictions/reader_chapter_read_toggle', chapter:, read: status == :read, marker: status, reader_drawer: false %>
+      <% elsif drawer_progress && status.in?(%i[read in_progress]) %>
+        <span class="flex size-8 shrink-0 items-center justify-center"><%= chapter_progress_icon(status, size: :lg) %></span>
       <% end %>
     </div>
   <% end %>

@@ -32,7 +32,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :avatars, except: %i[new edit show update]
     resources :genres, except: %i[new show]
-    resources :pokemons, except: :show
     resources :tags, except: %i[new show]
   end
 

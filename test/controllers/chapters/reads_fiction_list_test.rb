@@ -42,16 +42,17 @@ module Chapters
       post chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
 
       assert_select 'turbo-stream[action=replace][target=?]', "chapter_list_chapter_#{@chapter.id}"
-      assert_select "#{@row}[data-chapter-status=read] > div.bg-surface button[aria-label=?]",
+      assert_select "#{@row}[data-chapter-status=read] button[aria-label=?]",
                     I18n.t('chapters.reader_chapter_drawer.mark_unread')
     end
 
-    test 'mark unread from the fiction page drops the wash' do
+    test 'mark unread from the fiction page brings the toggle back to mark read' do
       sign_in @user
       post chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
       delete chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
 
-      assert_select "#{@row}[data-chapter-status=unread] .bg-surface", count: 0
+      assert_select "#{@row}[data-chapter-status=unread] button[aria-label=?]",
+                    I18n.t('chapters.reader_chapter_drawer.mark_read')
     end
   end
 end

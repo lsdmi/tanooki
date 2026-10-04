@@ -1,6 +1,6 @@
 <%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
-<ul class="<%= reader_drawer ? 'divide-y divide-line-muted' : 'divide-y divide-line' %>">
+<ul class="<%= reader_drawer ? 'divide-y divide-line-muted' : 'grid grid-cols-1 gap-2 p-3 md:grid-cols-2' %>">
   <% chapters.each do |chapter| %>
     <%= render 'fictions/chapter_item',
                chapter: chapter,

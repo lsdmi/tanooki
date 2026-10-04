@@ -37,7 +37,7 @@ module Books
       export_request.update!(processing_step: 'starting')
       export_request.processing!
       EpubExportProgress.update!(export_request.id, 'building')
-      epub_export = build_epub_export(export_request)
+      epub_export = Books::EpubExportMemory.measure(export_request) { build_epub_export(export_request) }
       mark_export_ready(export_request, epub_export)
     rescue StandardError => e
       export_request.update!(status: :failed, error_message: export_error_message(e), processing_step: nil)

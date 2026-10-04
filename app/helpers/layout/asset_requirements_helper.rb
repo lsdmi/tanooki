@@ -20,8 +20,7 @@ module Layout
       'chapters' => %w[new edit create update],
       'publications' => %w[new edit create update],
       'scanlators' => %w[new edit create update],
-      'bookshelves' => %w[new edit create update],
-      'admin/pokemons' => %w[new edit create update]
+      'bookshelves' => %w[new edit create update]
     }.freeze
 
     SWEETALERT_PAGES = {

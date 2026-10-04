@@ -4,8 +4,6 @@
 class Pokemon < ApplicationRecord
   extend FriendlyId
 
-  attr_accessor :type_ids
-
   friendly_id :slug_candidates
 
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
@@ -26,6 +24,10 @@ class Pokemon < ApplicationRecord
   validates :ancestor_id, :dex_id, :sprite, presence: true
   validates :descendant_level,
             numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 99 }
+  validates :base_hp, :base_attack,
+            numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 255 }
+
+  before_validation :fill_official_base_stats
 
   RARITY_LEVELS = {
     common: 1,
@@ -66,5 +68,14 @@ class Pokemon < ApplicationRecord
   # Final forms point to themselves with level 0.
   def evolves_at?(level)
     descendant_id != id && descendant_level.positive? && level >= descendant_level
+  end
+
+  private
+
+  # A new species only needs its dex number: blank stats take the official ones.
+  def fill_official_base_stats
+    official = Pokemons::BaseStats.for(dex_id) or return
+    self.base_hp = official[:hp] if base_hp.blank?
+    self.base_attack = official[:attack] if base_attack.blank?
   end
 end

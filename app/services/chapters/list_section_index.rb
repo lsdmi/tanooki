@@ -32,7 +32,8 @@ module Chapters
       groups = chapters.group_by(&:volume_number).sort_by { |volume_number, _| volume_number.to_f }
       in_list_order(groups).map do |volume_number, grouped|
         title = "Том #{Formatting.format_decimal(volume_number)}"
-        section(:volume, self.class.volume_section_key(volume_number), title, grouped, volume_number:)
+        section(:volume, self.class.volume_section_key(volume_number), "#{title} · #{range_title(grouped)}", grouped,
+                volume_number:, epub_title: title)
       end
     end
 
@@ -40,8 +41,13 @@ module Chapters
       groups = chapters.group_by { |chapter| self.class.range_label(chapter.number) }
                        .sort_by { |range, _| range.to_i }
       in_list_order(groups).map do |range, grouped|
-        section(:range, self.class.range_section_key(range), "Розділи #{range}", grouped, range:)
+        section(:range, self.class.range_section_key(range), range_title(grouped), grouped, range:)
       end
+    end
+
+    def range_title(chapters)
+      first, last = chapters.map(&:number).minmax.map { |number| Formatting.format_decimal(number) }
+      first == last ? "Розділ #{first}" : "Розділи #{first}–#{last}"
     end
 
     def in_list_order(groups)
@@ -49,13 +55,15 @@ module Chapters
     end
 
     def section(kind, section_key, title, chapters, **extra)
+      epub_title = extra.delete(:epub_title) || title
       {
         kind:,
         section_key:,
         **extra,
         title:,
-        epub_title: title,
-        chapter_ids: chapters.sort_by { |chapter| [chapter.number, chapter.id] }.map(&:id)
+        epub_title:,
+        chapter_ids: chapters.sort_by { |chapter| [chapter.number, chapter.id] }.map(&:id),
+        chapter_keys: chapters.map { |chapter| ReadingChapterRead.chapter_key(chapter) }.uniq
       }
     end
   end

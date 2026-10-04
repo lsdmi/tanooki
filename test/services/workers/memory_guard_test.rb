@@ -58,6 +58,12 @@ module Workers
       end
     end
 
+    test 'reads the peak RSS from VmHWM' do
+      File.stub(:foreach, ["VmHWM:\t  614400 kB\n", "VmRSS:\t  524288 kB\n"].each) do
+        assert_equal 600, MemoryGuard.peak_rss_mb
+      end
+    end
+
     test 'the limit can be changed with WORKER_MEMORY_LIMIT_MB' do
       ENV['WORKER_MEMORY_LIMIT_MB'] = '600'
       guard = MemoryGuard.new(logger: Logger.new(@log), stop: -> { @stops += 1 })

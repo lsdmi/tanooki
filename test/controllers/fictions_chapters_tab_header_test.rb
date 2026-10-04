@@ -8,6 +8,7 @@ class FictionsChaptersTabHeaderTest < ActionDispatch::IntegrationTest
   setup do
     @fiction = fictions(:one)
     @user = users(:user_one)
+    ReadingChapterRead.where(user: @user).delete_all
     sign_in @user
   end
 

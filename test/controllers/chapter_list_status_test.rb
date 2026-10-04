@@ -28,14 +28,14 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     assert_select "#{in_progress} #{WASH}, #{drawer_row(unread, :current)} #{WASH}", count: 0
   end
 
-  test 'the signed-in fiction page tints the same rows as the drawer' do
+  test 'the signed-in fiction page tints only the continue row and marks read rows with the check' do
     sign_in @user
     get fiction_url(@fiction)
 
-    assert_select "li[data-chapter-status=read] > div#{WASH} span[role=img][aria-label=?]",
+    assert_select 'li[data-chapter-status=read] span[role=img][aria-label=?]',
                   I18n.t('chapters.reader_chapter_drawer.progress_read')
-    assert_select 'li[data-chapter-status=in_progress] span[role=img][aria-label=?]',
-                  I18n.t('chapters.reader_chapter_drawer.progress_in_progress')
+    assert_select "li[data-chapter-status=read] > div#{WASH}", count: 0
+    assert_select 'li[data-chapter-status=in_progress] > div.bg-brand-subtle', text: /Продовжити/
   end
 
   test 'lazy fiction page sections carry the same statuses' do

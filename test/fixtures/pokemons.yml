@@ -8,6 +8,8 @@ one:
   descendant_id: 2
   descendant_level: 16
   dex_id: 1
+  base_hp: 45
+  base_attack: 65
 
 two:
   id: 2
@@ -19,6 +21,8 @@ two:
   descendant_id: 2
   descendant_level: 0
   dex_id: 2
+  base_hp: 60
+  base_attack: 80
 
 # Evolved forms are rarity 5, which keeps them out of the wild pool. Tests make it stage 3 by pointing two at it.
 three:
@@ -31,4 +35,6 @@ three:
   descendant_id: 3
   descendant_level: 0
   dex_id: 3
+  base_hp: 80
+  base_attack: 100
 

@@ -306,7 +306,7 @@ uk:
     am: до полудня
     formats:
       default: "%d.%m.%Y %H:%M:%S"
-      shortest: "%d/%m/%Y"
+      shortest: "%d.%m.%Y"
       short: "%d %B %Y"
       short_datetime: "%d %B %Y, %H:%M"
       long: "%d %b %Y, %H:%M"
@@ -490,6 +490,16 @@ uk:
       oldest: Старіші
       show_oldest: Показати від першого розділу
       show_newest: Показати від останнього розділу
+      progress: "%{read} з %{total} прочитано"
+      chapter: Розділ %{number}
+      chapter_with_title: Розділ %{number} — %{title}
+      continue: Продовжити
+      continue_mobile: Продовжити →
+      legend:
+        unread: Непрочитаний
+        in_progress: Читаю зараз
+        read: Прочитаний
+        hint: Натисніть на статус, щоб змінити його вручну
     comments:
       count:
         one: "%{count} коментар"
@@ -634,7 +644,7 @@ uk:
       search_label: Шукати розділ
       search_placeholder: Шукати назву або розділ
       search_empty: Розділів не знайдено
-      progress_read: Прочитано
+      progress_read: Прочитаний
       progress_current: Читаю зараз
       progress_in_progress: Ви зупинилися тут
       mark_read: Позначити розділ прочитаним
@@ -685,11 +695,6 @@ uk:
       image_processing_unavailable: На сервері недоступна обробка зображень для цього EPUB. Зверніться до підтримки.
       too_large: Цей том занадто великий для EPUB-завантаження. Спробуйте окремі розділи або зверніться до підтримки.
       login_link_text: Увійти
-  admin:
-    pokemons:
-      notices:
-        create_success: Дані про покемона додано.
-        update_success: Дані про покемона оновлено.
   pokemons:
     alerts:
       rate_limited: Забагато спроб. Зачекайте хвилину й спробуйте ще раз.

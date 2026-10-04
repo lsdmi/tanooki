@@ -13,6 +13,11 @@ module Fictions
       render hero(user: sample_progress&.user || User.first)
     end
 
+    # @label Team member («Керування» menu)
+    def team_member
+      render hero(user: User.find_by(admin: true))
+    end
+
     # @label With notices (16+ over «no new chapters»)
     def with_notice
       render(hero(user: nil)) do |component|

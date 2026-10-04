@@ -18,12 +18,21 @@
     </div>
   </section>
 <% else %>
-  <% latest = listed_chapters(fiction, viewer: current_user).first %>
+  <% listed = listed_chapters(fiction, viewer: current_user) %>
+  <% latest = listed.first %>
   <% newest_first = order.to_sym == :desc %>
+  <% list_progress = reader_chapter_drawer_progress(fiction) if user_signed_in? %>
+  <% total = chapters_size(fiction, viewer: current_user) %>
   <section class="flex flex-col gap-6 md:gap-5">
     <div class="flex items-center justify-between gap-3">
       <div class="flex min-w-0 flex-col gap-1">
-        <p class="text-base/6 font-semibold text-fg"><%= t('fictions.chapters_tab.count', count: chapters_size(fiction, viewer: current_user)) %></p>
+        <p class="text-base/6 font-semibold text-fg">
+          <% if list_progress&.started? %>
+            <%= t('fictions.chapters_tab.progress', read: chapter_list_read_count(listed, list_progress), total:) %>
+          <% else %>
+            <%= t('fictions.chapters_tab.count', count: total) %>
+          <% end %>
+        </p>
         <% if latest %>
           <p class="text-sm/5 text-fg-muted">
             <%= t('fictions.chapters_tab.latest', number: Chapters::Formatting.format_decimal(latest.number), date: l(latest.public_at, format: :shortest)) %>
@@ -48,7 +57,21 @@
     </div>
 
     <div data-controller="flowbite">
-      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter] %>
+      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress %>
     </div>
+
+    <% if list_progress %>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs/5 text-fg-muted">
+        <% %i[unread in_progress read].each do |state| %>
+          <span class="inline-flex items-center gap-1">
+            <%= render Ui::ProgressIconComponent.new(state:, size: :sm) %>
+            <%= t(state, scope: 'fictions.chapters_tab.legend') %>
+          </span>
+        <% end %>
+        <% if list_progress.toggleable? %>
+          <span><%= t('fictions.chapters_tab.legend.hint') %></span>
+        <% end %>
+      </div>
+    <% end %>
   </section>
 <% end %>

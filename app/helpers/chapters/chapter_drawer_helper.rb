@@ -11,18 +11,19 @@ module Chapters
       unread: 'text-sm text-fg'
     }.freeze
     LIST_TITLE_CLASSES = {
-      current: 'font-medium text-fg',
-      in_progress: 'font-medium text-fg',
+      current: 'text-fg-brand',
+      in_progress: 'text-fg-brand',
       read: 'text-fg-muted',
-      unread: 'text-fg-secondary group-hover:text-fg'
+      unread: 'text-fg'
     }.freeze
     DRAWER_ROW_CLASSES = {
       read: 'bg-surface hover:bg-surface-strong dark:bg-surface/40 dark:hover:bg-surface/70',
       other: 'hover:bg-surface dark:hover:bg-surface/60'
     }.freeze
+    # The fiction page tints only the continue row; read rows are told apart by the muted title and the check.
     LIST_ROW_CLASSES = {
-      read: 'bg-surface hover:bg-surface-strong dark:bg-surface/60',
-      other: 'hover:bg-surface-strong'
+      continue: 'bg-brand-subtle ring-1 ring-inset ring-brand',
+      other: 'hover:bg-surface-hover'
     }.freeze
 
     def fiction_chapter_drawer_count(fiction, viewer: current_user)
@@ -43,11 +44,11 @@ module Chapters
     end
 
     # :current shares the in-progress icon but keeps its own label; unread stays unlabelled.
-    def chapter_progress_icon(status)
+    def chapter_progress_icon(status, size: :md)
       status = status.to_sym
       state = %i[read unread].include?(status) ? status : :in_progress
       label = t("chapters.reader_chapter_drawer.progress_#{status}") unless status == :unread
-      render Ui::ProgressIconComponent.new(state:, label:)
+      render Ui::ProgressIconComponent.new(state:, label:, size:)
     end
 
     def chapter_row_title_class(status, reader_drawer:)
@@ -55,8 +56,21 @@ module Chapters
     end
 
     def chapter_row_class(status, reader_drawer:)
-      classes = reader_drawer ? DRAWER_ROW_CLASSES : LIST_ROW_CLASSES
-      status == :read ? classes[:read] : classes[:other]
+      return DRAWER_ROW_CLASSES[status == :read ? :read : :other] if reader_drawer
+
+      LIST_ROW_CLASSES[status.in?(%i[in_progress current]) ? :continue : :other]
+    end
+
+    def chapter_list_read_count(chapters, progress)
+      progress.read_count(chapters.map { |chapter| ReadingChapterRead.chapter_key(chapter) }.uniq)
+    end
+
+    # Mobile rows drop «Розділ N —»: the number box already says it.
+    def chapter_list_row_titles(chapter)
+      number = Chapters::Formatting.format_decimal(chapter.number)
+      return [t('fictions.chapters_tab.chapter', number:)] * 2 if chapter.title.blank?
+
+      [chapter.title, t('fictions.chapters_tab.chapter_with_title', number:, title: chapter.title)]
     end
 
     def reader_chapter_drawer_search_index(fiction, order:, current_chapter: nil, viewer: current_user)
