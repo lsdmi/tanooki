@@ -6,6 +6,14 @@ module Pokemons
   class DexHelperTest < ActionView::TestCase
     include DexHelper
 
+    test 'battle_result_badge names the outcome in its status colour' do
+      render html: battle_result_badge(true) + battle_result_badge(false)
+
+      assert_select 'span.bg-status-success-subtle-bg', text: 'Перемога'
+      assert_select 'span.bg-status-danger-subtle-bg', text: 'Поразка'
+      assert_select 'svg[aria-hidden=true]', count: 2
+    end
+
     test 'dex_title should return the correct title for case 0' do
       title = dex_title(4)
 

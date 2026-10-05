@@ -6,6 +6,9 @@ class Pokemon < ApplicationRecord
 
   friendly_id :slug_candidates
 
+  # Dropped in a later deploy; battle strength comes from base_hp / base_attack (Pokemons::StatTiers for the card).
+  self.ignored_columns += %w[power_level]
+
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
   belongs_to :descendant, class_name: 'Pokemon'
   has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon', inverse_of: :ancestor, dependent: :nullify
@@ -19,7 +22,7 @@ class Pokemon < ApplicationRecord
   has_one_attached :sprite
 
   validates :name, presence: true, uniqueness: true
-  validates :power_level, :rarity,
+  validates :rarity,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
   validates :ancestor_id, :dex_id, :sprite, presence: true
   validates :descendant_level,
@@ -37,24 +40,17 @@ class Pokemon < ApplicationRecord
     super_rare: 5
   }.freeze
 
-  POWER_LEVELS = {
-    weak: 1, # 0 - 200
-    moderate: 2, # 201 - 300
-    formidable: 3, # 301 - 400
-    mighty: 4, # 401 - 500
-    legendary: 5 # 501 - 600
-  }.freeze
-
   STARTER_DEX_IDS = [1, 4, 7].freeze
 
   def slug_candidates
     [
-      name.downcase
+      name.downcase,
+      [name.downcase, dex_id]
     ]
   end
 
-  def power_level
-    POWER_LEVELS.key(read_attribute(:power_level))
+  def should_generate_new_friendly_id?
+    slug.blank? || (name_changed? && name.present?)
   end
 
   def rarity

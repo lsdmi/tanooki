@@ -1,116 +1,74 @@
-<div id="pokemon-details" class="p-6 border-t border-line">
-  <div class="grid grid-cols-2">
-    <%= tag.h5 "##{selected_pokemon.pokemon.dex_id}. #{selected_pokemon.pokemon_name}", class: 'mb-4 text-xl font-bold tracking-tight text-fg' %>
-    <div class="flex justify-end">
-      <% if training_cooldown?(current_user) %>
-        <div class="flex flex-col items-center">
-          <svg class="w-6 h-6 text-fg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5" />
-          </svg>
-          <%= tag.p training_cooldown_reason(current_user), class: 'text-xs text-fg truncate font-light mx-px mt-1' %>
-        </div>
-      <% else %>
-        <div class="flex flex-col items-center">
-          <%= button_to training_pokemon_path(user_pokemon_id: selected_pokemon.id),
-                data: { turbo_stream: "", "turbo-method": :post },
-                remote: true,
-                class: "token-raw group inline-flex items-center justify-center rounded-full hover:bg-brand-subtle focus:outline-none focus:ring-2 focus:ring-cyan-400 p-2 transition" do %>
-            <svg
-              class="w-7 h-7 text-fg group-hover:text-white transition"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              focusable="false">
-              <g>
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M8.09118 8H9.36418C9.72392 8.00873 10.0086 8.30725 10.0002 8.667V15.333C10.0086 15.6927 9.72392 15.9913 9.36418 16H8.09118C7.73144 15.9913 7.4468 15.6927 7.45518 15.333V14H5.63618C5.27644 13.9913 4.9918 13.6927 5.00018 13.333V10.667C4.9918 10.3073 5.27644 10.0087 5.63618 10H7.45518V8.667C7.4468 8.30725 7.73144 8.00873 8.09118 8Z"
-                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                  d="M15.9092 16H14.6362C14.2764 15.9913 13.9918 15.6927 14.0002 15.333V8.667C13.9918 8.30725 14.2764 8.00873 14.6362 8H15.9092C16.2689 8.00873 16.5536 8.30725 16.5452 8.667V10H18.3632C18.5361 10.0039 18.7004 10.0764 18.8199 10.2015C18.9393 10.3266 19.0042 10.4941 19.0002 10.667V13.333C19.0086 13.6927 18.7239 13.9913 18.3642 14H16.5452V15.333C16.5536 15.6927 16.2689 15.9913 15.9092 16Z"
-                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path
-                  d="M6.7052 14C6.7052 14.4142 7.04099 14.75 7.4552 14.75C7.86941 14.75 8.2052 14.4142 8.2052 14H6.7052ZM8.2052 10C8.2052 9.58579 7.86941 9.25 7.4552 9.25C7.04099 9.25 6.7052 9.58579 6.7052 10H8.2052ZM17.2962 10C17.2962 9.58579 16.9604 9.25 16.5462 9.25C16.132 9.25 15.7962 9.58579 15.7962 10H17.2962ZM15.7962 14C15.7962 14.4142 16.132 14.75 16.5462 14.75C16.9604 14.75 17.2962 14.4142 17.2962 14H15.7962ZM10.0002 11.25C9.58599 11.25 9.2502 11.5858 9.2502 12C9.2502 12.4142 9.58599 12.75 10.0002 12.75V11.25ZM14.0002 12.75C14.4144 12.75 14.7502 12.4142 14.7502 12C14.7502 11.5858 14.4144 11.25 14.0002 11.25V12.75ZM8.2052 14V10H6.7052V14H8.2052ZM15.7962 10V14H17.2962V10H15.7962ZM10.0002 12.75H14.0002V11.25H10.0002V12.75Z"
-                  fill="currentColor"></path>
-              </g>
-            </svg>
-          <% end %>
-        </div>
+<% pokemon = selected_pokemon.pokemon %>
+<% info = { 'Могуть' => stat_tier_label(pokemon, :might), 'Витривалість' => stat_tier_label(pokemon, :stamina),
+            'Удар' => stat_tier_label(pokemon, :strike), 'Рідкість' => t("activerecord.enum.rarity.#{pokemon.rarity}") } %>
+<% record = { 'Бойовий досвід' => experience_to_sentence(selected_pokemon.battle_experience),
+              'Вік' => time_ago_in_words(selected_pokemon.created_at),
+              'Норов' => UserPokemon.characters[selected_pokemon.character] } %>
+<%= render Pokemons::PanelComponent.new(title: "##{pokemon.dex_id} #{selected_pokemon.pokemon_name}", id: 'pokemon-details') do |panel| %>
+  <% panel.with_action do %>
+    <% if training_cooldown?(current_user) %>
+      <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-surface px-2.5 py-1 text-xs/4 font-medium text-fg-muted ring-1 ring-inset ring-line">
+        <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+        <%= "Тренування через #{training_cooldown_reason(current_user)}" %>
+      </span>
+    <% else %>
+      <%= form_with url: training_pokemon_path(user_pokemon_id: selected_pokemon.id), data: { turbo_stream: true }, class: 'shrink-0' do %>
+        <%= render Ui::ButtonComponent.new(as: :submit, variant: :outline, size: :sm, label: 'Тренувати') do %>
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z" /><path d="m2.5 21.5 1.4-1.4" /><path d="m20.1 3.9 1.4-1.4" /><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z" /><path d="m9.6 14.4 4.8-4.8" /></svg>
+          Тренувати
+        <% end %>
       <% end %>
+    <% end %>
+  <% end %>
+
+  <div class="flex items-center gap-4">
+    <div class="flex size-20 shrink-0 items-center justify-center rounded-xl bg-surface ring-1 ring-inset ring-line">
+      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'size-18 object-contain' %>
+    </div>
+    <div class="flex min-w-0 flex-col gap-2">
+      <div class="flex flex-wrap gap-1.5">
+        <% pokemon.types.each do |type| %><%= pokemon_type_badge(type.name) %><% end %>
+      </div>
+      <p class="text-sm/5 text-fg-muted">Рівень <span class="font-semibold text-fg"><%= selected_pokemon.current_level %></span></p>
     </div>
   </div>
-  <div class="grid sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2 gap-4 -mt-2.5">
-    <div>
-      <div class="inline-flex">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6 text-fg transform transition duration-500 hover:scale-110">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-        </svg>
-        <p class="ml-1 mb-3 font-normal text-fg-secondary">Відомості:</p>
-      </div>
-      <div class="grid grid-cols-2 text-fg-secondary">
-        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Могуть:</p>
-        <%= tag.span I18n.t("activerecord.enum.power_level.#{selected_pokemon.pokemon_power_level}"), class: 'text-base font-light' %>
 
-        <p class="ml-1 mb-2 text-sm font-light">Рідкість:</p>
-        <%= tag.span I18n.t("activerecord.enum.rarity.#{selected_pokemon.pokemon.rarity}"), class: 'text-base font-light' %>
-
-        <p class="ml-1 text-sm text-fg-secondary font-light">Тип:</p>
-        <div>
-          <% selected_pokemon.pokemon.types.pluck(:name).each do |type| %>
-            <div class="leading-tight mb-1">
-              <%= tag.span type, class: "text-sm font-light #{Pokemons::StatsHelper::TYPE_COLORS[type]} px-2 rounded-lg text-white" %>
+  <div class="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+    <% { 'Відомості' => info, 'Облік' => record }.each do |heading, rows| %>
+      <div class="flex flex-col gap-1">
+        <%= tag.h3 heading, class: 'text-xs/4 font-semibold uppercase tracking-wide text-fg-muted' %>
+        <dl class="flex flex-col divide-y divide-line-muted">
+          <% rows.each do |label, value| %>
+            <div class="flex items-baseline justify-between gap-4 py-2">
+              <%= tag.dt label, class: 'text-sm/5 text-fg-muted' %>
+              <%= tag.dd value, class: 'text-right text-sm/5 font-medium text-fg' %>
             </div>
           <% end %>
-        </div>
+        </dl>
       </div>
-    </div>
-    <div>
-      <div class="inline-flex">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-fg w-6 h-6 transform transition duration-500 hover:scale-110">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
-        </svg>
-        <p class="ml-1 mb-3 font-normal text-fg-secondary">Облік:</p>
-      </div>
-      <div class="grid grid-cols-2 text-fg-secondary">
-        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Бойовий досвід:</p>
-        <%= tag.span experience_to_sentence(selected_pokemon.battle_experience), class: 'text-base font-light' %>
-
-        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Вік:</p>
-        <%= tag.span time_ago_in_words(selected_pokemon.created_at), class: 'text-base font-light' %>
-
-        <p class="ml-1 mb-2 text-sm text-fg-secondary font-light">Норов:</p>
-        <%= tag.span UserPokemon.characters[selected_pokemon.character], class: 'text-base font-light' %>
-      </div>
-    </div>
+    <% end %>
   </div>
-  <%= tag.div class: 'mt-2' do %>
-    <div class="inline-flex">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-fg w-6 h-6 transform transition duration-500 hover:scale-110">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-      </svg>
-      <p class="ml-1 mb-3 font-normal text-fg-secondary">Еволюція:</p>
-    </div>
-    <div class="">
-      <div class="border-2 border-line shadow-md rounded-full">
-        <%= tag.div class: "flex items-center justify-center h-12" do %>
-          <%= image_tag url_for(descendant.sprite), alt: descendant.sprite.blob.filename, class: 'w-auto cursor-pointer rounded-lg mb-8 transform transition duration-500 hover:scale-110' %>
-        <% end %>
-        <%= tag.div descendant.name, class: 'flex items-center justify-center mt-2 text-fg-secondary' %>
-        <p class="flex items-center justify-center mb-2 font-light text-xs text-fg-secondary">Рівень:
-          <%= tag.span "#{selected_pokemon.current_level}/#{selected_pokemon.pokemon.descendant_level unless selected_pokemon.pokemon.descendant_level.zero? }", class: 'text-sm font-bold ml-1' %>
-        </p>
-        <div class="flex items-center justify-center mb-4">
-          <% descendant.types.pluck(:name).each do |type| %>
-            <%= tag.span type, class: "text-sm font-light #{Pokemons::StatsHelper::TYPE_COLORS[type]} px-2 mx-1 rounded-lg text-white" %>
-          <% end %>
+
+  <% if descendant.present? && descendant.id != pokemon.id %>
+    <% target = pokemon.descendant_level %>
+    <div class="flex flex-col gap-1">
+      <h3 class="text-xs/4 font-semibold uppercase tracking-wide text-fg-muted">Еволюція</h3>
+      <div class="flex items-center gap-3 rounded-lg bg-surface p-3 ring-1 ring-inset ring-line">
+        <div class="flex size-14 shrink-0 items-center justify-center rounded-lg bg-main ring-1 ring-inset ring-line">
+          <%= image_tag url_for(descendant.sprite), alt: descendant.name, loading: :lazy, class: 'size-12 object-contain' %>
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+            <%= tag.span descendant.name, class: 'truncate text-sm/5 font-semibold text-fg' %>
+            <%= tag.span "Рівень #{selected_pokemon.current_level} з #{target}", class: 'text-xs/4 text-fg-muted' %>
+          </div>
+          <%= render Ui::MiniProgressBarComponent.new(read: selected_pokemon.current_level, total: target, check: false,
+                                                     html: { aria: { label: "Рівень до еволюції в #{descendant.name}" } }) %>
+          <div class="flex flex-wrap gap-1.5">
+            <% descendant.types.each do |type| %><%= pokemon_type_badge(type.name) %><% end %>
+          </div>
         </div>
       </div>
     </div>
-  <% end if descendant.present? && descendant.id != selected_pokemon.pokemon.id %>
-</div>
+  <% end %>
+<% end %>

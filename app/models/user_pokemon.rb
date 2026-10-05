@@ -27,12 +27,15 @@ class UserPokemon < ApplicationRecord
   SUCCESS_MESSSAGE = 'Вітаємо, із оновленням у команді!'
   TRAINING_FRAUD_ALERT = 'Ця дія наразі неможлива. Спробуйте пізніше.'
 
-  delegate :name, :power_level, to: :pokemon, prefix: true
+  delegate :name, to: :pokemon, prefix: true
 
   def train!
     return level_up_training! if rand(2).zero?
 
-    update(battle_experience: battle_experience + 1) if battle_experience < 100
+    cap = Pokemons::Balance::EXPERIENCE_CAP
+    if battle_experience < cap
+      update(battle_experience: [battle_experience + Pokemons::Balance::TRAINING_EXPERIENCE, cap].min)
+    end
     { alert: "#{pokemon_name} набув нового бойового досвіду!" }
   end
 

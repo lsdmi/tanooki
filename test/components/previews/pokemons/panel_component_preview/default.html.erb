@@ -1,0 +1,6 @@
+<%= render Pokemons::PanelComponent.new(title: 'Мої покемони', subtitle: 'У колекції: 27') do |panel| %>
+  <% panel.with_action do %>
+    <%= render Ui::ButtonComponent.new(variant: :outline, size: :sm, label: 'Тренувати') %>
+  <% end %>
+  <%= render 'users/pokemons/empty', message: 'Тут поки порожньо. Покемони трапляються на сторінках сайту — спіймайте першого, і він з’явиться тут.' %>
+<% end %>

@@ -1,36 +1,40 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Balance numbers from simulated battles between random teams of real species (rake pokemons:simulate[N]).
-  # Traits: N mirror matches each, an all-T team against the same species and experience with the other traits.
-  # Types, rarity and power: rounds won in N random battles. Same seed, same species, same report.
+  # Balance numbers for one engine version (rake pokemons:simulate[N]). Team battles use real collections (Trainers;
+  # random lineups when there are none). Traits: N mirror matches each, an all-T team against the same Pokémon with
+  # the other traits. Types, rarity and might: rounds won in N team battles. Species measures come from Duels. Same
+  # seed, same species and trainers, same report.
   class BalanceReport
-    Species = Data.define(:name, :power_level, :rarity, :types)
     Row = Data.define(:label, :wins, :total) do
       def win_rate
         total.zero? ? 0.0 : wins.fdiv(total)
       end
     end
+    # One team battle: the teams, the seed it was fought with, and the species by combatant id.
+    Battle = Data.define(:attacker, :defender, :seed, :result, :species)
 
     TRAIT_TARGET = 0.55
     EXPERIENCE = 0..100
-    DEFENDER_IDS = 1001
+    LINEUP_SIZES = 1..6
+    DEFENDER_IDS = 1_000_001
+    MIRROR_CHECKS = 200
 
-    attr_reader :battles
+    attr_reader :battles, :version, :species
 
-    def self.species
-      Pokemon.includes(:pokemon_types).order(:id).map do |pokemon|
-        Species.new(name: pokemon.name, power_level: pokemon.read_attribute(:power_level),
-                    rarity: pokemon.read_attribute(:rarity), types: pokemon.types.map(&:name))
-      end
-    end
-
-    def initialize(battles:, seed:, species: self.class.species, balance: Engine::BattleBalance::V1)
+    def initialize(battles:, seed:, version: Engine::VERSION, species: Species.catalogue,
+                   trainers: Trainers.load(species))
       @battles = battles
       @seed = seed
+      @version = version
+      @simulator = Engine.simulator(version)
       @species = species
-      @balance = balance
+      @trainers = trainers
       @characters = Engine::Traits.registry.keys
+    end
+
+    def duels
+      @duels ||= Duels.new(version:, species: @species, battles:, seed: @seed + 2)
     end
 
     # Each section rolls from its own generator, so reading them in any order gives the same numbers.
@@ -47,10 +51,16 @@ module Pokemons
 
     def types = tally { |species| species.types.uniq }
     def rarities = tally { |species| [species.rarity] }
-    def power_levels = tally { |species| [species.power_level] }
+    def might_tiers = tally { |species| [species.might] }
 
     def attacker_win_rate
-      random_battles.count { |result, _| result.attacker_won? }.fdiv(battles)
+      team_battles.count { |battle| battle.result.attacker_won? }.fdiv(battles)
+    end
+
+    # Share of team battles that mirror when fought again with the sides swapped and the same seed.
+    def mirror_rate
+      checked = team_battles.first(MIRROR_CHECKS)
+      checked.count { |battle| Mirror.mirrored?(battle, @simulator) }.fdiv(checked.size)
     end
 
     private
@@ -61,40 +71,50 @@ module Pokemons
     end
 
     def mirror_win?(trait, rng, attacking:)
-      lineup = random_lineup(rng)
+      lineup = lineup(rng)
       own = team(lineup, 1) { trait }
       opponent = team(lineup, DEFENDER_IDS) { (@characters - [trait]).sample(random: rng) }
       simulate(*(attacking ? [own, opponent] : [opponent, own]), rng).attacker_won? == attacking
     end
 
-    # Each entry: the battle Result and the species by combatant id.
-    def random_battles
-      @random_battles ||= begin
+    def team_battles
+      @team_battles ||= begin
         rng = Random.new(@seed + 1)
-        Array.new(battles) { random_battle(rng) }
+        Array.new(battles) { team_battle(rng) }
       end
     end
 
-    def random_battle(rng)
-      lineups = { 1 => random_lineup(rng), DEFENDER_IDS => random_lineup(rng) }
-      attacker, defender = lineups.map { |id, lineup| team(lineup, id) { @characters.sample(random: rng) } }
-      species = lineups.flat_map { |id, lineup| lineup.each_with_index.map { |(s, _), i| [id + i, s] } }.to_h
-      [simulate(attacker, defender, rng), species]
+    def team_battle(rng)
+      lineups = { 1 => lineup(rng), DEFENDER_IDS => lineup(rng) }
+      attacker, defender = lineups.map do |id, lineup|
+        team(lineup, id) { |own| own || @characters.sample(random: rng) }
+      end
+      seed = rng.rand(1 << 62)
+      Battle.new(attacker:, defender:, seed:, result: simulate(attacker, defender, Random.new(seed)),
+                 species: species_by_combatant(lineups))
     end
 
-    def random_lineup(rng)
-      Array.new(rng.rand(1..@balance.team_size)) { [@species.sample(random: rng), rng.rand(EXPERIENCE)] }
+    # A random trainer's collection, or a random lineup of 1–6 species with random experience and no trait.
+    def lineup(rng)
+      return @trainers.sample(random: rng) if @trainers.any?
+
+      Array.new(rng.rand(LINEUP_SIZES)) { [@species.sample(random: rng), rng.rand(EXPERIENCE), nil] }
     end
 
+    # Yields each entry's own character; the block returns the one to fight with.
     def team(lineup, first_id)
-      Engine::TeamSnapshot.new(trainer_id: first_id, combatants: lineup.each_with_index.map do |(species, xp), index|
-        Engine::Combatant.new(id: first_id + index, character: yield, power_level: species.power_level,
-                              battle_experience: xp, types: species.types)
+      Engine::TeamSnapshot.new(trainer_id: first_id, combatants: lineup.each_with_index.map do |entry, index|
+        species, experience, character = entry
+        species.combatant(first_id + index, experience, yield(character))
       end)
     end
 
+    def species_by_combatant(lineups)
+      lineups.flat_map { |id, lineup| lineup.each_with_index.map { |(species, _), i| [id + i, species] } }.to_h
+    end
+
     def simulate(attacker, defender, rng)
-      Engine::Simulator.call(attacker:, defender:, rng:, balance: @balance)
+      @simulator.call(attacker:, defender:, rng:)
     end
 
     # Win rate per label over every round fought; a round counts once for the winner's labels and the loser's.
@@ -104,11 +124,13 @@ module Pokemons
       totals.keys.sort.map { |label| Row.new(label:, wins: wins.fetch(label, 0), total: totals[label]) }
     end
 
+    # [winner, loser] species of every round.
     def round_pairs
-      @round_pairs ||= random_battles.flat_map do |result, species|
+      @round_pairs ||= team_battles.flat_map do |battle|
+        result = battle.result
         result.events_of(:round_started).zip(result.events_of(:fainted)).map do |start, fainted|
           loser = fainted.data[:combatant]
-          species.values_at((start.data.values_at(:attacker, :defender) - [loser]).first, loser)
+          battle.species.values_at((start.data.values_at(:attacker, :defender) - [loser]).first, loser)
         end
       end
     end

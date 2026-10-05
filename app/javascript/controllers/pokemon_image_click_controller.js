@@ -6,9 +6,7 @@ export default class PokemonImageClickController extends Controller {
 
   select(event) {
     this.buttonTargets.forEach(button => {
-      const selected = button === event.currentTarget;
-      button.classList.toggle("border-emerald-600", selected);
-      button.setAttribute("aria-pressed", selected);
+      button.setAttribute("aria-pressed", button === event.currentTarget);
     });
   }
 }

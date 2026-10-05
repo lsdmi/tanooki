@@ -1,45 +1,35 @@
-<div id="section"
-  class=""
-  data-controller="flowbite">
+<div id="section" class="flex flex-col gap-6">
+  <details class="group rounded-xl bg-main ring-1 ring-inset ring-line">
+    <summary class="flex cursor-pointer list-none flex-col gap-0.5 rounded-xl p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong md:p-5 [&::-webkit-details-marker]:hidden">
+      <span class="flex items-center justify-between gap-4">
+        <span class="text-base/6 font-semibold text-fg md:text-lg/7">Майданчик покемонів</span>
+        <span class="inline-flex shrink-0 items-center gap-1 text-sm/5 font-medium text-fg-brand">
+          Правила
+          <svg class="size-4 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </span>
+      </span>
+      <span class="text-sm/5 text-fg-muted">Ловіть покемонів на сторінках сайту, тренуйте їх і бийтеся з іншими тренерами.</span>
+    </summary>
+    <ul class="flex list-disc flex-col gap-2 border-t border-line px-4 pt-4 pb-5 pl-9 text-sm/6 text-fg-secondary md:px-5 md:pl-10">
+      <li>Вирушайте у подорож сторінками сайту — шукайте, досліджуйте, взаємодійте й ловіть нових покемонів на кожному кроці!</li>
+      <li>Кожен спійманий покемон одразу з'явиться у вашій колекції на цій сторінці — не пропустіть!</li>
+      <li>Розвивайте та тренуйте своїх покемонів, щоб брати участь у захопливих битвах із друзями та суперниками!</li>
+      <li>Приєднуйтеся до спільноти дослідників, відкривайте рідкісних покемонів і станьте справжньою легендою нашого майданчика!</li>
+    </ul>
+  </details>
 
-  <!-- Rules of the Game Accordion (closed by default) -->
-  <div id="accordion-collapse" data-accordion="collapse" class="mb-4 rounded-md shadow-md">
-    <h2 id="accordion-collapse-heading-rules">
-      <button type="button" class="bg-transparent dark:bg-transparent flex items-center justify-between w-full px-6 py-4 font-bold tracking-tight border border-line rounded-t-md shadow-sm transition duration-300" data-accordion-target="#accordion-collapse-body-rules" aria-expanded="false" aria-controls="accordion-collapse-body-rules">
-        <span class="text-fg">Майданчик Покемонів: Лови і Борись!</span>
-        <svg data-accordion-icon class="text-fg w-4 h-4 transition-transform duration-300 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5" />
-        </svg>
-      </button>
-    </h2>
-    <div id="accordion-collapse-body-rules" class="hidden" aria-labelledby="accordion-collapse-heading-rules">
-      <div class="px-6 py-5 border border-line rounded-b-md">
-        <ul class="list-disc pl-5 space-y-2 text-fg font-light tracking-tight">
-          <li>Вирушайте у подорож сторінками сайту — шукайте, досліджуйте, взаємодійте й ловіть нових покемонів на кожному кроці!</li>
-          <li>Кожен спійманий покемон одразу з'явиться у вашій колекції на цій сторінці — не пропустіть!</li>
-          <li>Розвивайте та тренуйте своїх покемонів, щоб брати участь у захопливих битвах із друзями та суперниками!</li>
-          <li>Приєднуйтеся до спільноти дослідників, відкривайте рідкісних покемонів і станьте справжньою легендою нашого майданчика!</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
+    <%= turbo_frame_tag "pokemon-data-screen", class: 'flex min-w-0 flex-col gap-6' do %>
+      <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, descendant: pokemon_show.descendant %>
+    <% end %>
 
-  <div class="space-y-6">
-    <div class="sm:grid sm:grid-cols-12 sm:gap-8">
-      <!-- Column 1: Pokémon Data Screen -->
-      <%= turbo_frame_tag "pokemon-data-screen", class: 'col-span-12 lg:col-span-5' do %>
-        <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, descendant: pokemon_show.descendant %>
+    <div class="flex min-w-0 flex-col gap-6">
+      <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
+        <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: pokemon_show.dex_leaderboard, opponent: pokemon_show.opponent,
+                                                    cooldown: pokemon_show.leaderboard_cooldown?,
+                                                    can_reroll: pokemon_show.reroll_available? %>
       <% end %>
-
-      <!-- Column 2: Leaderboard on top, Battle History below -->
-      <div class="col-span-12 lg:col-span-7 space-y-6">
-        <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
-          <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: pokemon_show.dex_leaderboard, opponent: pokemon_show.opponent,
-                                                      cooldown: pokemon_show.leaderboard_cooldown?,
-                                                      can_reroll: pokemon_show.reroll_available? %>
-        <% end %>
-        <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
-      </div>
+      <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
     </div>
   </div>
 </div>

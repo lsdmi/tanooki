@@ -1,45 +1,18 @@
-<div class="mt-4 rounded-lg border border-line bg-card shadow-sm">
-  <div class="">
-    <div class="inline-flex items-center justify-between px-6 pt-6">
-      <svg class="h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110 text-fg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-      </svg>
-      <h5 class="text-xl font-bold leading-none text-fg">Остання Сутичка</h5>
-    </div>
-    <% if battle_history.present? %>
-      <%= turbo_frame_tag "pokemon-history-list" do %>
-        <%= render 'users/pokemons/history_record', battle: battle_history %>
-      <% end %>
-    <% else %>
-      <%= turbo_frame_tag "pokemon-history-list" do %>
-      <% end %>
-      <%= turbo_frame_tag "pokemon-history-call" do %>
-        <div class="relative mx-auto my-2 overflow-hidden">
-          <!-- Main Content Area -->
-          <div class="flex items-center px-4 py-3">
-            <!-- Pokéball SVG or Icon (optional, for visual echo) -->
-            <div class="hidden sm:flex items-center pr-3">
-              <svg class="token-raw h-7 w-7 text-cyan-700 dark:text-cyan-300" fill="none" viewBox="0 0 48 48" stroke="currentColor">
-                <circle cx="24" cy="24" r="22" stroke-width="3" />
-                <circle cx="24" cy="24" r="8" stroke-width="3" />
-                <circle cx="24" cy="24" r="4" fill="currentColor" class="text-white" />
-                <line x1="2" y1="24" x2="46" y2="24" stroke-width="3" />
-              </svg>
-            </div>
-            <!-- Text Content -->
-            <div class="flex-1">
-              <div class="text-base sm:text-lg font-extrabold text-fg uppercase">
-                Вперед до бою!
-              </div>
-              <div class="mt-1 text-xs sm:text-sm text-fg-secondary font-light">
-                Ви маєте покемонів, що зриваються до бою! Натисніть на червону рукавичку
-                <%= image_tag 'battle.webp', class: 'h-5 w-5 inline-block mx-1 transform transition duration-300 hover:scale-110', alt: 'battle call' %>
-                на екрані <span class="font-semibold">"Мій Виклик"</span>, аби розпочати поєдинок!
-              </div>
-            </div>
-          </div>
+<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка') do %>
+  <%= turbo_frame_tag "pokemon-history-list" do %>
+    <%= render 'users/pokemons/history_record', battle: battle_history if battle_history.present? %>
+  <% end %>
+  <% if battle_history.blank? %>
+    <%= turbo_frame_tag "pokemon-history-call" do %>
+      <div class="flex items-center gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
+        <%= image_tag 'battle.webp', alt: '', class: 'hidden size-12 shrink-0 sm:block' %>
+        <div class="flex min-w-0 flex-col gap-1">
+          <p class="text-base/6 font-semibold text-fg">Вперед до бою!</p>
+          <p class="text-sm/5 text-fg-secondary">
+            Ваші покемони рвуться в бій! Натисніть «До бою!» у блоці «Мій виклик», аби розпочати поєдинок.
+          </p>
         </div>
-      <% end %>
+      </div>
     <% end %>
-  </div>
-</div>
+  <% end %>
+<% end %>

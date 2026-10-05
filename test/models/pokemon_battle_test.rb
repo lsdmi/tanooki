@@ -17,13 +17,25 @@ class PokemonBattleTest < ActiveSupport::TestCase
     battle = create_pokemon_battle(attacker: @attacker, defender: @defender, attacker_team: TEAM)
     combatant = battle.reload.snapshot(:attacker).combatants.sole
 
-    assert_equal [7, 'lucky', 3, 20, %w[Водяний]], combatant.to_h.values
+    assert_equal [7, 'lucky', 3, 20, %w[Водяний], nil, nil], combatant.to_h.values
     assert_equal @attacker.id, battle.snapshot(:attacker).trainer_id
   end
 
-  test 'stored events come back from MySQL unchanged' do
+  test 'a version 2 battle replays from its stored teams and keeps its hits through MySQL' do
+    team = [TEAM.first.merge('base_hp' => 160, 'base_attack' => 110)]
+    result = Pokemons::Engine.simulate(attacker: snapshot(team), defender: snapshot(team, id: 8), seed: 4, version: 2)
+    battle = create_pokemon_battle(attacker: @attacker, defender: @defender, engine_version: 2, seed: 4,
+                                   attacker_team: team, defender_team: [team.first.merge('id' => 8)],
+                                   events: PokemonBattle.serialize(result.events))
+
+    assert_equal result, battle.reload.replay
+    assert_equal PokemonBattle.serialize(result.events), battle.events
+    assert_not_empty battle.events_of(:hit)
+  end
+
+  test 'stored version 1 events come back from MySQL unchanged' do
     (1..20).each do |seed|
-      result = Pokemons::Engine.simulate(attacker: snapshot(TEAM), defender: snapshot(TEAM, id: 8), seed:)
+      result = Pokemons::Engine.simulate(attacker: snapshot(TEAM), defender: snapshot(TEAM, id: 8), seed:, version: 1)
       events = PokemonBattle.serialize(result.events)
 
       assert_equal events, create_pokemon_battle(attacker: @attacker, defender: @defender, events:).reload.events

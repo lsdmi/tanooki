@@ -11,7 +11,7 @@ class PokemonBattlesController < ApplicationController
 
   def start
     if Pokemons::BattleStart.new(current_user).call == :fought
-      finish_battle
+      current_user.reload
       render turbo_stream: turbo_stream_with_cleared_flash(refresh_leaderboard_card, refresh_history, remove_call)
     else
       render turbo_stream: turbo_stream_alert(PokemonBattle::POTENTIAL_FRAUD_ALERT)
@@ -19,11 +19,6 @@ class PokemonBattlesController < ApplicationController
   end
 
   private
-
-  def finish_battle
-    current_user.reload
-    Rails.cache.delete("user:#{current_user.id}:battle_history")
-  end
 
   def refresh_history
     turbo_stream.update(

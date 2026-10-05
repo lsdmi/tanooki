@@ -6,6 +6,7 @@ module Pokemons
     # tiredness; the loser faints, the winner stays and tires. Both gain experience every round. All randomness comes
     # from +rng+, in a fixed order.
     class Simulator
+      VERSION = 1
       SIDES = %i[attacker defender].freeze
 
       def self.call(attacker:, defender:, rng:, balance: BattleBalance::V1)

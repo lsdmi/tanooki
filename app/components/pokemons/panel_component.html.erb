@@ -1,0 +1,10 @@
+<%= tag.section id:, class: SHELL, aria: { labelledby: heading_id } do %>
+  <div class="flex items-start justify-between gap-3">
+    <div class="flex min-w-0 flex-col gap-0.5">
+      <%= tag.h2 title, id: heading_id, class: TITLE %>
+      <%= tag.p subtitle, class: 'text-sm/5 text-fg-muted' if subtitle %>
+    </div>
+    <%= action if action? %>
+  </div>
+  <%= content %>
+<% end %>

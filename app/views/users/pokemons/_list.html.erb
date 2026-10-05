@@ -1,32 +1,25 @@
-<div class="rounded-lg border border-line bg-card shadow-sm">
-  <div class="p-6">
-    <div class="inline-flex items-center justify-between mb-4">
-      <svg class="h-6 md:h-7 lg:h-8 inline-block mx-1 transform transition duration-500 hover:scale-110 text-fg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.0001 13c0-.8883.4022-2.3826 1-3.27163M18.05 14c0 3.3137-2.6862 6-6 6-3.31366 0-5.99995-2.6863-5.99995-6S8.73634 4 12.05 4c3.3138 0 6 6.6863 6 10Z" />
-      </svg>
-      <h5 class="text-xl font-bold leading-none text-fg">Мої Покемони</h5>
-    </div>
-    <div class="grid grid-cols-4 sm:grid-cols-8 gap-4 lg:grid-cols-6 lg:gap-2 2xl:grid-cols-8 2xl:gap-4" data-controller="pokemon-image-click">
-      <% pokemons.in_groups_of(8).each do |group| %>
-        <% group.each do |user_pokemon| %>
-          <% if user_pokemon.present? %>
-            <% selected = selected_pokemon.id == user_pokemon.id %>
-            <%= button_to pokemon_details_path(pokemon_id: user_pokemon), aria: { pressed: selected }, data: { turbo_stream: "", "turbo-method": :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' }, class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full #{'border-emerald-600' if selected}" do %>
-              <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: user_pokemon.pokemon.name, class: 'w-auto cursor-pointer rounded-lg mb-3 transform transition duration-500 hover:scale-110' %>
-            <% end %>
-          <% else %>
-            <%= tag.div class: "flex items-center justify-center h-12 w-14 border-2 shadow-md rounded-full" do %>
-              <%= image_tag 'pokeball.webp', alt: 'pokeball', class: 'h-12 rounded-lg mb-3' %>
-            <% end %>
+<%= render Pokemons::PanelComponent.new(title: 'Мої покемони', subtitle: ("У колекції: #{pokemons.size}" if pokemons.any?)) do %>
+  <% if pokemons.any? %>
+    <ul class="grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))]" data-controller="pokemon-image-click">
+      <% pokemons.each do |user_pokemon| %>
+        <li>
+          <%= button_to pokemon_details_path(pokemon_id: user_pokemon),
+                aria: { pressed: selected_pokemon&.id == user_pokemon.id, label: user_pokemon.pokemon.name },
+                title: user_pokemon.pokemon.name,
+                data: { turbo_stream: "", "turbo-method": :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' },
+                class: 'group flex aspect-square w-full items-center justify-center rounded-lg bg-surface ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:bg-brand-subtle aria-pressed:ring-2 aria-pressed:ring-brand' do %>
+            <%= image_tag url_for(user_pokemon.pokemon.sprite), alt: '', loading: :lazy, class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110' %>
           <% end %>
-        <% end %>
+        </li>
       <% end %>
-    </div>
-    <% if selected_pokemon.nil? %>
-      <p class="rounded-xl border border-line p-6 text-center text-sm text-fg-muted"><%= t('pokemons.party.empty') %></p>
-    <% end %>
-  </div>
-  <% if selected_pokemon %>
-    <%= render 'users/pokemons/details', selected_pokemon:, descendant: %>
+      <li class="flex aspect-square items-center justify-center rounded-lg border border-dashed border-line-strong" title="Ловіть більше покемонів на сторінках сайту">
+        <%= image_tag 'pokeball.webp', alt: 'Ловіть більше покемонів на сторінках сайту', class: 'size-2/3 object-contain opacity-40' %>
+      </li>
+    </ul>
+  <% else %>
+    <%= render 'users/pokemons/empty', message: t('pokemons.party.empty') %>
   <% end %>
-</div>
+<% end %>
+<% if selected_pokemon %>
+  <%= render 'users/pokemons/details', selected_pokemon:, descendant: %>
+<% end %>

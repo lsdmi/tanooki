@@ -19,9 +19,17 @@ module Pokemons
 
       render_inline(BattleReplayComponent.new(battle:))
 
-      assert_selector 'h1', text: 'Вітаємо на Арені!'
+      assert_selector 'li', count: rounds
       assert_selector 'span', text: "Раунд #{rounds}"
-      assert_selector 'h2', text: 'Бій завершено!'
+      assert_selector 'h3', text: 'Бій завершено!'
+    end
+
+    test 'marks the Pokémon that fainted in each round' do
+      battle = fought_battle
+
+      render_inline(BattleReplayComponent.new(battle:))
+
+      assert_selector 'li span', text: 'вибуває', count: battle.events_of(:fainted).size
     end
 
     test 'shows the species each Pokémon fought as, even after it evolved' do
@@ -41,8 +49,8 @@ module Pokemons
 
       render_inline(BattleReplayComponent.new(battle:))
 
-      assert_selector 'h2 + p span', text: loser.name
-      assert_selector 'h2 + p span', text: winner.name
+      assert_selector 'h3 + p span', text: loser.name
+      assert_selector 'h3 + p span', text: winner.name
     end
 
     test 'a species deleted since the battle leaves an empty ring' do
@@ -67,7 +75,7 @@ module Pokemons
 
       assert_text 'Раунди цього бою не збереглися'
       assert_no_selector 'span', text: 'Раунд'
-      assert_selector 'h2 + p span.text-status-danger-solid', text: @attacker.name
+      assert_selector 'h3 + p span.text-status-danger-solid', text: @attacker.name
     end
 
     test 'a new battle has no legacy note' do

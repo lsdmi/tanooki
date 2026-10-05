@@ -61,7 +61,9 @@ class User < ApplicationRecord
   end
 
   def latest_battle
-    PokemonBattle.involving(self).includes(:attacker, :defender, :winner).order(created_at: :desc, id: :desc).first
+    PokemonBattle.involving(self)
+                 .includes(:winner, attacker: { avatar: :image_attachment }, defender: { avatar: :image_attachment })
+                 .order(created_at: :desc, id: :desc).first
   end
 
   def manages_chapter?(chapter)

@@ -4,6 +4,8 @@ require 'test_helper'
 
 module Pokemons
   class StudioTabTest < ActiveSupport::TestCase
+    include PokemonBattleHelpers
+
     test 'stores the user' do
       user = users(:user_one)
       tab = StudioTab.new(user)
@@ -56,6 +58,14 @@ module Pokemons
       else
         assert_equal log, tab.battle_history
       end
+    end
+
+    test 'the defender sees a battle fought against them right away' do
+      user = users(:user_one)
+      StudioTab.new(user)
+      battle = create_pokemon_battle(attacker: users(:user_two), defender: user)
+
+      assert_equal battle, StudioTab.new(user).battle_history
     end
 
     test 'with pokemons shows and pins the matchmaker opponent' do

@@ -23,15 +23,14 @@ module Pokemons
 
       assert_equal [user_pokemons(:one).id, @brave.id],
                    BattleTeams.new(@attacker, @defender).snapshot(:attacker).combatants.map(&:id)
-      assert_equal ['brave', Pokemon::POWER_LEVELS.fetch(pokemons(:two).power_level), 40],
-                   [combatant.character, combatant.power_level, combatant.battle_experience]
+      assert_equal ['brave', 40, nil], [combatant.character, combatant.battle_experience, combatant.power_level]
     end
 
     test 'stores each combatant with its species' do
       stored = BattleTeams.new(@attacker, @defender).stored(:defender)
 
-      assert_equal [{ id: user_pokemons(:two).id, character: 'agile', power_level: 4, battle_experience: 1,
-                      types: %w[Звичайний], pokemon_id: pokemons(:one).id }], stored
+      assert_equal [{ id: user_pokemons(:two).id, character: 'agile', power_level: nil, battle_experience: 1,
+                      types: %w[Звичайний], base_hp: 45, base_attack: 65, pokemon_id: pokemons(:one).id }], stored
     end
 
     test 'writes back only the experience that changed' do

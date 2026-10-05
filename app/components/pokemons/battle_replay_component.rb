@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # The battle log rendered from a PokemonBattle's stored events: the arena header, one card per round in a two-column
-  # grid, and the result (in the grid's last cell when the round count is odd). Species come from the stored teams, so
-  # a Pokémon that evolved later still shows as it fought. A legacy battle has no events: header and result only.
+  # The battle log rendered from a PokemonBattle's stored events: one card per round (the Pokémon that fainted dimmed
+  # and marked), then the result. Species come from the stored teams, so a Pokémon that evolved later still shows as
+  # it fought. A legacy battle has no events: a note and the result only.
   class BattleReplayComponent < ViewComponent::Base
     Round = Data.define(:number, :attacker, :defender, :victory)
-    NAME_LENGTH = 7
-    AVATAR_RING = 'flex items-center justify-center h-14 w-14 border-2 border-line shadow dark:shadow-lg ' \
-                  'rounded-full mb-2 transition-transform duration-300 hover:scale-105'
+    SPRITE_RING = 'flex size-10 shrink-0 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line'
 
     def initialize(battle:)
       super()
@@ -27,10 +25,6 @@ module Pokemons
       end
     end
 
-    def result_in_grid?
-      rounds.size.odd?
-    end
-
     def winner_name
       battle.winner.name
     end
@@ -39,23 +33,22 @@ module Pokemons
       (battle.attacker_won? ? battle.defender : battle.attacker).name
     end
 
-    def avatar(pokemon)
-      tag.div(class: 'flex flex-col items-center justify-center text-center') do
-        safe_join([tag.div(sprite(pokemon), class: AVATAR_RING),
-                   tag.span(short_name(pokemon), class: 'font-semibold text-xs sm:text-sm text-fg mt-1 tracking-wide')])
+    def fighter(pokemon, fainted:, align: :start)
+      tag.div(class: ['flex min-w-0 items-center gap-2', ('flex-row-reverse text-right' if align == :end)]) do
+        safe_join([tag.div(sprite(pokemon), class: [SPRITE_RING, ('opacity-50 grayscale' if fainted)]),
+                   tag.div(class: 'flex min-w-0 flex-col') do
+                     safe_join([tag.span(pokemon&.name, class: ['truncate text-sm/5 font-medium',
+                                                                fainted ? 'text-fg-muted' : 'text-fg']),
+                                (tag.span('вибуває', class: 'text-xs/4 text-status-danger-solid') if fainted)])
+                   end])
       end
     end
 
+    # A species deleted since the battle shows an empty ring.
     def sprite(pokemon)
       return unless pokemon&.sprite&.attached?
 
-      image_tag(url_for(pokemon.sprite), alt: pokemon.name, class: 'w-10 h-10 object-contain rounded-full')
-    end
-
-    # A species deleted since the battle shows an empty ring.
-    def short_name(pokemon)
-      name = pokemon&.name.to_s
-      name.length > NAME_LENGTH ? "#{name[0, NAME_LENGTH]}..." : name
+      image_tag(url_for(pokemon.sprite), alt: pokemon.name, class: 'size-9 object-contain')
     end
 
     def species_of(combatant_id)
@@ -67,7 +60,7 @@ module Pokemons
     end
 
     def species
-      @species ||= Pokemon.where(id: pokemon_ids.values.uniq).with_attached_sprite.index_by(&:id)
+      @species ||= Pokemon.where(id: pokemon_ids.values.uniq).includes(sprite_attachment: :blob).index_by(&:id)
     end
   end
 end

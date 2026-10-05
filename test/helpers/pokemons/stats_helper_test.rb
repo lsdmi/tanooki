@@ -6,6 +6,20 @@ module Pokemons
   class StatsHelperTest < ActionView::TestCase
     include StatsHelper
 
+    test 'stat_tier_label names the species standing in words' do
+      chansey = Pokemon.new(dex_id: 113, base_hp: 250, base_attack: 35)
+      labels = %i[stamina strike].map { stat_tier_label(chansey, it) }
+
+      assert_equal ['Дуже висока', 'Дуже слабкий'], labels
+      assert_equal 'Немічний', stat_tier_label(Pokemon.new(dex_id: 129, base_hp: 20, base_attack: 15), :might)
+    end
+
+    test 'pokemon_type_badge colours the chip by type' do
+      render html: pokemon_type_badge('Вогняний')
+
+      assert_select 'span.rounded-full.bg-red-500', text: 'Вогняний'
+    end
+
     test 'experience_to_sentence returns correct sentence for 0' do
       assert_equal 'Відсутній', experience_to_sentence(0)
     end

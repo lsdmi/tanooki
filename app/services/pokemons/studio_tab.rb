@@ -29,19 +29,13 @@ module Pokemons
       @descendant = Pokemon.find_by(id: @selected_pokemon.pokemon.descendant_id)
       @dex_leaderboard = Pokemons::DexLeaderboard.new
       assign_opponent
-      @battle_history = fetch_battle_history
+      @battle_history = user.latest_battle
     end
 
     def assign_opponent
       matchmaker = Matchmaker.new(user, leaderboard: dex_leaderboard)
       @opponent = matchmaker.opponent unless leaderboard_cooldown?
       @reroll_available = matchmaker.reroll_available?
-    end
-
-    def fetch_battle_history
-      Rails.cache.fetch("user:#{user.id}:battle_history", expires_in: 5.minutes) do
-        user.latest_battle
-      end
     end
   end
 end

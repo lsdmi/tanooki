@@ -11,9 +11,21 @@ namespace :pokemons do
     puts "#{rows.size} overdue; #{apply ? 'evolved' : 'dry run, nothing written (APPLY=1 to evolve)'}"
   end
 
-  desc 'Simulate N battles per table between random teams of real species: win rates by trait, type, rarity, power'
-  task :simulate, %i[battles seed] => :environment do |_task, args|
-    report = Pokemons::BalanceReport.new(battles: Integer(args[:battles] || 1000), seed: Integer(args[:seed] || 2026))
-    puts Pokemons::BalanceReport::Markdown.render(report)
+  desc 'Simulate N battles per measure for one engine version, or every version side by side: the balance gates, ' \
+       'then the last version in detail'
+  task :simulate, %i[battles seed version] => :environment do |_task, args|
+    battles = Integer(args[:battles] || 1000)
+    seed = Integer(args[:seed] || 2026)
+    versions = args[:version] ? [Integer(args[:version])] : Pokemons::Engine::VERSIONS
+    unless (versions - Pokemons::Engine::VERSIONS).empty?
+      abort "Unknown engine version #{args[:version]}; known: #{Pokemons::Engine::VERSIONS.join(', ')}"
+    end
+
+    species = Pokemons::BalanceReport::Species.catalogue
+    trainers = Pokemons::BalanceReport::Trainers.load(species)
+    reports = versions.map do |version|
+      Pokemons::BalanceReport.new(battles:, seed:, version:, species:, trainers:)
+    end
+    puts Pokemons::BalanceReport::Markdown.render(reports)
   end
 end

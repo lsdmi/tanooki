@@ -34,11 +34,15 @@ module Pokemons
     def combatants(side)
       @combatants ||= {}
       @combatants[side] ||= @records.select { |record| record.user_id == trainer(side).id }.map do |record|
-        [Engine::Combatant.new(id: record.id, character: record.character,
-                               power_level: record.pokemon.read_attribute(:power_level),
-                               battle_experience: record.battle_experience, types: record.pokemon.types.map(&:name)),
-         record]
+        [combatant(record), record]
       end
+    end
+
+    def combatant(record)
+      species = record.pokemon
+      Engine::Combatant.new(id: record.id, character: record.character,
+                            battle_experience: record.battle_experience, types: species.types.map(&:name),
+                            base_hp: species.base_hp, base_attack: species.base_attack)
     end
   end
 end

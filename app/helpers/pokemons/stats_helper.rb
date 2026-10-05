@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Type badge colors and battle-experience labels for Pokémon detail UI.
+  # Type badge colors, stat and battle-experience labels for Pokémon detail UI.
   module StatsHelper
     TYPE_COLORS = {
       'Звичайний' => 'token-raw bg-gray-400 dark:bg-gray-600',
@@ -20,6 +20,17 @@ module Pokemons
       'Примарний' => 'bg-purple-300 dark:bg-purple-500',
       'Драконячий' => 'bg-indigo-600 dark:bg-indigo-800'
     }.freeze
+
+    TYPE_BADGE = 'inline-flex items-center rounded-full px-2 py-0.5 text-xs/4 font-medium text-white'
+
+    def pokemon_type_badge(type)
+      tag.span(type, class: "#{TYPE_BADGE} #{TYPE_COLORS[type]}")
+    end
+
+    # The species' standing as a word (StatTiers): +kind+ is :might, :stamina or :strike.
+    def stat_tier_label(pokemon, kind)
+      t("pokemons.stat_tiers.#{kind}")[Pokemons::StatTiers.for(pokemon).public_send(kind) - 1]
+    end
 
     def experience_to_sentence(rate)
       case rate

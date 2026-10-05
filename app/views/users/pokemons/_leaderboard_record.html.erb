@@ -1,26 +1,11 @@
-<div class="flex flex-row items-center justify-center w-full border border-line rounded-xl shadow-md p-6">
-  <!-- User Card -->
-  <div class="flex flex-col items-center flex-1">
-    <%= image_tag avatar_image_url(current_user.avatar.image), alt: current_user.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
-    <div class="text-center">
-      <%= link_to current_user.name, profile_path(current_user.sqid), turbo_drive_visit_data.merge(class: 'text-sm sm:text-base font-bold text-fg hover:text-brand hover:underline transition-all duration-200') %>
-      <%= tag.div "#{dex_title(current_user.battle_win_rate)} ##{dex_leaderboard.rank_for(current_user)}", class: 'text-xs font-light text-fg-muted uppercase tracking-widest' %>
-    </div>
-  </div>
+<div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
+  <%= render 'users/pokemons/trainer', user: current_user, caption: "#{dex_title(current_user.battle_win_rate)} ##{dex_leaderboard.rank_for(current_user)}" %>
 
-  <!-- VS Section -->
-  <div class="flex flex-col items-center justify-center px-4">
-    <%= button_to battle_start_path, data: { turbo_stream: "" } do %>
-      <%= image_tag 'battle.webp', class: 'h-10 sm:h-12 md:h-14 lg:h-16 inline-block mx-1 transform transition duration-500 hover:scale-110', alt: 'battle call' %>
-    <% end %>
-  </div>
+  <%= button_to battle_start_path, data: { turbo_stream: "" }, aria: { label: 'Розпочати бій' }, title: 'Розпочати бій',
+                class: 'group flex flex-col items-center gap-1 rounded-xl p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+    <%= image_tag 'battle.webp', alt: '', class: 'size-12 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 md:size-14' %>
+    <span class="text-xs/4 font-semibold text-fg-brand">До бою!</span>
+  <% end %>
 
-  <!-- Opponent Card -->
-  <div class="flex flex-col items-center flex-1">
-    <%= image_tag avatar_image_url(opponent.avatar.image), alt: opponent.avatar.image.blob.filename, class: 'h-10 w-10 sm:w-20 sm:h-20 rounded-full mb-3 shadow-md transition-transform duration-500 hover:scale-110' %>
-    <div class="text-center">
-      <%= link_to opponent.name, profile_path(opponent.sqid), turbo_drive_visit_data.merge(class: 'text-sm sm:text-base font-bold text-fg hover:text-brand hover:underline transition-all duration-200') %>
-      <%= tag.div "#{dex_title(opponent.battle_win_rate)} ##{dex_leaderboard.rank_for(opponent)}", class: 'text-xs font-light text-fg-muted uppercase tracking-widest' %>
-    </div>
-  </div>
+  <%= render 'users/pokemons/trainer', user: opponent, caption: "#{dex_title(opponent.battle_win_rate)} ##{dex_leaderboard.rank_for(opponent)}" %>
 </div>

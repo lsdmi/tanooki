@@ -50,7 +50,7 @@ module Pokemons
                                 defender: team(101, %w[hardy], experience: 0), rng: Random.new(1))
 
         assert_equal({ 101 => 2 }, result.experience)
-        assert_equal VERSION, result.engine_version
+        assert_equal Simulator::VERSION, result.engine_version
       end
 
       private

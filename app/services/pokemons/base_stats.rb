@@ -11,6 +11,12 @@ module Pokemons
       { hp: stats.fetch('hp'), attack: [stats.fetch('attack'), stats.fetch('sp_attack')].max }
     end
 
+    # Average of +stat+ (:hp or :attack) over every species in the file.
+    def self.mean(stat)
+      values = table.keys.map { |dex_id| self.for(dex_id).fetch(stat) }
+      values.sum.fdiv(values.size)
+    end
+
     def self.table
       @table ||= YAML.load_file(PATH).freeze
     end
