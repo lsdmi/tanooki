@@ -75,5 +75,12 @@ module Chapters
         assert_includes ids, chapters(:two).id
       end
     end
+
+    test 'chapter_number_range spans the lowest and highest number' do
+      chapters = [BigDecimal('1700'), BigDecimal('1622.5'), BigDecimal('1650')].map { |number| Chapter.new(number:) }
+
+      assert_equal '1622.5–1700', chapter_number_range(chapters)
+      assert_equal '1700', chapter_number_range(chapters.first(1))
+    end
   end
 end

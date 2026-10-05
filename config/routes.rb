@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       get :comments
       get :details
       get :chapter_section
+      get :chapter_jump
       get :sidebar_stats
       get :similar_fictions
       post :toggle_order

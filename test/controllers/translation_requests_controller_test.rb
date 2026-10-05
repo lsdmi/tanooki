@@ -116,6 +116,6 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to translation_requests_path
-    assert_equal 'Помилка при оновленні запиту.', flash[:alert]
+    assert_equal 'Помилка при оновленні запиту.', flash[:error]
   end
 end

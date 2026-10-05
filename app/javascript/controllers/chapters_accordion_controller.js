@@ -7,6 +7,7 @@ const TOP_GAP = 16
  * Fiction TOC accordion: expand/collapse volume sections and lazy-load chapter lists.
  * On the fiction page the server opens the group with the continue chapter; `focusRow` is that row's id, brought
  * up under the sticky tabs whenever the reader asks for the Chapters tab (a tab click or a `#chapters` link).
+ * «Перейти до розділу» (chapter-jump) swaps a group's body for a window of rows with `openSection` and reveals a row.
  */
 export default class extends Controller {
   static values = { focusRow: String }
@@ -25,12 +26,16 @@ export default class extends Controller {
     requestAnimationFrame(() => this.revealFocusRow())
   }
 
-  // The whole group when its header and the row fit on screen together, otherwise the row with one row above it.
   revealFocusRow() {
     const row = document.getElementById(this.focusRowValue)
     if (!row || !row.offsetParent) return
 
     document.body.dataset.chapterListRevealed = "true"
+    this.revealRow(row)
+  }
+
+  // The whole group when its header and the row fit on screen together, otherwise the row with one row above it.
+  revealRow(row) {
     const tabs = document.querySelector("[data-tabs-target='list']")
     const top = (tabs?.getBoundingClientRect().height ?? 0) + TOP_GAP
     const rowRect = row.getBoundingClientRect()
@@ -46,6 +51,24 @@ export default class extends Controller {
   disconnect() {
     this.abortPendingSectionFetch()
     this.resetChapterSectionLoadedState()
+  }
+
+  /** Opens the group with `key` (collapsing the rest) and replaces its body with `html`; returns the body. */
+  openSection(key, html) {
+    const container = Array.from(this.element.querySelectorAll(".accordion")).find((node) => node.dataset.sectionKey === key)
+    const content = container?.querySelector(".accordion-content")
+    if (!content) return null
+
+    this.abortPendingSectionFetch()
+    content.innerHTML = html
+    this.element.querySelectorAll(".accordion").forEach((node) => this.setExpanded(node, node === container))
+    return content
+  }
+
+  setExpanded(container, expanded) {
+    container.querySelector(".accordion-content")?.classList.toggle("hidden", !expanded)
+    container.querySelector(".accordion-icon")?.classList.toggle("rotate-180", expanded)
+    container.querySelector(".accordion-header")?.setAttribute("aria-expanded", expanded ? "true" : "false")
   }
 
   /** Re-run after chapter drawer injects accordion HTML (legacy hook). */

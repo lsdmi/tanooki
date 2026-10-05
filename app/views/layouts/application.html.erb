@@ -86,6 +86,7 @@
     <% end %>
     <%= turbo_frame_tag "application-alert", class: 'hidden' do %>
       <%= render "shared/alert" if alert %>
+      <%= render "shared/error", error: flash[:error] if flash[:error] %>
     <% end %>
     <main>
       <%= yield %>

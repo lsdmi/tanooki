@@ -21,9 +21,19 @@ const TOAST_CLOSE_CLASSES = [
   'hover:!bg-surface hover:!text-fg-secondary'
 ].join(' ')
 
+// Lucide paths (viewBox 24, stroke 2).
+const TOAST_ICON_PATHS = {
+  circleCheck: ['M21.801 10A10 10 0 1 1 17 3.335', 'm9 11 3 3L22 4'],
+  triangleAlert: ['m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3', 'M12 9v4', 'M12 17h.01'],
+  circleX: ['M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', 'm15 9-6 6', 'm9 9 6 6']
+}
+
+// Status colors, not brand: in dark mode brand is rose and would read as an error.
 const NOTICE_VARIANT = {
-  popup: '!border-l-brand',
-  timerBar: '!bg-brand',
+  popup: '!border-l-status-success-solid',
+  timerBar: '!bg-status-success-solid',
+  icon: 'circleCheck',
+  iconColor: 'text-status-success-solid',
   timer: 3000
 }
 
@@ -31,13 +41,17 @@ const TOAST_VARIANTS = {
   notice: NOTICE_VARIANT,
   success: NOTICE_VARIANT,
   alert: {
-    popup: '!border-l-amber-500 dark:!border-l-amber-400',
-    timerBar: '!bg-amber-500 dark:!bg-amber-400',
+    popup: '!border-l-status-warning-solid',
+    timerBar: '!bg-status-warning-solid',
+    icon: 'triangleAlert',
+    iconColor: 'text-status-warning-solid',
     timer: 5000
   },
   error: {
     popup: '!border-l-status-danger-solid',
     timerBar: '!bg-status-danger-solid',
+    icon: 'circleX',
+    iconColor: 'text-status-danger-solid',
     timer: 5000
   }
 }
@@ -93,7 +107,16 @@ function fireToast(text, type) {
       closeButton: TOAST_CLOSE_CLASSES,
       timerProgressBar: variant.timerBar,
     },
+    didRender: (popup) => {
+      if (popup.querySelector('[data-toast-icon]')) return
+      popup.insertAdjacentHTML('afterbegin', toastIconSvg(variant))
+    },
   })
+}
+
+function toastIconSvg({ icon, iconColor }) {
+  const paths = TOAST_ICON_PATHS[icon].map((d) => `<path d="${d}" />`).join('')
+  return `<svg data-toast-icon class="size-5 shrink-0 ${iconColor}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`
 }
 
 const UNDO_ICON_PATHS = {

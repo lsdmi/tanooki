@@ -2,7 +2,6 @@ one:
   id: 1
   slug: 'one'
   name: 'First'
-  power_level: 4
   rarity: 1
   ancestor_id: 1
   descendant_id: 2
@@ -15,7 +14,6 @@ two:
   id: 2
   slug: 'two'
   name: 'Second'
-  power_level: 1
   rarity: 1
   ancestor_id: 1
   descendant_id: 2
@@ -29,7 +27,6 @@ three:
   id: 3
   slug: 'three'
   name: 'Third'
-  power_level: 3
   rarity: 5
   ancestor_id: 1
   descendant_id: 3

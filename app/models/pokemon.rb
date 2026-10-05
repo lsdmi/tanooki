@@ -6,9 +6,6 @@ class Pokemon < ApplicationRecord
 
   friendly_id :slug_candidates
 
-  # Dropped in a later deploy; battle strength comes from base_hp / base_attack (Pokemons::StatTiers for the card).
-  self.ignored_columns += %w[power_level]
-
   belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
   belongs_to :descendant, class_name: 'Pokemon'
   has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon', inverse_of: :ancestor, dependent: :nullify

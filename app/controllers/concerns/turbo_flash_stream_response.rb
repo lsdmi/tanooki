@@ -13,7 +13,7 @@ module TurboFlashStreamResponse
   def append_session_flash_to_turbo_stream?
     response.media_type == Mime[:turbo_stream].to_s &&
       response.successful? &&
-      (flash[:notice].present? || flash[:alert].present?)
+      (flash[:notice].present? || flash[:alert].present? || flash[:error].present?)
   end
 
   def append_session_flash_to_turbo_stream
@@ -23,6 +23,9 @@ module TurboFlashStreamResponse
   end
 
   def session_flash_streams
-    flash[:notice].present? ? turbo_stream_notice(flash[:notice]) : turbo_stream_alert(flash[:alert])
+    return turbo_stream_notice(flash[:notice]) if flash[:notice].present?
+    return turbo_stream_error(flash[:error]) if flash[:error].present?
+
+    turbo_stream_alert(flash[:alert])
   end
 end

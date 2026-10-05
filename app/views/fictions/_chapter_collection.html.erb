@@ -34,7 +34,7 @@ end %>
     <% preload_section = accordion_open || (!reader_drawer && section[:section_key] == open_section_key) %>
     <% section_path = fiction_chapter_section_path(fiction, section[:section_key], order: list_order) %>
     <% section_chapter_ids = chapter_list_section_ids(section) %>
-    <div class="accordion overflow-hidden <%= accordion_shell %>">
+    <div class="accordion overflow-hidden <%= accordion_shell %>" <%= tag.attributes(data: { section_key: (section[:section_key] unless reader_drawer) }) %>>
       <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>"
            role="button"
            tabindex="0"

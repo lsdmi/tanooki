@@ -1,4 +1,4 @@
-<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil, total: nil, section_url: nil, focus_chapter: nil %>
+<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil, total: nil, section_url: nil, focus_chapter: nil, window_start: 0, before_label: nil, mobile_trim: nil %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% if reader_drawer %>
   <ul class="divide-y divide-line-muted">
@@ -7,7 +7,8 @@
 <% else %>
   <% total = local_assigns[:total] || chapters.size %>
   <% page_size = Fictions::ChapterSectionLoader::PAGE_SIZE %>
-  <% remaining = total - chapters.size %>
+  <% window_start = local_assigns.fetch(:window_start, 0) %>
+  <% remaining = total - window_start - chapters.size %>
   <% pager_labels = {
        more: t('fictions.chapters_tab.pager.more'),
        remaining: t('fictions.chapters_tab.pager.remaining'),
@@ -17,12 +18,22 @@
        data-controller="chapter-group-pager"
        data-chapter-group-pager-url-value="<%= local_assigns[:section_url] %>"
        data-chapter-group-pager-total-value="<%= total %>"
+       data-chapter-group-pager-start-value="<%= window_start %>"
        data-chapter-group-pager-page-size-value="<%= page_size %>"
        data-chapter-group-pager-mobile-page-size-value="<%= Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE %>"
        data-chapter-group-pager-labels-value="<%= pager_labels.to_json %>">
     <% focus_index = chapters.index { |chapter| chapter.id == local_assigns[:focus_chapter]&.id } %>
-    <%# Until the pager connects, phones see only their first page of the server-rendered rows; a page grown to reach the continue row is kept whole. %>
-    <ul class="grid grid-cols-1 gap-2 md:grid-cols-2<%= ' max-md:[&>li:nth-child(n+11)]:hidden' if focus_index.nil? || focus_index < Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE %>" data-chapter-group-pager-target="list">
+    <% mobile_trim = local_assigns[:mobile_trim].nil? ? focus_index.nil? || focus_index < Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE : local_assigns[:mobile_trim] %>
+    <% if window_start.positive? %>
+      <div class="flex justify-center py-2" data-chapter-group-pager-target="before">
+        <%= ui_button(variant: :outline, size: :sm, html: { data: { action: 'chapter-group-pager#before' } }) do %>
+          <%= stroke_icon(:chevron_up) %>
+          <span><%= t('fictions.chapters_tab.pager.before', range: local_assigns[:before_label]) %></span>
+        <% end %>
+      </div>
+    <% end %>
+    <%# Until the pager connects, phones see only their first page of the server-rendered rows; a page grown to reach the continue row, or a jump window, is kept whole. %>
+    <ul class="grid grid-cols-1 gap-2 md:grid-cols-2<%= ' max-md:[&>li:nth-child(n+11)]:hidden' if mobile_trim %>" data-chapter-group-pager-target="list">
       <%= render 'fictions/chapter_section_rows', chapters:, current_chapter: local_assigns[:current_chapter], drawer_progress: local_assigns[:drawer_progress] %>
     </ul>
     <div class="flex flex-wrap items-center justify-center gap-3 py-2<%= ' hidden' unless remaining.positive? %>" data-chapter-group-pager-target="footer">

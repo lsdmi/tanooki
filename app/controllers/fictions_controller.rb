@@ -10,6 +10,7 @@ class FictionsController < ApplicationController
          Scanlators::SelectOptionsHelper,
          Ui::StrokeIconHelper
   include FictionQuery
+  include Fictions::ChapterJumpRendering
   include Fictions::ChapterSectionRendering
   include Fictions::DashboardListing
   include Fictions::FictionControllerSetup
@@ -23,9 +24,10 @@ class FictionsController < ApplicationController
   ].freeze
 
   GUEST_SHOW_ACTIONS = %i[comments sidebar_stats similar_fictions].freeze
+  CHAPTER_LIST_ACTIONS = %i[toggle_order chapter_section chapter_jump].freeze
 
-  before_action :authenticate_user!, except: %i[index show toggle_order details chapter_section] + GUEST_SHOW_ACTIONS
-  before_action :set_fiction, only: %i[show edit update destroy toggle_order chapter_section] + GUEST_SHOW_ACTIONS
+  before_action :authenticate_user!, except: %i[index show details] + CHAPTER_LIST_ACTIONS + GUEST_SHOW_ACTIONS
+  before_action :set_fiction, only: %i[show edit update destroy] + CHAPTER_LIST_ACTIONS + GUEST_SHOW_ACTIONS
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_fiction_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
@@ -75,6 +77,10 @@ class FictionsController < ApplicationController
     order = params[:order].presence&.to_sym || :desc
     @section_chapters = load_chapter_section(order)
     render_chapter_section_items(order)
+  end
+
+  def chapter_jump
+    render json: chapter_jump_payload(params[:order].to_s == 'asc' ? :asc : :desc)
   end
 
   def comments = render_fiction_show_fragment

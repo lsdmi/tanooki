@@ -23,8 +23,11 @@
   <% newest_first = order.to_sym == :desc %>
   <% list_progress = reader_chapter_drawer_progress(fiction) if user_signed_in? %>
   <% total = chapters_size(fiction, viewer: current_user) %>
-  <section class="flex flex-col gap-6 md:gap-5">
-    <div class="flex items-center justify-between gap-3">
+  <section class="flex flex-col gap-6 md:gap-5"
+           data-controller="chapter-jump"
+           data-chapter-jump-url-value="<%= chapter_jump_fiction_path(fiction, order:) %>"
+           data-chapter-jump-failed-value="<%= t('fictions.chapters_tab.jump.failed') %>">
+    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3">
       <div class="flex min-w-0 flex-col gap-1">
         <p class="text-base/6 font-semibold text-fg">
           <% if list_progress&.started? %>
@@ -39,21 +42,47 @@
           </p>
         <% end %>
       </div>
-      <%= button_to toggle_order_fiction_path(fiction, order: order),
-                    data: {
-                      turbo_stream: '',
-                      'turbo-method': :post,
-                      controller: 'fictions-order-toggle',
-                      action: 'click->fictions-order-toggle#spin'
-                    },
-                    id: toggle_btn_id,
-                    title: t(newest_first ? 'fictions.chapters_tab.show_oldest' : 'fictions.chapters_tab.show_newest'),
-                    class: 'fictions-order-toggle group inline-flex shrink-0 items-center gap-2 rounded-lg bg-main px-4 py-2.5 text-sm/5 font-medium text-fg ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover' do %>
-        <span class="flex transition-transform duration-300 group-hover:rotate-180" data-fictions-order-toggle-target="icon">
-          <%= stroke_icon(:arrow_down_up) %>
-        </span>
-        <%= t(newest_first ? 'fictions.chapters_tab.newest' : 'fictions.chapters_tab.oldest') %>
-      <% end %>
+      <div class="flex items-start gap-2 md:gap-3">
+        <% if latest %>
+          <form class="flex min-w-0 flex-1 flex-col gap-1 md:w-60 md:flex-none" role="search" data-action="submit->chapter-jump#jump">
+            <label for="chapter-jump-input" class="sr-only"><%= t('fictions.chapters_tab.jump.label') %></label>
+            <div class="flex h-10 items-center gap-2 rounded-lg border border-line bg-main px-3 transition-colors hover:border-line-strong focus-within:border-brand has-[[aria-invalid=true]]:border-status-danger-solid">
+              <span class="flex shrink-0 text-fg-muted" aria-hidden="true"><%= stroke_icon(:hash) %></span>
+              <input id="chapter-jump-input"
+                     type="text"
+                     inputmode="decimal"
+                     enterkeyhint="go"
+                     autocomplete="off"
+                     placeholder="<%= t('fictions.chapters_tab.jump.placeholder') %>"
+                     class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm/5 text-fg placeholder:text-fg-muted focus:outline-none focus:ring-0"
+                     aria-describedby="chapter-jump-error"
+                     data-chapter-jump-target="input"
+                     data-action="input->chapter-jump#edit">
+              <button type="button"
+                      class="hidden shrink-0 rounded-sm text-fg-muted hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                      aria-label="<%= t('fictions.chapters_tab.jump.clear') %>"
+                      data-chapter-jump-target="clear"
+                      data-action="chapter-jump#clear"><%= stroke_icon(:x) %></button>
+            </div>
+            <p id="chapter-jump-error" class="hidden text-xs/5 text-status-danger-subtle-fg" aria-live="polite" data-chapter-jump-target="error"></p>
+          </form>
+        <% end %>
+        <%= button_to toggle_order_fiction_path(fiction, order: order),
+                      data: {
+                        turbo_stream: '',
+                        'turbo-method': :post,
+                        controller: 'fictions-order-toggle',
+                        action: 'click->fictions-order-toggle#spin'
+                      },
+                      id: toggle_btn_id,
+                      title: t(newest_first ? 'fictions.chapters_tab.show_oldest' : 'fictions.chapters_tab.show_newest'),
+                      class: 'fictions-order-toggle group inline-flex shrink-0 items-center gap-2 rounded-lg bg-main px-4 py-2.5 text-sm/5 font-medium text-fg ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover' do %>
+          <span class="flex transition-transform duration-300 group-hover:rotate-180" data-fictions-order-toggle-target="icon">
+            <%= stroke_icon(:arrow_down_up) %>
+          </span>
+          <%= t(newest_first ? 'fictions.chapters_tab.newest' : 'fictions.chapters_tab.oldest') %>
+        <% end %>
+      </div>
     </div>
 
     <div data-controller="flowbite">

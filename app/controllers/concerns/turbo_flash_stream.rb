@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Turbo Stream helpers for hidden layout flash frames (application-notice / application-alert).
+# Errors share the application-alert frame.
 module TurboFlashStream
   extend ActiveSupport::Concern
 
@@ -16,6 +17,13 @@ module TurboFlashStream
   def turbo_stream_alert(message)
     [
       turbo_stream.update('application-alert', partial: 'shared/alert', locals: { alert: message }),
+      turbo_stream.update('application-notice', html: '')
+    ]
+  end
+
+  def turbo_stream_error(message)
+    [
+      turbo_stream.update('application-alert', partial: 'shared/error', locals: { error: message }),
       turbo_stream.update('application-notice', html: '')
     ]
   end

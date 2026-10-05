@@ -90,7 +90,7 @@ class DownloadsController < ApplicationController
   end
 
   def handle_error
-    flash[:alert] = t('downloads.alerts.error')
+    flash[:error] = t('downloads.alerts.error')
     redirect_to request.referer || root_path
   end
 

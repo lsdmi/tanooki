@@ -74,6 +74,18 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to 'http://www.example.com/'
-    assert_equal I18n.t('downloads.alerts.error'), flash[:alert]
+    assert_equal I18n.t('downloads.alerts.error'), flash[:error]
+  end
+
+  test 'error flash renders as an error toast in the alert frame' do
+    EpubExportRequest.stub :create!, ->(*) { raise StandardError } do
+      get epub_download_path(id: @rich_text)
+    end
+    follow_redirect!
+
+    assert_select(
+      '#application-alert [data-controller="flash-toast"][data-flash-toast-type-value="error"]' \
+      "[data-flash-toast-message-value=\"#{I18n.t('downloads.alerts.error')}\"]"
+    )
   end
 end

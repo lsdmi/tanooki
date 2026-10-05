@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_05_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_05_190000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -277,7 +277,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_160000) do
     t.integer "descendant_level"
     t.integer "dex_id"
     t.string "name", null: false
-    t.integer "power_level", null: false
     t.integer "rarity", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false

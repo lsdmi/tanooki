@@ -31,6 +31,15 @@ class TurboFlashStreamResponseTest < ActiveSupport::TestCase
     assert_includes @controller.response.body, 'data-controller="flash-toast"'
   end
 
+  test 'append_session_flash_to_turbo_stream renders error into the alert frame' do
+    @controller.flash[:error] = 'Не вдалося зберегти.'
+    @controller.append_session_flash_to_turbo_stream
+
+    assert_includes @controller.response.body, 'target="application-alert"'
+    assert_includes @controller.response.body, 'data-flash-toast-type-value="error"'
+    assert_includes @controller.response.body, 'Не вдалося зберегти.'
+  end
+
   test 'append_session_flash_to_turbo_stream skips when flash frames already present' do
     @controller.flash[:notice] = 'Допис створено.'
     @controller.response.body = '<turbo-stream action="update" target="application-notice"></turbo-stream>'

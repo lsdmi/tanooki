@@ -3,10 +3,20 @@ import { Controller } from "@hotwired/stimulus"
 const DESKTOP_QUERY = "(min-width: 768px)"
 const SKELETON_ROWS = 4
 
-/** Fiction page chapter group: «Показати ще N» appends the next page of rows, «Показати всі» loads the rest. */
+/**
+ * Fiction page chapter group: «Показати ще N» appends the next page of rows, «Показати всі» loads the rest.
+ * A jump to a chapter renders a window from `start`; «Показати 1–40» above it loads the rows before the window.
+ */
 export default class extends Controller {
-  static targets = ["list", "footer", "more", "moreLabel", "remaining", "all", "error", "skeleton"]
-  static values = { url: String, total: Number, pageSize: Number, mobilePageSize: Number, labels: Object }
+  static targets = ["list", "before", "footer", "more", "moreLabel", "remaining", "all", "error", "skeleton"]
+  static values = {
+    url: String,
+    total: Number,
+    start: Number,
+    pageSize: Number,
+    mobilePageSize: Number,
+    labels: Object,
+  }
 
   connect() {
     this.media = window.matchMedia(DESKTOP_QUERY)
@@ -38,7 +48,7 @@ export default class extends Controller {
   }
 
   get remaining() {
-    return Math.max(this.totalValue - this.rows.length, 0)
+    return Math.max(this.totalValue - this.startValue - this.rows.length, 0)
   }
 
   // The server renders the desktop page; a phone keeps only its own first page so «Показати ще» continues from there.
@@ -69,10 +79,7 @@ export default class extends Controller {
   async load(limit) {
     if (this.abortController) return
 
-    const offset = this.rows.length
-    const url = new URL(this.urlValue, window.location.href)
-    url.searchParams.set("offset", offset)
-    url.searchParams.set("limit", limit ?? "all")
+    const url = this.pageUrl(this.startValue + this.rows.length, limit)
 
     this.abortController = new AbortController()
     this.errorTarget.classList.add("hidden")
@@ -80,16 +87,10 @@ export default class extends Controller {
     const skeletons = this.showSkeletons(Math.min(limit ?? this.remaining, this.remaining, SKELETON_ROWS))
 
     try {
-      const response = await fetch(url, {
-        headers: { Accept: "text/html", "X-Requested-With": "XMLHttpRequest" },
-        credentials: "same-origin",
-        signal: this.abortController.signal,
-      })
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-
+      const response = await this.fetchRows(url)
       const added = this.append(await response.text())
       // Fewer rows than asked means the group shrank since the page loaded (a chapter was hidden or deleted).
-      if (limit === null || added < limit) this.totalValue = this.rows.length
+      if (limit === null || added < limit) this.totalValue = this.startValue + this.rows.length
     } catch (error) {
       if (error.name === "AbortError") return
 
@@ -102,10 +103,61 @@ export default class extends Controller {
     }
   }
 
-  append(html) {
+  // The window stays where it is on screen; the rows above grow out of view and the reader scrolls up to them.
+  async before() {
+    if (this.abortController || !this.hasBeforeTarget) return
+
+    const anchor = this.rows[0]
+    const button = this.beforeTarget.querySelector("button")
+    this.abortController = new AbortController()
+    this.errorTarget.classList.add("hidden")
+    button.disabled = true
+
+    try {
+      // The rows above can be more than one request's page in a long volume; take the group head and keep `start`.
+      const response = await this.fetchRows(this.pageUrl(0, null))
+      const fetched = this.parseRows(await response.text()).slice(0, this.startValue)
+      const top = anchor?.getBoundingClientRect().top
+      this.beforeTarget.remove()
+      this.listTarget.prepend(...fetched.filter((row) => !row.id || !document.getElementById(row.id)))
+      if (anchor) window.scrollBy(0, anchor.getBoundingClientRect().top - top)
+      this.startValue = 0
+    } catch (error) {
+      if (error.name === "AbortError") return
+
+      this.errorTarget.textContent = this.labelsValue.failed
+      this.errorTarget.classList.remove("hidden")
+    } finally {
+      button.disabled = false
+      this.abortController = null
+    }
+  }
+
+  pageUrl(offset, limit) {
+    const url = new URL(this.urlValue, window.location.href)
+    url.searchParams.set("offset", offset)
+    url.searchParams.set("limit", limit ?? "all")
+    return url
+  }
+
+  async fetchRows(url) {
+    const response = await fetch(url, {
+      headers: { Accept: "text/html", "X-Requested-With": "XMLHttpRequest" },
+      credentials: "same-origin",
+      signal: this.abortController.signal,
+    })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return response
+  }
+
+  parseRows(html) {
     const template = document.createElement("template")
     template.innerHTML = html
-    const fetched = Array.from(template.content.children).filter((row) => row.tagName === "LI")
+    return Array.from(template.content.children).filter((row) => row.tagName === "LI")
+  }
+
+  append(html) {
+    const fetched = this.parseRows(html)
     // A chapter published since the last page shifts the offsets; skip rows that are already shown.
     this.listTarget.append(...fetched.filter((row) => !row.id || !document.getElementById(row.id)))
     return fetched.length

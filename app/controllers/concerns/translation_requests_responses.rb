@@ -20,7 +20,9 @@ module TranslationRequestsResponses
 
   def handle_update_failure
     respond_to do |format|
-      format.html { redirect_to translation_requests_path, alert: t('translation_requests.alerts.update_error') }
+      format.html do
+        redirect_to translation_requests_path, flash: { error: t('translation_requests.alerts.update_error') }
+      end
       format.json { render json: { success: false, errors: @translation_request.errors.full_messages } }
     end
   end
@@ -50,7 +52,9 @@ module TranslationRequestsResponses
 
   def handle_destroy_failure
     respond_to do |format|
-      format.html { redirect_to translation_requests_path, alert: t('translation_requests.alerts.destroy_error') }
+      format.html do
+        redirect_to translation_requests_path, flash: { error: t('translation_requests.alerts.destroy_error') }
+      end
       format.json do
         render json: { success: false, error: t('translation_requests.alerts.destroy_json_error') },
                status: :unprocessable_content
