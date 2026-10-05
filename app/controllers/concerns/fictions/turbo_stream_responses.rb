@@ -18,7 +18,7 @@ module Fictions
 
     def sorted_chapters_frame_locals
       locals = @show_presenter.sorted_chapters_locals
-      return locals unless reader_drawer_chapter_sort?
+      return locals.merge(continue_chapter: @show_presenter.list_continue_chapter) unless reader_drawer_chapter_sort?
 
       locals.merge(
         toggle_order_button_id: 'toggle-fictions-order-drawer',

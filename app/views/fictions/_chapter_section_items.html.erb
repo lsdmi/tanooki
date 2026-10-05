@@ -1,4 +1,4 @@
-<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil, total: nil, section_url: nil %>
+<%# locals: chapters:, reader_drawer: false, current_chapter: nil, drawer_progress: nil, total: nil, section_url: nil, focus_chapter: nil %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% if reader_drawer %>
   <ul class="divide-y divide-line-muted">
@@ -20,8 +20,9 @@
        data-chapter-group-pager-page-size-value="<%= page_size %>"
        data-chapter-group-pager-mobile-page-size-value="<%= Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE %>"
        data-chapter-group-pager-labels-value="<%= pager_labels.to_json %>">
-    <%# Until the pager connects, phones see only their first page of the server-rendered rows. %>
-    <ul class="grid grid-cols-1 gap-2 md:grid-cols-2 max-md:[&>li:nth-child(n+11)]:hidden" data-chapter-group-pager-target="list">
+    <% focus_index = chapters.index { |chapter| chapter.id == local_assigns[:focus_chapter]&.id } %>
+    <%# Until the pager connects, phones see only their first page of the server-rendered rows; a page grown to reach the continue row is kept whole. %>
+    <ul class="grid grid-cols-1 gap-2 md:grid-cols-2<%= ' max-md:[&>li:nth-child(n+11)]:hidden' if focus_index.nil? || focus_index < Fictions::ChapterSectionLoader::MOBILE_PAGE_SIZE %>" data-chapter-group-pager-target="list">
       <%= render 'fictions/chapter_section_rows', chapters:, current_chapter: local_assigns[:current_chapter], drawer_progress: local_assigns[:drawer_progress] %>
     </ul>
     <div class="flex flex-wrap items-center justify-center gap-3 py-2<%= ' hidden' unless remaining.positive? %>" data-chapter-group-pager-target="footer">

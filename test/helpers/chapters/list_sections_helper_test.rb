@@ -49,6 +49,20 @@ module Chapters
       assert(chapters.all? { |chapter| chapter.association(:scanlators).loaded? })
     end
 
+    test 'the first page grows in phone steps to reach the continue row' do
+      sizes = [nil, 0, 19, 20, 39].map { |index| chapter_list_first_page_size(index) }
+
+      assert_equal [20, 20, 20, 30, 40], sizes
+    end
+
+    test 'the open group is the continue chapter group, else the first one' do
+      sections = [{ section_key: 'r-101-200' }, { section_key: 'r-1-100' }]
+
+      assert_equal 'r-1-100', chapter_list_open_section_key(sections, chapters(:one))
+      assert_equal 'r-101-200', chapter_list_open_section_key(sections, nil)
+      assert_equal 'r-101-200', chapter_list_open_section_key(sections, Chapter.new(number: 1, volume_number: 3))
+    end
+
     test 'chapter_list_section_index hides chapters guests cannot see yet' do
       fiction = fictions(:one)
 

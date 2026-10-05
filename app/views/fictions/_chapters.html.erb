@@ -1,4 +1,4 @@
-<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), reader_drawer: false (optional), current_chapter: nil (optional) %>
+<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), reader_drawer: false (optional), current_chapter: nil (optional), continue_chapter: nil (optional) %>
 <% toggle_btn_id = local_assigns.fetch(:toggle_order_button_id, 'toggle-fictions-order') %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% if reader_drawer %>
@@ -57,7 +57,7 @@
     </div>
 
     <div data-controller="flowbite">
-      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress %>
+      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress, continue_chapter: local_assigns[:continue_chapter] %>
     </div>
 
     <% if list_progress %>

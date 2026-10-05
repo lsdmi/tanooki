@@ -73,6 +73,7 @@ export default class extends Controller {
     this.panelTargets.forEach((panel) => {
       panel.hidden = panel.dataset.tabId !== id;
     });
+    this.dispatch("activated", { detail: { id } });
   }
 
   tabIdFromHash() {

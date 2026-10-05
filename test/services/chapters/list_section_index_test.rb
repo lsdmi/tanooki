@@ -14,6 +14,17 @@ module Chapters
       assert_equal %i[volume range range], sections.pluck(:kind)
     end
 
+    test 'section_key_for names the group a chapter lands in' do
+      chapters = [chapter(1, number: 101), chapter(2, number: 0.5), chapter(3, number: 2, volume: 1)]
+      keys = ListSectionIndex.new(chapters).call.flat_map do |section|
+        section[:chapter_ids].map { |id| [id, section[:section_key]] }
+      end
+
+      expected = chapters.to_h { |chapter| [chapter.id, ListSectionIndex.section_key_for(chapter)] }
+
+      assert_equal keys.to_h, expected
+    end
+
     test 'range titles show the first and last chapter the group actually has' do
       chapters = [0.5, 100, 1901, 1999].each_with_index.map { |number, id| chapter(id, number:) }
 

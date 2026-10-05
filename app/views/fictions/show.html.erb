@@ -32,7 +32,7 @@
         <section class="flex flex-col gap-6 md:gap-5">
           <% if fiction_has_listable_chapters?(@fiction, current_user) %>
             <%= turbo_frame_tag 'sort-chapters' do %>
-              <%= render 'chapters', fiction: @fiction, order: @show_presenter.order %>
+              <%= render 'chapters', fiction: @fiction, order: @show_presenter.order, continue_chapter: @show_presenter.list_continue_chapter %>
             <% end %>
           <% else %>
             <%= render 'first_chapter_cta', fiction: @fiction %>

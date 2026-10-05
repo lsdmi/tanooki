@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_04_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_05_150000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -351,6 +351,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_04_160000) do
     t.index ["user_id", "fiction_id"], name: "index_reading_progresses_on_user_id_and_fiction_id", unique: true
     t.index ["user_id", "updated_at"], name: "index_reading_progresses_on_user_id_and_updated_at"
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
+  end
+
+  create_table "request_stats", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "bytes_p95", null: false
+    t.bigint "bytes_sum", null: false
+    t.datetime "created_at", null: false
+    t.float "db_ms_p95", null: false
+    t.float "db_ms_sum", null: false
+    t.float "duration_ms_max", null: false
+    t.float "duration_ms_p50", null: false
+    t.float "duration_ms_p95", null: false
+    t.float "duration_ms_sum", null: false
+    t.string "endpoint", null: false
+    t.datetime "period_start", null: false
+    t.integer "queries_p95", null: false
+    t.integer "queries_sum", null: false
+    t.integer "requests", null: false
+    t.integer "server_errors", null: false
+    t.float "view_ms_p95", null: false
+    t.float "view_ms_sum", null: false
+    t.index ["period_start", "endpoint"], name: "index_request_stats_on_period_start_and_endpoint"
   end
 
   create_table "scanlator_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

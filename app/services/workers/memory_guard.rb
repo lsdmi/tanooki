@@ -11,7 +11,6 @@ module Workers
     CHECK_EVERY = 30
     LOG_EVERY = 300
     PROC_STATUS = '/proc/self/status'
-    PROC_CLEAR_REFS = '/proc/self/clear_refs'
     CGROUP_FILES = %w[/sys/fs/cgroup/memory.current /sys/fs/cgroup/memory/memory.usage_in_bytes].freeze
 
     def self.start(**)
@@ -19,23 +18,7 @@ module Workers
     end
 
     def self.rss_mb
-      status_mb('VmRSS:')
-    end
-
-    # Highest RSS since the process started or since the last reset_peak_rss.
-    def self.peak_rss_mb
-      status_mb('VmHWM:')
-    end
-
-    def self.reset_peak_rss
-      File.write(PROC_CLEAR_REFS, '5')
-      true
-    rescue SystemCallError
-      false
-    end
-
-    def self.status_mb(field)
-      line = File.foreach(PROC_STATUS).find { |status_line| status_line.start_with?(field) }
+      line = File.foreach(PROC_STATUS).find { |status_line| status_line.start_with?('VmRSS:') }
       line && (line[/\d+/].to_i / 1024)
     rescue SystemCallError
       nil

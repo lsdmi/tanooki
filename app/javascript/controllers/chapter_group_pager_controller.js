@@ -42,11 +42,15 @@ export default class extends Controller {
   }
 
   // The server renders the desktop page; a phone keeps only its own first page so «Показати ще» continues from there.
+  // Without the trim class the page was grown to reach the continue row, and phones keep all of it.
   trimToFirstPage() {
+    const trim = "max-md:[&>li:nth-child(n+11)]:hidden"
+    if (!this.listTarget.classList.contains(trim)) return
+
     if (!this.media.matches) {
       this.rows.slice(this.mobilePageSizeValue).forEach((row) => row.remove())
     }
-    this.listTarget.classList.remove("max-md:[&>li:nth-child(n+11)]:hidden")
+    this.listTarget.classList.remove(trim)
   }
 
   render() {

@@ -37,6 +37,14 @@ class FictionShowPresenter
 
   def reading_started? = continue_reading&.started? || false
 
+  # The chapter the hero «Продовжити» opens; the chapter list opens its group. Nil for guests, before the first
+  # chapter is opened and once everything is read.
+  def list_continue_chapter
+    return unless @current_user && reading_started? && !continue_reading.all_read?
+
+    continue_reading.continue_chapter
+  end
+
   # Guests always get About: their page is one cached variant, and a URL hash picks another tab on the client.
   def default_tab = @current_user && reading_started? ? :chapters : :about
 

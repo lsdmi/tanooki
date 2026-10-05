@@ -16,6 +16,14 @@ module Chapters
       "#{start + 1}-#{start + RANGE_SIZE}"
     end
 
+    def self.section_key_for(chapter)
+      if chapter.volume_number
+        volume_section_key(chapter.volume_number)
+      else
+        range_section_key(range_label(chapter.number))
+      end
+    end
+
     def initialize(chapters, order: :asc)
       @chapters = chapters.to_a
       @descending = order.to_sym == :desc

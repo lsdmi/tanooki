@@ -1,9 +1,46 @@
 import { Controller } from "@hotwired/stimulus"
 
-/** Fiction TOC accordion: expand/collapse volume sections and lazy-load chapter lists. */
+const CHAPTERS_TAB = "chapters"
+const TOP_GAP = 16
+
+/**
+ * Fiction TOC accordion: expand/collapse volume sections and lazy-load chapter lists.
+ * On the fiction page the server opens the group with the continue chapter; `focusRow` is that row's id, brought
+ * up under the sticky tabs whenever the reader asks for the Chapters tab (a tab click or a `#chapters` link).
+ */
 export default class extends Controller {
+  static values = { focusRow: String }
+
   connect() {
     this.openDefaultSections()
+    // Once per visit: the list reconnects after a sort, and that should not move the page.
+    if (this.focusRowValue && location.hash === `#${CHAPTERS_TAB}` && !document.body.dataset.chapterListRevealed) {
+      requestAnimationFrame(() => this.revealFocusRow())
+    }
+  }
+
+  tabActivated(event) {
+    if (event.detail.id !== CHAPTERS_TAB || !this.focusRowValue) return
+
+    requestAnimationFrame(() => this.revealFocusRow())
+  }
+
+  // The whole group when its header and the row fit on screen together, otherwise the row with one row above it.
+  revealFocusRow() {
+    const row = document.getElementById(this.focusRowValue)
+    if (!row || !row.offsetParent) return
+
+    document.body.dataset.chapterListRevealed = "true"
+    const tabs = document.querySelector("[data-tabs-target='list']")
+    const top = (tabs?.getBoundingClientRect().height ?? 0) + TOP_GAP
+    const rowRect = row.getBoundingClientRect()
+    if (rowRect.top >= top && rowRect.bottom <= window.innerHeight) return
+
+    const headerTop = row.closest(".accordion")?.querySelector(".accordion-header")?.getBoundingClientRect().top
+    const target = headerTop !== undefined && rowRect.bottom - headerTop + top <= window.innerHeight
+      ? headerTop
+      : rowRect.top - rowRect.height - 8
+    window.scrollBy({ top: target - top, behavior: "instant" })
   }
 
   disconnect() {
