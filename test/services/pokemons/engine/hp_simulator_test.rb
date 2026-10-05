@@ -71,7 +71,7 @@ module Pokemons
 
       test 'refuses a snapshot without base stats' do
         stale = TeamSnapshot.new(trainer_id: 1, combatants: [Combatant.new(id: 1, character: 'lucky', power_level: 3,
-                                                                           battle_experience: 0, types: %w[Водяний])])
+                                                                           battle_experience: 0, types: %w[water])])
 
         assert_raises(HpSimulator::MissingStats) do
           HpSimulator.call(attacker: stale, defender: team(101, [[25, 0]]), rng: Random.new(1))
@@ -89,7 +89,7 @@ module Pokemons
         combatants = specs.each_with_index.map do |(dex_id, experience, character), index|
           stats = BaseStats.for(dex_id)
           Combatant.new(id: first_id + index, character:, power_level: 1, battle_experience: experience,
-                        types: [index.even? ? 'Вогняний' : 'Водяний'], base_hp: stats[:hp], base_attack: stats[:attack])
+                        types: [index.even? ? 'fire' : 'water'], base_hp: stats[:hp], base_attack: stats[:attack])
         end
         TeamSnapshot.new(trainer_id: first_id, combatants:)
       end

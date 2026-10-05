@@ -6,8 +6,8 @@
         "character": "agile",
         "battle_experience": 77,
         "types": [
-          "Примарний",
-          "Трав'яний"
+          "ghost",
+          "grass"
         ]
       }
     ],
@@ -17,7 +17,7 @@
         "character": "brave",
         "battle_experience": 115,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -25,7 +25,7 @@
         "character": "independent",
         "battle_experience": 1,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -59,7 +59,7 @@
         "character": "confident",
         "battle_experience": 17,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -67,7 +67,7 @@
         "character": "decisive",
         "battle_experience": 130,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -77,7 +77,7 @@
         "character": "agile",
         "battle_experience": 3,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -85,8 +85,8 @@
         "character": "lucky",
         "battle_experience": 5,
         "types": [
-          "Ґрунтовий",
-          "Отруйний"
+          "ground",
+          "poison"
         ]
       }
     ],
@@ -130,8 +130,8 @@
         "character": "ambitious",
         "battle_experience": 0,
         "types": [
-          "Льодовий",
-          "Комашиний"
+          "ice",
+          "bug"
         ]
       },
       {
@@ -139,8 +139,8 @@
         "character": "prideful",
         "battle_experience": 116,
         "types": [
-          "Драконячий",
-          "Отруйний"
+          "dragon",
+          "poison"
         ]
       },
       {
@@ -148,7 +148,7 @@
         "character": "independent",
         "battle_experience": 130,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       }
     ],
@@ -158,8 +158,8 @@
         "character": "brave",
         "battle_experience": 115,
         "types": [
-          "Драконячий",
-          "Скельний"
+          "dragon",
+          "rock"
         ]
       }
     ],
@@ -194,7 +194,7 @@
         "character": "confident",
         "battle_experience": 116,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -202,8 +202,8 @@
         "character": "brave",
         "battle_experience": 100,
         "types": [
-          "Драконячий",
-          "Отруйний"
+          "dragon",
+          "poison"
         ]
       },
       {
@@ -211,8 +211,8 @@
         "character": "patient",
         "battle_experience": 9,
         "types": [
-          "Вогняний",
-          "Бойовий"
+          "fire",
+          "fighting"
         ]
       }
     ],
@@ -222,7 +222,7 @@
         "character": "ambitious",
         "battle_experience": 13,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -230,7 +230,7 @@
         "character": "confident",
         "battle_experience": 1,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       }
     ],
@@ -275,7 +275,7 @@
         "character": "brave",
         "battle_experience": 5,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -283,7 +283,7 @@
         "character": "agile",
         "battle_experience": 101,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -291,7 +291,7 @@
         "character": "patient",
         "battle_experience": 63,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       }
     ],
@@ -301,7 +301,7 @@
         "character": "persistent",
         "battle_experience": 60,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -309,7 +309,7 @@
         "character": "prideful",
         "battle_experience": 48,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -363,7 +363,7 @@
         "character": "agile",
         "battle_experience": 106,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -371,8 +371,8 @@
         "character": "agile",
         "battle_experience": 1,
         "types": [
-          "Повітряний",
-          "Вогняний"
+          "flying",
+          "fire"
         ]
       }
     ],
@@ -382,8 +382,8 @@
         "character": "brave",
         "battle_experience": 67,
         "types": [
-          "Льодовий",
-          "Трав'яний"
+          "ice",
+          "grass"
         ]
       }
     ],
@@ -417,8 +417,8 @@
         "character": "confident",
         "battle_experience": 118,
         "types": [
-          "Скельний",
-          "Драконячий"
+          "rock",
+          "dragon"
         ]
       }
     ],
@@ -428,8 +428,8 @@
         "character": "decisive",
         "battle_experience": 1,
         "types": [
-          "Вогняний",
-          "Повітряний"
+          "fire",
+          "flying"
         ]
       }
     ],
@@ -462,7 +462,7 @@
         "character": "hardy",
         "battle_experience": 9,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -470,8 +470,8 @@
         "character": "decisive",
         "battle_experience": 89,
         "types": [
-          "Водяний",
-          "Льодовий"
+          "water",
+          "ice"
         ]
       }
     ],
@@ -481,7 +481,7 @@
         "character": "confident",
         "battle_experience": 0,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -489,7 +489,7 @@
         "character": "independent",
         "battle_experience": 130,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       }
     ],
@@ -533,8 +533,8 @@
         "character": "decisive",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий",
-          "Отруйний"
+          "ground",
+          "poison"
         ]
       },
       {
@@ -542,7 +542,7 @@
         "character": "friendly",
         "battle_experience": 110,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -550,8 +550,8 @@
         "character": "hardy",
         "battle_experience": 116,
         "types": [
-          "Льодовий",
-          "Вогняний"
+          "ice",
+          "fire"
         ]
       }
     ],
@@ -561,8 +561,8 @@
         "character": "patient",
         "battle_experience": 77,
         "types": [
-          "Примарний",
-          "Драконячий"
+          "ghost",
+          "dragon"
         ]
       }
     ],
@@ -597,7 +597,7 @@
         "character": "persistent",
         "battle_experience": 5,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -605,8 +605,8 @@
         "character": "patient",
         "battle_experience": 100,
         "types": [
-          "Бойовий",
-          "Отруйний"
+          "fighting",
+          "poison"
         ]
       },
       {
@@ -614,7 +614,7 @@
         "character": "decisive",
         "battle_experience": 85,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -624,7 +624,7 @@
         "character": "decisive",
         "battle_experience": 50,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -632,8 +632,8 @@
         "character": "ambitious",
         "battle_experience": 32,
         "types": [
-          "Льодовий",
-          "Психічний"
+          "ice",
+          "psychic"
         ]
       }
     ],
@@ -678,7 +678,7 @@
         "character": "friendly",
         "battle_experience": 9,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       }
     ],
@@ -688,7 +688,7 @@
         "character": "confident",
         "battle_experience": 50,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -696,8 +696,8 @@
         "character": "persistent",
         "battle_experience": 59,
         "types": [
-          "Драконячий",
-          "Примарний"
+          "dragon",
+          "ghost"
         ]
       },
       {
@@ -705,8 +705,8 @@
         "character": "hardy",
         "battle_experience": 130,
         "types": [
-          "Водяний",
-          "Повітряний"
+          "water",
+          "flying"
         ]
       }
     ],
@@ -741,7 +741,7 @@
         "character": "persistent",
         "battle_experience": 98,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -749,7 +749,7 @@
         "character": "prideful",
         "battle_experience": 113,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       }
     ],
@@ -759,8 +759,8 @@
         "character": "friendly",
         "battle_experience": 42,
         "types": [
-          "Електричний",
-          "Повітряний"
+          "electric",
+          "flying"
         ]
       },
       {
@@ -768,8 +768,8 @@
         "character": "ambitious",
         "battle_experience": 114,
         "types": [
-          "Ґрунтовий",
-          "Скельний"
+          "ground",
+          "rock"
         ]
       },
       {
@@ -777,7 +777,7 @@
         "character": "hardy",
         "battle_experience": 101,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -822,7 +822,7 @@
         "character": "hardy",
         "battle_experience": 50,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -830,8 +830,8 @@
         "character": "patient",
         "battle_experience": 114,
         "types": [
-          "Вогняний",
-          "Комашиний"
+          "fire",
+          "bug"
         ]
       }
     ],
@@ -841,7 +841,7 @@
         "character": "prideful",
         "battle_experience": 116,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -875,8 +875,8 @@
         "character": "persistent",
         "battle_experience": 0,
         "types": [
-          "Звичайний",
-          "Повітряний"
+          "normal",
+          "flying"
         ]
       }
     ],
@@ -886,7 +886,7 @@
         "character": "hardy",
         "battle_experience": 31,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       }
     ],
@@ -919,7 +919,7 @@
         "character": "independent",
         "battle_experience": 116,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       }
     ],
@@ -929,8 +929,8 @@
         "character": "lucky",
         "battle_experience": 101,
         "types": [
-          "Електричний",
-          "Трав'яний"
+          "electric",
+          "grass"
         ]
       },
       {
@@ -938,7 +938,7 @@
         "character": "brave",
         "battle_experience": 117,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       }
     ],
@@ -972,8 +972,8 @@
         "character": "agile",
         "battle_experience": 50,
         "types": [
-          "Скельний",
-          "Ґрунтовий"
+          "rock",
+          "ground"
         ]
       },
       {
@@ -981,7 +981,7 @@
         "character": "brave",
         "battle_experience": 114,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -989,7 +989,7 @@
         "character": "confident",
         "battle_experience": 9,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       }
     ],
@@ -999,8 +999,8 @@
         "character": "independent",
         "battle_experience": 114,
         "types": [
-          "Ґрунтовий",
-          "Психічний"
+          "ground",
+          "psychic"
         ]
       },
       {
@@ -1008,7 +1008,7 @@
         "character": "confident",
         "battle_experience": 101,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -1016,7 +1016,7 @@
         "character": "decisive",
         "battle_experience": 34,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -1071,7 +1071,7 @@
         "character": "lucky",
         "battle_experience": 116,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -1079,8 +1079,8 @@
         "character": "persistent",
         "battle_experience": 116,
         "types": [
-          "Льодовий",
-          "Трав'яний"
+          "ice",
+          "grass"
         ]
       }
     ],
@@ -1090,7 +1090,7 @@
         "character": "brave",
         "battle_experience": 9,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -1098,8 +1098,8 @@
         "character": "prideful",
         "battle_experience": 115,
         "types": [
-          "Комашиний",
-          "Вогняний"
+          "bug",
+          "fire"
         ]
       },
       {
@@ -1107,8 +1107,8 @@
         "character": "ambitious",
         "battle_experience": 1,
         "types": [
-          "Ґрунтовий",
-          "Психічний"
+          "ground",
+          "psychic"
         ]
       }
     ],
@@ -1162,7 +1162,7 @@
         "character": "ambitious",
         "battle_experience": 120,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -1172,8 +1172,8 @@
         "character": "lucky",
         "battle_experience": 91,
         "types": [
-          "Бойовий",
-          "Скельний"
+          "fighting",
+          "rock"
         ]
       },
       {
@@ -1181,8 +1181,8 @@
         "character": "patient",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий",
-          "Водяний"
+          "ground",
+          "water"
         ]
       },
       {
@@ -1190,8 +1190,8 @@
         "character": "hardy",
         "battle_experience": 114,
         "types": [
-          "Льодовий",
-          "Отруйний"
+          "ice",
+          "poison"
         ]
       }
     ],
@@ -1226,7 +1226,7 @@
         "character": "patient",
         "battle_experience": 9,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -1236,7 +1236,7 @@
         "character": "agile",
         "battle_experience": 14,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -1244,8 +1244,8 @@
         "character": "friendly",
         "battle_experience": 22,
         "types": [
-          "Психічний",
-          "Отруйний"
+          "psychic",
+          "poison"
         ]
       }
     ],
@@ -1279,7 +1279,7 @@
         "character": "decisive",
         "battle_experience": 1,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -1287,7 +1287,7 @@
         "character": "patient",
         "battle_experience": 96,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -1295,8 +1295,8 @@
         "character": "hardy",
         "battle_experience": 113,
         "types": [
-          "Психічний",
-          "Ґрунтовий"
+          "psychic",
+          "ground"
         ]
       }
     ],
@@ -1306,8 +1306,8 @@
         "character": "patient",
         "battle_experience": 1,
         "types": [
-          "Льодовий",
-          "Драконячий"
+          "ice",
+          "dragon"
         ]
       },
       {
@@ -1315,8 +1315,8 @@
         "character": "hardy",
         "battle_experience": 101,
         "types": [
-          "Водяний",
-          "Скельний"
+          "water",
+          "rock"
         ]
       },
       {
@@ -1324,8 +1324,8 @@
         "character": "hardy",
         "battle_experience": 9,
         "types": [
-          "Примарний",
-          "Драконячий"
+          "ghost",
+          "dragon"
         ]
       }
     ],
@@ -1380,8 +1380,8 @@
         "character": "persistent",
         "battle_experience": 130,
         "types": [
-          "Льодовий",
-          "Вогняний"
+          "ice",
+          "fire"
         ]
       }
     ],
@@ -1391,7 +1391,7 @@
         "character": "persistent",
         "battle_experience": 28,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -1399,8 +1399,8 @@
         "character": "confident",
         "battle_experience": 5,
         "types": [
-          "Примарний",
-          "Льодовий"
+          "ghost",
+          "ice"
         ]
       },
       {
@@ -1408,8 +1408,8 @@
         "character": "agile",
         "battle_experience": 22,
         "types": [
-          "Скельний",
-          "Звичайний"
+          "rock",
+          "normal"
         ]
       }
     ],
@@ -1444,7 +1444,7 @@
         "character": "patient",
         "battle_experience": 98,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       }
     ],
@@ -1454,8 +1454,8 @@
         "character": "persistent",
         "battle_experience": 78,
         "types": [
-          "Трав'яний",
-          "Електричний"
+          "grass",
+          "electric"
         ]
       },
       {
@@ -1463,7 +1463,7 @@
         "character": "lucky",
         "battle_experience": 1,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -1471,8 +1471,8 @@
         "character": "confident",
         "battle_experience": 113,
         "types": [
-          "Психічний",
-          "Драконячий"
+          "psychic",
+          "dragon"
         ]
       }
     ],
@@ -1507,7 +1507,7 @@
         "character": "prideful",
         "battle_experience": 38,
         "types": [
-          "Водяний"
+          "water"
         ]
       }
     ],
@@ -1517,7 +1517,7 @@
         "character": "confident",
         "battle_experience": 130,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -1525,8 +1525,8 @@
         "character": "friendly",
         "battle_experience": 20,
         "types": [
-          "Повітряний",
-          "Примарний"
+          "flying",
+          "ghost"
         ]
       }
     ],
@@ -1560,8 +1560,8 @@
         "character": "ambitious",
         "battle_experience": 97,
         "types": [
-          "Звичайний",
-          "Повітряний"
+          "normal",
+          "flying"
         ]
       },
       {
@@ -1569,8 +1569,8 @@
         "character": "hardy",
         "battle_experience": 55,
         "types": [
-          "Водяний",
-          "Драконячий"
+          "water",
+          "dragon"
         ]
       }
     ],
@@ -1580,7 +1580,7 @@
         "character": "prideful",
         "battle_experience": 99,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -1588,7 +1588,7 @@
         "character": "agile",
         "battle_experience": 9,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -1632,7 +1632,7 @@
         "character": "brave",
         "battle_experience": 1,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -1640,7 +1640,7 @@
         "character": "persistent",
         "battle_experience": 128,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -1648,7 +1648,7 @@
         "character": "friendly",
         "battle_experience": 116,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -1656,8 +1656,8 @@
         "character": "decisive",
         "battle_experience": 114,
         "types": [
-          "Повітряний",
-          "Психічний"
+          "flying",
+          "psychic"
         ]
       },
       {
@@ -1665,7 +1665,7 @@
         "character": "lucky",
         "battle_experience": 98,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -1673,7 +1673,7 @@
         "character": "lucky",
         "battle_experience": 95,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -1681,7 +1681,7 @@
         "character": "persistent",
         "battle_experience": 113,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -1689,7 +1689,7 @@
         "character": "confident",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       }
     ],
@@ -1699,8 +1699,8 @@
         "character": "persistent",
         "battle_experience": 1,
         "types": [
-          "Льодовий",
-          "Водяний"
+          "ice",
+          "water"
         ]
       },
       {
@@ -1708,8 +1708,8 @@
         "character": "patient",
         "battle_experience": 1,
         "types": [
-          "Комашиний",
-          "Бойовий"
+          "bug",
+          "fighting"
         ]
       },
       {
@@ -1717,8 +1717,8 @@
         "character": "confident",
         "battle_experience": 9,
         "types": [
-          "Трав'яний",
-          "Льодовий"
+          "grass",
+          "ice"
         ]
       },
       {
@@ -1726,7 +1726,7 @@
         "character": "friendly",
         "battle_experience": 55,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -1734,7 +1734,7 @@
         "character": "prideful",
         "battle_experience": 22,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -1742,8 +1742,8 @@
         "character": "prideful",
         "battle_experience": 116,
         "types": [
-          "Звичайний",
-          "Бойовий"
+          "normal",
+          "fighting"
         ]
       },
       {
@@ -1751,7 +1751,7 @@
         "character": "patient",
         "battle_experience": 23,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -1759,7 +1759,7 @@
         "character": "confident",
         "battle_experience": 115,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       }
     ],
@@ -1860,8 +1860,8 @@
         "character": "patient",
         "battle_experience": 99,
         "types": [
-          "Психічний",
-          "Бойовий"
+          "psychic",
+          "fighting"
         ]
       },
       {
@@ -1869,8 +1869,8 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Електричний",
-          "Драконячий"
+          "electric",
+          "dragon"
         ]
       }
     ],
@@ -1880,7 +1880,7 @@
         "character": "brave",
         "battle_experience": 5,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -1888,7 +1888,7 @@
         "character": "independent",
         "battle_experience": 31,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -1896,7 +1896,7 @@
         "character": "persistent",
         "battle_experience": 35,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -1904,7 +1904,7 @@
         "character": "friendly",
         "battle_experience": 5,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -1912,7 +1912,7 @@
         "character": "prideful",
         "battle_experience": 50,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -1920,8 +1920,8 @@
         "character": "hardy",
         "battle_experience": 77,
         "types": [
-          "Водяний",
-          "Драконячий"
+          "water",
+          "dragon"
         ]
       }
     ],
@@ -1978,7 +1978,7 @@
         "character": "ambitious",
         "battle_experience": 128,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -1986,7 +1986,7 @@
         "character": "confident",
         "battle_experience": 100,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -1994,7 +1994,7 @@
         "character": "friendly",
         "battle_experience": 115,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -2002,7 +2002,7 @@
         "character": "friendly",
         "battle_experience": 114,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -2010,7 +2010,7 @@
         "character": "independent",
         "battle_experience": 130,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -2018,7 +2018,7 @@
         "character": "independent",
         "battle_experience": 88,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -2026,8 +2026,8 @@
         "character": "prideful",
         "battle_experience": 98,
         "types": [
-          "Отруйний",
-          "Скельний"
+          "poison",
+          "rock"
         ]
       }
     ],
@@ -2037,8 +2037,8 @@
         "character": "persistent",
         "battle_experience": 115,
         "types": [
-          "Бойовий",
-          "Електричний"
+          "fighting",
+          "electric"
         ]
       },
       {
@@ -2046,8 +2046,8 @@
         "character": "friendly",
         "battle_experience": 9,
         "types": [
-          "Примарний",
-          "Електричний"
+          "ghost",
+          "electric"
         ]
       },
       {
@@ -2055,7 +2055,7 @@
         "character": "ambitious",
         "battle_experience": 130,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -2063,8 +2063,8 @@
         "character": "agile",
         "battle_experience": 47,
         "types": [
-          "Примарний",
-          "Скельний"
+          "ghost",
+          "rock"
         ]
       },
       {
@@ -2072,8 +2072,8 @@
         "character": "independent",
         "battle_experience": 100,
         "types": [
-          "Трав'яний",
-          "Бойовий"
+          "grass",
+          "fighting"
         ]
       },
       {
@@ -2081,8 +2081,8 @@
         "character": "agile",
         "battle_experience": 1,
         "types": [
-          "Повітряний",
-          "Електричний"
+          "flying",
+          "electric"
         ]
       },
       {
@@ -2090,8 +2090,8 @@
         "character": "brave",
         "battle_experience": 100,
         "types": [
-          "Психічний",
-          "Повітряний"
+          "psychic",
+          "flying"
         ]
       },
       {
@@ -2099,7 +2099,7 @@
         "character": "lucky",
         "battle_experience": 50,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -2208,7 +2208,7 @@
         "character": "decisive",
         "battle_experience": 1,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -2216,7 +2216,7 @@
         "character": "confident",
         "battle_experience": 5,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -2224,7 +2224,7 @@
         "character": "persistent",
         "battle_experience": 114,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -2232,7 +2232,7 @@
         "character": "lucky",
         "battle_experience": 78,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -2240,8 +2240,8 @@
         "character": "confident",
         "battle_experience": 65,
         "types": [
-          "Драконячий",
-          "Комашиний"
+          "dragon",
+          "bug"
         ]
       },
       {
@@ -2249,8 +2249,8 @@
         "character": "decisive",
         "battle_experience": 130,
         "types": [
-          "Трав'яний",
-          "Скельний"
+          "grass",
+          "rock"
         ]
       },
       {
@@ -2258,7 +2258,7 @@
         "character": "friendly",
         "battle_experience": 17,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -2266,8 +2266,8 @@
         "character": "agile",
         "battle_experience": 3,
         "types": [
-          "Звичайний",
-          "Повітряний"
+          "normal",
+          "flying"
         ]
       }
     ],
@@ -2277,7 +2277,7 @@
         "character": "hardy",
         "battle_experience": 0,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -2285,8 +2285,8 @@
         "character": "lucky",
         "battle_experience": 114,
         "types": [
-          "Отруйний",
-          "Скельний"
+          "poison",
+          "rock"
         ]
       },
       {
@@ -2294,8 +2294,8 @@
         "character": "hardy",
         "battle_experience": 99,
         "types": [
-          "Комашиний",
-          "Вогняний"
+          "bug",
+          "fire"
         ]
       },
       {
@@ -2303,8 +2303,8 @@
         "character": "hardy",
         "battle_experience": 5,
         "types": [
-          "Комашиний",
-          "Льодовий"
+          "bug",
+          "ice"
         ]
       },
       {
@@ -2312,8 +2312,8 @@
         "character": "patient",
         "battle_experience": 130,
         "types": [
-          "Драконячий",
-          "Скельний"
+          "dragon",
+          "rock"
         ]
       },
       {
@@ -2321,8 +2321,8 @@
         "character": "ambitious",
         "battle_experience": 98,
         "types": [
-          "Психічний",
-          "Трав'яний"
+          "psychic",
+          "grass"
         ]
       },
       {
@@ -2330,8 +2330,8 @@
         "character": "brave",
         "battle_experience": 98,
         "types": [
-          "Психічний",
-          "Скельний"
+          "psychic",
+          "rock"
         ]
       },
       {
@@ -2339,7 +2339,7 @@
         "character": "confident",
         "battle_experience": 101,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       }
     ],
@@ -2449,8 +2449,8 @@
         "character": "prideful",
         "battle_experience": 5,
         "types": [
-          "Електричний",
-          "Ґрунтовий"
+          "electric",
+          "ground"
         ]
       },
       {
@@ -2458,7 +2458,7 @@
         "character": "independent",
         "battle_experience": 99,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -2466,8 +2466,8 @@
         "character": "prideful",
         "battle_experience": 3,
         "types": [
-          "Трав'яний",
-          "Драконячий"
+          "grass",
+          "dragon"
         ]
       },
       {
@@ -2475,8 +2475,8 @@
         "character": "hardy",
         "battle_experience": 5,
         "types": [
-          "Водяний",
-          "Електричний"
+          "water",
+          "electric"
         ]
       },
       {
@@ -2484,8 +2484,8 @@
         "character": "agile",
         "battle_experience": 9,
         "types": [
-          "Ґрунтовий",
-          "Льодовий"
+          "ground",
+          "ice"
         ]
       },
       {
@@ -2493,7 +2493,7 @@
         "character": "agile",
         "battle_experience": 50,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -2501,7 +2501,7 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -2509,8 +2509,8 @@
         "character": "brave",
         "battle_experience": 114,
         "types": [
-          "Комашиний",
-          "Електричний"
+          "bug",
+          "electric"
         ]
       }
     ],
@@ -2520,7 +2520,7 @@
         "character": "brave",
         "battle_experience": 116,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -2528,8 +2528,8 @@
         "character": "decisive",
         "battle_experience": 98,
         "types": [
-          "Бойовий",
-          "Отруйний"
+          "fighting",
+          "poison"
         ]
       },
       {
@@ -2537,7 +2537,7 @@
         "character": "prideful",
         "battle_experience": 9,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -2545,8 +2545,8 @@
         "character": "agile",
         "battle_experience": 101,
         "types": [
-          "Скельний",
-          "Звичайний"
+          "rock",
+          "normal"
         ]
       },
       {
@@ -2554,7 +2554,7 @@
         "character": "prideful",
         "battle_experience": 1,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       }
     ],
@@ -2670,8 +2670,8 @@
         "character": "independent",
         "battle_experience": 72,
         "types": [
-          "Комашиний",
-          "Льодовий"
+          "bug",
+          "ice"
         ]
       },
       {
@@ -2679,7 +2679,7 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -2687,7 +2687,7 @@
         "character": "persistent",
         "battle_experience": 116,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -2695,8 +2695,8 @@
         "character": "hardy",
         "battle_experience": 114,
         "types": [
-          "Водяний",
-          "Звичайний"
+          "water",
+          "normal"
         ]
       },
       {
@@ -2704,7 +2704,7 @@
         "character": "lucky",
         "battle_experience": 99,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -2712,7 +2712,7 @@
         "character": "prideful",
         "battle_experience": 115,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -2720,8 +2720,8 @@
         "character": "independent",
         "battle_experience": 101,
         "types": [
-          "Трав'яний",
-          "Отруйний"
+          "grass",
+          "poison"
         ]
       }
     ],
@@ -2731,8 +2731,8 @@
         "character": "hardy",
         "battle_experience": 98,
         "types": [
-          "Вогняний",
-          "Скельний"
+          "fire",
+          "rock"
         ]
       },
       {
@@ -2740,8 +2740,8 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Вогняний",
-          "Електричний"
+          "fire",
+          "electric"
         ]
       },
       {
@@ -2749,7 +2749,7 @@
         "character": "persistent",
         "battle_experience": 122,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -2757,7 +2757,7 @@
         "character": "agile",
         "battle_experience": 114,
         "types": [
-          "Скельний"
+          "rock"
         ]
       }
     ],
@@ -2835,7 +2835,7 @@
         "character": "lucky",
         "battle_experience": 27,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -2843,7 +2843,7 @@
         "character": "brave",
         "battle_experience": 1,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -2851,8 +2851,8 @@
         "character": "persistent",
         "battle_experience": 0,
         "types": [
-          "Скельний",
-          "Драконячий"
+          "rock",
+          "dragon"
         ]
       },
       {
@@ -2860,8 +2860,8 @@
         "character": "persistent",
         "battle_experience": 9,
         "types": [
-          "Драконячий",
-          "Ґрунтовий"
+          "dragon",
+          "ground"
         ]
       },
       {
@@ -2869,8 +2869,8 @@
         "character": "patient",
         "battle_experience": 54,
         "types": [
-          "Примарний",
-          "Трав'яний"
+          "ghost",
+          "grass"
         ]
       },
       {
@@ -2878,8 +2878,8 @@
         "character": "brave",
         "battle_experience": 52,
         "types": [
-          "Примарний",
-          "Скельний"
+          "ghost",
+          "rock"
         ]
       },
       {
@@ -2887,7 +2887,7 @@
         "character": "prideful",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -2895,7 +2895,7 @@
         "character": "lucky",
         "battle_experience": 98,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -2905,8 +2905,8 @@
         "character": "agile",
         "battle_experience": 1,
         "types": [
-          "Примарний",
-          "Бойовий"
+          "ghost",
+          "fighting"
         ]
       },
       {
@@ -2914,8 +2914,8 @@
         "character": "decisive",
         "battle_experience": 26,
         "types": [
-          "Психічний",
-          "Ґрунтовий"
+          "psychic",
+          "ground"
         ]
       },
       {
@@ -2923,8 +2923,8 @@
         "character": "patient",
         "battle_experience": 98,
         "types": [
-          "Трав'яний",
-          "Льодовий"
+          "grass",
+          "ice"
         ]
       },
       {
@@ -2932,7 +2932,7 @@
         "character": "hardy",
         "battle_experience": 99,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       }
     ],
@@ -3002,7 +3002,7 @@
         "character": "lucky",
         "battle_experience": 100,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -3010,7 +3010,7 @@
         "character": "persistent",
         "battle_experience": 50,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -3018,7 +3018,7 @@
         "character": "ambitious",
         "battle_experience": 1,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -3026,7 +3026,7 @@
         "character": "confident",
         "battle_experience": 73,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -3036,7 +3036,7 @@
         "character": "decisive",
         "battle_experience": 0,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -3044,8 +3044,8 @@
         "character": "lucky",
         "battle_experience": 119,
         "types": [
-          "Ґрунтовий",
-          "Повітряний"
+          "ground",
+          "flying"
         ]
       }
     ],
@@ -3091,7 +3091,7 @@
         "character": "agile",
         "battle_experience": 65,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -3099,8 +3099,8 @@
         "character": "friendly",
         "battle_experience": 0,
         "types": [
-          "Льодовий",
-          "Трав'яний"
+          "ice",
+          "grass"
         ]
       },
       {
@@ -3108,8 +3108,8 @@
         "character": "independent",
         "battle_experience": 100,
         "types": [
-          "Психічний",
-          "Отруйний"
+          "psychic",
+          "poison"
         ]
       },
       {
@@ -3117,8 +3117,8 @@
         "character": "ambitious",
         "battle_experience": 80,
         "types": [
-          "Електричний",
-          "Скельний"
+          "electric",
+          "rock"
         ]
       }
     ],
@@ -3128,7 +3128,7 @@
         "character": "lucky",
         "battle_experience": 130,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -3136,7 +3136,7 @@
         "character": "brave",
         "battle_experience": 114,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -3144,8 +3144,8 @@
         "character": "decisive",
         "battle_experience": 15,
         "types": [
-          "Вогняний",
-          "Льодовий"
+          "fire",
+          "ice"
         ]
       },
       {
@@ -3153,7 +3153,7 @@
         "character": "independent",
         "battle_experience": 32,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -3161,7 +3161,7 @@
         "character": "lucky",
         "battle_experience": 9,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -3169,8 +3169,8 @@
         "character": "independent",
         "battle_experience": 0,
         "types": [
-          "Отруйний",
-          "Льодовий"
+          "poison",
+          "ice"
         ]
       }
     ],
@@ -3256,8 +3256,8 @@
         "character": "lucky",
         "battle_experience": 0,
         "types": [
-          "Ґрунтовий",
-          "Електричний"
+          "ground",
+          "electric"
         ]
       },
       {
@@ -3265,7 +3265,7 @@
         "character": "confident",
         "battle_experience": 105,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -3273,8 +3273,8 @@
         "character": "agile",
         "battle_experience": 114,
         "types": [
-          "Вогняний",
-          "Примарний"
+          "fire",
+          "ghost"
         ]
       },
       {
@@ -3282,7 +3282,7 @@
         "character": "friendly",
         "battle_experience": 130,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -3290,7 +3290,7 @@
         "character": "brave",
         "battle_experience": 113,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -3300,7 +3300,7 @@
         "character": "independent",
         "battle_experience": 96,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -3308,7 +3308,7 @@
         "character": "prideful",
         "battle_experience": 99,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -3316,8 +3316,8 @@
         "character": "agile",
         "battle_experience": 94,
         "types": [
-          "Скельний",
-          "Льодовий"
+          "rock",
+          "ice"
         ]
       },
       {
@@ -3325,7 +3325,7 @@
         "character": "friendly",
         "battle_experience": 98,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -3333,8 +3333,8 @@
         "character": "agile",
         "battle_experience": 122,
         "types": [
-          "Звичайний",
-          "Льодовий"
+          "normal",
+          "ice"
         ]
       },
       {
@@ -3342,8 +3342,8 @@
         "character": "brave",
         "battle_experience": 9,
         "types": [
-          "Психічний",
-          "Драконячий"
+          "psychic",
+          "dragon"
         ]
       },
       {
@@ -3351,7 +3351,7 @@
         "character": "persistent",
         "battle_experience": 114,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -3359,7 +3359,7 @@
         "character": "hardy",
         "battle_experience": 114,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       }
     ],
@@ -3466,7 +3466,7 @@
         "character": "independent",
         "battle_experience": 50,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -3474,8 +3474,8 @@
         "character": "prideful",
         "battle_experience": 98,
         "types": [
-          "Комашиний",
-          "Примарний"
+          "bug",
+          "ghost"
         ]
       },
       {
@@ -3483,7 +3483,7 @@
         "character": "persistent",
         "battle_experience": 98,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -3491,8 +3491,8 @@
         "character": "confident",
         "battle_experience": 1,
         "types": [
-          "Драконячий",
-          "Трав'яний"
+          "dragon",
+          "grass"
         ]
       },
       {
@@ -3500,8 +3500,8 @@
         "character": "decisive",
         "battle_experience": 113,
         "types": [
-          "Драконячий",
-          "Звичайний"
+          "dragon",
+          "normal"
         ]
       },
       {
@@ -3509,8 +3509,8 @@
         "character": "confident",
         "battle_experience": 98,
         "types": [
-          "Комашиний",
-          "Примарний"
+          "bug",
+          "ghost"
         ]
       },
       {
@@ -3518,8 +3518,8 @@
         "character": "friendly",
         "battle_experience": 99,
         "types": [
-          "Електричний",
-          "Вогняний"
+          "electric",
+          "fire"
         ]
       }
     ],
@@ -3529,8 +3529,8 @@
         "character": "friendly",
         "battle_experience": 115,
         "types": [
-          "Електричний",
-          "Бойовий"
+          "electric",
+          "fighting"
         ]
       },
       {
@@ -3538,7 +3538,7 @@
         "character": "patient",
         "battle_experience": 116,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -3546,8 +3546,8 @@
         "character": "prideful",
         "battle_experience": 130,
         "types": [
-          "Отруйний",
-          "Ґрунтовий"
+          "poison",
+          "ground"
         ]
       },
       {
@@ -3555,8 +3555,8 @@
         "character": "friendly",
         "battle_experience": 34,
         "types": [
-          "Ґрунтовий",
-          "Водяний"
+          "ground",
+          "water"
         ]
       },
       {
@@ -3564,8 +3564,8 @@
         "character": "hardy",
         "battle_experience": 100,
         "types": [
-          "Трав'яний",
-          "Примарний"
+          "grass",
+          "ghost"
         ]
       },
       {
@@ -3573,7 +3573,7 @@
         "character": "prideful",
         "battle_experience": 110,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -3689,7 +3689,7 @@
         "character": "confident",
         "battle_experience": 1,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -3697,7 +3697,7 @@
         "character": "persistent",
         "battle_experience": 100,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -3705,8 +3705,8 @@
         "character": "persistent",
         "battle_experience": 99,
         "types": [
-          "Комашиний",
-          "Водяний"
+          "bug",
+          "water"
         ]
       },
       {
@@ -3714,8 +3714,8 @@
         "character": "persistent",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий",
-          "Скельний"
+          "ground",
+          "rock"
         ]
       },
       {
@@ -3723,8 +3723,8 @@
         "character": "prideful",
         "battle_experience": 123,
         "types": [
-          "Психічний",
-          "Звичайний"
+          "psychic",
+          "normal"
         ]
       }
     ],
@@ -3734,8 +3734,8 @@
         "character": "hardy",
         "battle_experience": 101,
         "types": [
-          "Психічний",
-          "Ґрунтовий"
+          "psychic",
+          "ground"
         ]
       },
       {
@@ -3743,8 +3743,8 @@
         "character": "prideful",
         "battle_experience": 9,
         "types": [
-          "Трав'яний",
-          "Психічний"
+          "grass",
+          "psychic"
         ]
       },
       {
@@ -3752,7 +3752,7 @@
         "character": "persistent",
         "battle_experience": 0,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -3760,8 +3760,8 @@
         "character": "friendly",
         "battle_experience": 87,
         "types": [
-          "Отруйний",
-          "Драконячий"
+          "poison",
+          "dragon"
         ]
       },
       {
@@ -3769,7 +3769,7 @@
         "character": "hardy",
         "battle_experience": 20,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -3777,7 +3777,7 @@
         "character": "confident",
         "battle_experience": 0,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -3785,8 +3785,8 @@
         "character": "independent",
         "battle_experience": 121,
         "types": [
-          "Скельний",
-          "Бойовий"
+          "rock",
+          "fighting"
         ]
       },
       {
@@ -3794,8 +3794,8 @@
         "character": "prideful",
         "battle_experience": 60,
         "types": [
-          "Скельний",
-          "Отруйний"
+          "rock",
+          "poison"
         ]
       }
     ],
@@ -3893,8 +3893,8 @@
         "character": "hardy",
         "battle_experience": 115,
         "types": [
-          "Льодовий",
-          "Звичайний"
+          "ice",
+          "normal"
         ]
       },
       {
@@ -3902,7 +3902,7 @@
         "character": "agile",
         "battle_experience": 24,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -3910,7 +3910,7 @@
         "character": "prideful",
         "battle_experience": 5,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -3918,7 +3918,7 @@
         "character": "prideful",
         "battle_experience": 115,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -3926,8 +3926,8 @@
         "character": "independent",
         "battle_experience": 0,
         "types": [
-          "Драконячий",
-          "Комашиний"
+          "dragon",
+          "bug"
         ]
       },
       {
@@ -3935,8 +3935,8 @@
         "character": "hardy",
         "battle_experience": 9,
         "types": [
-          "Трав'яний",
-          "Водяний"
+          "grass",
+          "water"
         ]
       }
     ],
@@ -3946,7 +3946,7 @@
         "character": "brave",
         "battle_experience": 114,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -3954,7 +3954,7 @@
         "character": "independent",
         "battle_experience": 121,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -3962,8 +3962,8 @@
         "character": "friendly",
         "battle_experience": 45,
         "types": [
-          "Драконячий",
-          "Бойовий"
+          "dragon",
+          "fighting"
         ]
       },
       {
@@ -3971,7 +3971,7 @@
         "character": "friendly",
         "battle_experience": 98,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -3979,7 +3979,7 @@
         "character": "confident",
         "battle_experience": 9,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -3987,7 +3987,7 @@
         "character": "persistent",
         "battle_experience": 1,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -3995,8 +3995,8 @@
         "character": "friendly",
         "battle_experience": 101,
         "types": [
-          "Ґрунтовий",
-          "Звичайний"
+          "ground",
+          "normal"
         ]
       }
     ],
@@ -4094,7 +4094,7 @@
         "character": "brave",
         "battle_experience": 100,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -4102,7 +4102,7 @@
         "character": "hardy",
         "battle_experience": 50,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -4110,7 +4110,7 @@
         "character": "persistent",
         "battle_experience": 60,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -4118,8 +4118,8 @@
         "character": "hardy",
         "battle_experience": 101,
         "types": [
-          "Отруйний",
-          "Ґрунтовий"
+          "poison",
+          "ground"
         ]
       }
     ],
@@ -4129,7 +4129,7 @@
         "character": "brave",
         "battle_experience": 115,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -4137,7 +4137,7 @@
         "character": "agile",
         "battle_experience": 1,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -4145,8 +4145,8 @@
         "character": "hardy",
         "battle_experience": 23,
         "types": [
-          "Електричний",
-          "Драконячий"
+          "electric",
+          "dragon"
         ]
       },
       {
@@ -4154,8 +4154,8 @@
         "character": "persistent",
         "battle_experience": 130,
         "types": [
-          "Льодовий",
-          "Трав'яний"
+          "ice",
+          "grass"
         ]
       },
       {
@@ -4163,8 +4163,8 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Драконячий",
-          "Звичайний"
+          "dragon",
+          "normal"
         ]
       },
       {
@@ -4172,7 +4172,7 @@
         "character": "friendly",
         "battle_experience": 130,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -4240,7 +4240,7 @@
         "character": "hardy",
         "battle_experience": 100,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -4248,8 +4248,8 @@
         "character": "brave",
         "battle_experience": 76,
         "types": [
-          "Комашиний",
-          "Психічний"
+          "bug",
+          "psychic"
         ]
       },
       {
@@ -4257,8 +4257,8 @@
         "character": "independent",
         "battle_experience": 113,
         "types": [
-          "Отруйний",
-          "Звичайний"
+          "poison",
+          "normal"
         ]
       },
       {
@@ -4266,8 +4266,8 @@
         "character": "hardy",
         "battle_experience": 5,
         "types": [
-          "Примарний",
-          "Звичайний"
+          "ghost",
+          "normal"
         ]
       },
       {
@@ -4275,7 +4275,7 @@
         "character": "confident",
         "battle_experience": 99,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -4283,8 +4283,8 @@
         "character": "hardy",
         "battle_experience": 9,
         "types": [
-          "Психічний",
-          "Водяний"
+          "psychic",
+          "water"
         ]
       },
       {
@@ -4292,8 +4292,8 @@
         "character": "patient",
         "battle_experience": 101,
         "types": [
-          "Примарний",
-          "Бойовий"
+          "ghost",
+          "fighting"
         ]
       },
       {
@@ -4301,7 +4301,7 @@
         "character": "confident",
         "battle_experience": 88,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -4311,8 +4311,8 @@
         "character": "hardy",
         "battle_experience": 47,
         "types": [
-          "Трав'яний",
-          "Повітряний"
+          "grass",
+          "flying"
         ]
       },
       {
@@ -4320,8 +4320,8 @@
         "character": "friendly",
         "battle_experience": 107,
         "types": [
-          "Драконячий",
-          "Водяний"
+          "dragon",
+          "water"
         ]
       },
       {
@@ -4329,7 +4329,7 @@
         "character": "friendly",
         "battle_experience": 66,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       }
     ],
@@ -4389,8 +4389,8 @@
         "character": "patient",
         "battle_experience": 102,
         "types": [
-          "Примарний",
-          "Звичайний"
+          "ghost",
+          "normal"
         ]
       },
       {
@@ -4398,7 +4398,7 @@
         "character": "prideful",
         "battle_experience": 100,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -4406,7 +4406,7 @@
         "character": "independent",
         "battle_experience": 113,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -4414,7 +4414,7 @@
         "character": "decisive",
         "battle_experience": 5,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -4422,8 +4422,8 @@
         "character": "confident",
         "battle_experience": 98,
         "types": [
-          "Скельний",
-          "Драконячий"
+          "rock",
+          "dragon"
         ]
       }
     ],
@@ -4433,7 +4433,7 @@
         "character": "friendly",
         "battle_experience": 50,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -4441,7 +4441,7 @@
         "character": "patient",
         "battle_experience": 0,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -4449,8 +4449,8 @@
         "character": "lucky",
         "battle_experience": 98,
         "types": [
-          "Трав'яний",
-          "Бойовий"
+          "grass",
+          "fighting"
         ]
       },
       {
@@ -4458,8 +4458,8 @@
         "character": "agile",
         "battle_experience": 9,
         "types": [
-          "Електричний",
-          "Бойовий"
+          "electric",
+          "fighting"
         ]
       }
     ],
@@ -4526,8 +4526,8 @@
         "character": "friendly",
         "battle_experience": 115,
         "types": [
-          "Ґрунтовий",
-          "Електричний"
+          "ground",
+          "electric"
         ]
       }
     ],
@@ -4537,7 +4537,7 @@
         "character": "prideful",
         "battle_experience": 113,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -4545,8 +4545,8 @@
         "character": "hardy",
         "battle_experience": 98,
         "types": [
-          "Комашиний",
-          "Ґрунтовий"
+          "bug",
+          "ground"
         ]
       },
       {
@@ -4554,7 +4554,7 @@
         "character": "decisive",
         "battle_experience": 98,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -4562,8 +4562,8 @@
         "character": "brave",
         "battle_experience": 5,
         "types": [
-          "Повітряний",
-          "Електричний"
+          "flying",
+          "electric"
         ]
       },
       {
@@ -4571,7 +4571,7 @@
         "character": "decisive",
         "battle_experience": 130,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -4579,8 +4579,8 @@
         "character": "friendly",
         "battle_experience": 114,
         "types": [
-          "Вогняний",
-          "Ґрунтовий"
+          "fire",
+          "ground"
         ]
       },
       {
@@ -4588,8 +4588,8 @@
         "character": "brave",
         "battle_experience": 130,
         "types": [
-          "Водяний",
-          "Примарний"
+          "water",
+          "ghost"
         ]
       }
     ],
@@ -4628,8 +4628,8 @@
         "character": "patient",
         "battle_experience": 72,
         "types": [
-          "Звичайний",
-          "Повітряний"
+          "normal",
+          "flying"
         ]
       },
       {
@@ -4637,8 +4637,8 @@
         "character": "persistent",
         "battle_experience": 101,
         "types": [
-          "Бойовий",
-          "Ґрунтовий"
+          "fighting",
+          "ground"
         ]
       },
       {
@@ -4646,8 +4646,8 @@
         "character": "persistent",
         "battle_experience": 76,
         "types": [
-          "Бойовий",
-          "Скельний"
+          "fighting",
+          "rock"
         ]
       },
       {
@@ -4655,8 +4655,8 @@
         "character": "agile",
         "battle_experience": 99,
         "types": [
-          "Комашиний",
-          "Вогняний"
+          "bug",
+          "fire"
         ]
       },
       {
@@ -4664,7 +4664,7 @@
         "character": "friendly",
         "battle_experience": 17,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -4672,7 +4672,7 @@
         "character": "hardy",
         "battle_experience": 69,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -4682,7 +4682,7 @@
         "character": "independent",
         "battle_experience": 9,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -4690,7 +4690,7 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -4698,8 +4698,8 @@
         "character": "brave",
         "battle_experience": 98,
         "types": [
-          "Повітряний",
-          "Примарний"
+          "flying",
+          "ghost"
         ]
       },
       {
@@ -4707,8 +4707,8 @@
         "character": "ambitious",
         "battle_experience": 113,
         "types": [
-          "Електричний",
-          "Комашиний"
+          "electric",
+          "bug"
         ]
       },
       {
@@ -4716,8 +4716,8 @@
         "character": "hardy",
         "battle_experience": 116,
         "types": [
-          "Льодовий",
-          "Примарний"
+          "ice",
+          "ghost"
         ]
       },
       {
@@ -4725,8 +4725,8 @@
         "character": "confident",
         "battle_experience": 116,
         "types": [
-          "Комашиний",
-          "Трав'яний"
+          "bug",
+          "grass"
         ]
       },
       {
@@ -4734,7 +4734,7 @@
         "character": "decisive",
         "battle_experience": 50,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -4742,7 +4742,7 @@
         "character": "decisive",
         "battle_experience": 114,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       }
     ],
@@ -4859,7 +4859,7 @@
         "character": "lucky",
         "battle_experience": 115,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -4869,7 +4869,7 @@
         "character": "ambitious",
         "battle_experience": 70,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -4877,8 +4877,8 @@
         "character": "confident",
         "battle_experience": 107,
         "types": [
-          "Скельний",
-          "Звичайний"
+          "rock",
+          "normal"
         ]
       },
       {
@@ -4886,8 +4886,8 @@
         "character": "decisive",
         "battle_experience": 9,
         "types": [
-          "Вогняний",
-          "Звичайний"
+          "fire",
+          "normal"
         ]
       },
       {
@@ -4895,8 +4895,8 @@
         "character": "patient",
         "battle_experience": 9,
         "types": [
-          "Повітряний",
-          "Бойовий"
+          "flying",
+          "fighting"
         ]
       }
     ],
@@ -4932,8 +4932,8 @@
         "character": "independent",
         "battle_experience": 119,
         "types": [
-          "Електричний",
-          "Водяний"
+          "electric",
+          "water"
         ]
       },
       {
@@ -4941,7 +4941,7 @@
         "character": "persistent",
         "battle_experience": 113,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -4949,7 +4949,7 @@
         "character": "friendly",
         "battle_experience": 101,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -4957,8 +4957,8 @@
         "character": "patient",
         "battle_experience": 99,
         "types": [
-          "Ґрунтовий",
-          "Психічний"
+          "ground",
+          "psychic"
         ]
       },
       {
@@ -4966,8 +4966,8 @@
         "character": "patient",
         "battle_experience": 32,
         "types": [
-          "Звичайний",
-          "Водяний"
+          "normal",
+          "water"
         ]
       },
       {
@@ -4975,8 +4975,8 @@
         "character": "friendly",
         "battle_experience": 129,
         "types": [
-          "Скельний",
-          "Примарний"
+          "rock",
+          "ghost"
         ]
       }
     ],
@@ -4986,8 +4986,8 @@
         "character": "friendly",
         "battle_experience": 101,
         "types": [
-          "Льодовий",
-          "Отруйний"
+          "ice",
+          "poison"
         ]
       },
       {
@@ -4995,8 +4995,8 @@
         "character": "confident",
         "battle_experience": 8,
         "types": [
-          "Скельний",
-          "Ґрунтовий"
+          "rock",
+          "ground"
         ]
       },
       {
@@ -5004,7 +5004,7 @@
         "character": "agile",
         "battle_experience": 98,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       }
     ],
@@ -5062,8 +5062,8 @@
         "character": "prideful",
         "battle_experience": 9,
         "types": [
-          "Бойовий",
-          "Вогняний"
+          "fighting",
+          "fire"
         ]
       },
       {
@@ -5071,7 +5071,7 @@
         "character": "friendly",
         "battle_experience": 53,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -5079,7 +5079,7 @@
         "character": "confident",
         "battle_experience": 9,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -5087,8 +5087,8 @@
         "character": "hardy",
         "battle_experience": 84,
         "types": [
-          "Водяний",
-          "Вогняний"
+          "water",
+          "fire"
         ]
       },
       {
@@ -5096,7 +5096,7 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -5104,8 +5104,8 @@
         "character": "confident",
         "battle_experience": 116,
         "types": [
-          "Примарний",
-          "Психічний"
+          "ghost",
+          "psychic"
         ]
       }
     ],
@@ -5115,7 +5115,7 @@
         "character": "friendly",
         "battle_experience": 114,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -5123,7 +5123,7 @@
         "character": "lucky",
         "battle_experience": 126,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -5131,8 +5131,8 @@
         "character": "patient",
         "battle_experience": 115,
         "types": [
-          "Повітряний",
-          "Комашиний"
+          "flying",
+          "bug"
         ]
       },
       {
@@ -5140,8 +5140,8 @@
         "character": "ambitious",
         "battle_experience": 96,
         "types": [
-          "Бойовий",
-          "Повітряний"
+          "fighting",
+          "flying"
         ]
       },
       {
@@ -5149,8 +5149,8 @@
         "character": "lucky",
         "battle_experience": 50,
         "types": [
-          "Отруйний",
-          "Трав'яний"
+          "poison",
+          "grass"
         ]
       },
       {
@@ -5158,8 +5158,8 @@
         "character": "persistent",
         "battle_experience": 101,
         "types": [
-          "Ґрунтовий",
-          "Трав'яний"
+          "ground",
+          "grass"
         ]
       },
       {
@@ -5167,7 +5167,7 @@
         "character": "decisive",
         "battle_experience": 79,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -5274,7 +5274,7 @@
         "character": "independent",
         "battle_experience": 0,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -5282,7 +5282,7 @@
         "character": "patient",
         "battle_experience": 98,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -5290,7 +5290,7 @@
         "character": "prideful",
         "battle_experience": 9,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       }
     ],
@@ -5300,8 +5300,8 @@
         "character": "prideful",
         "battle_experience": 1,
         "types": [
-          "Вогняний",
-          "Водяний"
+          "fire",
+          "water"
         ]
       },
       {
@@ -5309,8 +5309,8 @@
         "character": "agile",
         "battle_experience": 69,
         "types": [
-          "Примарний",
-          "Трав'яний"
+          "ghost",
+          "grass"
         ]
       },
       {
@@ -5318,8 +5318,8 @@
         "character": "brave",
         "battle_experience": 100,
         "types": [
-          "Скельний",
-          "Примарний"
+          "rock",
+          "ghost"
         ]
       },
       {
@@ -5327,8 +5327,8 @@
         "character": "decisive",
         "battle_experience": 25,
         "types": [
-          "Льодовий",
-          "Отруйний"
+          "ice",
+          "poison"
         ]
       },
       {
@@ -5336,8 +5336,8 @@
         "character": "lucky",
         "battle_experience": 130,
         "types": [
-          "Ґрунтовий",
-          "Психічний"
+          "ground",
+          "psychic"
         ]
       },
       {
@@ -5345,7 +5345,7 @@
         "character": "agile",
         "battle_experience": 115,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -5421,7 +5421,7 @@
         "character": "ambitious",
         "battle_experience": 99,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -5429,8 +5429,8 @@
         "character": "hardy",
         "battle_experience": 5,
         "types": [
-          "Повітряний",
-          "Льодовий"
+          "flying",
+          "ice"
         ]
       },
       {
@@ -5438,7 +5438,7 @@
         "character": "ambitious",
         "battle_experience": 113,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -5446,8 +5446,8 @@
         "character": "lucky",
         "battle_experience": 113,
         "types": [
-          "Вогняний",
-          "Льодовий"
+          "fire",
+          "ice"
         ]
       },
       {
@@ -5455,7 +5455,7 @@
         "character": "persistent",
         "battle_experience": 113,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -5465,7 +5465,7 @@
         "character": "hardy",
         "battle_experience": 114,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       }
     ],
@@ -5502,7 +5502,7 @@
         "character": "prideful",
         "battle_experience": 113,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -5510,7 +5510,7 @@
         "character": "ambitious",
         "battle_experience": 8,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -5518,8 +5518,8 @@
         "character": "patient",
         "battle_experience": 114,
         "types": [
-          "Звичайний",
-          "Водяний"
+          "normal",
+          "water"
         ]
       },
       {
@@ -5527,7 +5527,7 @@
         "character": "brave",
         "battle_experience": 27,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -5535,8 +5535,8 @@
         "character": "friendly",
         "battle_experience": 50,
         "types": [
-          "Льодовий",
-          "Скельний"
+          "ice",
+          "rock"
         ]
       },
       {
@@ -5544,8 +5544,8 @@
         "character": "brave",
         "battle_experience": 64,
         "types": [
-          "Бойовий",
-          "Звичайний"
+          "fighting",
+          "normal"
         ]
       }
     ],
@@ -5555,8 +5555,8 @@
         "character": "prideful",
         "battle_experience": 36,
         "types": [
-          "Скельний",
-          "Вогняний"
+          "rock",
+          "fire"
         ]
       },
       {
@@ -5564,8 +5564,8 @@
         "character": "decisive",
         "battle_experience": 9,
         "types": [
-          "Електричний",
-          "Повітряний"
+          "electric",
+          "flying"
         ]
       },
       {
@@ -5573,7 +5573,7 @@
         "character": "ambitious",
         "battle_experience": 11,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -5581,8 +5581,8 @@
         "character": "hardy",
         "battle_experience": 130,
         "types": [
-          "Повітряний",
-          "Ґрунтовий"
+          "flying",
+          "ground"
         ]
       },
       {
@@ -5590,8 +5590,8 @@
         "character": "agile",
         "battle_experience": 115,
         "types": [
-          "Водяний",
-          "Вогняний"
+          "water",
+          "fire"
         ]
       }
     ],
@@ -5687,8 +5687,8 @@
         "character": "confident",
         "battle_experience": 116,
         "types": [
-          "Водяний",
-          "Бойовий"
+          "water",
+          "fighting"
         ]
       },
       {
@@ -5696,7 +5696,7 @@
         "character": "prideful",
         "battle_experience": 115,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -5704,8 +5704,8 @@
         "character": "patient",
         "battle_experience": 99,
         "types": [
-          "Бойовий",
-          "Отруйний"
+          "fighting",
+          "poison"
         ]
       },
       {
@@ -5713,7 +5713,7 @@
         "character": "ambitious",
         "battle_experience": 5,
         "types": [
-          "Електричний"
+          "electric"
         ]
       },
       {
@@ -5721,7 +5721,7 @@
         "character": "agile",
         "battle_experience": 130,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -5729,8 +5729,8 @@
         "character": "hardy",
         "battle_experience": 114,
         "types": [
-          "Драконячий",
-          "Повітряний"
+          "dragon",
+          "flying"
         ]
       },
       {
@@ -5738,8 +5738,8 @@
         "character": "confident",
         "battle_experience": 130,
         "types": [
-          "Електричний",
-          "Бойовий"
+          "electric",
+          "fighting"
         ]
       },
       {
@@ -5747,7 +5747,7 @@
         "character": "lucky",
         "battle_experience": 17,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       }
     ],
@@ -5757,7 +5757,7 @@
         "character": "brave",
         "battle_experience": 100,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       }
     ],
@@ -5797,8 +5797,8 @@
         "character": "brave",
         "battle_experience": 99,
         "types": [
-          "Льодовий",
-          "Примарний"
+          "ice",
+          "ghost"
         ]
       },
       {
@@ -5806,7 +5806,7 @@
         "character": "friendly",
         "battle_experience": 100,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -5814,8 +5814,8 @@
         "character": "friendly",
         "battle_experience": 1,
         "types": [
-          "Комашиний",
-          "Отруйний"
+          "bug",
+          "poison"
         ]
       },
       {
@@ -5823,7 +5823,7 @@
         "character": "independent",
         "battle_experience": 83,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -5831,7 +5831,7 @@
         "character": "persistent",
         "battle_experience": 50,
         "types": [
-          "Електричний"
+          "electric"
         ]
       }
     ],
@@ -5841,7 +5841,7 @@
         "character": "lucky",
         "battle_experience": 1,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       }
     ],
@@ -5878,7 +5878,7 @@
         "character": "patient",
         "battle_experience": 30,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -5886,8 +5886,8 @@
         "character": "friendly",
         "battle_experience": 5,
         "types": [
-          "Звичайний",
-          "Льодовий"
+          "normal",
+          "ice"
         ]
       },
       {
@@ -5895,8 +5895,8 @@
         "character": "friendly",
         "battle_experience": 100,
         "types": [
-          "Повітряний",
-          "Комашиний"
+          "flying",
+          "bug"
         ]
       }
     ],
@@ -5906,7 +5906,7 @@
         "character": "prideful",
         "battle_experience": 119,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -5914,7 +5914,7 @@
         "character": "brave",
         "battle_experience": 101,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       },
       {
@@ -5922,8 +5922,8 @@
         "character": "friendly",
         "battle_experience": 101,
         "types": [
-          "Водяний",
-          "Вогняний"
+          "water",
+          "fire"
         ]
       },
       {
@@ -5931,8 +5931,8 @@
         "character": "agile",
         "battle_experience": 5,
         "types": [
-          "Водяний",
-          "Трав'яний"
+          "water",
+          "grass"
         ]
       },
       {
@@ -5940,7 +5940,7 @@
         "character": "prideful",
         "battle_experience": 14,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -5997,8 +5997,8 @@
         "character": "friendly",
         "battle_experience": 101,
         "types": [
-          "Вогняний",
-          "Повітряний"
+          "fire",
+          "flying"
         ]
       },
       {
@@ -6006,7 +6006,7 @@
         "character": "decisive",
         "battle_experience": 42,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -6014,8 +6014,8 @@
         "character": "ambitious",
         "battle_experience": 130,
         "types": [
-          "Трав'яний",
-          "Примарний"
+          "grass",
+          "ghost"
         ]
       },
       {
@@ -6023,7 +6023,7 @@
         "character": "lucky",
         "battle_experience": 0,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -6033,8 +6033,8 @@
         "character": "friendly",
         "battle_experience": 99,
         "types": [
-          "Скельний",
-          "Повітряний"
+          "rock",
+          "flying"
         ]
       }
     ],
@@ -6070,7 +6070,7 @@
         "character": "agile",
         "battle_experience": 103,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -6078,8 +6078,8 @@
         "character": "persistent",
         "battle_experience": 117,
         "types": [
-          "Вогняний",
-          "Комашиний"
+          "fire",
+          "bug"
         ]
       },
       {
@@ -6087,7 +6087,7 @@
         "character": "friendly",
         "battle_experience": 8,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -6095,8 +6095,8 @@
         "character": "ambitious",
         "battle_experience": 5,
         "types": [
-          "Отруйний",
-          "Комашиний"
+          "poison",
+          "bug"
         ]
       },
       {
@@ -6104,7 +6104,7 @@
         "character": "brave",
         "battle_experience": 130,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       }
     ],
@@ -6114,8 +6114,8 @@
         "character": "patient",
         "battle_experience": 5,
         "types": [
-          "Льодовий",
-          "Отруйний"
+          "ice",
+          "poison"
         ]
       },
       {
@@ -6123,7 +6123,7 @@
         "character": "brave",
         "battle_experience": 57,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -6131,7 +6131,7 @@
         "character": "patient",
         "battle_experience": 101,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -6139,7 +6139,7 @@
         "character": "ambitious",
         "battle_experience": 5,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       },
       {
@@ -6147,7 +6147,7 @@
         "character": "lucky",
         "battle_experience": 116,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -6155,8 +6155,8 @@
         "character": "brave",
         "battle_experience": 5,
         "types": [
-          "Психічний",
-          "Отруйний"
+          "psychic",
+          "poison"
         ]
       }
     ],
@@ -6261,7 +6261,7 @@
         "character": "agile",
         "battle_experience": 98,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -6269,7 +6269,7 @@
         "character": "friendly",
         "battle_experience": 25,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -6277,8 +6277,8 @@
         "character": "prideful",
         "battle_experience": 15,
         "types": [
-          "Електричний",
-          "Звичайний"
+          "electric",
+          "normal"
         ]
       }
     ],
@@ -6288,8 +6288,8 @@
         "character": "decisive",
         "battle_experience": 116,
         "types": [
-          "Бойовий",
-          "Вогняний"
+          "fighting",
+          "fire"
         ]
       },
       {
@@ -6297,7 +6297,7 @@
         "character": "confident",
         "battle_experience": 70,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -6305,8 +6305,8 @@
         "character": "persistent",
         "battle_experience": 5,
         "types": [
-          "Комашиний",
-          "Психічний"
+          "bug",
+          "psychic"
         ]
       },
       {
@@ -6314,8 +6314,8 @@
         "character": "prideful",
         "battle_experience": 99,
         "types": [
-          "Трав'яний",
-          "Звичайний"
+          "grass",
+          "normal"
         ]
       }
     ],
@@ -6371,8 +6371,8 @@
         "character": "friendly",
         "battle_experience": 7,
         "types": [
-          "Ґрунтовий",
-          "Комашиний"
+          "ground",
+          "bug"
         ]
       },
       {
@@ -6380,8 +6380,8 @@
         "character": "friendly",
         "battle_experience": 9,
         "types": [
-          "Примарний",
-          "Звичайний"
+          "ghost",
+          "normal"
         ]
       }
     ],
@@ -6391,8 +6391,8 @@
         "character": "brave",
         "battle_experience": 99,
         "types": [
-          "Трав'яний",
-          "Скельний"
+          "grass",
+          "rock"
         ]
       },
       {
@@ -6400,7 +6400,7 @@
         "character": "lucky",
         "battle_experience": 98,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -6408,7 +6408,7 @@
         "character": "brave",
         "battle_experience": 0,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -6416,7 +6416,7 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -6424,8 +6424,8 @@
         "character": "agile",
         "battle_experience": 101,
         "types": [
-          "Комашиний",
-          "Електричний"
+          "bug",
+          "electric"
         ]
       },
       {
@@ -6433,7 +6433,7 @@
         "character": "brave",
         "battle_experience": 99,
         "types": [
-          "Льодовий"
+          "ice"
         ]
       }
     ],
@@ -6481,8 +6481,8 @@
         "character": "hardy",
         "battle_experience": 116,
         "types": [
-          "Примарний",
-          "Психічний"
+          "ghost",
+          "psychic"
         ]
       },
       {
@@ -6490,8 +6490,8 @@
         "character": "ambitious",
         "battle_experience": 5,
         "types": [
-          "Звичайний",
-          "Повітряний"
+          "normal",
+          "flying"
         ]
       },
       {
@@ -6499,8 +6499,8 @@
         "character": "hardy",
         "battle_experience": 14,
         "types": [
-          "Трав'яний",
-          "Льодовий"
+          "grass",
+          "ice"
         ]
       },
       {
@@ -6508,8 +6508,8 @@
         "character": "hardy",
         "battle_experience": 99,
         "types": [
-          "Ґрунтовий",
-          "Психічний"
+          "ground",
+          "psychic"
         ]
       },
       {
@@ -6517,7 +6517,7 @@
         "character": "lucky",
         "battle_experience": 100,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -6525,8 +6525,8 @@
         "character": "agile",
         "battle_experience": 48,
         "types": [
-          "Вогняний",
-          "Комашиний"
+          "fire",
+          "bug"
         ]
       }
     ],
@@ -6536,7 +6536,7 @@
         "character": "hardy",
         "battle_experience": 66,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -6544,7 +6544,7 @@
         "character": "independent",
         "battle_experience": 113,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       }
     ],
@@ -6592,8 +6592,8 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Психічний",
-          "Звичайний"
+          "psychic",
+          "normal"
         ]
       },
       {
@@ -6601,8 +6601,8 @@
         "character": "lucky",
         "battle_experience": 5,
         "types": [
-          "Водяний",
-          "Психічний"
+          "water",
+          "psychic"
         ]
       },
       {
@@ -6610,8 +6610,8 @@
         "character": "prideful",
         "battle_experience": 113,
         "types": [
-          "Скельний",
-          "Електричний"
+          "rock",
+          "electric"
         ]
       }
     ],
@@ -6621,8 +6621,8 @@
         "character": "ambitious",
         "battle_experience": 98,
         "types": [
-          "Трав'яний",
-          "Бойовий"
+          "grass",
+          "fighting"
         ]
       },
       {
@@ -6630,8 +6630,8 @@
         "character": "brave",
         "battle_experience": 102,
         "types": [
-          "Примарний",
-          "Водяний"
+          "ghost",
+          "water"
         ]
       },
       {
@@ -6639,7 +6639,7 @@
         "character": "lucky",
         "battle_experience": 116,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -6647,8 +6647,8 @@
         "character": "persistent",
         "battle_experience": 50,
         "types": [
-          "Повітряний",
-          "Звичайний"
+          "flying",
+          "normal"
         ]
       },
       {
@@ -6656,7 +6656,7 @@
         "character": "hardy",
         "battle_experience": 1,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -6664,8 +6664,8 @@
         "character": "confident",
         "battle_experience": 91,
         "types": [
-          "Драконячий",
-          "Примарний"
+          "dragon",
+          "ghost"
         ]
       },
       {
@@ -6673,8 +6673,8 @@
         "character": "lucky",
         "battle_experience": 43,
         "types": [
-          "Електричний",
-          "Повітряний"
+          "electric",
+          "flying"
         ]
       }
     ],
@@ -6733,8 +6733,8 @@
         "character": "lucky",
         "battle_experience": 56,
         "types": [
-          "Ґрунтовий",
-          "Отруйний"
+          "ground",
+          "poison"
         ]
       },
       {
@@ -6742,7 +6742,7 @@
         "character": "patient",
         "battle_experience": 5,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -6750,7 +6750,7 @@
         "character": "independent",
         "battle_experience": 0,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -6758,7 +6758,7 @@
         "character": "patient",
         "battle_experience": 101,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -6766,8 +6766,8 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Скельний",
-          "Примарний"
+          "rock",
+          "ghost"
         ]
       },
       {
@@ -6775,8 +6775,8 @@
         "character": "confident",
         "battle_experience": 52,
         "types": [
-          "Повітряний",
-          "Примарний"
+          "flying",
+          "ghost"
         ]
       }
     ],
@@ -6786,7 +6786,7 @@
         "character": "prideful",
         "battle_experience": 9,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -6794,7 +6794,7 @@
         "character": "ambitious",
         "battle_experience": 1,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -6802,7 +6802,7 @@
         "character": "decisive",
         "battle_experience": 116,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -6810,8 +6810,8 @@
         "character": "ambitious",
         "battle_experience": 9,
         "types": [
-          "Електричний",
-          "Ґрунтовий"
+          "electric",
+          "ground"
         ]
       },
       {
@@ -6819,8 +6819,8 @@
         "character": "agile",
         "battle_experience": 101,
         "types": [
-          "Електричний",
-          "Трав'яний"
+          "electric",
+          "grass"
         ]
       }
     ],
@@ -6907,8 +6907,8 @@
         "character": "patient",
         "battle_experience": 25,
         "types": [
-          "Психічний",
-          "Водяний"
+          "psychic",
+          "water"
         ]
       }
     ],
@@ -6918,7 +6918,7 @@
         "character": "ambitious",
         "battle_experience": 2,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -6926,8 +6926,8 @@
         "character": "independent",
         "battle_experience": 5,
         "types": [
-          "Електричний",
-          "Скельний"
+          "electric",
+          "rock"
         ]
       },
       {
@@ -6935,8 +6935,8 @@
         "character": "friendly",
         "battle_experience": 50,
         "types": [
-          "Примарний",
-          "Трав'яний"
+          "ghost",
+          "grass"
         ]
       },
       {
@@ -6944,8 +6944,8 @@
         "character": "ambitious",
         "battle_experience": 125,
         "types": [
-          "Водяний",
-          "Електричний"
+          "water",
+          "electric"
         ]
       },
       {
@@ -6953,7 +6953,7 @@
         "character": "agile",
         "battle_experience": 9,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -6961,8 +6961,8 @@
         "character": "persistent",
         "battle_experience": 9,
         "types": [
-          "Водяний",
-          "Ґрунтовий"
+          "water",
+          "ground"
         ]
       }
     ],
@@ -7000,8 +7000,8 @@
         "character": "patient",
         "battle_experience": 9,
         "types": [
-          "Водяний",
-          "Примарний"
+          "water",
+          "ghost"
         ]
       },
       {
@@ -7009,8 +7009,8 @@
         "character": "confident",
         "battle_experience": 113,
         "types": [
-          "Трав'яний",
-          "Ґрунтовий"
+          "grass",
+          "ground"
         ]
       },
       {
@@ -7018,7 +7018,7 @@
         "character": "ambitious",
         "battle_experience": 103,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -7026,8 +7026,8 @@
         "character": "decisive",
         "battle_experience": 130,
         "types": [
-          "Водяний",
-          "Електричний"
+          "water",
+          "electric"
         ]
       },
       {
@@ -7035,8 +7035,8 @@
         "character": "independent",
         "battle_experience": 116,
         "types": [
-          "Трав'яний",
-          "Бойовий"
+          "grass",
+          "fighting"
         ]
       },
       {
@@ -7044,8 +7044,8 @@
         "character": "hardy",
         "battle_experience": 98,
         "types": [
-          "Повітряний",
-          "Примарний"
+          "flying",
+          "ghost"
         ]
       },
       {
@@ -7053,8 +7053,8 @@
         "character": "decisive",
         "battle_experience": 23,
         "types": [
-          "Льодовий",
-          "Примарний"
+          "ice",
+          "ghost"
         ]
       },
       {
@@ -7062,7 +7062,7 @@
         "character": "agile",
         "battle_experience": 62,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       }
     ],
@@ -7072,8 +7072,8 @@
         "character": "persistent",
         "battle_experience": 115,
         "types": [
-          "Скельний",
-          "Трав'яний"
+          "rock",
+          "grass"
         ]
       },
       {
@@ -7081,7 +7081,7 @@
         "character": "agile",
         "battle_experience": 50,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -7089,8 +7089,8 @@
         "character": "brave",
         "battle_experience": 43,
         "types": [
-          "Отруйний",
-          "Вогняний"
+          "poison",
+          "fire"
         ]
       },
       {
@@ -7098,8 +7098,8 @@
         "character": "patient",
         "battle_experience": 4,
         "types": [
-          "Повітряний",
-          "Примарний"
+          "flying",
+          "ghost"
         ]
       },
       {
@@ -7107,7 +7107,7 @@
         "character": "ambitious",
         "battle_experience": 116,
         "types": [
-          "Трав'яний"
+          "grass"
         ]
       }
     ],
@@ -7214,7 +7214,7 @@
         "character": "patient",
         "battle_experience": 115,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -7222,7 +7222,7 @@
         "character": "decisive",
         "battle_experience": 114,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -7230,7 +7230,7 @@
         "character": "confident",
         "battle_experience": 99,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -7238,8 +7238,8 @@
         "character": "decisive",
         "battle_experience": 101,
         "types": [
-          "Звичайний",
-          "Водяний"
+          "normal",
+          "water"
         ]
       }
     ],
@@ -7249,7 +7249,7 @@
         "character": "decisive",
         "battle_experience": 98,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       },
       {
@@ -7257,7 +7257,7 @@
         "character": "lucky",
         "battle_experience": 95,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -7265,7 +7265,7 @@
         "character": "prideful",
         "battle_experience": 113,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -7273,7 +7273,7 @@
         "character": "lucky",
         "battle_experience": 5,
         "types": [
-          "Драконячий"
+          "dragon"
         ]
       },
       {
@@ -7281,8 +7281,8 @@
         "character": "hardy",
         "battle_experience": 100,
         "types": [
-          "Трав'яний",
-          "Льодовий"
+          "grass",
+          "ice"
         ]
       },
       {
@@ -7290,8 +7290,8 @@
         "character": "independent",
         "battle_experience": 109,
         "types": [
-          "Електричний",
-          "Льодовий"
+          "electric",
+          "ice"
         ]
       },
       {
@@ -7299,7 +7299,7 @@
         "character": "patient",
         "battle_experience": 5,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       }
     ],
@@ -7368,7 +7368,7 @@
         "character": "decisive",
         "battle_experience": 9,
         "types": [
-          "Водяний"
+          "water"
         ]
       },
       {
@@ -7376,8 +7376,8 @@
         "character": "prideful",
         "battle_experience": 72,
         "types": [
-          "Бойовий",
-          "Звичайний"
+          "fighting",
+          "normal"
         ]
       },
       {
@@ -7385,7 +7385,7 @@
         "character": "patient",
         "battle_experience": 86,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -7393,7 +7393,7 @@
         "character": "hardy",
         "battle_experience": 116,
         "types": [
-          "Отруйний"
+          "poison"
         ]
       },
       {
@@ -7401,8 +7401,8 @@
         "character": "decisive",
         "battle_experience": 46,
         "types": [
-          "Вогняний",
-          "Бойовий"
+          "fire",
+          "fighting"
         ]
       },
       {
@@ -7410,8 +7410,8 @@
         "character": "agile",
         "battle_experience": 100,
         "types": [
-          "Ґрунтовий",
-          "Льодовий"
+          "ground",
+          "ice"
         ]
       },
       {
@@ -7419,7 +7419,7 @@
         "character": "persistent",
         "battle_experience": 100,
         "types": [
-          "Бойовий"
+          "fighting"
         ]
       },
       {
@@ -7427,7 +7427,7 @@
         "character": "persistent",
         "battle_experience": 108,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       }
     ],
@@ -7437,7 +7437,7 @@
         "character": "decisive",
         "battle_experience": 130,
         "types": [
-          "Примарний"
+          "ghost"
         ]
       },
       {
@@ -7445,7 +7445,7 @@
         "character": "patient",
         "battle_experience": 125,
         "types": [
-          "Скельний"
+          "rock"
         ]
       },
       {
@@ -7453,8 +7453,8 @@
         "character": "persistent",
         "battle_experience": 113,
         "types": [
-          "Бойовий",
-          "Повітряний"
+          "fighting",
+          "flying"
         ]
       },
       {
@@ -7462,8 +7462,8 @@
         "character": "prideful",
         "battle_experience": 116,
         "types": [
-          "Примарний",
-          "Комашиний"
+          "ghost",
+          "bug"
         ]
       },
       {
@@ -7471,8 +7471,8 @@
         "character": "lucky",
         "battle_experience": 1,
         "types": [
-          "Примарний",
-          "Драконячий"
+          "ghost",
+          "dragon"
         ]
       },
       {
@@ -7480,8 +7480,8 @@
         "character": "decisive",
         "battle_experience": 69,
         "types": [
-          "Отруйний",
-          "Примарний"
+          "poison",
+          "ghost"
         ]
       }
     ],
@@ -7589,8 +7589,8 @@
         "character": "brave",
         "battle_experience": 130,
         "types": [
-          "Звичайний",
-          "Психічний"
+          "normal",
+          "psychic"
         ]
       },
       {
@@ -7598,7 +7598,7 @@
         "character": "friendly",
         "battle_experience": 114,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       },
       {
@@ -7606,8 +7606,8 @@
         "character": "independent",
         "battle_experience": 113,
         "types": [
-          "Вогняний",
-          "Водяний"
+          "fire",
+          "water"
         ]
       },
       {
@@ -7615,8 +7615,8 @@
         "character": "brave",
         "battle_experience": 50,
         "types": [
-          "Повітряний",
-          "Електричний"
+          "flying",
+          "electric"
         ]
       }
     ],
@@ -7626,8 +7626,8 @@
         "character": "independent",
         "battle_experience": 0,
         "types": [
-          "Отруйний",
-          "Драконячий"
+          "poison",
+          "dragon"
         ]
       },
       {
@@ -7635,7 +7635,7 @@
         "character": "lucky",
         "battle_experience": 5,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -7643,7 +7643,7 @@
         "character": "lucky",
         "battle_experience": 113,
         "types": [
-          "Повітряний"
+          "flying"
         ]
       },
       {
@@ -7651,8 +7651,8 @@
         "character": "confident",
         "battle_experience": 113,
         "types": [
-          "Примарний",
-          "Звичайний"
+          "ghost",
+          "normal"
         ]
       },
       {
@@ -7660,8 +7660,8 @@
         "character": "prideful",
         "battle_experience": 114,
         "types": [
-          "Отруйний",
-          "Звичайний"
+          "poison",
+          "normal"
         ]
       },
       {
@@ -7669,7 +7669,7 @@
         "character": "prideful",
         "battle_experience": 114,
         "types": [
-          "Вогняний"
+          "fire"
         ]
       }
     ],
@@ -7737,7 +7737,7 @@
         "character": "patient",
         "battle_experience": 1,
         "types": [
-          "Звичайний"
+          "normal"
         ]
       },
       {
@@ -7745,8 +7745,8 @@
         "character": "agile",
         "battle_experience": 41,
         "types": [
-          "Отруйний",
-          "Водяний"
+          "poison",
+          "water"
         ]
       },
       {
@@ -7754,8 +7754,8 @@
         "character": "hardy",
         "battle_experience": 0,
         "types": [
-          "Повітряний",
-          "Електричний"
+          "flying",
+          "electric"
         ]
       },
       {
@@ -7763,8 +7763,8 @@
         "character": "ambitious",
         "battle_experience": 100,
         "types": [
-          "Вогняний",
-          "Льодовий"
+          "fire",
+          "ice"
         ]
       },
       {
@@ -7772,7 +7772,7 @@
         "character": "decisive",
         "battle_experience": 121,
         "types": [
-          "Комашиний"
+          "bug"
         ]
       },
       {
@@ -7780,8 +7780,8 @@
         "character": "ambitious",
         "battle_experience": 101,
         "types": [
-          "Електричний",
-          "Скельний"
+          "electric",
+          "rock"
         ]
       },
       {
@@ -7789,7 +7789,7 @@
         "character": "hardy",
         "battle_experience": 5,
         "types": [
-          "Ґрунтовий"
+          "ground"
         ]
       }
     ],
@@ -7799,8 +7799,8 @@
         "character": "patient",
         "battle_experience": 99,
         "types": [
-          "Повітряний",
-          "Трав'яний"
+          "flying",
+          "grass"
         ]
       },
       {
@@ -7808,8 +7808,8 @@
         "character": "independent",
         "battle_experience": 101,
         "types": [
-          "Драконячий",
-          "Звичайний"
+          "dragon",
+          "normal"
         ]
       },
       {
@@ -7817,7 +7817,7 @@
         "character": "lucky",
         "battle_experience": 115,
         "types": [
-          "Психічний"
+          "psychic"
         ]
       },
       {
@@ -7825,8 +7825,8 @@
         "character": "patient",
         "battle_experience": 1,
         "types": [
-          "Льодовий",
-          "Ґрунтовий"
+          "ice",
+          "ground"
         ]
       }
     ],

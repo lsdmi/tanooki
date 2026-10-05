@@ -6,7 +6,7 @@ module Pokemons
   class BalanceReport
     class FieldTest < ActiveSupport::TestCase
       SPECIES = [[129, 20, 15], [16, 40, 45], [143, 160, 110]].map do |dex_id, hp, attack|
-        Species.new(id: dex_id, dex_id:, name: "S#{dex_id}", rarity: 1, types: %w[Звичайний], base_hp: hp,
+        Species.new(id: dex_id, dex_id:, name: "S#{dex_id}", rarity: 1, types: %w[normal], base_hp: hp,
                     base_attack: attack)
       end.freeze
 

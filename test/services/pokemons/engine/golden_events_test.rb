@@ -8,8 +8,8 @@ module Pokemons
     # if it also changes outcomes, it needs a new engine version.
     class GoldenEventsTest < ActiveSupport::TestCase
       test 'two on two: round traits, tiredness traits and a comeback' do
-        result = simulate([['hardy', 2, 50, %w[Вогняний]], ['ambitious', 3, 20, %w[Водяний]]],
-                          [['agile', 3, 60, %w[Трав'яний]], ['friendly', 1, 10, %w[Звичайний]]], seed: 11)
+        result = simulate([['hardy', 2, 50, %w[fire]], ['ambitious', 3, 20, %w[water]]],
+                          [['agile', 3, 60, %w[grass]], ['friendly', 1, 10, %w[normal]]], seed: 11)
 
         assert_equal [
           [1, :round_started, { attacker: 2, defender: 101 }],
@@ -35,7 +35,7 @@ module Pokemons
       end
 
       test 'one on one: dual types against prideful, the defender wins' do
-        result = simulate([['prideful', 4, 90, %w[Психічний Повітряний]]], [['lucky', 4, 95, %w[Примарний]]], seed: 5)
+        result = simulate([['prideful', 4, 90, %w[psychic flying]]], [['lucky', 4, 95, %w[ghost]]], seed: 5)
 
         assert_equal [
           [1, :round_started, { attacker: 1, defender: 101 }],

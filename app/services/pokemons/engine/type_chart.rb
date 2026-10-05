@@ -2,7 +2,7 @@
 
 module Pokemons
   module Engine
-    # Attacking type => defending type => multiplier, keyed by the type names in config/type_advantage.yml.
+    # Attacking type => defending type => multiplier, keyed by PokemonType#key (config/type_advantage.yml).
     class TypeChart
       class Incomplete < StandardError; end
 

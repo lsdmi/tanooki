@@ -9,7 +9,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @pokemon_params = { user_pokemon_id: 1 }
     @user = users(:user_one)
-    @user.update(pokemon_last_catch: 5.hours.ago, pokemon_last_training: 5.hours.ago)
+    @user.trainer_profile.update!(last_catch_at: 5.hours.ago, last_training_at: 5.hours.ago)
     UserPokemon.where(user_id: [@user.id, users(:user_two).id], pokemon_id: pokemons(:two).id).destroy_all
     @encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), user: @user)
     sign_in @user
@@ -70,13 +70,13 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   test 'a caught encounter cannot be reused after the cooldown' do
     token = @encounter.catch_token
     catch_with(token)
-    @user.update!(pokemon_last_catch: 5.hours.ago)
+    @user.trainer_profile.update!(last_catch_at: 5.hours.ago)
 
     assert_rejected { catch_with(token) }
   end
 
   test 'catching on cooldown keeps the encounter open' do
-    @user.update!(pokemon_last_catch: 1.hour.ago)
+    @user.trainer_profile.update!(last_catch_at: 1.hour.ago)
 
     assert_rejected { catch_with(@encounter.catch_token) }
     assert_predicate @encounter.reload, :open?
@@ -107,7 +107,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'training should refresh error screen on training fraud' do
-    @user.update(pokemon_last_training: Time.zone.now)
+    @user.trainer_profile.update!(last_training_at: Time.zone.now)
     post training_pokemon_path(format: :turbo_stream), params: @pokemon_params
 
     assert_response :success

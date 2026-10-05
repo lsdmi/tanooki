@@ -7,11 +7,11 @@ module Pokemons
     include PokemonBattleHelpers
 
     SPECIES = [
-      BalanceReport::Species.new(id: 1, dex_id: 129, name: 'Weak', rarity: 1, types: %w[Звичайний], base_hp: 20,
+      BalanceReport::Species.new(id: 1, dex_id: 129, name: 'Weak', rarity: 1, types: %w[normal], base_hp: 20,
                                  base_attack: 15),
-      BalanceReport::Species.new(id: 2, dex_id: 25, name: 'Mid', rarity: 3, types: %w[Вогняний Повітряний],
+      BalanceReport::Species.new(id: 2, dex_id: 25, name: 'Mid', rarity: 3, types: %w[fire flying],
                                  base_hp: 60, base_attack: 80),
-      BalanceReport::Species.new(id: 3, dex_id: 143, name: 'Strong', rarity: 5, types: %w[Водяний], base_hp: 160,
+      BalanceReport::Species.new(id: 3, dex_id: 143, name: 'Strong', rarity: 5, types: %w[water], base_hp: 160,
                                  base_attack: 110)
     ].freeze
 
@@ -20,7 +20,7 @@ module Pokemons
 
       read = [first.dex_id, first.might, first.types, first.base_hp, first.base_attack]
 
-      assert_equal [1, 2, %w[Звичайний], 45, 65], read
+      assert_equal [1, 2, %w[normal], 45, 65], read
       assert_includes 1..5, first.rarity
     end
 

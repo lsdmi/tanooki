@@ -2,9 +2,9 @@
 
 module Pokemons
   module Battle
-    # Updates winner and loser battle ratings after PvP.
+    # Updates the winner's and loser's trainer profile ratings after PvP.
     class RatingUpdater
-      attr_reader :winner_id, :loser_id
+      attr_reader :winner, :loser
 
       RANK_RANGES = {
         1 => (-Float::INFINITY..35),
@@ -15,24 +15,24 @@ module Pokemons
         6 => (99..Float::INFINITY)
       }.freeze
 
-      def initialize(winner_id:, loser_id:)
-        @winner_id = winner_id
-        @loser_id = loser_id
+      def initialize(winner:, loser:)
+        @winner = winner
+        @loser = loser
       end
 
-      # Returns the change each user got, by id (after clamping to 0..100).
+      # Returns the change each user got, by user id (after clamping to 0..100).
       def call
-        users = [User.find(winner_id), User.find(loser_id)]
-        before = users.map(&:battle_win_rate)
+        profiles = [winner, loser]
+        before = profiles.map(&:rating)
 
-        update_battle_rates(*users)
-        users.zip(before).to_h { |user, rate| [user.id, user.battle_win_rate - rate] }
+        update_battle_rates(winner, loser)
+        profiles.zip(before).to_h { |profile, rating| [profile.user_id, profile.rating - rating] }
       end
 
       private
 
       def update_battle_rates(winner, loser)
-        delta = user_rank(winner.battle_win_rate) - user_rank(loser.battle_win_rate)
+        delta = user_rank(winner.rating) - user_rank(loser.rating)
         case delta <=> 0
         when 1 then update_higher_rank(winner, loser)
         when 0 then update_equal_rank(winner, loser)
@@ -55,8 +55,8 @@ module Pokemons
         update_rate(loser, -3)
       end
 
-      def update_rate(user, rate)
-        user.update(battle_win_rate: (user.battle_win_rate + rate).clamp(0, 100))
+      def update_rate(profile, rate)
+        profile.update!(rating: (profile.rating + rate).clamp(0, 100))
       end
 
       def user_rank(battle_rate)

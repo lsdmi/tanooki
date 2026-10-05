@@ -12,7 +12,7 @@ module Pokemons
     end
 
     def call
-      (user.last_battle_at || 1.year.ago) > Balance::BATTLE_COOLDOWN.ago
+      user.trainer_profile.battle_on_cooldown?
     end
 
     private

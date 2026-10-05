@@ -7,7 +7,7 @@ module Pokemons
       def self.catalogue
         Pokemon.includes(:pokemon_types).order(:id).map do |pokemon|
           new(id: pokemon.id, dex_id: pokemon.dex_id, name: pokemon.name, rarity: pokemon.read_attribute(:rarity),
-              types: pokemon.types.map(&:name), base_hp: pokemon.base_hp, base_attack: pokemon.base_attack)
+              types: pokemon.types.map(&:key), base_hp: pokemon.base_hp, base_attack: pokemon.base_attack)
         end
       end
 

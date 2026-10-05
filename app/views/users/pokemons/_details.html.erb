@@ -27,7 +27,7 @@
     </div>
     <div class="flex min-w-0 flex-col gap-2">
       <div class="flex flex-wrap gap-1.5">
-        <% pokemon.types.each do |type| %><%= pokemon_type_badge(type.name) %><% end %>
+        <% pokemon.types.each do |type| %><%= pokemon_type_badge(type) %><% end %>
       </div>
       <p class="text-sm/5 text-fg-muted">Рівень <span class="font-semibold text-fg"><%= selected_pokemon.current_level %></span></p>
     </div>
@@ -65,7 +65,7 @@
           <%= render Ui::MiniProgressBarComponent.new(read: selected_pokemon.current_level, total: target, check: false,
                                                      html: { aria: { label: "Рівень до еволюції в #{descendant.name}" } }) %>
           <div class="flex flex-wrap gap-1.5">
-            <% descendant.types.each do |type| %><%= pokemon_type_badge(type.name) %><% end %>
+            <% descendant.types.each do |type| %><%= pokemon_type_badge(type) %><% end %>
           </div>
         </div>
       </div>

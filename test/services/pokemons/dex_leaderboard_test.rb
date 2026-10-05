@@ -18,9 +18,9 @@ module Pokemons
         character: 'Таланистий'
       )
 
-      @first.update!(battle_win_rate: 80)
-      @second.update!(battle_win_rate: 60)
-      @third.update!(battle_win_rate: 40)
+      @first.trainer_profile.update!(rating: 80)
+      @second.trainer_profile.update!(rating: 60)
+      @third.trainer_profile.update!(rating: 40)
     end
 
     test 'ranks three or more users by battle win rate' do
@@ -30,8 +30,8 @@ module Pokemons
     end
 
     test 'tie-breaks equal win rates by user id' do
-      @first.update!(battle_win_rate: 50)
-      @second.update!(battle_win_rate: 50)
+      @first.trainer_profile.update!(rating: 50)
+      @second.trainer_profile.update!(rating: 50)
 
       assert_equal 1, @leaderboard.rank_for(@first)
       assert_equal 2, @leaderboard.rank_for(@second)

@@ -41,7 +41,7 @@ module Pokemons
     def combatant(record)
       species = record.pokemon
       Engine::Combatant.new(id: record.id, character: record.character,
-                            battle_experience: record.battle_experience, types: species.types.map(&:name),
+                            battle_experience: record.battle_experience, types: species.types.map(&:key),
                             base_hp: species.base_hp, base_attack: species.base_attack)
     end
   end

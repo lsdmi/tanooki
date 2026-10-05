@@ -10,7 +10,7 @@ module Pokemons
 
     setup do
       @user = users(:user_one)
-      @user.update!(pokemon_last_catch: 5.hours.ago, pokemon_last_training: 5.hours.ago)
+      @user.trainer_profile.update!(last_catch_at: 5.hours.ago, last_training_at: 5.hours.ago)
     end
 
     teardown do

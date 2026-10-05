@@ -1,5 +1,5 @@
 <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
-  <%= render 'users/pokemons/trainer', user: current_user, caption: "#{dex_title(current_user.battle_win_rate)} ##{dex_leaderboard.rank_for(current_user)}" %>
+  <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard) %>
 
   <%= button_to battle_start_path, data: { turbo_stream: "" }, aria: { label: 'Розпочати бій' }, title: 'Розпочати бій',
                 class: 'group flex flex-col items-center gap-1 rounded-xl p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
@@ -7,5 +7,5 @@
     <span class="text-xs/4 font-semibold text-fg-brand">До бою!</span>
   <% end %>
 
-  <%= render 'users/pokemons/trainer', user: opponent, caption: "#{dex_title(opponent.battle_win_rate)} ##{dex_leaderboard.rank_for(opponent)}" %>
+  <%= render 'users/pokemons/trainer', user: opponent, caption: trainer_caption(opponent, dex_leaderboard) %>
 </div>

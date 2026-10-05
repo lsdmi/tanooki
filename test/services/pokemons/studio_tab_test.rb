@@ -73,7 +73,7 @@ module Pokemons
       tab = StudioTab.new(user)
 
       assert_equal users(:user_two), tab.opponent
-      assert_equal users(:user_two).id, user.reload.pinned_opponent_id
+      assert_equal users(:user_two).id, user.trainer_profile.reload.pinned_opponent_id
     end
 
     test 'with pokemons offers a reroll until one is used' do

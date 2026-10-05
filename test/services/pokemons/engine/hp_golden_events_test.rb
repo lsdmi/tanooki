@@ -8,8 +8,8 @@ module Pokemons
     # told and stored; if it also changes outcomes, it needs a new engine version once version 2 is live.
     class HpGoldenEventsTest < ActiveSupport::TestCase
       test 'two on two: a dodge, crits, weak and super effective hits, a heal and a lucky reroll' do
-        result = simulate([['friendly', 25, 40, %w[Електричний]], ['lucky', 7, 10, %w[Водяний]]],
-                          [['agile', 4, 30, %w[Вогняний]], ['persistent', 1, 0, %w[Трав'яний Отруйний]]], seed: 815)
+        result = simulate([['friendly', 25, 40, %w[electric]], ['lucky', 7, 10, %w[water]]],
+                          [['agile', 4, 30, %w[fire]], ['persistent', 1, 0, %w[grass poison]]], seed: 815)
 
         assert_equal [
           [1, :round_started, { attacker: 1, defender: 101, first_striker: 1 }],
@@ -37,7 +37,7 @@ module Pokemons
       end
 
       test 'one on one: persistent survives a lethal crit at 1 HP and wins' do
-        result = simulate([['decisive', 6, 50, %w[Вогняний Повітряний]]], [['persistent', 9, 20, %w[Водяний]]],
+        result = simulate([['decisive', 6, 50, %w[fire flying]]], [['persistent', 9, 20, %w[water]]],
                           seed: 270)
 
         assert_equal [

@@ -10,7 +10,6 @@ user_one:
   confirmation_sent_at: <%= Time.zone.now %>
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
-  pokemon_last_catch: <%= 2.years.ago %>
 
 user_two:
   id: 2

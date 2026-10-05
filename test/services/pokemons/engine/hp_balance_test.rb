@@ -35,8 +35,8 @@ module Pokemons
       end
 
       test 'softens the type chart' do
-        assert_in_delta 1.25**0.45, @balance.type_multiplier(%w[Вогняний], %w[Трав'яний])
-        assert_in_delta 1.0, @balance.type_multiplier(%w[Звичайний], %w[Звичайний])
+        assert_in_delta 1.25**0.45, @balance.type_multiplier(%w[fire], %w[grass])
+        assert_in_delta 1.0, @balance.type_multiplier(%w[normal], %w[normal])
       end
 
       private

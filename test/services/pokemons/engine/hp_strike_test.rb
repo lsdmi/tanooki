@@ -49,16 +49,16 @@ module Pokemons
       end
 
       test 'a dodge drops the crit, the effect and the striker triggers it drew' do
-        striker = fighter(1, character: 'decisive').with(types: %w[Вогняний])
-        target = fighter(2, character: 'agile').with(types: %w[Трав'яний])
+        striker = fighter(1, character: 'decisive').with(types: %w[fire])
+        target = fighter(2, character: 'agile').with(types: %w[grass])
         dodged = strike(striker:, target:, draws: [1.0, 0.15, 0.01])
 
         assert_equal [false, nil, [[2, 'agile']]], [dodged.crit, dodged.effect, dodged.triggers]
       end
 
       test 'the effect is super or weak by the raw type chart, nil when neutral' do
-        fire = fighter(1).with(types: %w[Вогняний])
-        grass = fighter(2).with(types: %w[Трав'яний])
+        fire = fighter(1).with(types: %w[fire])
+        grass = fighter(2).with(types: %w[grass])
 
         assert_equal 'super', strike(striker: fire, target: grass).effect
         assert_equal 'weak', strike(striker: grass, target: fire).effect

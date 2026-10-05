@@ -8,21 +8,21 @@ class PokemonGameActionsTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = users(:user_one)
-    @user.update!(pokemon_last_catch: 5.hours.ago, pokemon_last_training: 5.hours.ago)
+    @user.trainer_profile.update!(last_catch_at: 5.hours.ago, last_training_at: 5.hours.ago)
     sign_in @user
   end
 
   test 'reroll pins a new opponent and hides the reroll button' do
     reroll
 
-    assert_equal users(:user_two).id, @user.reload.pinned_opponent_id
+    assert_equal users(:user_two).id, @user.trainer_profile.reload.pinned_opponent_id
     assert_not_includes response.body, regenerate_pokemon_opponent_path
   end
 
   test 'second reroll in the window is refused' do
     reroll
 
-    assert_no_changes(-> { @user.reload.opponent_rerolled_at }) { reroll }
+    assert_no_changes(-> { @user.trainer_profile.reload.opponent_rerolled_at }) { reroll }
     assert_includes response.body, I18n.t('pokemons.alerts.reroll_used')
   end
 

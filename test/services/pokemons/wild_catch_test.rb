@@ -72,7 +72,7 @@ module Pokemons
     end
 
     test 'a recent catch means no roll' do
-      @user.update!(pokemon_last_catch: 1.hour.ago)
+      @user.trainer_profile.update!(last_catch_at: 1.hour.ago)
 
       assert_nil roll(user: @user)
     end

@@ -15,7 +15,7 @@ module Pokemons
     end
 
     test 'pokemon_type_badge colours the chip by type' do
-      render html: pokemon_type_badge('Вогняний')
+      render html: pokemon_type_badge(PokemonType.new(key: 'fire'))
 
       assert_select 'span.rounded-full.bg-red-500', text: 'Вогняний'
     end

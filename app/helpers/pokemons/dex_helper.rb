@@ -23,15 +23,19 @@ module Pokemons
     }.freeze
 
     def training_cooldown?(user)
-      user.pokemon_training_on_cooldown?
+      user.trainer_profile.training_on_cooldown?
     end
 
     def training_cooldown_reason(user)
-      cooldown_message_for(user.pokemon_last_training, Balance::TRAINING_COOLDOWN)
+      cooldown_message_for(user.trainer_profile.last_training_at, Balance::TRAINING_COOLDOWN)
     end
 
     def reason_for_cooldown(current_user)
-      cooldown_message_for(current_user.last_battle_at || 1.year.ago, Balance::BATTLE_COOLDOWN)
+      cooldown_message_for(current_user.trainer_profile.last_battle_at || 1.year.ago, Balance::BATTLE_COOLDOWN)
+    end
+
+    def trainer_caption(user, dex_leaderboard)
+      "#{dex_title(user.trainer_profile.rating)} ##{dex_leaderboard.rank_for(user)}"
     end
 
     # «Перемога» / «Поразка» with a trophy or a crossed shield, so the result does not rest on colour alone.

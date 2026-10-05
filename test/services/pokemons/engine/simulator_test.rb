@@ -63,7 +63,7 @@ module Pokemons
       def team(first_id, characters, experience: 20)
         TeamSnapshot.new(trainer_id: first_id, combatants: characters.each_with_index.map do |character, index|
           Combatant.new(id: first_id + index, character:, power_level: (index % 5) + 1, battle_experience: experience,
-                        types: [index.even? ? 'Вогняний' : 'Водяний'])
+                        types: [index.even? ? 'fire' : 'water'])
         end)
       end
     end

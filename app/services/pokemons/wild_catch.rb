@@ -62,7 +62,7 @@ module Pokemons
       return false if shown_recently?
       return session[:pokemon_catch_last_seen].present? if user.nil?
 
-      !user.pokemon_last_catch&.after?(Balance::ENCOUNTER_DELAY.ago)
+      !user.trainer_profile.last_catch_at&.after?(Balance::ENCOUNTER_DELAY.ago)
     end
 
     # Signed-in users are also throttled by their last catch, but an ignored pop-up would otherwise reappear at once.

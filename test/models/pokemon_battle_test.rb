@@ -5,7 +5,7 @@ require 'test_helper'
 class PokemonBattleTest < ActiveSupport::TestCase
   include PokemonBattleHelpers
 
-  TEAM = [{ 'id' => 7, 'character' => 'lucky', 'power_level' => 3, 'battle_experience' => 20, 'types' => %w[Водяний],
+  TEAM = [{ 'id' => 7, 'character' => 'lucky', 'power_level' => 3, 'battle_experience' => 20, 'types' => %w[water],
             'pokemon_id' => 1 }].freeze
 
   setup do
@@ -17,7 +17,7 @@ class PokemonBattleTest < ActiveSupport::TestCase
     battle = create_pokemon_battle(attacker: @attacker, defender: @defender, attacker_team: TEAM)
     combatant = battle.reload.snapshot(:attacker).combatants.sole
 
-    assert_equal [7, 'lucky', 3, 20, %w[Водяний], nil, nil], combatant.to_h.values
+    assert_equal [7, 'lucky', 3, 20, %w[water], nil, nil], combatant.to_h.values
     assert_equal @attacker.id, battle.snapshot(:attacker).trainer_id
   end
 

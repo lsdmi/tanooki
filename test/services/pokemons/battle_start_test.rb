@@ -15,7 +15,17 @@ module Pokemons
       Matchmaker.new(@attacker).opponent
 
       assert_equal :fought, BattleStart.new(@attacker).call
-      assert_equal [52, 48].sort, [@attacker.reload.battle_win_rate, @defender.reload.battle_win_rate].sort
+      ratings = [@attacker, @defender].map { |user| user.trainer_profile.reload.rating }
+
+      assert_equal [48, 52], ratings.sort
+    end
+
+    test 'starts the battle clock for both sides' do
+      battle = fight
+
+      assert_equal [battle.created_at] * 2,
+                   [@attacker.trainer_profile.reload.last_battle_at, @defender.trainer_profile.reload.last_battle_at]
+      assert BattleLeaderboardCooldown.call(@defender)
     end
 
     test 'stores the battle as data that replays to the same events' do

@@ -34,7 +34,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
 
     post battle_start_path
 
-    assert_nil @attacker.reload.pinned_opponent_id
+    assert_nil @attacker.trainer_profile.reload.pinned_opponent_id
   end
 
   test 'starting a battle refreshes leaderboard to cooldown via turbo stream' do

@@ -5,6 +5,10 @@ class User < ApplicationRecord
   include NormalizesWhitespace
   include UserProfile
 
+  # Moved to trainer_profiles; dropped in a later deploy.
+  self.ignored_columns += %w[battle_win_rate pokemon_last_catch pokemon_last_training pinned_opponent_id pinned_until
+                             opponent_rerolled_at]
+
   normalizes :email, with: ->(email) { email.strip.downcase }
   normalizes_squished :name
 
@@ -25,6 +29,7 @@ class User < ApplicationRecord
   has_many :chat_messages, dependent: :destroy
   has_many :fiction_ratings, dependent: :destroy
 
+  has_one :trainer_profile, dependent: :delete
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
   has_many :pokemon_encounters, dependent: :delete_all
@@ -38,6 +43,8 @@ class User < ApplicationRecord
   has_many :translation_request_votes, dependent: :destroy
 
   scope :avatarless, -> { where(avatar_id: nil) }
+
+  after_create :trainer_profile
 
   def send_devise_notification(notification, *)
     devise_mailer.send(notification, self, *).deliver_later
@@ -56,8 +63,9 @@ class User < ApplicationRecord
     )
   end
 
-  def last_battle_at
-    PokemonBattle.involving(self).maximum(:created_at)
+  # Created on first use when missing (accounts made while the backfill deployed); the unique index settles a race.
+  def trainer_profile
+    super || (self.trainer_profile = TrainerProfile.create_or_find_by!(user: self))
   end
 
   def latest_battle
@@ -86,13 +94,5 @@ class User < ApplicationRecord
     return unless avatar&.image&.attached?
 
     avatar.image.url
-  end
-
-  def pokemon_catch_permitted?
-    pokemon_last_catch < Pokemons::Balance::CATCH_COOLDOWN.ago
-  end
-
-  def pokemon_training_on_cooldown?
-    pokemon_last_training > Pokemons::Balance::TRAINING_COOLDOWN.ago
   end
 end

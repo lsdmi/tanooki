@@ -5,9 +5,9 @@ require 'test_helper'
 module Pokemons
   class BalanceReport
     class DuelsTest < ActiveSupport::TestCase
-      SPECIES = [[20, 15, %w[Водяний]], [40, 45, %w[Повітряний]], [35, 55, %w[Електричний]], [60, 90, %w[Електричний]],
-                 [78, 109, %w[Вогняний]], [80, 100, %w[Трав'яний]], [91, 134, %w[Драконячий]],
-                 [160, 110, %w[Звичайний]]].each_with_index.map do |(hp, attack, types), index|
+      SPECIES = [[20, 15, %w[water]], [40, 45, %w[flying]], [35, 55, %w[electric]], [60, 90, %w[electric]],
+                 [78, 109, %w[fire]], [80, 100, %w[grass]], [91, 134, %w[dragon]],
+                 [160, 110, %w[normal]]].each_with_index.map do |(hp, attack, types), index|
         Species.new(id: index + 1, dex_id: index + 1, name: "S#{index}", rarity: 1, types:, base_hp: hp,
                     base_attack: attack)
       end.freeze

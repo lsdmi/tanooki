@@ -1,0 +1,10 @@
+<%# users.yml sets explicit ids, so a label reference (user: user_one) would point at a different id. %>
+<% { user_two: 2, user_101: 101, user_102: 102, user_103: 103, user_104: 104, user_105: 105, user_106: 106,
+     user_107: 107, user_108: 108, user_109: 109, user_one_one_zero: 110 }.each do |label, user_id| %>
+<%= label %>:
+  user_id: <%= user_id %>
+<% end %>
+
+user_one:
+  user_id: 1
+  last_catch_at: <%= 2.years.ago %>

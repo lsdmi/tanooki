@@ -3,7 +3,7 @@
 module Pokemons
   # Dex leaderboard ranks and opponent lookup without materializing the full table.
   class DexLeaderboard
-    ORDER = Arel.sql('users.battle_win_rate DESC, users.id ASC')
+    ORDER = Arel.sql('trainer_profiles.rating DESC, trainer_profiles.user_id ASC')
 
     def rank_for(user)
       return unless on_leaderboard?(user)
@@ -35,19 +35,19 @@ module Pokemons
 
     # EXISTS, not a join: a join repeats each user once per Pokémon, so every count needed DISTINCT or GROUP BY.
     def self.leader_scope
-      User.where(UserPokemon.where('user_pokemons.user_id = users.id').arel.exists)
+      User.joins(:trainer_profile).where(UserPokemon.where('user_pokemons.user_id = users.id').arel.exists)
     end
 
     def self.ranked_scope
-      leader_scope.includes(avatar: :image_attachment).order(ORDER)
+      leader_scope.includes(:trainer_profile, avatar: :image_attachment).order(ORDER)
     end
 
     private
 
     def higher_ranked_count(user)
       self.class.leader_scope.where(
-        'users.battle_win_rate > :rate OR (users.battle_win_rate = :rate AND users.id < :id)',
-        rate: user.battle_win_rate,
+        'trainer_profiles.rating > :rating OR (trainer_profiles.rating = :rating AND trainer_profiles.user_id < :id)',
+        rating: user.trainer_profile.rating,
         id: user.id
       ).count
     end

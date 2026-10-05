@@ -30,7 +30,7 @@ module Pokemons
       stored = BattleTeams.new(@attacker, @defender).stored(:defender)
 
       assert_equal [{ id: user_pokemons(:two).id, character: 'agile', power_level: nil, battle_experience: 1,
-                      types: %w[Звичайний], base_hp: 45, base_attack: 65, pokemon_id: pokemons(:one).id }], stored
+                      types: %w[normal], base_hp: 45, base_attack: 65, pokemon_id: pokemons(:one).id }], stored
     end
 
     test 'writes back only the experience that changed' do

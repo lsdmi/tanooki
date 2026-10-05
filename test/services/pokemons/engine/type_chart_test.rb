@@ -10,9 +10,9 @@ module Pokemons
       test 'looks up the effectiveness of one type against another' do
         chart = TypeChart.default
 
-        assert_in_delta 1.25, chart.effectiveness('Вогняний', "Трав'яний")
-        assert_in_delta 1.25, chart.effectiveness('Водяний', 'Вогняний')
-        assert_in_delta 1.25, chart.effectiveness("Трав'яний", 'Водяний')
+        assert_in_delta 1.25, chart.effectiveness('fire', 'grass')
+        assert_in_delta 1.25, chart.effectiveness('water', 'fire')
+        assert_in_delta 1.25, chart.effectiveness('grass', 'water')
       end
 
       test 'multiplies every pair of own and opposing types' do
@@ -29,7 +29,14 @@ module Pokemons
       end
 
       test 'covers every Pokémon type' do
-        assert_empty PokemonType.pluck(:name) - TypeChart.default.types
+        assert_empty PokemonType.pluck(:key) - TypeChart.default.types
+      end
+
+      test 'every type in the chart has a label and a badge colour' do
+        types = TypeChart.default.types
+
+        assert_equal types.sort, I18n.t('pokemons.types').keys.map(&:to_s).sort
+        assert_equal types.sort, Pokemons::StatsHelper::TYPE_COLORS.keys.sort
       end
 
       test 'refuses a chart with a missing pair' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_05_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -264,8 +264,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_190000) do
 
   create_table "pokemon_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "key", limit: 16, null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_pokemon_types_on_key", unique: true
   end
 
   create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -537,6 +539,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_190000) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "trainer_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "last_battle_at"
+    t.datetime "last_catch_at"
+    t.datetime "last_training_at"
+    t.datetime "opponent_rerolled_at"
+    t.bigint "pinned_opponent_id"
+    t.datetime "pinned_until"
+    t.integer "rating", default: 50, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["rating", "user_id"], name: "index_trainer_profiles_on_rank", order: { rating: :desc }
+    t.index ["user_id"], name: "index_trainer_profiles_on_user_id", unique: true
+  end
+
   create_table "translation_request_votes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "translation_request_id", null: false
@@ -678,6 +695,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_190000) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "trainer_profiles", "users", on_delete: :cascade
   add_foreign_key "translation_request_votes", "translation_requests", on_delete: :cascade
   add_foreign_key "translation_request_votes", "users", on_delete: :cascade
   add_foreign_key "translation_requests", "scanlators"
