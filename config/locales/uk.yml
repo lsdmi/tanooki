@@ -49,6 +49,9 @@ uk:
       scanlator:
         description: "Опис"
         notice: "Оголошення"
+      fiction:
+        license_publisher: "Видавництво"
+        license_url: "Посилання на офіційне видання"
     enum:
       rarity:
         common: Поширений
@@ -97,6 +100,10 @@ uk:
               blank: має бути принаймні одна команда
             cover:
               invalid_format: має бути WebP або AVIF (JPEG/PNG конвертуються автоматично)
+            license_publisher:
+              source_missing: або посилання на офіційне видання обов'язкові для ліцензованого твору
+            license_url:
+              invalid: має починатися з https://
         fiction_rating:
           attributes:
             user:
@@ -328,6 +335,9 @@ uk:
     filters:
       include_eighteen: Показувати 18+
   fictions:
+    license:
+      label: Ліцензовано
+      label_short: Ліценз.
     hero:
       stats:
         rating: "%{average} (%{ratings})"

@@ -8,7 +8,7 @@ module Library
       @fiction_one = fictions(:one)
       @fiction_two = fictions(:two)
       @reading = reading_progresses(:one)
-      clear_related_fictions_cache(@fiction_one, @fiction_two)
+      @fiction_two.update!(chapter_count: 1)
     end
 
     test 'call returns related fictions from reading progress' do
@@ -45,12 +45,6 @@ module Library
 
       assert_equal 1, results.size
       assert_equal @fiction_two.id, results.first.id
-    end
-
-    private
-
-    def clear_related_fictions_cache(*fictions)
-      fictions.each { |fiction| Rails.cache.delete("related-to-#{fiction.slug}") }
     end
   end
 end

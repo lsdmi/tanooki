@@ -55,10 +55,8 @@
         </div>
       <% end %>
 
-      <% if @fiction.scanlators.any? %>
-        <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(@fiction), loading: :lazy, class: 'mt-8 block md:mt-14' do %>
-          <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
-        <% end %>
+      <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(@fiction), loading: :lazy, class: 'mt-8 block md:mt-14' do %>
+        <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
       <% end %>
     </main>
   </div>

@@ -5,6 +5,7 @@ class Fiction < ApplicationRecord
   include FictionPresentation
   include FictionRatings
   include FictionListingProgress
+  include FictionLicense
   include FictionContentRating
   include NormalizesWhitespace
 

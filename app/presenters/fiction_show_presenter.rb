@@ -60,8 +60,8 @@ class FictionShowPresenter
     end
   end
 
-  def related_fictions
-    @related_fictions ||= @fiction.related_fictions.includes(:fiction_ratings).limit(8).to_a
+  def similar_fictions
+    @similar_fictions ||= @fiction.similar_fictions
   end
 
   def order = @params[:order] || :desc

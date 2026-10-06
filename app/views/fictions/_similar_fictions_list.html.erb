@@ -6,7 +6,7 @@
   <%= render Ui::SectionHeadingComponent.new(title: t('fictions.about.similar'), id: 'fiction-similar-title') %>
   <div class="-mr-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain md:mr-0 md:gap-4 md:snap-proximity"
        role="region" aria-labelledby="fiction-similar-title">
-    <% show_presenter.related_fictions.each do |similar_fiction| %>
+    <% show_presenter.similar_fictions.each do |similar_fiction| %>
       <% card = popular_fiction_card_stats(similar_fiction) %>
       <article class="flex w-37 shrink-0 snap-start flex-col gap-2 md:w-64 md:gap-3">
         <%= link_to fiction_path(similar_fiction), turbo_drive_visit_data.merge(class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-line-strong') do %>

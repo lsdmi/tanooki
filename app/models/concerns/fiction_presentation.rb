@@ -18,24 +18,7 @@ module FictionPresentation
     }
   end
 
-  def related_fictions
-    scanlator_ids = scanlators.ids
-    return Fiction.none if scanlator_ids.empty?
-
-    Rails.cache.fetch("related-to-#{slug}", expires_in: 24.hours) do
-      related_fictions_scope(scanlator_ids)
-    end
-  end
-
-  private
-
-  def related_fictions_scope(scanlator_ids)
-    Fiction.joins(:scanlators)
-           .includes(:genres)
-           .where(scanlators: { id: scanlator_ids })
-           .includes(:cover_attachment)
-           .where.not(id: id)
-           .order(views: :desc)
-           .distinct
+  def similar_fictions
+    Fictions::SimilarFictions.new(self).fictions
   end
 end

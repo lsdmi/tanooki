@@ -25,7 +25,7 @@ module Library
       fiction = reading.fiction
       return unless fiction
 
-      fiction.related_fictions.each do |related|
+      fiction.similar_fictions.each do |related|
         add_related_fiction(related)
         break if reached_limit?
       end

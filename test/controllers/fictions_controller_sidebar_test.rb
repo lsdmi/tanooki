@@ -47,6 +47,7 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
   end
 
   test 'similar_fictions frame renders recommendations' do
+    fictions(:two).update!(chapter_count: 1)
     get similar_fictions_fiction_url(@fiction)
 
     assert_response :success
@@ -54,23 +55,22 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
   end
 
   test 'similar_fictions frame links to related titles' do
+    fictions(:two).update!(chapter_count: 1)
     get similar_fictions_fiction_url(@fiction)
 
     assert_includes response.body, fiction_path(fictions(:two))
   end
 
   test 'similar_fictions frame links escape turbo frame for full-page navigation' do
+    fictions(:two).update!(chapter_count: 1)
     get similar_fictions_fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_similar a[data-turbo-frame="_top"][href*="/fictions/"]', minimum: 1
   end
 
-  test 'similar_fictions frame is omitted on show when fiction has no scanlators' do
-    fiction = fictions(:one)
-    fiction.scanlators.destroy_all
+  test 'similar_fictions frame stays empty when no other work has chapters' do
+    get similar_fictions_fiction_url(@fiction)
 
-    get fiction_url(fiction)
-
-    assert_select 'turbo-frame#fiction_similar', count: 0
+    assert_select 'turbo-frame#fiction_similar #fiction-similar-title', 0
   end
 end
