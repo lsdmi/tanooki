@@ -3,12 +3,14 @@
 module Chapters
   # View helpers for chapter list accordion sections.
   module ListSectionsHelper
-    def chapter_list_section_index(fiction, order:, viewer: current_user)
-      ListSectionIndex.new(Library::ChapterCatalog.listed_chapters(fiction, viewer:), order:).call
+    def chapter_list_section_index(fiction, order:, viewer: current_user, read_filter: nil)
+      listed = Library::ChapterCatalog.listed_chapters(fiction, viewer:)
+      sections = ListSectionIndex.new(listed, order:).call
+      read_filter ? read_filter.sections(sections, listed) : sections
     end
 
-    def fiction_chapter_section_path(fiction, section_key, order:)
-      chapter_section_fiction_path(fiction, section: section_key, order: order)
+    def fiction_chapter_section_path(fiction, section_key, order:, filter: nil)
+      chapter_section_fiction_path(fiction, section: section_key, order:, filter:)
     end
 
     # Only the fiction page list shows scanlator names; the reader drawer does not.

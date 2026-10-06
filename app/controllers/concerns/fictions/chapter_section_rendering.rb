@@ -55,8 +55,14 @@ module Fictions
         viewer: current_user,
         section_key: params[:section],
         order: order,
-        chapter_ids: params[:chapter_ids]
+        read_filter: chapter_section_read_filter
       )
+    end
+
+    def chapter_section_read_filter
+      return if chapter_section_reader_drawer? || current_user.nil?
+
+      Chapters::ReadFilter.new(params[:filter], progress: chapter_section_drawer_progress(nil))
     end
 
     def load_chapter_section(order)
@@ -79,7 +85,8 @@ module Fictions
       limit = chapter_section_limit
       shown = @section_chapters.size
       total = limit && shown >= limit ? chapter_section_loader(order).total : shown
-      { total:, section_url: chapter_section_fiction_path(@fiction, section: params[:section], order:) }
+      filter = chapter_section_read_filter&.value
+      { total:, section_url: chapter_section_fiction_path(@fiction, section: params[:section], order:, filter:) }
     end
   end
 end

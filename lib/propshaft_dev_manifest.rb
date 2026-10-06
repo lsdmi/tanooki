@@ -15,21 +15,33 @@ module PropshaftDevManifest
     manifest_path = Rails.application.config.assets.manifest_path
     return unless manifest_path.to_s.end_with?(MANIFEST_SUFFIX)
 
-    return unless stale?(manifest_path)
-
-    refresh!(manifest_path)
+    if stale?(manifest_path)
+      refresh!(manifest_path)
+    else
+      reload_if_rewritten!(manifest_path)
+    end
   end
 
   def refresh!(manifest_path = Rails.application.config.assets.manifest_path)
-    assembly = Rails.application.assets
-    load_path = assembly.load_path
+    load_path = Rails.application.assets.load_path
     load_path.cache_sweeper.execute_if_updated
 
     manifest_path.dirname.mkpath
     File.write(manifest_path, load_path.manifest.to_json)
-    assembly.instance_variable_set(:@resolver, nil)
+    reset_resolver!(manifest_path)
 
     manifest_path
+  end
+
+  # Another process (tests, rails runner, rake) may have rewritten the manifest, which makes it fresh
+  # on disk while this process still resolves digests from the copy it parsed earlier.
+  def reload_if_rewritten!(manifest_path)
+    reset_resolver!(manifest_path) unless @resolver_manifest_mtime == manifest_path.mtime
+  end
+
+  def reset_resolver!(manifest_path)
+    Rails.application.assets.instance_variable_set(:@resolver, nil)
+    @resolver_manifest_mtime = manifest_path.mtime
   end
 
   def stale?(manifest_path)

@@ -1,4 +1,4 @@
-<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), reader_drawer: false (optional), current_chapter: nil (optional), continue_chapter: nil (optional) %>
+<%# locals: fiction:, order:, toggle_order_button_id: 'toggle-fictions-order' (optional), reader_drawer: false (optional), current_chapter: nil (optional), continue_chapter: nil (optional), filter: nil (optional) %>
 <% toggle_btn_id = local_assigns.fetch(:toggle_order_button_id, 'toggle-fictions-order') %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% if reader_drawer %>
@@ -23,13 +23,15 @@
   <% newest_first = order.to_sym == :desc %>
   <% list_progress = reader_chapter_drawer_progress(fiction) if user_signed_in? %>
   <% total = chapters_size(fiction, viewer: current_user) %>
+  <% read_filter = Chapters::ReadFilter.new(local_assigns[:filter], progress: list_progress) %>
   <% continue_chapter = local_assigns[:continue_chapter] %>
+  <% continue_chapter = nil unless continue_chapter && read_filter.match?(continue_chapter) %>
   <section class="flex flex-col gap-6 md:gap-5"
            data-controller="chapter-jump"
-           data-chapter-jump-url-value="<%= chapter_jump_fiction_path(fiction, order:) %>"
+           data-chapter-jump-url-value="<%= chapter_jump_fiction_path(fiction, order:, filter: read_filter.value) %>"
            data-chapter-jump-failed-value="<%= t('fictions.chapters_tab.jump.failed') %>">
-    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3">
-      <div class="flex min-w-0 flex-col gap-1">
+    <div class="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-start md:gap-3">
+      <div class="flex min-w-0 flex-col gap-1 md:mr-auto">
         <%= render 'fictions/chapter_list_progress', listed:, total:, list_progress: %>
         <% if latest %>
           <p class="text-sm/5 text-fg-muted">
@@ -37,6 +39,11 @@
           </p>
         <% end %>
       </div>
+      <% if list_progress %>
+        <%= render 'fictions/chapter_read_filter', fiction:, order:, read_filter: %>
+      <% else %>
+        <%= render 'fictions/chapter_login_nudge', fiction: %>
+      <% end %>
       <div class="flex items-start gap-2 md:gap-3">
         <% if latest %>
           <form class="flex min-w-0 flex-1 flex-col gap-1 md:w-60 md:flex-none" role="search" data-action="submit->chapter-jump#jump">
@@ -62,7 +69,7 @@
             <p id="chapter-jump-error" class="hidden text-xs/5 text-status-danger-subtle-fg" aria-live="polite" data-chapter-jump-target="error"></p>
           </form>
         <% end %>
-        <%= button_to toggle_order_fiction_path(fiction, order: order),
+        <%= button_to toggle_order_fiction_path(fiction, order:, filter: read_filter.value),
                       data: {
                         turbo_stream: '',
                         'turbo-method': :post,
@@ -81,7 +88,7 @@
     </div>
 
     <div data-controller="flowbite">
-      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress, continue_chapter: %>
+      <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress, continue_chapter:, read_filter: %>
     </div>
 
     <% if list_progress %>

@@ -75,19 +75,16 @@ module Fictions
       chapters&.each(&:destroy)
     end
 
-    test 'loads chapters by chapter_ids when provided' do
+    test 'an active read filter keeps only its rows and its count' do
       fiction = fictions(:one)
-      chapter_ids = fiction.chapters.pluck(:id)
+      user = users(:user_one)
+      ReadingChapterRead.where(user:).delete_all
+      ReadingChapterRead.create!(user:, fiction:, chapter: chapters(:one), completed_at: Time.current, source: 'manual')
+      progress = Reading::ChapterDrawerProgress.build(fiction:, viewer: user)
+      loader = ChapterSectionLoader.new(fiction:, viewer: user, section_key: 'r-1-100', order: :asc,
+                                        read_filter: Chapters::ReadFilter.new('unread', progress:))
 
-      loaded = ChapterSectionLoader.new(
-        fiction: fiction,
-        viewer: users(:user_one),
-        section_key: 'r-1-100',
-        order: :asc,
-        chapter_ids: chapter_ids.join(',')
-      ).call
-
-      assert_equal chapter_ids.sort, loaded.pluck(:id).sort
+      assert_equal [[chapters(:two).id], 1], [loader.call.pluck(:id), loader.total]
     end
 
     test 'pages through a section and counts all of it' do

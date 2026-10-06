@@ -1,0 +1,14 @@
+<%# locals: fiction:, order:, read_filter: %>
+<%# Figma «Read filter» 10097:5413: full width above Jump + Sort on phones, left of them from md. %>
+<div class="flex w-full gap-1 rounded-lg bg-surface p-1 ring-1 ring-inset ring-line md:w-auto" role="group" aria-label="<%= t('fictions.chapters_tab.filter.label') %>">
+  <% [nil, 'unread', 'read'].each do |value| %>
+    <% selected = read_filter.value == value %>
+    <%= button_to t(value || 'all', scope: 'fictions.chapters_tab.filter'),
+                  chapter_filter_fiction_path(fiction, order:, filter: value),
+                  form: { class: 'flex flex-1 md:flex-none' },
+                  data: { turbo_stream: '' },
+                  aria: { pressed: selected },
+                  class: ['flex-1 rounded-lg px-1 py-1.5 text-sm/5 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong md:px-4',
+                          selected ? 'bg-main text-fg shadow-sm' : 'text-fg-muted hover:bg-surface-hover hover:text-fg'] %>
+  <% end %>
+</div>

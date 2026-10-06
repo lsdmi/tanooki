@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       get :sidebar_stats
       get :similar_fictions
       post :toggle_order
+      post :chapter_filter
     end
   end
   resources :fictions do

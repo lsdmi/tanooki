@@ -69,7 +69,8 @@ class FictionShowPresenter
   def sorted_chapters_locals
     {
       fiction: @fiction,
-      order:
+      order:,
+      filter: @params[:filter]
     }
   end
 

@@ -2,7 +2,8 @@
 
 module Fictions
   # JSON for «Перейти до розділу» on the fiction page: the group to open and its body rendered as a window of rows
-  # around the chapter, or the inline error for the field.
+  # around the chapter, or the inline error for the field. With the read filter on it looks only at the rows the
+  # filter shows.
   module ChapterJumpRendering
     extend ActiveSupport::Concern
 
@@ -10,7 +11,7 @@ module Fictions
 
     def chapter_jump_payload(order)
       listed = Library::ChapterCatalog.listed_chapters(@fiction, viewer: current_user)
-      result = chapter_jump_result(listed, order)
+      result = chapter_jump_result(chapter_jump_filter.listed(listed), order)
       return { error: chapter_jump_error(result, listed) } unless result.found?
 
       html = render_to_string(partial: 'fictions/chapter_section_items', formats: :html,
@@ -21,7 +22,7 @@ module Fictions
     def chapter_jump_result(listed, order)
       Fictions::ChapterJump.new(
         listed:,
-        sections: helpers.chapter_list_section_index(@fiction, order:),
+        sections: helpers.chapter_list_section_index(@fiction, order:, read_filter: chapter_jump_filter),
         query: params[:number],
         section_rows: ->(section) { helpers.fiction_section_chapters(@fiction, section, order:, scanlators: false) },
         chapter_id: Integer(params[:chapter_id].to_s, 10, exception: false)
@@ -32,8 +33,11 @@ module Fictions
       return t('fictions.chapters_tab.jump.invalid') if result.error == :invalid
       return t('fictions.chapters_tab.jump.failed') unless result.number
 
-      t('fictions.chapters_tab.jump.missing', number: Chapters::Formatting.format_decimal(result.number),
-                                              range: helpers.chapter_number_range(listed))
+      number = Chapters::Formatting.format_decimal(result.number)
+      hidden = listed.any? { |chapter| chapter.number == result.number }
+      return t('fictions.chapters_tab.jump.filtered', number:) if hidden
+
+      t('fictions.chapters_tab.jump.missing', number:, range: helpers.chapter_number_range(listed))
     end
 
     def chapter_jump_locals(result, order)
@@ -41,10 +45,19 @@ module Fictions
       ActiveRecord::Associations::Preloader.new(records: window, associations: :scanlators).call
       locals = {
         chapters: window, total: result.rows.size, window_start: result.window_start, mobile_trim: false,
-        section_url: helpers.fiction_chapter_section_path(@fiction, result.section[:section_key], order:),
-        before_label: chapter_jump_before_label(result)
+        section_url: chapter_jump_section_url(result.section, order), before_label: chapter_jump_before_label(result)
       }
       current_user ? locals.merge(drawer_progress: helpers.reader_chapter_drawer_progress(@fiction)) : locals
+    end
+
+    def chapter_jump_section_url(section, order)
+      helpers.fiction_chapter_section_path(@fiction, section[:section_key], order:, filter: chapter_jump_filter.value)
+    end
+
+    def chapter_jump_filter
+      @chapter_jump_filter ||= Chapters::ReadFilter.new(
+        params[:filter], progress: (helpers.reader_chapter_drawer_progress(@fiction) if current_user)
+      )
     end
 
     def chapter_jump_before_label(result)

@@ -7,12 +7,13 @@ module Fictions
     PAGE_SIZE = 20
     MOBILE_PAGE_SIZE = 10
 
-    def initialize(fiction:, viewer:, section_key:, order:, chapter_ids: nil)
+    # read_filter: a Chapters::ReadFilter; an active one keeps only its rows (the pager total follows).
+    def initialize(fiction:, viewer:, section_key:, order:, read_filter: nil)
       @fiction = fiction
       @viewer = viewer
       @section_key = section_key.to_s
       @order = order
-      @chapter_ids = parse_chapter_ids(chapter_ids)
+      @read_filter = read_filter
     end
 
     def call(offset: 0, limit: nil)
@@ -35,13 +36,15 @@ module Fictions
     private
 
     def scope
-      @scope ||= filter_scope(Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer))
+      @scope ||= read_filter_scope(
+        apply_section_filter(Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer))
+      )
     end
 
-    def filter_scope(scope)
-      return scope.where(id: @chapter_ids) if @chapter_ids.present?
+    def read_filter_scope(scope)
+      return scope unless @read_filter&.active?
 
-      apply_section_filter(scope)
+      scope.where(id: @read_filter.listed(Library::ChapterCatalog.listed_chapters(@fiction, viewer: @viewer)).map(&:id))
     end
 
     def list_order_sql
@@ -50,12 +53,6 @@ module Fictions
       else
         Library::ChapterCatalog.order_clause
       end
-    end
-
-    def parse_chapter_ids(raw)
-      return [] if raw.blank?
-
-      raw.to_s.split(',').filter_map { |id| Integer(id, 10, exception: false) }.reject(&:zero?)
     end
 
     def apply_section_filter(scope)

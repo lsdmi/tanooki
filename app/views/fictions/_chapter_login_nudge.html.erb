@@ -1,0 +1,13 @@
+<%# locals: fiction: %>
+<%# Figma «Progress login nudge» 10106:11834: below Jump + Sort on every width (10106:12715, 10120:14860). %>
+<div class="order-last flex flex-col gap-3 rounded-[10px] bg-brand-subtle/50 px-4 py-3 ring-1 ring-inset ring-line md:basis-full md:flex-row md:items-center">
+  <p class="flex min-w-0 flex-1 items-start gap-2 text-xs/5 text-fg md:items-center">
+    <span class="flex shrink-0 text-fg-secondary" aria-hidden="true"><%= stroke_icon(:list, 'size-5 shrink-0') %></span>
+    <span><%= t('fictions.chapters_tab.login_nudge.text') %></span>
+  </p>
+  <%= ui_button(size: :sm, as: :link, href: new_user_session_path(return_to: fiction_path(fiction, anchor: 'chapters')),
+                html: turbo_drive_visit_data.merge(class: 'w-full md:w-auto')) do %>
+    <%= stroke_icon(:log_in) %>
+    <span><%= t('fictions.chapters_tab.login_nudge.action') %></span>
+  <% end %>
+</div>

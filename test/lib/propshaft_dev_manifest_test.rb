@@ -62,6 +62,21 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     assert_includes roots, Rails.root.join('app/javascript')
   end
 
+  test 'reload_if_rewritten! drops the cached resolver once the manifest is rewritten elsewhere' do
+    assets = Rails.application.assets
+    PropshaftDevManifest.reload_if_rewritten!(@manifest_path)
+    resolver = assets.resolver
+    PropshaftDevManifest.reload_if_rewritten!(@manifest_path)
+
+    assert_same resolver, assets.resolver
+
+    future_mtime = @manifest_path.mtime + 1
+    File.utime(future_mtime, future_mtime, @manifest_path)
+    PropshaftDevManifest.reload_if_rewritten!(@manifest_path)
+
+    assert_not_same resolver, assets.resolver
+  end
+
   test 'stale? is true when tailwind build is newer than manifest' do
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
     PropshaftDevManifest.refresh!(@manifest_path)
