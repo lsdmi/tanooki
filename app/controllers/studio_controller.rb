@@ -4,6 +4,7 @@
 class StudioController < ApplicationController
   helper Pokemons::DexHelper,
          Pokemons::StatsHelper,
+         Pokemons::SpriteHelper,
          Publications::FormHelper,
          Studio::MenuHelper
 

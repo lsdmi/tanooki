@@ -6,7 +6,7 @@ module Pokemons
   class AuthCatchTest < ActiveSupport::TestCase
     setup do
       @user = users(:user_two)
-      @pokemon = pokemons(:two)
+      @pokemon = pokemons(:four)
       @encounter = PokemonEncounter.roll!(pokemon: @pokemon, guest_token: 'guest-token')
     end
 
@@ -89,7 +89,7 @@ module Pokemons
       travel PokemonEncounter::EXPIRES_IN + 1.minute do
         assert_equal :without_pokemon, Pokemons::AuthCatch.after_omniauth!(user: @user, session: guest_session)
       end
-      assert_not UserPokemon.exists?(user_id: @user.id, pokemon_id: @pokemon.id)
+      assert_predicate @encounter.reload, :open?
     end
 
     private

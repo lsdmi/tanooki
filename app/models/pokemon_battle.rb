@@ -7,7 +7,6 @@ class PokemonBattle < ApplicationRecord
   belongs_to :defender, class_name: 'User'
   belongs_to :winner, class_name: 'User'
 
-  POTENTIAL_FRAUD_ALERT = 'Ця сутичка наразі неможлива. Спробуйте пізніше чи оберіть іншого опонента.'
   FLOAT_DIGITS = 4
   # Converted from pokemon_battle_logs: who fought, who won and when, nothing to replay.
   LEGACY_VERSION = 0

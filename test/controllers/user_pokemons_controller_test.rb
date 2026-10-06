@@ -10,16 +10,16 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
     @pokemon_params = { user_pokemon_id: 1 }
     @user = users(:user_one)
     @user.trainer_profile.update!(last_catch_at: 5.hours.ago, last_training_at: 5.hours.ago)
-    UserPokemon.where(user_id: [@user.id, users(:user_two).id], pokemon_id: pokemons(:two).id).destroy_all
-    @encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), user: @user)
+    UserPokemon.where(user_id: [@user.id, users(:user_two).id], pokemon_id: pokemons(:four).id).destroy_all
+    @encounter = PokemonEncounter.roll!(pokemon: pokemons(:four), user: @user)
     sign_in @user
   end
 
   test 'catching an open encounter adds its pokemon' do
     assert_difference('UserPokemon.count') { catch_with(@encounter.catch_token) }
 
-    assert_includes response.body, UserPokemon::SUCCESS_MESSSAGE
-    assert UserPokemon.exists?(user: @user, pokemon: pokemons(:two))
+    assert_includes response.body, I18n.t('pokemons.catch.success')
+    assert UserPokemon.exists?(user: @user, pokemon: pokemons(:four))
   end
 
   test 'catching closes the encounter' do
@@ -29,7 +29,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'the rendered pop-up posts a catch token that the endpoint accepts' do
-    with_guaranteed_encounter(pokemons(:two)) { get root_path }
+    with_guaranteed_encounter(pokemons(:four)) { get root_path }
     token = css_select('turbo-frame#catch-pokemon form input[name="encounter"]').first&.[]('value')
 
     assert_predicate token, :present?
@@ -39,7 +39,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   test 'a forged pokemon_id is ignored in favour of the encounter' do
     catch_with(@encounter.catch_token, user_pokemon: { pokemon_id: pokemons(:one).id })
 
-    assert UserPokemon.exists?(user: @user, pokemon: pokemons(:two))
+    assert UserPokemon.exists?(user: @user, pokemon: pokemons(:four))
     assert_equal 1, user_pokemons(:one).reload.current_level
   end
 
@@ -61,7 +61,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'another user encounter is rejected and stays open' do
-    foreign = PokemonEncounter.roll!(pokemon: pokemons(:two), user: users(:user_two))
+    foreign = PokemonEncounter.roll!(pokemon: pokemons(:four), user: users(:user_two))
 
     assert_rejected { catch_with(foreign.catch_token) }
     assert_predicate foreign.reload, :open?
@@ -89,7 +89,7 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
       catch_with(@encounter.catch_token, user_id: other_user.id)
     end
 
-    assert_not UserPokemon.exists?(user_id: other_user.id, pokemon_id: pokemons(:two).id)
+    assert_not UserPokemon.exists?(user_id: other_user.id, pokemon_id: pokemons(:four).id)
   end
 
   test 'guest should not catch pokemon' do
@@ -129,6 +129,6 @@ class UserPokemonsControllerTest < ActionDispatch::IntegrationTest
 
   def assert_rejected(&)
     assert_no_difference('UserPokemon.count', &)
-    assert_includes response.body, UserPokemon::FAILURE_MESSSAGE
+    assert_includes response.body, I18n.t('pokemons.catch.failure')
   end
 end

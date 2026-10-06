@@ -5,6 +5,7 @@ require 'test_helper'
 module Pokemons
   class BalanceReportTest < ActiveSupport::TestCase
     include PokemonBattleHelpers
+    include PokemonEvolutionLineHelpers
 
     SPECIES = [
       BalanceReport::Species.new(id: 1, dex_id: 129, name: 'Weak', rarity: 1, types: %w[normal], base_hp: 20,
@@ -25,16 +26,17 @@ module Pokemons
     end
 
     test 'trainers are those who battled recently, or everyone with a full team when too few did' do
-      species = BalanceReport::Species.catalogue
-      5.times do
-        UserPokemon.create!(user: users(:user_one), pokemon: pokemons(:two), character: :brave, battle_experience: 40)
+      5.times do |index|
+        UserPokemon.create!(user: users(:user_one), pokemon: create_line_root("Line #{index}", dex_id: 10 + index),
+                            character: :brave, battle_experience: 40)
       end
+      species = BalanceReport::Species.catalogue
       create_pokemon_battle(attacker: users(:user_one), defender: User.find(2))
       full_teams = BalanceReport::Trainers.load(species)
       recent = BalanceReport::Trainers.load(species, min_trainers: 2)
 
       assert_equal [6], full_teams.map(&:size)
-      assert_equal [['First', 1, 'lucky'], ['Second', 40, 'brave']], named(full_teams).first.uniq
+      assert_equal [['First', 1, 'lucky'], ['Line 0', 40, 'brave']], named(full_teams).first.first(2)
       assert_equal [6, 1], recent.map(&:size)
     end
 

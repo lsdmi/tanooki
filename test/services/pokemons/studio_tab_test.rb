@@ -20,13 +20,13 @@ module Pokemons
       assert_equal UserPokemonListQuery.new(user).call.to_a, tab.pokemons.to_a
     end
 
-    test 'with no pokemons has empty party and no selected pokemon or descendant' do
+    test 'with no pokemons has empty party and no selected pokemon or evolution' do
       user = User.find(101) # users fixture user_101: no user_pokemons rows
       tab = StudioTab.new(user)
 
       assert_empty tab.pokemons
       assert_nil tab.selected_pokemon
-      assert_nil tab.descendant
+      assert_nil tab.evolution
     end
 
     test 'with no pokemons leaves dex leaderboard, opponent, and battle history unset' do
@@ -38,14 +38,14 @@ module Pokemons
       assert_nil tab.battle_history
     end
 
-    test 'with pokemons sets selected pokemon and descendant from the first entry' do
+    test 'with pokemons sets selected pokemon and its next evolution from the first entry' do
       user = users(:user_one)
       tab = StudioTab.new(user)
 
       first = UserPokemonListQuery.new(user).call.first
 
       assert_equal first, tab.selected_pokemon
-      assert_equal first.pokemon.descendant, tab.descendant
+      assert_equal pokemon_evolutions(:one_to_two), tab.evolution
     end
 
     test 'with pokemons sets battle history from the user' do
@@ -88,9 +88,9 @@ module Pokemons
     test 'a fresh catch shows up in the party right away' do
       user = users(:user_one)
       StudioTab.new(user)
-      CollectionUpdater.new(pokemon_id: pokemons(:three).id, user_id: user.id).trap
+      CollectionUpdater.new(pokemon_id: pokemons(:four).id, user_id: user.id).trap
 
-      assert_includes StudioTab.new(user).pokemons.map(&:pokemon), pokemons(:three)
+      assert_includes StudioTab.new(user).pokemons.map(&:pokemon), pokemons(:four)
     end
 
     test 'with pokemons exposes dex leaderboard' do

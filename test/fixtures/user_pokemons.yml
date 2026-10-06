@@ -4,7 +4,8 @@ one:
   user_id: 1
   current_level: 1
   battle_experience: 1
-  character: 'Таланистий'
+  line_root_id: 1
+  character: lucky
 
 two:
   id: 2
@@ -12,4 +13,5 @@ two:
   user_id: 2
   current_level: 1
   battle_experience: 1
-  character: 'Меткий'
+  line_root_id: 1
+  character: agile

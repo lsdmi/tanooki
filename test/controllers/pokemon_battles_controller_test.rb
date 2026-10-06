@@ -52,7 +52,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
       post battle_start_path(format: :turbo_stream), params: { defender: @defender.id }
     end
 
-    assert_includes @response.body, PokemonBattle::POTENTIAL_FRAUD_ALERT
+    assert_includes @response.body, I18n.t('pokemons.alerts.battle_unavailable')
   end
 
   test 'second battle inside the cooldown is refused' do

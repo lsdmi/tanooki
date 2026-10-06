@@ -14,7 +14,7 @@ class PokemonBattlesController < ApplicationController
       current_user.reload
       render turbo_stream: turbo_stream_with_cleared_flash(refresh_leaderboard_card, refresh_history, remove_call)
     else
-      render turbo_stream: turbo_stream_alert(PokemonBattle::POTENTIAL_FRAUD_ALERT)
+      render turbo_stream: turbo_stream_alert(t('pokemons.alerts.battle_unavailable'))
     end
   end
 

@@ -33,7 +33,7 @@ module UserProfile
   def profile_pokemon_stats
     {
       pokemon_count: pokemons.count,
-      total_pokemon: Pokemon.where(descendant_level: 0).count,
+      total_pokemon: Pokemon.wild.count,
       victories: battle_victory_count,
       total_battles: battle_total_count,
       user_rating: dex_leader_rank

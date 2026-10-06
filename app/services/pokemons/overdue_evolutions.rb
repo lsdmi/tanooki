@@ -24,9 +24,8 @@ module Pokemons
     private
 
     def candidates
-      UserPokemon.joins(:pokemon).includes(:pokemon).order(:id)
-                 .where('pokemons.descendant_id <> pokemons.id AND pokemons.descendant_level > 0')
-                 .where('user_pokemons.current_level >= pokemons.descendant_level')
+      UserPokemon.joins(pokemon: :evolutions).includes(:pokemon).distinct.order(:id)
+                 .where('user_pokemons.current_level >= pokemon_evolutions.min_level')
     end
   end
 end

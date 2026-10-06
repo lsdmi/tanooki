@@ -80,7 +80,7 @@ module Users
     setup do
       @user = users(:user_one)
       @controller = Users::OmniauthCallbacksController.new
-      encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), guest_token: 'guest-token')
+      encounter = PokemonEncounter.roll!(pokemon: pokemons(:four), guest_token: 'guest-token')
       @session = { pokemon_guest_caught: true, pokemon_encounter_id: encounter.id, pokemon_guest_token: 'guest-token' }
       @request = ActionController::TestRequest.new({}, nil, :get)
       @request.flash = { notice: 'My Notice' }

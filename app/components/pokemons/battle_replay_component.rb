@@ -5,6 +5,8 @@ module Pokemons
   # and marked), then the result. Species come from the stored teams, so a Pokémon that evolved later still shows as
   # it fought. A legacy battle has no events: a note and the result only.
   class BattleReplayComponent < ViewComponent::Base
+    include SpriteHelper
+
     Round = Data.define(:number, :attacker, :defender, :victory)
     SPRITE_RING = 'flex size-10 shrink-0 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line'
 
@@ -46,9 +48,7 @@ module Pokemons
 
     # A species deleted since the battle shows an empty ring.
     def sprite(pokemon)
-      return unless pokemon&.sprite&.attached?
-
-      image_tag(url_for(pokemon.sprite), alt: pokemon.name, class: 'size-9 object-contain')
+      pokemon_sprite_tag(pokemon, class: 'size-9 object-contain') if pokemon
     end
 
     def species_of(combatant_id)

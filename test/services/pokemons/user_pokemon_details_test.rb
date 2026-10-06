@@ -21,11 +21,18 @@ module Pokemons
       assert_predicate result, :success?
     end
 
-    test 'call data includes selected user pokemon and descendant' do
+    test 'call data includes selected user pokemon and the evolution it follows next' do
       result = @service.call
 
       assert_equal @user_pokemon, result.data[:selected_pokemon]
-      assert_equal @pokemon.descendant, result.data[:descendant]
+      assert_equal pokemon_evolutions(:one_to_two), result.data[:evolution]
+      assert_equal pokemons(:two), result.data[:evolution].to
+    end
+
+    test 'a final form has no evolution' do
+      @user_pokemon.update!(pokemon: pokemons(:two))
+
+      assert_nil UserPokemonDetails.new(@user_pokemon.user, @user_pokemon.id).call.data[:evolution]
     end
 
     test 'selected_pokemon returns user_pokemon with pokemon included' do
@@ -39,22 +46,6 @@ module Pokemons
     test 'selected_pokemon memoizes the result' do
       first_call = @service.send(:selected_pokemon)
       second_call = @service.send(:selected_pokemon)
-
-      assert_equal first_call, second_call
-      assert_same first_call, second_call
-    end
-
-    test 'descendant returns pokemon descendant when different from pokemon' do
-      descendant = @service.send(:descendant)
-
-      assert_not_nil descendant
-      assert_equal 2, descendant.id
-      assert_equal 'Second', descendant.name
-    end
-
-    test 'descendant memoizes the result' do
-      first_call = @service.send(:descendant)
-      second_call = @service.send(:descendant)
 
       assert_equal first_call, second_call
       assert_same first_call, second_call
@@ -78,21 +69,8 @@ module Pokemons
       result = @service.call
 
       assert_includes result.data.keys, :selected_pokemon
-      assert_includes result.data.keys, :descendant
+      assert_includes result.data.keys, :evolution
       assert_equal 2, result.data.keys.length
-    end
-
-    test 'descendant logic works with pokemon that has different descendant' do
-      pokemons(:one)
-      user_pokemon_with_descendant = user_pokemons(:one)
-      service_with_descendant = UserPokemonDetails.new(user_pokemon_with_descendant.user,
-                                                       user_pokemon_with_descendant.id)
-
-      descendant = service_with_descendant.send(:descendant)
-
-      assert_not_nil descendant
-      assert_equal 2, descendant.id
-      assert_equal 'Second', descendant.name
     end
   end
 end

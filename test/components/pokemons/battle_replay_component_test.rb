@@ -9,8 +9,8 @@ module Pokemons
     setup do
       @attacker = users(:user_one)
       @defender = users(:user_two)
-      UserPokemon.create!(user: @attacker, pokemon: pokemons(:two), character: :brave, battle_experience: 40)
-      UserPokemon.create!(user: @defender, pokemon: pokemons(:three), character: :hardy, battle_experience: 10)
+      UserPokemon.create!(user: @attacker, pokemon: pokemons(:four), character: :brave, battle_experience: 40)
+      UserPokemon.create!(user: @defender, pokemon: pokemons(:five), character: :hardy, battle_experience: 10)
     end
 
     test 'one card per round with both species, then the result' do
@@ -35,7 +35,9 @@ module Pokemons
     test 'shows the species each Pokémon fought as, even after it evolved' do
       battle = fought_battle
       species = fought_species(battle)
-      UserPokemon.find_each { |user_pokemon| user_pokemon.update!(pokemon: pokemons(:three)) }
+      UserPokemon.where(line_root_id: pokemons(:one).id).find_each do |user_pokemon|
+        user_pokemon.update!(pokemon: pokemons(:three))
+      end
 
       render_inline(BattleReplayComponent.new(battle:))
 

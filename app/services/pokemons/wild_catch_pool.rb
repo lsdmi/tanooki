@@ -10,7 +10,7 @@ module Pokemons
       4 => 1
     }.freeze
 
-    CACHE_KEY_PREFIX = 'pokemons/wild_catch_weighted_ids'
+    CACHE_KEY_PREFIX = 'pokemons/wild_catch_weighted_ids/v2'
 
     class << self
       def sample_id
@@ -27,11 +27,10 @@ module Pokemons
 
       private
 
+      # Only first forms are wild; rarity 5 (legendaries) has no weight, so none of them appear.
       def build_weighted_ids
-        Pokemon.pluck(:id, :rarity).flat_map do |id, rarity_value|
-          level = rarity_value.is_a?(Integer) ? rarity_value : Pokemon::RARITY_LEVELS[rarity_value]
-          weight = RARITY_WEIGHTS[level]
-          weight ? Array.new(weight, id) : []
+        Pokemon.wild.pluck(:id, :rarity).flat_map do |id, rarity|
+          Array.new(RARITY_WEIGHTS.fetch(rarity, 0), id)
         end
       end
     end

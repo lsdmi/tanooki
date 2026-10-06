@@ -103,6 +103,20 @@ pokemon_three_sprite:
   blob_id: 19
   created_at: <%= Time.now %>
 
+pokemon_four_sprite:
+  name: sprite
+  record_type: Pokemon
+  record_id: 4
+  blob_id: 19
+  created_at: <%= Time.now %>
+
+pokemon_five_sprite:
+  name: sprite
+  record_type: Pokemon
+  record_id: 5
+  blob_id: 19
+  created_at: <%= Time.now %>
+
 attachment_twenty:
   name: avatar
   record_type: Scanlator

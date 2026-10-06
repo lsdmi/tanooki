@@ -4,11 +4,13 @@
 class Pokemon < ApplicationRecord
   extend FriendlyId
 
+  # Replaced by line_root_id and pokemon_evolutions; dropped in a later deploy.
+  self.ignored_columns += %w[ancestor_id descendant_id descendant_level]
+
   friendly_id :slug_candidates
 
-  belongs_to :ancestor, class_name: 'Pokemon', inverse_of: :descendants, optional: true
-  belongs_to :descendant, class_name: 'Pokemon'
-  has_many :descendants, foreign_key: :ancestor_id, class_name: 'Pokemon', inverse_of: :ancestor, dependent: :nullify
+  belongs_to :line_root, class_name: 'Pokemon', optional: true
+  has_many :evolutions, class_name: 'PokemonEvolution', foreign_key: :from_id, inverse_of: :from, dependent: :destroy
 
   has_many :pokemon_type_relations, dependent: :destroy
   has_many :pokemon_types, through: :pokemon_type_relations
@@ -21,9 +23,7 @@ class Pokemon < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :rarity,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
-  validates :ancestor_id, :dex_id, :sprite, presence: true
-  validates :descendant_level,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 99 }
+  validates :dex_id, :sprite, presence: true
   validates :base_hp, :base_attack,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 255 }
 
@@ -38,6 +38,8 @@ class Pokemon < ApplicationRecord
   }.freeze
 
   STARTER_DEX_IDS = [1, 4, 7].freeze
+
+  scope :wild, -> { where(wild: true) }
 
   def slug_candidates
     [
@@ -58,9 +60,8 @@ class Pokemon < ApplicationRecord
     pokemon_types
   end
 
-  # Final forms point to themselves with level 0.
-  def evolves_at?(level)
-    descendant_id != id && descendant_level.positive? && level >= descendant_level
+  def evolution_for(character)
+    evolutions.find { |evolution| evolution.for?(character) }
   end
 
   private

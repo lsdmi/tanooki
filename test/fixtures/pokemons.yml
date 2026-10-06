@@ -3,9 +3,8 @@ one:
   slug: 'one'
   name: 'First'
   rarity: 1
-  ancestor_id: 1
-  descendant_id: 2
-  descendant_level: 16
+  line_root_id: 1
+  wild: true
   dex_id: 1
   base_hp: 45
   base_attack: 65
@@ -15,23 +14,41 @@ two:
   slug: 'two'
   name: 'Second'
   rarity: 1
-  ancestor_id: 1
-  descendant_id: 2
-  descendant_level: 0
+  line_root_id: 1
   dex_id: 2
   base_hp: 60
   base_attack: 80
 
-# Evolved forms are rarity 5, which keeps them out of the wild pool. Tests make it stage 3 by pointing two at it.
+# Not wild, so it stays out of the wild pool. Tests make it stage 3 by giving two an evolution into it.
 three:
   id: 3
   slug: 'three'
   name: 'Third'
   rarity: 5
-  ancestor_id: 1
-  descendant_id: 3
-  descendant_level: 0
+  line_root_id: 1
   dex_id: 3
   base_hp: 80
   base_attack: 100
 
+# Two more lines, so a trainer can own several Pokémon (one per line).
+four:
+  id: 4
+  slug: 'four'
+  name: 'Fourth'
+  rarity: 2
+  line_root_id: 4
+  wild: true
+  dex_id: 4
+  base_hp: 39
+  base_attack: 60
+
+five:
+  id: 5
+  slug: 'five'
+  name: 'Fifth'
+  rarity: 3
+  line_root_id: 5
+  wild: true
+  dex_id: 7
+  base_hp: 44
+  base_attack: 50

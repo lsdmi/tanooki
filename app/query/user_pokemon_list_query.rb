@@ -8,7 +8,7 @@ class UserPokemonListQuery
 
   def call
     UserPokemon
-      .includes(pokemon: :sprite_attachment)
+      .includes(pokemon: { sprite_attachment: :blob })
       .where(user_id: @user.id)
       .order('pokemons.dex_id')
   end

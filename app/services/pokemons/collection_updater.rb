@@ -23,7 +23,7 @@ module Pokemons
     private
 
     def sample_character
-      UserPokemon.characters.to_a.sample.second
+      UserPokemon::CHARACTERS.sample
     end
 
     def starter
@@ -31,12 +31,8 @@ module Pokemons
     end
 
     def find_or_create_user_pokemon
-      pokemon_data.descendants.each do |pokemon|
-        user_pokemon = UserPokemon.find_by(user_id:, pokemon_id: pokemon.id)
-        return user_pokemon if user_pokemon
-      end
-
-      UserPokemon.create!(user_id:, pokemon_id:, character: sample_character)
+      UserPokemon.joins(:pokemon).find_by(user_id:, pokemons: { line_root_id: pokemon_data.line_root_id }) ||
+        UserPokemon.create!(user_id:, pokemon_id:, character: sample_character)
     end
 
     def pokemon_data

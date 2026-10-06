@@ -5,7 +5,8 @@ class UserPokemonsController < ApplicationController
   include Pokemons::GameActions
 
   helper Pokemons::DexHelper,
-         Pokemons::StatsHelper
+         Pokemons::StatsHelper,
+         Pokemons::SpriteHelper
 
   before_action :authenticate_user!
   pokemon_rate_limit to: 10, only: :create
@@ -14,7 +15,7 @@ class UserPokemonsController < ApplicationController
 
   def create
     caught = Pokemons::Catch.new(current_user, params[:encounter]).call
-    message = caught ? UserPokemon::SUCCESS_MESSSAGE : UserPokemon::FAILURE_MESSSAGE
+    message = t(caught ? 'pokemons.catch.success' : 'pokemons.catch.failure')
     render turbo_stream: [remove_pokemon, *update_notice(message)]
   end
 
@@ -43,7 +44,7 @@ class UserPokemonsController < ApplicationController
   end
 
   def refresh_error_screen
-    turbo_stream_alert(UserPokemon::TRAINING_FRAUD_ALERT)
+    turbo_stream_alert(t('pokemons.alerts.training_unavailable'))
   end
 
   def refresh_screen
@@ -52,7 +53,7 @@ class UserPokemonsController < ApplicationController
     turbo_stream.update(
       'pokemon-data-screen',
       partial: 'users/pokemons/list',
-      locals: { pokemons:, selected_pokemon:, descendant: selected_pokemon.pokemon.descendant }
+      locals: { pokemons:, selected_pokemon:, evolution: selected_pokemon.next_evolution }
     )
   end
 

@@ -36,7 +36,7 @@ class AuthorizationRegressionTest < ActionDispatch::IntegrationTest
     sign_in users(:user_one)
     other_user = users(:user_two)
     UserPokemon.where(user_id: [users(:user_one).id, other_user.id], pokemon_id: 2).destroy_all
-    encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), user: users(:user_one))
+    encounter = PokemonEncounter.roll!(pokemon: pokemons(:four), user: users(:user_one))
 
     assert_difference -> { users(:user_one).user_pokemons.reload.count }, 1 do
       post catch_pokemon_path, params: { encounter: encounter.catch_token, user_id: other_user.id }

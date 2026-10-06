@@ -15,7 +15,7 @@ module Pokemons
         user: @third,
         current_level: 1,
         battle_experience: 1,
-        character: 'Таланистий'
+        character: 'lucky'
       )
 
       @first.trainer_profile.update!(rating: 80)
@@ -50,9 +50,9 @@ module Pokemons
     end
 
     test 'counts and orders a user with several Pokémon once' do
-      2.times do
-        UserPokemon.create!(pokemon_id: pokemons(:one).id, user: @first, current_level: 1, battle_experience: 1,
-                            character: 'Таланистий')
+      %i[four five].each do |species|
+        UserPokemon.create!(pokemon: pokemons(species), user: @first, current_level: 1, battle_experience: 1,
+                            character: 'lucky')
       end
 
       assert_equal 3, DexLeaderboard.new.size

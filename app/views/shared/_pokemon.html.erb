@@ -5,11 +5,11 @@
             style: "left: min(#{rand(5..85)}vw, calc(100vw - 8rem)); top: min(#{rand(5..85)}vh, calc(100vh - 8rem));" do %>
   <% if current_user.present? %>
     <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, aria: { label: }, data: { turbo_stream: "", "turbo-method": :post } do %>
-      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'cursor-pointer max-h-24 max-w-24' %>
+      <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'cursor-pointer max-h-24 max-w-24 object-contain') %>
     <% end %>
   <% else %>
     <%= link_to register_path(pokenotice: true), aria: { label: }, data: { turbo_frame: '_top' } do %>
-      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'cursor-pointer max-h-24 max-w-24' %>
+      <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'cursor-pointer max-h-24 max-w-24 object-contain') %>
     <% end %>
   <% end %>
 <% end %>

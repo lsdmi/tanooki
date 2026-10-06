@@ -25,7 +25,22 @@ module Pokemons
       UserPokemon.where(user_id: @user_pokemon.user_id).delete_all
 
       assert_difference('UserPokemon.count') { trap(pokemons(:one)) }
-      assert_equal 1, UserPokemon.find_by(user_id: @user_pokemon.user_id).current_level
+
+      caught = UserPokemon.find_by(user_id: @user_pokemon.user_id)
+
+      assert_equal [1, pokemons(:one).id], [caught.current_level, caught.line_root_id]
+      assert_includes UserPokemon::CHARACTERS, caught.character
+    end
+
+    test 'catching any form of an owned line levels the owned Pokémon' do
+      assert_no_difference('UserPokemon.count') { trap(pokemons(:two)) }
+      assert_equal 2, @user_pokemon.reload.current_level
+    end
+
+    test 'a user cannot hold two Pokémon of one line' do
+      duplicate = UserPokemon.new(user_id: @user_pokemon.user_id, pokemon: pokemons(:two), character: 'brave')
+
+      assert_raises(ActiveRecord::RecordNotUnique) { duplicate.save! }
     end
 
     private

@@ -3,7 +3,8 @@
 # Authenticated profile updates and Pokemon detail refreshes in Studio.
 class UsersController < ApplicationController
   helper Pokemons::DexHelper,
-         Pokemons::StatsHelper
+         Pokemons::StatsHelper,
+         Pokemons::SpriteHelper
 
   include FictionQuery
   include UserUpdateable
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
     turbo_stream.replace(
       'pokemon-details',
       partial: 'users/pokemons/details',
-      locals: { selected_pokemon: data[:selected_pokemon], descendant: data[:descendant] }
+      locals: { selected_pokemon: data[:selected_pokemon], evolution: data[:evolution] }
     )
   end
 end

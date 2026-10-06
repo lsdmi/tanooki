@@ -3,7 +3,7 @@
 module Pokemons
   # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history.
   class StudioTab
-    attr_reader :user, :pokemons, :selected_pokemon, :descendant, :dex_leaderboard,
+    attr_reader :user, :pokemons, :selected_pokemon, :evolution, :dex_leaderboard,
                 :opponent, :battle_history
 
     def initialize(user)
@@ -26,7 +26,7 @@ module Pokemons
 
     def assign_pokemon_details
       @selected_pokemon = @pokemons.first
-      @descendant = Pokemon.find_by(id: @selected_pokemon.pokemon.descendant_id)
+      @evolution = @selected_pokemon.next_evolution
       @dex_leaderboard = Pokemons::DexLeaderboard.new
       assign_opponent
       @battle_history = user.latest_battle

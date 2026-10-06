@@ -20,7 +20,7 @@
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
     <%= turbo_frame_tag "pokemon-data-screen", class: 'flex min-w-0 flex-col gap-6' do %>
-      <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, descendant: pokemon_show.descendant %>
+      <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, evolution: pokemon_show.evolution %>
     <% end %>
 
     <div class="flex min-w-0 flex-col gap-6">

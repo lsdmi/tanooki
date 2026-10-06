@@ -1,0 +1,4 @@
+one_to_two:
+  from_id: 1
+  to_id: 2
+  min_level: 16

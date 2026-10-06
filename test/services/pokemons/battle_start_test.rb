@@ -7,8 +7,8 @@ module Pokemons
     setup do
       @attacker = users(:user_one)
       @defender = users(:user_two)
-      UserPokemon.create!(user: @attacker, pokemon: pokemons(:two), character: :brave, battle_experience: 40)
-      UserPokemon.create!(user: @defender, pokemon: pokemons(:three), character: :hardy, battle_experience: 10)
+      UserPokemon.create!(user: @attacker, pokemon: pokemons(:four), character: :brave, battle_experience: 40)
+      UserPokemon.create!(user: @defender, pokemon: pokemons(:five), character: :hardy, battle_experience: 10)
     end
 
     test 'fights the pinned opponent and updates both ratings' do

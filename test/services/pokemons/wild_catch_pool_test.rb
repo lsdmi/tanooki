@@ -17,6 +17,13 @@ module Pokemons
       assert Pokemon.exists?(sampled)
     end
 
+    test 'only first forms appear in the wild' do
+      ids = WildCatchPool.weighted_ids.uniq
+
+      assert_equal Pokemon.wild.ids.sort, ids.sort
+      assert_not_includes ids, pokemons(:two).id
+    end
+
     test 'rarity level 1 is weighted higher than level 4' do
       level_one_count = WildCatchPool.weighted_ids.count { |id| id == pokemons(:one).id }
       level_four_weight = WildCatchPool::RARITY_WEIGHTS[4]

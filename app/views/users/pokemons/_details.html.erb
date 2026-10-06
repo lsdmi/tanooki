@@ -3,7 +3,7 @@
             'Удар' => stat_tier_label(pokemon, :strike), 'Рідкість' => t("activerecord.enum.rarity.#{pokemon.rarity}") } %>
 <% record = { 'Бойовий досвід' => experience_to_sentence(selected_pokemon.battle_experience),
               'Вік' => time_ago_in_words(selected_pokemon.created_at),
-              'Норов' => UserPokemon.characters[selected_pokemon.character] } %>
+              'Норов' => selected_pokemon.character_label } %>
 <%= render Pokemons::PanelComponent.new(title: "##{pokemon.dex_id} #{selected_pokemon.pokemon_name}", id: 'pokemon-details') do |panel| %>
   <% panel.with_action do %>
     <% if training_cooldown?(current_user) %>
@@ -23,7 +23,7 @@
 
   <div class="flex items-center gap-4">
     <div class="flex size-20 shrink-0 items-center justify-center rounded-xl bg-surface ring-1 ring-inset ring-line">
-      <%= image_tag url_for(pokemon.sprite), alt: pokemon.name, class: 'size-18 object-contain' %>
+      <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'size-18 object-contain') %>
     </div>
     <div class="flex min-w-0 flex-col gap-2">
       <div class="flex flex-wrap gap-1.5">
@@ -49,13 +49,14 @@
     <% end %>
   </div>
 
-  <% if descendant.present? && descendant.id != pokemon.id %>
-    <% target = pokemon.descendant_level %>
+  <% if evolution %>
+    <% descendant = evolution.to %>
+    <% target = evolution.min_level %>
     <div class="flex flex-col gap-1">
       <h3 class="text-xs/4 font-semibold uppercase tracking-wide text-fg-muted">Еволюція</h3>
       <div class="flex items-center gap-3 rounded-lg bg-surface p-3 ring-1 ring-inset ring-line">
         <div class="flex size-14 shrink-0 items-center justify-center rounded-lg bg-main ring-1 ring-inset ring-line">
-          <%= image_tag url_for(descendant.sprite), alt: descendant.name, loading: :lazy, class: 'size-12 object-contain' %>
+          <%= pokemon_sprite_tag(descendant, class: 'size-12 object-contain') %>
         </div>
         <div class="flex min-w-0 flex-1 flex-col gap-1.5">
           <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">

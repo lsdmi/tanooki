@@ -14,7 +14,7 @@ module Users
     end
 
     test 'guest wild encounter transfers once on login' do
-      pokemon = pokemons(:two)
+      pokemon = pokemons(:four)
       UserPokemon.where(user: @user, pokemon:).destroy_all
 
       with_guaranteed_encounter(pokemon) { get root_path }
@@ -71,7 +71,7 @@ module Users
     setup do
       @user = users(:user_one)
       @controller = Users::SessionsController.new
-      encounter = PokemonEncounter.roll!(pokemon: pokemons(:two), guest_token: 'guest-token')
+      encounter = PokemonEncounter.roll!(pokemon: pokemons(:four), guest_token: 'guest-token')
       @session = { pokemon_guest_caught: true, pokemon_encounter_id: encounter.id, pokemon_guest_token: 'guest-token' }
     end
 

@@ -2,3 +2,13 @@ one:
   id: 1
   pokemon_id: 1
   pokemon_type_id: 1
+
+four:
+  id: 2
+  pokemon_id: 4
+  pokemon_type_id: 1
+
+five:
+  id: 3
+  pokemon_id: 5
+  pokemon_type_id: 1

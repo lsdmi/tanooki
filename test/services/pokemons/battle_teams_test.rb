@@ -7,7 +7,7 @@ module Pokemons
     setup do
       @attacker = users(:user_one)
       @defender = users(:user_two)
-      @brave = UserPokemon.create!(user: @attacker, pokemon: pokemons(:two), character: :brave, battle_experience: 40)
+      @brave = UserPokemon.create!(user: @attacker, pokemon: pokemons(:four), character: :brave, battle_experience: 40)
     end
 
     test 'loads both teams with one preload, whatever the team size' do
