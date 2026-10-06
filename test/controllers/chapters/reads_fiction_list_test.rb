@@ -54,5 +54,42 @@ module Chapters
       assert_select "#{@row}[data-chapter-status=unread] button[aria-label=?]",
                     I18n.t('chapters.reader_chapter_drawer.mark_read')
     end
+
+    test 'reading the continue chapter moves the continue row and the chip to the next chapter' do
+      following = continue_from_two
+      post chapter_read_url(chapters(:two)), params: { fiction_list: 1 }, as: :turbo_stream
+
+      assert_select "#{row(chapters(:two))}[data-chapter-status=read]:not([data-chapter-continue])"
+      assert_select "#{row(following)}[data-chapter-status=unread][data-chapter-continue]"
+      assert_select 'turbo-stream[action=update][target=chapter_continue_chip] template',
+                    text: /До поточного розділу · 3/
+    end
+
+    test 'unmarking it brings the continue row back' do
+      following = continue_from_two
+      post chapter_read_url(chapters(:two)), params: { fiction_list: 1 }, as: :turbo_stream
+      delete chapter_read_url(chapters(:two)), params: { fiction_list: 1 }, as: :turbo_stream
+
+      assert_select "#{row(chapters(:two))}[data-chapter-continue]"
+      assert_select "#{row(following)}:not([data-chapter-continue])"
+    end
+
+    test 'a toggle that leaves the continue target alone re-renders only its own row' do
+      continue_from_two
+      post chapter_read_url(@chapter), params: { fiction_list: 1 }, as: :turbo_stream
+
+      assert_select 'turbo-stream', count: 1
+    end
+
+    private
+
+    def row(chapter) = "li#chapter_list_chapter_#{chapter.id}"
+
+    def continue_from_two
+      reading_progresses(:one).update!(resume_at: Time.current)
+      sign_in @user
+      Chapter.create!(fiction: fictions(:one), user: @user, title: 'Chapter 3', number: 3, content: 'x' * 500,
+                      scanlator_ids: [scanlators(:one).id])
+    end
   end
 end

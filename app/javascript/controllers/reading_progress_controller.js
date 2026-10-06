@@ -2,13 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
 import { applyReadingEvent } from "guest_reading"
 import { updateRecord } from "guest_reading_store"
+import { fitsScreen, isCompleted, isEngaged, seenFraction } from "reading_progress_rules"
 
-const MIN_DWELL_MS = 4000
-const ENGAGED_DWELL_MS = 8000
-const ENGAGED_DWELL_SEEN = 0.15
-const ENGAGED_SCROLL_SEEN = 0.25
-const COMPLETED_SEEN = 0.9
-const NEXT_SEEN = 0.7
 const TICK_MS = 1000
 const POSITION_DEBOUNCE_MS = 1000
 const POSITION_FLUSH_MS = 5000
@@ -19,7 +14,6 @@ const QUOTE_LENGTH = 120
 // Dwell counts only while the tab is visible and #user-content is on screen and unlocked.
 // "Seen" is the furthest fraction of #user-content that has entered the viewport; ads,
 // comments and the support card sit outside it and do not count.
-// One-screen chapters are fully "seen" on load, so for them only dwell proves reading.
 // Turbo prefetch fetches HTML without connecting Stimulus, so prefetch never records.
 //
 // Once engaged, the in-chapter position (first visible [data-rp-i] block, its quote, percent and
@@ -68,7 +62,7 @@ export default class extends Controller {
     if (this.element.isConnected) this.start()
   }
 
-  // «Наступний розділ»: counts as finishing only past NEXT_SEEN (or after the one-screen dwell).
+  // «Наступний розділ» counts as finishing from a lower share of the text than scrolling does.
   next() {
     if (!this.trackedUrl || this.completed) return
 
@@ -76,7 +70,7 @@ export default class extends Controller {
     if (!rect || !this.isEngaged(rect)) return
 
     this.engage()
-    if (this.fits(rect) || this.seen >= NEXT_SEEN) this.complete("next")
+    if (isCompleted({ seen: this.seen, fits: this.fits(rect) }, "next")) this.complete("next")
   }
 
   start() {
@@ -224,7 +218,7 @@ export default class extends Controller {
     if (!rect || !this.isEngaged(rect)) return
 
     this.engage()
-    if (this.fits(rect) || this.seen >= COMPLETED_SEEN) this.complete("scroll")
+    if (isCompleted({ seen: this.seen, fits: this.fits(rect) }, "scroll")) this.complete("scroll")
   }
 
   measureSeen() {
@@ -233,10 +227,7 @@ export default class extends Controller {
     const rect = this.content.getBoundingClientRect()
     if (rect.height <= 0) return null
 
-    if (this.readable()) {
-      const seen = (window.innerHeight - rect.top) / rect.height
-      this.seen = Math.max(this.seen, Math.min(1, Math.max(0, seen)))
-    }
+    if (this.readable()) this.seen = seenFraction(this.seen, rect, window.innerHeight)
     return rect
   }
 
@@ -248,15 +239,11 @@ export default class extends Controller {
 
   // Re-evaluated on every measure: resize or a font change can flip a chapter in or out of one screen.
   fits(rect) {
-    return rect.height <= window.innerHeight
+    return fitsScreen(rect, window.innerHeight)
   }
 
   isEngaged(rect) {
-    if (this.dwellMs < MIN_DWELL_MS) return false
-    if (this.fits(rect)) return this.dwellMs >= ENGAGED_DWELL_MS
-
-    return (this.dwellMs >= ENGAGED_DWELL_MS && this.seen >= ENGAGED_DWELL_SEEN) ||
-      this.seen >= ENGAGED_SCROLL_SEEN
+    return isEngaged({ dwellMs: this.dwellMs, seen: this.seen, fits: this.fits(rect) })
   }
 
   engage() {

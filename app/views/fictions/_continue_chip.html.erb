@@ -1,0 +1,14 @@
+<%# locals: continue_chapter: %>
+<% if continue_chapter %>
+  <button type="button"
+          class="fixed inset-x-0 bottom-6 z-40 mx-auto flex w-max items-center gap-2 rounded-full bg-invert py-2 pr-3 pl-4 text-xs/5 text-fg-on-invert shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+          hidden
+          data-chapter-jump-target="chip"
+          data-chapter-id="<%= continue_chapter.id %>"
+          data-section-key="<%= Chapters::ListSectionIndex.section_key_for(continue_chapter) %>"
+          data-action="chapter-jump#toCurrent scroll@window->chapter-jump#track resize@window->chapter-jump#track tabs:activated@window->chapter-jump#track">
+    <%= t('fictions.chapters_tab.to_current', number: Chapters::Formatting.format_decimal(continue_chapter.number)) %>
+    <span class="flex" data-chapter-jump-target="chipUp"><%= stroke_icon(:arrow_up) %></span>
+    <span class="flex" hidden data-chapter-jump-target="chipDown"><%= stroke_icon(:arrow_down) %></span>
+  </button>
+<% end %>

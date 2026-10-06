@@ -34,6 +34,7 @@ pin 'channels/index', preload: false
 pin_all_from 'app/javascript/translation_requests', under: 'translation_requests', preload: false
 pin 'reader_preferences', preload: false
 pin 'reading_resume', preload: false
+pin 'reading_progress_rules', preload: false
 pin 'guest_reading', preload: false
 pin 'guest_reading_store', preload: false
 pin 'safe_logo_src', preload: false

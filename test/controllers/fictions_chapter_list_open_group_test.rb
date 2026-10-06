@@ -32,7 +32,8 @@ class FictionsChapterListOpenGroupTest < ActionDispatch::IntegrationTest
     sign_in @user
     get fiction_url(@fiction)
 
-    assert_select "#chapters-list [data-chapters-accordion-focus-row-value='chapter_list_chapter_#{chapters(:two).id}']"
+    assert_select '#chapters-list li[data-chapter-continue]', count: 1
+    assert_select "#chapters-list li#chapter_list_chapter_#{chapters(:two).id}[data-chapter-continue]"
   end
 
   test 'the open group renders through the continue row and keeps it on phones' do
@@ -49,7 +50,7 @@ class FictionsChapterListOpenGroupTest < ActionDispatch::IntegrationTest
 
     assert_select "#{OPEN_PAGER}[data-chapter-group-pager-url-value*='section=r-101-200']"
     assert_select "#{OPEN_PAGER} > ul[class*='nth-child']"
-    assert_select '[data-chapters-accordion-focus-row-value]', count: 0
+    assert_select '[data-chapter-continue]', count: 0
   end
 
   test 'a reader who has read everything gets the first group' do

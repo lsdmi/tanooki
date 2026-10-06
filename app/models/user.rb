@@ -5,10 +5,6 @@ class User < ApplicationRecord
   include NormalizesWhitespace
   include UserProfile
 
-  # Moved to trainer_profiles; dropped in a later deploy.
-  self.ignored_columns += %w[battle_win_rate pokemon_last_catch pokemon_last_training pinned_opponent_id pinned_until
-                             opponent_rerolled_at]
-
   normalizes :email, with: ->(email) { email.strip.downcase }
   normalizes_squished :name
 

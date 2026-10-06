@@ -2,13 +2,14 @@
 <% reader_drawer = local_assigns.fetch(:reader_drawer, false) %>
 <% drawer_progress = local_assigns[:drawer_progress] %>
 <% status = drawer_progress ? reader_drawer_chapter_status(chapter, drawer_progress:) : :unread %>
-<% title_class = chapter_row_title_class(status, reader_drawer:) %>
-<% row_class = chapter_row_class(status, reader_drawer:) %>
+<% continue_row = !reader_drawer && drawer_progress&.continue?(chapter) %>
+<% title_class = chapter_row_title_class(status, reader_drawer:, continue: continue_row) %>
+<% row_class = chapter_row_class(status, reader_drawer:, continue: continue_row) %>
 <% row_attributes = if reader_drawer
   { id: dom_id(chapter, :reader_drawer),
     data: { chapter_drawer_search_target: 'row', chapter_id: chapter.id, chapter_status: status } }
 elsif drawer_progress
-  { id: dom_id(chapter, :chapter_list), data: { chapter_status: status } }
+  { id: dom_id(chapter, :chapter_list), data: { chapter_status: status, chapter_continue: (true if continue_row) } }
 else
   {}
 end %>
@@ -49,7 +50,6 @@ end %>
     <% end %>
   <% else %>
     <% toggle = drawer_progress&.toggleable? %>
-    <% continue_row = status == :in_progress %>
     <% mobile_title, desktop_title = chapter_list_row_titles(chapter) %>
     <%# The title link stretches over the row; team links and the toggle sit above it. %>
     <div class="relative flex items-center gap-3 rounded-lg p-3 transition-colors <%= row_class %>">
@@ -59,7 +59,7 @@ end %>
       <div class="flex min-w-0 flex-1 flex-col gap-1">
         <%= link_to chapter_path(chapter), turbo_drive_visit_data.merge(class: "truncate rounded-sm text-sm/5 font-medium after:absolute after:inset-0 after:rounded-lg focus:outline-none focus-visible:after:ring-2 focus-visible:after:ring-line-strong #{title_class}") do %>
           <span class="md:hidden"><%= mobile_title %></span><span class="hidden md:inline"><%= desktop_title %></span>
-          <% if toggle && continue_row %>
+          <% if toggle && status == :in_progress %>
             <span class="sr-only"><%= t('chapters.reader_chapter_drawer.progress_in_progress') %></span>
           <% end %>
         <% end %>

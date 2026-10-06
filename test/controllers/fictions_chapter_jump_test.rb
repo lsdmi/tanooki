@@ -63,9 +63,9 @@ class FictionsChapterJumpTest < ActionDispatch::IntegrationTest
     sign_in @user
     get fiction_url(@fiction)
 
-    assert_select "[data-chapter-jump-continue-id-value='#{chapters(:two).id}']" \
-                  "[data-chapter-jump-continue-section-value='r-1-100']"
-    assert_select "[data-chapter-jump-target='chip'][hidden]", text: /До поточного розділу · 2/
+    assert_select "#chapter_continue_chip [data-chapter-jump-target='chip'][hidden]" \
+                  "[data-chapter-id='#{chapters(:two).id}'][data-section-key='r-1-100']",
+                  text: /До поточного розділу · 2/
   end
 
   test 'guests get sticky group headers and no chip' do

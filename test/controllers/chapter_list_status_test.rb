@@ -38,6 +38,19 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     assert_select 'li[data-chapter-status=in_progress] > div.bg-brand-subtle', text: /Продовжити/
   end
 
+  test 'once the resume chapter is read to the end the next chapter is the continue row and stays unread' do
+    following = Chapter.create!(fiction: @fiction, user: @user, title: 'Chapter 3', number: 3, content: 'x' * 500,
+                                scanlator_ids: [scanlators(:one).id])
+    ReadingChapterRead.create!(user: @user, fiction: @fiction, chapter: chapters(:two), completed_at: Time.current,
+                               source: 'scroll')
+    sign_in @user
+    get fiction_url(@fiction)
+
+    assert_select "li#chapter_list_chapter_#{following.id}[data-chapter-status=unread][data-chapter-continue] " \
+                  '> div.bg-brand-subtle', text: /Продовжити/
+    assert_select 'li[data-chapter-continue]', count: 1
+  end
+
   test 'lazy fiction page sections carry the same statuses' do
     sign_in @user
     get chapter_section_fiction_path(@fiction, section: 'r-1-100', order: 'asc')

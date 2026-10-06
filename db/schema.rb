@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_130100) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -265,7 +265,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
   create_table "pokemon_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "key", limit: 16, null: false
-    t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_pokemon_types_on_key", unique: true
   end
@@ -365,6 +364,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
     t.float "duration_ms_p95", null: false
     t.float "duration_ms_sum", null: false
     t.string "endpoint", null: false
+    t.string "error_sample", limit: 500
     t.datetime "period_start", null: false
     t.integer "queries_p95", null: false
     t.integer "queries_sum", null: false
@@ -596,7 +596,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
     t.boolean "admin", default: false
     t.date "adult_content_acknowledged_at"
     t.bigint "avatar_id"
-    t.integer "battle_win_rate", default: 50
     t.datetime "confirmation_sent_at"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
@@ -605,16 +604,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_210000) do
     t.string "encrypted_password", default: "", null: false
     t.bigint "latest_read_comment_id"
     t.string "name", null: false
-    t.datetime "opponent_rerolled_at"
-    t.bigint "pinned_opponent_id"
-    t.datetime "pinned_until"
-    t.datetime "pokemon_last_catch", default: "2023-09-18 02:18:35"
-    t.datetime "pokemon_last_training", default: "2023-11-02 02:58:41"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.index ["avatar_id"], name: "index_users_on_avatar_id"
-    t.index ["battle_win_rate", "id"], name: "index_users_on_dex_rank", order: { battle_win_rate: :desc }
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["latest_read_comment_id"], name: "index_users_on_latest_read_comment_id"

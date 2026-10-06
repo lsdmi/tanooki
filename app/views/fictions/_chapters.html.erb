@@ -27,8 +27,7 @@
   <section class="flex flex-col gap-6 md:gap-5"
            data-controller="chapter-jump"
            data-chapter-jump-url-value="<%= chapter_jump_fiction_path(fiction, order:) %>"
-           data-chapter-jump-failed-value="<%= t('fictions.chapters_tab.jump.failed') %>"
-           <%= tag.attributes(data: { chapter_jump_continue_id_value: continue_chapter&.id, chapter_jump_continue_section_value: (Chapters::ListSectionIndex.section_key_for(continue_chapter) if continue_chapter) }) %>>
+           data-chapter-jump-failed-value="<%= t('fictions.chapters_tab.jump.failed') %>">
     <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3">
       <div class="flex min-w-0 flex-col gap-1">
         <p class="text-base/6 font-semibold text-fg">
@@ -91,16 +90,8 @@
       <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress, continue_chapter: %>
     </div>
 
-    <% if continue_chapter %>
-      <button type="button"
-              class="fixed inset-x-0 bottom-6 z-40 mx-auto flex w-max items-center gap-2 rounded-full bg-invert py-2 pr-3 pl-4 text-xs/5 text-fg-on-invert shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
-              hidden
-              data-chapter-jump-target="chip"
-              data-action="chapter-jump#toCurrent scroll@window->chapter-jump#track resize@window->chapter-jump#track tabs:activated@window->chapter-jump#track">
-        <%= t('fictions.chapters_tab.to_current', number: Chapters::Formatting.format_decimal(continue_chapter.number)) %>
-        <span class="flex" data-chapter-jump-target="chipUp"><%= stroke_icon(:arrow_up) %></span>
-        <span class="flex" hidden data-chapter-jump-target="chipDown"><%= stroke_icon(:arrow_down) %></span>
-      </button>
+    <% if list_progress %>
+      <div id="chapter_continue_chip"><%= render 'fictions/continue_chip', continue_chapter: %></div>
     <% end %>
 
     <% if list_progress %>

@@ -9,26 +9,31 @@ const HIGHLIGHT_MS = 2000
  *
  * The «До поточного розділу» chip shows while the reader is in the list and the continue row is off screen (scrolled
  * away, in a collapsed group, or swapped out by a jump); its arrow points at the row or its group. A click brings the
- * row back the same way, loading its window when it is not on the page.
+ * row back the same way, loading its window when it is not on the page. The chip carries the continue chapter id
+ * and group key, and a read toggle that moves the target re-renders it.
  */
 export default class extends Controller {
   static targets = ["input", "clear", "error", "chip", "chipUp", "chipDown"]
-  static values = { url: String, failed: String, continueId: Number, continueSection: String }
+  static values = { url: String, failed: String }
 
   disconnect() {
     this.abortController?.abort()
     clearTimeout(this.highlightTimer)
   }
 
+  // A read toggle swaps the chip, and the new one may connect before the old one disconnects.
   chipTargetConnected() {
-    this.observer = new MutationObserver(() => this.track())
+    this.observer ??= new MutationObserver(() => this.track())
     this.observer.observe(this.element, { childList: true, subtree: true, attributeFilter: ["class"] })
     this.track()
   }
 
   chipTargetDisconnected() {
+    if (this.hasChipTarget) return
+
     this.observer?.disconnect()
     cancelAnimationFrame(this.trackFrame)
+    this.trackFrame = null
   }
 
   edit() {
@@ -55,7 +60,7 @@ export default class extends Controller {
     if (row?.offsetParent) {
       this.reveal(row)
     } else {
-      this.request({ chapter_id: this.continueIdValue }, false)
+      this.request({ chapter_id: this.chipTarget.dataset.chapterId }, false)
     }
   }
 
@@ -155,12 +160,12 @@ export default class extends Controller {
   }
 
   get continueRow() {
-    return document.getElementById(`chapter_list_chapter_${this.continueIdValue}`)
+    return document.getElementById(`chapter_list_chapter_${this.chipTarget.dataset.chapterId}`)
   }
 
   get continueGroup() {
     return Array.from(this.element.querySelectorAll(".accordion")).find(
-      (node) => node.dataset.sectionKey === this.continueSectionValue,
+      (node) => node.dataset.sectionKey === this.chipTarget.dataset.sectionKey,
     )
   }
 

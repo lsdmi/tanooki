@@ -33,15 +33,16 @@ module Analytics
 
     def add_event(event)
       payload = event.payload
-      add(endpoint: "#{payload[:controller]}##{payload[:action]}", status: payload[:status].to_i,
-          duration_ms: event.duration, **runtime_values(payload))
+      status = payload[:status].to_i
+      add(endpoint: "#{payload[:controller]}##{payload[:action]}", status:, duration_ms: event.duration,
+          error: (error_sample(payload) if status >= 500), **runtime_values(payload))
     rescue StandardError => e
       @logger.error("[RequestStats] skipped a request: #{e.class}: #{e.message}")
     end
 
-    def add(endpoint:, status:, **values)
+    def add(endpoint:, status:, error: nil, **values)
       @mutex.synchronize do
-        (@buckets[endpoint] ||= RequestStatsBucket.new(@max_samples)).add(status, values)
+        (@buckets[endpoint] ||= RequestStatsBucket.new(@max_samples)).add(status, values, error)
         @thread = Thread.new { run } if @background && !@thread&.alive?
       end
     end
@@ -71,6 +72,13 @@ module Analytics
     def runtime_values(payload)
       { db_ms: payload[:db_runtime].to_f, view_ms: payload[:view_runtime].to_f,
         queries: payload[:queries_count].to_i, bytes: response_bytes(payload[:response]) }
+    end
+
+    def error_sample(payload)
+      error = payload[:exception_object]
+      line = error && Rails.backtrace_cleaner.clean(error.backtrace.to_a).first
+      [error && "#{error.class}: #{error.message}", line && "at #{line}", "(#{payload[:method]} #{payload[:path]})"]
+        .compact.join(' ').squish.truncate(500)
     end
 
     def response_bytes(response)

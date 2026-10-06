@@ -37,6 +37,20 @@ module Analytics
       assert_equal Time.zone.at((Time.current.to_i / 3600) * 3600), RequestStat.last.period_start
     end
 
+    test 'keeps the first server error of the hour with its app line and path' do
+      first = NoMethodError.new("undefined method 'filename' for nil")
+      first.set_backtrace(["#{Rails.root.join('app/views/fictions/_fiction_details.html.erb')}:12:in 'block'",
+                           '/gems/actionview/lib/action_view/template.rb:1:in render'])
+      @stats.add_event(details_event(first, '/fictions/7/details?variant=hot_novelty'))
+      @stats.add_event(details_event(RuntimeError.new('later'), '/fictions/8/details'))
+      @stats.flush
+
+      assert_equal [2, "NoMethodError: undefined method 'filename' for nil at " \
+                       "app/views/fictions/_fiction_details.html.erb:12:in 'block' " \
+                       '(GET /fictions/7/details?variant=hot_novelty)'],
+                   RequestStat.last.values_at(:server_errors, :error_sample)
+    end
+
     test 'nothing to write, no query' do
       assert_no_queries { @stats.flush }
     end
@@ -74,6 +88,14 @@ module Analytics
 
       assert_difference('RequestStat.count', 1) { stats.stop }
       assert_not thread.alive?
+    end
+
+    private
+
+    def details_event(error, path)
+      payload = { controller: 'FictionsController', action: 'details', method: 'GET', path:, status: 500,
+                  exception_object: error, db_runtime: 1.0, view_runtime: 2.0, queries_count: 3 }
+      ActiveSupport::Notifications::Event.new('process_action.action_controller', 1.0, 1.5, 'id', payload)
     end
   end
 end

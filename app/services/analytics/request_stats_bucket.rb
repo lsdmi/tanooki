@@ -17,10 +17,11 @@ module Analytics
       @samples = []
     end
 
-    def add(status, values)
+    def add(status, values, error = nil)
       sample = METRICS.map { |metric| values.fetch(metric) }
       @requests += 1
       @server_errors += 1 if status >= 500
+      @error_sample ||= error
       @sums = @sums.zip(sample).map(&:sum)
       @max_duration_ms = [@max_duration_ms, sample.first].max
       keep(sample)
@@ -28,8 +29,8 @@ module Analytics
 
     def to_row
       sorted = @samples.transpose.map(&:sort)
-      row = { requests: @requests, server_errors: @server_errors, duration_ms_max: @max_duration_ms,
-              duration_ms_p50: percentile(sorted.first, 0.5) }
+      row = { requests: @requests, server_errors: @server_errors, error_sample: @error_sample,
+              duration_ms_max: @max_duration_ms, duration_ms_p50: percentile(sorted.first, 0.5) }
       METRICS.each_with_index do |metric, index|
         row[:"#{metric}_sum"] = @sums[index]
         row[:"#{metric}_p95"] = percentile(sorted[index], 0.95)

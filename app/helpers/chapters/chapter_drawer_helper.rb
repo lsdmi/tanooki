@@ -11,10 +11,9 @@ module Chapters
       unread: 'text-sm text-fg'
     }.freeze
     LIST_TITLE_CLASSES = {
-      current: 'text-fg-brand',
-      in_progress: 'text-fg-brand',
+      continue: 'text-fg-brand',
       read: 'text-fg-muted',
-      unread: 'text-fg'
+      other: 'text-fg'
     }.freeze
     DRAWER_ROW_CLASSES = {
       read: 'bg-surface hover:bg-surface-strong dark:bg-surface/40 dark:hover:bg-surface/70',
@@ -51,14 +50,17 @@ module Chapters
       render Ui::ProgressIconComponent.new(state:, label:, size:)
     end
 
-    def chapter_row_title_class(status, reader_drawer:)
-      (reader_drawer ? DRAWER_TITLE_CLASSES : LIST_TITLE_CLASSES).fetch(status)
+    def chapter_row_title_class(status, reader_drawer:, continue: false)
+      return DRAWER_TITLE_CLASSES.fetch(status) if reader_drawer
+      return LIST_TITLE_CLASSES[:continue] if continue
+
+      LIST_TITLE_CLASSES[status == :read ? :read : :other]
     end
 
-    def chapter_row_class(status, reader_drawer:)
+    def chapter_row_class(status, reader_drawer:, continue: false)
       return DRAWER_ROW_CLASSES[status == :read ? :read : :other] if reader_drawer
 
-      LIST_ROW_CLASSES[status.in?(%i[in_progress current]) ? :continue : :other]
+      LIST_ROW_CLASSES[continue ? :continue : :other]
     end
 
     def chapter_list_read_count(chapters, progress)

@@ -6,25 +6,25 @@ const ROW_GAP = 8
 
 /**
  * Fiction TOC accordion: expand/collapse volume sections and lazy-load chapter lists.
- * On the fiction page the server opens the group with the continue chapter; `focusRow` is that row's id, brought
- * up under the sticky tabs whenever the reader asks for the Chapters tab (a tab click or a `#chapters` link).
+ * On the fiction page the server opens the group with the continue chapter; that row (`data-chapter-continue`, moved
+ * by read toggles) is brought up under the sticky tabs whenever the reader asks for the Chapters tab (a tab click or a `#chapters` link).
  * «Перейти до розділу» (chapter-jump) swaps a group's body for a window of rows with `openSection` and reveals a row.
  * With `sticky` (the fiction page) the open group's header sticks under the tabs; `data-pinned` marks it while it
  * does, and a click on it then collapses the group and leaves its header under the tabs.
  */
 export default class extends Controller {
-  static values = { focusRow: String, sticky: Boolean }
+  static values = { sticky: Boolean }
 
   connect() {
     this.openDefaultSections()
     // Once per visit: the list reconnects after a sort, and that should not move the page.
-    if (this.focusRowValue && location.hash === `#${CHAPTERS_TAB}` && !document.body.dataset.chapterListRevealed) {
+    if (this.focusRow && location.hash === `#${CHAPTERS_TAB}` && !document.body.dataset.chapterListRevealed) {
       requestAnimationFrame(() => this.revealFocusRow())
     }
   }
 
   tabActivated(event) {
-    if (event.detail.id !== CHAPTERS_TAB || !this.focusRowValue) return
+    if (event.detail.id !== CHAPTERS_TAB || !this.focusRow) return
 
     requestAnimationFrame(() => this.revealFocusRow())
   }
@@ -49,8 +49,12 @@ export default class extends Controller {
     return document.querySelector("[data-tabs-target='list']")?.getBoundingClientRect().height ?? 0
   }
 
+  get focusRow() {
+    return this.element.querySelector("li[data-chapter-continue]")
+  }
+
   revealFocusRow() {
-    const row = document.getElementById(this.focusRowValue)
+    const row = this.focusRow
     if (!row || !row.offsetParent) return
 
     document.body.dataset.chapterListRevealed = "true"

@@ -27,7 +27,7 @@ module Fictions
 
     test 'guest_fiction_show_fragment_cache_key includes fiction order' do
       key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
-      expected = ['fiction_show/v36/guest', @fiction, :asc, I18n.locale, 'light', nil]
+      expected = ['fiction_show/v37/guest', @fiction, :asc, I18n.locale, 'light', nil]
 
       assert_equal expected, key.first(6)
       assert_kind_of Integer, key.last
