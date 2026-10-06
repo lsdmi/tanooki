@@ -11,6 +11,7 @@ module Catalog
       @fiction.scanlator_ids = @fiction.scanlators.ids
       @admin = users(:user_one)
       @editor = users(:user_two)
+      ScanlatorUser.create!(user: @editor, scanlator: scanlators(:one))
     end
 
     test 'marking stamps licensed_at and records the source' do
@@ -35,8 +36,18 @@ module Catalog
       end
     end
 
-    test 'an editor cannot clear a license' do
-      license!
+    test 'the team clears its own mark within the grace period' do
+      license!(23.hours.ago)
+
+      result = ApplyLicense.call(@fiction, actor: @editor, licensed: '0')
+      @fiction.save!
+
+      assert_not result.clear_denied?
+      assert_equal [nil, nil, nil], license_columns
+    end
+
+    test 'the team cannot clear once the grace period is over' do
+      license!(25.hours.ago)
 
       result = ApplyLicense.call(@fiction, actor: @editor, licensed: '0')
 
@@ -44,8 +55,17 @@ module Catalog
       assert_predicate @fiction, :licensed?
     end
 
-    test 'an admin clears all license fields' do
-      license!
+    test 'an outsider cannot clear even within the grace period' do
+      license!(1.hour.ago)
+
+      result = ApplyLicense.call(@fiction, actor: users(:user_one_one_zero), licensed: '0')
+
+      assert_predicate result, :clear_denied?
+      assert_predicate @fiction, :licensed?
+    end
+
+    test 'an admin clears all license fields after the grace period' do
+      license!(3.days.ago)
 
       result = ApplyLicense.call(@fiction, actor: @admin, licensed: '0')
       @fiction.save!
@@ -78,7 +98,7 @@ module Catalog
 
     private
 
-    def license!(at = 1.day.ago)
+    def license!(at = 3.days.ago)
       @fiction.update!(licensed_at: at, license_publisher: SOURCE[:publisher])
     end
 

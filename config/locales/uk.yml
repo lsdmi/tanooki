@@ -120,6 +120,13 @@ uk:
               invalid_format: має бути JPEG, PNG, SVG, або WebP
             banner:
               invalid_format: має бути JPEG, PNG, SVG, або WebP
+            bank_url:
+              unsafe: Вкажіть посилання https:// на сторінку донату (не email, IP-адресу чи скорочене посилання)
+              unsupported_service: Посилання на банку має вести на %{services}
+              russian_domain: Посилання на російські сайти заборонені
+            extra_url:
+              unsafe: Вкажіть посилання https:// на сайт (не email, IP-адресу чи скорочене посилання)
+              russian_domain: Посилання на російські сайти заборонені
         translation_request:
           attributes:
             title:
@@ -651,7 +658,7 @@ uk:
     reader_support_card:
       title: Підтримати Команду
       description: Допоможемо створити та перекласти ще більше захоплюючих історій рідною мовою!
-      support: Підтримка
+      support: Підтримати через %{service}
       mascot_alt: Бака — маскот платформи
     reader_resume_banner:
       label: Продовжити читання

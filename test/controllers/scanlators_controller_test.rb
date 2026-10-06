@@ -90,7 +90,6 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to scanlator_path(scanlator)
     assert_equal 'Updated Scanlator', scanlator.reload.title
   end
-
   test 'should show scanlator' do
     scanlator = scanlators(:one)
     get scanlator_path(scanlator)

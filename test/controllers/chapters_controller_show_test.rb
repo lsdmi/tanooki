@@ -116,7 +116,7 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
 
     get chapter_url(@chapter)
 
-    assert_includes response.body, I18n.t('chapters.reader_support_card.support')
+    assert_includes response.body, I18n.t('chapters.reader_support_card.support', service: 'monobank')
     assert_select 'img.reader-support-card__mascot.dark\\:hidden[src*="mascot"]', count: 1
     assert_select 'img.reader-support-card__mascot.hidden[src*="mascot-dark"]', count: 1
   end

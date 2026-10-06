@@ -69,7 +69,7 @@
 
           <div>
             <%= f.label :bank_url, 'Посилання на Банку', class: 'block text-sm font-medium text-fg-secondary mb-2' %>
-            <%= f.input :bank_url, input_html: { class: "bg-surface-strong border border-line-strong text-fg text-sm rounded-lg focus:ring-2 focus:ring-brand focus:border-brand block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:bank_url].any?}" }, label: false, placeholder: "Посилання на Банку (необов'язково)" %>
+            <%= f.input :bank_url, input_html: { class: "bg-surface-strong border border-line-strong text-fg text-sm rounded-lg focus:ring-2 focus:ring-brand focus:border-brand block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:bank_url].any?}" }, label: false, placeholder: "https://send.monobank.ua/jar/… (необов'язково)" %>
             <%= tag.p scanlator.errors[:bank_url].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-1 flex items-center' do %>
               <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
               <%= scanlator.errors[:bank_url].first %>

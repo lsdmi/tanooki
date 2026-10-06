@@ -3,11 +3,11 @@
 # Translation team (scanlator group) publishing fictions and chapters.
 class Scanlator < ApplicationRecord
   include NormalizesWhitespace
+  include ScanlatorLinks
 
   extend FriendlyId
 
   normalizes_squished :title, :description, :notice, :telegram_id
-  normalizes_stripped :bank_url, :extra_url
 
   friendly_id :slug_candidates
 

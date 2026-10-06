@@ -44,9 +44,7 @@ Rails.application.configure do
   config.action_cable.url = 'wss://baka.in.ua/cable'
   config.action_cable.allowed_request_origins = [
     'https://baka.in.ua',
-    'https://www.baka.in.ua',
-    %r{https://baka\.in\.ua.*},
-    %r{https://www\.baka\.in\.ua.*}
+    %r{https://baka\.in\.ua.*}
   ]
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.

@@ -18,6 +18,12 @@ class TranslationRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'source links are marked as user-generated' do
+    get translation_requests_url
+
+    assert_select %(a[href="#{@translation_request.source_url}"][rel="ugc nofollow noopener noreferrer"])
+  end
+
   test 'should get index with turbo stream format' do
     get translation_requests_url(format: :turbo_stream)
 

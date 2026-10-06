@@ -19,4 +19,10 @@ Rails.application.config.after_initialize do
     'type', 'media', 'data-*', 'data-tooltip', 'data-note', 'data-note-id', 'aria-*', 'role', 'tabindex', 'accesskey',
     'contenteditable', 'dir', 'hidden', 'id', 'spellcheck', 'translate', 'itemscope', 'itemtype', 'itemprop'
   ]
+
+  # A scrubber replaces the tag and attribute lists above, so it is built from them.
+  ActionText::ContentHelper.scrubber = UserContent::LinkScrubber.new(
+    tags: ActionText::ContentHelper.allowed_tags,
+    attributes: ActionText::ContentHelper.allowed_attributes
+  )
 end

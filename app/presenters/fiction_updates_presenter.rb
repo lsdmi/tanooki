@@ -98,7 +98,7 @@ class FictionUpdatesPresenter
       fiction_genres: fiction.genres.sample(3).map { |g| { name: g.name, slug: g.slug } },
       fiction_slug: fiction_slug,
       fiction_title: fiction.title,
-      scanlator_bank_url: scanlator&.bank_url.presence,
+      scanlator_bank_url: scanlator&.donation_url,
       scanlator_slug: scanlator&.slug,
       scanlator_title: scanlator&.title
     }

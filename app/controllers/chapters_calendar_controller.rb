@@ -3,7 +3,7 @@
 # Calendar of recent chapter releases, optionally filtered to subscribed fictions.
 class ChaptersCalendarController < ApplicationController
   # Bump when calendar payload shape changes (e.g. presenter hash keys).
-  CALENDAR_CACHE_VERSION = 2
+  CALENDAR_CACHE_VERSION = 3
 
   before_action :pokemon_appearance, only: [:index]
 

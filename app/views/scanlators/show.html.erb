@@ -52,19 +52,22 @@
             </div>
 
             <!-- Links Row 2 - Only visible on smaller screens, inline on lg+ -->
-            <% if @scanlator.bank_url? || @scanlator.extra_url? %>
+            <% donation_url = @scanlator.donation_url %>
+            <% extra_link_url = @scanlator.extra_link_url %>
+            <% if donation_url || extra_link_url %>
               <div class="flex justify-center lg:justify-end space-x-3">
-                <% if @scanlator.bank_url? %>
-                  <%= link_to https_url(@scanlator.bank_url), class: "token-raw group relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-stone-700 to-stone-900 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
+                <% if donation_url %>
+                  <% donation_label = t('chapters.reader_support_card.support', service: @scanlator.donation_service) %>
+                  <%= link_to donation_url, class: "token-raw group relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-stone-700 to-stone-900 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer", title: donation_label, aria: { label: donation_label } do %>
                     <div class="token-raw absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                    <svg class="token-raw w-5 h-5 sm:w-6 sm:h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    <svg class="token-raw w-5 h-5 sm:w-6 sm:h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"></path>
                     </svg>
                   <% end %>
                 <% end %>
 
-                <% if @scanlator.extra_url? %>
-                  <%= link_to https_url(@scanlator.extra_url), class: "token-raw group relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-stone-500 to-stone-700 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
+                <% if extra_link_url %>
+                  <%= link_to extra_link_url, class: "token-raw group relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-stone-500 to-stone-700 rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl", target: "_blank", rel: "noopener noreferrer" do %>
                     <div class="token-raw absolute inset-0 bg-stone-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                     <svg class="token-raw w-5 h-5 sm:w-6 sm:h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>

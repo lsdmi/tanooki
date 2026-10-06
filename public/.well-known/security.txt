@@ -1,0 +1,5 @@
+Contact: mailto:support@baka.in.ua
+Contact: https://telegram.me/bakaInUa
+Expires: 2027-10-06T00:00:00.000Z
+Preferred-Languages: uk, en
+Canonical: https://baka.in.ua/.well-known/security.txt

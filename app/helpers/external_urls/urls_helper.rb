@@ -19,19 +19,12 @@ module ExternalUrls
     profile_url(TELEGRAM_SITE_HANDLE)
   end
 
-  # Normalizes external URLs and linkifies http(s) substrings in plain text.
+  # Project and Telegram links, and http(s) linkification of plain text.
   module UrlsHelper
     DEFAULT_LINKIFY_LINK_CLASS =
       'underline text-sky-700 dark:text-sky-400 hover:text-sky-900 dark:hover:text-sky-300 break-words'
 
     HTTP_URL_PATTERN = URI::DEFAULT_PARSER.make_regexp(%w[http https]).freeze
-
-    def https_url(url)
-      s = url.to_s
-      return s if s.blank?
-
-      s.start_with?('http') ? s : "https://#{s}"
-    end
 
     def telegram_profile_url(telegram_id)
       ExternalUrls.profile_url(telegram_id)
@@ -67,7 +60,7 @@ module ExternalUrls
     def link_or_plain_segment(url, link_class)
       return url unless safe_web_url?(url)
 
-      link_to(h(url), url, target: '_blank', rel: 'noopener noreferrer', class: link_class)
+      link_to(h(url), url, target: '_blank', rel: 'ugc nofollow noopener noreferrer', class: link_class)
     end
 
     def safe_web_url?(url)

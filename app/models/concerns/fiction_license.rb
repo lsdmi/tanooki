@@ -6,6 +6,8 @@ module FictionLicense
   extend ActiveSupport::Concern
 
   HTTPS_URL = /\A#{URI::DEFAULT_PARSER.make_regexp(%w[https])}\z/
+  # The team may undo its own mark for this long; after that only an admin can clear it.
+  LICENSE_GRACE_PERIOD = 24.hours
 
   included do
     normalizes :license_publisher, :license_url, with: ->(value) { value.squish.presence }
@@ -23,6 +25,17 @@ module FictionLicense
 
   def licensed?
     licensed_at.present?
+  end
+
+  def license_grace?
+    marked_at = licensed_at_in_database
+    marked_at.present? && marked_at > LICENSE_GRACE_PERIOD.ago
+  end
+
+  def license_clearable_by?(user)
+    return false unless user
+
+    user.admin? || (license_grace? && user.manages_fiction?(self))
   end
 
   def public_listing_label

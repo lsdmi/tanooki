@@ -4,12 +4,19 @@ module Chapters
   # Bottom reader grid: fiction anchor card and translator support card.
   module ReaderBottomHelper
     def fiction_reader_support?(fiction)
-      fiction.scanlators.any? { |scanlator| scanlator.bank_url.present? }
+      fiction_support_scanlator(fiction).present?
     end
 
     def fiction_reader_support_url(fiction)
-      url = fiction.scanlators.filter_map(&:bank_url).find(&:present?)
-      https_url(url) if url.present?
+      fiction_support_scanlator(fiction)&.donation_url
+    end
+
+    def fiction_reader_support_label(fiction)
+      t('chapters.reader_support_card.support', service: fiction_support_scanlator(fiction)&.donation_service)
+    end
+
+    def fiction_support_scanlator(fiction)
+      fiction.scanlators.find(&:donation_url)
     end
 
     def reader_outlined_button(href:, title: nil, **html_options, &)

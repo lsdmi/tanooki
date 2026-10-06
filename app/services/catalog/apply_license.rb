@@ -3,7 +3,8 @@
 module Catalog
   # Official license fields from the fiction form: the licensed checkbox, publisher and store URL.
   # Does not persist; the caller saves. Saving a newly licensed fiction reverts its scheduled
-  # chapters to drafts (FictionLicense). Only an admin may clear a license.
+  # chapters to drafts (FictionLicense). Clearing follows Fiction#license_clearable_by?:
+  # the team within the grace period, an admin at any time. Reverted drafts stay drafts.
   class ApplyLicense
     def self.call(fiction, actor:, **fields)
       new(fiction, actor:, **fields).tap(&:call)
@@ -37,7 +38,7 @@ module Catalog
 
     def clear
       return unless @fiction.licensed?
-      return @clear_denied = true unless @actor&.admin?
+      return @clear_denied = true unless @fiction.license_clearable_by?(@actor)
 
       @fiction.assign_attributes(licensed_at: nil, license_publisher: nil, license_url: nil)
     end

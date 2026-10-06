@@ -47,7 +47,7 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_includes response.body, I18n.t('chapters.reader_support_card.title')
-    assert_includes response.body, I18n.t('chapters.reader_support_card.support')
+    assert_includes response.body, I18n.t('chapters.reader_support_card.support', service: 'monobank')
   end
 
   test 'show uses resized cover in the hero when variants are available' do
