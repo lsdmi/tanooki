@@ -56,4 +56,29 @@ class FictionsChapterJumpTest < ActionDispatch::IntegrationTest
     assert_equal ['r-1-100', 1], response.parsed_body.values_at('section_key', 'target_index')
     assert_equal "chapter_list_chapter_#{chapters(:two).id}", html.css('li')[1]['id']
   end
+
+  test 'a reader with a continue chapter gets the chip back to it' do
+    ReadingChapterRead.where(user: @user).delete_all
+    reading_progresses(:one).update!(chapter: chapters(:two), resume_at: Time.current, status: :active)
+    sign_in @user
+    get fiction_url(@fiction)
+
+    assert_select "[data-chapter-jump-continue-id-value='#{chapters(:two).id}']" \
+                  "[data-chapter-jump-continue-section-value='r-1-100']"
+    assert_select "[data-chapter-jump-target='chip'][hidden]", text: /До поточного розділу · 2/
+  end
+
+  test 'guests get sticky group headers and no chip' do
+    get fiction_url(@fiction)
+
+    assert_select "[data-chapter-jump-target='chip']", count: 0
+    assert_select '#chapters-list .accordion.overflow-clip > .accordion-header.sticky', count: 2
+  end
+
+  test 'the chip asks for its chapter by id' do
+    sign_in @user
+    get chapter_jump_fiction_url(@fiction, order: :desc, chapter_id: chapters(:one).id)
+
+    assert_equal ['r-1-100', 1], response.parsed_body.values_at('section_key', 'target_index')
+  end
 end

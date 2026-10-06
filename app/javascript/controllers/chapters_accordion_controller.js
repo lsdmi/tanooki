@@ -2,15 +2,18 @@ import { Controller } from "@hotwired/stimulus"
 
 const CHAPTERS_TAB = "chapters"
 const TOP_GAP = 16
+const ROW_GAP = 8
 
 /**
  * Fiction TOC accordion: expand/collapse volume sections and lazy-load chapter lists.
  * On the fiction page the server opens the group with the continue chapter; `focusRow` is that row's id, brought
  * up under the sticky tabs whenever the reader asks for the Chapters tab (a tab click or a `#chapters` link).
  * «Перейти до розділу» (chapter-jump) swaps a group's body for a window of rows with `openSection` and reveals a row.
+ * With `sticky` (the fiction page) the open group's header sticks under the tabs; `data-pinned` marks it while it
+ * does, and a click on it then collapses the group and leaves its header under the tabs.
  */
 export default class extends Controller {
-  static values = { focusRow: String }
+  static values = { focusRow: String, sticky: Boolean }
 
   connect() {
     this.openDefaultSections()
@@ -26,6 +29,26 @@ export default class extends Controller {
     requestAnimationFrame(() => this.revealFocusRow())
   }
 
+  trackPinned() {
+    if (this.pinnedFrame) return
+
+    this.pinnedFrame = requestAnimationFrame(() => {
+      this.pinnedFrame = null
+      const tabs = this.tabsHeight
+      this.element.querySelectorAll(".accordion").forEach((container) => {
+        const header = container.querySelector(".accordion-header")
+        const open = !container.querySelector(".accordion-content")?.classList.contains("hidden")
+        const box = container.getBoundingClientRect()
+        const pinned = open && box.top < tabs && box.bottom > tabs && header.getBoundingClientRect().top <= tabs + 1
+        header.toggleAttribute("data-pinned", pinned)
+      })
+    })
+  }
+
+  get tabsHeight() {
+    return document.querySelector("[data-tabs-target='list']")?.getBoundingClientRect().height ?? 0
+  }
+
   revealFocusRow() {
     const row = document.getElementById(this.focusRowValue)
     if (!row || !row.offsetParent) return
@@ -34,21 +57,26 @@ export default class extends Controller {
     this.revealRow(row)
   }
 
-  // The whole group when its header and the row fit on screen together, otherwise the row with one row above it.
+  // The whole group when its header and the row fit on screen together, otherwise the row with one row above it,
+  // below the header that then sticks under the tabs.
   revealRow(row) {
-    const tabs = document.querySelector("[data-tabs-target='list']")
-    const top = (tabs?.getBoundingClientRect().height ?? 0) + TOP_GAP
+    const tabs = this.tabsHeight
+    const top = tabs + TOP_GAP
+    const header = row.closest(".accordion")?.querySelector(".accordion-header")
+    const headerRect = header?.getBoundingClientRect()
+    const covered = tabs + (this.stickyValue && headerRect ? headerRect.height : 0)
     const rowRect = row.getBoundingClientRect()
-    if (rowRect.top >= top && rowRect.bottom <= window.innerHeight) return
+    if (rowRect.top >= Math.max(top, covered) && rowRect.bottom <= window.innerHeight) return
 
-    const headerTop = row.closest(".accordion")?.querySelector(".accordion-header")?.getBoundingClientRect().top
-    const target = headerTop !== undefined && rowRect.bottom - headerTop + top <= window.innerHeight
-      ? headerTop
-      : rowRect.top - rowRect.height - 8
-    window.scrollBy({ top: target - top, behavior: "instant" })
+    if (headerRect && rowRect.bottom - headerRect.top + top <= window.innerHeight) {
+      window.scrollBy({ top: headerRect.top - top, behavior: "instant" })
+    } else {
+      window.scrollBy({ top: rowRect.top - rowRect.height - ROW_GAP - (covered + ROW_GAP), behavior: "instant" })
+    }
   }
 
   disconnect() {
+    cancelAnimationFrame(this.pinnedFrame)
     this.abortPendingSectionFetch()
     this.resetChapterSectionLoadedState()
   }
@@ -92,6 +120,7 @@ export default class extends Controller {
     if (!container) return
 
     event.preventDefault()
+    const pinned = event.currentTarget.hasAttribute("data-pinned")
 
     const icon = container.querySelector(".accordion-icon")
     const content = container.querySelector(".accordion-content")
@@ -104,6 +133,9 @@ export default class extends Controller {
 
     if (wasHidden) {
       this.loadLazyChapterSection(content)
+    } else if (pinned) {
+      event.currentTarget.removeAttribute("data-pinned")
+      window.scrollBy({ top: event.currentTarget.getBoundingClientRect().top - (this.tabsHeight + TOP_GAP), behavior: "instant" })
     }
 
     this.element.querySelectorAll(".accordion").forEach((otherContainer) => {

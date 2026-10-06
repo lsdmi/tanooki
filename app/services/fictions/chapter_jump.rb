@@ -3,6 +3,7 @@
 module Fictions
   # «Перейти до розділу»: finds the chapter by number in the visible list and the window of rows around it inside
   # its group, in the list's current order. Translations share a number; the first row in that order wins.
+  # With `chapter_id` (the «До поточного розділу» chip) it finds that exact row instead.
   class ChapterJump
     WINDOW = 20
     ROWS_ABOVE_TARGET = 9
@@ -16,21 +17,24 @@ module Fictions
     end
 
     # sections: Chapters::ListSectionIndex output for `order`; section_rows: section → its chapters in that order.
-    def initialize(listed:, sections:, query:, section_rows:)
+    def initialize(listed:, sections:, query:, section_rows:, chapter_id: nil)
       @listed = listed
       @sections = sections
       @query = query
       @section_rows = section_rows
+      @chapter_id = chapter_id
     end
 
     def call
+      return find_chapter if @chapter_id
+
       number = parse(@query)
       return failure(:invalid) unless number
 
       section = section_for(number)
       return failure(:missing, number) unless section
 
-      found(section, number)
+      found(section, number) { |row| row.number == number }
     end
 
     def self.parse(query)
@@ -52,9 +56,18 @@ module Fictions
       @sections.find { |section| keys.include?(section[:section_key]) }
     end
 
-    def found(section, number)
+    def find_chapter
+      chapter = @listed.find { |listed| listed.id == @chapter_id }
+      return failure(:gone) unless chapter
+
+      key = Chapters::ListSectionIndex.section_key_for(chapter)
+      section = @sections.find { |candidate| candidate[:section_key] == key }
+      found(section, chapter.number) { |row| row.id == chapter.id }
+    end
+
+    def found(section, number, &)
       rows = @section_rows.call(section)
-      index = rows.index { |row| row.number == number }
+      index = rows.index(&)
       return failure(:missing, number) unless index
 
       start = (index - ROWS_ABOVE_TARGET).clamp(0, [rows.size - WINDOW, 0].max)

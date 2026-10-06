@@ -4,7 +4,9 @@ module Ui
   # Inline 24 px Lucide stroke icons by name. Decorative: hidden from assistive tech.
   module StrokeIconHelper
     STROKE_ICON_PATHS = {
+      arrow_down: ['M12 5v14', 'm19 12-7 7-7-7'],
       arrow_down_up: ['m3 16 4 4 4-4', 'M7 20V4', 'm21 8-4-4-4 4', 'M17 4v16'],
+      arrow_up: ['m5 12 7-7 7 7', 'M12 19V5'],
       book_open: ['M12 7v14',
                   'M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13' \
                   'a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],

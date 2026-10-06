@@ -4,17 +4,17 @@ require 'test_helper'
 
 module Fictions
   class ChapterJumpTest < ActiveSupport::TestCase
-    Row = Struct.new(:number, :volume_number)
+    Row = Struct.new(:number, :volume_number, :id)
 
-    def jump(query, rows:, order: :asc)
+    def jump(query, rows:, order: :asc, chapter_id: nil)
       ordered = order == :asc ? rows : rows.reverse
       keys = ordered.map { |row| Chapters::ListSectionIndex.section_key_for(row) }.uniq
       grouped = ordered.group_by { |row| Chapters::ListSectionIndex.section_key_for(row) }
       ChapterJump.new(listed: rows.reverse, sections: keys.map { |key| { section_key: key } }, query:,
-                      section_rows: ->(section) { grouped.fetch(section[:section_key]) }).call
+                      section_rows: ->(section) { grouped.fetch(section[:section_key]) }, chapter_id:).call
     end
 
-    def range(first, last) = (first..last).map { |number| Row.new(BigDecimal(number), nil) }
+    def range(first, last) = (first..last).map { |number| Row.new(BigDecimal(number), nil, number) }
 
     test 'the window has nine rows above the chapter' do
       result = jump('150', rows: range(1, 200))
@@ -45,6 +45,14 @@ module Fictions
 
       assert_equal 'v-1.0', jump('1', rows:).section[:section_key]
       assert_equal 'v-2.0', jump('1', rows:, order: :desc).section[:section_key]
+    end
+
+    test 'the chip finds its exact row among translations that share the number' do
+      rows = range(1, 30) + [Row.new(BigDecimal(12), nil, 99)]
+      result = jump(nil, rows:, chapter_id: 99)
+
+      assert_equal 99, result.window[result.target_index].id
+      assert_equal :gone, jump(nil, rows:, chapter_id: 500).error
     end
   end
 end

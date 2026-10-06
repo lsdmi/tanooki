@@ -23,12 +23,14 @@ module Fictions
         listed:,
         sections: helpers.chapter_list_section_index(@fiction, order:),
         query: params[:number],
-        section_rows: ->(section) { helpers.fiction_section_chapters(@fiction, section, order:, scanlators: false) }
+        section_rows: ->(section) { helpers.fiction_section_chapters(@fiction, section, order:, scanlators: false) },
+        chapter_id: Integer(params[:chapter_id].to_s, 10, exception: false)
       ).call
     end
 
     def chapter_jump_error(result, listed)
       return t('fictions.chapters_tab.jump.invalid') if result.error == :invalid
+      return t('fictions.chapters_tab.jump.failed') unless result.number
 
       t('fictions.chapters_tab.jump.missing', number: Chapters::Formatting.format_decimal(result.number),
                                               range: helpers.chapter_number_range(listed))

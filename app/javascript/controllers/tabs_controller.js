@@ -4,6 +4,7 @@ import { Controller } from "@hotwired/stimulus";
 // (`#chapters`) wins on load and on `hashchange`. Picking a tab writes its hash with replaceState, so it
 // survives reload and back without adding history entries.
 // Studio's tab list also uses this controller with server-rendered links and no targets; then it does nothing.
+// The sticky tab bar's height is published as `--fiction-tabs-h` for what sticks under it (chapter group headers).
 export default class extends Controller {
   static targets = ["tab", "panel", "list"];
   static values = { activeTab: String };
@@ -11,12 +12,26 @@ export default class extends Controller {
   connect() {
     if (!this.hasTabTarget) return;
 
+    this.publishListHeight();
     this.defaultTab = this.activeTabValue;
     const fromHash = this.tabIdFromHash();
     if (fromHash && fromHash !== this.activeTabValue) {
       this.activate(fromHash);
       this.revealList();
     }
+  }
+
+  disconnect() {
+    this.listObserver?.disconnect();
+  }
+
+  publishListHeight() {
+    if (!this.hasListTarget) return;
+
+    this.listObserver = new ResizeObserver(() => {
+      this.element.style.setProperty("--fiction-tabs-h", `${this.listTarget.offsetHeight}px`);
+    });
+    this.listObserver.observe(this.listTarget);
   }
 
   select(event) {
