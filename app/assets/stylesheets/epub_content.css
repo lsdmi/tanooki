@@ -23,6 +23,16 @@
   height: auto;
 }
 
+.epub-content iframe {
+  display: block !important;
+  width: 100% !important;
+  max-width: 48rem;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  margin: 1em auto;
+  border: 0;
+}
+
 /* Tables */
 .epub-content table {
   border-collapse: collapse;

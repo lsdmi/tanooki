@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     resource :read, only: %i[create destroy], module: :chapters
   end
   resources :chapter_images, only: :create
+  resources :chapter_markdown_imports, only: :create, controller: 'chapters/markdown_imports'
   resource :guest_reading_merge, only: :create
   resources :fictions, only: [] do
     collection do

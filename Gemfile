@@ -74,6 +74,7 @@ group :production do
   gem 'aws-sdk-s3'
 end
 
+gem 'commonmarker'
 gem 'devise'
 gem 'dotenv-rails'
 gem 'fastimage'

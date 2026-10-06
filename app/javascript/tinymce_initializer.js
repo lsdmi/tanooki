@@ -40,6 +40,402 @@ const imageUploadOptions = (textarea) => {
   };
 };
 
+// Kept in step with UserContent::LinkScrubber::YOUTUBE_EMBED_HOSTS: only these embed URLs survive rendering.
+const YOUTUBE_EMBED_HOSTS = new Set(['www.youtube.com', 'www.youtube-nocookie.com']);
+const YOUTUBE_ID = /^[A-Za-z0-9_-]+$/;
+
+const decodeAttr = (value) => value
+  .replace(/&amp;/gi, '&')
+  .replace(/&quot;/gi, '"')
+  .replace(/&#39;|&apos;/gi, "'")
+  .replace(/&lt;/gi, '<')
+  .replace(/&gt;/gi, '>');
+
+const escapeAttr = (value) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+
+const parseHttpUrl = (value) => {
+  try {
+    return new URL(value.trim());
+  } catch (_error) {
+    return null;
+  }
+};
+
+const isAllowedYoutubeEmbed = (value) => {
+  if (!value || /[\s<>"']/.test(value)) return false;
+
+  const url = parseHttpUrl(value);
+  if (!url || url.protocol !== 'https:' || url.port || url.username || url.password) return false;
+
+  const host = url.hostname.toLowerCase();
+  return YOUTUBE_EMBED_HOSTS.has(host) && /^\/embed\/[A-Za-z0-9_-]+\/?$/.test(url.pathname);
+};
+
+const embedUrl = (host, id, params) => {
+  const query = params.toString();
+  return `https://${host}/embed/${id}${query ? `?${query}` : ''}`;
+};
+
+const safeParams = (url, keys) => {
+  const params = new URLSearchParams();
+  keys.forEach((key) => {
+    const value = url.searchParams.get(key);
+    if (value && YOUTUBE_ID.test(value)) params.set(key, value);
+  });
+  const timestamp = url.searchParams.get('t');
+  if (timestamp && /^\d+s?$/.test(timestamp) && !params.has('start')) params.set('start', timestamp.replace(/s$/, ''));
+  return params;
+};
+
+// Watch, share, and Shorts links become an embed URL. An address that is already an allowed embed is rebuilt
+// with only playback parameters. Anything else (another site, http, data:, javascript:) is rejected.
+const youtubeEmbedSrc = (raw) => {
+  const input = String(raw ?? '').trim();
+  if (!input) return null;
+
+  const snippet = input.match(/<iframe\b[^>]*\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i);
+  const candidate = decodeAttr(snippet ? (snippet[1] || snippet[2] || snippet[3] || '') : input);
+  const url = parseHttpUrl(candidate);
+  if (!url || url.protocol !== 'https:' || url.port || url.username || url.password) return null;
+
+  const host = url.hostname.toLowerCase();
+  if (YOUTUBE_EMBED_HOSTS.has(host)) {
+    const embedId = url.pathname.match(/^\/embed\/([A-Za-z0-9_-]+)\/?$/);
+    if (embedId) return embedUrl(host, embedId[1], safeParams(url, ['start', 'end', 'list', 'index']));
+  }
+
+  if (host === 'youtu.be') {
+    const id = url.pathname.split('/').filter(Boolean)[0];
+    return id && YOUTUBE_ID.test(id) ? embedUrl('www.youtube.com', id, safeParams(url, ['start', 'end', 'list'])) : null;
+  }
+
+  if (host !== 'www.youtube.com' && host !== 'youtube.com' && host !== 'm.youtube.com') return null;
+
+  const pathId = url.pathname.match(/^\/(?:shorts|live|embed)\/([A-Za-z0-9_-]+)\/?$/);
+  const watchId = url.pathname === '/watch' ? url.searchParams.get('v') : null;
+  const id = pathId?.[1] || (watchId && YOUTUBE_ID.test(watchId) ? watchId : null);
+  return id ? embedUrl('www.youtube.com', id, safeParams(url, ['start', 'end', 'list', 'index'])) : null;
+};
+
+const iframeTagPattern = () => /<iframe\b(?:[^>"']|"[^"]*"|'[^']*')*\/?>(?:\s*<\/iframe\s*>)?/gi;
+
+// Leaves an already-allowed embed tag untouched, so opening a chapter does not rewrite it.
+const sanitizeIframeHtml = (html) => {
+  if (!/<iframe\b/i.test(html)) return { html, removed: false };
+
+  let removed = false;
+  const next = html.replace(iframeTagPattern(), (tag) => {
+    const srcMatch = tag.match(/\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i);
+    const raw = decodeAttr(srcMatch?.[1] ?? srcMatch?.[2] ?? srcMatch?.[3] ?? '');
+    if (isAllowedYoutubeEmbed(raw)) return tag;
+
+    const embed = youtubeEmbedSrc(raw);
+    if (!embed) {
+      removed = true;
+      return '';
+    }
+
+    return `<iframe src="${escapeAttr(embed)}" width="560" height="314" frameborder="0" allowfullscreen="allowfullscreen"></iframe>`;
+  });
+
+  return { html: next, removed };
+};
+
+const selectedIframeSrc = (editor) => {
+  const node = editor.selection.getNode();
+  const object = editor.dom.getParent(node, '[data-mce-object="iframe"]') || (node?.nodeName === 'IFRAME' ? node : null);
+  return object?.getAttribute('data-mce-p-src') || object?.getAttribute('src') || '';
+};
+
+const openYoutubeDialog = (editor) => {
+  editor.windowManager.open({
+    title: editor.translate('Insert YouTube video'),
+    body: {
+      type: 'panel',
+      items: [
+        {
+          type: 'input',
+          name: 'url',
+          label: editor.translate('YouTube URL'),
+          placeholder: 'https://www.youtube.com/watch?v=…'
+        }
+      ]
+    },
+    initialData: { url: selectedIframeSrc(editor) },
+    buttons: [
+      { type: 'cancel', text: editor.translate('Cancel') },
+      { type: 'submit', text: editor.translate('Save'), primary: true }
+    ],
+    onSubmit: (api) => {
+      const src = youtubeEmbedSrc(api.getData().url);
+      if (!src) {
+        editor.notificationManager.open({
+          text: editor.translate('Only a YouTube link can be embedded'),
+          type: 'warning',
+          timeout: 8000
+        });
+        return;
+      }
+
+      editor.insertContent(`<iframe src="${escapeAttr(src)}" width="560" height="314" frameborder="0" allowfullscreen="allowfullscreen"></iframe>`);
+      api.close();
+    }
+  });
+};
+
+const READER_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap';
+const READER_FONT_FAMILY = '"Golos Text", ui-sans-serif, system-ui, sans-serif';
+const READER_FONT_SIZE = 16;
+// Keep in sync with HEADING_SCALE in reader_preferences.js.
+const HEADING_SCALE = { h1: 1.75, h2: 1.5, h3: 1.25, h4: 1.1, h5: 1.1, h6: 1.1 };
+
+const prefersDarkTheme = () => localStorage.getItem('color-theme') === 'dark' ||
+  (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+// Content area styles copied from what the chapter reader computes (actiontext.css, chapters_reader.css,
+// application.css note styles, reader_preferences.js defaults). `readerStyles` also flattens pasted fonts and
+// sizes, as the reader does with its inline font settings. `#tinymce` outranks TinyMCE's default content CSS.
+const editorContentCss = (isDark, readerStyles) => {
+  const theme = isDark
+    ? { background: '#18181b', text: '#e4e4e7', quote: '#52525b', note: '244, 63, 94' }
+    : { background: '#fafaf9', text: '#292524', quote: '#d6d3d1', note: '8, 145, 178' };
+  const important = readerStyles ? ' !important' : '';
+  const headingSizes = Object.entries(HEADING_SCALE)
+    .map(([tag, scale]) => `#tinymce ${tag} { font-size: ${Math.round(READER_FONT_SIZE * scale)}px${important}; }`)
+    .join('\n');
+
+  return `
+    #tinymce {
+      margin: 0;
+      padding: 20px;
+      background: ${theme.background};
+      color: ${theme.text};
+      font-family: ${READER_FONT_FAMILY};
+      font-size: ${READER_FONT_SIZE}px;
+      line-height: 1.625;
+      text-align: start;
+      overflow-wrap: anywhere;
+    }
+    ${readerStyles ? '#tinymce * { font-family: inherit !important; font-size: inherit !important; }' : ''}
+    #tinymce *:not([style*="color"]) { color: inherit !important; }
+
+    #tinymce p { margin: 0 0 1.5rem; }
+    #tinymce :is(h1, h2, h3, h4, h5, h6) { margin: 2rem 0 1rem; font-weight: 700; line-height: 1.3; }
+    ${headingSizes}
+
+    #tinymce a { text-decoration: underline; font-style: italic; }
+    #tinymce :is(strong, b) { font-weight: 700; }
+    #tinymce :is(em, i) { font-style: italic; }
+    #tinymce u { text-decoration: underline; }
+    #tinymce :is(s, strike, del) { text-decoration: line-through; opacity: 0.7; }
+
+    #tinymce blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1.5rem;
+      border: 0;
+      border-left: 0.25rem solid ${theme.quote};
+      border-radius: 0.25rem;
+      font-style: italic;
+    }
+
+    #tinymce :is(ul, ol) { margin: 0 0 1.5rem 2rem; padding-left: 1.5rem; }
+    #tinymce ul { list-style-type: disc; }
+    #tinymce ol { list-style-type: decimal; }
+    #tinymce li { margin: 0 0 0.5rem; padding-left: 0.25rem; line-height: 1.7; }
+
+    #tinymce hr { height: 0; margin: 2rem 0; border: 0; border-top: 1px solid #d1d5db; }
+
+    #tinymce img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    #tinymce :is(iframe, .mce-preview-object) {
+      display: block !important;
+      width: 100% !important;
+      max-width: 48rem;
+      height: auto !important;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto 1.5rem;
+      border: 0;
+      border-radius: 0.5rem;
+    }
+    #tinymce .mce-preview-object { position: relative; }
+    #tinymce .mce-preview-object iframe {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0;
+    }
+
+    #tinymce table { border-collapse: collapse; }
+    #tinymce :is(th, td) { padding: 0; border: 0; }
+    #tinymce th { font-weight: 700; }
+
+    #tinymce :is(code, pre) { margin: 0; padding: 0; background: none; border-radius: 0; }
+
+    #tinymce .note-reference {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      border-bottom: 1px dotted rgba(${theme.note}, 0.6);
+      transition: all 0.2s ease;
+    }
+    #tinymce .note-reference:hover {
+      background-color: rgba(${theme.note}, 0.1);
+      border-bottom-color: rgba(${theme.note}, 1);
+    }
+    #tinymce .note-reference::after { content: '📝'; font-size: 0.7em; margin-left: 2px; opacity: 0.7; }
+
+    ::selection { background: rgba(${theme.note}, 0.3); }
+  `;
+};
+
+const applyEditorContentStyles = (editor, isDark = prefersDarkTheme()) => {
+  const doc = editor.getDoc();
+  if (!doc) return;
+
+  if (!doc.querySelector('link[data-reader-fonts]')) {
+    const fonts = doc.createElement('link');
+    fonts.rel = 'stylesheet';
+    fonts.href = READER_FONTS_URL;
+    fonts.setAttribute('data-reader-fonts', 'true');
+    doc.head.appendChild(fonts);
+  }
+
+  doc.querySelector('style[data-tinymce-theme]')?.remove();
+  const style = doc.createElement('style');
+  style.setAttribute('data-tinymce-theme', 'true');
+  style.textContent = editorContentCss(isDark, editor.getElement()?.dataset.readerStyles === 'true');
+  doc.head.appendChild(style);
+};
+
+// mode_toggler.js calls this when the site theme changes.
+window.applyEditorContentTheme = (isDark) => {
+  if (typeof tinymce === 'undefined') return;
+  tinymce.get().forEach((editor) => applyEditorContentStyles(editor, isDark));
+};
+
+// AI answers copied with the chat's copy button arrive as plain-text Markdown. Two of these signals
+// make a paste "look like Markdown"; one alone (a lone `**` or `---`) is too common in ordinary text.
+const MARKDOWN_SIGNALS = [
+  /\*\*[^*\n]+\*\*/,
+  /^#{1,6}[ \t]+\S/m,
+  /\[\^[^\]\s]+\]/,
+  /^[ \t]*(?:-{3,}|\*{3,}|_{3,}|\*[ \t]+\*[ \t]+\*)[ \t]*$/m
+];
+
+const looksLikeMarkdown = (text) => MARKDOWN_SIGNALS.filter((signal) => signal.test(text)).length >= 2;
+
+const convertMarkdown = async (url, markdown) => {
+  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...(token && { 'X-CSRF-Token': token }) },
+    body: JSON.stringify({ markdown })
+  });
+  let data = {};
+  try { data = await response.json(); } catch (_error) { data = {}; }
+  if (!response.ok || typeof data.html !== 'string') throw new Error(data.error || `HTTP ${response.status}`);
+  return data;
+};
+
+const insertConverted = (editor, { html, changes }) => {
+  editor.insertContent(html);
+  if (changes?.length) {
+    editor.notificationManager.open({ text: `Під час вставки прибрано: ${changes.join('; ')}`, type: 'warning', timeout: 10000 });
+  }
+};
+
+const convertAndInsert = async (editor, api, url, markdown) => {
+  api.block('Перетворюю…');
+  try {
+    const data = await convertMarkdown(url, markdown);
+    api.close();
+    insertConverted(editor, data);
+  } catch (error) {
+    api.unblock();
+    editor.notificationManager.open({ text: error.message || 'Не вдалося перетворити текст', type: 'error', timeout: 8000 });
+  }
+};
+
+const openMarkdownImportDialog = (editor, url) => {
+  editor.windowManager.open({
+    title: 'Вставити Markdown',
+    size: 'large',
+    body: {
+      type: 'panel',
+      items: [
+        {
+          type: 'htmlpanel',
+          html: '<p>Вставте текст із розміткою Markdown. Жирний (**текст**), курсив (*текст*), заголовки (#), розриви сцен (***) і примітки ([^1]) стануть форматуванням редактора.</p>'
+        },
+        { type: 'textarea', name: 'markdown', placeholder: 'Текст у форматі Markdown', maximized: true }
+      ]
+    },
+    buttons: [
+      { type: 'cancel', text: 'Скасувати' },
+      { type: 'submit', text: 'Вставити', primary: true }
+    ],
+    onSubmit: (api) => {
+      const { markdown } = api.getData();
+      if (!markdown.trim()) return;
+      convertAndInsert(editor, api, url, markdown);
+    }
+  });
+};
+
+const offerMarkdownConversion = (editor, url, text) => {
+  editor.windowManager.open({
+    title: 'Схоже на розмітку Markdown',
+    body: {
+      type: 'panel',
+      items: [{
+        type: 'htmlpanel',
+        html: '<p>У тексті є розмітка Markdown (**жирний**, заголовки, *** чи примітки [^1]). Перетворити її на форматування редактора?</p>'
+      }]
+    },
+    buttons: [
+      { type: 'custom', name: 'as_is', text: 'Вставити як є' },
+      { type: 'submit', text: 'Перетворити', primary: true }
+    ],
+    onAction: (api, details) => {
+      if (details.name !== 'as_is') return;
+      api.close();
+      editor.execCommand('mceInsertClipboardContent', false, { text });
+    },
+    onSubmit: (api) => convertAndInsert(editor, api, url, text)
+  });
+};
+
+// Only forms that opt in (the chapter form) get the Markdown import button and the paste check.
+const setupMarkdownImport = (editor) => {
+  const url = editor.getElement()?.dataset.markdownImportUrl;
+  if (!url) return;
+
+  editor.ui.registry.addIcon('markdown-import', '<svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6zm2 0v12h14V6H5z"/><path d="M5.5 15.5v-7h1.8L9 10.8l1.7-2.3h1.8v7h-1.8v-4.2L9 13.6l-1.7-2.3v4.2z"/><path d="M15.75 8.5h1.5V12h1.25l-2 3.5-2-3.5h1.25z"/></svg>');
+  editor.ui.registry.addButton('markdownimport', {
+    icon: 'markdown-import',
+    tooltip: 'Вставити Markdown',
+    onAction: () => openMarkdownImportDialog(editor, url)
+  });
+
+  editor.on('paste', (event) => {
+    const types = Array.from(event.clipboardData?.types || []);
+    if (types.includes('text/html') || types.includes('Files')) return;
+
+    const text = event.clipboardData?.getData('text/plain') || '';
+    if (!looksLikeMarkdown(text)) return;
+
+    event.preventDefault();
+    offerMarkdownConversion(editor, url, text);
+  });
+};
+
 const base64Key = (base64) => `${base64.length}:${base64.slice(-32)}`;
 const dataUriBase64 = (src) => src.split(';base64,')[1] || '';
 
@@ -117,7 +513,6 @@ const initializeTinymce = () => {
     'Save': 'Зберегти',
     'Selection': 'Виділене',
     'Source': 'Джерело',
-    'Source code': 'Вихідний код',
     'System Font': 'Шрифт',
     'Text to display': 'Текст для відображення',
     'Underline': 'Підкреслення',
@@ -137,7 +532,11 @@ const initializeTinymce = () => {
     'Drop an image here': 'Перетягніть зображення сюди',
     'Browse for an image': 'Вибрати зображення',
     'Browse files': 'Вибрати файл',
-    'Failed to upload image: {0}': 'Не вдалося завантажити зображення: {0}'
+    'Failed to upload image: {0}': 'Не вдалося завантажити зображення: {0}',
+    'Insert YouTube video': 'Вставити ролик YouTube',
+    'YouTube URL': 'Посилання на ролик',
+    'Only a YouTube link can be embedded': 'Можна вставити лише посилання на ролик YouTube',
+    'Removed an embed that is not a YouTube video': 'Прибрано вбудовану сторінку: можна лише ролик YouTube'
   });
   tinymce.init({
     ...imageUploadOptions(textarea),
@@ -147,7 +546,6 @@ const initializeTinymce = () => {
     height: 500,
     plugins: [
       'autosave',
-      'code',
       'image',
       'link',
       'lists',
@@ -156,7 +554,18 @@ const initializeTinymce = () => {
       'wordcount'
     ],
     menubar: false,
-    toolbar: 'undo redo | bold italic underline strikethrough | forecolor | link tooltip | fontfamily fontsize align lineheight | removeformat | outdent indent | image media | hr | code | wordcount',
+    // Font and size do nothing in the chapter reader. Line height still would, so that control stays on the blog editor only.
+    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | bold italic underline strikethrough | forecolor | link tooltip | ${textarea.dataset.readerStyles === 'true' ? 'align' : 'fontfamily fontsize align lineheight'} | removeformat | outdent indent | image media | hr | wordcount`,
+    media_alt_source: false,
+    media_poster: false,
+    media_url_resolver: (data) => {
+      const src = youtubeEmbedSrc(data.url);
+      if (!src) return Promise.reject({ msg: 'Можна вставити лише посилання на ролик YouTube' });
+
+      return Promise.resolve({
+        html: `<iframe src="${escapeAttr(src)}" width="560" height="314" frameborder="0" allowfullscreen="allowfullscreen"></iframe>`
+      });
+    },
     quickbars_insert_toolbar: 'image media',
     quickbars_selection_toolbar: 'bold italic underline strikethrough | forecolor | blockquote quicklink tooltip',
     contextmenu: false,
@@ -167,12 +576,15 @@ const initializeTinymce = () => {
     // theme (light/dark). Keep weight, italic, size, family, underline (without its color).
     paste_webkit_styles: 'font-weight font-style text-decoration font-size font-family',
     paste_postprocess: function(editor, args) {
+      const dropLineHeight = editor.getElement()?.dataset.readerStyles === 'true';
       const stripNonInheritedPasteStyles = function(styleStr) {
         if (!styleStr || !styleStr.trim()) return null;
         const dropName = function(name) {
           if (name.indexOf('background') === 0) return true;
           if (name === 'color' || name === 'text-decoration-color') return true;
           if (name === '-webkit-text-fill-color') return true;
+          // Saved line-height is cleared on paste into the chapter editor, not by a database pass.
+          if (dropLineHeight && name === 'line-height') return true;
           return false;
         };
         const next = styleStr
@@ -212,6 +624,25 @@ const initializeTinymce = () => {
     valid_children: '+body[style],+span[data-note]',
     setup: function(editor) {
       keepExistingInlineImages(editor);
+      setupMarkdownImport(editor);
+
+      editor.on('BeforeSetContent', (event) => {
+        if (typeof event.content !== 'string') return;
+
+        const sanitized = sanitizeIframeHtml(event.content);
+        if (sanitized.html === event.content) return;
+
+        event.content = sanitized.html;
+        if (!sanitized.removed) return;
+
+        const warn = () => editor.notificationManager.open({
+          text: editor.translate('Removed an embed that is not a YouTube video'),
+          type: 'warning',
+          timeout: 8000
+        });
+        if (editor.initialized) warn();
+        else editor.once('init', warn);
+      });
 
       // Add custom note button
       editor.ui.registry.addIcon('note-icon', '<svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z"/></svg>');
@@ -279,219 +710,15 @@ const initializeTinymce = () => {
       });
 
       editor.on('init', function() {
+        // The media plugin's dialog accepts arbitrary embed HTML. Replace that command with a YouTube URL field.
+        editor.addCommand('mceMedia', () => openYoutubeDialog(editor));
+
         const form = editor.getElement()?.form;
         if (form) {
           form.addEventListener('submit', () => editor.save(), { capture: true });
         }
 
-        // Apply custom styles to the content area
-        const iframe = editor.getContainer().querySelector('iframe');
-        if (iframe && iframe.contentDocument) {
-          // Detect dark mode from parent window
-          const isDark = localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-          const style = iframe.contentDocument.createElement('style');
-          style.textContent = `
-            body {
-              background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
-              color: ${isDark ? '#fafafa' : '#111827'} !important;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-              font-size: 16px;
-              line-height: 1.6;
-              margin: 0;
-              padding: 20px;
-            }
-
-            /* Typography */
-            h1, h2, h3, h4, h5, h6 {
-              font-weight: 600;
-              line-height: 1.3;
-              margin-top: 1.5em;
-              margin-bottom: 0.5em;
-              color: ${isDark ? '#f43f5e' : '#0891b2'};
-            }
-
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.75em; }
-            h3 { font-size: 1.5em; }
-            h4 { font-size: 1.25em; }
-            h5 { font-size: 1.1em; }
-            h6 { font-size: 1em; }
-
-            p {
-              margin-bottom: 1em;
-              text-align: justify;
-            }
-            
-            /* Links */
-            a {
-              color: ${isDark ? '#f43f5e' : '#0891b2'};
-              text-decoration: underline;
-              transition: color 0.2s ease;
-            }
-            
-            a:hover {
-              color: ${isDark ? '#e11d48' : '#0e7490'};
-            }
-            
-            /* Lists */
-            ul, ol {
-              margin: 1em 0;
-              padding-left: 2em;
-            }
-            
-            li {
-              margin-bottom: 0.5em;
-            }
-            
-            /* Blockquotes */
-            blockquote {
-              border-left: 3px solid ${isDark ? '#f43f5e' : '#0891b2'};
-              padding-left: 1em;
-              margin: 1.5em 0;
-              font-style: italic;
-              color: ${isDark ? '#a1a1aa' : '#6b7280'};
-            }
-            
-            /* Code */
-            code {
-              background: ${isDark ? '#3f3f46' : '#f3f4f6'};
-              padding: 0.2em 0.4em;
-              border-radius: 3px;
-              font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-              font-size: 0.9em;
-              color: ${isDark ? '#f87171' : '#dc2626'};
-            }
-            
-            pre {
-              background: ${isDark ? '#3f3f46' : '#f9fafb'};
-              color: ${isDark ? '#f4f4f5' : '#374151'};
-              padding: 1em;
-              border-radius: 6px;
-              overflow-x: auto;
-              margin: 1.5em 0;
-            }
-            
-            pre code {
-              background: transparent;
-              color: inherit;
-              padding: 0;
-            }
-            
-            /* Images */
-            img {
-              max-width: 100%;
-              height: auto;
-              border-radius: 6px;
-              margin: 1em 0;
-            }
-            
-            /* Tables */
-            table {
-              border-collapse: collapse;
-              width: 100%;
-              margin: 1.5em 0;
-            }
-            
-            th, td {
-              border: 1px solid ${isDark ? '#3f3f46' : '#e5e7eb'};
-              padding: 0.75em;
-              text-align: left;
-            }
-            
-            th {
-              background: ${isDark ? '#3f3f46' : '#f9fafb'};
-              font-weight: 600;
-            }
-            
-            /* Horizontal rules */
-            hr {
-              border: none;
-              border-top: 2px solid ${isDark ? '#71717a' : '#e5e7eb'};
-              margin: 2em 0;
-            }
-            
-            /* Emphasis */
-            strong, b {
-              font-weight: 600;
-            }
-            
-            em, i {
-              font-style: italic;
-            }
-            
-            strike, s, del {
-              text-decoration: line-through;
-              opacity: 0.7;
-            }
-            
-            /* Selection styles */
-            ::selection {
-              background: ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.3)'};
-              color: ${isDark ? '#fafafa' : '#111827'};
-            }
-            
-            ::-moz-selection {
-              background: ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.3)'};
-              color: ${isDark ? '#fafafa' : '#111827'};
-            }
-            
-            /* Expandable Note styles */
-            .note-reference {
-              position: relative;
-              display: inline-block;
-              cursor: pointer;
-              border-bottom: 1px dotted ${isDark ? 'rgba(244, 63, 94, 0.6)' : 'rgba(8, 145, 178, 0.6)'};
-              color: inherit;
-              transition: all 0.2s ease;
-            }
-            
-            .note-reference:hover {
-              background-color: ${isDark ? 'rgba(244, 63, 94, 0.1)' : 'rgba(8, 145, 178, 0.1)'};
-              border-bottom-color: ${isDark ? 'rgba(244, 63, 94, 1)' : 'rgba(8, 145, 178, 1)'};
-            }
-            
-            .note-reference::after {
-              content: '📝';
-              font-size: 0.7em;
-              margin-left: 2px;
-              opacity: 0.7;
-            }
-            
-            .note-content {
-              display: none;
-              margin-top: 8px;
-              padding: 12px;
-              background: ${isDark ? 'rgba(39, 39, 42, 0.95)' : 'rgba(248, 250, 252, 0.95)'};
-              border: 1px solid ${isDark ? 'rgba(244, 63, 94, 0.3)' : 'rgba(8, 145, 178, 0.2)'};
-              border-left: 3px solid ${isDark ? 'rgba(244, 63, 94, 0.6)' : 'rgba(8, 145, 178, 0.6)'};
-              border-radius: 4px;
-              font-size: 0.9em;
-              line-height: 1.4;
-              color: ${isDark ? 'rgba(212, 212, 216, 0.9)' : 'rgba(55, 65, 81, 0.9)'};
-              font-style: italic;
-              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            }
-            
-            .note-content.show {
-              display: block;
-              animation: slideDown 0.2s ease;
-            }
-            
-            @keyframes slideDown {
-              from {
-                opacity: 0;
-                transform: translateY(-5px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `;
-          iframe.contentDocument.head.appendChild(style);
-        }
+        applyEditorContentStyles(editor);
         
         // Style the TinyMCE editor header/toolbar
         const editorContainer = editor.getContainer();

@@ -649,6 +649,19 @@ uk:
       scheduled_vs_draft: Розклад — час виходу для читачів. Щоб сховати розділ раніше, поверніть його в начерк.
     status:
       unpublished: Ще не опубліковано.
+    content_sanitizer:
+      inline_image: вбудоване (base64)
+      removed:
+        attribute: атрибут %{name}
+        image: 'зображення з іншого сайту: %{url}'
+        link: 'небезпечне посилання: %{url}'
+        tag: тег <%{tag}>
+    markdown_imports:
+      errors:
+        blank: Вставте текст у форматі Markdown.
+        forbidden: Вставляти Markdown можуть лише учасники команд.
+        rate_limited: Забагато перетворень за хвилину. Зачекайте трохи й спробуйте ще раз.
+        too_large: Текст завеликий (максимум %{max} МБ). Розбийте його на частини.
     reader_epub_banner:
       title: Завантажити EPUB
       login_description: Увійдіть, щоб зберегти розділ та читати офлайн на будь-якому пристрої.

@@ -52,6 +52,23 @@ module Books
       end
     end
 
+    test 'drops inline line-height and keeps the book stylesheet' do
+      html = line_height_html
+      body = html.split('<body', 2).last
+
+      assert_includes html, 'line-height: 1.5'
+      assert_not_includes body, 'line-height'
+      assert_includes body, '<p>Only</p>'
+    end
+
+    test 'keeps other style declarations when stripping line-height' do
+      body = line_height_html.split('<body', 2).last
+
+      assert_includes body, 'style="color: blue;"'
+      assert_includes body, 'style="color: red"'
+      assert_includes body, "style='font-size: 16px'"
+    end
+
     test 'skips regexp normalization for very large chapter bodies' do
       large_body = "#{'x' * (Books::EpubChapterHtml::LARGE_CONTENT_BYTES + 1)}<hr>"
       html = epub_html_for_body(large_body)
@@ -61,6 +78,13 @@ module Books
     end
 
     private
+
+    def line_height_html
+      epub_html_for_body(
+        '<p style="color: blue;">Stay</p><p style="line-height: 2; color: red">Hi</p>' \
+        '<p style="line-height:1.5">Only</p><p style=\'font-size: 16px; line-height: 200%\'>Size</p>'
+      )
+    end
 
     def epub_html_for_body(body_html)
       chapter = Chapter.new(

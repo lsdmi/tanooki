@@ -1,8 +1,8 @@
 <% pokemon = encounter.pokemon %>
 <% label = t('pokemons.wild.catch', name: pokemon.name) %>
-<%# Fixed and capped so the button (sprite at most 6rem plus padding) stays on screen; temporary so a back navigation does not restore a used token. %>
-<%= tag.div class: 'fixed z-50', data: { turbo_temporary: true },
-            style: "left: min(#{rand(5..85)}vw, calc(100vw - 8rem)); top: min(#{rand(5..85)}vh, calc(100vh - 8rem));" do %>
+<%# Hidden anywhere on the page (top is a share of the body's height), so the reader has to find it; capped so the button (sprite at most 6rem plus padding) stays inside the page. Temporary so a back navigation does not restore a used token. %>
+<%= tag.div class: 'absolute z-50', data: { turbo_temporary: true },
+            style: "left: min(#{rand(5..85)}vw, calc(100vw - 8rem)); top: min(#{rand(2..95)}%, calc(100% - 8rem));" do %>
   <% if current_user.present? %>
     <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, aria: { label: }, data: { turbo_stream: "", "turbo-method": :post } do %>
       <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'cursor-pointer max-h-24 max-w-24 object-contain') %>

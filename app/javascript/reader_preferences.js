@@ -39,6 +39,8 @@ const STORAGE_FONT_SIZE = 'reader-font-size'
 const LEGACY_FONT_CLASSES = ['', 'font-[Georgia]', 'font-[Helvetica]', 'font-[Times_New_Roman]']
 const LEGACY_SIZE_CLASSES = ['', 'text-sm', 'text-base', 'text-lg', 'text-xl']
 const LEGACY_SIZE_PX = [16, 14, 16, 18, 20]
+// Keep in sync with the heading sizes in actiontext.css and the composer (tinymce_initializer.js).
+const HEADING_SCALE = { H1: 1.75, H2: 1.5, H3: 1.25, H4: 1.1, H5: 1.1, H6: 1.1 }
 
 /** Maps retired reader-font ids and Latin-only picks to the new Cyrillic set. */
 const RETIRED_READER_FONT_IDS = {
@@ -153,14 +155,15 @@ export const applyToContent = (element) => {
 
   disconnectFontObserver()
   try {
-    const walk = (el) => {
+    const walk = (el, inHeading = false) => {
+      const scale = inHeading ? null : HEADING_SCALE[el.tagName]
       el.style.setProperty('font-family', font.family)
-      el.style.setProperty('font-size', `${fontSize}px`)
+      el.style.setProperty('font-size', inHeading ? '1em' : `${Math.round(fontSize * (scale || 1))}px`)
 
       LEGACY_FONT_CLASSES.filter(Boolean).forEach((cls) => el.classList.remove(cls))
       LEGACY_SIZE_CLASSES.filter(Boolean).forEach((cls) => el.classList.remove(cls))
 
-      Array.from(el.children).forEach((child) => walk(child))
+      Array.from(el.children).forEach((child) => walk(child, inHeading || Boolean(scale)))
     }
 
     walk(element)

@@ -37,7 +37,7 @@ class WildEncounterFlowTest < ActionDispatch::IntegrationTest
   test 'the pop-up is named, labelled, and kept on screen' do
     with_guaranteed_encounter(@pokemon) { get root_path }
 
-    assert_select 'turbo-frame#catch-pokemon div.fixed[data-turbo-temporary]' do
+    assert_select 'turbo-frame#catch-pokemon div.absolute[data-turbo-temporary]' do
       assert_select 'button[aria-label=?]', "Спіймати #{@pokemon.name}"
       assert_select 'img[alt=?]', @pokemon.name
     end

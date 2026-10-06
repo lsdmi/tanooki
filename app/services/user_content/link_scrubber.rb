@@ -5,11 +5,22 @@ module UserContent
   # marks links to other sites as user-generated, so URL reputation scanners do not count them as our own links.
   # Links to other sites that a reader cannot see (no text or image, or hidden) are dropped, keeping their content:
   # scanners treat hidden outbound links as SEO spam on a compromised site.
+  # An iframe is kept only for a YouTube embed. Any other frame (another host, http, data:, javascript:) is removed
+  # with the tag, for chapters and the blog, because both are Action Text.
   class LinkScrubber < Rails::HTML::PermitScrubber
     EXTERNAL_REL = %w[ugc nofollow noopener noreferrer].freeze
     INTERNAL_HOST = 'baka.in.ua'
+    YOUTUBE_EMBED_HOSTS = %w[www.youtube.com www.youtube-nocookie.com].freeze
+    YOUTUBE_EMBED_PATH = %r{\A/embed/[A-Za-z0-9_-]+/?\z}
     INVISIBLE_TEXT = /[[:space:]\u200B-\u200D\u2060\uFEFF]/
     HIDDEN_STYLE = /display\s*:\s*none|visibility\s*:\s*hidden/i
+
+    def self.youtube_embed?(src)
+      uri = https_uri(src)
+      return false unless uri
+
+      YOUTUBE_EMBED_HOSTS.include?(uri.host.to_s.downcase) && uri.path.match?(YOUTUBE_EMBED_PATH)
+    end
 
     def initialize(tags:, attributes:)
       super()
@@ -23,6 +34,34 @@ module UserContent
     rescue URI::InvalidURIError
       false
     end
+
+    def scrub(node)
+      if node.element? && node.name == 'iframe' && !self.class.youtube_embed?(node['src'])
+        node.remove
+        return STOP
+      end
+
+      super
+    end
+
+    def self.https_uri(src)
+      raw = src.to_s.strip
+      return if unsafe_src?(raw)
+
+      uri = URI.parse(raw)
+      uri if plain_https?(uri)
+    rescue URI::InvalidURIError
+      nil
+    end
+
+    def self.unsafe_src?(raw)
+      raw.empty? || raw.match?(/[[:space:]<>"']/)
+    end
+
+    def self.plain_https?(uri)
+      uri.is_a?(URI::HTTPS) && uri.port == 443 && uri.userinfo.nil?
+    end
+    private_class_method :https_uri, :unsafe_src?, :plain_https?
 
     private
 
