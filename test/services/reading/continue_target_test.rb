@@ -25,6 +25,15 @@ module Reading
       assert_equal [@latest, false], [target.chapter, target.resume?]
     end
 
+    test 'read and finished skips chapters already read after it' do
+      third = Chapter.create!(fiction: @progress.fiction, user: @user, title: 'Chapter 3', number: 3,
+                              content: 'x' * 500, scanlator_ids: [scanlators(:one).id])
+      mark_read(@first)
+      mark_read(@latest)
+
+      assert_equal third, target_for(@first, percent: 100).chapter
+    end
+
     test 'read with no stored position, as on pre-rebuild rows, counts as finished' do
       mark_read(@first)
 

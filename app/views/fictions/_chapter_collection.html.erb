@@ -46,17 +46,7 @@ end %>
         </h3>
         <div class="flex shrink-0 items-center <%= reader_drawer ? 'gap-1' : 'gap-2 md:gap-3' %>">
           <% unless reader_drawer %>
-            <% group_total = section[:chapter_keys].size %>
-            <% if local_assigns[:drawer_progress]&.started? %>
-              <% group_read = drawer_progress.read_count(section[:chapter_keys]) %>
-              <%= render Ui::MiniProgressBarComponent.new(read: group_read, total: group_total, check: false, html: { class: 'w-8 md:w-13', aria: { hidden: true } }) %>
-              <span class="whitespace-nowrap text-xs/5 text-fg-muted md:text-sm/5"><%= t('fictions.chapters_tab.progress', read: group_read, total: group_total) %></span>
-              <% if group_read == group_total %>
-                <%= render Ui::ProgressIconComponent.new(state: :read, size: :sm) %>
-              <% end %>
-            <% else %>
-              <span class="whitespace-nowrap text-xs/5 text-fg-muted md:text-sm/5"><%= t('fictions.chapters_tab.count', count: group_total) %></span>
-            <% end %>
+            <%= render 'fictions/chapter_group_progress', section:, drawer_progress: local_assigns[:drawer_progress] %>
           <% end %>
           <% if !reader_drawer && epub_download_available_for_section?(fiction, section_chapter_ids) %>
             <div class="-my-1.5 flex"

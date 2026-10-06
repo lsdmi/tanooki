@@ -5,15 +5,19 @@
 <% continue_row = !reader_drawer && drawer_progress&.continue?(chapter) %>
 <% title_class = chapter_row_title_class(status, reader_drawer:, continue: continue_row) %>
 <% row_class = chapter_row_class(status, reader_drawer:, continue: continue_row) %>
+<% row_menu = !reader_drawer && drawer_progress&.toggleable? %>
 <% row_attributes = if reader_drawer
   { id: dom_id(chapter, :reader_drawer),
-    data: { chapter_drawer_search_target: 'row', chapter_id: chapter.id, chapter_status: status } }
+    data: { chapter_drawer_search_target: 'row', chapter_id: chapter.id, chapter_status: status, chapter_key: chapter_row_key(chapter) } }
 elsif drawer_progress
-  { id: dom_id(chapter, :chapter_list), data: { chapter_status: status, chapter_continue: (true if continue_row) } }
+  { id: dom_id(chapter, :chapter_list),
+    data: { chapter_id: chapter.id, chapter_status: status, chapter_key: chapter_row_key(chapter), chapter_continue: (true if continue_row),
+            chapter_title: (chapter_list_row_titles(chapter).last if row_menu), read_through: (drawer_progress.read_through_range(chapter) if row_menu) } }
 else
   {}
 end %>
-<%= tag.li class: 'group', **row_attributes do %>
+<%# Long-press opens the row menu on touch screens, so no text selection or link preview there. %>
+<%= tag.li class: ['group', ('pointer-coarse:select-none pointer-coarse:[-webkit-touch-callout:none]' if row_menu)], **row_attributes do %>
   <% if reader_drawer %>
     <% toggle = drawer_progress.toggleable? %>
     <% if status == :current %>
@@ -23,7 +27,7 @@ end %>
         </span>
         <% if toggle %>
           <span class="sr-only"><%= t('chapters.reader_chapter_drawer.progress_current') %></span>
-          <%= render 'fictions/reader_chapter_read_toggle', chapter:, read: drawer_progress.read?(chapter), current_chapter: local_assigns[:current_chapter] %>
+          <%= render 'fictions/reader_chapter_read_toggle', chapter:, read: drawer_progress.read?(chapter), marker: :current, current_chapter: local_assigns[:current_chapter] %>
         <% else %>
           <%= chapter_progress_icon(status) %>
         <% end %>
@@ -79,6 +83,15 @@ end %>
       <% end %>
       <% if toggle %>
         <%= render 'fictions/reader_chapter_read_toggle', chapter:, read: status == :read, marker: status, reader_drawer: false %>
+        <button type="button"
+                class="relative hidden size-8 shrink-0 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong md:group-focus-within:flex md:group-hover:flex md:group-data-[row-menu-open]:flex"
+                aria-label="<%= t('fictions.chapters_tab.row_menu.label') %>"
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                data-row-menu-button
+                data-action="chapter-row-menu#toggle">
+          <%= stroke_icon(:ellipsis_vertical, 'size-5') %>
+        </button>
       <% elsif drawer_progress && status.in?(%i[read in_progress]) %>
         <span class="flex size-8 shrink-0 items-center justify-center"><%= chapter_progress_icon(status, size: :lg) %></span>
       <% end %>

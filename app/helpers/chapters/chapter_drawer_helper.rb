@@ -24,6 +24,7 @@ module Chapters
       continue: 'bg-brand-subtle ring-1 ring-inset ring-brand',
       other: 'hover:bg-surface-hover'
     }.freeze
+    READ_TOGGLE_COPY_KEYS = %w[mark_read mark_unread mark_read_tip mark_unread_tip toggle_failed].freeze
 
     def fiction_chapter_drawer_count(fiction, viewer: current_user)
       count = chapters_size(fiction, viewer: viewer)
@@ -61,6 +62,21 @@ module Chapters
       return DRAWER_ROW_CLASSES[status == :read ? :read : :other] if reader_drawer
 
       LIST_ROW_CLASSES[continue ? :continue : :other]
+    end
+
+    # Translations of one chapter share the key, and a toggle flips all of their rows.
+    def chapter_row_key(chapter)
+      ReadingChapterRead.chapter_key(chapter).map { |part| part && Chapters::Formatting.format_decimal(part) }.join(':')
+    end
+
+    # Strings every read toggle of a list shares, rendered once with the list (JS has no i18n).
+    def read_toggle_copy
+      scope = 'chapters.reader_chapter_drawer'
+      READ_TOGGLE_COPY_KEYS.index_with { |key| t("#{scope}.#{key}") }.merge(
+        marked_read: t("#{scope}.marked_read", number: '{number}'),
+        marked_unread: t("#{scope}.marked_unread", number: '{number}'),
+        undo: t('undo_toast.undo')
+      )
     end
 
     def chapter_list_read_count(chapters, progress)

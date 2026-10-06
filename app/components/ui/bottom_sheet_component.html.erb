@@ -2,7 +2,7 @@
   <% if trigger? %>
     <div class="contents" data-bottom-sheet-target="trigger" data-action="click->bottom-sheet#toggle"><%= trigger %></div>
   <% end %>
-  <div class="fixed inset-0 z-[70] bg-overlay-scrim-60 opacity-0 transition-opacity duration-200 md:hidden"
+  <div class="fixed inset-0 z-[70] m-0 size-auto border-0 bg-overlay-scrim-60 p-0 opacity-0 transition-opacity duration-200 md:hidden"
        data-bottom-sheet-target="scrim"
        data-action="click->bottom-sheet#close"
        aria-hidden="true"

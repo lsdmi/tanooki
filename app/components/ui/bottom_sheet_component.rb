@@ -8,7 +8,7 @@ module Ui
     ALIGN_CLASSES = { start: 'md:left-0', end: 'md:right-0' }.freeze
 
     PANEL_CLASSES = [
-      'fixed inset-x-0 bottom-0 z-[70] max-h-[85dvh] translate-y-full overflow-y-auto',
+      'fixed inset-x-0 top-auto bottom-0 z-[70] m-0 size-auto max-h-[85dvh] translate-y-full overflow-y-auto text-fg',
       'rounded-t-2xl border border-b-0 border-line bg-main px-4 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))]',
       'shadow-popover transition-transform duration-200 ease-out focus:outline-none',
       'md:absolute md:inset-x-auto md:bottom-auto md:top-full md:z-50 md:mt-2 md:max-h-none',

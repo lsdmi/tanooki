@@ -513,6 +513,10 @@ uk:
         missing: Розділу %{number} немає · доступні %{range}
         invalid: Введіть номер розділу, наприклад 86
         failed: Не вдалося знайти розділ. Спробуйте ще раз.
+      row_menu:
+        label: Дії з розділом
+        mark_through: Позначити прочитаними %{range}
+        marked_through: Розділи %{range} позначено прочитаними
     comments:
       count:
         one: "%{count} коментар"
@@ -662,6 +666,11 @@ uk:
       progress_in_progress: Ви зупинилися тут
       mark_read: Позначити розділ прочитаним
       mark_unread: Позначити розділ непрочитаним
+      mark_read_tip: Позначити прочитаним
+      mark_unread_tip: Позначити непрочитаним
+      marked_read: Розділ %{number} позначено прочитаним
+      marked_unread: Розділ %{number} позначено непрочитаним
+      toggle_failed: Не вдалося змінити позначку. Спробуйте ще раз.
       fiction_chapters_count:
         one: "%{count} розділ"
         few: "%{count} розділи"

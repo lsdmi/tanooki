@@ -1,19 +1,32 @@
-<%# locals: chapter:, read:, marker: nil (row status; :in_progress keeps its marker on the button), current_chapter: nil, reader_drawer: true %>
+<%# locals: chapter:, read:, marker: nil (row status; :in_progress and :current keep their marker on the button), current_chapter: nil, reader_drawer: true %>
+<%# Only Unread ↔ Read: In progress comes from reading, so its circle marks the chapter read. %>
 <% reader_drawer = local_assigns.fetch(:reader_drawer, true) %>
-<% label = t(read ? 'chapters.reader_chapter_drawer.mark_unread' : 'chapters.reader_chapter_drawer.mark_read') %>
-<% icon_status = read ? :read : (local_assigns[:marker] == :in_progress ? :in_progress : :unread) %>
+<% scope = 'chapters.reader_chapter_drawer' %>
+<% label = t(read ? "#{scope}.mark_unread" : "#{scope}.mark_read") %>
+<% tip = t(read ? "#{scope}.mark_unread_tip" : "#{scope}.mark_read_tip") %>
+<% marker = local_assigns[:marker] %>
+<% icon_status = read ? :read : (marker.in?(%i[in_progress current]) ? marker : :unread) %>
 <% toggle_params = reader_drawer ? { current_chapter_id: current_chapter&.id }.compact : { fiction_list: 1 } %>
 <% form_class = reader_drawer ? 'flex shrink-0 self-stretch' : 'relative flex shrink-0' %>
-<% surface_class = reader_drawer ? 'px-4 hover:bg-surface' : 'size-8 justify-center rounded-full hover:bg-line' %>
+<% surface_class = reader_drawer ? 'px-4 hover:bg-surface' : 'size-8 justify-center rounded-full hover:bg-surface-hover' %>
+<%# The drawer is a scroll box, so its tip opens to the left instead of above the first row. %>
+<% tip_class = reader_drawer ? 'top-1/2 right-full -translate-y-1/2' : 'right-0 bottom-full mb-1.5' %>
 <%= button_to chapter_read_path(chapter),
               method: read ? :delete : :post,
               params: toggle_params,
               form: {
                 class: form_class,
-                data: { turbo_stream: true, controller: 'read-toggle', action: 'turbo:submit-end->read-toggle#clearCache' }
+                data: {
+                  controller: 'read-toggle',
+                  action: 'read-toggle#submit',
+                  read_toggle_read_value: read,
+                  read_toggle_number_value: Chapters::Formatting.format_decimal(chapter.number)
+                }
               },
-              class: "flex items-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-line-strong #{surface_class}",
-              title: label,
+              class: "group/toggle relative flex items-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-line-strong #{surface_class}",
               aria: { label: } do %>
-  <%= chapter_progress_icon(icon_status, size: reader_drawer ? :md : :lg) %>
+  <span class="flex" data-read-toggle-target="icon"><%= chapter_progress_icon(icon_status, size: reader_drawer ? :md : :lg) %></span>
+  <span class="pointer-events-none absolute z-30 hidden rounded-md bg-invert px-2 py-1 text-xs/5 whitespace-nowrap text-fg-on-invert group-hover/toggle:block group-focus-visible/toggle:block <%= tip_class %>"
+        aria-hidden="true"
+        data-read-toggle-target="tip"><%= tip %></span>
 <% end %>

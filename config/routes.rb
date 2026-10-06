@@ -96,6 +96,7 @@ Rails.application.routes.draw do
     resource :reading_progress, only: [], controller: 'reading_progresses' do
       patch :update_status
     end
+    resource :read_through, only: %i[create destroy], module: :fictions, path: 'reads/through'
   end
   resources :publications, except: %i[index show]
   resources :scanlators

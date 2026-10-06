@@ -1,0 +1,17 @@
+<%# locals: fiction: %>
+<%# One menu for every row of the list (Figma «Chapter actions menu» 10161:12120, 10163:12883, 10163:19917). chapter_row_menu_controller.js moves the anchor under the row's ⋮ and fills the title and items for that row. %>
+<div class="pointer-events-none absolute right-0 top-0 size-0" data-chapter-row-menu-target="anchor">
+  <%= render Ui::BottomSheetComponent.new(title: '', id: 'chapter-row-menu', align: :end,
+                                          html: { class: 'pointer-events-auto', data: { chapter_row_menu_target: 'sheet', action: 'bottom-sheet:closed->chapter-row-menu#closed' } }) do %>
+    <%= render Ui::MenuItemComponent.new(label: t('chapters.reader_chapter_drawer.mark_read_tip'), html: { data: { chapter_row_menu_target: 'markRead', action: 'chapter-row-menu#toggleRead' } }) do |item| %>
+      <% item.with_icon { stroke_icon(:check) } %>
+    <% end %>
+    <%= render Ui::MenuItemComponent.new(label: t('fictions.chapters_tab.row_menu.mark_through', range: '{range}'),
+                                         html: { data: { chapter_row_menu_target: 'markThrough', action: 'chapter-row-menu#markThrough' } }) do |item| %>
+      <% item.with_icon { stroke_icon(:check_check) } %>
+    <% end %>
+    <%= render Ui::MenuItemComponent.new(label: t('chapters.reader_chapter_drawer.mark_unread_tip'), html: { data: { chapter_row_menu_target: 'markUnread', action: 'chapter-row-menu#toggleRead' } }) do |item| %>
+      <% item.with_icon { stroke_icon(:undo) } %>
+    <% end %>
+  <% end %>
+</div>

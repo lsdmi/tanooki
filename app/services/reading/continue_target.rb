@@ -3,8 +3,8 @@
 module Reading
   # Where «Читати далі» (library) and «Продовжити» (fiction page) send the reader:
   # - resume chapter not read yet: that chapter, restoring the in-chapter position (resume=1);
-  # - read and finished (position at or past FINISHED_PERCENT, or none, as on pre-rebuild rows): the following
-  #   chapter from the top, or the same chapter when nothing follows;
+  # - read and finished (position at or past FINISHED_PERCENT, or none, as on pre-rebuild rows): the next unread
+  #   chapter after it from the top, or the same chapter when nothing follows;
   # - read but stopped mid-chapter, i.e. a later re-read: back into it with the restore.
   # The latest listable chapter read, or the fiction marked finished, is «Все прочитано».
   # A visit that completes the chapter reports 100% from then on (and so does a manual mark on the cursor
@@ -50,7 +50,17 @@ module Reading
       return @listable.last unless resume
       return resume unless read?(resume) && finished_position?
 
-      Library::ChapterNavigation.following_chapter(@progress.fiction, resume, viewer: @viewer) || resume
+      next_unread_after(resume) ||
+        Library::ChapterNavigation.following_chapter(@progress.fiction, resume, viewer: @viewer) || resume
+    end
+
+    # Skips chapters read out of order (by hand or in bulk), so continue never lands on a read chapter.
+    def next_unread_after(resume)
+      key = ReadingChapterRead.chapter_key(resume)
+      index = @listable.index { |chapter| ReadingChapterRead.chapter_key(chapter) == key }
+      return unless index
+
+      @listable.first(index).reverse.find { |chapter| !read?(chapter) }
     end
 
     def finished_position?

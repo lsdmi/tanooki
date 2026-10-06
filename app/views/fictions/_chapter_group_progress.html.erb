@@ -1,0 +1,16 @@
+<%# locals: section:, drawer_progress: nil %>
+<% group_total = section[:chapter_keys].size %>
+<% started = drawer_progress&.started? %>
+<% group_read = drawer_progress.read_count(section[:chapter_keys]) if started %>
+<%= tag.span id: "chapter_group_progress_#{section[:section_key]}", class: 'contents',
+             data: ({ read_progress: true, read: group_read, total: group_total } if started) do %>
+  <% if started %>
+    <%= render Ui::MiniProgressBarComponent.new(read: group_read, total: group_total, check: false, html: { class: 'w-8 md:w-13', aria: { hidden: true } }) %>
+    <span class="whitespace-nowrap text-xs/5 text-fg-muted md:text-sm/5" data-read-progress-text="<%= t('fictions.chapters_tab.progress', read: '{read}', total: group_total) %>"><%= t('fictions.chapters_tab.progress', read: group_read, total: group_total) %></span>
+    <% if group_read == group_total %>
+      <%= render Ui::ProgressIconComponent.new(state: :read, size: :sm) %>
+    <% end %>
+  <% else %>
+    <span class="whitespace-nowrap text-xs/5 text-fg-muted md:text-sm/5"><%= t('fictions.chapters_tab.count', count: group_total) %></span>
+  <% end %>
+<% end %>

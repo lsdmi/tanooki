@@ -72,6 +72,17 @@ module Reading
       @viewer.present? && !@finished
     end
 
+    # «1–85» for «Позначити прочитаними 1–85»: the first listed chapter to this one. Nil when every chapter before
+    # it is read already, since the single toggle then does the same.
+    def read_through_range(chapter)
+      position = list_positions[ReadingChapterRead.chapter_key(chapter)]
+      read_through_label(chapter) if position && position > read_prefix
+    end
+
+    def read_through_label(chapter)
+      [listable.last.number, chapter.number].map { |number| Chapters::Formatting.format_decimal(number) }.join('–')
+    end
+
     private
 
     def resolve_continue_chapter_id
@@ -86,6 +97,17 @@ module Reading
       return false if @progress.nil? || @finished
 
       @progress.resume_at.present? || listable.any? { |chapter| read?(chapter) }
+    end
+
+    def list_positions
+      @list_positions ||= listable.reverse.each_with_index.to_h do |chapter, index|
+        [ReadingChapterRead.chapter_key(chapter), index]
+      end
+    end
+
+    # How many chapters from the start of the list are read without a gap.
+    def read_prefix
+      @read_prefix ||= listable.reverse.index { |chapter| !read?(chapter) } || listable.size
     end
 
     def listable

@@ -1,0 +1,11 @@
+<%# locals: listed:, total:, list_progress: nil %>
+<% started = list_progress&.started? %>
+<% read = chapter_list_read_count(listed, list_progress) if started %>
+<%= tag.p id: 'chapter_list_progress', class: 'text-base/6 font-semibold text-fg',
+          data: ({ read_progress: true, read:, total: } if started) do %>
+  <% if started %>
+    <span data-read-progress-text="<%= t('fictions.chapters_tab.progress', read: '{read}', total:) %>"><%= t('fictions.chapters_tab.progress', read:, total:) %></span>
+  <% else %>
+    <%= t('fictions.chapters_tab.count', count: total) %>
+  <% end %>
+<% end %>

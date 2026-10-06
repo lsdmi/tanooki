@@ -1,0 +1,5 @@
+<%# locals: size: %>
+<div hidden data-read-toggle-kit data-copy="<%= read_toggle_copy.to_json %>">
+  <template data-icon="read"><%= chapter_progress_icon(:read, size:) %></template>
+  <template data-icon="unread"><%= chapter_progress_icon(:unread, size:) %></template>
+</div>

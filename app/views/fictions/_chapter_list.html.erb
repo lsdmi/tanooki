@@ -3,7 +3,20 @@
 <%# Guests on the fiction page get plain rows; the drawer always has progress (current chapter, toggles). %>
 <% drawer_progress = local_assigns[:drawer_progress] %>
 <% drawer_progress ||= reader_chapter_drawer_progress(fiction, current_chapter: local_assigns[:current_chapter]) if reader_drawer || user_signed_in? %>
-<div class="<%= reader_drawer ? '' : 'rounded-lg' %>">
+<% toggleable = drawer_progress&.toggleable? %>
+<% row_menu = toggleable && !reader_drawer %>
+<% scope_data = { read_toggle_scope: (true if toggleable) } %>
+<% if row_menu %>
+  <% scope_data.merge!(controller: 'chapter-row-menu', chapter_row_menu_url_value: fiction_read_through_path(fiction),
+                       action: 'pointerdown->chapter-row-menu#press contextmenu->chapter-row-menu#contextMenu') %>
+<% end %>
+<%= tag.div class: (reader_drawer ? '' : ['rounded-lg', ('relative' if row_menu)]), data: scope_data do %>
+  <% if toggleable %>
+    <%= render 'fictions/read_toggle_kit', size: reader_drawer ? :md : :lg %>
+  <% end %>
+  <% if row_menu %>
+    <%= render 'fictions/chapter_row_menu', fiction: %>
+  <% end %>
   <div id="chapters-list">
     <%= render 'fictions/chapter_collection',
                fiction: fiction,
@@ -13,4 +26,4 @@
                drawer_progress: drawer_progress,
                continue_chapter: local_assigns[:continue_chapter] %>
   </div>
-</div>
+<% end %>

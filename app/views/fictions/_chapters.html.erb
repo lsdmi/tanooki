@@ -30,13 +30,7 @@
            data-chapter-jump-failed-value="<%= t('fictions.chapters_tab.jump.failed') %>">
     <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-3">
       <div class="flex min-w-0 flex-col gap-1">
-        <p class="text-base/6 font-semibold text-fg">
-          <% if list_progress&.started? %>
-            <%= t('fictions.chapters_tab.progress', read: chapter_list_read_count(listed, list_progress), total:) %>
-          <% else %>
-            <%= t('fictions.chapters_tab.count', count: total) %>
-          <% end %>
-        </p>
+        <%= render 'fictions/chapter_list_progress', listed:, total:, list_progress: %>
         <% if latest %>
           <p class="text-sm/5 text-fg-muted">
             <%= t('fictions.chapters_tab.latest', number: Chapters::Formatting.format_decimal(latest.number), date: l(latest.public_at, format: :shortest)) %>

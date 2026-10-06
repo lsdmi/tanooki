@@ -51,6 +51,8 @@ export default class extends Controller {
     this.panelTarget.setAttribute("aria-modal", String(this.sheet))
     if (this.sheet) {
       this.scrimTarget.hidden = false
+      raise(this.scrimTarget)
+      raise(this.panelTarget)
       document.body.classList.add("overflow-hidden")
       requestAnimationFrame(() => {
         this.scrimTarget.classList.replace("opacity-0", "opacity-100")
@@ -73,6 +75,8 @@ export default class extends Controller {
     const focusInside = this.panelTarget.contains(document.activeElement)
 
     const hide = () => {
+      lower(this.panelTarget)
+      lower(this.scrimTarget)
       this.panelTarget.hidden = true
       this.scrimTarget.hidden = true
     }
@@ -93,6 +97,7 @@ export default class extends Controller {
       this.opener?.focus({ preventScroll: true })
     }
     this.opener = null
+    this.dispatch("closed")
   }
 
   select(event) {
@@ -168,4 +173,20 @@ export default class extends Controller {
   get focusables() {
     return [...this.panelTarget.querySelectorAll(FOCUSABLE)]
   }
+}
+
+// A sheet goes to the top layer: the menu can sit inside a z-indexed stacking context (the fiction page main),
+// and sticky tabs or the chat button would cover it there.
+function raise(element) {
+  if (!element.showPopover) return
+
+  element.popover = "manual"
+  element.showPopover()
+}
+
+function lower(element) {
+  if (!element.hasAttribute("popover")) return
+
+  if (element.matches(":popover-open")) element.hidePopover()
+  element.removeAttribute("popover")
 }

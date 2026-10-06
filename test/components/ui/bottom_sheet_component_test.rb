@@ -26,7 +26,7 @@ module Ui
 
       classes = page.find('[data-bottom-sheet-target="panel"]', visible: :all)[:class]
 
-      assert_includes classes, 'fixed inset-x-0 bottom-0'
+      assert_includes classes, 'fixed inset-x-0 top-auto bottom-0'
       assert_includes classes, 'pb-[max(1.5rem,env(safe-area-inset-bottom))]'
       assert_includes classes, 'md:absolute md:inset-x-auto'
     end

@@ -64,6 +64,24 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     assert_select '#chapters-list li[data-chapter-status], #chapters-list li span[role=img]', count: 0
   end
 
+  test 'drawer toggles share one kit and the open chapter keeps its marker' do
+    sign_in @user
+    unread = Chapter.create!(fiction: @fiction, user: @user, title: 'Chapter 3', number: 3, content: 'x' * 500,
+                             scanlator_ids: [scanlators(:one).id])
+    get chapter_url(unread)
+
+    assert_select '[data-read-toggle-scope] [data-read-toggle-kit]', count: 1
+    assert_select "#{drawer_row(unread, :current)} form [data-read-toggle-target=icon] span[aria-label=?]",
+                  I18n.t('chapters.reader_chapter_drawer.progress_current')
+  end
+
+  test 'the drawer has no row menu' do
+    sign_in @user
+    get chapter_url(chapters(:one))
+
+    assert_select '[data-row-menu-button], [data-controller~=chapter-row-menu], li[data-read-through]', count: 0
+  end
+
   test 'drawer search results clone labelled status icons from templates' do
     sign_in @user
     get chapter_url(chapters(:one))
