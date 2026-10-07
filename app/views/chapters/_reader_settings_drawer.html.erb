@@ -109,7 +109,7 @@
       <p class="sr-only" data-reader-settings-target="themeLabel"></p>
     </section>
 
-    <% if current_user&.manages_chapter?(chapter) %>
+    <% if current_user&.manages_chapter?(chapter) && !chapter.fiction.license_frozen_for?(current_user) %>
       <section class="border-t border-line pt-5">
         <%= link_to edit_chapter_path(chapter),
                     class: 'flex w-full items-center justify-center gap-2 rounded-lg border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-line-strong hover:bg-card dark:bg-surface/80' do %>

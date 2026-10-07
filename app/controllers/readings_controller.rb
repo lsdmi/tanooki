@@ -39,9 +39,10 @@ class ReadingsController < ApplicationController
   end
 
   def authorize_chapter_deletion
-    return if current_user.manages_chapter?(@chapter)
+    return redirect_to root_path unless current_user.manages_chapter?(@chapter)
+    return unless @chapter.fiction.license_frozen_for?(current_user)
 
-    redirect_to root_path
+    render turbo_stream: turbo_stream_alert(t('chapters.alerts.licensed'))
   end
 
   def handle_scanlators_destruction(stack_size)

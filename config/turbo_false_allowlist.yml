@@ -3,7 +3,7 @@
 # Verified: 2026-09-18 — 34 occurrences (composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE).
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
-  - app/views/fictions/edit.html.erb:5
+  - app/views/fictions/edit.html.erb:6
   - app/views/fictions/new.html.erb:3
   - app/views/scanlators/edit.html.erb:11
   - app/views/scanlators/new.html.erb:15
@@ -12,11 +12,11 @@ allowed:
   - app/views/publications/_edit.html.erb:14
   - app/views/publications/_new.html.erb:11
   - app/views/bookshelves/_form.html.erb:1
-  - app/views/readings/_chapters.html.erb:120
-  - app/views/readings/_chapters.html.erb:139
-  - app/views/readings/_chapters.html.erb:195
-  - app/views/readings/chapter_row_component/_actions.html.erb:11
-  - app/components/readings/chapter_row_component.rb:51
+  - app/views/readings/_chapters.html.erb:127
+  - app/views/readings/_chapters.html.erb:146
+  - app/views/readings/_chapters.html.erb:203
+  - app/views/readings/chapter_row_component/_actions.html.erb:12
+  - app/components/readings/chapter_row_component.rb:55
   - app/helpers/publications/form_helper.rb:25
   - app/views/scanlators/_team_card.html.erb:29
   - app/views/studio/tabs/_blogs.html.erb:13
@@ -25,8 +25,8 @@ allowed:
   - app/views/studio/tabs/_bookshelves.html.erb:181
   - app/views/studio/tabs/_teams.html.erb:15
   - app/views/users/dashboard/_fictions.html.erb:16
-  - app/views/users/dashboard/_fictions.html.erb:85
-  - app/views/users/dashboard/_fictions.html.erb:172
+  - app/views/users/dashboard/_fictions.html.erb:86
+  - app/views/users/dashboard/_fictions.html.erb:177
   - app/views/users/dashboard/_no_scanlators_screen.html.erb:74
   - app/views/users/dashboard/_publications.html.erb:68
   - app/views/users/dashboard/_publications.html.erb:148

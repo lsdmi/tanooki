@@ -4,19 +4,19 @@
 class FictionForm
   include ActiveModel::Model
 
-  attr_accessor :fiction, :params
+  attr_accessor :fiction, :params, :user
 
   validate :banner_is_valid
   validate :cover_is_valid
 
-  FORM_ONLY_PARAMS = %i[genre_ids scanlator_ids expected_chapters complete].freeze
+  FORM_ONLY_PARAMS = %i[
+    genre_ids scanlator_ids expected_chapters complete licensed license_publisher license_url
+  ].freeze
 
   def save
     return false unless normalize_cover_upload
 
-    fiction.assign_attributes(params.except(*FORM_ONLY_PARAMS))
-    apply_listing_editorial
-    assign_association_ids_from_params
+    assign_from_params
     if valid? && fiction.save
       fiction
     else
@@ -25,7 +25,27 @@ class FictionForm
     end
   end
 
+  def license_clear_denied?
+    @license.present? && @license.clear_denied?
+  end
+
   private
+
+  def assign_from_params
+    fiction.assign_attributes(params.except(*FORM_ONLY_PARAMS))
+    apply_listing_editorial
+    apply_license
+    assign_association_ids_from_params
+  end
+
+  def apply_license
+    return unless param?(:licensed)
+
+    @license = Catalog::ApplyLicense.call(
+      fiction, actor: user, licensed: params[:licensed],
+               publisher: params[:license_publisher], url: params[:license_url]
+    )
+  end
 
   def assign_association_ids_from_params
     fiction.genre_ids = params[:genre_ids] if params.key?(:genre_ids)

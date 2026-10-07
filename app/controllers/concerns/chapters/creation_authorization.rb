@@ -19,6 +19,7 @@ module Chapters
       )
       allowed = action_name == 'new' ? policy.new? : policy.create?
       return if allowed
+      return redirect_to(fiction_path(@fiction), alert: t('chapters.alerts.licensed')) if policy.licensed?
 
       redirect_to chapter_creation_denied_path
     end

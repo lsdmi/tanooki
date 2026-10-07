@@ -1,3 +1,5 @@
+<% licensed = fiction.licensed? %>
+<% editable = !fiction.license_frozen_for?(current_user) %>
 <div class="relative z-10 space-y-4 p-4 sm:space-y-6 sm:p-8">
   <!-- Navigation Header -->
   <div class="mb-6">
@@ -114,35 +116,41 @@
 
   <%= render 'catalog/listing_nudge', fiction: fiction %>
 
+  <% if licensed %>
+    <%= render 'readings/licensed_notice' %>
+  <% end %>
+
   <% if chapters.any? %>
-    <!-- Compact "Add chapter" (Mobile Only) -->
-    <div class="sm:hidden">
-      <%= ui_button(as: :link, href: new_chapter_path(fiction:), full_width: true, html: { data: { turbo: false } }) do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
-        </svg>
-        Додати розділ
-      <% end %>
-    </div>
-
-    <!-- CTA Card -->
-    <div class="hidden sm:block rounded-lg border border-line bg-card p-6 text-center shadow-sm relative overflow-hidden">
-      <%= render 'shared/decorative_ornament' %>
-
-      <div class="mx-auto h-20 w-20 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
-        <svg class="h-10 w-10 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
+    <% unless licensed %>
+      <!-- Compact "Add chapter" (Mobile Only) -->
+      <div class="sm:hidden">
+        <%= ui_button(as: :link, href: new_chapter_path(fiction:), full_width: true, html: { data: { turbo: false } }) do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+          </svg>
+          Додати розділ
+        <% end %>
       </div>
-      <h3 class="mb-2 text-lg font-semibold leading-none text-fg relative z-10">Додайте новий розділ!</h3>
-      <p class="mb-4 text-fg-muted relative z-10">Створіть захоплююче продовження улюбленої історії!</p>
-      <%= ui_button(as: :link, href: new_chapter_path(fiction:), html: { data: { turbo: false }, class: 'relative z-10' }) do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
-        </svg>
-        Додати розділ
-      <% end %>
-    </div>
+
+      <!-- CTA Card -->
+      <div class="hidden sm:block rounded-lg border border-line bg-card p-6 text-center shadow-sm relative overflow-hidden">
+        <%= render 'shared/decorative_ornament' %>
+
+        <div class="mx-auto h-20 w-20 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
+          <svg class="h-10 w-10 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+        <h3 class="mb-2 text-lg font-semibold leading-none text-fg relative z-10">Додайте новий розділ!</h3>
+        <p class="mb-4 text-fg-muted relative z-10">Створіть захоплююче продовження улюбленої історії!</p>
+        <%= ui_button(as: :link, href: new_chapter_path(fiction:), html: { data: { turbo: false }, class: 'relative z-10' }) do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
+          </svg>
+          Додати розділ
+        <% end %>
+      </div>
+    <% end %>
 
     <!-- Pagination (Top) -->
     <%= ui_pagination(pagy, pagy_id: 'pagy-top', form_path: reading_path(fiction), html: { class: 'p-2' }) %>
@@ -163,7 +171,7 @@
 
           <tbody class="divide-y divide-line">
             <% chapters.each do |chapter| %>
-              <%= render Readings::ChapterRowComponent.new(chapter:, variant: :table_row, pagy_page: pagy.page) %>
+              <%= render Readings::ChapterRowComponent.new(chapter:, variant: :table_row, pagy_page: pagy.page, editable:) %>
             <% end %>
           </tbody>
         </table>
@@ -173,7 +181,7 @@
       <div class="sm:hidden p-3">
         <div class="grid grid-cols-1 gap-3">
           <% chapters.each do |chapter| %>
-            <%= render Readings::ChapterRowComponent.new(chapter:, variant: :card, pagy_page: pagy.page) %>
+            <%= render Readings::ChapterRowComponent.new(chapter:, variant: :card, pagy_page: pagy.page, editable:) %>
           <% end %>
         </div>
       </div>
@@ -181,7 +189,7 @@
 
     <!-- Pagination (Bottom) -->
     <%= ui_pagination(pagy, form_path: reading_path(fiction), html: { class: 'p-4' }) %>
-  <% else %>
+  <% elsif !licensed %>
     <div class="rounded-lg border border-line bg-card p-8 text-center shadow-sm relative overflow-hidden">
       <%= render 'shared/jellyfish_ornament' %>
 

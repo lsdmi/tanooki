@@ -30,6 +30,12 @@ module Meta
       assert_equal 'test | Бака', title
     end
 
+    test 'resolve takes a single search term as a string' do
+      title = PageTitle.new(search_index_page: true, search_terms: 'фінал конкурсу').resolve
+
+      assert_equal 'фінал конкурсу | Бака', title
+    end
+
     test 'resolve returns static path copy for fictions index' do
       title = PageTitle.new(
         request_path: fictions_path,

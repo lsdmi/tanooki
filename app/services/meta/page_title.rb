@@ -24,7 +24,7 @@ module Meta
     def title_from_search
       return unless context[:search_index_page]
 
-      "#{context.fetch(:search_terms).to_sentence} | Бака"
+      "#{Array(context.fetch(:search_terms)).to_sentence} | Бака"
     end
 
     def title_from_i18n

@@ -121,6 +121,9 @@ class ChaptersController < ApplicationController
   end
 
   def verify_permissions
-    redirect_to root_path unless current_user.manages_chapter?(@chapter)
+    return redirect_to root_path unless current_user.manages_chapter?(@chapter)
+    return unless @chapter.fiction.license_frozen_for?(current_user)
+
+    redirect_to fiction_path(@chapter.fiction), alert: t('chapters.alerts.licensed')
   end
 end

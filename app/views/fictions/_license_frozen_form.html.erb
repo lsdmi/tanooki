@@ -1,0 +1,10 @@
+<div class="bg-page p-8 rounded-xl shadow-xl border border-line max-w-2xl">
+  <h2 class="text-3xl font-bold text-fg mb-2">Налаштування Твору</h2>
+  <p class="text-fg-muted mb-6"><%= t('fictions.license.frozen_form_note') %></p>
+
+  <%= render 'fictions/license_fields', f: f, fiction: fiction %>
+
+  <% if fiction.license_clearable_by?(current_user) %>
+    <%= f.submit "Зберегти Налаштування", class: "token-raw cursor-pointer w-full bg-stone-700 dark:bg-zinc-700 text-stone-100 dark:text-zinc-300 font-bold py-3 px-6 rounded-lg hover:bg-stone-600 dark:hover:bg-zinc-600 transition duration-300 mt-4" %>
+  <% end %>
+</div>

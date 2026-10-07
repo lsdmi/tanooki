@@ -9,6 +9,14 @@ module Fictions
       @new_chapter = "/chapters/new?fiction=#{@fiction.slug}"
     end
 
+    test 'a licensed fiction offers no continuation' do
+      @fiction.licensed_at = 1.day.ago
+
+      render_continue(users(:user_two), :notice)
+
+      assert_no_selector 'a'
+    end
+
     test 'a reader from another team goes straight to the new chapter form' do
       render_continue(users(:user_two), :notice)
 

@@ -24,7 +24,7 @@ module Chapters
     def call
       previous_status = chapter.status
       assign_and_apply_intent
-      if chapter.save
+      if save_chapter
         after_save
         true
       else
@@ -36,6 +36,22 @@ module Chapters
     private
 
     attr_reader :chapter, :attributes, :intent, :user
+
+    def save_chapter
+      return chapter.save unless licensed_release?
+
+      chapter.errors.add(:base, I18n.t('chapters.alerts.licensed'))
+      false
+    end
+
+    # A licensed fiction takes no new releases: no new or draft→published chapter, no future schedule.
+    # Editing an already released chapter (admins only, see ChaptersController) still saves.
+    def licensed_release?
+      return false unless chapter.published?
+      return false unless chapter.new_record? || chapter.status_changed? || chapter.scheduled?
+
+      Fiction.licensed.exists?(chapter.fiction_id)
+    end
 
     def assign_and_apply_intent
       was_draft = chapter.draft?

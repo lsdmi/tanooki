@@ -5,12 +5,15 @@ module Fictions
   module FictionPersistence
     extend ActiveSupport::Concern
 
+    LICENSE_PARAMS = %i[licensed license_publisher license_url].freeze
+
     private
 
     def persist_fiction(failure_template, notice)
-      form = FictionForm.new(fiction: @fiction, params: fiction_params)
+      form = FictionForm.new(fiction: @fiction, params: fiction_params, user: current_user)
       if form.save
         sync_fiction_associations
+        flash[:alert] = t('fictions.license.clear_denied') if form.license_clear_denied?
         redirect_to @fiction, notice: notice
       else
         render failure_template, status: :unprocessable_content
@@ -27,10 +30,13 @@ module Fictions
     end
 
     def fiction_params
+      return params.expect(fiction: LICENSE_PARAMS) if @fiction&.license_frozen_for?(current_user)
+
       params.expect(
         fiction: [
           :alternative_title, :author, :cover, :description, :english_title, :origin,
           :title, :expected_chapters, :complete, :short_description, :banner, :content_rating,
+          :licensed, :license_publisher, :license_url,
           { genre_ids: [], scanlator_ids: [] }
         ]
       )

@@ -26,9 +26,11 @@ module Catalog
       @listing = listing
     end
 
+    # A licensed listing is frozen: nothing to plan, finish or relabel.
     def current
-      posted_after_complete_nudge || plan_reached_nudge || stale_plan_nudge || gone_quiet_nudge ||
-        content_rating_nudge || missing_genres_nudge || optional_expected_nudge
+      return if @listing.licensed?
+
+      progress_nudge || profile_nudge
     end
 
     def complete!
@@ -79,6 +81,14 @@ module Catalog
     end
 
     private
+
+    def progress_nudge
+      posted_after_complete_nudge || plan_reached_nudge || stale_plan_nudge || gone_quiet_nudge
+    end
+
+    def profile_nudge
+      content_rating_nudge || missing_genres_nudge || optional_expected_nudge
+    end
 
     def build_nudge(kind)
       Nudge.new(kind: kind, chapter_count: @listing.chapter_count, expected_chapters: @listing.expected_chapters)

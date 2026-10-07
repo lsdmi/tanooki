@@ -26,6 +26,12 @@ module Catalog
       assert_equal ListingNudge::CONTENT_RATING, ListingNudge.for(@fiction).kind
     end
 
+    test 'a licensed listing gets no nudge at all' do
+      @fiction.licensed_at = 1.day.ago
+
+      assert_nil ListingNudge.for(@fiction)
+    end
+
     test 'does not auto-set content_rating' do
       ListingNudge.for(@fiction)
 

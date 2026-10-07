@@ -9,9 +9,11 @@
       <%= stroke_icon(:chevron_down, 'size-4 shrink-0 md:hidden') %>
     <% end %>
   <% end %>
-  <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.add_chapter'), as: :link,
-                                       href: new_chapter_path(fiction:)) do |item| %>
-    <% item.with_icon { stroke_icon(:plus) } %>
+  <% unless fiction.licensed? %>
+    <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.add_chapter'), as: :link,
+                                         href: new_chapter_path(fiction:)) do |item| %>
+      <% item.with_icon { stroke_icon(:plus) } %>
+    <% end %>
   <% end %>
   <%= render Ui::MenuItemComponent.new(label: t('fictions.team_menu.chapters'), as: :link, href: reading_path(fiction),
                                        html: turbo_drive_visit_data) do |item| %>

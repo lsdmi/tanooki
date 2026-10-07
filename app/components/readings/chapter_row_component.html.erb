@@ -9,7 +9,7 @@
         </div>
         <div>
           <%= render 'readings/chapter_row_component/caption', chapter:, published_at_label: do %>
-            <%= link_to chapter.display_title, title_url, title_link_html(TABLE_TITLE_CLASSES) %>
+            <%= link_to_if title_url, chapter.display_title, title_url, title_link_html(TABLE_TITLE_CLASSES) %>
           <% end %>
         </div>
       </div>
@@ -41,7 +41,7 @@
   <div class="bg-card rounded-lg border border-line p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
     <div class="mb-3 min-w-0">
       <%= render 'readings/chapter_row_component/caption', chapter:, published_at_label: do %>
-        <%= link_to chapter.display_title, title_url, title_link_html(CARD_TITLE_CLASSES) %>
+        <%= link_to_if title_url, chapter.display_title, title_url, title_link_html(CARD_TITLE_CLASSES) %>
       <% end %>
     </div>
     <div class="flex items-center space-x-4 mb-3 text-sm">

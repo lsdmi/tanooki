@@ -22,6 +22,16 @@ module Chapters
       assert_not policy.new?
     end
 
+    test 'new and create denied on a licensed fiction, admin included' do
+      fiction = fictions(:one)
+      fiction.licensed_at = 1.day.ago
+      policy = Authorization.new(users(:user_one), fiction, scanlator_ids: [scanlators(:one).id])
+
+      assert_not policy.new?
+      assert_not policy.create?
+      assert_predicate policy, :licensed?
+    end
+
     test 'new denied when fiction is missing' do
       policy = Authorization.new(users(:user_one), nil)
 

@@ -1,0 +1,65 @@
+<% input_class = 'w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong' %>
+<% marked = fiction.licensed_at_in_database.present? %>
+<div id="fiction_license" class="relative mb-4 scroll-mt-24"
+     data-controller="license-mark"
+     data-license-mark-marked-value="<%= marked %>"
+     data-license-mark-title-value="<%= t('fictions.license.form.confirm.title') %>"
+     data-license-mark-accept-value="<%= t('fictions.license.form.confirm.accept') %>"
+     data-license-mark-cancel-value="<%= t('fictions.license.form.confirm.cancel') %>"
+     data-action="submit@document->license-mark#confirm">
+  <% if !marked || fiction.license_clearable_by?(current_user) %>
+    <div class="flex items-center">
+      <%= hidden_field_tag 'fiction[licensed]', '0', id: nil %>
+      <%= check_box_tag 'fiction[licensed]', '1', fiction.licensed?,
+                        id: 'fiction_licensed',
+                        class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong rounded focus:ring-line-strong focus:ring-2',
+                        data: { license_mark_target: 'checkbox', action: 'license-mark#toggle' } %>
+      <%= label_tag 'fiction_licensed', t('fictions.license.form.checkbox'), class: 'ml-2 text-fg-secondary text-lg font-semibold' %>
+    </div>
+    <% if marked && fiction.license_grace? && !current_user.admin? %>
+      <p class="text-fg-muted text-sm mt-1">
+        <%= t('fictions.license.form.grace_note', time: l(fiction.license_grace_ends_at, format: '%d.%m.%Y, %H:%M')) %>
+      </p>
+    <% else %>
+      <p class="text-fg-muted text-sm mt-1"><%= t('fictions.license.form.hint') %></p>
+    <% end %>
+
+    <div class="mt-3 space-y-4" data-license-mark-target="fields" <%= 'hidden' unless fiction.licensed? %>>
+      <div class="relative">
+        <%= f.label :license_publisher, class: 'block text-fg-secondary font-semibold mb-1' %>
+        <%= f.text_field :license_publisher, class: input_class, maxlength: 100,
+                                             placeholder: t('fictions.license.form.publisher_placeholder') %>
+        <%= tag.p fiction.errors[:license_publisher].to_sentence, class: 'text-xs text-status-danger-solid mt-1' if fiction.errors[:license_publisher].any? %>
+      </div>
+      <div class="relative">
+        <%= f.label :license_url, class: 'block text-fg-secondary font-semibold mb-1' %>
+        <%= f.url_field :license_url, class: input_class, maxlength: 500,
+                                      placeholder: t('fictions.license.form.url_placeholder') %>
+        <%= tag.p fiction.errors[:license_url].to_sentence, class: 'text-xs text-status-danger-solid mt-1' if fiction.errors[:license_url].any? %>
+      </div>
+      <p class="text-fg-muted text-sm"><%= t('fictions.license.form.source_hint') %></p>
+    </div>
+
+    <template data-license-mark-target="confirmBody">
+      <%= t('fictions.license.form.confirm.body_html',
+            rules: link_to(t('fictions.license.form.confirm.rules_link'), rules_path(anchor: 'licensed-content'),
+                           target: '_blank', rel: 'noopener')) %>
+    </template>
+  <% else %>
+    <p class="text-fg-secondary text-lg font-semibold"><%= t('fictions.license.form.checkbox') %></p>
+    <% if fiction.license_publisher %>
+      <p class="text-fg-muted text-sm mt-1"><%= t('fictions.license.form.publisher', name: fiction.license_publisher) %></p>
+    <% end %>
+    <% if fiction.license_url %>
+      <p class="text-sm mt-1">
+        <%= link_to t('fictions.license.form.official_link'), fiction.license_url,
+                    class: 'text-fg-brand hover:underline', target: '_blank', rel: 'noopener noreferrer' %>
+      </p>
+    <% end %>
+    <p class="text-fg-muted text-sm mt-2">
+      <%= t('fictions.license.form.locked_note_html',
+            telegram: link_to('Telegram', telegram_site_url, class: 'text-fg-brand hover:underline',
+                                                             target: '_blank', rel: 'noopener')) %>
+    </p>
+  <% end %>
+</div>

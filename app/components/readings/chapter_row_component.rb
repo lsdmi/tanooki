@@ -9,17 +9,19 @@ module Readings
 
     VARIANTS = %i[table_row card].freeze
 
-    def initialize(chapter:, variant: :table_row, pagy_page: 1)
+    # editable: false on a licensed fiction for the team (no edit or delete, drafts not linked).
+    def initialize(chapter:, variant: :table_row, pagy_page: 1, editable: true)
       super()
       @chapter = chapter
       @variant = variant.to_sym
       @pagy_page = pagy_page
+      @editable = editable
       validate!
     end
 
     private
 
-    attr_reader :chapter, :variant, :pagy_page
+    attr_reader :chapter, :variant, :pagy_page, :editable
 
     def validate!
       raise ArgumentError, "unknown variant: #{variant}" unless VARIANTS.include?(variant)
@@ -43,7 +45,9 @@ module Readings
     end
 
     def title_url
-      chapter.draft? ? edit_url : helpers.chapter_path(chapter)
+      return helpers.chapter_path(chapter) unless chapter.draft?
+
+      edit_url if editable
     end
 
     def title_link_html(css_classes)
@@ -59,7 +63,8 @@ module Readings
              locals: {
                chapter:,
                edit_url:,
-               delete_button:,
+               delete_button: (delete_button if editable),
+               editable:,
                visit_data: turbo_drive_visit_data,
                show_view: !chapter.draft?
              }

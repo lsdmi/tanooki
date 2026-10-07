@@ -9,6 +9,9 @@ module Analytics
     PERIOD = 3600
     MAX_SAMPLES = 20_000
     STOP_WAIT = 10
+    # Request header where a rescue_from handler leaves the error it turned into a 500; the event payload only
+    # carries errors that escaped the action.
+    HANDLED_ERROR = 'tanooki.handled_error'
 
     class << self
       def default
@@ -75,7 +78,7 @@ module Analytics
     end
 
     def error_sample(payload)
-      error = payload[:exception_object]
+      error = payload[:exception_object] || payload[:request]&.get_header(HANDLED_ERROR)
       line = error && Rails.backtrace_cleaner.clean(error.backtrace.to_a).first
       [error && "#{error.class}: #{error.message}", line && "at #{line}", "(#{payload[:method]} #{payload[:path]})"]
         .compact.join(' ').squish.truncate(500)

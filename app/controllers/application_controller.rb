@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   # Handlers declared later win, so the catch-all must come first or every missing record becomes a 500.
   rescue_from StandardError, with: :handle_error
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::TooManyRequests, with: :too_many_requests
 
   # Layout helpers (trending_tags, recent_ranobe, etc.) are fragment-cached in navbar/footer;
   # avoid adding uncached per-request queries to ApplicationController without a similar cache.
@@ -22,11 +23,18 @@ class ApplicationController < ActionController::Base
 
     log_handled_error(error)
     Rails.error.report(error, handled: true)
+    request.set_header(Analytics::RequestStats::HANDLED_ERROR, error)
+    return head :internal_server_error unless request.format.html?
+
     render :error, status: :internal_server_error
   end
 
   def record_not_found
     render file: Rails.public_path.join('404.html'), layout: false, status: :not_found
+  end
+
+  def too_many_requests
+    render plain: t('errors.too_many_requests'), status: :too_many_requests
   end
 
   private

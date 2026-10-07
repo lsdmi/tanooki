@@ -19,6 +19,15 @@ module Fictions
       assert_selector "a[href='/fictions/#{@fiction.slug}/edit']", text: 'Редагувати твір', visible: :all
     end
 
+    test 'a licensed fiction keeps chapter management and edit but drops add chapter' do
+      @fiction.licensed_at = 1.day.ago
+
+      render_inline(TeamMenuComponent.new(fiction: @fiction, user: users(:user_one)))
+
+      assert_no_selector "a[href='/chapters/new?fiction=#{@fiction.slug}']", visible: :all
+      assert_selector "a[href='/fictions/#{@fiction.slug}/edit']", visible: :all
+    end
+
     test 'an admin outside the team gets the menu too' do
       render_inline(TeamMenuComponent.new(fiction: fictions(:two), user: users(:user_one)))
 

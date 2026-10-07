@@ -81,11 +81,13 @@
 
                     <td class="p-4 text-right">
                       <div class="flex items-center space-x-2">
-                        <!-- Add Chapter Button -->
-                        <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-fg-muted hover:text-fg transition-colors duration-200" do %>
-                          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                          </svg>
+                        <% unless fiction.licensed? %>
+                          <!-- Add Chapter Button -->
+                          <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-fg-muted hover:text-fg transition-colors duration-200" do %>
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                          <% end %>
                         <% end %>
 
                         <!-- Edit Button -->
@@ -102,17 +104,19 @@
                           </svg>
                         <% end %>
 
-                        <!-- Delete Button -->
-                        <%= sweet_alert_button(
-                          content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
-                          {
-                            description: "Впевнені, що хочете видалити твір?",
-                            message: "",
-                            tag_id: nil,
-                            url: fiction_path(fiction, page: params[:page]),
-                            button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-status-danger-solid hover:text-status-danger-solid transition-colors duration-200"
-                          }
-                        ) %>
+                        <% unless fiction.license_frozen_for?(current_user) %>
+                          <!-- Delete Button -->
+                          <%= sweet_alert_button(
+                            content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                            {
+                              description: "Впевнені, що хочете видалити твір?",
+                              message: "",
+                              tag_id: nil,
+                              url: fiction_path(fiction, page: params[:page]),
+                              button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-status-danger-solid hover:text-status-danger-solid transition-colors duration-200"
+                            }
+                          ) %>
+                        <% end %>
                       </div>
                     </td>
                   </tr>
@@ -168,11 +172,13 @@
                 <div class="flex items-center justify-end pt-3 border-t border-line">
 
                   <div class="flex items-center space-x-2">
-                    <!-- Add Chapter Button -->
-                    <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-fg-muted hover:text-fg transition-colors duration-200" do %>
-                      <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                      </svg>
+                    <% unless fiction.licensed? %>
+                      <!-- Add Chapter Button -->
+                      <%= link_to new_chapter_path(fiction:), data: { turbo: false }, class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-fg-muted hover:text-fg transition-colors duration-200" do %>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                      <% end %>
                     <% end %>
 
                     <!-- Edit Button -->
@@ -189,17 +195,19 @@
                       </svg>
                     <% end %>
 
-                    <!-- Delete Button -->
-                    <%= sweet_alert_button(
-                      content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
-                      {
-                        description: "Впевнені, що хочете видалити твір?",
-                        message: "",
-                        tag_id: nil,
-                        url: fiction_path(fiction, page: params[:page]),
-                        button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-status-danger-solid hover:text-status-danger-solid transition-colors duration-200"
-                      }
-                    ) %>
+                    <% unless fiction.license_frozen_for?(current_user) %>
+                      <!-- Delete Button -->
+                      <%= sweet_alert_button(
+                        content_tag(:svg, content_tag(:path, nil, stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"), class: "h-4 w-4", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"),
+                        {
+                          description: "Впевнені, що хочете видалити твір?",
+                          message: "",
+                          tag_id: nil,
+                          url: fiction_path(fiction, page: params[:page]),
+                          button_class: "inline-flex h-8 w-8 items-center justify-center rounded-lg text-status-danger-solid hover:text-status-danger-solid transition-colors duration-200"
+                        }
+                      ) %>
+                    <% end %>
                   </div>
                 </div>
               </div>

@@ -28,8 +28,18 @@ module FictionLicense
   end
 
   def license_grace?
-    marked_at = licensed_at_in_database
-    marked_at.present? && marked_at > LICENSE_GRACE_PERIOD.ago
+    ends_at = license_grace_ends_at
+    ends_at.present? && ends_at > Time.current
+  end
+
+  def license_grace_ends_at
+    licensed_at_in_database&.+(LICENSE_GRACE_PERIOD)
+  end
+
+  # The team keeps read access only: no chapter or fiction changes beyond the license itself.
+  # New chapters are closed to admins too (Chapters::Authorization).
+  def license_frozen_for?(user)
+    licensed_at_in_database.present? && !user&.admin?
   end
 
   def license_clearable_by?(user)

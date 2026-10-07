@@ -76,6 +76,8 @@
         <p class="text-fg-muted text-sm mt-1">Позначте, якщо нових розділів на цій сторінці не буде.</p>
       </div>
 
+      <%= render 'fictions/license_fields', f: f, fiction: fiction if fiction.persisted? %>
+
       <div class="relative mb-4">
         <%= f.label :origin, 'Походження', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <%= f.select :origin, options_for_select(Fiction.origins.map { |key, value| value }, selected: Fiction.origins[f.object.origin]), {}, { class: "w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" } %>

@@ -49,9 +49,10 @@ module Catalog
     end
 
     def authorize_fiction
-      return if Fictions::Authorization.new(current_user, @fiction).edit?
+      return redirect_to root_path unless Fictions::Authorization.new(current_user, @fiction).edit?
+      return unless @fiction.license_frozen_for?(current_user)
 
-      redirect_to root_path
+      redirect_to fiction_path(@fiction), alert: t('fictions.license.frozen')
     end
   end
 end
