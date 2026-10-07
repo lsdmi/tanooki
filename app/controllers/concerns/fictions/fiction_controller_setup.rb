@@ -25,7 +25,9 @@ module Fictions
     end
 
     def fiction_ads_fully_excluded?
-      @fiction&.slug.in?(self.class::AD_EXCLUDED_SLUGS)
+      return false unless @fiction
+
+      @fiction.licensed? || @fiction.slug.in?(self.class::AD_EXCLUDED_SLUGS)
     end
 
     def set_genres

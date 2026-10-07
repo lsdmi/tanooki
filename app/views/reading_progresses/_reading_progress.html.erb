@@ -15,8 +15,9 @@
 
   <!-- Main Content -->
   <div class="flex-1 tracking-tight min-w-0">
-    <div class="flex justify-between gap-2 sm:gap-3">
+    <div class="flex flex-col gap-1">
       <%= link_to reading.fiction.title, fiction_path(reading.fiction), turbo_drive_visit_data.merge(class: 'leading-tight text-sm sm:text-base lg:text-lg font-semibold text-fg line-clamp-2 hover:text-brand transition-colors duration-300 tracking-tight') %>
+      <%= render Fictions::LicensedTagComponent.new(fiction: reading.fiction) %>
     </div>
     <div class="text-xs sm:text-sm text-fg flex gap-1 mt-2 font-light">
       <span class="">Прочитано:</span>

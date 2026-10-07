@@ -7,6 +7,10 @@ module Chapters
 
     private
 
+    def track_chapter_visit
+      track_visit(@chapter)
+    end
+
     # Every-4th-chapter session cadence gates only the auto-opening ad drawer, not top/bottom reader slots.
     def assign_reader_ad_drawer_session
       @reader_ad_drawer_open = false

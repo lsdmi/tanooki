@@ -7,8 +7,8 @@ module Fictions
       {
         rating: hot_novelty_rating(fiction),
         views: format_view_count(fiction.views),
-        status: fiction.listing_state_label,
-        status_short: fiction.listing_state_label_short,
+        status: fiction.public_listing_label,
+        status_short: fiction.public_listing_label_short,
         chapters: released_chapter_count.to_i,
         excerpt: hot_novelty_excerpt(fiction),
         genres: hot_novelty_genres(fiction)

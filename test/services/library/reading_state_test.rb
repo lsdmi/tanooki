@@ -12,6 +12,12 @@ module Library
       assert_equal :all, ReadingState.fiction_epub_download_support(@fiction, viewer: nil)
     end
 
+    test 'fiction_epub_download_support is none for a licensed fiction' do
+      @fiction.licensed_at = 1.day.ago
+
+      assert_equal :none, ReadingState.fiction_epub_download_support(@fiction, viewer: nil)
+    end
+
     test 'fiction_epub_download_support is none when no listable chapter allows epub' do
       sl = scanlators(:one)
       sl.convertable = false

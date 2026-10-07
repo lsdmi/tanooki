@@ -21,6 +21,8 @@ module Library
     end
 
     def fiction_epub_download_support(fiction, viewer: nil)
+      return :none if fiction.licensed?
+
       list = ChapterCatalog.listed_chapters_with_scanlators(fiction, viewer:)
       return :none if list.empty?
 

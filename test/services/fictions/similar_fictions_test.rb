@@ -47,6 +47,15 @@ module Fictions
       assert_not_includes ranked, adult.id
     end
 
+    test 'a licensed work sinks below an equal match but still shows' do
+      base = listed('base', genres: [@rare], team: @team)
+      licensed = listed('licensed', genres: [@rare], views: 1000, licensed_at: 1.day.ago)
+      plain = listed('plain', genres: [@rare], views: 1)
+      6.times { |index| listed("filler-#{index}", genres: [@common]) }
+
+      assert_equal [plain.id, licensed.id], SimilarFictions.new(base).ranked_ids.first(2)
+    end
+
     test 'the fiction itself and works without chapters never show' do
       base = listed('base', genres: [@rare], team: @team)
       empty = listed('empty', genres: [@rare], chapter_count: 0)
@@ -75,7 +84,7 @@ module Fictions
       first.destroy!
 
       assert_equal [second.id], SimilarFictions.new(base).fictions.map(&:id)
-      assert Rails.cache.exist?("similar-to/v2/#{base.id}")
+      assert Rails.cache.exist?("similar-to/v3/#{base.id}")
     end
 
     private

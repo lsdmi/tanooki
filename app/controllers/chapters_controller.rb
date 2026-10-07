@@ -3,6 +3,7 @@
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
   include Chapters::CreationAuthorization
+  include Chapters::ReaderAds
   include Chapters::ReadingEvents
   include Chapters::ShowTracking
   include ChaptersViewHelpers
@@ -97,10 +98,6 @@ class ChaptersController < ApplicationController
 
   def set_chapter
     @chapter = @commentable = Chapter.friendly.find(params.expect(:id))
-  end
-
-  def track_chapter_visit
-    track_visit(@chapter)
   end
 
   def chapter_params

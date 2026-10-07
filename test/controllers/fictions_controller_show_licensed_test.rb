@@ -32,6 +32,17 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: @fiction.listing_state_label, count: 0
   end
 
+  test 'a licensed work quiet for months shows the licensed tag and notice, not the dropped ones' do
+    license!
+    @fiction.update!(chapter_count: 3, last_chapter_at: 4.months.ago)
+
+    get fiction_url(@fiction)
+
+    assert_equal :stale, @fiction.reload.listing_state
+    assert_select 'span', text: I18n.t('fictions.license.label')
+    assert_not_includes response.body, I18n.t('fictions.notice_zone.dropped.title')
+  end
+
   test 'the about sidebar opens with the official edition card' do
     license!(url: STORE_URL)
 

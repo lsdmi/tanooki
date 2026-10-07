@@ -57,8 +57,8 @@ module FictionGenrePageNewReleases
       chapters_label: "#{fiction.chapter_count} Розділи",
       chapters_label_short: "#{fiction.chapter_count} розд.",
       views: helpers.format_view_count(fiction.views),
-      status: fiction.listing_state_label,
-      status_short: fiction.listing_state_label_short
+      status: fiction.public_listing_label,
+      status_short: fiction.public_listing_label_short
     }
   end
 
