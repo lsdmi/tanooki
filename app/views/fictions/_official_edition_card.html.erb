@@ -1,0 +1,15 @@
+<section class="<%= Fictions::AboutCardStyles::HONORS_CARD %>" id="official-edition-card" aria-labelledby="official-edition-title">
+  <h2 id="official-edition-title" class="<%= Fictions::AboutCardStyles::SMALL_TITLE %> flex items-center gap-2">
+    <span class="text-status-licensed-solid"><%= stroke_icon(:lock, 'size-5 shrink-0') %></span>
+    <%= t('fictions.license.card.title') %>
+  </h2>
+  <% if fiction.license_publisher %>
+    <div class="flex flex-col">
+      <span class="text-xs/5 text-fg-muted"><%= t('fictions.license.card.publisher') %></span>
+      <span class="text-base/6 font-semibold text-fg"><%= fiction.license_publisher %></span>
+    </div>
+  <% end %>
+  <p class="text-sm/5 text-fg-secondary"><%= t('fictions.license.card.body') %></p>
+  <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: t('fictions.license.card.link'),
+                                                          variant: :licensed, size: :sm, full_width: true) %>
+</section>

@@ -31,6 +31,22 @@ module Fictions
       assert_equal %i[finished], NoticeZone.for(@fiction, age: false).map(&:kind)
     end
 
+    test 'a licensed fiction gets the licensed notice whatever its listing state' do
+      @fiction.assign_attributes(licensed_at: 1.day.ago, license_publisher: 'Видавництво Тест',
+                                 last_chapter_at: 4.months.ago)
+
+      notice = NoticeZone.for(@fiction).sole
+
+      assert_equal :licensed, notice.kind
+      assert_includes notice.body, '«Видавництво Тест»'
+    end
+
+    test 'the licensed notice reads without a publisher' do
+      @fiction.assign_attributes(licensed_at: 1.day.ago, license_url: 'https://example.com/book')
+
+      assert_equal I18n.t('fictions.notice_zone.licensed.body'), NoticeZone.for(@fiction).sole.body
+    end
+
     test 'notices carry the uk copy' do
       notice = NoticeZone.notice(:teen)
 

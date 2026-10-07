@@ -24,7 +24,7 @@ three:
   id: 3
   slug: 'three'
   name: 'Third'
-  rarity: 5
+  rarity: 1
   line_root_id: 1
   dex_id: 3
   base_hp: 80

@@ -42,6 +42,10 @@ module Fictions
     # An inset ring, not a border, so it is as tall as the age tag beside it.
     STATUS_TAG = 'inline-flex items-center rounded-md bg-card px-3 py-1 text-sm/5 font-medium text-fg ring-1 ' \
                  'ring-inset ring-line-strong dark:bg-fg/8 dark:ring-fg/15'
+    LICENSED_TAG = 'inline-flex items-center gap-1 rounded-md bg-status-licensed-subtle-bg px-3 py-1 text-sm/5 ' \
+                   'font-medium text-status-licensed-solid ring-1 ring-inset ring-status-licensed-subtle-border ' \
+                   'dark:bg-status-licensed-on-media-bg dark:text-status-licensed-on-media-title ' \
+                   'dark:ring-status-licensed-on-media-border'
 
     STATS_CELL = [
       'col-start-2 row-start-2 mt-3 flex flex-col gap-2 self-start',

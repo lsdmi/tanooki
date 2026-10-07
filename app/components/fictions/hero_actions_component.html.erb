@@ -9,6 +9,8 @@
       <% end %>
     <% end %>
 
+    <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, html: { class: 'w-full md:w-auto' }) %>
+
     <% if guest? %>
       <%= render Ui::ButtonComponent.new(label: t('fictions.hero.library.add'), variant: :on_media, as: :link,
                                          href: login_path, html: { class: 'w-full md:w-auto' }) do %>

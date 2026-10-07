@@ -193,15 +193,14 @@ const prefersDarkTheme = () => localStorage.getItem('color-theme') === 'dark' ||
   (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 // Content area styles copied from what the chapter reader computes (actiontext.css, chapters_reader.css,
-// application.css note styles, reader_preferences.js defaults). `readerStyles` also flattens pasted fonts and
-// sizes, as the reader does with its inline font settings. `#tinymce` outranks TinyMCE's default content CSS.
-const editorContentCss = (isDark, readerStyles) => {
+// application.css note styles, reader_preferences.js defaults). Font, size, and color are flattened in
+// both the chapter and publication editors. `#tinymce` outranks TinyMCE's default content CSS.
+const editorContentCss = (isDark) => {
   const theme = isDark
     ? { background: '#18181b', text: '#e4e4e7', quote: '#52525b', note: '244, 63, 94' }
     : { background: '#fafaf9', text: '#292524', quote: '#d6d3d1', note: '8, 145, 178' };
-  const important = readerStyles ? ' !important' : '';
   const headingSizes = Object.entries(HEADING_SCALE)
-    .map(([tag, scale]) => `#tinymce ${tag} { font-size: ${Math.round(READER_FONT_SIZE * scale)}px${important}; }`)
+    .map(([tag, scale]) => `#tinymce ${tag} { font-size: ${Math.round(READER_FONT_SIZE * scale)}px !important; }`)
     .join('\n');
 
   return `
@@ -216,8 +215,7 @@ const editorContentCss = (isDark, readerStyles) => {
       text-align: start;
       overflow-wrap: anywhere;
     }
-    ${readerStyles ? '#tinymce * { font-family: inherit !important; font-size: inherit !important; }' : ''}
-    #tinymce *:not([style*="color"]) { color: inherit !important; }
+    #tinymce * { font-family: inherit !important; font-size: inherit !important; color: inherit !important; -webkit-text-fill-color: currentcolor !important; }
 
     #tinymce p { margin: 0 0 1.5rem; }
     #tinymce :is(h1, h2, h3, h4, h5, h6) { margin: 2rem 0 1rem; font-weight: 700; line-height: 1.3; }
@@ -310,7 +308,7 @@ const applyEditorContentStyles = (editor, isDark = prefersDarkTheme()) => {
   doc.querySelector('style[data-tinymce-theme]')?.remove();
   const style = doc.createElement('style');
   style.setAttribute('data-tinymce-theme', 'true');
-  style.textContent = editorContentCss(isDark, editor.getElement()?.dataset.readerStyles === 'true');
+  style.textContent = editorContentCss(isDark);
   doc.head.appendChild(style);
 };
 
@@ -461,6 +459,43 @@ const keepExistingInlineImages = (editor) => {
   });
 };
 
+// TinyMCE's align menu always includes justify. The chapter editor keeps left, center, and right.
+const setupReaderAlign = (editor) => {
+  const choices = [
+    ['Left', 'align-left', 'JustifyLeft', 'alignleft'],
+    ['Center', 'align-center', 'JustifyCenter', 'aligncenter'],
+    ['Right', 'align-right', 'JustifyRight', 'alignright']
+  ];
+
+  editor.ui.registry.addMenuButton('readeralign', {
+    icon: 'align-left',
+    tooltip: 'Align',
+    onSetup: (api) => {
+      const update = () => {
+        const active = choices.find(([, , , format]) => editor.formatter.match(format));
+        api.setIcon(active ? active[1] : 'align-left');
+      };
+      editor.on('NodeChange', update);
+      update();
+      return () => editor.off('NodeChange', update);
+    },
+    fetch: (callback) => {
+      callback(choices.map(([text, icon, command, format]) => ({
+        type: 'togglemenuitem',
+        text,
+        icon,
+        onAction: () => editor.execCommand(command),
+        onSetup: (api) => {
+          const update = () => api.setActive(!!editor.formatter.match(format));
+          editor.on('NodeChange', update);
+          update();
+          return () => editor.off('NodeChange', update);
+        }
+      })));
+    }
+  });
+};
+
 const initializeTinymce = () => {
   const textarea = document.querySelector('.tinymce');
   if (!textarea) return;
@@ -554,8 +589,8 @@ const initializeTinymce = () => {
       'wordcount'
     ],
     menubar: false,
-    // Font and size do nothing in the chapter reader. Line height still would, so that control stays on the blog editor only.
-    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | bold italic underline strikethrough | forecolor | link tooltip | ${textarea.dataset.readerStyles === 'true' ? 'align' : 'fontfamily fontsize align lineheight'} | removeformat | outdent indent | image media | hr | wordcount`,
+    // Chapter and publication editors share this toolbar. Font, size, line-height, color, indent, and justify stay off it.
+    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | bold italic underline strikethrough | link tooltip | readeralign | removeformat | image media | hr | wordcount`,
     media_alt_source: false,
     media_poster: false,
     media_url_resolver: (data) => {
@@ -567,24 +602,23 @@ const initializeTinymce = () => {
       });
     },
     quickbars_insert_toolbar: 'image media',
-    quickbars_selection_toolbar: 'bold italic underline strikethrough | forecolor | blockquote quicklink tooltip',
+    quickbars_selection_toolbar: 'bold italic underline strikethrough | blockquote quicklink tooltip',
     contextmenu: false,
     statusbar: false,
     newline_behavior: 'linebreak',
     link_title: false,
-    // GDocs/WebKit paste: drop background* and fixed colors so content inherits editor + site
-    // theme (light/dark). Keep weight, italic, size, family, underline (without its color).
-    paste_webkit_styles: 'font-weight font-style text-decoration font-size font-family',
+    // GDocs/WebKit paste: drop background, color, family, size, and line-height.
+    // Bold, italic, and underline stay. Stored HTML is not rewritten.
+    paste_webkit_styles: 'font-weight font-style text-decoration',
     paste_postprocess: function(editor, args) {
-      const dropLineHeight = editor.getElement()?.dataset.readerStyles === 'true';
       const stripNonInheritedPasteStyles = function(styleStr) {
         if (!styleStr || !styleStr.trim()) return null;
         const dropName = function(name) {
           if (name.indexOf('background') === 0) return true;
           if (name === 'color' || name === 'text-decoration-color') return true;
           if (name === '-webkit-text-fill-color') return true;
-          // Saved line-height is cleared on paste into the chapter editor, not by a database pass.
-          if (dropLineHeight && name === 'line-height') return true;
+          // font shorthand sets family and size, so it goes with those four.
+          if (name === 'font' || name === 'font-family' || name === 'font-size' || name === 'line-height') return true;
           return false;
         };
         const next = styleStr
@@ -625,6 +659,7 @@ const initializeTinymce = () => {
     setup: function(editor) {
       keepExistingInlineImages(editor);
       setupMarkdownImport(editor);
+      setupReaderAlign(editor);
 
       editor.on('BeforeSetContent', (event) => {
         if (typeof event.content !== 'string') return;

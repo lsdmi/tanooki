@@ -14,12 +14,12 @@ module PokemonEvolutionLineHelpers
     evolution.update!(min_level: level, characters:)
   end
 
-  # A wild first form of its own line. Fixtures have no sprite, which Pokemon validates, so save without validations.
+  # A wild first form of its own line. It has no sprite, which Pokemon validates, so save without validations; the id
+  # is set up front because line_root_id (a foreign key) points at the row itself.
   def create_line_root(name, dex_id:)
-    species = Pokemon.new(name:, slug: name.parameterize, rarity: 1, wild: true, dex_id:, line_root_id: 0,
+    id = Pokemon.maximum(:id).to_i + 1
+    species = Pokemon.new(id:, line_root_id: id, name:, slug: name.parameterize, rarity: 1, wild: true, dex_id:,
                           **Pokemons::BaseStats.for(dex_id).transform_keys(hp: :base_hp, attack: :base_attack))
-    species.save!(validate: false)
-    species.line_root_id = species.id
     species.save!(validate: false)
     species
   end

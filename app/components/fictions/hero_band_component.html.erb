@@ -23,7 +23,11 @@
             <%= fiction.content_rating_label %>
           </span>
         <% end %>
-        <span class="<%= STATUS_TAG %>"><%= fiction.listing_state_label %></span>
+        <% if fiction.licensed? %>
+          <span class="<%= LICENSED_TAG %>"><%= stroke_icon(:lock) %><%= fiction.public_listing_label %></span>
+        <% else %>
+          <span class="<%= STATUS_TAG %>"><%= fiction.listing_state_label %></span>
+        <% end %>
       </div>
 
       <ul class="<%= STATS_CELL %>">

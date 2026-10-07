@@ -4,9 +4,11 @@ module Books
   # Wraps a chapter in EPUB-safe XHTML (void tags, embedded +epub_content.css+).
   class EpubChapterHtml
     LARGE_CONTENT_BYTES = 1.megabyte
-    # style="line-height: …" and the quote that wraps the value.
+    # style="…" and the quote that wraps the value.
     STYLE_ATTRIBUTE = /\sstyle\s*=\s*("[^"]*"|'[^']*')/i
-    LINE_HEIGHT_DECLARATION = /(?:\A|;)\s*line-height\s*:\s*[^;]*/i
+    # font shorthand is included: it sets family and size. font-weight and background-color do not match.
+    HAS_READER_OWNED_STYLE = /font-family\s*:|font-size\s*:|line-height\s*:|(?<![\w-])color\s*:|(?<![\w-])font\s*:/i
+    READER_OWNED_DECLARATION = /(?:\A|;)\s*(?:font(?:-family|-size)?|line-height|color)\s*:\s*[^;]*/i
 
     class << self
       def html(chapter, book: nil, chapter_key: 'chapter', export_request_id: nil)
@@ -63,10 +65,10 @@ module Books
       end
 
       # EPUB chapter XHTML must use proper empty elements: <hr />, <br />, <img ... /> — not <hr></hr> or <img></img>.
-      # Inline line-height is stripped here, including for very large chapters. The stored HTML is not rewritten;
-      # the book stylesheet owns the measure.
+      # Inline font, size, line-height, and color are stripped here, including for very large chapters.
+      # The stored HTML is not rewritten; the book stylesheet owns those four.
       def format_content(content)
-        html = strip_line_height(content.to_s)
+        html = strip_reader_owned_styles(content.to_s)
         html = html.gsub('</hr>', '').gsub('</br>', '').gsub('</HR>', '').gsub('</BR>', '')
         html = html.gsub('&nbsp;', '&#160;').gsub('&NBSP;', '&#160;')
         return html if html.bytesize >= LARGE_CONTENT_BYTES
@@ -76,16 +78,17 @@ module Books
         normalize_img_tag(html)
       end
 
-      def strip_line_height(html)
-        return html unless html.match?(/line-height\s*:/i)
+      def strip_reader_owned_styles(html)
+        return html unless html.match?(HAS_READER_OWNED_STYLE)
 
         html.gsub(STYLE_ATTRIBUTE) do
           quoted = Regexp.last_match(1)
           value = quoted[1..-2]
-          next Regexp.last_match(0) unless value.match?(LINE_HEIGHT_DECLARATION)
+          next Regexp.last_match(0) unless value.match?(READER_OWNED_DECLARATION)
 
           quote = quoted[0]
-          cleaned = value.gsub(LINE_HEIGHT_DECLARATION, '').sub(/\A\s*;\s*/, '').strip.sub(/;\s*\z/, '')
+          cleaned = value.gsub(READER_OWNED_DECLARATION, '')
+          cleaned = cleaned.sub(/\A\s*;\s*/, '').gsub(/;\s*;/, ';').strip.sub(/;\s*\z/, '')
           cleaned.empty? ? '' : %( style=#{quote}#{cleaned}#{quote})
         end
       end

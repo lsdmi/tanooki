@@ -1,0 +1,7 @@
+<div id="license-banner" class="mb-2 sm:mb-4">
+  <%= render Ui::NoticeComponent.new(style: :light, **Fictions::NoticeZone.licensed(fiction).to_h) do |notice| %>
+    <% if fiction.license_url.present? %>
+      <% notice.with_action { render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, size: :sm) } %>
+    <% end %>
+  <% end %>
+</div>

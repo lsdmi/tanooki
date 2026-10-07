@@ -14,13 +14,6 @@ class UserPokemonCharacterTest < ActiveSupport::TestCase
     assert_equal 'Витривалий', @user_pokemon.character_label
   end
 
-  test 'a Ukrainian label written by the previous release reads as its key' do
-    UserPokemon.connection.update("UPDATE user_pokemons SET `character` = 'Таланистий' WHERE id = #{@user_pokemon.id}")
-
-    assert_equal 'lucky', @user_pokemon.reload.character
-    assert_equal 'Таланистий', @user_pokemon.character_label
-  end
-
   test 'an unknown character is rejected' do
     assert_raises(ArgumentError) { @user_pokemon.character = 'grumpy' }
   end

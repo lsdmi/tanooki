@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Notices above the fiction hero: an optional age notice, then at most one status notice
-  # derived from the listing state (ongoing works get none).
+  # Notices above the fiction hero: an optional age notice, then at most one status notice.
+  # A licensed work gets the licensed notice whatever its listing state; otherwise the notice
+  # follows the listing state (ongoing works get none).
   module NoticeZone
     Notice = Data.define(:kind, :title, :body)
 
@@ -13,7 +14,24 @@ module Fictions
 
     def for(fiction, age: true)
       age_kind = AGE_KINDS[fiction.content_rating] if age
-      [age_kind, STATUS_KINDS[fiction.listing_state]].compact.map { |kind| notice(kind) }
+      [(notice(age_kind) if age_kind), status_notice(fiction)].compact
+    end
+
+    def status_notice(fiction)
+      return licensed(fiction) if fiction.licensed?
+
+      kind = STATUS_KINDS[fiction.listing_state]
+      notice(kind) if kind
+    end
+
+    def licensed(fiction)
+      publisher = fiction.license_publisher
+      body_key = publisher ? :body_with_publisher : :body
+      Notice.new(
+        kind: :licensed,
+        title: I18n.t('fictions.notice_zone.licensed.title'),
+        body: I18n.t("fictions.notice_zone.licensed.#{body_key}", publisher:)
+      )
     end
 
     def notice(kind)

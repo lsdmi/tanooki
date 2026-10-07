@@ -52,21 +52,19 @@ module Books
       end
     end
 
-    test 'drops inline line-height and keeps the book stylesheet' do
-      html = line_height_html
-      body = html.split('<body', 2).last
+    test 'drops reader-owned inline styles from the chapter body' do
+      body = reader_style_html.split('<body', 2).last
 
-      assert_includes html, 'line-height: 1.5'
-      assert_not_includes body, 'line-height'
-      assert_includes body, '<p>Only</p>'
+      assert_includes body,
+                      '<p>Stay</p><p style="font-weight: 700">Hi</p><p>Only</p>' \
+                      "<p style='text-align: center'>Size</p><p style=\"border-color: red\">Edge</p>"
     end
 
-    test 'keeps other style declarations when stripping line-height' do
-      body = line_height_html.split('<body', 2).last
+    test 'keeps the book stylesheet line-height and link color' do
+      html = reader_style_html
 
-      assert_includes body, 'style="color: blue;"'
-      assert_includes body, 'style="color: red"'
-      assert_includes body, "style='font-size: 16px'"
+      assert_includes html, 'line-height: 1.5'
+      assert_includes html, 'color: #0000FF'
     end
 
     test 'skips regexp normalization for very large chapter bodies' do
@@ -79,10 +77,13 @@ module Books
 
     private
 
-    def line_height_html
+    def reader_style_html
       epub_html_for_body(
-        '<p style="color: blue;">Stay</p><p style="line-height: 2; color: red">Hi</p>' \
-        '<p style="line-height:1.5">Only</p><p style=\'font-size: 16px; line-height: 200%\'>Size</p>'
+        '<p style="color: blue;">Stay</p>' \
+        '<p style="font-weight: 700; font-family: Courier; font-size: 24px; line-height: 2; color: red">Hi</p>' \
+        '<p style="line-height:1.5">Only</p>' \
+        '<p style=\'text-align: center; font-size: 16px; line-height: 200%\'>Size</p>' \
+        '<p style="border-color: red; font: 16px Courier">Edge</p>'
       )
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_07_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -285,12 +285,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
   end
 
   create_table "pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "ancestor_id"
     t.integer "base_attack", limit: 2, null: false
     t.integer "base_hp", limit: 2, null: false
     t.datetime "created_at", null: false
-    t.bigint "descendant_id"
-    t.integer "descendant_level"
     t.integer "dex_id"
     t.bigint "line_root_id", null: false
     t.string "name", null: false
@@ -298,8 +295,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.boolean "wild", default: false, null: false
-    t.index ["ancestor_id"], name: "index_pokemons_on_ancestor_id"
-    t.index ["descendant_id"], name: "index_pokemons_on_descendant_id"
     t.index ["line_root_id"], name: "index_pokemons_on_line_root_id"
     t.index ["name"], name: "index_pokemons_on_name", unique: true
   end
@@ -603,10 +598,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
     t.string "character"
     t.datetime "created_at", null: false
     t.integer "current_level", default: 0
-    t.bigint "line_root_id"
+    t.bigint "line_root_id", null: false
     t.bigint "pokemon_id"
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.index ["line_root_id"], name: "index_user_pokemons_on_line_root_id"
     t.index ["pokemon_id"], name: "index_user_pokemons_on_pokemon_id"
     t.index ["user_id", "line_root_id"], name: "index_user_pokemons_on_user_id_and_line_root_id", unique: true
     t.index ["user_id"], name: "index_user_pokemons_on_user_id"
@@ -690,8 +686,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
   add_foreign_key "pokemon_evolutions", "pokemons", column: "to_id"
   add_foreign_key "pokemon_type_relations", "pokemon_types"
   add_foreign_key "pokemon_type_relations", "pokemons"
-  add_foreign_key "pokemons", "pokemons", column: "ancestor_id"
-  add_foreign_key "pokemons", "pokemons", column: "descendant_id"
+  add_foreign_key "pokemons", "pokemons", column: "line_root_id"
   add_foreign_key "publication_tags", "publications"
   add_foreign_key "publication_tags", "tags"
   add_foreign_key "publications", "users", on_delete: :cascade
@@ -716,6 +711,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_200300) do
   add_foreign_key "translation_requests", "scanlators"
   add_foreign_key "translation_requests", "users", on_delete: :cascade
   add_foreign_key "user_pokemons", "pokemons"
+  add_foreign_key "user_pokemons", "pokemons", column: "line_root_id"
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"
   add_foreign_key "users", "comments", column: "latest_read_comment_id"

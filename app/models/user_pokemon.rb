@@ -8,8 +8,6 @@ class UserPokemon < ApplicationRecord
   belongs_to :user
   belongs_to :pokemon
 
-  # The labels rows written before KeyUserPokemonCharacters still hold; rewritten in a later deploy.
-  attribute :character, Pokemons::LegacyCharacterType.new
   enum :character, CHARACTERS.index_with(&:itself)
 
   before_validation :copy_line_root

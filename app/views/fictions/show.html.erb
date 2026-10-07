@@ -12,6 +12,8 @@
             <%= render Ui::NoticeComponent.new(style: :scrim, **notice.to_h) do |component| %>
               <% if notice.kind == :dropped && continue_translation.render? %>
                 <% component.with_action { render continue_translation } %>
+              <% elsif notice.kind == :licensed && @fiction.license_url.present? %>
+                <% component.with_action { render Fictions::OfficialEditionButtonComponent.new(fiction: @fiction, variant: :on_media, size: :sm) } %>
               <% end %>
             <% end %>
           <% end %>

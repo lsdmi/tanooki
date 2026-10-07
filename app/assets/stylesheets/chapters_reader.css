@@ -99,28 +99,28 @@
 /* Immersive chapter reader — light mode (“sunlit” stone palette, cover-visible scrim) */
 
 html:not(.dark) .immersive-reader #user-content {
-  color: rgb(41 37 36); /* stone-800 */
+  color: rgb(41 37 36) !important; /* stone-800 */
 }
 
 html:not(.dark) .immersive-reader #user-content :where(h1, h2, h3, h4, h5, h6) {
-  color: rgb(28 25 23); /* stone-900 */
+  color: rgb(28 25 23) !important; /* stone-900 */
 }
 
 html:not(.dark) .immersive-reader #user-content :where(a) {
-  color: rgb(14 116 144); /* cyan-700 */
+  color: rgb(14 116 144) !important; /* cyan-700 */
 }
 
 html:not(.dark) .immersive-reader #user-content :where(a:hover) {
-  color: rgb(21 94 117); /* cyan-800 */
+  color: rgb(21 94 117) !important; /* cyan-800 */
 }
 
 html:not(.dark) .immersive-reader #user-content :where(strong, b) {
-  color: rgb(28 25 23);
+  color: rgb(28 25 23) !important;
 }
 
 html:not(.dark) .immersive-reader #user-content :where(blockquote) {
   border-left-color: rgb(214 211 209); /* stone-300 */
-  color: rgb(87 83 78); /* stone-600 */
+  color: rgb(87 83 78) !important; /* stone-600 */
 }
 
 html:not(.dark) .immersive-reader .note-content {
@@ -133,28 +133,28 @@ html:not(.dark) .immersive-reader .note-content {
 /* Immersive chapter reader — dark mode (solid scrim, high contrast, no blue form glow) */
 
 .dark .immersive-reader #user-content {
-  color: rgb(228 228 231); /* zinc-200 */
+  color: rgb(228 228 231) !important; /* zinc-200 */
 }
 
 .dark .immersive-reader #user-content :where(h1, h2, h3, h4, h5, h6) {
-  color: rgb(250 250 250); /* zinc-50 */
+  color: rgb(250 250 250) !important; /* zinc-50 */
 }
 
 .dark .immersive-reader #user-content :where(a) {
-  color: rgb(251 113 133); /* rose-400 */
+  color: rgb(251 113 133) !important; /* rose-400 */
 }
 
 .dark .immersive-reader #user-content :where(a:hover) {
-  color: rgb(253 164 175); /* rose-300 */
+  color: rgb(253 164 175) !important; /* rose-300 */
 }
 
 .dark .immersive-reader #user-content :where(strong, b) {
-  color: rgb(250 250 250);
+  color: rgb(250 250 250) !important;
 }
 
 .dark .immersive-reader #user-content :where(blockquote) {
   border-left-color: rgb(82 82 91); /* zinc-600 */
-  color: rgb(161 161 170); /* zinc-400 */
+  color: rgb(161 161 170) !important; /* zinc-400 */
 }
 
 .dark .immersive-reader .note-content {

@@ -27,6 +27,7 @@
     <% show_rating_notice = show_age_rating_notice?(@chapter.fiction) %>
     <% lock_reader = age_rating_reader_gate?(@chapter.fiction) %>
     <div class="container mx-auto px-4 py-2">
+      <%= render 'license_banner', fiction: @chapter.fiction if @chapter.fiction.licensed? %>
       <%= render Ui::AgeRatingNotice.new(rating: age_rating_notice_rating(@chapter.fiction), reader_gate: lock_reader) if show_rating_notice %>
 
       <div class="w-full py-2 sm:py-4<%= ' adult-content-gate--locked' if lock_reader %>"

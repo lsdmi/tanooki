@@ -4,9 +4,6 @@
 class Pokemon < ApplicationRecord
   extend FriendlyId
 
-  # Replaced by line_root_id and pokemon_evolutions; dropped in a later deploy.
-  self.ignored_columns += %w[ancestor_id descendant_id descendant_level]
-
   friendly_id :slug_candidates
 
   belongs_to :line_root, class_name: 'Pokemon', optional: true

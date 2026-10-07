@@ -6,4 +6,9 @@ namespace :fictions do
     Fictions::WarmIndexCacheJob.perform_now
     puts 'Fiction index caches warmed.'
   end
+
+  desc 'List non-deleted fictions that share a normalized title, alternative title, or English title'
+  task duplicates: :environment do
+    puts Fictions::DuplicateGroups.new.to_tsv
+  end
 end
