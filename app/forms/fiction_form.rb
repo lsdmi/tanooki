@@ -11,7 +11,7 @@ class FictionForm
 
   FORM_ONLY_PARAMS = %i[
     genre_ids scanlator_ids expected_chapters complete licensed license_publisher license_url
-    different_work
+    chapters_hidden different_work
   ].freeze
 
   attr_reader :title_matches
@@ -46,10 +46,9 @@ class FictionForm
   def apply_license
     return unless param?(:licensed)
 
-    @license = Catalog::ApplyLicense.call(
-      fiction, actor: user, licensed: params[:licensed],
-               publisher: params[:license_publisher], url: params[:license_url]
-    )
+    fields = { licensed: params[:licensed], publisher: params[:license_publisher], url: params[:license_url] }
+    fields[:hidden] = params[:chapters_hidden] if param?(:chapters_hidden)
+    @license = Catalog::ApplyLicense.call(fiction, actor: user, **fields)
   end
 
   def assign_association_ids_from_params

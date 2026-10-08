@@ -83,6 +83,29 @@ class FictionsControllerLicenseTest < ActionDispatch::IntegrationTest
     assert_not_predicate @fiction.reload, :licensed?
   end
 
+  test 'only an admin gets the hide chapters checkbox' do
+    license!(2.days.ago)
+
+    get edit_fiction_url(@fiction)
+
+    assert_select 'input#fiction_chapters_hidden', count: 0
+
+    sign_in users(:user_one)
+    get edit_fiction_url(@fiction)
+
+    assert_select 'input#fiction_chapters_hidden[type=checkbox]:not([checked])'
+  end
+
+  test 'an admin hides chapters from the edit form' do
+    license!(2.days.ago)
+    sign_in users(:user_one)
+
+    fields = { scanlator_ids: [1], licensed: '1', chapters_hidden: '1', **SOURCE }
+    patch fiction_url(@fiction), params: { fiction: fields }
+
+    assert_predicate @fiction.reload, :chapters_hidden?
+  end
+
   test 'the rules page explains licensed works' do
     get rules_url
 

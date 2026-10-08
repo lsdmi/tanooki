@@ -37,7 +37,7 @@ module Fictions
         fiction: [
           :alternative_title, :author, :cover, :description, :english_title, :origin,
           :title, :expected_chapters, :complete, :short_description, :banner, :content_rating,
-          :licensed, :license_publisher, :license_url, :different_work,
+          :licensed, :license_publisher, :license_url, :chapters_hidden, :different_work,
           { genre_ids: [], scanlator_ids: [] }
         ]
       )

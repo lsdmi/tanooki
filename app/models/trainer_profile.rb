@@ -2,9 +2,6 @@
 
 # A user's Pokémon game state: Glicko-2 rating, cooldown clocks, and the pinned battle opponent.
 class TrainerProfile < ApplicationRecord
-  # The 0–100 rating, replaced by glicko_*; dropped in the next deploy.
-  self.ignored_columns += %w[rating]
-
   belongs_to :user
 
   def training_on_cooldown?

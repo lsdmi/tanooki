@@ -63,9 +63,20 @@ module Fictions
     def stats
       [
         [:eye, views_text],
-        [:list, t('fictions.hero.stats.chapters', count: fiction.chapter_count)],
+        [:list, chapters_text],
         [:bookmark, t('fictions.hero.stats.bookmarks', count: presenter.bookmarks_total_count)]
       ]
+    end
+
+    def chapters_text
+      return t('fictions.hero.stats.chapters', count: fiction.chapter_count) unless partial_license?
+
+      preview = fiction.license_preview
+      t('fictions.hero.stats.chapters_available', available: preview.available_count, count: preview.released_count)
+    end
+
+    def partial_license?
+      fiction.license_chapters_state == :partial
     end
 
     def scanlators

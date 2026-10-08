@@ -96,6 +96,38 @@ module Catalog
       assert_equal completed_at, @fiction.reload.completed_at
     end
 
+    test 'an admin hides chapters and unhides them later' do
+      license!
+
+      freeze_time do
+        ApplyLicense.call(@fiction, actor: @admin, licensed: '1', hidden: '1', **SOURCE)
+
+        assert_equal Time.current, @fiction.chapters_hidden_at
+      end
+
+      ApplyLicense.call(@fiction, actor: @admin, licensed: '1', hidden: '0', **SOURCE)
+
+      assert_nil @fiction.chapters_hidden_at
+    end
+
+    test 'the team cannot hide chapters' do
+      license!
+
+      ApplyLicense.call(@fiction, actor: @editor, licensed: '1', hidden: '1', **SOURCE)
+
+      assert_nil @fiction.chapters_hidden_at
+    end
+
+    test 'clearing the license unhides the chapters' do
+      license!
+      @fiction.update!(chapters_hidden_at: 1.day.ago)
+
+      ApplyLicense.call(@fiction, actor: @admin, licensed: '0')
+      @fiction.save!
+
+      assert_nil @fiction.reload.chapters_hidden_at
+    end
+
     private
 
     def license!(at = 3.days.ago)

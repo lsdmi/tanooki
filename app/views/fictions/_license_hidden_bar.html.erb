@@ -1,0 +1,10 @@
+<%# locals: fiction: %>
+<% preview = fiction.license_preview %>
+<% title_key = preview.hidden_count == 1 ? :title_one : :title %>
+<%= render Ui::NoticeComponent.new(kind: :licensed, style: :light, html: { id: 'license-hidden-bar' },
+                                   title: t("fictions.license.hidden_bar.#{title_key}", range: preview.hidden_range),
+                                   body: t('fictions.license.hidden_bar.body')) do |notice| %>
+  <% if fiction.license_url.present? %>
+    <% notice.with_action { render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, size: :sm) } %>
+  <% end %>
+<% end %>

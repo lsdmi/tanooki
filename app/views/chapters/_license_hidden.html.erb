@@ -1,0 +1,16 @@
+<%# locals: chapter: %>
+<% fiction = chapter.fiction %>
+<section id="license-hidden" class="flex flex-col items-center gap-4 rounded-lg bg-page/95 px-4 py-10 text-center ring-1 ring-line/80 sm:px-8 sm:py-14">
+  <span class="flex size-12 items-center justify-center rounded-full bg-status-licensed-subtle-bg text-status-licensed-solid ring-1 ring-inset ring-status-licensed-subtle-border">
+    <%= stroke_icon(:lock, 'size-6') %>
+  </span>
+  <h2 class="max-w-xl text-lg font-bold text-fg sm:text-xl"><%= t('chapters.license_hidden.title') %></h2>
+  <p class="max-w-xl text-sm text-fg-secondary sm:text-base">
+    <%= t("chapters.license_hidden.#{fiction.license_publisher ? :body_with_publisher : :body}", publisher: fiction.license_publisher) %>
+  </p>
+  <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+    <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, html: { class: 'w-full sm:w-auto' }) %>
+    <%= render Ui::ButtonComponent.new(label: t('chapters.license_hidden.back'), variant: :outline, as: :link,
+                                       href: fiction_path(fiction), html: { class: 'w-full sm:w-auto' }) %>
+  </div>
+</section>

@@ -18,8 +18,8 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_includes response.body, I18n.t('fictions.notice_zone.licensed.body_with_publisher',
-                                          publisher: 'Видавництво Тест')
+    assert_includes response.body, 'Твір ліцензовано в Україні видавництвом «Видавництво Тест». ' \
+                                   'Опубліковані розділи лишаються доступними, нових на сайті не буде.'
     assert_select 'a[href=?][target="_blank"][rel="noopener noreferrer"]', STORE_URL, count: 3
   end
 

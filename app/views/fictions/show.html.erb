@@ -36,6 +36,8 @@
             <%= turbo_frame_tag 'sort-chapters' do %>
               <%= render 'chapters', fiction: @fiction, order: @show_presenter.order, continue_chapter: @show_presenter.list_continue_chapter %>
             <% end %>
+          <% elsif @fiction.license_chapters_state == :removed %>
+            <%= render 'license_removed', fiction: @fiction, progress_chapter: @show_presenter.reading_progress&.chapter %>
           <% else %>
             <%= render 'first_chapter_cta', fiction: @fiction %>
           <% end %>

@@ -87,9 +87,16 @@
       </div>
     </div>
 
+    <% license_partial = fiction.license_chapters_state == :partial %>
+    <%= render 'fictions/license_hidden_bar', fiction: fiction if license_partial %>
+    <%# Hidden chapters come after the preview, so the row sits where they would be in the current sort. %>
+    <%= render 'fictions/license_hidden_row', fiction: fiction if license_partial && newest_first %>
+
     <div data-controller="flowbite">
       <%= render 'fictions/chapter_list', fiction: fiction, order: order, reader_drawer: false, current_chapter: local_assigns[:current_chapter], drawer_progress: list_progress, continue_chapter:, read_filter: %>
     </div>
+
+    <%= render 'fictions/license_hidden_row', fiction: fiction if license_partial && !newest_first %>
 
     <% if list_progress %>
       <div id="chapter_continue_chip"><%= render 'fictions/continue_chip', continue_chapter: %></div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_210000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -187,6 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
     t.string "alternative_title"
     t.string "author", null: false
     t.integer "chapter_count", default: 0, null: false
+    t.datetime "chapters_hidden_at"
     t.integer "comments_count", default: 0
     t.datetime "completed_at"
     t.integer "content_rating", default: 0, null: false
@@ -564,11 +565,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
     t.datetime "opponent_rerolled_at"
     t.bigint "pinned_opponent_id"
     t.datetime "pinned_until"
-    t.integer "rating", default: 50, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["glicko_floor", "user_id"], name: "index_trainer_profiles_on_glicko_rank", order: { glicko_floor: :desc }
-    t.index ["rating", "user_id"], name: "index_trainer_profiles_on_rank", order: { rating: :desc }
     t.index ["user_id"], name: "index_trainer_profiles_on_user_id", unique: true
   end
 

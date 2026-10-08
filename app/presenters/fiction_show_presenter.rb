@@ -46,7 +46,10 @@ class FictionShowPresenter
   end
 
   # Guests always get About: their page is one cached variant, and a URL hash picks another tab on the client.
-  def default_tab = @current_user && reading_started? ? :chapters : :about
+  # So does a licensed work with no chapter left to list.
+  def default_tab
+    @current_user && reading_started? && @fiction.license_chapters_state != :removed ? :chapters : :about
+  end
 
   def bookmark_stats
     Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do

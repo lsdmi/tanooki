@@ -59,6 +59,12 @@ class Chapter < ApplicationRecord
 
   delegate :author, :cover, to: :fiction
 
+  def license_hidden?
+    return false unless fiction&.chapters_hidden?
+
+    fiction.license_preview_chapter_ids.exclude?(id)
+  end
+
   before_destroy :capture_scanlator_ids_for_stats_cache
   after_commit :invalidate_scanlator_stats_cache, on: %i[create update destroy]
 

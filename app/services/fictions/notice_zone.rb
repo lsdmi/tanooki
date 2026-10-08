@@ -25,13 +25,27 @@ module Fictions
     end
 
     def licensed(fiction)
-      publisher = fiction.license_publisher
-      body_key = publisher ? :body_with_publisher : :body
       Notice.new(
         kind: :licensed,
         title: I18n.t('fictions.notice_zone.licensed.title'),
-        body: I18n.t("fictions.notice_zone.licensed.#{body_key}", publisher:)
+        body: [license_lead(fiction), license_chapters_note(fiction)].join(' ')
       )
+    end
+
+    def license_lead(fiction)
+      publisher = fiction.license_publisher
+      I18n.t("fictions.notice_zone.licensed.#{publisher ? :lead_with_publisher : :lead}", publisher:)
+    end
+
+    def license_chapters_note(fiction)
+      preview = fiction.license_preview
+      case fiction.license_chapters_state
+      when :removed then I18n.t('fictions.notice_zone.licensed.removed')
+      when :partial
+        key = preview.available_count == 1 ? :preview_one : :preview
+        I18n.t("fictions.notice_zone.licensed.#{key}", range: preview.available_range)
+      else I18n.t('fictions.notice_zone.licensed.open')
+      end
     end
 
     def notice(kind)

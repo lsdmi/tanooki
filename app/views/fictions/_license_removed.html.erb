@@ -1,0 +1,14 @@
+<%# locals: fiction:, progress_chapter: %>
+<div id="license-removed" class="flex flex-col items-center gap-4 rounded-2xl border-2 border-dashed border-status-licensed-subtle-border bg-status-licensed-subtle-bg px-6 py-12 text-center">
+  <span class="flex size-12 items-center justify-center rounded-full bg-page text-status-licensed-solid ring-1 ring-inset ring-status-licensed-subtle-border">
+    <%= stroke_icon(:lock, 'size-6') %>
+  </span>
+  <h2 class="text-xl font-bold text-fg"><%= t('fictions.license.removed.title') %></h2>
+  <p class="max-w-md text-sm text-fg-secondary"><%= t('fictions.license.removed.body') %></p>
+  <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: t('fictions.license.read_official'), variant: :licensed) %>
+  <% if progress_chapter %>
+    <p class="text-xs/5 text-fg-muted">
+      <%= t('fictions.license.removed.progress', number: Chapters::Formatting.format_decimal(progress_chapter.number)) %>
+    </p>
+  <% end %>
+</div>

@@ -1,0 +1,9 @@
+<%# locals: fiction: %>
+<% preview = fiction.license_preview %>
+<div id="license-hidden-range" class="flex items-center gap-3 rounded-lg border border-dashed border-status-licensed-subtle-border bg-status-licensed-subtle-bg px-4 py-3 text-sm/5 text-fg-secondary">
+  <span class="flex shrink-0 text-status-licensed-solid" aria-hidden="true"><%= stroke_icon(:lock, 'size-4') %></span>
+  <span class="min-w-0 flex-1">
+    <%= t(preview.hidden_count == 1 ? 'fictions.license.hidden_row_one' : 'fictions.license.hidden_row', range: preview.hidden_range) %>
+  </span>
+  <span class="shrink-0 tabular-nums text-fg-muted"><%= preview.hidden_count %></span>
+</div>

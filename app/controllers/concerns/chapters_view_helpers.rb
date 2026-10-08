@@ -16,6 +16,7 @@ module ChaptersViewHelpers
            Library::ChapterCatalogHelper,
            Library::ChapterNavigationHelper,
            Library::ReadingStateHelper,
-           Scanlators::SelectOptionsHelper
+           Scanlators::SelectOptionsHelper,
+           Ui::StrokeIconHelper
   end
 end

@@ -10,7 +10,7 @@ module StructuredData
     end
 
     def chapter_reader_meta?(chapter = nil)
-      chapters_show_page? && chapter&.public_visible?
+      chapters_show_page? && chapter&.public_visible? && !chapter.license_hidden?
     end
 
     def fiction_reader_meta?

@@ -44,7 +44,8 @@ module Fictions
     test 'the licensed notice reads without a publisher' do
       @fiction.assign_attributes(licensed_at: 1.day.ago, license_url: 'https://example.com/book')
 
-      assert_equal I18n.t('fictions.notice_zone.licensed.body'), NoticeZone.for(@fiction).sole.body
+      assert_equal 'Твір ліцензовано в Україні. Опубліковані розділи лишаються доступними, нових на сайті не буде.',
+                   NoticeZone.for(@fiction).sole.body
     end
 
     test 'notices carry the uk copy' do

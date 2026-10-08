@@ -34,10 +34,16 @@ module Fictions
       return t('fictions.chapters_tab.jump.failed') unless result.number
 
       number = Chapters::Formatting.format_decimal(result.number)
-      hidden = listed.any? { |chapter| chapter.number == result.number }
-      return t('fictions.chapters_tab.jump.filtered', number:) if hidden
+      unlisted = chapter_jump_unlisted_reason(result.number, listed)
+      return t("fictions.chapters_tab.jump.#{unlisted}", number:) if unlisted
 
       t('fictions.chapters_tab.jump.missing', number:, range: helpers.chapter_number_range(listed))
+    end
+
+    def chapter_jump_unlisted_reason(number, listed)
+      return :licensed if @fiction.chapters_hidden? && @fiction.license_preview.hidden_number?(number)
+
+      :filtered if listed.any? { |chapter| chapter.number == number }
     end
 
     def chapter_jump_locals(result, order)

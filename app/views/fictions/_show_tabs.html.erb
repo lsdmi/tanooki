@@ -1,7 +1,7 @@
 <%# locals: fiction:, active_tab: %>
 <% tabs = {
      about: t('fictions.tabs.about'),
-     chapters: "#{t('fictions.tabs.chapters')} · #{fiction.chapter_count}",
+     chapters: "#{t('fictions.tabs.chapters')} · #{fiction.chapters_hidden? ? fiction.license_preview.available_count : fiction.chapter_count}",
      comments: "#{t('fictions.tabs.comments')} · #{fiction.comments_count}"
    } %>
 <div class="sticky top-0 z-30 border-b border-line bg-surface/95 backdrop-blur" data-tabs-target="list">

@@ -52,10 +52,10 @@ module Library
       order.to_sym == :desc ? chapters : chapters.reverse
     end
 
+    # After a takedown everyone, admins included, gets only the preview chapters.
     def chapters_scope_for_list(fiction, viewer)
-      return fiction.chapters.published if viewer&.admin?
-
-      chapters_scope_by_visibility(fiction, viewer)
+      scope = viewer&.admin? ? fiction.chapters.published : chapters_scope_by_visibility(fiction, viewer)
+      fiction.chapters_hidden? ? scope.where(id: fiction.license_preview_chapter_ids) : scope
     end
 
     def order_clause

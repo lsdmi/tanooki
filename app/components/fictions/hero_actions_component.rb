@@ -65,6 +65,11 @@ module Fictions
       turbo_drive_visit_data(preload: true).deep_merge(data:, class: 'w-full md:w-auto')
     end
 
+    # With nothing left to read here, the official edition is the read button.
+    def official_edition_label
+      t('fictions.license.read_official') unless cta?
+    end
+
     def guest_continue_attributes
       return {} unless guest? && cta?
 
@@ -99,6 +104,12 @@ module Fictions
 
     # «востаннє» is the last chapter visit; a shelf change also touches updated_at, so it is not a fallback.
     def progress_line
+      return licensed_progress_line if reading_progress&.chapter&.license_hidden?
+
+      reading_progress_line
+    end
+
+    def reading_progress_line
       return unless reading_started? && continue_reading.total.positive?
 
       counts = { read: continue_reading.read_count, total: continue_reading.total }
@@ -106,6 +117,10 @@ module Fictions
       return t('fictions.hero.progress', **counts) unless visited_at
 
       t('fictions.hero.progress_with_time', **counts, time: time_ago_in_words(visited_at, locale: :uk))
+    end
+
+    def licensed_progress_line
+      t('fictions.hero.progress_licensed', number: chapter_number(reading_progress.chapter))
     end
   end
 end

@@ -18,6 +18,7 @@ module FictionLicense
     validates :license_publisher, length: { maximum: 100 }
     validates :license_url, length: { maximum: 500 }, format: { with: HTTPS_URL, allow_nil: true }
     validate :license_source_present, if: :licensed?
+    validates :chapters_hidden_at, absence: true, unless: :licensed?
 
     # Chapter.released is wall-clock, so a schedule left in place would go live after the license.
     after_save :revert_scheduled_chapters, if: :license_just_marked?
@@ -25,6 +26,26 @@ module FictionLicense
 
   def licensed?
     licensed_at.present?
+  end
+
+  # Rights holder takedown (admin only): every chapter past the preview stops rendering. Rows stay.
+  def chapters_hidden?
+    licensed? && chapters_hidden_at.present?
+  end
+
+  def license_preview
+    @license_preview ||= Fictions::LicensePreview.new(self)
+  end
+
+  delegate :chapter_ids, to: :license_preview, prefix: true
+
+  # :open while every released chapter is readable (including a takedown with nothing past the preview),
+  # :partial with a hidden range, :removed when not even a preview chapter is left.
+  def license_chapters_state
+    return :open unless chapters_hidden?
+    return :removed if license_preview.available_count.zero?
+
+    license_preview.hidden_count.positive? ? :partial : :open
   end
 
   def license_grace?
