@@ -1,7 +1,20 @@
 <section class="bg-main z-10 relative">
-  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
+  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8"
+       data-controller="dropzone fiction-title-lookup"
+       data-fiction-title-lookup-url-value="<%= lookup_fictions_path %>">
     <%= simple_form_for @fiction, as: :fiction, url: fictions_path, method: :post, html: { class: "form" }, data: { turbo: false } do |f| %>
-      <%= render 'form', fiction: @fiction, f: f, genres: @genres %>
+      <div data-fiction-title-lookup-target="results">
+        <%= render 'title_matches', matches: @title_matches || [] %>
+      </div>
+      <% if @title_matches.present? %>
+        <label class="mb-6 flex items-start gap-3 rounded-xl border border-line bg-page p-4 shadow-xl" for="fiction_different_work">
+          <%= check_box_tag 'fiction[different_work]', '1', params.dig(:fiction, :different_work).to_s == '1',
+                            id: 'fiction_different_work',
+                            class: 'mt-1 h-4 w-4 rounded border-line-strong bg-surface text-fg-secondary focus:ring-2 focus:ring-line-strong' %>
+          <span class="text-lg font-semibold text-fg-secondary"><%= t('fictions.duplicates.confirm') %></span>
+        </label>
+      <% end %>
+      <%= render 'form', fiction: @fiction, f: f, genres: @genres, lookup: true %>
     <% end %>
   </div>
 </section>

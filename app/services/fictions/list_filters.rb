@@ -3,7 +3,7 @@
 module Fictions
   # Permits and normalizes fiction catalog URL filters for queries and Pagy links.
   class ListFilters
-    KEYS = %i[genre only_new longreads evening top_rated finished include_eighteen].freeze
+    KEYS = %i[genre only_new longreads evening top_rated finished licensed include_eighteen].freeze
     FLAG_KEYS = (KEYS - [:genre]).freeze
     # Read for one release after the rename; never written into query/pagy hashes.
     LEGACY_INCLUDE_EIGHTEEN_KEY = :adult_content

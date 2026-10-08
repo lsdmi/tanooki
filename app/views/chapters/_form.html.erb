@@ -5,7 +5,7 @@
   <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:items-stretch">
     <!-- Left Column - Chapter Details -->
     <div class="flex flex-col min-h-0">
-      <div class="bg-card rounded-xl border border-line p-4 sm:p-6 shadow-sm h-full flex flex-col">
+      <div class="flex h-full flex-col sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
         <div class="flex items-center gap-3 pb-4 mb-1 border-b border-line-muted dark:border-line/80">
           <div class="h-9 w-9 shrink-0 rounded-lg bg-brand-subtle flex items-center justify-center ring-1 ring-brand/20">
             <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,7 +46,7 @@
     </div>
     <!-- Right Column — team only -->
     <div class="flex flex-col min-h-0">
-      <div class="bg-card rounded-xl border border-line p-4 sm:p-6 shadow-sm h-full flex flex-col">
+      <div class="flex h-full flex-col sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
         <div class="flex items-center gap-3 pb-4 mb-1 border-b border-line-muted dark:border-line/80">
           <div class="h-9 w-9 shrink-0 rounded-lg bg-brand-subtle flex items-center justify-center ring-1 ring-brand/20">
             <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,7 +79,7 @@
   </div>
 
   <!-- Scheduled publication — full width below the two-column row -->
-  <div class="mb-8 bg-gradient-to-br from-card to-surface/80 dark:to-surface/95 rounded-xl border border-line p-4 sm:p-6 shadow-sm ring-1 ring-brand/5 dark:ring-brand/10">
+  <div class="mb-8 sm:rounded-xl sm:border sm:border-line sm:bg-gradient-to-br sm:from-card sm:to-surface/80 sm:p-6 sm:shadow-sm sm:ring-1 sm:ring-brand/5 dark:sm:to-surface/95 dark:sm:ring-brand/10">
     <div class="flex items-start gap-3 pb-4 mb-1 border-b border-line">
       <div class="h-9 w-9 shrink-0 rounded-lg bg-brand-subtle flex items-center justify-center ring-1 ring-brand/25">
         <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -135,8 +135,8 @@
   </div>
 
   <!-- Content Section - Full Width at Bottom -->
-  <div class="bg-card rounded-xl border border-line p-4 sm:p-6 shadow-sm">
-    <div class="flex items-center gap-3 pb-4 mb-4 border-b border-line-muted dark:border-line/80">
+  <div class="sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
+    <div class="mb-3 flex items-center gap-3 border-b border-line-muted pb-3 dark:border-line/80 sm:mb-4 sm:pb-4">
       <div class="h-9 w-9 shrink-0 rounded-lg bg-brand-subtle flex items-center justify-center ring-1 ring-brand/20">
         <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -148,7 +148,7 @@
       <div>
         <%= f.text_area :content, label: false, class: "tinymce block w-full min-h-[400px] focus:ring-0 bg-transparent text-fg border-0 p-0", data: { image_upload_url: chapter_images_path, markdown_import_url: chapter_markdown_imports_path } %>
       </div>
-      <%= tag.div chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-2 flex items-center p-3 bg-status-danger-subtle-bg rounded-lg border border-red-200 dark:border-red-800' do %>
+      <%= tag.div chapter.errors[:content].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'mx-3 mt-2 flex items-center rounded-lg border border-red-200 bg-status-danger-subtle-bg p-3 text-sm text-status-danger-solid dark:border-red-800 sm:mx-0' do %>
         <svg class="h-4 w-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
         <%= chapter.errors[:content].first %>
       <% end if chapter.errors[:content].any? %>

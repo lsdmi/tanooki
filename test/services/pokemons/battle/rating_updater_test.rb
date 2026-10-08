@@ -6,39 +6,46 @@ module Pokemons
   module Battle
     class RatingUpdaterTest < ActiveSupport::TestCase
       def setup
-        @attacker = trainer_profiles(:user_one)
-        @defender = trainer_profiles(:user_two)
-        @service = RatingUpdater.new(winner: @attacker, loser: @defender)
+        @winner = trainer_profiles(:user_one)
+        @loser = trainer_profiles(:user_two)
       end
 
-      test 'winner and loser ratings are updated correctly' do
-        @service.call
+      test 'two newcomers move apart symmetrically and return the rounded change' do
+        deltas = RatingUpdater.new(winner: @winner, loser: @loser).call
 
-        # Same rank (fixtures default rating 50) -> update_equal_rank: +2 / -2
-        assert_equal [52, 48], [@attacker.reload.rating, @defender.reload.rating]
+        assert_equal({ @winner.user_id => 162, @loser.user_id => -162 }, deltas)
+        assert_in_delta 1662.2, @winner.reload.glicko_rating, 0.1
+        assert_in_delta 1337.8, @loser.reload.glicko_rating, 0.1
       end
 
-      test 'rating never drops below 0' do
-        @attacker.update!(rating: 1)
-        @defender.update!(rating: 1)
-        RatingUpdater.new(winner: @defender, loser: @attacker).call
+      test 'a battle makes both sides surer and moves the floor with them' do
+        RatingUpdater.new(winner: @winner, loser: @loser).call
 
-        assert_equal 0, @attacker.reload.rating
+        assert_in_delta 290.2, @winner.reload.glicko_deviation, 0.1
+        assert_in_delta @winner.glicko.floor, @winner.glicko_floor, 0.000001
       end
 
-      test 'rating never rises above 100' do
-        @attacker.update!(rating: 99)
-        @defender.update!(rating: 99)
-        @service.call
+      test 'beating a much weaker trainer earns little' do
+        @winner.update!(glicko_rating: 1900, glicko_deviation: 60, last_battle_at: 1.hour.ago)
+        @loser.update!(glicko_rating: 1400, glicko_deviation: 60, last_battle_at: 1.hour.ago)
 
-        assert_equal 100, @attacker.reload.rating
+        deltas = RatingUpdater.new(winner: @winner, loser: @loser).call
+
+        assert_equal [1, -1], deltas.values_at(@winner.user_id, @loser.user_id)
       end
 
-      test 'returns the change each side actually got, by user id' do
-        @attacker.update!(rating: 99)
-        @defender.update!(rating: 99)
+      test 'rates both sides from their ratings before the battle, grown by their own idle time' do
+        at = Time.zone.parse('2026-10-08 12:00')
+        @winner.update!(glicko_rating: 1600, glicko_deviation: 60, last_battle_at: at - 1.hour)
+        @loser.update!(glicko_rating: 1600, glicko_deviation: 60, last_battle_at: at - 365.days)
+        winner_before = @winner.glicko
+        loser_before = @loser.glicko
 
-        assert_equal({ @attacker.user_id => 1, @defender.user_id => -2 }, @service.call)
+        RatingUpdater.new(winner: @winner, loser: @loser, at:).call
+
+        assert_equal Ratings::Glicko2.rate(winner_before, [[loser_before.idle(365), 1]], periods: 1.0 / 24),
+                     @winner.reload.glicko
+        assert_operator 1600 - @loser.reload.glicko_rating, :>, 3 * (@winner.glicko_rating - 1600)
       end
     end
   end

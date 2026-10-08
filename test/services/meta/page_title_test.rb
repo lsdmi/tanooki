@@ -46,6 +46,16 @@ module Meta
       assert_equal I18n.t('meta.title.fictions.index'), title
     end
 
+    test 'resolve keeps the default title when a static path has no action copy' do
+      title = PageTitle.new(
+        request_path: fictions_path,
+        controller_name: 'fictions',
+        action_name: 'create'
+      ).resolve
+
+      assert_equal PageTitle::DEFAULT_TITLE, title
+    end
+
     test 'resolve returns genre title on genre show pages' do
       genre = genres(:one)
 

@@ -65,6 +65,11 @@ const initializeModeToggler = () => {
     const headerStyle = document.createElement('style');
     headerStyle.setAttribute('data-tinymce-header-theme', 'true');
     headerStyle.textContent = `
+      .tox-tinymce {
+        border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
+        border-radius: 10px !important;
+      }
+
       .tox-editor-header {
         background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
         border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
@@ -258,6 +263,35 @@ const initializeModeToggler = () => {
         border-color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
         color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
       }
+
+      /* Search options (gear) is a toolbar button dropped into the dialog, so the skin paints it white. */
+      .tox-dialog .tox-tbtn {
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+        color: ${isDark ? '#fafafa' : '#374151'} !important;
+        border: 1px solid ${isDark ? '#71717a' : '#d1d5db'} !important;
+        border-radius: 6px !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .tox-dialog .tox-tbtn:hover,
+      .tox-dialog .tox-tbtn--enabled {
+        background: ${isDark ? '#71717a' : '#e5e7eb'} !important;
+      }
+
+      .tox-dialog .tox-tbtn svg {
+        fill: ${isDark ? '#fafafa' : '#374151'} !important;
+      }
+
+      .tox-dialog .tox-button--naked {
+        background: transparent !important;
+        border-color: transparent !important;
+        color: ${isDark ? '#fafafa' : '#374151'} !important;
+      }
+
+      .tox-dialog .tox-button--naked .tox-icon svg {
+        fill: ${isDark ? '#fafafa' : '#374151'} !important;
+      }
       
       /* Dialog form elements */
       .tox-dialog__body .tox-form__group {
@@ -358,10 +392,18 @@ const initializeModeToggler = () => {
       }
       
       /* Collection items (dropdowns, menus) */
-      .tox-collection__item-label {
+      .tox-collection__item-label,
+      .tox-collection__item-label :is(h1, h2, h3, h4, h5, h6, p, blockquote) {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
         color: ${isDark ? '#fafafa' : '#111827'} !important;
+      }
+
+      .tox-collection__item-label {
         font-size: 14px !important;
         margin: 4px !important;
+        padding: 0 !important;
         transition: all 0.2s ease !important;
       }
       

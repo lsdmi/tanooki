@@ -9,6 +9,13 @@ class FictionLicenseTest < ActiveSupport::TestCase
                                 license_url: 'https://publisher.example/book')
   end
 
+  test 'search_data keeps a licensed work searchable and flags it' do
+    data = @licensed.search_data
+
+    assert data.fetch(:active)
+    assert data.fetch(:licensed)
+  end
+
   test 'licensed scopes split on licensed_at' do
     @licensed.save!(validate: false)
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_07_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -232,8 +232,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_140000) do
     t.json "defender_team", null: false
     t.integer "engine_version", limit: 2, null: false
     t.json "events", null: false
-    t.integer "rating_delta_attacker", limit: 1, null: false
-    t.integer "rating_delta_defender", limit: 1, null: false
+    t.integer "rating_delta_attacker", limit: 2, null: false
+    t.integer "rating_delta_defender", limit: 2, null: false
     t.bigint "seed", null: false
     t.bigint "winner_id", null: false
     t.index ["attacker_id", "created_at"], name: "index_pokemon_battles_on_attacker_id_and_created_at"
@@ -554,6 +554,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_140000) do
 
   create_table "trainer_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.float "glicko_deviation", limit: 53, default: 350.0, null: false
+    t.virtual "glicko_floor", type: :float, limit: 53, as: "(`glicko_rating` - (2 * `glicko_deviation`))", stored: true
+    t.float "glicko_rating", limit: 53, default: 1500.0, null: false
+    t.float "glicko_volatility", limit: 53, default: 0.06, null: false
     t.datetime "last_battle_at"
     t.datetime "last_catch_at"
     t.datetime "last_training_at"
@@ -563,6 +567,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_140000) do
     t.integer "rating", default: 50, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["glicko_floor", "user_id"], name: "index_trainer_profiles_on_glicko_rank", order: { glicko_floor: :desc }
     t.index ["rating", "user_id"], name: "index_trainer_profiles_on_rank", order: { rating: :desc }
     t.index ["user_id"], name: "index_trainer_profiles_on_user_id", unique: true
   end

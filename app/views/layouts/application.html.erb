@@ -101,7 +101,7 @@
     <% if requires_mode_toggler? %>
       <%= javascript_import_module_tag 'mode_toggler' %>
     <% end %>
-    <%= render "shared/chat_widget" unless chapters_show_page? %>
+    <%= render "shared/chat_widget" unless chapters_show_page? || requires_tinymce? %>
     <%= tag.div(hidden: true, data: { controller: 'guest-reading-merge', guest_reading_merge_url_value: guest_reading_merge_path }) if user_signed_in? %>
   </body>
 </html>

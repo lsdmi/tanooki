@@ -1,3 +1,5 @@
+<% lookup_query = { action: 'input->fiction-title-lookup#schedule', fiction_title_lookup_target: 'query' } if local_assigns[:lookup] %>
+<% text_field_class = 'w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong' %>
 <div class="bg-page p-8 rounded-xl shadow-xl border border-line">
   <h2 class="text-3xl font-bold text-fg mb-6">Налаштування Твору</h2>
 
@@ -5,7 +7,7 @@
     <div>
       <div class="relative mb-4">
         <%= f.label :title, 'Заголовок', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
-        <%= f.input :title, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: 'Вкажіть заголовок' %>
+        <%= f.input :title, input_html: { class: text_field_class, data: lookup_query }.compact, label: false, placeholder: 'Вкажіть заголовок' %>
         <%= tag.p fiction.errors[:title].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:title].any? %>
       </div>
 
@@ -17,7 +19,7 @@
 
       <div class="relative mb-4">
         <%= f.label :english_title, 'Заголовок англійською', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
-        <%= f.input :english_title, input_html: { class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" }, label: false, placeholder: "Англійський заголовок (необов'язково)" %>
+        <%= f.input :english_title, input_html: { class: text_field_class, data: lookup_query }.compact, label: false, placeholder: "Англійський заголовок (необов'язково)" %>
         <%= tag.p fiction.errors[:english_title].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:english_title].any? %>
       </div>
 

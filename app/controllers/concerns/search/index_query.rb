@@ -40,10 +40,14 @@ module Search
       @trending_tag_counts = search_tag_counts(@trending_tag_labels)
     end
 
+    # Links from outside sometimes send search[0]=..., which Rails parses as a hash rather than an array.
     def transformed_param
-      return nil if params[:search].blank?
+      terms = params[:search]
+      terms = terms.values if terms.is_a?(ActionController::Parameters)
+      terms = Array(terms).grep(String).compact_blank
+      return nil if terms.empty?
 
-      params[:search] = Array(params[:search])
+      params[:search] = terms
     end
 
     def fiction_search

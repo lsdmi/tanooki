@@ -31,7 +31,8 @@ module Meta
       request_path = context[:request_path]
       return unless request_path && PageDescription.static_path?(request_path)
 
-      I18n.t("meta.title.#{context[:controller_name]}.#{context[:action_name]}")
+      key = "meta.title.#{context[:controller_name]}.#{context[:action_name]}"
+      I18n.t(key) if I18n.exists?(key)
     end
 
     def title_from_record

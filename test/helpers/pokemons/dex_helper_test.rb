@@ -14,40 +14,18 @@ module Pokemons
       assert_select 'svg[aria-hidden=true]', count: 2
     end
 
-    test 'dex_title should return the correct title for case 0' do
-      title = dex_title(4)
-
-      assert_equal 'Початківець', title
+    test 'dex_title gives a trainer without battles the first title' do
+      assert_equal 'Новачок', dex_title(nil)
     end
 
-    test 'dex_title should return the correct title for case 21' do
-      title = dex_title(41)
-
-      assert_equal 'Школяр', title
+    test 'dex_title maps a percentile to its band' do
+      assert_equal(['Новачок', 'Юнак', 'Власник значка', 'Лідер стадіону', 'Майстер покемонів', 'Чемпіон'],
+                   [0.0, 0.15, 0.6, 0.9, 0.96, 0.99].map { |percentile| dex_title(percentile) })
+      assert_equal 'Елітна четвірка', dex_title(0.989)
     end
 
-    test 'dex_title should return the correct title for case 41' do
-      title = dex_title(59)
-
-      assert_equal 'Тренер', title
-    end
-
-    test 'dex_title should return the correct title for case 61' do
-      title = dex_title(83)
-
-      assert_equal 'Висхідна зірка', title
-    end
-
-    test 'dex_title should return the correct title for case 81' do
-      title = dex_title(93)
-
-      assert_equal 'Майстер', title
-    end
-
-    test 'dex_title should return the correct title for case 91' do
-      title = dex_title(99)
-
-      assert_equal 'Чемпіон', title
+    test 'every title band has a label' do
+      assert_equal TITLE_PERCENTILES.size, t('pokemons.titles').size
     end
   end
 end

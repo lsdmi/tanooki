@@ -82,6 +82,9 @@ Rails.application.routes.draw do
     end
   end
   resources :fictions do
+    collection do
+      get :lookup
+    end
     resources :fiction_ratings, only: %i[create update]
     resource :listing_nudge, only: [], module: :catalog, controller: 'listing_nudges' do
       post :complete

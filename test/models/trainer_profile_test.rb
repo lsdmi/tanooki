@@ -9,7 +9,18 @@ class TrainerProfileTest < ActiveSupport::TestCase
     profile = TrainerProfile.find_by!(user:)
     clocks = profile.attributes.values_at('last_catch_at', 'last_training_at', 'last_battle_at')
 
-    assert_equal [50, [nil] * 3], [profile.rating, clocks]
+    assert_equal [Pokemons::Ratings::Glicko2::NEW, [nil] * 3], [profile.glicko, clocks]
+  end
+
+  test 'idle periods count fractional days since the last battle' do
+    profile = trainer_profiles(:user_one)
+    now = Time.zone.parse('2026-10-08 12:00')
+
+    assert_equal 0, profile.idle_periods(now)
+
+    profile.last_battle_at = now - 36.hours
+
+    assert_in_delta 1.5, profile.idle_periods(now)
   end
 
   test 'an account without a profile gets one on first use' do

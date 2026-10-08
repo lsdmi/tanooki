@@ -11,13 +11,18 @@ class FictionForm
 
   FORM_ONLY_PARAMS = %i[
     genre_ids scanlator_ids expected_chapters complete licensed license_publisher license_url
+    different_work
   ].freeze
 
+  attr_reader :title_matches
+
   def save
+    @title_matches = []
     return false unless normalize_cover_upload
 
     assign_from_params
-    if valid? && fiction.save
+    duplicate = blocking_title_match?
+    if !duplicate && valid? && fiction.save
       fiction
     else
       copy_errors_to_fiction
@@ -68,6 +73,18 @@ class FictionForm
 
   def param?(key)
     params.key?(key) || params.key?(key.to_s)
+  end
+
+  # Edit is never blocked. A checked "different work" box creates the fiction anyway.
+  def blocking_title_match?
+    return false if fiction.persisted?
+
+    @title_matches = Fictions::ExactTitleMatch.new(title: fiction.title, english_title: fiction.english_title).call
+    @title_matches.any? && !different_work?
+  end
+
+  def different_work?
+    ActiveModel::Type::Boolean.new.cast(params[:different_work])
   end
 
   def banner_is_valid

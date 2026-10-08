@@ -52,7 +52,10 @@ module Meta
     end
 
     def description_from_static_path
-      I18n.t("meta.description.#{context[:controller_name]}.#{context[:action_name]}") if static_description_path?
+      return unless static_description_path?
+
+      key = "meta.description.#{context[:controller_name]}.#{context[:action_name]}"
+      I18n.t(key) if I18n.exists?(key)
     end
 
     def static_description_path?

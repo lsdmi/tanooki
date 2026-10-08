@@ -7,10 +7,10 @@
     <%= t('chapters.buttons.back_to_chapters') %>
   <% end %>
 </div>
-<div class="mb-8 text-center">
+<div class="mb-6 text-center sm:mb-8">
   <div class="mb-3 flex flex-wrap items-center justify-center gap-3">
-    <h1 class="text-3xl font-bold text-fg"><%= title %></h1>
+    <h1 class="text-2xl font-bold text-fg sm:text-3xl"><%= title %></h1>
     <%= render 'shared/draft_badge', record: chapter %>
   </div>
-  <p class="mx-auto max-w-2xl text-lg text-fg-muted"><%= subtitle %></p>
+  <p class="mx-auto max-w-2xl text-base text-fg-muted sm:text-lg"><%= subtitle %></p>
 </div>

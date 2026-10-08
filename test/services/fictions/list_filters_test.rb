@@ -11,6 +11,13 @@ module Fictions
       assert_equal({ genre: '3', only_new: '1' }, hash.symbolize_keys)
     end
 
+    test 'licensed is a flag filter' do
+      params = ActionController::Parameters.new(licensed: '1', page: '2')
+
+      assert_equal({ licensed: '1' }, ListFilters.permit_for_pagy(params))
+      assert_equal({ licensed: '1' }, ListFilters.permit_for_query(params).symbolize_keys)
+    end
+
     test 'permit_for_pagy ignores page param in pagy hash' do
       params = ActionController::Parameters.new(page: '2', top_rated: '1')
       hash = ListFilters.permit_for_pagy(params)

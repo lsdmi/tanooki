@@ -22,6 +22,14 @@ class FictionListQueryBuilderTest < ActiveSupport::TestCase
     assert_not_includes ids, @open.id
   end
 
+  test 'licensed filter keeps only licensed works' do
+    @open.update!(licensed_at: 1.day.ago, license_publisher: 'Видавництво Тест')
+
+    ids = FictionListQueryBuilder.new(Fiction.all, licensed: '1').call.map(&:id)
+
+    assert_equal [@open.id], ids
+  end
+
   test 'without finished filter both listings remain' do
     ids = FictionListQueryBuilder.new(Fiction.all, {}).call.map(&:id)
 

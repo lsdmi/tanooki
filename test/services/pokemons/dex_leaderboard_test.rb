@@ -18,23 +18,51 @@ module Pokemons
         character: 'lucky'
       )
 
-      @first.trainer_profile.update!(rating: 80)
-      @second.trainer_profile.update!(rating: 60)
-      @third.trainer_profile.update!(rating: 40)
+      @first.trainer_profile.update!(glicko_rating: 1800, glicko_deviation: 100, last_battle_at: 1.day.ago)
+      @second.trainer_profile.update!(glicko_rating: 1700, glicko_deviation: 80, last_battle_at: 1.day.ago)
+      @third.trainer_profile.update!(glicko_rating: 1500, glicko_deviation: 80, last_battle_at: 1.day.ago)
     end
 
-    test 'ranks three or more users by battle win rate' do
-      assert_equal 1, @leaderboard.rank_for(@first)
-      assert_equal 2, @leaderboard.rank_for(@second)
-      assert_equal 3, @leaderboard.rank_for(@third)
+    test 'ranks by rating minus two deviations' do
+      @first.trainer_profile.update!(glicko_rating: 1900, glicko_deviation: 300)
+
+      assert_equal 3, @leaderboard.rank_for(@first)
+      assert_equal 1, @leaderboard.rank_for(@second)
+      assert_equal 2, @leaderboard.rank_for(@third)
     end
 
-    test 'tie-breaks equal win rates by user id' do
-      @first.trainer_profile.update!(rating: 50)
-      @second.trainer_profile.update!(rating: 50)
+    test 'tie-breaks an equal floor by user id' do
+      @second.trainer_profile.update!(glicko_rating: 1740, glicko_deviation: 70)
 
       assert_equal 1, @leaderboard.rank_for(@first)
       assert_equal 2, @leaderboard.rank_for(@second)
+    end
+
+    test 'ranks a profile just rated by its new rating' do
+      @third.trainer_profile.glicko_rating = 2000
+
+      assert_equal 1, @leaderboard.rank_for(@third)
+    end
+
+    test 'percentile counts battled trainers ranked strictly lower, so a tie shares one' do
+      @second.trainer_profile.update!(glicko_rating: 1500, glicko_deviation: 80)
+
+      assert_in_delta 2.0 / 3, @leaderboard.percentile_for(@first)
+      assert_in_delta 0.0, @leaderboard.percentile_for(@second)
+      assert_in_delta 0.0, @leaderboard.percentile_for(@third)
+    end
+
+    test 'percentile compares with recently active trainers only' do
+      @third.trainer_profile.update!(glicko_rating: 2000, last_battle_at: 31.days.ago)
+
+      assert_in_delta 0.5, @leaderboard.percentile_for(@first)
+      assert_in_delta 1.0, @leaderboard.percentile_for(@third)
+    end
+
+    test 'a trainer who never battled has no percentile' do
+      @third.trainer_profile.update!(last_battle_at: nil)
+
+      assert_nil @leaderboard.percentile_for(@third)
     end
 
     test 'returns nil for users not on the leaderboard' do

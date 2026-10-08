@@ -85,6 +85,7 @@ class Fiction < ApplicationRecord
       english_title:,
       scanlators: scanlators.pluck(:title).to_sentence,
       title:,
+      licensed: licensed?,
       active: true
     }
   end

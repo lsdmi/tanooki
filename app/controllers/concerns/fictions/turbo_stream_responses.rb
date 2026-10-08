@@ -65,7 +65,10 @@ module Fictions
     end
 
     def catalog_or_bookshelf_referer?
-      request.referer == alphabetical_fictions_url || request.referer&.include?('/bookshelves/')
+      referer_path = URI.parse(request.referer.to_s).path.to_s
+      referer_path == alphabetical_fictions_path || referer_path.include?('/bookshelves/')
+    rescue URI::InvalidURIError
+      false
     end
 
     def details_stream_locals

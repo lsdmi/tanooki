@@ -2,13 +2,13 @@
 
 <div class="mx-auto">
   <!-- Main Content Area -->
-  <div class="grid lg:grid-cols-3 gap-8">
+  <div class="grid gap-6 lg:grid-cols-3 lg:gap-8">
 
     <!-- Left Column - Basic Info -->
     <div class="lg:col-span-1 space-y-6">
 
       <!-- Title Section -->
-      <div class="bg-card rounded-xl border border-line p-6 shadow-sm">
+      <div class="sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
         <div class="flex items-center mb-4">
           <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
             <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,7 +37,7 @@
       </div>
 
       <!-- Cover Image Section -->
-      <div class="bg-card rounded-xl border border-line p-6 shadow-sm">
+      <div class="sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
         <div class="flex items-center mb-4">
           <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
             <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +66,7 @@
 
       <!-- Admin Options -->
       <% if current_user.admin? %>
-        <div class="bg-gradient-to-r from-brand-subtle to-blue-50 dark:to-purple-900/20 rounded-xl border border-brand/25 p-6 shadow-sm">
+        <div class="sm:rounded-xl sm:border sm:border-brand/25 sm:bg-gradient-to-r sm:from-brand-subtle sm:to-blue-50 sm:p-6 sm:shadow-sm dark:sm:to-purple-900/20">
           <div class="flex items-center mb-4">
             <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
               <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,8 +86,8 @@
 
     <!-- Right Column - Content -->
     <div class="lg:col-span-2">
-      <div class="bg-card rounded-xl border border-line p-6 shadow-sm">
-        <div class="flex items-center mb-6">
+      <div class="sm:rounded-xl sm:border sm:border-line sm:bg-card sm:p-6 sm:shadow-sm">
+        <div class="mb-3 flex items-center sm:mb-6">
           <div class="h-8 w-8 rounded-lg bg-brand-subtle flex items-center justify-center mr-3">
             <svg class="h-4 w-4 text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -101,7 +101,7 @@
             <%= f.text_area :description, label: false, class: "tinymce block w-full min-h-[400px] focus:ring-0 bg-transparent text-fg border-0 p-0" %>
           </div>
 
-          <%= tag.div publication.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-2 flex items-center p-3 bg-status-danger-subtle-bg rounded-lg border border-red-200 dark:border-red-800' do %>
+          <%= tag.div publication.errors[:description].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'mx-3 mt-2 flex items-center rounded-lg border border-red-200 bg-status-danger-subtle-bg p-3 text-sm text-status-danger-solid dark:border-red-800 sm:mx-0' do %>
             <svg class="h-4 w-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
             <%= publication.errors[:description].first %>
           <% end if publication.errors[:description].any? %>

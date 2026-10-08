@@ -16,6 +16,7 @@ module Fictions
         flash[:alert] = t('fictions.license.clear_denied') if form.license_clear_denied?
         redirect_to @fiction, notice: notice
       else
+        @title_matches = form.title_matches
         render failure_template, status: :unprocessable_content
       end
     end
@@ -36,7 +37,7 @@ module Fictions
         fiction: [
           :alternative_title, :author, :cover, :description, :english_title, :origin,
           :title, :expected_chapters, :complete, :short_description, :banner, :content_rating,
-          :licensed, :license_publisher, :license_url,
+          :licensed, :license_publisher, :license_url, :different_work,
           { genre_ids: [], scanlator_ids: [] }
         ]
       )

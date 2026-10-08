@@ -37,6 +37,26 @@ class ChatWidgetLayoutTest < ActionDispatch::IntegrationTest
     assert_select '#chat-widget-guest [data-chat-widget-target="input"]', count: 0
   end
 
+  test 'chapter composer omits chat widget shells' do
+    sign_in users(:user_one)
+
+    get new_chapter_url(fiction: 'one')
+
+    assert_response :success
+    assert_select '#chat-widget-guest', count: 0
+    assert_select '#chat-widget-auth', count: 0
+  end
+
+  test 'publication composer omits chat widget shells' do
+    sign_in users(:user_one)
+
+    get edit_publication_path(publications(:tale_approved_one))
+
+    assert_response :success
+    assert_select '#chat-widget-guest', count: 0
+    assert_select '#chat-widget-auth', count: 0
+  end
+
   test 'chapter reader omits chat widget shells' do
     sign_in users(:user_one)
 

@@ -1,5 +1,5 @@
 <section class="bg-page z-10 relative min-h-screen">
-  <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-12" data-controller="dropzone">
+  <div class="py-4 px-2 sm:px-6 sm:py-8 md:px-12 lg:px-24 mx-auto lg:py-12" data-controller="dropzone">
     <%= render 'chapters/composer_header',
                title: 'Додати Розділ',
                subtitle: 'Додайте новий розділ до вашого твору - заголовок, номер та текст історії!',
@@ -7,7 +7,7 @@
                back_path: chapter_composer_back_path(@chapter.fiction || @fiction) %>
 
     <!-- Form Container -->
-    <div class="bg-card rounded-2xl border border-line shadow-lg p-2 sm:p-8">
+    <div class="bg-card rounded-2xl border border-line shadow-lg p-3 sm:p-8">
       <%= simple_form_for @chapter, as: :chapter, url: chapters_path, method: :post, html: { class: "form", multipart: true }, data: { turbo: false } do |f| %>
         <%= render 'form', chapter: @chapter, f: f, cancel_url: chapter_composer_back_path(@chapter.fiction || @fiction) %>
       <% end %>

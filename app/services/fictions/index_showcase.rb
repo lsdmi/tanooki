@@ -2,6 +2,8 @@
 
 module Fictions
   # Homepage / genre carousel: cache sampled fiction ids, then load rows with banner + ratings preloads.
+  # Licensed works never get a slide: the carousel promotes reading here, and the cached ids can outlive a
+  # license, so the load filters again.
   class IndexShowcase
     CACHE_KEY = 'fiction_showcase_ids'
     INDEX_CACHE_EXPIRY = 1.hour
@@ -36,6 +38,7 @@ module Fictions
 
       def random_sample_index
         Fiction
+          .not_licensed
           .where(id: id_pool)
           .where.not(short_description: [nil, ''])
           .joins(:banner_attachment)
@@ -46,6 +49,7 @@ module Fictions
 
       def random_sample_for_genre(genre)
         Fiction
+          .not_licensed
           .where(id: id_pool)
           .where.not(short_description: [nil, ''])
           .joins(:genres, :banner_attachment)
@@ -57,6 +61,7 @@ module Fictions
 
       def load_fictions(ids)
         Fiction
+          .not_licensed
           .where(id: ids)
           .includes(:fiction_ratings, :banner_attachment)
           .in_order_of(:id, ids)

@@ -31,7 +31,7 @@ class FictionsController < ApplicationController
   before_action :set_genres, only: %i[new create edit update]
   before_action :track_fiction_visit, only: :show
   before_action :authorize_fiction, only: %i[edit update destroy]
-  before_action :authorize_fiction_creation, only: %i[new create]
+  before_action :authorize_fiction_creation, only: %i[new create lookup]
   around_action :instrument_guest_fiction_index, only: :index
   after_action :set_guest_fiction_index_cache_headers, only: :index
 
@@ -48,6 +48,11 @@ class FictionsController < ApplicationController
 
   def new
     @fiction = Fiction.new
+  end
+
+  def lookup
+    matches = Fictions::TitleLookup.new(params[:q]).call
+    render partial: 'fictions/title_matches', locals: { matches: }
   end
 
   def edit; end

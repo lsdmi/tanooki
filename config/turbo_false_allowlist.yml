@@ -4,7 +4,7 @@
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
   - app/views/fictions/edit.html.erb:6
-  - app/views/fictions/new.html.erb:3
+  - app/views/fictions/new.html.erb:5
   - app/views/scanlators/edit.html.erb:11
   - app/views/scanlators/new.html.erb:15
   - app/views/chapters/edit.html.erb:11

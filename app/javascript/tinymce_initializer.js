@@ -215,6 +215,9 @@ const editorContentCss = (isDark) => {
       text-align: start;
       overflow-wrap: anywhere;
     }
+    @media (max-width: 639px) {
+      #tinymce { padding: 12px 8px; }
+    }
     #tinymce * { font-family: inherit !important; font-size: inherit !important; color: inherit !important; -webkit-text-fill-color: currentcolor !important; }
 
     #tinymce p { margin: 0 0 1.5rem; }
@@ -496,6 +499,129 @@ const setupReaderAlign = (editor) => {
   });
 };
 
+// A heading is a block, so TinyMCE would restyle the whole paragraph. A partial selection is split off first.
+const BLOCK_SELECTION_FORMATS = new Set(['p', 'h2', 'h3', 'h4', 'blockquote']);
+const SPLITTABLE_BLOCKS = new Set(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote']);
+
+const isBlankHtml = (html) => {
+  if (/<(?:img|iframe|hr)\b/i.test(html)) return false;
+  return html
+    .replace(/<br\s*\/?>/gi, '')
+    .replace(/&nbsp;|&#160;/gi, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\s\u00a0\uFEFF]/g, '') === '';
+};
+
+const htmlFromRange = (editor, range) => {
+  const holder = editor.dom.create('div');
+  holder.appendChild(range.cloneContents());
+  return holder.innerHTML;
+};
+
+const trimEdgeBreaks = (html, edge) => (
+  edge === 'start'
+    ? html.replace(/^(?:\s*<br\s*\/?>)+/gi, '')
+    : html.replace(/(?:<br\s*\/?>\s*)+$/gi, '')
+);
+
+const stripEmptyInlines = (html) => {
+  let next = html;
+  let previous;
+  do {
+    previous = next;
+    next = next.replace(/<(strong|b|em|i|u|s|span|a)\b[^>]*>(?:\s|&nbsp;)*<\/\1>/gi, '');
+  } while (next !== previous);
+  return next;
+};
+
+const elementFullySelected = (element, range) => {
+  const doc = element.ownerDocument;
+  const before = doc.createRange();
+  before.setStartBefore(element);
+  before.setEnd(range.startContainer, range.startOffset);
+  const after = doc.createRange();
+  after.setStart(range.endContainer, range.endOffset);
+  after.setEndAfter(element);
+  const blank = (probe) => probe.toString().replace(/[\s\u00a0]/g, '') === '';
+  try {
+    return blank(before) && blank(after);
+  } catch (_error) {
+    return false;
+  }
+};
+
+const selectedHtml = (editor, range, block) => {
+  let node = range.commonAncestorContainer;
+  if (node.nodeType === 3) node = node.parentNode;
+  let covered = null;
+  while (node && node !== block && !editor.dom.isBlock(node)) {
+    if (elementFullySelected(node, range)) covered = node;
+    node = node.parentNode;
+  }
+  return covered ? covered.outerHTML : editor.selection.getContent();
+};
+
+const blockPiece = (tag, html) => {
+  if (isBlankHtml(html)) return '';
+  if (tag === 'blockquote') return `<blockquote><p>${html}</p></blockquote>`;
+  return `<${tag}>${html}</${tag}>`;
+};
+
+const applyBlockToPartialSelection = (editor, format) => {
+  if (!BLOCK_SELECTION_FORMATS.has(format) || editor.selection.isCollapsed()) return false;
+
+  const range = editor.selection.getRng();
+  const startBlock = editor.dom.getParent(range.startContainer, editor.dom.isBlock);
+  const endBlock = editor.dom.getParent(range.endContainer, editor.dom.isBlock);
+  if (!startBlock || startBlock !== endBlock || startBlock === editor.getBody()) return false;
+
+  const tag = startBlock.nodeName.toLowerCase();
+  if (!SPLITTABLE_BLOCKS.has(tag) || tag === format) return false;
+  if (format === 'blockquote' && editor.dom.getParent(startBlock, 'blockquote')) return false;
+
+  const selected = selectedHtml(editor, range, startBlock);
+  if (isBlankHtml(selected)) return false;
+
+  let beforeHtml;
+  let afterHtml;
+  try {
+    const beforeRange = editor.dom.createRng();
+    beforeRange.setStart(startBlock, 0);
+    beforeRange.setEnd(range.startContainer, range.startOffset);
+    const afterRange = editor.dom.createRng();
+    afterRange.setStart(range.endContainer, range.endOffset);
+    afterRange.setEnd(startBlock, startBlock.childNodes.length);
+    beforeHtml = stripEmptyInlines(trimEdgeBreaks(htmlFromRange(editor, beforeRange), 'end'));
+    afterHtml = stripEmptyInlines(trimEdgeBreaks(htmlFromRange(editor, afterRange), 'start'));
+  } catch (_error) {
+    return false;
+  }
+  if (isBlankHtml(beforeHtml) && isBlankHtml(afterHtml)) return false;
+
+  const id = editor.dom.uniqueId('blocksplit');
+  const middle = format === 'blockquote'
+    ? `<blockquote id="${id}"><p>${selected}</p></blockquote>`
+    : `<${format} id="${id}">${selected}</${format}>`;
+
+  editor.dom.setOuterHTML(startBlock, `${blockPiece(tag, beforeHtml)}${middle}${blockPiece(tag, afterHtml)}`);
+  const created = editor.dom.get(id);
+  if (created) {
+    editor.selection.select(created, true);
+    editor.selection.collapse(false);
+    created.removeAttribute('id');
+  }
+  editor.nodeChanged();
+  return true;
+};
+
+const setupBlockSelection = (editor) => {
+  editor.on('BeforeExecCommand', (event) => {
+    if (event.command !== 'mceToggleFormat') return;
+    if (!applyBlockToPartialSelection(editor, event.value)) return;
+    event.preventDefault();
+  });
+};
+
 const initializeTinymce = () => {
   const textarea = document.querySelector('.tinymce');
   if (!textarea) return;
@@ -511,6 +637,12 @@ const initializeTinymce = () => {
     'Alternative source URL': 'Альтернативний URL',
     'Background color': 'Колір тла',
     'Blockquote': 'Цитата',
+    'Block': 'Тип блоку',
+    'Blocks': 'Блоки',
+    'Paragraph': 'Абзац',
+    'Heading 2': 'Заголовок 2',
+    'Heading 3': 'Заголовок 3',
+    'Heading 4': 'Заголовок 4',
     'Bold': 'Жирний',
     'Cancel': 'Відмінити',
     'Center': 'По центру',
@@ -571,7 +703,21 @@ const initializeTinymce = () => {
     'Insert YouTube video': 'Вставити ролик YouTube',
     'YouTube URL': 'Посилання на ролик',
     'Only a YouTube link can be embedded': 'Можна вставити лише посилання на ролик YouTube',
-    'Removed an embed that is not a YouTube video': 'Прибрано вбудовану сторінку: можна лише ролик YouTube'
+    'Removed an embed that is not a YouTube video': 'Прибрано вбудовану сторінку: можна лише ролик YouTube',
+    'Find': 'Знайти',
+    'Previous': 'Попереднє',
+    'Next': 'Наступне',
+    'Replace': 'Замінити',
+    'Replace with': 'Замінити на',
+    'Replace all': 'Замінити все',
+    'Find and Replace': 'Пошук і заміна',
+    'Find and replace': 'Пошук і заміна',
+    'Find and replace...': 'Пошук і заміна...',
+    'Match case': 'Враховувати регістр',
+    'Find whole words only': 'Лише цілі слова',
+    'Find in selection': 'Шукати у виділеному',
+    'Could not find the specified string.': 'Не вдалося знайти цей текст.',
+    'Preferences': 'Параметри'
   });
   tinymce.init({
     ...imageUploadOptions(textarea),
@@ -579,6 +725,7 @@ const initializeTinymce = () => {
     language: 'uk',
     selector: 'textarea',
     height: 500,
+    toolbar_mode: 'wrap',
     plugins: [
       'autosave',
       'image',
@@ -586,11 +733,16 @@ const initializeTinymce = () => {
       'lists',
       'media',
       'quickbars',
+      'searchreplace',
       'wordcount'
     ],
     menubar: false,
+    // No Heading 1: the chapter title is its own field, and the API sanitizer renames h1 to h2.
+    block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Blockquote=blockquote',
+    // The default preview copies the editor canvas color. On a dark theme that paints each row black.
+    preview_styles: 'font-size font-weight font-style text-decoration color',
     // Chapter and publication editors share this toolbar. Font, size, line-height, color, indent, and justify stay off it.
-    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | bold italic underline strikethrough | link tooltip | readeralign | removeformat | image media | hr | wordcount`,
+    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | blocks | bold italic underline strikethrough | link tooltip | readeralign | removeformat | image media | hr | searchreplace wordcount`,
     media_alt_source: false,
     media_poster: false,
     media_url_resolver: (data) => {
@@ -660,6 +812,7 @@ const initializeTinymce = () => {
       keepExistingInlineImages(editor);
       setupMarkdownImport(editor);
       setupReaderAlign(editor);
+      setupBlockSelection(editor);
 
       editor.on('BeforeSetContent', (event) => {
         if (typeof event.content !== 'string') return;
@@ -764,6 +917,11 @@ const initializeTinymce = () => {
           
           const headerStyle = document.createElement('style');
           headerStyle.textContent = `
+            .tox-tinymce {
+              border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
+              border-radius: 10px !important;
+            }
+
             .tox-editor-header {
               background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
               border: 1px solid ${isDark ? '#52525b' : '#d1d5db'} !important;
@@ -975,6 +1133,35 @@ const initializeTinymce = () => {
               border-color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
               color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
             }
+
+            /* Search options (gear) is a toolbar button dropped into the dialog, so the skin paints it white. */
+            .tox-dialog .tox-tbtn {
+              background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
+              color: ${isDark ? '#fafafa' : '#374151'} !important;
+              border: 1px solid ${isDark ? '#71717a' : '#d1d5db'} !important;
+              border-radius: 6px !important;
+              margin: 0 !important;
+              box-shadow: none !important;
+            }
+
+            .tox-dialog .tox-tbtn:hover,
+            .tox-dialog .tox-tbtn--enabled {
+              background: ${isDark ? '#71717a' : '#e5e7eb'} !important;
+            }
+
+            .tox-dialog .tox-tbtn svg {
+              fill: ${isDark ? '#fafafa' : '#374151'} !important;
+            }
+
+            .tox-dialog .tox-button--naked {
+              background: transparent !important;
+              border-color: transparent !important;
+              color: ${isDark ? '#fafafa' : '#374151'} !important;
+            }
+
+            .tox-dialog .tox-button--naked .tox-icon svg {
+              fill: ${isDark ? '#fafafa' : '#374151'} !important;
+            }
             
             /* Dialog form elements */
             .tox-dialog__body .tox-form__group {
@@ -1075,10 +1262,18 @@ const initializeTinymce = () => {
             }
             
             /* Collection items (dropdowns, menus) */
-            .tox-collection__item-label {
+            .tox-collection__item-label,
+            .tox-collection__item-label :is(h1, h2, h3, h4, h5, h6, p, blockquote) {
+              background: transparent !important;
+              border: 0 !important;
+              box-shadow: none !important;
               color: ${isDark ? '#fafafa' : '#111827'} !important;
+            }
+
+            .tox-collection__item-label {
               font-size: 14px !important;
               margin: 4px !important;
+              padding: 0 !important;
               transition: all 0.2s ease !important;
             }
             

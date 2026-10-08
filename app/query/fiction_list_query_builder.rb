@@ -17,6 +17,7 @@ class FictionListQueryBuilder
     results = evening_only(results)
     results = top_rated_only(results)
     results = finished_only(results)
+    results = licensed_only(results)
     results = with_recent_chapters_subquery(results)
     results.includes(:cover_attachment, :genres)
   end
@@ -76,6 +77,12 @@ class FictionListQueryBuilder
     return scope if @params['finished'].blank?
 
     scope.finished
+  end
+
+  def licensed_only(scope)
+    return scope if @params['licensed'].blank?
+
+    scope.licensed
   end
 
   def with_recent_chapters_subquery(scope)

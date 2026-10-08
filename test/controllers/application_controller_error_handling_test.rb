@@ -26,6 +26,12 @@ class ApplicationControllerErrorHandlingTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t('errors.too_many_requests'), response.body
   end
 
+  test 'errors Rails maps to a 4xx keep that status instead of a 500' do
+    in_production { get details_fiction_url(fictions(:one)) }
+
+    assert_response :not_acceptable
+  end
+
   test 'errors in non-HTML requests are a bare 500 rather than a missing template' do
     Fiction.stub(:includes, ->(*) { raise ArgumentError, 'boom' }) do
       in_production { get fiction_url(fictions(:one)), headers: { 'Accept' => 'application/json' } }

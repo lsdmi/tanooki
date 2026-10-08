@@ -21,6 +21,8 @@ module Pokemons
     ICON_STROKE = {
       stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
     }.freeze
+    # The lowest percentile of each title in pokemons.titles: bands narrow towards the top, «Чемпіон» is the top 1%.
+    TITLE_PERCENTILES = [0, 0.15, 0.30, 0.45, 0.58, 0.70, 0.80, 0.87, 0.92, 0.955, 0.975, 0.99].freeze
 
     def training_cooldown?(user)
       user.trainer_profile.training_on_cooldown?
@@ -35,7 +37,7 @@ module Pokemons
     end
 
     def trainer_caption(user, dex_leaderboard)
-      "#{dex_title(user.trainer_profile.rating)} ##{dex_leaderboard.rank_for(user)}"
+      "#{dex_title(dex_leaderboard.percentile_for(user))} ##{dex_leaderboard.rank_for(user)}"
     end
 
     # «Перемога» / «Поразка» with a trophy or a crossed shield, so the result does not rest on colour alone.
@@ -45,15 +47,9 @@ module Pokemons
       end
     end
 
-    def dex_title(rate)
-      case rate
-      when -Float::INFINITY..35 then 'Початківець'
-      when 36..55 then 'Школяр'
-      when 56..75 then 'Тренер'
-      when 76..90 then 'Висхідна зірка'
-      when 91..98 then 'Майстер'
-      else 'Чемпіон'
-      end
+    # +percentile+ from DexLeaderboard#percentile_for; nil (no battles yet) gets the first title.
+    def dex_title(percentile)
+      t('pokemons.titles')[TITLE_PERCENTILES.rindex { |from| from <= percentile.to_f }]
     end
 
     private

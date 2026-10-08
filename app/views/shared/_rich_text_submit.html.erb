@@ -1,23 +1,25 @@
 <%# locals: (primary_label:, show_draft: true, unpublish: false, unpublish_confirm: nil, cancel_url: :back) %>
-<div class="mt-8 flex items-center justify-end gap-6 border-t border-line pt-6"
+<div class="mt-8 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-end sm:gap-6"
      data-controller="<%= 'draft-hotkey' if show_draft %>">
   <%= link_to t('chapters.buttons.cancel'), cancel_url,
-              class: 'text-sm text-fg-muted transition-colors hover:text-fg' %>
-  <div class="flex items-center gap-2">
+              class: 'py-2 text-center text-sm text-fg-muted transition-colors hover:text-fg sm:py-0 sm:text-left' %>
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
     <% if show_draft %>
       <%= ui_button(as: :submit, variant: :outline, label: t('chapters.buttons.save'), size: :lg, html: {
         name: 'intent',
         value: 'draft',
         title: 'Ctrl/⌘+S',
+        class: 'w-full sm:w-auto',
         data: { draft_hotkey_target: 'draftSubmit' }
       }) %>
     <% elsif unpublish %>
       <%= ui_button(as: :submit, variant: :outline, label: t('chapters.buttons.unpublish'), size: :lg, html: {
         name: 'intent',
         value: 'draft',
+        class: 'w-full sm:w-auto',
         data: { turbo_confirm: unpublish_confirm }
       }) %>
     <% end %>
-    <%= ui_button(as: :submit, label: primary_label, size: :lg, html: { name: 'intent', value: 'publish' }) %>
+    <%= ui_button(as: :submit, label: primary_label, size: :lg, html: { name: 'intent', value: 'publish', class: 'w-full sm:w-auto' }) %>
   </div>
 </div>

@@ -2,65 +2,34 @@
 
 module Pokemons
   module Battle
-    # Updates the winner's and loser's trainer profile ratings after PvP.
+    # Rates one PvP battle with Glicko-2 and saves both trainer profiles. Both sides are rated from their ratings
+    # before the battle, each with the deviation it has grown since its own last battle. The defender gets the full
+    # change though it did not choose to fight: the simulator showed that damping it only made idle trainers' ratings
+    # less accurate, and a run of attackers on an idle top trainer does not drain it.
     class RatingUpdater
-      attr_reader :winner, :loser
-
-      RANK_RANGES = {
-        1 => (-Float::INFINITY..35),
-        2 => (36..55),
-        3 => (56..75),
-        4 => (76..90),
-        5 => (91..98),
-        6 => (99..Float::INFINITY)
-      }.freeze
-
-      def initialize(winner:, loser:)
+      def initialize(winner:, loser:, at: Time.current)
         @winner = winner
         @loser = loser
+        @at = at
       end
 
-      # Returns the change each user got, by user id (after clamping to 0..100).
+      # Returns the rating change each user got, rounded, by user id.
       def call
-        profiles = [winner, loser]
-        before = profiles.map(&:rating)
-
-        update_battle_rates(winner, loser)
-        profiles.zip(before).to_h { |profile, rating| [profile.user_id, profile.rating - rating] }
+        before = [@winner, @loser].index_with { |profile| profile.glicko.idle(profile.idle_periods(@at)) }
+        rated = { @winner => rate(@winner, before[@loser], 1), @loser => rate(@loser, before[@winner], 0) }
+        rated.to_h { |profile, rating| [profile.user_id, save(profile, rating)] }
       end
 
       private
 
-      def update_battle_rates(winner, loser)
-        delta = user_rank(winner.rating) - user_rank(loser.rating)
-        case delta <=> 0
-        when 1 then update_higher_rank(winner, loser)
-        when 0 then update_equal_rank(winner, loser)
-        when -1 then update_lower_rank(winner, loser)
-        end
+      def rate(profile, opponent, score)
+        Ratings::Glicko2.rate(profile.glicko, [[opponent, score]], periods: profile.idle_periods(@at))
       end
 
-      def update_higher_rank(winner, loser)
-        update_rate(winner, 1)
-        update_rate(loser, -1)
-      end
-
-      def update_equal_rank(user1, user2)
-        update_rate(user1, 2)
-        update_rate(user2, -2)
-      end
-
-      def update_lower_rank(winner, loser)
-        update_rate(winner, 3)
-        update_rate(loser, -3)
-      end
-
-      def update_rate(profile, rate)
-        profile.update!(rating: (profile.rating + rate).clamp(0, 100))
-      end
-
-      def user_rank(battle_rate)
-        RANK_RANGES.each { |rank, range| return rank if range.include?(battle_rate) }
+      def save(profile, rating)
+        change = (rating.rating - profile.glicko_rating).round
+        profile.update!(glicko: rating)
+        change
       end
     end
   end

@@ -1,0 +1,32 @@
+<% if matches.any? %>
+  <section class="mb-6 rounded-xl border border-line bg-page p-6 shadow-xl" aria-live="polite">
+    <h2 class="text-xl font-bold text-fg"><%= t('fictions.duplicates.heading') %></h2>
+    <ul class="mt-4 space-y-4">
+      <% matches.each do |fiction| %>
+        <li class="flex gap-3">
+          <% if fiction.cover.attached? %>
+            <%= image_tag cover_thumbnail_url(fiction.cover),
+                          alt: '',
+                          class: 'h-20 w-14 shrink-0 rounded-md object-cover',
+                          width: 56,
+                          height: 80 %>
+          <% end %>
+          <div class="min-w-0">
+            <p class="font-semibold text-fg break-words"><%= fiction.title %></p>
+            <% if fiction.english_title.present? && fiction.english_title != fiction.title %>
+              <p class="text-sm text-fg-muted break-words"><%= fiction.english_title %></p>
+            <% end %>
+            <% team_names = fiction.scanlators.map(&:title).sort %>
+            <% details = [] %>
+            <% details << t('fictions.duplicates.teams', names: team_names.join(', ')) if team_names.any? %>
+            <% details << t('fictions.hero.stats.chapters', count: fiction.chapter_count) %>
+            <p class="text-sm text-fg-muted"><%= details.join(' · ') %></p>
+            <%= link_to t('fictions.duplicates.add_chapters'),
+                        new_chapter_path(fiction: fiction.slug),
+                        class: 'mt-1 inline-block text-sm font-medium text-fg-brand underline underline-offset-2 hover:text-brand-hover' %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

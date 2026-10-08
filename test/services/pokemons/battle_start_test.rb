@@ -15,9 +15,9 @@ module Pokemons
       Matchmaker.new(@attacker).opponent
 
       assert_equal :fought, BattleStart.new(@attacker).call
-      ratings = [@attacker, @defender].map { |user| user.trainer_profile.reload.rating }
+      ratings = [@attacker, @defender].map { |user| user.trainer_profile.reload.glicko_rating.round }
 
-      assert_equal [48, 52], ratings.sort
+      assert_equal [1338, 1662], ratings.sort
     end
 
     test 'starts the battle clock for both sides' do
@@ -42,7 +42,7 @@ module Pokemons
       deltas = battle.values_at(:rating_delta_attacker, :rating_delta_defender)
 
       assert_equal @attacker.user_pokemons.order(:id).pluck(:pokemon_id), battle.attacker_team.pluck('pokemon_id')
-      assert_equal battle.attacker_won? ? [2, -2] : [-2, 2], deltas
+      assert_equal battle.attacker_won? ? [162, -162] : [-162, 162], deltas
     end
 
     test 'saves the experience the engine decided' do

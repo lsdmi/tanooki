@@ -21,9 +21,12 @@ class ApplicationController < ActionController::Base
   def handle_error(error)
     raise error unless Rails.env.production?
 
-    log_handled_error(error)
-    Rails.error.report(error, handled: true)
-    request.set_header(Analytics::RequestStats::HANDLED_ERROR, error)
+    # Rails answers errors like UnknownFormat or InvalidAuthenticityToken with a 4xx, but only once they leave the
+    # controller; this catch-all sees them first.
+    status = ActionDispatch::ExceptionWrapper.status_code_for_exception(error.class.name)
+    return head(status) if status < 500
+
+    report_handled_error(error)
     return head :internal_server_error unless request.format.html?
 
     render :error, status: :internal_server_error
@@ -38,6 +41,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def report_handled_error(error)
+    log_handled_error(error)
+    Rails.error.report(error, handled: true)
+    request.set_header(Analytics::RequestStats::HANDLED_ERROR, error)
+  end
 
   def log_handled_error(error)
     Rails.logger.error(
