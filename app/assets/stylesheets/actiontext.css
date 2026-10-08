@@ -11,8 +11,9 @@
 }
 
 /* A fixed author color does not read on both themes. The stored style stays in the HTML.
+   Inherit only on descendants: the container keeps text-fg (tales) or the chapter reader color.
+   Forcing inherit on #user-content itself paints black text on the dark tale background.
    More specific theme rules in chapters_reader.css still color headings, links, and quotes. */
-#user-content,
 #user-content * {
   color: inherit !important;
   -webkit-text-fill-color: currentcolor !important;
