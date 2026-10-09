@@ -33,7 +33,7 @@ module Api
 
       def edited_html
         Limits.refuse_too_many_blocks!(edits.size)
-        ::Chapters::Paragraphs.apply(chapter.content.to_s, edits, changes:)
+        ::Chapters::Paragraphs.apply(chapter.content_html, edits, changes:)
       end
 
       def edits

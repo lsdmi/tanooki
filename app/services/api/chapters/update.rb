@@ -98,7 +98,7 @@ module Api
       def refuse_shrink!(attributes)
         return unless attributes.key?(:content)
 
-        Limits.refuse_published_rewrite!(chapter.content.to_s, attributes[:content])
+        Limits.refuse_published_rewrite!(chapter.content_html, attributes[:content])
       end
 
       def publishing?

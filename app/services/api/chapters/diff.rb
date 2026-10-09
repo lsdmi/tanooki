@@ -8,7 +8,7 @@ module Api
     class Diff
       def self.call(chapter, revision)
         before = ::Chapters::Paragraphs.list(revision.body).pluck(:markdown)
-        after = ::Chapters::Paragraphs.list(chapter.content.to_s).pluck(:markdown)
+        after = ::Chapters::Paragraphs.list(chapter.content_html).pluck(:markdown)
         ::Diff::LCS.sdiff(before, after).map { |change| entry(change) }
       end
 

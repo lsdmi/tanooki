@@ -85,6 +85,35 @@
       </section>
 
       <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Помічник</h2>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Той самий ключ підходить для Claude Code, Cursor і Codex. Адреса сервера —
+          <code class="text-fg">https://baka.in.ua/mcp</code>. Заголовок той самий:
+          <code class="text-fg">Authorization: Bearer baka_…</code>.
+          Чернетка лишається типовим станом. Публікація просить окремий дозвіл ключа.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">Claude Code:</p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>claude mcp add --transport http baka https://baka.in.ua/mcp \
+  --header "Authorization: Bearer baka_…"</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed mb-4">
+          Cursor: у <code class="text-fg">.cursor/mcp.json</code> (або в налаштуваннях MCP) додайте сервер з полем url і заголовком.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>{
+  "mcpServers": {
+    "baka": {
+      "url": "https://baka.in.ua/mcp",
+      "headers": { "Authorization": "Bearer baka_…" }
+    }
+  }
+}</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed">
+          claude.ai: Налаштування → Коннектори → свій коннектор, та сама адреса.
+          Заголовок Authorization там у беті. ChatGPT підключається з цієї ж адреси і входить через Баку, без ключа в заголовку.
+          Muse теж: у чаті попроси власний конектор на цю адресу.
+        </p>
+      </section>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
         <h2 class="text-2xl font-bold text-fg mb-4">Ліміти</h2>
         <ul class="list-disc list-inside space-y-2 text-fg-secondary">
           <li>300 читань і 30 записів на хвилину для одного ключа.</li>

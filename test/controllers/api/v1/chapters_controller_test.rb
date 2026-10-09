@@ -52,6 +52,16 @@ module Api
         assert_includes response.parsed_body['sanitizer_changes'].join, 'evil.test'
       end
 
+      test 'the chapter html omits development template comments' do
+        ActionView::Base.annotate_rendered_view_with_filenames = true
+        get api_v1_chapter_path(@chapter.id), headers: auth
+
+        assert_response :success
+        assert_not_includes response.parsed_body['html'], 'BEGIN'
+      ensure
+        ActionView::Base.annotate_rendered_view_with_filenames = false
+      end
+
       private
 
       def issue(scopes)

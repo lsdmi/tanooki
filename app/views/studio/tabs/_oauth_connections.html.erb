@@ -1,0 +1,28 @@
+<section class="mt-8 border-t border-line pt-6">
+  <h3 class="text-lg font-semibold text-fg"><%= t('oauth_connections.title') %></h3>
+  <% if connections.any? %>
+    <ul class="mt-4 divide-y divide-line">
+      <% connections.each do |connection| %>
+        <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="min-w-0">
+            <p class="font-medium text-fg break-words"><%= connection.name %></p>
+            <p class="mt-1 text-sm text-fg-muted">
+              <%= connection.scopes.map { |scope| t("api_tokens.scopes.#{scope}") }.join(', ') %>
+            </p>
+            <% if connection.scopes.include?('chapters:publish') %>
+              <p class="mt-1 text-sm font-medium text-amber-800 dark:text-amber-200"><%= t('api_tokens.live_edits') %></p>
+            <% end %>
+            <p class="mt-1 text-sm text-fg-muted">
+              <%= t('oauth_connections.connected') %>: <%= l(connection.connected_at, format: :short_datetime) %>
+            </p>
+          </div>
+          <%= button_to t('oauth_connections.revoke'), oauth_connection_path(connection.uid), method: :delete,
+                        class: 'shrink-0 text-sm font-medium text-status-danger-solid hover:underline',
+                        form: { data: { turbo_frame: '_top', turbo_confirm: t('oauth_connections.confirm_revoke') } } %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-2 text-sm text-fg-muted"><%= t('oauth_connections.empty') %></p>
+  <% end %>
+</section>

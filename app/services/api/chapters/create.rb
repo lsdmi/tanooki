@@ -7,16 +7,17 @@ module Api
     class Create
       Result = Data.define(:chapter, :changes)
 
-      def self.call(user:, token:, fiction_id:, params:)
-        new(user:, token:, fiction_id:, params:).call
+      def self.call(user:, token:, fiction_id:, params:, via: 'api')
+        new(user:, token:, fiction_id:, params:, via:).call
       end
 
-      def initialize(user:, token:, fiction_id:, params:)
+      def initialize(user:, token:, fiction_id:, params:, via: 'api')
         @user = user
         @token = token
         @fiction_id = fiction_id
         @params = params.to_h.with_indifferent_access
         @access = Access.new(user)
+        @via = via
       end
 
       def call
@@ -29,7 +30,7 @@ module Api
 
       private
 
-      attr_reader :user, :token, :fiction_id, :params, :access
+      attr_reader :user, :token, :fiction_id, :params, :access, :via
 
       def attributes_for(fiction)
         {
@@ -53,7 +54,7 @@ module Api
       end
 
       def save!(attributes)
-        chapter = Chapter.new(user:, created_via: 'api', api_token: token)
+        chapter = Chapter.new(user:, created_via: via, api_token: stored_token)
         saved = ::Chapters::Persist.call(chapter:, attributes:, intent:, user:)
         raise invalid!(chapter) unless saved
 
@@ -79,6 +80,10 @@ module Api
         volume = attributes[:volume_number]
         scope = volume.nil? ? scope.where(volume_number: nil) : scope.where(volume_number: volume)
         scope.first
+      end
+
+      def stored_token
+        token if token.is_a?(ApiToken)
       end
 
       def publishing?

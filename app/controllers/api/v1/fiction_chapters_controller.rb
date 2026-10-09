@@ -8,19 +8,15 @@ module Api
       before_action(only: :create) { enforce_scope('chapters:write') }
 
       def index
-        render json: { chapters: listed.map { |chapter| Api::Chapters::Serialize.summary(chapter) } }
+        render json: { chapters: catalog.summaries(params[:fiction_id], **list_options) }
       end
 
       def batch
-        render json: { chapters: capped(listed).map { |chapter| Api::Chapters::Serialize.full(chapter) } }
+        render json: { chapters: catalog.batch(params[:fiction_id], **list_options) }
       end
 
       def by_number
-        matches = numbered.to_a
-        raise Api::Error.new('not_found', :not_found) if matches.empty?
-        raise ambiguous!(matches) if matches.many?
-
-        render json: Api::Chapters::Serialize.full(matches.first)
+        render json: catalog.by_number(params[:fiction_id], params[:number], volume: params[:volume], **list_options)
       end
 
       def create
@@ -34,30 +30,6 @@ module Api
 
       private
 
-      def listed
-        fiction = access.fiction!(params[:fiction_id])
-        scope = access.chapters.where(fiction_id: fiction.id).preload(:scanlators, :rich_text_content)
-        filter_listed(scope).ordered_by_volume_and_number
-      end
-
-      def filter_listed(scope)
-        scope = scope.where(chapter_scanlators: { scanlator_id: team_filter }) if params[:team_id].present?
-        filter_numbers(scope)
-      end
-
-      def filter_numbers(scope)
-        scope = scope.where(number: (params[:from])..) if params[:from].present?
-        scope = scope.where(number: ..(params[:to])) if params[:to].present?
-        scope
-      end
-
-      def numbered
-        scope = listed.where(number: params[:number])
-        return scope if params[:volume].blank?
-
-        scope.where(volume_number: params[:volume])
-      end
-
       def created_body
         outcome = Api::Chapters::Create.call(
           user: Current.user, token: Current.api_token, fiction_id: params[:fiction_id], params: chapter_input
@@ -65,29 +37,12 @@ module Api
         Api::Chapters::Serialize.full(outcome.chapter, changes: outcome.changes, diff: { summary: 'created' })
       end
 
-      def team_filter
-        id = params[:team_id].to_i
-        raise Api::Error.new('not_found', :not_found) unless access.member_team_ids.include?(id)
-
-        id
+      def list_options
+        { team_id: params[:team_id], from: params[:from], to: params[:to] }
       end
 
-      def capped(chapters)
-        picked = []
-        chars = 0
-        chapters.limit(5).each do |chapter|
-          html = chapter.content.to_s
-          break if picked.any? && chars + html.length > 200_000
-
-          picked << chapter
-          chars += html.length
-        end
-        picked
-      end
-
-      def ambiguous!(matches)
-        chapters = matches.map { |chapter| Api::Chapters::Serialize.summary(chapter) }
-        Api::Error.new('ambiguous', :conflict, { chapters: })
+      def catalog
+        @catalog ||= Api::Chapters::Catalog.new(Current.user)
       end
 
       def chapter_input
@@ -98,10 +53,6 @@ module Api
 
       def idempotency_key
         request.headers['Idempotency-Key']
-      end
-
-      def access
-        @access ||= Api::Access.new(Current.user)
       end
     end
   end

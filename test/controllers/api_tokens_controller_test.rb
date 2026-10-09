@@ -17,6 +17,18 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, secret.first(8)
   end
 
+  test 'the api card stays folded until a new secret is shown' do
+    sign_in users(:user_two)
+    get studio_index_path(tab: 'teams')
+
+    assert_select 'details#api-access:not([open])'
+
+    post api_tokens_path, params: token_params
+    follow_redirect!
+
+    assert_select 'details#api-access[open]'
+  end
+
   test 'the secret is not shown on the next visit' do
     sign_in users(:user_two)
     post api_tokens_path, params: token_params

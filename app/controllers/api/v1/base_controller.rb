@@ -27,12 +27,29 @@ module Api
       private
 
       def authenticate_api_token!
-        token = ApiToken.authenticate(bearer_secret)
-        return render_api_error(:unauthorized, 'unauthorized') if token.nil?
+        secret = bearer_secret
+        return if accept_api_token?(secret) || accept_oauth_token?(secret)
+
+        render_api_error(:unauthorized, 'unauthorized')
+      end
+
+      def accept_api_token?(secret)
+        token = ApiToken.authenticate(secret)
+        return false if token.nil?
 
         Current.api_token = token
         Current.user = token.user
         touch_last_used(token)
+        true
+      end
+
+      def accept_oauth_token?(secret)
+        access = Api::OauthAccess.from_secret(secret)
+        return false if access.nil?
+
+        Current.api_token = access
+        Current.user = access.user
+        true
       end
 
       def enforce_scope(scope)

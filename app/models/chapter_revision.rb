@@ -6,5 +6,5 @@ class ChapterRevision < ApplicationRecord
   belongs_to :user
   belongs_to :api_token, optional: true
 
-  validates :title, presence: true
+  # A chapter subtitle may be blank. The snapshot keeps that title, including an empty one.
 end

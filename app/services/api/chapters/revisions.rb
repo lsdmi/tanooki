@@ -6,8 +6,8 @@ module Api
     class Revisions
       def self.record!(chapter, user:, token:)
         ChapterRevision.create!(
-          chapter:, user:, api_token: token,
-          title: chapter.title.to_s, body: chapter.content.to_s
+          chapter:, user:, api_token: token.is_a?(ApiToken) ? token : nil,
+          title: chapter.title.to_s, body: chapter.content_html
         )
       end
 
@@ -22,7 +22,7 @@ module Api
       end
 
       def self.body_change?(chapter, attributes)
-        attributes.key?(:content) && attributes[:content] != chapter.content.to_s
+        attributes.key?(:content) && attributes[:content] != chapter.content_html
       end
 
       private_class_method :title_change?, :body_change?

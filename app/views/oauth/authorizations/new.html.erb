@@ -1,0 +1,46 @@
+<div class="mx-auto w-full max-w-lg px-4 py-8">
+  <section class="rounded-lg border border-line bg-card p-6 shadow-sm">
+    <h1 class="text-xl font-semibold text-fg break-words"><%= t('oauth_consent.title', name: @pre_auth.client.name) %></h1>
+    <p class="mt-3 text-sm text-fg-muted"><%= t('oauth_consent.prompt') %></p>
+
+    <%= form_with url: oauth_authorization_path, method: :post, class: 'mt-6 space-y-4' do %>
+      <%= hidden_field_tag :client_id, @pre_auth.client.uid, id: nil %>
+      <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri, id: nil %>
+      <%= hidden_field_tag :state, @pre_auth.state, id: nil %>
+      <%= hidden_field_tag :response_type, @pre_auth.response_type, id: nil %>
+      <%= hidden_field_tag :code_challenge, @pre_auth.code_challenge, id: nil %>
+      <%= hidden_field_tag :code_challenge_method, @pre_auth.code_challenge_method, id: nil %>
+      <% if @pre_auth.scopes.exists?('offline_access') %>
+        <%= hidden_field_tag 'scope[]', 'offline_access', id: 'scope_offline_access' %>
+      <% end %>
+
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-medium text-fg-secondary"><%= t('api_tokens.scopes_label') %></legend>
+        <% ApiToken::SCOPES.each do |scope| %>
+          <% next unless @pre_auth.scopes.exists?(scope) %>
+          <label class="flex items-start gap-2 text-sm text-fg" for="oauth_scope_<%= scope.tr(':', '_') %>">
+            <%= check_box_tag 'scope[]', scope, ApiToken::DEFAULT_SCOPES.include?(scope), id: "oauth_scope_#{scope.tr(':', '_')}" %>
+            <span>
+              <%= t("api_tokens.scopes.#{scope}") %>
+              <% if scope == 'chapters:publish' %>
+                <span class="mt-1 block text-fg-muted"><%= t('api_tokens.publish_warning') %></span>
+              <% end %>
+            </span>
+          </label>
+        <% end %>
+      </fieldset>
+
+      <%= ui_button(t('oauth_consent.allow'), as: :submit, size: :md, full_width: true) %>
+    <% end %>
+
+    <%= form_with url: oauth_authorization_path, method: :delete, class: 'mt-3' do %>
+      <%= hidden_field_tag :client_id, @pre_auth.client.uid, id: nil %>
+      <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri, id: nil %>
+      <%= hidden_field_tag :state, @pre_auth.state, id: nil %>
+      <%= hidden_field_tag :response_type, @pre_auth.response_type, id: nil %>
+      <%= hidden_field_tag :code_challenge, @pre_auth.code_challenge, id: nil %>
+      <%= hidden_field_tag :code_challenge_method, @pre_auth.code_challenge_method, id: nil %>
+      <%= ui_button(t('oauth_consent.deny'), as: :submit, variant: :outline, size: :md, full_width: true) %>
+    <% end %>
+  </section>
+</div>

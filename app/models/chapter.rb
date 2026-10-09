@@ -100,6 +100,11 @@ class Chapter < ApplicationRecord
     published_at.presence || created_at
   end
 
+  # Stored HTML. Rendering through Action Text in development wraps this in template comments.
+  def content_html
+    content&.body&.to_html.to_s
+  end
+
   def slug_candidates
     [
       "#{fiction&.title&.downcase}-rozdil-#{number}"

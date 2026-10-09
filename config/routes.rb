@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  use_doorkeeper do
+    skip_controllers :applications, :authorized_applications, :token_info
+    controllers authorizations: 'oauth/authorizations', tokens: 'oauth/tokens'
+  end
+  post '/oauth/register', to: 'oauth/registrations#create'
+  scope format: false do
+    get '/.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+    get '/.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
+    get '/.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  end
   get 'manifest' => 'rails/pwa#manifest', defaults: { format: :json }, as: :pwa_manifest
   get 'service-worker' => 'rails/pwa#service_worker', defaults: { format: :js }, as: :pwa_service_worker
 
@@ -34,6 +44,10 @@ Rails.application.routes.draw do
     resources :genres, except: %i[new show]
     resources :tags, except: %i[new show]
   end
+
+  post '/mcp', to: 'mcp#create'
+  get '/mcp', to: 'mcp#show'
+  delete '/mcp', to: 'mcp#destroy'
 
   namespace :api do
     namespace :v1 do
@@ -135,6 +149,7 @@ Rails.application.routes.draw do
   end
   resources :search, only: :index
   resources :api_tokens, only: %i[create destroy]
+  resources :oauth_connections, only: :destroy
   resources :studio, only: :index do
     member do
       get :tab

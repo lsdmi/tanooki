@@ -18,7 +18,7 @@ module Api
       end
 
       def self.body(chapter)
-        html = chapter.content.to_s
+        html = chapter.content_html
         { html:, paragraphs: ::Chapters::Paragraphs.list(html) }
       end
 
