@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -151,6 +151,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_220000) do
     t.index ["token"], name: "index_epub_export_requests_on_token", unique: true
     t.index ["user_id", "content_fingerprint"], name: "index_epub_export_requests_on_user_id_and_fingerprint"
     t.index ["user_id"], name: "index_epub_export_requests_on_user_id"
+  end
+
+  create_table "epub_export_stats", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "chapters", null: false
+    t.datetime "created_at", null: false
+    t.bigint "epub_bytes"
+    t.bigint "epub_export_request_id", null: false
+    t.integer "rss_after_mb", null: false
+    t.integer "rss_before_mb", null: false
+    t.integer "rss_peak_mb", null: false
+    t.float "seconds", null: false
+    t.bigint "source_bytes", null: false
+    t.bigint "user_id"
   end
 
   create_table "fiction_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

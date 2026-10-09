@@ -60,9 +60,9 @@ class Chapter < ApplicationRecord
   delegate :author, :cover, to: :fiction
 
   def license_hidden?
-    return false unless fiction&.chapters_hidden?
+    return false unless fiction&.licensed?
 
-    fiction.license_preview_chapter_ids.exclude?(id)
+    fiction.license_readable_chapter_ids.exclude?(id)
   end
 
   before_destroy :capture_scanlator_ids_for_stats_cache

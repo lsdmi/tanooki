@@ -219,6 +219,10 @@ const editorContentCss = (isDark) => {
       #tinymce { padding: 12px 8px; }
     }
     #tinymce * { font-family: inherit !important; font-size: inherit !important; color: inherit !important; -webkit-text-fill-color: currentcolor !important; }
+    #tinymce .explanation {
+      color: ${isDark ? '#a1a1aa' : '#4b5563'} !important;
+      -webkit-text-fill-color: currentcolor !important;
+    }
 
     #tinymce p { margin: 0 0 1.5rem; }
     #tinymce :is(h1, h2, h3, h4, h5, h6) { margin: 2rem 0 1rem; font-weight: 700; line-height: 1.3; }
@@ -622,6 +626,129 @@ const setupBlockSelection = (editor) => {
   });
 };
 
+const EXPLANATION_CLASS = 'explanation';
+const TEXT_COLOR_PROPERTIES = new Set(['color', '-webkit-text-fill-color']);
+
+const styleDeclarations = (style) => (style || '').split(';').map((part) => part.trim()).filter(Boolean);
+
+const isTextColor = (declaration) => TEXT_COLOR_PROPERTIES.has(declaration.split(':')[0].trim().toLowerCase());
+
+const addExplanationClass = (element) => {
+  const classes = element.getAttribute('class')?.split(/\s+/).filter(Boolean) || [];
+  if (classes.includes(EXPLANATION_CLASS)) return;
+  element.setAttribute('class', [...classes, EXPLANATION_CLASS].join(' '));
+};
+
+// Same rules as UserContent::ExplanationNotes. Runs on the editor's first load so a save
+// stores the class. Paste still drops color and does not become a note.
+const promoteExplanations = (html) => {
+  if (!/color\s*:|<\s*(?:em|i)\b/i.test(html)) return html;
+
+  const root = document.createElement('div');
+  root.innerHTML = html;
+  let changed = false;
+
+  root.querySelectorAll('[style]').forEach((element) => {
+    const kept = [];
+    let colored = false;
+    styleDeclarations(element.getAttribute('style')).forEach((declaration) => {
+      if (isTextColor(declaration)) colored = true;
+      else kept.push(declaration);
+    });
+    if (!colored) return;
+
+    addExplanationClass(element);
+    if (kept.length) element.setAttribute('style', kept.join('; '));
+    else element.removeAttribute('style');
+    changed = true;
+  });
+
+  root.querySelectorAll('em, i').forEach((element) => {
+    if (element.classList.contains(EXPLANATION_CLASS)) return;
+    const parent = element.parentElement;
+    if (!parent || parent.tagName !== 'P') return;
+    if (parent.querySelectorAll(':scope > em, :scope > i').length !== 1) return;
+    if ([...parent.children].some((child) => child !== element)) return;
+    if (!/^\(\d+\)/.test(parent.textContent.replace(/\s+/g, ' ').trim())) return;
+
+    addExplanationClass(element);
+    changed = true;
+  });
+
+  return changed ? root.innerHTML : html;
+};
+
+const replaceTypedTail = (editor, node, offset, length, replacement) => {
+  const start = offset - length;
+  if (start < 0) return;
+
+  editor.undoManager.transact(() => {
+    node.replaceData(start, length, replacement);
+    editor.selection.setCursorLocation(node, start + replacement.length);
+  });
+};
+
+// Typed replacements only. Saved chapters are left alone. `--` after a space or at the
+// start of a line, `...`, and straight quotes. `# ` headings are text_patterns.
+const setupTypography = (editor) => {
+  editor.on('keyup', (event) => {
+    if (event.key !== '-' && event.key !== '.' && event.key !== '"') return;
+
+    const range = editor.selection.getRng();
+    if (!range.collapsed || range.startContainer.nodeType !== Node.TEXT_NODE) return;
+
+    const node = range.startContainer;
+    const offset = range.startOffset;
+    const before = node.data.slice(0, offset);
+
+    if (/(?:^|[\s\u00A0])--$/.test(before)) {
+      replaceTypedTail(editor, node, offset, 2, '—');
+      return;
+    }
+    if (before.endsWith('...')) {
+      replaceTypedTail(editor, node, offset, 3, '…');
+      return;
+    }
+    if (before.endsWith('"')) {
+      const lead = before.slice(0, -1);
+      const opening = lead.length === 0 || /[\s\u00A0([{\-—–«]$/.test(lead);
+      replaceTypedTail(editor, node, offset, 1, opening ? '«' : '»');
+    }
+  });
+};
+
+const setupExplanation = (editor) => {
+  editor.on('PreInit', () => {
+    editor.formatter.register('explanation', {
+      inline: 'span',
+      classes: EXPLANATION_CLASS,
+      exact: true
+    });
+  });
+
+  editor.ui.registry.addIcon(
+    'explanation-icon',
+    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 18h14v1.5H5V18zm1.2-2.2 3.1-9.3h1.5l3.1 9.3h-1.6l-.7-2.2H8.5l-.7 2.2H6.2zm2.6-3.6h2.5L10.1 8.4 8.8 12.2z" fill="currentColor"/></svg>'
+  );
+
+  editor.ui.registry.addToggleButton('explanation', {
+    icon: 'explanation-icon',
+    tooltip: 'Explanation',
+    onAction: () => {
+      if (!editor.selection.getContent({ format: 'text' }).trim()) {
+        editor.windowManager.alert(editor.translate('Select text to mark as an explanation'));
+        return;
+      }
+      editor.formatter.toggle('explanation');
+    },
+    onSetup: (api) => {
+      const sync = () => api.setActive(editor.formatter.match('explanation'));
+      editor.on('NodeChange', sync);
+      return () => editor.off('NodeChange', sync);
+    }
+  });
+};
+
 const initializeTinymce = () => {
   const textarea = document.querySelector('.tinymce');
   if (!textarea) return;
@@ -717,7 +844,9 @@ const initializeTinymce = () => {
     'Find whole words only': 'Лише цілі слова',
     'Find in selection': 'Шукати у виділеному',
     'Could not find the specified string.': 'Не вдалося знайти цей текст.',
-    'Preferences': 'Параметри'
+    'Preferences': 'Параметри',
+    'Explanation': 'Пояснення',
+    'Select text to mark as an explanation': 'Спершу виділіть текст для пояснення'
   });
   tinymce.init({
     ...imageUploadOptions(textarea),
@@ -742,7 +871,7 @@ const initializeTinymce = () => {
     // The default preview copies the editor canvas color. On a dark theme that paints each row black.
     preview_styles: 'font-size font-weight font-style text-decoration color',
     // Chapter and publication editors share this toolbar. Font, size, line-height, color, indent, and justify stay off it.
-    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | blocks | bold italic underline strikethrough | link tooltip | readeralign | removeformat | image media | hr | searchreplace wordcount`,
+    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | blocks | bold italic underline strikethrough explanation | link tooltip | readeralign | removeformat | image media | hr | searchreplace wordcount`,
     media_alt_source: false,
     media_poster: false,
     media_url_resolver: (data) => {
@@ -757,7 +886,18 @@ const initializeTinymce = () => {
     quickbars_selection_toolbar: 'bold italic underline strikethrough | blockquote quicklink tooltip',
     contextmenu: false,
     statusbar: false,
-    newline_behavior: 'linebreak',
+    // Enter starts a paragraph. Shift+Enter keeps a line break. Paste and Markdown import do not use this.
+    newline_behavior: 'block',
+    text_patterns: [
+      { start: '*', end: '*', format: 'italic' },
+      { start: '**', end: '**', format: 'bold' },
+      { start: '###', format: 'h4', trigger: 'space' },
+      { start: '##', format: 'h3', trigger: 'space' },
+      { start: '#', format: 'h2', trigger: 'space' },
+      { start: '1. ', cmd: 'InsertOrderedList' },
+      { start: '* ', cmd: 'InsertUnorderedList' },
+      { start: '- ', cmd: 'InsertUnorderedList' }
+    ],
     link_title: false,
     // GDocs/WebKit paste: drop background, color, family, size, and line-height.
     // Bold, italic, and underline stay. Stored HTML is not rewritten.
@@ -813,9 +953,12 @@ const initializeTinymce = () => {
       setupMarkdownImport(editor);
       setupReaderAlign(editor);
       setupBlockSelection(editor);
+      setupTypography(editor);
+      setupExplanation(editor);
 
       editor.on('BeforeSetContent', (event) => {
         if (typeof event.content !== 'string') return;
+        if (event.initial) event.content = promoteExplanations(event.content);
 
         const sanitized = sanitizeIframeHtml(event.content);
         if (sanitized.html === event.content) return;
@@ -976,7 +1119,7 @@ const initializeTinymce = () => {
             
             .tox-editor-header .tox-tbtn:hover {
               background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
-              color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
+              color: ${isDark ? '#f4f4f5' : '#374151'} !important;
             }
             
             .tox-editor-header .tox-tbtn--disabled {
@@ -1016,22 +1159,13 @@ const initializeTinymce = () => {
               fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
             }
             
-            /* Custom note button - no fill, stroke only */
-            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg,
-            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg path {
+            /* The note icon is a stroke. The quickbar sits outside the header, so currentColor stays dark. */
+            .tox-tbtn[data-mce-name="tooltip"] .tox-icon svg,
+            .tox-tbtn[data-mce-name="tooltip"] .tox-icon svg path,
+            .tox-tbtn[data-mce-name="tooltip"]:hover .tox-icon svg,
+            .tox-tbtn[data-mce-name="tooltip"]:hover .tox-icon svg path {
               fill: none !important;
-              stroke: currentColor !important;
-            }
-            
-            .tox-tbtn[aria-label*="tooltip"]:hover .tox-icon svg,
-            .tox-tbtn[aria-label*="tooltip"]:hover .tox-icon svg path {
-              fill: none !important;
-              stroke: currentColor !important;
-            }
-            
-            /* Override any inherited fill styles */
-            .tox-tbtn[aria-label*="tooltip"] .tox-icon svg * {
-              fill: none !important;
+              stroke: ${isDark ? '#f4f4f5' : '#374151'} !important;
             }
             
             /* Additional specificity for nested elements */
@@ -1337,6 +1471,15 @@ const initializeTinymce = () => {
             .tox-pop__dialog::before {
               background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
               border-color: ${isDark ? '#52525b' : '#e5e7eb'} !important;
+            }
+
+            .tox-pop .tox-tbtn,
+            .tox-pop .tox-tbtn:hover {
+              color: ${isDark ? '#f4f4f5' : '#374151'} !important;
+            }
+
+            .tox-pop .tox-tbtn:hover {
+              background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
             }
             
             /* Dialog overlay */

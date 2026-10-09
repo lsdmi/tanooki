@@ -52,12 +52,12 @@ module Books
       end
     end
 
-    test 'drops reader-owned inline styles from the chapter body' do
+    test 'drops reader-owned inline styles and turns text color into a note' do
       body = reader_style_html.split('<body', 2).last
 
       assert_includes body,
-                      '<p>Stay</p><p style="font-weight: 700">Hi</p><p>Only</p>' \
-                      "<p style='text-align: center'>Size</p><p style=\"border-color: red\">Edge</p>"
+                      '<p class="explanation">Stay</p><p style="font-weight: 700" class="explanation">Hi</p>' \
+                      '<p>Only</p><p style="text-align: center">Size</p><p style="border-color: red">Edge</p>'
     end
 
     test 'keeps the book stylesheet line-height and link color' do

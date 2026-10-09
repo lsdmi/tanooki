@@ -45,7 +45,7 @@
             <%= check_box_tag 'fiction[chapters_hidden]', '1', fiction.chapters_hidden_at.present?,
                               id: 'fiction_chapters_hidden',
                               class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong rounded focus:ring-line-strong focus:ring-2' %>
-            <%= label_tag 'fiction_chapters_hidden', t('fictions.license.form.chapters_hidden', limit: Fictions::LicensePreview::LIMIT),
+            <%= label_tag 'fiction_chapters_hidden', t('fictions.license.form.chapters_hidden'),
                           class: 'ml-2 text-fg-secondary font-semibold' %>
           </div>
           <p class="text-fg-muted text-sm mt-1"><%= t('fictions.license.form.chapters_hidden_hint') %></p>
@@ -55,6 +55,7 @@
 
     <template data-license-mark-target="confirmBody">
       <%= t('fictions.license.form.confirm.body_html',
+            limit: Fictions::LicensePreview::LIMIT,
             rules: link_to(t('fictions.license.form.confirm.rules_link'), rules_path(anchor: 'licensed-content'),
                            target: '_blank', rel: 'noopener')) %>
     </template>

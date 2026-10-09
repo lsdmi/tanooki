@@ -33,7 +33,7 @@
           </aside>
       </div>
       <div id="user-content" class="leading-6 w-full relative pr-2 md:pr-0 lead text-fg dark:text-fg-muted leading-7 font-georgia text-lg" data-controller="note-reference" data-action="click->note-reference#toggle">
-        <%= publication.description %>
+        <%= UserContent::ExplanationNotes.html_for(publication.description) %>
       </div>
       <div class="mt-4">
         <%= render Ui::TagListComponent.new(

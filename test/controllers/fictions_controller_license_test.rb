@@ -19,6 +19,7 @@ class FictionsControllerLicenseTest < ActionDispatch::IntegrationTest
 
     assert_select 'input#fiction_licensed[type=checkbox]:not([checked])'
     assert_select '#fiction_license[data-license-mark-marked-value=false] template a[href=?]', '/rules#licensed-content'
+    assert_includes response.body, 'лишаться лише перші 6 як ознайомчий фрагмент'
   end
 
   test 'the new fiction form has no license block' do

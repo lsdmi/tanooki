@@ -15,9 +15,8 @@
 
   <!-- Main Content -->
   <div class="flex-1 tracking-tight min-w-0">
-    <div class="flex flex-col gap-1">
+    <div class="flex justify-between gap-2 sm:gap-3">
       <%= link_to reading.fiction.title, fiction_path(reading.fiction), turbo_drive_visit_data.merge(class: 'leading-tight text-sm sm:text-base lg:text-lg font-semibold text-fg line-clamp-2 hover:text-brand transition-colors duration-300 tracking-tight') %>
-      <%= render Fictions::LicensedTagComponent.new(fiction: reading.fiction) %>
     </div>
     <div class="text-xs sm:text-sm text-fg flex gap-1 mt-2 font-light">
       <span class="">Прочитано:</span>
@@ -26,7 +25,17 @@
     </div>
 
     <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-3 sm:mt-4">
-      <% if continue_reading.all_read? %>
+      <% if continue_reading.license_hidden? %>
+        <%= ui_button(as: :link,
+                      href: fiction_path(reading.fiction),
+                      size: :xs,
+                      html: turbo_drive_visit_data.merge(class: 'w-fit')) do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+          </svg>
+          <span>Читати далі</span>
+        <% end %>
+      <% elsif continue_reading.all_read? %>
         <%= ui_button(as: :button,
                       size: :xs,
                       html: { class: 'w-fit pointer-events-none cursor-default', tabindex: -1, 'aria-disabled': true }) do %>

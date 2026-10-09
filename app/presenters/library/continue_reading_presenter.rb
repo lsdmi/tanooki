@@ -27,6 +27,11 @@ module Library
       target.chapter
     end
 
+    # The reader stopped on a chapter hidden by a licence takedown, so there is no chapter to continue in.
+    def license_hidden?
+      @reading.chapter&.license_hidden? || false
+    end
+
     # Putting a fiction on a shelf creates a progress on the first chapter; it counts as started only once a
     # chapter was opened (resume_at) or read.
     def started?

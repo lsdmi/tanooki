@@ -2,7 +2,8 @@
 
 module Chapters
   # Prepares chapter HTML for the reader: pasted non-breaking spaces become regular spaces so they do not
-  # create horizontal overflow on narrow viewports, and text blocks are tagged for resume (see ReaderBlocks).
+  # create horizontal overflow on narrow viewports, stored text colors become explanation notes, and text
+  # blocks are tagged for resume (see ReaderBlocks).
   class ReaderContentHtml
     NBSP_PATTERN = /&(nbsp|#160|#x0?A0);/i
 
@@ -22,7 +23,7 @@ module Chapters
     end
 
     def render
-      blocks.html
+      UserContent::ExplanationNotes.call(blocks.html)
     end
 
     private

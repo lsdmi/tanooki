@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Books
-  # Logs worker RSS around one EPUB build, to size EpubExportLimits::MAX_SOURCE_BYTES against real exports.
-  # The peak is sampled (App Platform does not allow resetting VmHWM) and covers the whole process, other queues'
-  # jobs too. Without /proc (macOS) nothing is logged.
+  # Logs worker RSS around one EPUB build and keeps it as an EpubExportStat, to size
+  # EpubExportLimits::MAX_SOURCE_BYTES against real exports (deploys cut the logs). The peak is sampled (App Platform
+  # does not allow resetting VmHWM) and covers the whole process, other queues' jobs too. Without /proc (macOS)
+  # nothing is recorded.
   class EpubExportMemory
     SAMPLE_EVERY = 0.25
 
@@ -28,7 +29,7 @@ module Books
     ensure
       if before
         stop&.push(true)
-        log(before, sampler, started, epub_export)
+        record(before, sampler, started, epub_export)
       end
     end
 
@@ -44,20 +45,28 @@ module Books
       [sampler, stop]
     end
 
-    def log(before, sampler, started, epub_export)
-      seconds = (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started).round(1)
-      after = @memory.rss_mb.to_i
-      peak = [sampler.value, after].max
-      @logger.info("[EPUB memory] request=#{@export_request.id} #{sizes(epub_export)} rss_before=#{before}MB " \
-                   "peak=#{peak}MB rss_after=#{after}MB seconds=#{seconds}")
+    def record(before, sampler, started, epub_export)
+      stat = stat_attributes(before, sampler, started, epub_export)
+      @logger.info(log_line(stat))
+      EpubExportStat.create!(stat)
     rescue StandardError => e
-      @logger.warn("[EPUB memory] request=#{@export_request.id} log failed: #{e.class}: #{e.message}")
+      @logger.warn("[EPUB memory] request=#{@export_request.id} record failed: #{e.class}: #{e.message}")
     end
 
-    def sizes(epub_export)
+    def stat_attributes(before, sampler, started, epub_export)
+      after = @memory.rss_mb.to_i
       ids = @export_request.rich_text_ids
-      epub_bytes = epub_export && File.size?(epub_export.file_path)
-      "chapters=#{ids.size} source=#{megabytes(EpubExportLimits.source_bytes(ids))} epub=#{megabytes(epub_bytes)}"
+      { epub_export_request_id: @export_request.id, user_id: @export_request.user_id, chapters: ids.size,
+        source_bytes: EpubExportLimits.source_bytes(ids), epub_bytes: epub_export && File.size?(epub_export.file_path),
+        rss_before_mb: before, rss_peak_mb: [sampler.value, after].max, rss_after_mb: after,
+        seconds: (Process.clock_gettime(Process::CLOCK_MONOTONIC) - started).round(1) }
+    end
+
+    def log_line(stat)
+      "[EPUB memory] request=#{stat[:epub_export_request_id]} chapters=#{stat[:chapters]} " \
+        "source=#{megabytes(stat[:source_bytes])} epub=#{megabytes(stat[:epub_bytes])} " \
+        "rss_before=#{stat[:rss_before_mb]}MB peak=#{stat[:rss_peak_mb]}MB rss_after=#{stat[:rss_after_mb]}MB " \
+        "seconds=#{stat[:seconds]}"
     end
 
     def megabytes(bytes)

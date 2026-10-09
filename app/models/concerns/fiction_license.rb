@@ -28,7 +28,7 @@ module FictionLicense
     licensed_at.present?
   end
 
-  # Rights holder takedown (admin only): every chapter past the preview stops rendering. Rows stay.
+  # Rights holder takedown (admin only): every chapter stops rendering, the preview included. Rows stay.
   def chapters_hidden?
     licensed? && chapters_hidden_at.present?
   end
@@ -37,13 +37,20 @@ module FictionLicense
     @license_preview ||= Fictions::LicensePreview.new(self)
   end
 
-  delegate :chapter_ids, to: :license_preview, prefix: true
+  # A licensed work keeps only the preview readable, and nothing after the takedown.
+  def license_readable_chapter_ids
+    chapters_hidden? ? [] : license_preview.chapter_ids
+  end
 
-  # :open while every released chapter is readable (including a takedown with nothing past the preview),
-  # :partial with a hidden range, :removed when not even a preview chapter is left.
+  def license_readable_count
+    chapters_hidden? ? 0 : license_preview.available_count
+  end
+
+  # :open while every released chapter is readable (6 or fewer), :partial with chapters past the preview,
+  # :removed after the takedown or with nothing released.
   def license_chapters_state
-    return :open unless chapters_hidden?
-    return :removed if license_preview.available_count.zero?
+    return :open unless licensed?
+    return :removed if license_readable_count.zero?
 
     license_preview.hidden_count.positive? ? :partial : :open
   end

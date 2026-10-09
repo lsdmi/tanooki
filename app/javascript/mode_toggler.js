@@ -124,7 +124,7 @@ const initializeModeToggler = () => {
       
       .tox-editor-header .tox-tbtn:hover {
         background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
-        color: ${isDark ? '#f43f5e' : '#0891b2'} !important;
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       .tox-editor-header .tox-tbtn--disabled {
@@ -162,6 +162,14 @@ const initializeModeToggler = () => {
       
       .tox-tbtn:hover .tox-icon svg {
         fill: ${isDark ? '#f4f4f5' : '#374151'} !important;
+      }
+
+      .tox-tbtn[data-mce-name="tooltip"] .tox-icon svg,
+      .tox-tbtn[data-mce-name="tooltip"] .tox-icon svg path,
+      .tox-tbtn[data-mce-name="tooltip"]:hover .tox-icon svg,
+      .tox-tbtn[data-mce-name="tooltip"]:hover .tox-icon svg path {
+        fill: none !important;
+        stroke: ${isDark ? '#f4f4f5' : '#374151'} !important;
       }
       
       /* Additional specificity for nested elements */
@@ -467,6 +475,15 @@ const initializeModeToggler = () => {
       .tox-pop__dialog::before {
         background: ${isDark ? '#3f3f46' : '#f9fafb'} !important;
         border-color: ${isDark ? '#52525b' : '#e5e7eb'} !important;
+      }
+
+      .tox-pop .tox-tbtn,
+      .tox-pop .tox-tbtn:hover {
+        color: ${isDark ? '#f4f4f5' : '#374151'} !important;
+      }
+
+      .tox-pop .tox-tbtn:hover {
+        background: ${isDark ? '#52525b' : '#f3f4f6'} !important;
       }
       
       /* Dialog overlay */

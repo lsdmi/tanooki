@@ -22,9 +22,11 @@ export function applyReadingEvent(record, payload, chapter, now = new Date()) {
 }
 
 // Where the fiction page «Продовжити» goes, as `Reading::ContinueTarget` decides for signed-in readers.
-// Null means keep «Читати»: nothing recorded, or the latest chapter already read.
-export function continueTarget(record, { latestChapterId } = {}) {
+// Null means keep «Читати»: nothing recorded, the latest chapter already read, or (when the page passes the
+// listed ids after a licence takedown) the recorded chapter is hidden.
+export function continueTarget(record, { latestChapterId, listedChapterIds = null } = {}) {
   if (!record?.chapterId || !record.chapterPath) return null
+  if (listedChapterIds && !listedChapterIds.includes(record.chapterId)) return null
 
   const read = new Set(record.readChapterIds)
   if (latestChapterId && read.has(latestChapterId)) return null

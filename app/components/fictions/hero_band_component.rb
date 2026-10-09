@@ -69,14 +69,15 @@ module Fictions
     end
 
     def chapters_text
-      return t('fictions.hero.stats.chapters', count: fiction.chapter_count) unless partial_license?
+      return t('fictions.hero.stats.chapters', count: fiction.chapter_count) unless license_cut?
 
-      preview = fiction.license_preview
-      t('fictions.hero.stats.chapters_available', available: preview.available_count, count: preview.released_count)
+      t('fictions.hero.stats.chapters_available', available: fiction.license_readable_count,
+                                                  count: fiction.license_preview.released_count)
     end
 
-    def partial_license?
-      fiction.license_chapters_state == :partial
+    # Something released is no longer readable: past the preview, or all of it after the takedown.
+    def license_cut?
+      fiction.licensed? && fiction.license_readable_count < fiction.license_preview.released_count
     end
 
     def scanlators

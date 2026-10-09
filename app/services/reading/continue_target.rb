@@ -7,6 +7,7 @@ module Reading
   #   chapter after it from the top, or the same chapter when nothing follows;
   # - read but stopped mid-chapter, i.e. a later re-read: back into it with the restore.
   # The latest listable chapter read, or the fiction marked finished, is «Все прочитано».
+  # A resume chapter hidden by a licence takedown has no target: the fiction page explains where the rest went.
   # A visit that completes the chapter reports 100% from then on (and so does a manual mark on the cursor
   # chapter), so a position captured one screen above the end still counts as finished.
   class ContinueTarget
@@ -27,7 +28,7 @@ module Reading
       latest.present? && read?(latest)
     end
 
-    # Nil only when nothing is listable.
+    # Nil when nothing is listable or the resume chapter is hidden by a licence.
     def chapter
       return @chapter if defined?(@chapter)
 
@@ -48,6 +49,7 @@ module Reading
     def resolve_chapter
       resume = @progress.chapter
       return @listable.last unless resume
+      return if resume.license_hidden?
       return resume unless read?(resume) && finished_position?
 
       next_unread_after(resume) ||

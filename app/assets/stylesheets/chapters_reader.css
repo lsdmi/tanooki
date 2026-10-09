@@ -118,6 +118,11 @@ html:not(.dark) .immersive-reader #user-content :where(strong, b) {
   color: rgb(28 25 23) !important;
 }
 
+html:not(.dark) .immersive-reader #user-content .explanation {
+  color: #4b5563 !important;
+  -webkit-text-fill-color: currentcolor !important;
+}
+
 html:not(.dark) .immersive-reader #user-content :where(blockquote) {
   border-left-color: rgb(214 211 209); /* stone-300 */
   color: rgb(87 83 78) !important; /* stone-600 */
@@ -150,6 +155,11 @@ html:not(.dark) .immersive-reader .note-content {
 
 .dark .immersive-reader #user-content :where(strong, b) {
   color: rgb(250 250 250) !important;
+}
+
+.dark .immersive-reader #user-content .explanation {
+  color: #a1a1aa !important;
+  -webkit-text-fill-color: currentcolor !important;
 }
 
 .dark .immersive-reader #user-content :where(blockquote) {

@@ -41,7 +41,7 @@ module Fictions
     end
 
     def chapter_jump_unlisted_reason(number, listed)
-      return :licensed if @fiction.chapters_hidden? && @fiction.license_preview.hidden_number?(number)
+      return :licensed if @fiction.licensed? && @fiction.license_preview.hidden_number?(number)
 
       :filtered if listed.any? { |chapter| chapter.number == number }
     end

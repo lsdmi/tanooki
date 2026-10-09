@@ -40,6 +40,23 @@ module Chapters
       assert_equal 2, Nokogiri::HTML5.fragment(ReaderContentHtml.render(chapter)).css('p[data-rp-i]').size
     end
 
+    test 'render turns a stored text color into an explanation note' do
+      chapter = chapters(:one)
+      chapter.content = '<p><span style="color:#95a5a6;">примітка</span></p>'
+
+      html = ReaderContentHtml.render(chapter)
+
+      assert_includes html, '<span class="explanation">примітка</span>'
+      assert_not_includes html, 'color:'
+    end
+
+    test 'render keeps html safe after adding an explanation note' do
+      chapter = chapters(:one)
+      chapter.content = '<p><span style="color:#95a5a6;">примітка</span></p>'
+
+      assert_predicate ReaderContentHtml.render(chapter), :html_safe?
+    end
+
     test 'digest changes when chapter content changes' do
       chapter = chapters(:one)
       chapter.content = '<p>one</p><p>two</p>'

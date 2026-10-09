@@ -21,7 +21,7 @@ module Books
       def xhtml_document(chapter_title, body)
         <<-CONTENT
         <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml">
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
         <head>
           <title>#{chapter_title}</title>
           <style>
@@ -68,7 +68,9 @@ module Books
       # Inline font, size, line-height, and color are stripped here, including for very large chapters.
       # The stored HTML is not rewritten; the book stylesheet owns those four.
       def format_content(content)
-        html = strip_reader_owned_styles(content.to_s)
+        html = UserContent::ExplanationNotes.call(content.to_s)
+        html = EpubFootnotes.call(html)
+        html = strip_reader_owned_styles(html)
         html = html.gsub('</hr>', '').gsub('</br>', '').gsub('</HR>', '').gsub('</BR>', '')
         html = html.gsub('&nbsp;', '&#160;').gsub('&NBSP;', '&#160;')
         return html if html.bytesize >= LARGE_CONTENT_BYTES

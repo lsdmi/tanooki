@@ -7,5 +7,5 @@
     </svg>
   </div>
   <h3 class="mb-2 text-lg font-semibold leading-none text-fg relative z-10"><%= t('fictions.license.chapters_cta_title') %></h3>
-  <p class="text-fg-muted relative z-10"><%= t('fictions.license.chapters_cta_body') %></p>
+  <p class="text-fg-muted relative z-10"><%= t('fictions.license.chapters_cta_body', limit: Fictions::LicensePreview::LIMIT) %></p>
 </div>

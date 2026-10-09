@@ -61,6 +61,28 @@
   text-decoration: none;
 }
 
+/* EPUB 3 footnotes. The word is the popup trigger. Asides stay visible for readers
+   that do not open footnotes as popups; do not hide them. */
+.epub-content a.noteref {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.epub-content .footnote {
+  margin: 1.5em 0 0;
+  font-size: 0.9em;
+}
+
+.epub-content .footnote p {
+  text-indent: 0;
+  margin: 0;
+}
+
+/* Translator notes. Inline color is stripped; this gray is the book color. */
+.epub-content .explanation {
+  color: #4b5563;
+}
+
 /* Chapter titles */
 .epub-content .chapter-title {
   font-size: 2em;

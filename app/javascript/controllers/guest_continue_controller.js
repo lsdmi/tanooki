@@ -7,13 +7,17 @@ import { readRecord } from "guest_reading_store"
 // first chapter. Recomputed on every connect, so a Turbo snapshot never shows a stale target.
 export default class extends Controller {
   static targets = ["link", "label"]
-  static values = { fictionId: Number, latestChapterId: Number, readPath: String, readLabel: String, continueLabel: String }
+  static values = {
+    fictionId: Number, latestChapterId: Number, listedChapterIds: Array,
+    readPath: String, readLabel: String, continueLabel: String
+  }
 
   async connect() {
     const record = await readRecord(this.fictionIdValue)
     if (!this.element.isConnected) return
 
-    const target = continueTarget(record, { latestChapterId: this.latestChapterIdValue })
+    const listedChapterIds = this.hasListedChapterIdsValue ? this.listedChapterIdsValue : null
+    const target = continueTarget(record, { latestChapterId: this.latestChapterIdValue, listedChapterIds })
     this.linkTarget.href = target ? target.path : this.readPathValue
     this.labelTarget.textContent = target ? this.continueLabelValue : this.readLabelValue
   }

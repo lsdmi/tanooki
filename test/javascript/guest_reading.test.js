@@ -100,6 +100,14 @@ test("continue keeps «Читати» with no record or once the latest chapter 
   assert.equal(continueTarget(record, { latestChapterId: 9 }), null)
 })
 
+test("after a licence takedown continue keeps «Читати» for a chapter that is no longer listed", () => {
+  const record = engaged(null, 8)
+
+  assert.equal(continueTarget(record, { latestChapterId: 6, listedChapterIds: [1, 2, 3, 4, 5, 6] }), null)
+  assert.equal(continueTarget(engaged(null, 3), { latestChapterId: 6, listedChapterIds: [1, 2, 3] }).path,
+    "/chapters/c3?resume=1")
+})
+
 test("resume restores anything on ?resume=1 but offers the banner only between 1% and 90%", () => {
   const at = (percent) => ({ ...engaged(null, 3), locator: locator(percent) })
 

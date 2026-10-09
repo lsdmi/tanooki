@@ -64,7 +64,7 @@ class LicensedFictionFreezeTest < ActionDispatch::IntegrationTest
   test 'the studio list shows the licensed card without add or edit links' do
     get reading_url(@fiction)
 
-    assert_select '#licensed-notice', text: /Ранобе ліцензовано/
+    assert_select '#licensed-notice', text: /Ранобе ліцензовано.*лише перші 6 розділів/m
     assert_select 'a[href^=?]', '/chapters/new', count: 0
     assert_select 'a[title=?]', 'Редагувати', count: 0
   end
