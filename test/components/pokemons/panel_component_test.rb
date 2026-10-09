@@ -20,5 +20,11 @@ module Pokemons
       assert_selector 'h2 + p', text: 'У колекції: 27'
       assert_selector 'button', text: 'Тренувати'
     end
+
+    test 'extra classes join the shell' do
+      render_inline(PanelComponent.new(title: 'Топ тренерів', html: { class: 'lg:flex-1', data: { qa: 'top' } }))
+
+      assert_selector 'section.rounded-xl.lg\:flex-1[data-qa=top]'
+    end
   end
 end

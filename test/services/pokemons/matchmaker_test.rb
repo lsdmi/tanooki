@@ -11,7 +11,7 @@ module Pokemons
       @rival = users(:user_two)
     end
 
-    test 'opponent pins a leaderboard neighbour' do
+    test 'opponent pins an active trainer' do
       assert_equal @rival, Matchmaker.new(@user).opponent
       assert_equal @rival.id, @user.trainer_profile.reload.pinned_opponent_id
       assert_predicate @user.trainer_profile.pinned_until, :future?
@@ -68,6 +68,23 @@ module Pokemons
 
       assert_not Matchmaker.new(@user).reroll!
       assert_nil @user.trainer_profile.reload.opponent_rerolled_at
+    end
+
+    test 'reroll keeps the opponent when there is no one else' do
+      pin(@rival)
+
+      assert Matchmaker.new(@user).reroll!
+      assert_equal @rival.id, @user.trainer_profile.reload.pinned_opponent_id
+    end
+
+    test 'reroll offers someone other than the current opponent' do
+      other = User.find(103)
+      UserPokemon.create!(user: other, pokemon: pokemons(:one), character: :brave, battle_experience: 1)
+      other.trainer_profile.update!(last_training_at: 1.day.ago)
+      pin(@rival)
+
+      assert Matchmaker.new(@user).reroll!
+      assert_equal other.id, @user.trainer_profile.reload.pinned_opponent_id
     end
 
     test 'release clears the pin' do

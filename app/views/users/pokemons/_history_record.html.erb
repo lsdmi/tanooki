@@ -8,6 +8,9 @@
     </div>
     <%= render 'users/pokemons/trainer', user: battle.defender, caption: 'Захисник', badge: battle_result_badge(!attacker_won) %>
   </div>
+  <% unless battle.ranked? %>
+    <p class="text-center text-sm/5 text-fg-muted"><%= t('pokemons.battle.unranked') %></p>
+  <% end %>
 
   <%= render Pokemons::BattleReplayComponent.new(battle:) %>
 </div>

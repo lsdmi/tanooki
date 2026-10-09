@@ -12,7 +12,8 @@ class PokemonBattlesController < ApplicationController
   def start
     if Pokemons::BattleStart.new(current_user).call == :fought
       current_user.reload
-      render turbo_stream: turbo_stream_with_cleared_flash(refresh_leaderboard_card, refresh_history, remove_call)
+      render turbo_stream: turbo_stream_with_cleared_flash(refresh_leaderboard_card, refresh_history, remove_call,
+                                                           refresh_top)
     else
       render turbo_stream: turbo_stream_alert(t('pokemons.alerts.battle_unavailable'))
     end
@@ -26,6 +27,12 @@ class PokemonBattlesController < ApplicationController
       partial: 'users/pokemons/history_record',
       locals: { battle: current_user.latest_battle }
     )
+  end
+
+  def refresh_top
+    turbo_stream.replace('pokemon-top-trainers', partial: 'users/pokemons/top_trainers',
+                                                 locals: { top: Pokemons::DexLeaderboard.top,
+                                                           dex_leaderboard: Pokemons::DexLeaderboard.new })
   end
 
   def remove_call

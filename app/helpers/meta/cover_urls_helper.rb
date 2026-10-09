@@ -88,13 +88,13 @@ module Meta
     end
 
     def variable_cover?(attachment)
-      attachment.blob.variable? && Attachments::VariantProcessing.available?
+      Attachments::VariantProcessing.processable?(attachment.blob)
     end
 
     def variant_image_url(attachment, transformations)
       return unless attachment&.attached?
 
-      if attachment.blob.variable? && Attachments::VariantProcessing.available?
+      if Attachments::VariantProcessing.processable?(attachment.blob)
         url_for(attachment.variant(transformations))
       else
         url_for(attachment)

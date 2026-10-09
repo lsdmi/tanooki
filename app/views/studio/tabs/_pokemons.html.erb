@@ -18,11 +18,11 @@
     </ul>
   </details>
 
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
-    <%= turbo_frame_tag "pokemon-data-screen", class: 'flex min-w-0 flex-col gap-6' do %>
-      <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, evolution: pokemon_show.evolution %>
-    <% end %>
+  <%= turbo_frame_tag "pokemon-data-screen", class: 'flex min-w-0 flex-col gap-6' do %>
+    <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, evolution: pokemon_show.evolution %>
+  <% end %>
 
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
     <div class="flex min-w-0 flex-col gap-6">
       <%= turbo_frame_tag "pokemon-leaderboard-screen" do %>
         <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: pokemon_show.dex_leaderboard, opponent: pokemon_show.opponent,
@@ -30,6 +30,11 @@
                                                     can_reroll: pokemon_show.reroll_available? %>
       <% end %>
       <%= render 'users/pokemons/battle_history', battle_history: pokemon_show.battle_history %>
+    </div>
+
+    <%# The top takes the height of the battle column and scrolls inside, so neither column leaves a gap. %>
+    <div class="relative min-w-0 lg:min-h-[36rem]">
+      <%= render 'users/pokemons/top_trainers', top: pokemon_show.top_trainers, dex_leaderboard: pokemon_show.dex_leaderboard %>
     </div>
   </div>
 </div>

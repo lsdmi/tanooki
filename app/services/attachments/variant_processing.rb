@@ -11,6 +11,12 @@ module Attachments
       @available = vips_available?
     end
 
+    # False for a blob on a service this environment must not write to (ReadOnlyStorage): its variant could not be
+    # stored, so callers show the original.
+    def processable?(blob)
+      blob.variable? && available? && !ReadOnlyStorage.covers?(blob.service_name)
+    end
+
     def reset!
       @available = nil
     end

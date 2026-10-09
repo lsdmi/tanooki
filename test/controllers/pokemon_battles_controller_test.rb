@@ -47,6 +47,14 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, 'pokemon-leaderboard-screen'
   end
 
+  test 'starting a battle replaces the top trainers panel' do
+    pin_opponent
+
+    post battle_start_path(format: :turbo_stream)
+
+    assert_includes @response.body, 'turbo-stream action="replace" target="pokemon-top-trainers"'
+  end
+
   test 'battle without a pinned opponent is refused' do
     assert_no_difference('PokemonBattle.count') do
       post battle_start_path(format: :turbo_stream), params: { defender: @defender.id }

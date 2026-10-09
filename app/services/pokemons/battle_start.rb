@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # One PvP battle against the attacker's pinned opponent. Simulated first; then experience, the battle row, ratings,
-  # both battle clocks, and the pin release commit together.
+  # One PvP battle against the attacker's pinned opponent. Simulated first; then experience, the battle row, ratings
+  # (none for a rematch within a day), both battle clocks, and the pin release commit together.
   class BattleStart
     def initialize(attacker)
       @attacker = attacker
@@ -38,7 +38,10 @@ module Pokemons
       :fought
     end
 
+    # nil for a rematch inside Balance::RANKED_REMATCH_GAP: it plays unranked.
     def update_ratings(result, defender)
+      return if PokemonBattle.rematch?(@attacker, defender)
+
       winner, loser = result.attacker_won? ? [@attacker, defender] : [defender, @attacker]
       Battle::RatingUpdater.new(winner: winner.trainer_profile, loser: loser.trainer_profile).call
     end

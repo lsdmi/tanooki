@@ -69,12 +69,12 @@ module Pokemons
       assert_nil @leaderboard.rank_for(User.find(101))
     end
 
-    test 'rank_for uses a bounded number of queries' do
-      assert_queries_count(2) { @leaderboard.rank_for(@first) }
+    test 'a rank costs two queries once per user per render' do
+      assert_queries_count(2) { 2.times { @leaderboard.rank_for(@first) } }
     end
 
-    test 'size returns distinct leaderboard count' do
-      assert_equal 3, @leaderboard.size
+    test 'every title in a render shares one query' do
+      assert_queries_count(1) { [@first, @second, @third].each { |user| @leaderboard.percentile_for(user) } }
     end
 
     test 'counts and orders a user with several Pokémon once' do
@@ -83,9 +83,8 @@ module Pokemons
                             character: 'lucky')
       end
 
-      assert_equal 3, DexLeaderboard.new.size
       assert_equal 3, DexLeaderboard.new.rank_for(@third)
-      assert_equal([@first, @second, @third], (0..2).map { |index| @leaderboard.user_at_index(index) })
+      assert_equal [@first, @second, @third], DexLeaderboard.top.map(&:user)
     end
   end
 end

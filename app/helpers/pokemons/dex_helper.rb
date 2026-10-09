@@ -52,6 +52,10 @@ module Pokemons
       t('pokemons.titles')[TITLE_PERCENTILES.rindex { |from| from <= percentile.to_f }]
     end
 
+    def trophy_icon(size)
+      lucide_icon(TROPHY_PATHS, size)
+    end
+
     private
 
     def battle_result_icon(won)

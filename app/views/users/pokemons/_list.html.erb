@@ -1,6 +1,6 @@
 <%= render Pokemons::PanelComponent.new(title: 'Мої покемони', subtitle: ("У колекції: #{pokemons.size}" if pokemons.any?)) do %>
   <% if pokemons.any? %>
-    <ul class="grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))]" data-controller="pokemon-image-click">
+    <ul class="grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))]" data-controller="pokemon-image-click">
       <% pokemons.each do |user_pokemon| %>
         <li>
           <%= button_to pokemon_details_path(pokemon_id: user_pokemon),

@@ -1,0 +1,10 @@
+<%# locals: (entry:, foldable: true) %>
+<% mine = entry.user == current_user %>
+<%# Places past 10 fold behind «Показати ще» on phones; the desktop list scrolls instead. %>
+<% display = foldable && entry.rank > 10 ? 'hidden group-has-[:checked]/top:flex lg:flex' : 'flex' %>
+<%= tag.li class: class_names(display, 'items-center gap-3 px-2 py-2', 'rounded-lg bg-brand-subtle' => mine), aria: { current: mine || nil } do %>
+  <span class="w-7 shrink-0 text-right text-sm/5 font-semibold tabular-nums text-fg-muted"><span class="sr-only">Місце</span><%= entry.rank %></span>
+  <%= image_tag avatar_image_url(entry.user.avatar.image), alt: '', loading: :lazy, class: 'size-8 shrink-0 rounded-full object-cover' %>
+  <%= link_to entry.user.name, profile_path(entry.user.sqid), turbo_drive_visit_data.merge(class: 'min-w-0 flex-1 truncate text-sm/5 font-semibold text-fg hover:text-fg-brand') %>
+  <span class="shrink-0 text-xs/4 text-fg-muted"><%= dex_title(entry.percentile) %></span>
+<% end %>

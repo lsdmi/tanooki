@@ -1,9 +1,9 @@
-<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка') do %>
+<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка', html: { class: 'lg:flex-1' }) do %>
   <%= turbo_frame_tag "pokemon-history-list" do %>
     <%= render 'users/pokemons/history_record', battle: battle_history if battle_history.present? %>
   <% end %>
   <% if battle_history.blank? %>
-    <%= turbo_frame_tag "pokemon-history-call" do %>
+    <%= turbo_frame_tag "pokemon-history-call", class: 'flex flex-1 flex-col justify-center' do %>
       <div class="flex items-center gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
         <%= image_tag 'battle.webp', alt: '', class: 'hidden size-12 shrink-0 sm:block' %>
         <div class="flex min-w-0 flex-col gap-1">

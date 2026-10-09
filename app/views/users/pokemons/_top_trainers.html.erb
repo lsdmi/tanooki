@@ -1,0 +1,57 @@
+<%# locals: (top:, dex_leaderboard: nil) %>
+<% podium, rest = top.partition { |entry| entry.rank <= 3 } %>
+<% folded = rest.count { |entry| entry.rank > 10 } %>
+<% outside = dex_leaderboard && top.none? { |entry| entry.user == current_user } %>
+<% my_place = dex_leaderboard.top_place_for(current_user) if outside %>
+<%# Absolute on desktop: the battle column sets the row height and the list scrolls in what is left. %>
+<%= render Pokemons::PanelComponent.new(title: 'Топ тренерів', subtitle: 'Хто бився за останні 30 днів', id: 'pokemon-top-trainers',
+                                        html: { class: 'group/top lg:absolute lg:inset-0' }) do %>
+  <% if top.empty? %>
+    <p class="rounded-lg bg-surface p-5 text-center text-sm/5 text-fg-muted ring-1 ring-inset ring-line"><%= t('pokemons.top.empty') %></p>
+  <% else %>
+    <ol class="grid shrink-0 grid-cols-3 items-end gap-2 sm:gap-3">
+      <% podium.each do |entry| %>
+        <% first = entry.rank == 1 %>
+        <% mine = entry.user == current_user %>
+        <%= tag.li class: class_names('flex min-w-0 flex-col items-center gap-2 text-center', 'col-start-2 row-start-1' => first, 'col-start-1 row-start-1' => entry.rank == 2, 'col-start-3 row-start-1' => entry.rank == 3), aria: { current: mine || nil } do %>
+          <%= image_tag avatar_image_url(entry.user.avatar.image), alt: '', loading: :lazy,
+                                                                   class: class_names('shrink-0 rounded-full object-cover', first ? 'size-16 ring-4 ring-status-warning-subtle-border md:size-20' : 'size-12 ring-2 ring-line md:size-14', 'outline-2 outline-offset-2 outline-brand' => mine) %>
+          <div class="flex min-w-0 max-w-full flex-col items-center gap-0.5">
+            <%= link_to entry.user.name, profile_path(entry.user.sqid), turbo_drive_visit_data.merge(class: class_names('max-w-full truncate text-sm/5 font-semibold hover:text-fg-brand', mine ? 'text-fg-brand' : 'text-fg')) %>
+            <span class="line-clamp-2 max-w-full text-xs/4 text-balance text-fg-muted"><%= dex_title(entry.percentile) %></span>
+          </div>
+          <%= tag.div class: class_names('flex w-full items-start justify-center gap-1 rounded-t-lg pt-2 text-lg/6 font-bold tabular-nums ring-1 ring-inset',
+                                         first ? 'h-16 bg-status-warning-subtle-bg text-status-warning-subtle-fg ring-status-warning-subtle-border' : 'bg-surface-strong text-fg-secondary ring-line',
+                                         'h-12' => entry.rank == 2, 'h-9' => entry.rank == 3) do %>
+            <%= trophy_icon('mt-0.5 size-4') if first %>
+            <span class="sr-only">Місце</span><%= entry.rank %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ol>
+
+    <% if rest.any? %>
+      <ol class="-mx-2 flex flex-col divide-y divide-line-muted px-2 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+        <%= render partial: 'users/pokemons/top_trainer_row', collection: rest, as: :entry %>
+      </ol>
+    <% end %>
+
+    <% if folded.positive? %>
+      <label class="flex cursor-pointer items-center justify-center gap-1 rounded-lg py-1.5 text-sm/5 font-medium text-fg-brand hover:bg-surface-hover has-focus-visible:ring-2 has-focus-visible:ring-line-strong lg:hidden">
+        <input type="checkbox" class="peer sr-only">
+        <span class="peer-checked:hidden">Показати ще <%= folded %></span>
+        <span class="hidden peer-checked:inline">Згорнути</span>
+        <svg class="size-4 transition-transform peer-checked:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </label>
+    <% end %>
+
+    <% if my_place %>
+      <ol class="shrink-0 border-t border-dashed border-line pt-3">
+        <%= render 'users/pokemons/top_trainer_row', foldable: false,
+                                                     entry: Pokemons::DexLeaderboard::TopEntry.new(user: current_user, rank: my_place, percentile: dex_leaderboard.percentile_for(current_user)) %>
+      </ol>
+    <% elsif outside %>
+      <p class="shrink-0 border-t border-dashed border-line pt-3 text-center text-sm/5 text-fg-muted"><%= t('pokemons.top.join') %></p>
+    <% end %>
+  <% end %>
+<% end %>

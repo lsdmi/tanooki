@@ -36,6 +36,8 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
   config.x.chapter_images.service = :local_chapter_images
+  # Blobs copied from production point at its bucket: read them, never write or delete (lib/read_only_storage.rb).
+  config.x.active_storage.read_only_services = %w[digitalocean digitalocean_chapter_images]
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

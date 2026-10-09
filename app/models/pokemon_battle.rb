@@ -11,7 +11,12 @@ class PokemonBattle < ApplicationRecord
   # Converted from pokemon_battle_logs: who fought, who won and when, nothing to replay.
   LEGACY_VERSION = 0
 
+  after_create_commit -> { Pokemons::DexLeaderboard.expire_top }, if: :ranked?
+
   scope :involving, ->(user) { where(attacker_id: user.id).or(where(defender_id: user.id)) }
+  scope :between, lambda { |one, other|
+    where(attacker_id: one.id, defender_id: other.id).or(where(attacker_id: other.id, defender_id: one.id))
+  }
   scope :legacy, -> { where(engine_version: LEGACY_VERSION) }
 
   # Fits the signed BIGINT column.
@@ -19,13 +24,19 @@ class PokemonBattle < ApplicationRecord
     SecureRandom.random_number(1 << 63)
   end
 
+  # +rating_deltas+ by user id, or nil for an unranked battle.
   def self.record!(teams:, seed:, result:, rating_deltas:)
     attacker, defender = teams.trainers
     create!(attacker:, defender:, winner: result.attacker_won? ? attacker : defender, seed:,
             engine_version: result.engine_version, events: serialize(result.events),
-            attacker_team: teams.stored(:attacker), defender_team: teams.stored(:defender),
-            rating_delta_attacker: rating_deltas.fetch(attacker.id),
-            rating_delta_defender: rating_deltas.fetch(defender.id))
+            attacker_team: teams.stored(:attacker), defender_team: teams.stored(:defender), ranked: !rating_deltas.nil?,
+            rating_delta_attacker: rating_deltas&.fetch(attacker.id) || 0,
+            rating_delta_defender: rating_deltas&.fetch(defender.id) || 0)
+  end
+
+  # True when the pair already fought within Balance::RANKED_REMATCH_GAP, either side attacking.
+  def self.rematch?(attacker, defender, at: Time.current)
+    between(attacker, defender).exists?(created_at: (at - Pokemons::Balance::RANKED_REMATCH_GAP)..)
   end
 
   # The JSON column's form: string keys and values. MySQL's JSON type prints doubles with 16 significant digits, so

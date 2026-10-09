@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history.
+  # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history, top trainers.
   class StudioTab
     attr_reader :user, :pokemons, :selected_pokemon, :evolution, :dex_leaderboard,
                 :opponent, :battle_history
@@ -20,6 +20,10 @@ module Pokemons
 
     def reroll_available?
       @reroll_available
+    end
+
+    def top_trainers
+      @top_trainers ||= DexLeaderboard.top
     end
 
     private

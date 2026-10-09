@@ -4,6 +4,8 @@ require 'test_helper'
 
 module Pokemons
   class BattleStartTest < ActiveSupport::TestCase
+    include PokemonBattleHelpers
+
     setup do
       @attacker = users(:user_one)
       @defender = users(:user_two)
@@ -43,6 +45,22 @@ module Pokemons
 
       assert_equal @attacker.user_pokemons.order(:id).pluck(:pokemon_id), battle.attacker_team.pluck('pokemon_id')
       assert_equal battle.attacker_won? ? [162, -162] : [-162, 162], deltas
+    end
+
+    test 'a rematch within a day, either side attacking, plays unranked' do
+      create_pokemon_battle(attacker: @defender, defender: @attacker, created_at: 23.hours.ago)
+      @attacker.trainer_profile.update!(last_battle_at: 5.hours.ago)
+      ratings = -> { [@attacker, @defender].map { |user| user.trainer_profile.reload.glicko } }
+
+      assert_no_changes(ratings) { fight }
+      assert_equal [false, 0, 0], PokemonBattle.last.values_at(:ranked, :rating_delta_attacker, :rating_delta_defender)
+    end
+
+    test 'a rematch after a day is ranked again' do
+      create_pokemon_battle(attacker: @attacker, defender: @defender, created_at: 25.hours.ago)
+      @attacker.trainer_profile.update!(last_battle_at: 5.hours.ago)
+
+      assert_predicate fight, :ranked?
     end
 
     test 'saves the experience the engine decided' do
