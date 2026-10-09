@@ -54,6 +54,7 @@ class OauthFlowTest < ActionDispatch::IntegrationTest
     get '/oauth/authorize', params: authorize_params(client, pkce_pair.last)
 
     assert_includes response.body, 'Про Бака'
+    assert_select 'form[action="/oauth/authorize"][data-turbo="false"]', count: 2
   end
 
   test 'publish stays unchecked until the member opts in' do

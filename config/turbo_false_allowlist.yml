@@ -1,6 +1,6 @@
 # Intentional data-turbo=false (Category D/F + admin forms).
 # Every match in app/views, app/helpers, app/components must appear here.
-# Verified: 2026-09-18 — 34 occurrences (composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE).
+# Verified: 2026-10-09 — 36 occurrences (composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE).
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
   - app/views/fictions/edit.html.erb:6
@@ -32,6 +32,9 @@ allowed:
   - app/views/users/dashboard/_publications.html.erb:148
   # Category E — OmniAuth (external redirect; Turbo fetch hits CORS on Google)
   - app/views/users/sessions/_omniauth.html.erb:7
+  # OAuth consent must fully navigate to the client's redirect, or Muse never exchanges the code.
+  - app/views/oauth/authorizations/new.html.erb:6
+  - app/views/oauth/authorizations/new.html.erb:36
 
   # Category F — EPUB / special
   - app/views/studio/tabs/_epub_exports.html.erb:44

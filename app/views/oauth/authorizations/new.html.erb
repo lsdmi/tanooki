@@ -3,7 +3,7 @@
     <h1 class="text-xl font-semibold text-fg break-words"><%= t('oauth_consent.title', name: @pre_auth.client.name) %></h1>
     <p class="mt-3 text-sm text-fg-muted"><%= t('oauth_consent.prompt') %></p>
 
-    <%= form_with url: oauth_authorization_path, method: :post, class: 'mt-6 space-y-4' do %>
+    <%= form_with url: oauth_authorization_path, method: :post, class: 'mt-6 space-y-4', data: { turbo: false } do %>
       <%= hidden_field_tag :client_id, @pre_auth.client.uid, id: nil %>
       <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri, id: nil %>
       <%= hidden_field_tag :state, @pre_auth.state, id: nil %>
@@ -33,7 +33,7 @@
       <%= ui_button(t('oauth_consent.allow'), as: :submit, size: :md, full_width: true) %>
     <% end %>
 
-    <%= form_with url: oauth_authorization_path, method: :delete, class: 'mt-3' do %>
+    <%= form_with url: oauth_authorization_path, method: :delete, class: 'mt-3', data: { turbo: false } do %>
       <%= hidden_field_tag :client_id, @pre_auth.client.uid, id: nil %>
       <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri, id: nil %>
       <%= hidden_field_tag :state, @pre_auth.state, id: nil %>
