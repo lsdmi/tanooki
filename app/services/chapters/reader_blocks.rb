@@ -7,9 +7,9 @@ module Chapters
   # chapter in a single <p>. The digest covers every block's text and the block count, so it changes whenever
   # a stored index could point somewhere else.
   #
-  # A <div> whose only content is whitespace (often a &nbsp; paragraph spacer, later normalized to a regular
-  # space) collapses to zero height in the browser. Pad it with a <br> so the blank line survives. Empty <p>
-  # spacers stay collapsed: paragraph margins already separate those chapters.
+  # A block whose only content is whitespace (often a &nbsp; paragraph spacer, later normalized to a regular
+  # space) collapses to zero height in the browser. Pad it with a <br> so the blank line the editor shows
+  # survives in the reader.
   class ReaderBlocks
     INDEX_ATTRIBUTE = 'data-rp-i'
     DIGEST_LENGTH = 16
@@ -19,7 +19,6 @@ module Chapters
     ].to_set.freeze
     MEDIA_TAGS = %w[img picture video iframe svg].freeze
     MEDIA_SELECTOR = MEDIA_TAGS.join(', ').freeze
-    SPACER_TAG = 'div'
 
     def initialize(html)
       @fragment = Nokogiri::HTML5.fragment(html.to_s)
@@ -69,10 +68,13 @@ module Chapters
       node.element? && (MEDIA_TAGS.include?(node.name) || node.at_css(MEDIA_SELECTOR).present?)
     end
 
+    # TinyMCE shows any empty <p> as a line (and saves it as <p>&nbsp;</p>), including one that only wraps
+    # empty inline tags.
     def collapsed_spacer?(node)
-      return false unless node.name == SPACER_TAG
+      return false if visible?(node) || node.at_css('br')
+      return true if node.name == 'p'
+      return false unless node.name == 'div'
       return false if node.element_children.any?
-      return false if visible?(node)
 
       node.text.match?(/[[:space:]]/)
     end
