@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_180000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -52,6 +52,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "api_tokens", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "last_used_at"
+    t.string "last_used_ip", limit: 45
+    t.string "name", null: false
+    t.datetime "revoked_at"
+    t.json "scopes", null: false
+    t.string "token_digest", null: false
+    t.string "token_prefix", limit: 8, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
   create_table "avatars", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -77,6 +93,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
     t.index ["user_id"], name: "index_bookshelves_on_user_id"
   end
 
+  create_table "chapter_revisions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "api_token_id"
+    t.text "body", size: :long, null: false
+    t.bigint "chapter_id", null: false
+    t.datetime "created_at", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["api_token_id"], name: "index_chapter_revisions_on_api_token_id"
+    t.index ["chapter_id", "created_at"], name: "index_chapter_revisions_on_chapter_id_and_created_at"
+    t.index ["chapter_id"], name: "index_chapter_revisions_on_chapter_id"
+    t.index ["user_id"], name: "index_chapter_revisions_on_user_id"
+  end
+
   create_table "chapter_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "chapter_id", null: false
     t.datetime "created_at", null: false
@@ -87,8 +117,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
   end
 
   create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "api_token_id"
     t.integer "comments_count", default: 0
     t.datetime "created_at", null: false
+    t.string "created_via", limit: 16
     t.datetime "deleted_at"
     t.bigint "fiction_id", null: false
     t.decimal "number", precision: 9, scale: 2, null: false
@@ -100,6 +132,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.decimal "volume_number", precision: 9, scale: 1
+    t.index ["api_token_id"], name: "index_chapters_on_api_token_id"
     t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
     t.index ["fiction_id", "deleted_at", "status", "published_at"], name: "index_chapters_on_fiction_deleted_status_published"
     t.index ["fiction_id", "volume_number", "number"], name: "index_chapters_on_fiction_volume_number"
@@ -678,11 +711,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_120000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "bookshelf_fictions", "bookshelves"
   add_foreign_key "bookshelf_fictions", "fictions"
   add_foreign_key "bookshelves", "users"
+  add_foreign_key "chapter_revisions", "api_tokens", on_delete: :nullify
+  add_foreign_key "chapter_revisions", "chapters"
+  add_foreign_key "chapter_revisions", "users"
   add_foreign_key "chapter_scanlators", "chapters"
   add_foreign_key "chapter_scanlators", "scanlators"
+  add_foreign_key "chapters", "api_tokens", on_delete: :nullify
   add_foreign_key "chapters", "fictions", on_delete: :cascade
   add_foreign_key "chapters", "users", on_delete: :cascade
   add_foreign_key "chat_messages", "users"

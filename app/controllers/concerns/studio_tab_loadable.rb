@@ -6,7 +6,7 @@ module StudioTabLoadable
   extend ActiveSupport::Concern
 
   STUDIO_TAB_COLLECTION_DEFAULTS = %i[
-    comments fictions publications avatars scanlators bookshelves epub_export_requests
+    comments fictions publications avatars scanlators bookshelves epub_export_requests api_tokens
     cover_quality_flags listing_nudge_flags
   ].freeze
 

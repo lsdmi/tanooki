@@ -29,6 +29,10 @@ production:
     class: Chapters::PurgeOrphanImagesJob
     schedule: "20 4 * * * Europe/Kiev"
 
+  prune_chapter_revisions:
+    class: Chapters::PruneRevisionsJob
+    schedule: "30 4 * * * Europe/Kiev"
+
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
     schedule: "0 5 * * 0 UTC"

@@ -1,0 +1,106 @@
+<div class="bg-surface min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <header class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h1 class="text-3xl font-bold text-fg mb-4">API для команд</h1>
+        <p class="text-lg text-fg-muted leading-relaxed">
+          Експериментальна можливість. Ключ бачить і змінює лише розділи команд, у яких ви зараз є.
+          Чужий розділ для нього не існує.
+        </p>
+      </header>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Ключ</h2>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Відкрийте <%= link_to 'Студію, вкладку команд', studio_index_path(tab: 'teams'), class: 'underline underline-offset-2' %>
+          і створіть ключ. Секрет починається з <code class="text-fg">baka_</code> і показується один раз.
+          Передавайте його в заголовку <code class="text-fg">Authorization</code>.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl https://baka.in.ua/api/v1/me \
+  -H "Authorization: Bearer baka_…"</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed">
+          Дозволи: читання розділів, чернетки, публікація, зображення.
+          Без дозволу на публікацію опублікований розділ змінити не вийде.
+          Ключ живе щонайбільше рік. Відкликаний ключ перестає діяти одразу.
+        </p>
+      </section>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Розділи</h2>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Список творів ваших команд: <code class="text-fg">GET /api/v1/me/fictions</code>.
+          Розділи твору: <code class="text-fg">GET /api/v1/fictions/slug/chapters</code>.
+          Один розділ, уже з абзацами: <code class="text-fg">GET /api/v1/chapters/123</code>.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">Нова чернетка. Поле <code class="text-fg">content</code> — це Markdown.</p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl -X POST https://baka.in.ua/api/v1/fictions/slug/chapters \
+  -H "Authorization: Bearer baka_…" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: draft-12" \
+  -d '{"number":12,"title":"Розділ 12","content":"Перший абзац.\n\nДругий.","scanlator_ids":[1]}'</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed mb-4">
+          Той самий ключ протягом доби повертає перший розділ і не створює другий.
+          Щоб опублікувати, додайте <code class="text-fg">"status":"published"</code>.
+          Для цього ключу потрібен дозвіл на публікацію, а текст — щонайменше 500 символів.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Зміна всього тексту вимагає <code class="text-fg">version</code> з останнього читання.
+          Якщо розділ уже змінився, відповідь буде 409.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl -X PATCH https://baka.in.ua/api/v1/chapters/123 \
+  -H "Authorization: Bearer baka_…" \
+  -H "Content-Type: application/json" \
+  -d '{"version":"…","title":"Нова назва"}'</code></pre>
+      </section>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Абзаци, історія, зображення</h2>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Правка одного абзацу не переписує сусідні. <code class="text-fg">n</code> рахується з 1.
+          <code class="text-fg">old</code> має збігатися з поточним текстом. Порожній <code class="text-fg">new</code> видаляє абзац.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl -X POST https://baka.in.ua/api/v1/chapters/123/paragraph_edits \
+  -H "Authorization: Bearer baka_…" \
+  -H "Content-Type: application/json" \
+  -d '{"version":"…","edits":[{"n":1,"old":"Було","new":"Стало"}]}'</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed mb-4">
+          Перед зміною тексту API зберігає попередній варіант.
+          <code class="text-fg">GET /api/v1/chapters/123/revisions</code> показує список,
+          <code class="text-fg">GET …/revisions/1/diff</code> — різницю,
+          <code class="text-fg">POST …/revisions/1/revert</code> повертає той варіант.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Зображення надсилається файлом або за адресою. У відповіді буде URL, його й ставте в Markdown.
+          Адреси у приватні мережі не завантажуються.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl -X POST https://baka.in.ua/api/v1/chapter_images \
+  -H "Authorization: Bearer baka_…" \
+  -F "file=@cover.webp"</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed">
+          Markdown: абзаци розділяє порожній рядок. <code class="text-fg">**жирний**</code>,
+          <code class="text-fg">*курсив*</code>, заголовки <code class="text-fg">##</code>.
+          Картинка: <code class="text-fg">![опис](url)</code>, де url — з відповіді завантаження.
+          Вбудовані base64-зображення не приймаються. HTML у тексті очищується, а що прибрано — повертається в <code class="text-fg">sanitizer_changes</code>.
+        </p>
+      </section>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Ліміти</h2>
+        <ul class="list-disc list-inside space-y-2 text-fg-secondary">
+          <li>300 читань і 30 записів на хвилину для одного ключа.</li>
+          <li>100 нових розділів на день.</li>
+          <li>5 знять з публікації на день.</li>
+          <li>30 правок опублікованих розділів на годину і 200 на день.</li>
+          <li>Заміна всього тексту опублікованого розділу не може лишити менше ніж 500 символів і не може прибрати понад 30%.</li>
+          <li>За один виклик — не більше ніж 50 абзаців.</li>
+          <li>Текст розділу — до 1 МБ. Зображення — до 20 МБ, завантаження за адресою чекає до 10 секунд.</li>
+        </ul>
+        <p class="mt-4 text-fg-secondary leading-relaxed">
+          Помилки приходять як JSON: <code class="text-fg">error.code</code> і українське <code class="text-fg">error.message</code>.
+          Чужий розділ — це 404. Машиночитний опис усіх адрес:
+          <%= link_to 'OpenAPI', '/api/v1/openapi.json', class: 'underline underline-offset-2' %>.
+        </p>
+      </section>
+    </div>
+  </div>
+</div>

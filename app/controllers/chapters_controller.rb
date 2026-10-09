@@ -47,6 +47,7 @@ class ChaptersController < ApplicationController
   def create
     @chapter = Chapter.new(chapter_params)
     @chapter.user = current_user
+    @chapter.created_via = 'web'
     return render_new_with_schedule_error if published_at_schedule_invalid?
 
     persist_chapter(failure_template: 'chapters/new')

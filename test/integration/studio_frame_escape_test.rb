@@ -37,6 +37,15 @@ class StudioFrameEscapeTest < ActionDispatch::IntegrationTest
     assert_select 'turbo-frame#bookshelves-list a[data-turbo-frame="_top"][href*="/bookshelves/"]'
   end
 
+  test 'studio teams tab opens the api docs as a full page' do
+    sign_in users(:user_one)
+
+    get studio_index_path(tab: 'teams')
+
+    assert_select 'turbo-frame#tab-content a[data-turbo-frame="_top"][href="/developers"]',
+                  text: I18n.t('api_tokens.docs')
+  end
+
   test 'studio notifications empty state escapes frame for browse CTAs' do
     sign_in users(:user_two)
 

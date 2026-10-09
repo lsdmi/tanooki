@@ -1,6 +1,8 @@
 <% scanlators = local_assigns.fetch(:scanlators, []) %>
 <% pagy = local_assigns.fetch(:pagy, nil) %>
 <div class="space-y-6">
+  <%= render 'studio/tabs/api_tokens', api_tokens: local_assigns.fetch(:api_tokens, []) %>
+
   <!-- CTA Card -->
   <div class="col-span-2 rounded-lg border border-line bg-card p-6 text-center shadow-sm relative overflow-hidden">
     <!-- SVG Ornament -->

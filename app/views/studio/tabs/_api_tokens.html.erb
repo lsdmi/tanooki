@@ -1,0 +1,90 @@
+<% api_tokens = local_assigns.fetch(:api_tokens, []) %>
+<% return unless current_user.scanlators.exists? || api_tokens.any? %>
+
+<section class="rounded-lg border border-line bg-card p-6 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    <h3 class="text-lg font-semibold text-fg"><%= t('api_tokens.title') %></h3>
+    <span class="inline-flex items-center rounded-full border border-amber-200/90 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800 dark:border-amber-800/80 dark:bg-amber-900/25 dark:text-amber-200"><%= t('api_tokens.experimental') %></span>
+  </div>
+  <p class="mt-2 text-sm text-fg-muted"><%= t('api_tokens.intro') %></p>
+  <p class="mt-2 text-sm">
+    <%= link_to t('api_tokens.docs'), api_docs_path, class: 'text-brand underline underline-offset-2', data: { turbo_frame: '_top' } %>
+  </p>
+
+  <% if flash[:api_token_secret].present? %>
+    <div class="mt-4 rounded-lg border border-line bg-surface-strong p-4" data-controller="copy-value" data-copy-value-copied-value="<%= t('api_tokens.copied') %>">
+      <p class="mb-2 text-sm font-medium text-fg"><%= t('api_tokens.secret_title') %></p>
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <input type="text" readonly autocomplete="off" value="<%= flash[:api_token_secret] %>" data-copy-value-target="source" data-api-token-secret
+               class="min-w-0 flex-1 rounded-lg border border-line-strong bg-card p-3 font-mono text-sm text-fg">
+        <button type="button" data-copy-value-target="button" data-action="copy-value#copy"
+                class="rounded-lg border border-line-strong px-4 py-2 text-sm font-medium text-fg hover:bg-brand-subtle">
+          <%= t('api_tokens.copy') %>
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+  <% if current_user.scanlators.exists? %>
+    <%= form_with model: ApiToken.new, url: api_tokens_path, class: 'mt-6 space-y-4', data: { turbo_frame: '_top' } do %>
+      <div>
+        <%= label_tag 'api_token_name', t('api_tokens.name'), class: 'mb-2 block text-sm font-medium text-fg-secondary' %>
+        <%= text_field_tag 'api_token[name]', nil, id: 'api_token_name', maxlength: 40, required: true, autocomplete: 'off',
+                           placeholder: t('api_tokens.name_placeholder'),
+                           class: 'block w-full rounded-lg border border-line-strong bg-surface-strong p-3 text-sm text-fg focus:border-brand focus:ring-2 focus:ring-brand' %>
+      </div>
+      <div>
+        <%= label_tag 'api_token_expires_in', t('api_tokens.expiry'), class: 'mb-2 block text-sm font-medium text-fg-secondary' %>
+        <%= select_tag 'api_token[expires_in]', options_for_select([[t('api_tokens.expiries.30'), 30], [t('api_tokens.expiries.90'), 90, { selected: true }], [t('api_tokens.expiries.365'), 365]]),
+                        id: 'api_token_expires_in',
+                        class: 'block w-full rounded-lg border border-line-strong bg-surface-strong p-3 text-sm text-fg focus:border-brand focus:ring-2 focus:ring-brand' %>
+      </div>
+      <fieldset>
+        <legend class="mb-2 text-sm font-medium text-fg-secondary"><%= t('api_tokens.scopes_label') %></legend>
+        <div class="space-y-2">
+          <% ApiToken::SCOPES.each do |scope| %>
+            <label class="flex items-start gap-2 text-sm text-fg">
+              <%= check_box_tag 'api_token[scopes][]', scope, ApiToken::DEFAULT_SCOPES.include?(scope), id: "api_token_scope_#{scope.tr(':', '_')}" %>
+              <span>
+                <%= t("api_tokens.scopes.#{scope}") %>
+                <% if scope == 'chapters:publish' %>
+                  <span class="mt-1 block text-fg-muted"><%= t('api_tokens.publish_warning') %></span>
+                <% end %>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+      <%= ui_button(t('api_tokens.create'), as: :submit, size: :md) %>
+    <% end %>
+  <% end %>
+
+  <div class="mt-6">
+    <% if api_tokens.any? %>
+      <ul class="divide-y divide-line">
+        <% api_tokens.each do |token| %>
+          <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0">
+              <p class="font-medium text-fg"><%= token.name %> <span class="font-mono text-sm text-fg-muted"><%= token.token_prefix %>…</span></p>
+              <p class="mt-1 text-sm text-fg-muted">
+                <%= token.scopes.map { |scope| t("api_tokens.scopes.#{scope}") }.join(', ') %>
+              </p>
+              <% if token.scopes.include?('chapters:publish') %>
+                <p class="mt-1 text-sm font-medium text-amber-800 dark:text-amber-200"><%= t('api_tokens.live_edits') %></p>
+              <% end %>
+              <p class="mt-1 text-sm text-fg-muted">
+                <%= t('api_tokens.expires') %>: <%= l(token.expires_at, format: :short_datetime) %>
+                · <%= t('api_tokens.last_used') %>: <%= token.last_used_at ? l(token.last_used_at, format: :short_datetime) : t('api_tokens.never_used') %>
+              </p>
+            </div>
+            <%= button_to t('api_tokens.revoke'), api_token_path(token), method: :delete,
+                          class: 'shrink-0 text-sm font-medium text-status-danger-solid hover:underline',
+                          form: { data: { turbo_frame: '_top', turbo_confirm: t('api_tokens.confirm_revoke') } } %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-sm text-fg-muted"><%= t('api_tokens.empty') %></p>
+    <% end %>
+  </div>
+</section>

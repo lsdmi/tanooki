@@ -23,7 +23,7 @@ allowed:
   - app/views/studio/tabs/_bookshelves.html.erb:15
   - app/views/studio/tabs/_bookshelves.html.erb:97
   - app/views/studio/tabs/_bookshelves.html.erb:181
-  - app/views/studio/tabs/_teams.html.erb:15
+  - app/views/studio/tabs/_teams.html.erb:17
   - app/views/users/dashboard/_fictions.html.erb:16
   - app/views/users/dashboard/_fictions.html.erb:86
   - app/views/users/dashboard/_fictions.html.erb:177

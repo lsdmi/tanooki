@@ -7,6 +7,7 @@ module Studio
 
     ASSIGNMENT_KEYS = %i[
       pagy publications pokemon_show scanlators fictions comments avatars bookshelves epub_export_requests
+      api_tokens
       cover_quality_flags
       listing_nudge_flags
     ].freeze
@@ -43,6 +44,7 @@ module Studio
         limit: 8,
         page: params[:page]
       )
+      @api_tokens = user.api_tokens.active.order(created_at: :desc)
     end
 
     def scanlators_scope

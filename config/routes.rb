@@ -37,7 +37,30 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :fictions, only: :index
+      get 'openapi', to: 'openapi#show', defaults: { format: :json }
+      resources :chapter_images, only: :create
+      resources :fictions, only: :index do
+        resources :chapters, only: %i[index create], controller: 'fiction_chapters' do
+          collection do
+            get :batch
+            get 'by_number/:number', action: :by_number, as: :by_number
+          end
+        end
+      end
+      resource :me, only: :show, controller: 'me' do
+        get :fictions, to: 'mine_fictions#index'
+      end
+      resources :chapters, only: %i[show update] do
+        member do
+          post :paragraph_edits
+        end
+        resources :revisions, only: :index, controller: 'chapter_revisions' do
+          member do
+            get :diff
+            post :revert
+          end
+        end
+      end
     end
   end
 
@@ -111,6 +134,7 @@ Rails.application.routes.draw do
     end
   end
   resources :search, only: :index
+  resources :api_tokens, only: %i[create destroy]
   resources :studio, only: :index do
     member do
       get :tab
@@ -168,6 +192,7 @@ Rails.application.routes.draw do
   patch 'reading_progresses/:id', to: 'library#update_status', as: :update_reading_progress
 
   get :about, to: 'pages#about'
+  get '/developers', to: 'pages#api', as: :api_docs
   get :friends, to: 'pages#friends'
   get :rules, to: 'pages#rules'
   get :privacy, to: 'pages#privacy'

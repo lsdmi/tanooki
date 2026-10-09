@@ -76,6 +76,7 @@ end
 
 gem 'commonmarker'
 gem 'devise'
+gem 'diff-lcs'
 gem 'dotenv-rails'
 gem 'fastimage'
 gem 'friendly_id'

@@ -30,6 +30,7 @@ class User < ApplicationRecord
   has_many :pokemons, through: :user_pokemons
   has_many :pokemon_encounters, dependent: :delete_all
 
+  has_many :api_tokens, dependent: :destroy
   has_many :scanlator_users, dependent: :destroy
   has_many :scanlators, through: :scanlator_users
   has_many :chapters, through: :scanlators

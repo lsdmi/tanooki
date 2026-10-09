@@ -102,6 +102,7 @@ class ChaptersControllerDraftTest < ActionDispatch::IntegrationTest
     chapter = Chapter.order(:id).last
 
     assert_predicate chapter, :published?
+    assert_equal 'web', chapter.created_via
     assert_redirected_to reading_path(@fiction)
   end
 

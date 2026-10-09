@@ -13,13 +13,17 @@ class Chapter < ApplicationRecord
 
   attr_accessor :scanlator_ids, :scanlator_ids_for_stats_cache
 
+  CREATED_VIA = %w[web api mcp].freeze
+
   belongs_to :fiction
   belongs_to :user
+  belongs_to :api_token, optional: true
   has_rich_text :content
   # Blobs linked from the body by URL. Blobs are never purged with the chapter: another
   # chapter may link the same URL, so Chapters::PurgeOrphanImagesJob removes unused ones.
   has_many_attached :images, service: Rails.configuration.x.chapter_images.service, dependent: false
   has_many :chapter_scanlators, dependent: :destroy
+  has_many :revisions, class_name: 'ChapterRevision', dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :scanlators, through: :chapter_scanlators
@@ -32,6 +36,7 @@ class Chapter < ApplicationRecord
   validates :number, numericality: { greater_than_or_equal_to: 0 }
   validates :volume_number, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :title, length: { maximum: 100 }
+  validates :created_via, inclusion: { in: CREATED_VIA }, allow_nil: true
 
   # When set, this is the moment a published chapter becomes visible to everyone (nil = live on save).
   validate :published_at_not_in_the_past
