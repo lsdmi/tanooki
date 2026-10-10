@@ -94,6 +94,7 @@ module Api
 
         assert_response :too_many_requests
         assert_equal 'rate_limited', response.parsed_body.dig('error', 'code')
+        assert_match '300 на хвилину', response.parsed_body.dig('error', 'message')
       end
 
       private

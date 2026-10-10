@@ -19,10 +19,10 @@ module Api
 
       rate_limit to: READS_PER_MINUTE, within: 1.minute, scope: 'api/v1', name: 'read',
                  by: -> { Current.api_token.id }, if: :read_request?,
-                 with: -> { render_api_error(:too_many_requests, 'rate_limited') }
+                 with: -> { refuse_rate_limit(:read) }
       rate_limit to: WRITES_PER_MINUTE, within: 1.minute, scope: 'api/v1', name: 'write',
                  by: -> { Current.api_token.id }, unless: :read_request?,
-                 with: -> { render_api_error(:too_many_requests, 'rate_limited') }
+                 with: -> { refuse_rate_limit(:write) }
 
       private
 
@@ -95,14 +95,28 @@ module Api
         render_api_error(:forbidden, 'writes_disabled') unless Api::Limits.writes_enabled?
       end
 
+      def refuse_rate_limit(kind)
+        render_api_error(:too_many_requests, 'rate_limited', details: rate_limit_details(kind))
+      end
+
+      def rate_limit_details(kind)
+        limit = kind == :read ? READS_PER_MINUTE : WRITES_PER_MINUTE
+        label = kind == :read ? 'читань' : 'записів'
+        { limit:, kind: label }
+      end
+
       def render_raised_api_error(error)
         render_api_error(error.status, error.code, details: error.details)
       end
 
       def render_api_error(status, code, details: nil)
         render json: {
-          error: { code: code.to_s, message: I18n.t("api.errors.#{code}"), details: details || {} }
+          error: { code: code.to_s, message: api_error_message(code, details), details: details || {} }
         }, status:
+      end
+
+      def api_error_message(code, details)
+        I18n.t("api.errors.#{code}", **(details || {}).symbolize_keys)
       end
     end
   end

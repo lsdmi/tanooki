@@ -11,7 +11,9 @@ module Api
       end
 
       def self.body(error)
-        { error: { code: error.code, message: I18n.t("api.errors.#{error.code}"), details: error.details } }
+        details = error.details || {}
+        message = I18n.t("api.errors.#{error.code}", **details.symbolize_keys)
+        { error: { code: error.code, message:, details: } }
       end
     end
   end

@@ -8,6 +8,9 @@ class EpubExportRequest < ApplicationRecord
 
   DOWNLOAD_TTL = 24.hours
   STALE_PROCESSING_AFTER = 30.minutes
+  # The heavy queue builds one EPUB at a time, so one reader clicking through every section would hold it for
+  # everyone else. Older requests stop counting, so a lost job cannot block its owner.
+  MAX_IN_FLIGHT_PER_USER = 2
   STATUS_LABELS = {
     'queued' => 'У черзі',
     'processing' => 'Готується',
@@ -41,6 +44,12 @@ class EpubExportRequest < ApplicationRecord
     return nil unless export
 
     refreshed_for_reuse(export)
+  end
+
+  def self.in_flight_limit_reached?(user)
+    user.epub_export_requests
+        .where(status: %i[queued processing], created_at: STALE_PROCESSING_AFTER.ago..)
+        .count >= MAX_IN_FLIGHT_PER_USER
   end
 
   def self.refreshed_for_reuse(export)

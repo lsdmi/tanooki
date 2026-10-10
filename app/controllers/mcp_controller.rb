@@ -24,6 +24,12 @@ class McpController < Api::V1::BaseController
 
   private
 
+  def refuse_rate_limit(kind)
+    details = rate_limit_details(kind)
+    message = I18n.t('api.errors.rate_limited', **details)
+    render json: Api::Mcp::LimitNotice.payload(request.raw_post, message), status: :ok
+  end
+
   def render_api_error(status, code, details: nil)
     if status == :unauthorized
       response.set_header('WWW-Authenticate', %(Bearer realm="baka", resource_metadata="#{oauth_metadata_url}"))

@@ -11,6 +11,11 @@ module DownloadsEpubExportResponses
            status: cached && export_request.ready? ? :ok : :accepted
   end
 
+  # The button retries on its own (epub_download_controller.js) until one of the user's builds finishes.
+  def render_epub_wait_response
+    render json: { status: 'waiting' }, status: :too_many_requests
+  end
+
   def epub_enqueue_payload(export_request, cached:)
     epub_export_status_payload(export_request).merge(cached:)
   end

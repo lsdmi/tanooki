@@ -65,6 +65,8 @@ class DownloadsController < ApplicationController
 
   def enqueue_epub_export(rich_text_ids, volume_title = nil)
     export_request, cached = find_or_create_epub_export(rich_text_ids, volume_title)
+    return render_epub_wait_response unless export_request
+
     render_epub_enqueue_response(export_request, cached:)
   rescue StandardError => _e
     handle_error
@@ -75,6 +77,7 @@ class DownloadsController < ApplicationController
       user: current_user, rich_text_ids:, volume_title:
     )
     return [export_request, true] if export_request
+    return if EpubExportRequest.in_flight_limit_reached?(current_user)
 
     [create_epub_export(rich_text_ids, volume_title), false]
   end

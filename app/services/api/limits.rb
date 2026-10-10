@@ -6,8 +6,9 @@ module Api
   # immediately through the cache, with no deploy.
   class Limits
     UNPUBLISHES_PER_DAY = 5
-    PUBLISHED_EDITS_PER_HOUR = 30
-    PUBLISHED_EDITS_PER_DAY = 200
+    PUBLISHED_EDITS_PER_HOUR = 60
+    PUBLISHED_EDITS_PER_SPAN = 200
+    EDIT_SPAN = 5.hours
     CREATES_PER_DAY = 100
     MIN_PUBLISHED_CHARACTERS = 500
     MAX_BLOCKS = 50
@@ -79,12 +80,7 @@ module Api
 
     def record_published_edit!
       ensure_writes!
-      hour = bump(:published_edit_hour, Time.current.strftime('%Y%m%d%H'), 2.hours)
-      day = bump(:published_edit_day, Date.current, 26.hours)
-      over = hour > PUBLISHED_EDITS_PER_HOUR || day > PUBLISHED_EDITS_PER_DAY
-      raise Error.new('published_edit_cap', :too_many_requests) if over
-
-      hour
+      PublishedEdits.charge!(user)
     end
 
     private

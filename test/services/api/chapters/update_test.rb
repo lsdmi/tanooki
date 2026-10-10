@@ -16,8 +16,8 @@ module Api
 
       teardown do
         Rails.cache.delete(Limits.counter_key(:create, @user, Date.current))
-        Rails.cache.delete(Limits.counter_key(:published_edit_hour, @user, Time.current.strftime('%Y%m%d%H')))
-        Rails.cache.delete(Limits.counter_key(:published_edit_day, @user, Date.current))
+        Rails.cache.delete(Limits.counter_key(:published_edit_hour, @user, Limits::PublishedEdits.hour_period))
+        Rails.cache.delete(Limits.counter_key(:published_edit_span, @user, Limits::PublishedEdits.span_period))
       end
 
       test 'a matching version updates the draft' do
