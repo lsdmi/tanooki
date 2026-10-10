@@ -40,7 +40,7 @@ module Fictions
     def license_chapters_note(fiction)
       preview = fiction.license_preview
       case fiction.license_chapters_state
-      when :removed then I18n.t('fictions.notice_zone.licensed.removed')
+      when :removed then I18n.t("fictions.notice_zone.licensed.#{fiction.chapters_hidden? ? :removed : :unreleased}")
       when :partial
         key = preview.available_count == 1 ? :preview_one : :preview
         I18n.t("fictions.notice_zone.licensed.#{key}", range: preview.available_range)

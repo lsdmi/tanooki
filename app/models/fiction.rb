@@ -22,6 +22,10 @@ class Fiction < ApplicationRecord
 
   attr_accessor :genre_ids, :scanlator_ids, :user_id
 
+  belongs_to :merged_into, class_name: 'Fiction', optional: true, inverse_of: :merged_sources
+  has_many :merged_sources, class_name: 'Fiction', foreign_key: :merged_into_id, inverse_of: :merged_into,
+                            dependent: :nullify
+
   has_many :chapters, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_one_attached :banner

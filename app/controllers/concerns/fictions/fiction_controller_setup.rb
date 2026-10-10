@@ -8,10 +8,27 @@ module Fictions
     private
 
     def set_fiction
-      @fiction = @commentable = Fiction.includes(
+      @fiction = @commentable = find_live_fiction
+    rescue ActiveRecord::RecordNotFound
+      redirect_merged_fiction || raise
+    end
+
+    def find_live_fiction
+      Fiction.includes(
         :genres, :scanlators, :fiction_ratings, cover_attachment: :blob
       ).find(params.expect(:id))
-      @commentable = @fiction
+    end
+
+    def redirect_merged_fiction
+      target = MergedRedirect.new(params[:id]).target
+      return if target.nil?
+
+      redirect_to merged_fiction_location(target), status: :moved_permanently
+    end
+
+    def merged_fiction_location(target)
+      route = request.path_parameters.merge(id: target.slug)
+      url_for(route.merge(request.query_parameters).merge(only_path: true))
     end
 
     def track_fiction_visit

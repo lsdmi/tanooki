@@ -9,7 +9,7 @@
       <span class="text-base/6 font-semibold text-fg"><%= fiction.license_publisher %></span>
     </div>
   <% end %>
-  <p class="text-sm/5 text-fg-secondary"><%= t('fictions.license.card.body') %></p>
+  <p class="text-sm/5 text-fg-secondary"><%= t(fiction.license_readable_count.positive? ? :body_preview : :body, scope: 'fictions.license.card') %></p>
   <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: t('fictions.license.card.link'),
                                                           variant: :licensed, size: :sm, full_width: true) %>
 </section>

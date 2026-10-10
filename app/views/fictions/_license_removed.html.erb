@@ -4,7 +4,7 @@
     <%= stroke_icon(:lock, 'size-6') %>
   </span>
   <h2 class="text-xl font-bold text-fg"><%= t('fictions.license.removed.title') %></h2>
-  <p class="max-w-md text-sm text-fg-secondary"><%= t('fictions.license.removed.body') %></p>
+  <p class="max-w-md text-sm text-fg-secondary"><%= t(fiction.chapters_hidden? ? :body : :body_unreleased, scope: 'fictions.license.removed') %></p>
   <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: t('fictions.license.read_official'), variant: :licensed) %>
   <% if progress_chapter %>
     <p class="text-xs/5 text-fg-muted">

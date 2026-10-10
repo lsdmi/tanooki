@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_180001) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -247,6 +247,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_180001) do
     t.string "license_url", limit: 500
     t.datetime "licensed_at"
     t.json "listing_nudge_dismissals"
+    t.bigint "merged_into_id"
     t.string "origin"
     t.text "short_description"
     t.string "slug", null: false
@@ -257,6 +258,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_180001) do
     t.index ["content_rating"], name: "index_fictions_on_content_rating"
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["licensed_at"], name: "index_fictions_on_licensed_at"
+    t.index ["merged_into_id"], name: "index_fictions_on_merged_into_id"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
     t.index ["views"], name: "index_fictions_on_views"
   end
@@ -777,6 +779,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_180001) do
   add_foreign_key "fiction_ratings", "users"
   add_foreign_key "fiction_scanlators", "fictions"
   add_foreign_key "fiction_scanlators", "scanlators"
+  add_foreign_key "fictions", "fictions", column: "merged_into_id", on_delete: :nullify
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

@@ -101,6 +101,14 @@ class FictionsController < ApplicationController
 
   def details
     @fiction = Fiction.includes(:genres, :fiction_ratings, cover_attachment: :blob).find(params.expect(:id))
+    render_fiction_details
+  rescue ActiveRecord::RecordNotFound
+    redirect_merged_fiction || raise
+  end
+
+  private
+
+  def render_fiction_details
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(

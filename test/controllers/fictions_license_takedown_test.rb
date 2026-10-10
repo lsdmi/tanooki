@@ -82,7 +82,7 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select '#fiction-tab-about[aria-selected="true"]'
-    assert_select '#license-removed', text: /#{I18n.t('fictions.license.removed.title')}/
+    assert_select '#license-removed', text: /#{I18n.t('fictions.license.removed.body')}/
     assert_select 'a[href=?]', STORE_URL, text: /#{I18n.t('fictions.license.read_official')}/, minimum: 2
   end
 
@@ -98,12 +98,14 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     assert_includes response.body, '0 з 8 розділів доступно'
   end
 
-  test 'a licensed work with nothing released gets the removed state' do
+  test 'a licensed work with nothing released says so instead of blaming the rights holder' do
     @fiction.chapters.destroy_all
 
     get fiction_url(@fiction)
 
-    assert_select '#license-removed'
+    assert_select '#license-removed', text: /#{I18n.t('fictions.license.removed.body_unreleased')}/
+    assert_includes response.body, I18n.t('fictions.notice_zone.licensed.unreleased')
+    assert_not_includes response.body, 'на прохання правовласника'
   end
 
   test 'unmarking brings every chapter back' do

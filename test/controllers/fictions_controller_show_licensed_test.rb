@@ -54,6 +54,23 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'the official edition card mentions the preview left on Baka' do
+    license!
+
+    get fiction_url(@fiction)
+
+    assert_select '#official-edition-card p', text: I18n.t('fictions.license.card.body_preview')
+  end
+
+  test 'the official edition card drops the preview clause once every chapter is hidden' do
+    license!
+    @fiction.update!(chapters_hidden_at: Time.current)
+
+    get fiction_url(@fiction)
+
+    assert_select '#official-edition-card p', text: I18n.t('fictions.license.card.body')
+  end
+
   test 'without a store URL there are no official edition links' do
     license!
 
