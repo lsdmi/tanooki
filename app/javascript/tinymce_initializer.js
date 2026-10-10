@@ -627,6 +627,17 @@ const setupBlockSelection = (editor) => {
 };
 
 const EXPLANATION_CLASS = 'explanation';
+// Kept in step with UserContent::LinkScrubber::CONTENT_CLASSES.
+const CONTENT_CLASSES = new Set(['note-reference', EXPLANATION_CLASS]);
+
+const stripForeignClasses = (element) => {
+  if (!element.hasAttribute('class')) return;
+
+  const kept = element.getAttribute('class').split(/\s+/).filter((name) => CONTENT_CLASSES.has(name));
+  if (kept.length) element.setAttribute('class', kept.join(' '));
+  else element.removeAttribute('class');
+};
+
 const TEXT_COLOR_PROPERTIES = new Set(['color', '-webkit-text-fill-color']);
 
 const styleDeclarations = (style) => (style || '').split(';').map((part) => part.trim()).filter(Boolean);
@@ -929,6 +940,7 @@ const initializeTinymce = () => {
       const walk = function(node) {
         if (node.nodeType !== 1) return;
         const el = node;
+        stripForeignClasses(el);
         if (el.hasAttribute('style')) {
           const cleaned = stripNonInheritedPasteStyles(el.getAttribute('style'));
           if (cleaned) el.setAttribute('style', cleaned);

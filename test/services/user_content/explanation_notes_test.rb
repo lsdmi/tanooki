@@ -53,5 +53,17 @@ module UserContent
 
       assert_equal html, ExplanationNotes.call(html)
     end
+
+    test 'html_for runs the Action Text sanitizer on a blog post' do
+      publication = publications(:tale_approved_one)
+      publication.description = '<div class="mx-auto max-w-3xl"><p style="color: red">Текст</p></div>' \
+                                '<script>alert(1)</script>'
+
+      html = ExplanationNotes.html_for(publication.description)
+
+      assert_predicate html, :html_safe?
+      assert_not_includes html, '<script'
+      assert_equal '<div><p class="explanation">Текст</p></div>alert(1)', html.strip
+    end
   end
 end

@@ -17,12 +17,11 @@ module UserContent
       new.apply(html.to_s)
     end
 
+    # `to_s` runs the Action Text sanitizer; `body.to_html` would print stored HTML unsanitized.
     def self.html_for(rich_text)
       return ActiveSupport::SafeBuffer.new if rich_text.blank?
 
-      body = rich_text.respond_to?(:body) ? rich_text.body : rich_text
-      source = body.respond_to?(:to_html) ? body.to_html : body.to_s
-      ActiveSupport::SafeBuffer.new(call(source))
+      ActiveSupport::SafeBuffer.new(call(rich_text.to_s))
     end
 
     def apply(html)

@@ -14,6 +14,9 @@ module UserContent
     YOUTUBE_EMBED_PATH = %r{\A/embed/[A-Za-z0-9_-]+/?\z}
     INVISIBLE_TEXT = /[[:space:]\u200B-\u200D\u2060\uFEFF]/
     HIDDEN_STYLE = /display\s*:\s*none|visibility\s*:\s*hidden/i
+    # Text pasted from another site keeps its utility classes (`mx-auto max-w-3xl`), which the site's
+    # Tailwind would apply to the article. Only classes the editor itself writes are kept.
+    CONTENT_CLASSES = %w[note-reference explanation].freeze
 
     def self.youtube_embed?(src)
       uri = https_uri(src)
@@ -67,6 +70,7 @@ module UserContent
 
     def scrub_attributes(node)
       super
+      scrub_classes(node)
       return unless node.name == 'a' && self.class.external?(node['href'])
 
       if invisible?(node)
@@ -75,6 +79,13 @@ module UserContent
       else
         node['rel'] = (node['rel'].to_s.split | EXTERNAL_REL).join(' ')
       end
+    end
+
+    def scrub_classes(node)
+      return unless node.key?('class')
+
+      kept = node['class'].split & CONTENT_CLASSES
+      kept.empty? ? node.remove_attribute('class') : node['class'] = kept.join(' ')
     end
 
     def invisible?(node)
