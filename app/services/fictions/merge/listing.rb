@@ -26,7 +26,11 @@ module Fictions
         @report.count(:views, added)
       end
 
+      # The surviving page keeps its own completion. A finished source must not
+      # mark an ongoing translation as finished.
       def later_completion
+        return if @target.completed_at.nil?
+
         [@source.completed_at, @target.completed_at].compact.max
       end
 

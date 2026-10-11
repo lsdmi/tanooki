@@ -46,14 +46,13 @@ module Fictions
       assert_in_delta later, @target.reload.completed_at, 1
     end
 
-    test 'copies completion when only the source is complete' do
-      mark = Time.zone.parse('2026-09-01 08:00')
-      @source.completed_at = mark
+    test 'leaves an ongoing page ongoing when the source is finished' do
+      @source.completed_at = Time.zone.parse('2026-09-01 08:00')
       @source.save!(validate: false)
 
       Merge.call(source: @source, target: @target, admin: @admin)
 
-      assert_in_delta mark, @target.reload.completed_at, 1
+      assert_nil @target.reload.completed_at
     end
 
     test 'fills blank english and alternative titles from the source' do
