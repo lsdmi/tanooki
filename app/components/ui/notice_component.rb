@@ -18,20 +18,22 @@ module Ui
 
     renders_one :action
 
-    def initialize(kind:, title:, body: nil, style: :light, html: {})
+    # `action_on_mobile: false` drops the action below md, where the same button sits right under the notice.
+    def initialize(kind:, title:, body: nil, style: :light, **options)
       super()
       @kind = kind.to_sym
       @style = style.to_sym
       @title = title
       @body = body
-      @html = html
+      @html = options.fetch(:html, {})
+      @action_on_mobile = options.fetch(:action_on_mobile, true)
       raise ArgumentError, "unknown kind: #{kind}" unless KINDS.key?(@kind)
       raise ArgumentError, "unknown style: #{style}" unless STYLES.include?(@style)
     end
 
     private
 
-    attr_reader :kind, :style, :title, :body, :html
+    attr_reader :kind, :style, :title, :body, :html, :action_on_mobile
 
     def light?
       style == :light
@@ -86,7 +88,8 @@ module Ui
 
     # Below the text on mobile, indented past the icon; to the right on desktop.
     def action_classes
-      "basis-full #{light? ? 'pl-7' : 'pl-8'} md:basis-auto md:shrink-0 md:self-center md:pl-0"
+      base = "basis-full #{light? ? 'pl-7' : 'pl-8'} md:basis-auto md:shrink-0 md:self-center md:pl-0"
+      action_on_mobile ? base : "#{base} max-md:hidden"
     end
   end
 end

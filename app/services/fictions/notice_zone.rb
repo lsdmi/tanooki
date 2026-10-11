@@ -3,7 +3,8 @@
 module Fictions
   # Notices above the fiction hero: an optional age notice, then at most one status notice.
   # A licensed work gets the licensed notice whatever its listing state; otherwise the notice
-  # follows the listing state (ongoing works get none).
+  # follows the listing state (ongoing works get none). On the fiction page the licensed notice
+  # leaves the chapters out: the Chapters tab says what is left; the reader banner keeps them.
   module NoticeZone
     Notice = Data.define(:kind, :title, :body)
 
@@ -18,17 +19,17 @@ module Fictions
     end
 
     def status_notice(fiction)
-      return licensed(fiction) if fiction.licensed?
+      return licensed(fiction, chapters: false) if fiction.licensed?
 
       kind = STATUS_KINDS[fiction.listing_state]
       notice(kind) if kind
     end
 
-    def licensed(fiction)
+    def licensed(fiction, chapters: true)
       Notice.new(
         kind: :licensed,
         title: I18n.t('fictions.notice_zone.licensed.title'),
-        body: [license_lead(fiction), license_chapters_note(fiction)].join(' ')
+        body: [license_lead(fiction), (license_chapters_note(fiction) if chapters)].compact.join(' ')
       )
     end
 

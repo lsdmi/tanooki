@@ -6,6 +6,7 @@
 <% read_filter = local_assigns[:read_filter] unless reader_drawer %>
 <% sections = chapter_list_section_index(fiction, order: list_order, viewer: current_user, read_filter:) %>
 <% open_section_key = chapter_list_open_section_key(sections, continue_chapter) unless reader_drawer %>
+<% license_row_section_key = license_hidden_row_section_key(fiction, sections) unless reader_drawer %>
 <% drawer_accordion_opened = false %>
 <% lazy_page_sizes = {} %>
 <% unless reader_drawer %>
@@ -39,14 +40,14 @@ end %>
     <% preload_section = accordion_open || (!reader_drawer && section[:section_key] == open_section_key) %>
     <% section_path = fiction_chapter_section_path(fiction, section[:section_key], order: list_order, filter: read_filter&.value) %>
     <% section_chapter_ids = chapter_list_section_ids(section) %>
-    <div class="accordion <%= accordion_shell %>" <%= tag.attributes(data: { section_key: (section[:section_key] unless reader_drawer) }) %>>
+    <div class="accordion group/accordion <%= accordion_shell %>" <%= tag.attributes(data: { section_key: (section[:section_key] unless reader_drawer) }) %>>
       <div class="accordion-header flex cursor-pointer items-center justify-between gap-2 <%= accordion_head %>"
            role="button"
            tabindex="0"
            aria-expanded="<%= preload_section || accordion_open ? 'true' : 'false' %>"
            data-action="click->chapters-accordion#toggle keydown.enter->chapters-accordion#toggle keydown.space->chapters-accordion#toggle">
         <h3 class="min-w-0 flex-1 truncate text-left <%= reader_drawer ? 'text-sm font-medium' : 'text-sm/5 font-semibold md:text-base/6' %> text-fg">
-          <%= reader_drawer ? reader_drawer_section_title(section) : section[:title] %>
+          <%= reader_drawer ? reader_drawer_section_title(section) : chapter_list_section_title(fiction, section) %>
         </h3>
         <div class="flex shrink-0 items-center <%= reader_drawer ? 'gap-1' : 'gap-2 md:gap-3' %>">
           <% unless reader_drawer %>
@@ -105,6 +106,12 @@ end %>
           </div>
         <% end %>
       </div>
+      <% if license_row_section_key && section[:section_key] == license_row_section_key %>
+        <%# Outside the body, which a jump replaces; still hidden with it while the group is collapsed. %>
+        <div class="bg-main px-3 pb-3 group-has-[>.accordion-content.hidden]/accordion:hidden">
+          <%= render 'fictions/license_hidden_row', fiction: %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>

@@ -18,9 +18,8 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_includes response.body, 'Твір ліцензовано в Україні видавництвом «Видавництво Тест». ' \
-                                   'Опубліковані розділи лишаються доступними, нових на сайті не буде.'
-    assert_select 'a[href=?][target="_blank"][rel="noopener noreferrer"]', STORE_URL, count: 3
+    assert_includes response.body, 'Твір офіційно ліцензовано в Україні видавництвом «Видавництво Тест».'
+    assert_select 'a[href=?][target="_blank"][rel="noopener noreferrer"]', STORE_URL, count: 4
   end
 
   test 'the hero shows the licensed tag instead of the listing state' do
@@ -49,9 +48,18 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select 'aside > section:first-child#official-edition-card' do
-      assert_select 'span', text: 'Видавництво Тест'
+      assert_select 'p', text: '«Видавництво Тест»'
       assert_select 'a[href=?]', STORE_URL, text: I18n.t('fictions.license.card.link')
     end
+  end
+
+  test 'the comments sidebar opens with the official edition card too' do
+    license!
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-panel-comments aside > section:first-child#fiction-comments-official-edition-card' \
+                  '[aria-labelledby="fiction-comments-official-edition-title"]'
   end
 
   test 'the official edition card mentions the preview left on Baka' do

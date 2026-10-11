@@ -29,14 +29,7 @@ module Library
         guest_continue_read_path_value: chapter_path(first_chapter),
         guest_continue_read_label_value: read_label,
         guest_continue_continue_label_value: t('fictions.hero.cta.continue_guest')
-      }.merge(guest_continue_listed_ids(fiction, listed))
-    end
-
-    # After a licence takedown the device record may sit on a hidden chapter, so only listed ids count.
-    def guest_continue_listed_ids(fiction, listed)
-      return {} unless fiction.license_chapters_state == :partial
-
-      { guest_continue_listed_chapter_ids_value: listed.ids }
+      }
     end
   end
 end

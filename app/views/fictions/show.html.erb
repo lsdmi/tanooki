@@ -9,7 +9,7 @@
         <div class="flex flex-col gap-2">
           <% continue_translation = Fictions::ContinueTranslationComponent.new(fiction: @fiction, user: current_user, placement: :notice) %>
           <% notices.each do |notice| %>
-            <%= render Ui::NoticeComponent.new(style: :scrim, **notice.to_h) do |component| %>
+            <%= render Ui::NoticeComponent.new(style: :scrim, action_on_mobile: notice.kind != :licensed, **notice.to_h) do |component| %>
               <% if notice.kind == :dropped && continue_translation.render? %>
                 <% component.with_action { render continue_translation } %>
               <% elsif notice.kind == :licensed && @fiction.license_url.present? %>
@@ -52,6 +52,7 @@
             <p class="py-6 text-center text-sm text-fg-muted"><%= t('fictions.comments.loading') %></p>
           <% end %>
           <aside class="hidden min-w-0 flex-col gap-6 lg:flex">
+            <%= render 'official_edition_card', fiction: @fiction, id: 'fiction-comments-official-edition' if @fiction.licensed? %>
             <%= render Fictions::RatingCardComponent.new(fiction: @fiction, user: current_user, heading_id: 'fiction-comments-rating-title') %>
             <%= render Fictions::SupportCardComponent.new(fiction: @fiction, heading_id: 'fiction-comments-support-title') %>
             <%= render 'comment_rules' %>

@@ -58,6 +58,14 @@ module Ui
       assert_selector 'div', text: 'Видавництво «А»'
     end
 
+    test 'can drop the action on mobile' do
+      render_inline(NoticeComponent.new(kind: :licensed, title: 'Ліцензія', action_on_mobile: false)) do |notice|
+        notice.with_action { '<a href="/official">Офіційне видання</a>'.html_safe }
+      end
+
+      assert_selector 'div.max-md\\:hidden a[href="/official"]'
+    end
+
     test 'omits the body when none is given' do
       render_inline(NoticeComponent.new(kind: :finished, title: 'Переклад завершено'))
 

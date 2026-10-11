@@ -33,12 +33,12 @@
       <ul class="<%= STATS_CELL %>">
         <li class="<%= STAT %>">
           <%= stroke_icon(:star, RATING_ICON) %>
-          <%= rating_text %>
+          <span class="<%= STAT_TEXT %>"><%= rating_text %></span>
         </li>
         <% stats.each do |icon_name, text| %>
           <li class="<%= STAT %>">
             <%= stroke_icon(icon_name, STAT_ICON) %>
-            <%= text %>
+            <span class="<%= STAT_TEXT %>"><%= text %></span>
           </li>
         <% end %>
         <% if origin_language %>

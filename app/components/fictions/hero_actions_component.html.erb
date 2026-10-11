@@ -9,7 +9,7 @@
       <% end %>
     <% end %>
 
-    <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: official_edition_label, variant: :licensed, html: { class: 'w-full md:w-auto' }) %>
+    <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: official_edition_label, variant: :licensed, icon_first: true, html: { class: 'w-full md:w-auto' }) %>
 
     <% if guest? %>
       <%= render Ui::ButtonComponent.new(label: t('fictions.hero.library.add'), variant: :on_media, as: :link,
@@ -47,7 +47,12 @@
     <% end %>
   </div>
 
-  <% if (line = progress_line) %>
+  <% if stopped_past_license? %>
+    <p class="text-xs/5 text-fg-secondary">
+      <span class="md:hidden"><%= licensed_progress_line(short: true) %></span>
+      <span class="max-md:hidden"><%= licensed_progress_line %></span>
+    </p>
+  <% elsif (line = reading_progress_line) %>
     <p class="text-xs/5 text-fg-secondary"><%= line %></p>
   <% end %>
 <% end %>

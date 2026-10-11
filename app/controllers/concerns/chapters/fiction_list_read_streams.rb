@@ -42,9 +42,13 @@ module Chapters
         turbo_stream.replace("chapter_group_progress_#{section[:section_key]}",
                              partial: 'fictions/chapter_group_progress', locals:)
       end
+      groups << list_progress_stream(listed, progress)
+    end
+
+    def list_progress_stream(listed, progress)
       total = Library::ChapterCatalog.chapters_size(fiction, viewer: current_user)
-      groups << turbo_stream.replace('chapter_list_progress', partial: 'fictions/chapter_list_progress',
-                                                              locals: { listed:, total:, list_progress: progress })
+      locals = { fiction:, listed:, total:, list_progress: progress }
+      turbo_stream.replace('chapter_list_progress', partial: 'fictions/chapter_list_progress', locals:)
     end
 
     def continue_chip_stream(continue_chapter)

@@ -40,8 +40,42 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select '#license-hidden-bar', text: /Розділи 7–8 приховані через офіційну ліцензію/
-    assert_select '#license-hidden-range', text: /Розділи 7–8 · приховано \(ліцензія\), не видалено\s+2/
+    assert_select '.accordion #license-hidden-range', text: /Розділи 7–8 · приховано\s*\(ліцензія\)\s+2/
     assert_select '#chapters-list a[href=?]', chapter_path(@hidden), count: 0
+  end
+
+  test 'the chapters tab header and jump field name the preview range' do
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-panel-chapters p', text: 'Ознайомчий фрагмент: розділи 1–6'
+    assert_select '#chapter_list_progress', text: /решта приховані через ліцензію/
+    assert_select '#chapter-jump-input[placeholder=?]', 'Перейти до розділу (1–6)…'
+  end
+
+  test 'the preview group is titled as the preview' do
+    get fiction_url(@fiction)
+
+    assert_select '.accordion-header h3', text: 'Ознайомчий фрагмент · Розділи 1–6'
+  end
+
+  test 'a reader past the preview gets the official edition as the only read button' do
+    reading_progresses(:one).update!(chapter: @hidden, resume_at: Time.current, status: :active)
+    sign_in users(:user_one)
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-hero-actions a[href=?]', STORE_URL, text: /#{I18n.t('fictions.license.read_official')}/
+    assert_select '#fiction-hero-actions a[href^="/chapters/"]', count: 0
+  end
+
+  test 'a reader inside the preview also reads on from the official edition in the hero' do
+    reading_progresses(:one).update!(chapter: chapters(:one), resume_at: Time.current, status: :active)
+    sign_in users(:user_one)
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-hero-actions a[href=?]', STORE_URL, text: /#{I18n.t('fictions.license.read_official')}/
+    assert_select '#fiction-hero-actions a[href^="/chapters/"]', count: 0
   end
 
   test 'jumping to a hidden chapter says it is hidden' do
@@ -50,11 +84,11 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     assert_equal 'Розділ 7 приховано через ліцензію', response.parsed_body['error']
   end
 
-  test 'the hero counts the available chapters and the notice names the preview' do
+  test 'the hero counts the available chapters and the notice leaves the preview to the tab' do
     get fiction_url(@fiction)
 
     assert_includes response.body, '6 з 8 розділів доступно'
-    assert_includes response.body, 'Розділи 1–6 доступні як ознайомчий фрагмент, решта приховані.'
+    assert_not_includes response.body, 'доступні як ознайомчий фрагмент'
   end
 
   test 'a reader past the preview sees where they stopped before the license' do
@@ -67,13 +101,10 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     assert_select 'a[href^=?]', chapter_path(@hidden), count: 0
   end
 
-  test 'guests only continue into a listed chapter' do
+  test 'guests get no guest continue button on a licensed work' do
     get fiction_url(@fiction)
 
-    attribute = 'data-guest-continue-listed-chapter-ids-value'
-    ids = JSON.parse(css_select("[#{attribute}]").sole[attribute])
-
-    assert_equal @fiction.license_readable_chapter_ids.sort, ids.sort
+    assert_select '[data-controller~="guest-continue"]', count: 0
   end
 
   test 'after the admin takedown the page opens on About with the removed state' do
@@ -104,7 +135,6 @@ class FictionsLicenseTakedownTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select '#license-removed', text: /#{I18n.t('fictions.license.removed.body_unreleased')}/
-    assert_includes response.body, I18n.t('fictions.notice_zone.licensed.unreleased')
     assert_not_includes response.body, 'на прохання правовласника'
   end
 

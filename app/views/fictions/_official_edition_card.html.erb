@@ -1,15 +1,17 @@
-<section class="<%= Fictions::AboutCardStyles::HONORS_CARD %>" id="official-edition-card" aria-labelledby="official-edition-title">
-  <h2 id="official-edition-title" class="<%= Fictions::AboutCardStyles::SMALL_TITLE %> flex items-center gap-2">
-    <span class="text-status-licensed-solid"><%= stroke_icon(:lock, 'size-5 shrink-0') %></span>
-    <%= t('fictions.license.card.title') %>
-  </h2>
-  <% if fiction.license_publisher %>
-    <div class="flex flex-col">
-      <span class="text-xs/5 text-fg-muted"><%= t('fictions.license.card.publisher') %></span>
-      <span class="text-base/6 font-semibold text-fg"><%= fiction.license_publisher %></span>
+<%# locals: (fiction:, id: 'official-edition') %>
+<section class="relative flex flex-col gap-4 rounded-xl bg-main p-5 ring-1 ring-inset ring-status-licensed-subtle-border" id="<%= id %>-card" aria-labelledby="<%= id %>-title">
+  <div class="flex items-center gap-3">
+    <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-status-licensed-subtle-bg text-fg" aria-hidden="true">
+      <%= stroke_icon(:book_open, 'size-5') %>
+    </span>
+    <div class="flex min-w-0 flex-col">
+      <h2 id="<%= id %>-title" class="text-xl/7 font-bold text-fg"><%= t('fictions.license.card.title') %></h2>
+      <% if fiction.license_publisher %>
+        <p class="text-sm/5 text-status-licensed-solid">«<%= fiction.license_publisher %>»</p>
+      <% end %>
     </div>
-  <% end %>
+  </div>
   <p class="text-sm/5 text-fg-secondary"><%= t(fiction.license_readable_count.positive? ? :body_preview : :body, scope: 'fictions.license.card') %></p>
   <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, label: t('fictions.license.card.link'),
-                                                          variant: :licensed, size: :sm, full_width: true) %>
+                                                          variant: :licensed, full_width: true) %>
 </section>

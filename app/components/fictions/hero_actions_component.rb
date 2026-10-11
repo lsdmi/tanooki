@@ -38,8 +38,9 @@ module Fictions
       end
     end
 
+    # A licensed work reads on in the official edition; its preview stays in the Chapters tab (Figma 10114:8901).
     def cta?
-      cta_kind.present?
+      !fiction.licensed? && cta_kind.present?
     end
 
     def cta_href
@@ -65,7 +66,11 @@ module Fictions
       turbo_drive_visit_data(preload: true).deep_merge(data:, class: 'w-full md:w-auto')
     end
 
-    # With nothing left to read here, the official edition is the read button.
+    def stopped_past_license?
+      reading_progress&.chapter&.license_hidden? || false
+    end
+
+    # Without a read button here, the official edition is the read button.
     def official_edition_label
       t('fictions.license.read_official') unless cta?
     end
@@ -103,12 +108,6 @@ module Fictions
     end
 
     # «востаннє» is the last chapter visit; a shelf change also touches updated_at, so it is not a fallback.
-    def progress_line
-      return licensed_progress_line if reading_progress&.chapter&.license_hidden?
-
-      reading_progress_line
-    end
-
     def reading_progress_line
       return unless reading_started? && continue_reading.total.positive?
 
@@ -119,8 +118,9 @@ module Fictions
       t('fictions.hero.progress_with_time', **counts, time: time_ago_in_words(visited_at, locale: :uk))
     end
 
-    def licensed_progress_line
-      t('fictions.hero.progress_licensed', number: chapter_number(reading_progress.chapter))
+    def licensed_progress_line(short: false)
+      t(short ? 'fictions.hero.progress_licensed_short' : 'fictions.hero.progress_licensed',
+        number: chapter_number(reading_progress.chapter))
     end
   end
 end

@@ -8,7 +8,7 @@ import { readRecord } from "guest_reading_store"
 export default class extends Controller {
   static targets = ["link", "label"]
   static values = {
-    fictionId: Number, latestChapterId: Number, listedChapterIds: Array,
+    fictionId: Number, latestChapterId: Number,
     readPath: String, readLabel: String, continueLabel: String
   }
 
@@ -16,8 +16,7 @@ export default class extends Controller {
     const record = await readRecord(this.fictionIdValue)
     if (!this.element.isConnected) return
 
-    const listedChapterIds = this.hasListedChapterIdsValue ? this.listedChapterIdsValue : null
-    const target = continueTarget(record, { latestChapterId: this.latestChapterIdValue, listedChapterIds })
+    const target = continueTarget(record, { latestChapterId: this.latestChapterIdValue })
     this.linkTarget.href = target ? target.path : this.readPathValue
     this.labelTarget.textContent = target ? this.continueLabelValue : this.readLabelValue
   }

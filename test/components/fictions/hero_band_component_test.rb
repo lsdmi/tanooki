@@ -40,11 +40,11 @@ module Fictions
       assert_no_selector "li[title='Мова оригіналу']"
     end
 
-    test 'age tag is rose for 18+' do
+    test 'age tag is rose for 18+ and stays off phones' do
       @fiction.update!(content_rating: :eighteen)
       render_hero
 
-      assert_selector 'span.bg-rose-600', text: '18+'
+      assert_selector 'span.bg-rose-600.max-md\:hidden', text: '18+'
     end
 
     test 'age tag is orange for 16+' do

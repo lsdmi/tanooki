@@ -1,10 +1,10 @@
 <%# locals: fiction: %>
 <% preview = fiction.license_preview %>
 <% title_key = preview.hidden_count == 1 ? :title_one : :title %>
-<%= render Ui::NoticeComponent.new(kind: :licensed, style: :light, html: { id: 'license-hidden-bar' },
-                                   title: t("fictions.license.hidden_bar.#{title_key}", range: preview.hidden_range),
-                                   body: t('fictions.license.hidden_bar.body')) do |notice| %>
-  <% if fiction.license_url.present? %>
-    <% notice.with_action { render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, size: :sm) } %>
-  <% end %>
-<% end %>
+<div id="license-hidden-bar" role="note" class="flex flex-col gap-3 rounded-xl border border-status-licensed-subtle-border bg-status-licensed-subtle-bg p-4 md:flex-row md:items-center md:gap-4">
+  <div class="flex min-w-0 flex-1 flex-col gap-1">
+    <p class="text-sm/5 font-semibold text-fg"><%= t("fictions.license.hidden_bar.#{title_key}", range: preview.hidden_range) %></p>
+    <p class="text-xs/5 text-fg-secondary"><%= t('fictions.license.hidden_bar.body') %></p>
+  </div>
+  <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, icon_first: true, html: { class: 'w-full md:w-auto md:shrink-0' }) %>
+</div>

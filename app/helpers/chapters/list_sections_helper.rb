@@ -9,6 +9,36 @@ module Chapters
       read_filter ? read_filter.sections(sections, listed) : sections
     end
 
+    # A licensed work lists only its preview, so the group says so: «Том 1 · Ознайомчий фрагмент · Розділи 1–6».
+    # Phones drop the label to keep the range in view; the list header above already names the preview.
+    def chapter_list_section_title(fiction, section)
+      return section[:title] unless fiction.license_chapters_state == :partial
+
+      *head, range = section[:title].split(' · ')
+      label = tag.span("#{t('fictions.chapters_tab.license_preview.group')} · ", class: 'max-md:hidden')
+      safe_join([*head.map { |part| "#{part} · " }, label, range])
+    end
+
+    # The hidden range follows the last preview chapter, so its row closes that chapter's group.
+    def license_hidden_row_section_key(fiction, sections)
+      return unless fiction.license_chapters_state == :partial
+
+      last_id = fiction.license_preview.chapter_ids.last
+      sections.find { |section| chapter_list_section_ids(section).include?(last_id) }&.fetch(:section_key)
+    end
+
+    def license_preview_list_title(fiction)
+      preview = fiction.license_preview
+      key = preview.available_count == 1 ? :title_one : :title
+      t(key, scope: 'fictions.chapters_tab.license_preview', range: preview.available_range)
+    end
+
+    def chapter_jump_placeholder(fiction, license_partial)
+      return t('fictions.chapters_tab.jump.placeholder') unless license_partial
+
+      t('fictions.chapters_tab.jump.placeholder_range', range: fiction.license_preview.available_range)
+    end
+
     def fiction_chapter_section_path(fiction, section_key, order:, filter: nil)
       chapter_section_fiction_path(fiction, section: section_key, order:, filter:)
     end

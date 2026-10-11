@@ -32,7 +32,8 @@ module Fictions
     COVER_PLACEHOLDER = 'aspect-[74/105] w-full rounded-lg bg-surface-strong md:rounded-xl'
 
     TAGS_CELL = 'col-start-2 row-start-1 flex flex-wrap items-center gap-2 self-start'
-    AGE_TAG = 'inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm/5 font-medium text-white'
+    # Desktop only: on phones the tags must stay one line, so the stats beside the cover end above its bottom edge.
+    AGE_TAG = 'inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm/5 font-medium text-white max-md:hidden'
     # Danger / warning hues, as on the site's other rating tags. Not the status tokens: their warning and dark-mode
     # shades are too light for white text.
     AGE_TAG_TONES = {
@@ -52,6 +53,8 @@ module Fictions
       'md:row-start-3 md:mt-4 md:flex-row md:flex-wrap md:gap-x-5 md:gap-y-2'
     ].join(' ').freeze
     STAT = 'flex items-center gap-1 text-sm/5 font-medium text-fg'
+    # One line beside the cover on phones: a stat too long for the column ends at its last whole word.
+    STAT_TEXT = 'line-clamp-1 min-w-0'
     STAT_ICON = 'size-4 shrink-0 text-fg-muted'
     RATING_ICON = 'size-4 shrink-0 text-amber-500'
 
