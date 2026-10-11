@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SolidQueue
-  # Hourly cleanup: unblock stale EPUB exports, retry safe recent failures, purge old dead jobs.
+  # Every 2 hours: report new failures, unblock stale EPUB exports, retry safe recent failures, purge old dead jobs.
   class TriageFailedJobsJob < ApplicationJob
     RETRYABLE_JOB_CLASSES = %w[
       Books::GenerateEpubJob
@@ -16,6 +16,7 @@ module SolidQueue
     PURGE_AFTER = 14.days
 
     def perform
+      alert_new_failures
       fail_epub_exports_with_failed_jobs
       fail_stale_epub_exports
       retry_recent_failures
@@ -23,6 +24,13 @@ module SolidQueue
     end
 
     private
+
+    # A Telegram outage must not stop the cleanup below.
+    def alert_new_failures
+      Ops::FailedJobsAlert.call
+    rescue StandardError => e
+      Rails.error.report(e, handled: true)
+    end
 
     def fail_epub_exports_with_failed_jobs
       EpubExportRequest.processing.find_each(&:sync_with_job_status!)

@@ -881,8 +881,11 @@ const initializeTinymce = () => {
     block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Blockquote=blockquote',
     // The default preview copies the editor canvas color. On a dark theme that paints each row black.
     preview_styles: 'font-size font-weight font-style text-decoration color',
-    // Chapter and publication editors share this toolbar. Font, size, line-height, color, indent, and justify stay off it.
-    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | blocks | bold italic underline strikethrough explanation | link tooltip | readeralign | removeformat | image media | hr | searchreplace wordcount`,
+    // Chapter and publication editors share this toolbar. Font, size, line-height, color, and justify stay off it.
+    // Indent stays: authors set flashbacks and letters apart with it.
+    toolbar: `${textarea.dataset.markdownImportUrl ? 'markdownimport | ' : ''}undo redo | blocks | bold italic underline strikethrough explanation | link tooltip | readeralign outdent indent | removeformat | image media | hr | searchreplace wordcount`,
+    // Scales with the reader's font size; the 40px default eats a phone screen after two steps.
+    indentation: '2em',
     media_alt_source: false,
     media_poster: false,
     media_url_resolver: (data) => {

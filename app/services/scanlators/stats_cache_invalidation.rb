@@ -12,7 +12,9 @@ module Scanlators
     end
 
     def self.for_fiction(fiction)
-      for_scanlator_ids(fiction.scanlator_ids)
+      return if fiction.nil?
+
+      for_scanlator_ids(fiction.scanlators.ids)
     end
   end
 end

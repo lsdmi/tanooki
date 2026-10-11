@@ -11,4 +11,9 @@ namespace :fictions do
   task duplicates: :environment do
     puts Fictions::DuplicateGroups.new.to_tsv
   end
+
+  desc 'Merge a duplicate fiction into another. DRY_RUN=1 prints row counts and writes nothing'
+  task :merge, %i[source_slug target_slug] => :environment do |_task, args|
+    puts Fictions::Merge.call(**Fictions::Merge::Arguments.for(args))
+  end
 end

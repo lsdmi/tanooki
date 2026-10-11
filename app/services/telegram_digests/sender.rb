@@ -9,23 +9,24 @@ module TelegramDigests
     DEFAULT_CHAT_ID = '@bakaInUa'
     ATTEMPTS = 5
 
-    def self.call(text)
-      new(text).call
+    def self.call(text, chat_id: self.chat_id)
+      new(text, chat_id:).call
     end
 
     def self.chat_id
       ENV.fetch('TELEGRAM_CHAT_ID', DEFAULT_CHAT_ID)
     end
 
-    def initialize(text)
+    def initialize(text, chat_id: self.class.chat_id)
       @text = text
+      @chat_id = chat_id
     end
 
     def call
       attempt = 0
       begin
         attempt += 1
-        TelegramBot.client.api.send_message(chat_id: self.class.chat_id, text: @text, parse_mode: 'HTML')
+        TelegramBot.client.api.send_message(chat_id: @chat_id, text: @text, parse_mode: 'HTML')
       rescue Telegram::Bot::Exceptions::ResponseError
         raise if attempt >= ATTEMPTS
 

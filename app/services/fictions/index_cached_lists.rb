@@ -7,6 +7,13 @@ module Fictions
       base.extend ClassMethods
     end
 
+    def self.expire!
+      Rails.cache.delete(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY)
+      Rails.cache.delete('recent_fiction_ids')
+      Rails.cache.delete(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY)
+      Rails.cache.delete(['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS])
+    end
+
     # Class methods mixed into IndexVariablesManager.
     module ClassMethods
       def popular_novelty

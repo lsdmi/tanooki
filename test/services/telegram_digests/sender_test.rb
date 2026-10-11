@@ -17,5 +17,15 @@ module TelegramDigests
 
       assert_equal '@bakaTgTest', Sender.chat_id
     end
+
+    test 'sends to the chat it is given' do
+      sent = []
+      api = Object.new
+      api.define_singleton_method(:send_message) { |**params| sent << params }
+
+      TelegramBot.stub(:client, Struct.new(:api).new(api)) { Sender.call('<b>hi</b>', chat_id: '@ops') }
+
+      assert_equal [{ chat_id: '@ops', text: '<b>hi</b>', parse_mode: 'HTML' }], sent
+    end
   end
 end
