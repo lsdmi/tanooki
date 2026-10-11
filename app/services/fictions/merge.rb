@@ -70,10 +70,17 @@ module Fictions
 
     def publish!
       fiction = @target.reload
+      expire_fiction_counters(fiction)
       ClaimCleanSlug.new(fiction).call
+      expire_fiction_counters(fiction)
       reindex(fiction)
       IndexCachedLists.expire!
       Scanlators::StatsCacheInvalidation.for_scanlator_ids(fiction.scanlators.ids)
+    end
+
+    def expire_fiction_counters(fiction)
+      Rails.cache.delete("fiction-#{fiction.slug}-stats")
+      Rails.cache.delete("fiction-#{fiction.slug}-ranks")
     end
 
     def reindex(fiction)

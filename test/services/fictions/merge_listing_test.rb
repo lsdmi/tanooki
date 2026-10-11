@@ -86,6 +86,15 @@ module Fictions
       assert_equal 'Вже є', @target.reload.alternative_title
     end
 
+    test 'expires the bookmark counter cache' do
+      key = "fiction-#{@target.slug}-stats"
+      Rails.cache.write(key, [1])
+
+      Merge.call(source: @source, target: @target, admin: @admin)
+
+      assert_nil Rails.cache.read(key)
+    end
+
     test 'expires the fiction index caches' do
       latest = IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY
       reads = ['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS]
