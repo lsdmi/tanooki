@@ -1,0 +1,44 @@
+<section class="mx-auto max-w-3xl px-4 py-10">
+  <h1 class="text-2xl font-bold text-fg"><%= t('admin.fiction_duplicates.title') %></h1>
+  <p class="mt-2 text-sm/6 text-fg-muted"><%= t('admin.fiction_duplicates.intro') %></p>
+
+  <% if @groups.empty? %>
+    <p class="mt-8 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm/5 text-fg-muted"><%= t('admin.fiction_duplicates.empty') %></p>
+  <% else %>
+    <div class="mt-8 flex flex-col gap-6">
+      <% @groups.each do |rows, target| %>
+        <article class="rounded-xl border border-line bg-main p-4">
+          <h2 class="text-base/6 font-semibold text-fg"><%= rows.map(&:title).uniq.join(' · ') %></h2>
+          <ul class="mt-3 flex flex-col gap-3">
+            <% rows.each do |row| %>
+              <li class="rounded-lg bg-surface px-3 py-3">
+                <%= link_to row.title, fiction_path(row.fiction), class: 'font-medium text-fg underline-offset-2 hover:underline' %>
+                <% if row.english_title.present? && row.english_title != row.title %>
+                  <p class="text-sm/5 text-fg-muted"><%= row.english_title %></p>
+                <% end %>
+                <p class="text-sm/5 text-fg-muted">
+                  <%= [row.author.presence, row.teams.presence, row.listing_state_label].compact.join(' · ') %>
+                </p>
+                <p class="text-sm/5 text-fg-muted"><%= t('admin.fiction_duplicates.stats', chapters: row.chapters, readers: row.readers) %></p>
+                <% if row.fiction.id == target.id %>
+                  <p class="mt-1 text-sm/5 font-semibold text-fg-brand"><%= t('admin.fiction_duplicates.survives') %></p>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <%= button_to t('admin.fiction_duplicates.merge'),
+                          merge_admin_fiction_duplicates_path,
+                          params: { fiction_ids: rows.map { |row| row.fiction.id } },
+                          form: { data: { turbo_confirm: t('admin.fiction_duplicates.confirm', title: target.title) } },
+                          class: 'inline-flex items-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+            <%= button_to t('admin.fiction_duplicates.dismiss'),
+                          dismiss_admin_fiction_duplicates_path,
+                          params: { fiction_ids: rows.map { |row| row.fiction.id } },
+                          class: 'inline-flex items-center rounded-lg bg-main px-4 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+</section>

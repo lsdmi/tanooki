@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_10_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_11_210000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -197,6 +197,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_140000) do
     t.float "seconds", null: false
     t.bigint "source_bytes", null: false
     t.bigint "user_id"
+  end
+
+  create_table "fiction_duplicate_dismissals", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "fiction_id", null: false
+    t.bigint "other_fiction_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["fiction_id", "other_fiction_id"], name: "index_fiction_duplicate_dismissals_on_pair", unique: true
+    t.index ["fiction_id"], name: "index_fiction_duplicate_dismissals_on_fiction_id"
+    t.index ["other_fiction_id"], name: "index_fiction_duplicate_dismissals_on_other_fiction_id"
+    t.index ["user_id"], name: "index_fiction_duplicate_dismissals_on_user_id"
+    t.check_constraint "`fiction_id` < `other_fiction_id`", name: "fiction_duplicate_dismissals_ordered_pair"
   end
 
   create_table "fiction_genres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -773,6 +786,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_140000) do
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
   add_foreign_key "epub_export_requests", "users"
+  add_foreign_key "fiction_duplicate_dismissals", "fictions", column: "other_fiction_id", on_delete: :cascade
+  add_foreign_key "fiction_duplicate_dismissals", "fictions", on_delete: :cascade
+  add_foreign_key "fiction_duplicate_dismissals", "users", on_delete: :nullify
   add_foreign_key "fiction_genres", "fictions"
   add_foreign_key "fiction_genres", "genres"
   add_foreign_key "fiction_ratings", "fictions"

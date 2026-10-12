@@ -39,6 +39,28 @@ module Fictions
       assert_not_includes slugs, 'blank-b'
     end
 
+    test 'a dismissed pair does not come back' do
+      left = listed('gone-pair-a', title: 'Shared Novel')
+      right = listed('gone-pair-b', title: 'Shared Novel')
+      FictionDuplicateDismissal.dismiss([left, right], user: users(:user_one))
+
+      slugs = DuplicateGroups.new.call.flatten.map(&:slug)
+
+      assert_not_includes slugs, 'gone-pair-a'
+      assert_not_includes slugs, 'gone-pair-b'
+    end
+
+    test 'a dismissed pair drops out while the rest of a chain stays' do
+      listed('chain-keep-a', title: 'Alpha Tale')
+      second = listed('chain-keep-b', title: 'Beta Tale', english_title: 'Alpha Tale')
+      third = listed('chain-keep-c', title: 'Gamma Tale', alternative_title: 'beta tale')
+      FictionDuplicateDismissal.dismiss([second, third], user: users(:user_one))
+
+      group = DuplicateGroups.new.call.find { |rows| rows.map(&:slug).include?('chain-keep-a') }
+
+      assert_equal %w[chain-keep-a chain-keep-b], group.map(&:slug).sort
+    end
+
     test 'skips a soft-deleted fiction' do
       listed('gone-a', title: 'Shared Novel')
       gone = listed('gone-b', title: 'Shared Novel')

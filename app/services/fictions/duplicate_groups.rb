@@ -3,16 +3,17 @@
 module Fictions
   # Groups catalog fictions that share a normalized title, alternative title, or English title.
   # "Live" here is every fiction that is not soft-deleted: finished, stale, and announced
-  # works still show up as duplicates. Blank fields and a fiction matching only itself are ignored.
+  # works still show up as duplicates. Blank fields, a fiction matching only itself, and pairs
+  # an admin marked as different works are ignored.
   class DuplicateGroups
     TITLE_FIELDS = %i[title alternative_title english_title].freeze
     HEADER = %w[group slug title alternative_title english_title teams author chapters readers created].freeze
 
     # One fiction inside a duplicate group, with the fields the report prints.
     class Row
-      attr_reader :readers
+      attr_reader :fiction, :readers
 
-      delegate :slug, to: :fiction
+      delegate :slug, :listing_state_label, to: :fiction
 
       def initialize(fiction, readers)
         @fiction = fiction
@@ -30,10 +31,6 @@ module Fictions
       def tsv_fields
         [slug, title, alternative_title, english_title, teams, author, chapters, readers, created_on]
       end
-
-      private
-
-      attr_reader :fiction
     end
 
     # Disjoint-set so a title match chains into one group.
@@ -71,9 +68,18 @@ module Fictions
       value.to_s.downcase.gsub(/[^\p{L}\p{Nd}]/, '')
     end
 
+    # The group whose fiction ids are exactly `ids`, or nil when that group is gone.
+    def self.find(ids)
+      wanted = Array(ids).map(&:to_i).uniq.sort
+      return if wanted.size < 2
+
+      new.call.find { |rows| rows.map { |row| row.fiction.id }.sort == wanted }
+    end
+
     def call
       fictions = Fiction.includes(:scanlators).to_a
       readers = ReadingProgress.where(fiction_id: fictions.map(&:id)).group(:fiction_id).count
+      @dismissed = FictionDuplicateDismissal.pairs
       group_fictions(fictions).map { |group| rows_for(group, readers) }.sort_by { |rows| group_sort_key(rows) }
     end
 
@@ -100,9 +106,17 @@ module Fictions
     end
 
     def link_bucket(union_find, ids)
-      return if ids.size < 2
+      ids.uniq.combination(2) { |pair| link_pair(union_find, pair) }
+    end
 
-      ids.drop(1).each { |id| union_find.union(ids.first, id) }
+    def link_pair(union_find, pair)
+      return if dismissed_pair?(pair)
+
+      union_find.union(*pair)
+    end
+
+    def dismissed_pair?(pair)
+      @dismissed.include?(pair.minmax)
     end
 
     def keys_for(fiction)
