@@ -1,0 +1,32 @@
+<li id="reading-progress-<%= reading.id %>" class="<%= ROW %>" data-library-entry-state="<%= state %>">
+  <div class="<%= COVER_CELL %>">
+    <%= helpers.cover_card_picture_tag(fiction.cover, alt: '', class: COVER, loading: 'lazy', data: cover_data) %>
+  </div>
+
+  <div class="<%= INFO_CELL %>">
+    <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: TITLE_LINK) %>
+    <p class="<%= META %>"><%= meta %></p>
+    <%= render bar %>
+  </div>
+
+  <div class="<%= ACTION_CELL %>">
+    <% case action %>
+    <% when :official %>
+      <%= render Fictions::OfficialEditionButtonComponent.new(fiction:, variant: :licensed, size: :md) %>
+    <% when :continue %>
+      <%= render Ui::ButtonComponent.new(label: t('library.entry.continue'), size: :md, as: :link, href: continue_href, html: continue_html) do %>
+        <span><%= t('library.entry.continue') %></span>
+        <%= stroke_icon(:arrow_right) %>
+      <% end %>
+    <% when :start %>
+      <%= render Ui::ButtonComponent.new(label: t('library.entry.start'), variant: :outline, size: :md, as: :link, href: continue_href, html: continue_html) %>
+    <% else %>
+      <%= render Ui::ButtonComponent.new(label: t('library.entry.chapters'), variant: :outline, size: :md, as: :link,
+                                         href: fiction_path(fiction, anchor: 'chapters'), html: turbo_drive_visit_data) %>
+    <% end %>
+  </div>
+
+  <div class="<%= MENU_CELL %>">
+    <%= render Library::ShelfMenuComponent.new(reading:, section:) %>
+  </div>
+</li>

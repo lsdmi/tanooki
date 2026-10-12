@@ -99,6 +99,7 @@ Rails.application.routes.draw do
       post :record_progress
     end
     resource :read, only: %i[create destroy], module: :chapters
+    resources :thanks, only: :create, controller: 'chapter_thanks'
   end
   resources :chapter_images, only: :create
   resources :chapter_markdown_imports, only: :create, controller: 'chapters/markdown_imports'

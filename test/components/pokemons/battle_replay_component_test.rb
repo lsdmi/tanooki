@@ -24,6 +24,13 @@ module Pokemons
       assert_selector 'h3', text: 'Бій завершено!'
     end
 
+    test 'folded, the rounds wait for the panel to unfold and the result stays' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle, folded: true))
+
+      assert_selector 'ol[hidden][data-panel-fold-target=open]', visible: :all
+      assert_selector 'h3', text: 'Бій завершено!'
+    end
+
     test 'marks the Pokémon that fainted in each round' do
       battle = fought_battle
 

@@ -3,21 +3,27 @@
 module Pokemons
   # The battle log rendered from a PokemonBattle's stored events: one card per round (the Pokémon that fainted dimmed
   # and marked), then the result. Species come from the stored teams, so a Pokémon that evolved later still shows as
-  # it fought. A legacy battle has no events: a note and the result only.
+  # it fought. A legacy battle has no events: a note and the result only. +folded+ hides the rounds until the panel-fold
+  # around it unfolds them; the result stays.
   class BattleReplayComponent < ViewComponent::Base
     include SpriteHelper
 
     Round = Data.define(:number, :attacker, :defender, :victory)
     SPRITE_RING = 'flex size-10 shrink-0 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line'
 
-    def initialize(battle:)
+    def initialize(battle:, folded: false)
       super()
       @battle = battle
+      @folded = folded
     end
 
     private
 
-    attr_reader :battle
+    attr_reader :battle, :folded
+
+    def rounds_attributes
+      folded ? { hidden: true, data: PanelComponent.open_target } : {}
+    end
 
     def rounds
       @rounds ||= battle.events_of(:round_started).zip(battle.events_of(:fainted)).map.with_index(1) do |events, number|

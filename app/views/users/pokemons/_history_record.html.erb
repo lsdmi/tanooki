@@ -12,5 +12,5 @@
     <p class="text-center text-sm/5 text-fg-muted"><%= t('pokemons.battle.unranked') %></p>
   <% end %>
 
-  <%= render Pokemons::BattleReplayComponent.new(battle:) %>
+  <%= render Pokemons::BattleReplayComponent.new(battle:, folded: true) %>
 </div>

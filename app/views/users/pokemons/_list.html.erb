@@ -1,11 +1,36 @@
-<%= render Pokemons::PanelComponent.new(title: 'Мої покемони', subtitle: ("У колекції: #{pokemons.size}" if pokemons.any?)) do %>
+<% fold = Pokemons::PanelComponent %>
+<%# Folded, the party is a fanned stack (the selected Pokémon on top); its tiles share view-transition names with the grid, so they fly into place. %>
+<% stack = [selected_pokemon, *pokemons].compact.uniq.first(5) %>
+<% fan = %w[-rotate-6 -rotate-3 rotate-0 rotate-3 rotate-6][(5 - stack.size) / 2, stack.size] %>
+<%= render fold.new(title: 'Мої покемони', subtitle: ("У колекції: #{pokemons.size}" if pokemons.any?), fold: 'party',
+                         html: { class: 'lg:only:col-span-full' }) do %>
   <% if pokemons.any? %>
-    <ul class="grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))]" data-controller="pokemon-image-click">
+    <%= tag.button type: 'button', data: { panel_fold_target: 'toggle closed', action: 'panel-fold#toggle' }, aria: { expanded: false },
+                   class: 'group/stack -m-1 flex items-center gap-4 self-start rounded-xl p-1 pr-3 text-left transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+      <span class="flex items-center pl-4">
+        <% stack.each_with_index do |user_pokemon, index| %>
+          <%= tag.span class: "#{fan[index]} -ml-4 flex size-12 shrink-0 items-center justify-center rounded-xl bg-surface shadow-sm ring-1 ring-inset ring-line transition-[margin,rotate] duration-300 group-hover/stack:-ml-2 group-hover/stack:rotate-0 motion-reduce:transition-none sm:size-14 xl:size-16",
+                       style: "view-transition-name: pokemon-tile-#{user_pokemon.id}; z-index: #{stack.size - index}" do %>
+            <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain') %>
+          <% end %>
+        <% end %>
+      </span>
+      <span class="flex flex-col">
+        <span class="text-sm/5 font-semibold text-fg-brand">Розкласти всіх</span>
+        <% if pokemons.size > stack.size %>
+          <span class="text-xs/4 text-fg-muted">і ще <%= pokemons.size - stack.size %> у колекції</span>
+        <% end %>
+      </span>
+    <% end %>
+
+    <%= tag.ul class: 'grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))]',
+               hidden: true, data: { controller: 'pokemon-image-click', **fold.open_target } do %>
       <% pokemons.each do |user_pokemon| %>
         <li>
           <%= button_to pokemon_details_path(pokemon_id: user_pokemon),
                 aria: { pressed: selected_pokemon&.id == user_pokemon.id, label: user_pokemon.pokemon.name },
                 title: user_pokemon.pokemon.name,
+                style: ("view-transition-name: pokemon-tile-#{user_pokemon.id}" if stack.include?(user_pokemon)),
                 data: { turbo_stream: "", "turbo-method": :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' },
                 class: 'group flex aspect-square w-full items-center justify-center rounded-lg bg-surface ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:bg-brand-subtle aria-pressed:ring-2 aria-pressed:ring-brand' do %>
             <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110') %>
@@ -15,7 +40,7 @@
       <li class="flex aspect-square items-center justify-center rounded-lg border border-dashed border-line-strong" title="Ловіть більше покемонів на сторінках сайту">
         <%= image_tag 'pokeball.webp', alt: 'Ловіть більше покемонів на сторінках сайту', class: 'size-2/3 object-contain opacity-40' %>
       </li>
-    </ul>
+    <% end %>
   <% else %>
     <%= render 'users/pokemons/empty', message: t('pokemons.party.empty') %>
   <% end %>

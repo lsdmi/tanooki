@@ -4,7 +4,8 @@
 <% record = { 'Бойовий досвід' => experience_to_sentence(selected_pokemon.battle_experience),
               'Вік' => time_ago_in_words(selected_pokemon.created_at),
               'Норов' => selected_pokemon.character_label } %>
-<%= render Pokemons::PanelComponent.new(title: "##{pokemon.dex_id} #{selected_pokemon.pokemon_name}", id: 'pokemon-details') do |panel| %>
+<% open = Pokemons::PanelComponent.open_target %>
+<%= render Pokemons::PanelComponent.new(title: "##{pokemon.dex_id} #{selected_pokemon.pokemon_name}", id: 'pokemon-details', fold: 'details') do |panel| %>
   <% panel.with_action do %>
     <% if training_cooldown?(current_user) %>
       <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-surface px-2.5 py-1 text-xs/4 font-medium text-fg-muted ring-1 ring-inset ring-line">
@@ -22,7 +23,7 @@
   <% end %>
 
   <div class="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-    <div class="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
+    <div class="col-span-full flex flex-col gap-4 group-data-open/fold:lg:col-span-1">
       <div class="flex items-center gap-4">
         <div class="flex size-20 shrink-0 items-center justify-center rounded-xl bg-surface ring-1 ring-inset ring-line">
           <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'size-18 object-contain') %>
@@ -38,7 +39,7 @@
       <% if evolution %>
         <% descendant = evolution.to %>
         <% target = evolution.min_level %>
-        <div class="flex flex-col gap-1">
+        <%= tag.div class: 'flex flex-col gap-1', hidden: true, data: open do %>
           <h3 class="text-xs/4 font-semibold uppercase tracking-wide text-fg-muted">Еволюція</h3>
           <div class="flex items-center gap-3 rounded-lg bg-surface p-3 ring-1 ring-inset ring-line">
             <div class="flex size-14 shrink-0 items-center justify-center rounded-lg bg-main ring-1 ring-inset ring-line">
@@ -56,12 +57,12 @@
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
 
     <% { 'Відомості' => info, 'Облік' => record }.each do |heading, rows| %>
-      <div class="flex flex-col gap-1">
+      <%= tag.div class: 'flex flex-col gap-1', hidden: true, data: open do %>
         <%= tag.h3 heading, class: 'text-xs/4 font-semibold uppercase tracking-wide text-fg-muted' %>
         <dl class="flex flex-col divide-y divide-line-muted">
           <% rows.each do |label, value| %>
@@ -71,7 +72,7 @@
             </div>
           <% end %>
         </dl>
-      </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

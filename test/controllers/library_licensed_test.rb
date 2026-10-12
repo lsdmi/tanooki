@@ -22,14 +22,27 @@ class LibraryLicensedTest < ActionDispatch::IntegrationTest
     assert_select "#reading-progress-#{@reading.id} span", text: 'Ліцензовано', count: 0
   end
 
-  test 'continue on a chapter hidden by a takedown goes to the fiction page' do
+  test 'a reader stopped on a chapter hidden by the licence gets the licensed row' do
     hidden = license_past_the_preview
     @reading.update!(chapter: hidden, resume_at: Time.current)
 
     get library_url(section: :active)
 
-    assert_select "#reading-progress-#{@reading.id} a[href=?]", fiction_path(@fiction), text: /Читати далі/
-    assert_select "#reading-progress-#{@reading.id} a[href^=?]", chapter_path(hidden), count: 0
+    row = "#reading-progress-#{@reading.id}"
+
+    assert_select "#{row} p", text: 'прочитано 7 до ліцензування'
+    assert_select "#{row} a[href=?]", fiction_path(@fiction, anchor: 'chapters'), text: 'Розділи'
+    assert_select "#{row} a[href^=?]", chapter_path(hidden), count: 0
+  end
+
+  test 'the licensed row reads on in the official edition' do
+    @reading.update!(chapter: license_past_the_preview, resume_at: Time.current)
+    @fiction.update!(license_url: 'https://example.com/book')
+
+    get library_url(section: :active)
+
+    assert_select "#reading-progress-#{@reading.id} a[href='https://example.com/book']",
+                  text: I18n.t('fictions.license.official_edition')
   end
 
   private

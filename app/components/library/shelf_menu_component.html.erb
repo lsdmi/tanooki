@@ -1,0 +1,31 @@
+<%= render Ui::BottomSheetComponent.new(title: t('library.shelf_menu.title'), id: "library-shelf-menu-#{reading.id}", align: :end) do |sheet| %>
+  <% sheet.with_trigger do %>
+    <%= render Ui::ButtonComponent.new(label: t('library.shelf_menu.open', title: reading.fiction.title), variant: :ghost, size: :sm, icon_only: true) do %>
+      <%= stroke_icon(:ellipsis_vertical) %>
+    <% end %>
+  <% end %>
+  <p class="px-3 pt-1 pb-1 text-xs/5 text-fg-muted max-md:hidden" aria-hidden="true"><%= t('library.shelf_menu.title') %></p>
+  <% status_filters.each do |label, status| %>
+    <% if status == current_status %>
+      <%= render Ui::MenuItemComponent.new(label:, tone: :selected) do |item| %>
+        <% item.with_icon { stroke_icon(ICONS.fetch(status)) } %>
+      <% end %>
+    <% else %>
+      <%= form_with(**form_options) do %>
+        <%= hidden_field_tag :status, status, id: nil %>
+        <%= hidden_field_tag :current_section, section, id: nil %>
+        <%= render Ui::MenuItemComponent.new(label:, as: :submit) do |item| %>
+          <% item.with_icon { stroke_icon(ICONS.fetch(status)) } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <div class="my-1 h-px bg-line" role="separator"></div>
+  <%= form_with(**form_options, data: { turbo_confirm: remove_confirm }) do %>
+    <%= hidden_field_tag :status, Reading::UpdateStatus::DESTROY_STATUS, id: nil %>
+    <%= hidden_field_tag :current_section, section, id: nil %>
+    <%= render Ui::MenuItemComponent.new(label: t('library.shelf_menu.remove'), as: :submit, tone: :destructive) do |item| %>
+      <% item.with_icon { stroke_icon(:trash) } %>
+    <% end %>
+  <% end %>
+<% end %>

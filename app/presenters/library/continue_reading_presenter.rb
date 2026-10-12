@@ -32,6 +32,11 @@ module Library
       @reading.chapter&.license_hidden? || false
     end
 
+    # Every chapter read here, the ones a licence now hides included: the licensed row measures against all released.
+    def license_read_count
+      read_keys.size
+    end
+
     # Putting a fiction on a shelf creates a progress on the first chapter; it counts as started only once a
     # chapter was opened (resume_at) or read.
     def started?
@@ -51,7 +56,7 @@ module Library
     end
 
     def read_keys
-      Reading::ReadKeys.call(user: @viewer, fiction: @reading.fiction, progress: @reading)
+      @read_keys ||= Reading::ReadKeys.call(user: @viewer, fiction: @reading.fiction, progress: @reading)
     end
   end
 end

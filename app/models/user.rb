@@ -38,6 +38,7 @@ class User < ApplicationRecord
   has_many :bookshelves, dependent: :destroy
   has_many :translation_requests, dependent: :destroy
   has_many :translation_request_votes, dependent: :destroy
+  has_many :chapter_thanks, dependent: :destroy
 
   scope :avatarless, -> { where(avatar_id: nil) }
 

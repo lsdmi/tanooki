@@ -26,5 +26,21 @@ module Pokemons
 
       assert_selector 'section.rounded-xl.lg\:flex-1[data-qa=top]'
     end
+
+    test 'a folded panel wires the fold controller to a chevron named by the heading' do
+      render_inline(PanelComponent.new(title: 'Топ тренерів', fold: 'top'))
+
+      heading_id = page.find('h2', text: 'Топ тренерів')[:id]
+
+      assert_selector "section[data-controller=panel-fold][data-panel-fold-key-value=top][style*='pokemon-top']"
+      assert_selector "button[aria-expanded=false][aria-labelledby='#{heading_id}'][data-action='panel-fold#toggle']"
+    end
+
+    test 'a panel without a fold has no chevron' do
+      render_inline(PanelComponent.new(title: 'Мій виклик'))
+
+      assert_no_selector 'section[data-controller]'
+      assert_no_selector 'button'
+    end
   end
 end

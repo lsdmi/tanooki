@@ -15,26 +15,55 @@ class LibraryController < ApplicationController
     @section = data[:section]
     @history = data[:history]
     @history_presenter = data[:history_presenter]
-    @pagy, @paginated_readings = pagy_array(data[:section_data], limit: 8)
+    paginate_readings(data[:section_data])
     @related_fictions = related_fictions
     @favourite_translators = favourite_translators
   end
 
+  # A move or a removal drops the row from the tab with a toast, so the reader stays on their page. The whole list is
+  # redrawn when the tab empties (for its empty state) or nothing moved.
   def update_status
     reading_progress = current_user.readings.find(params.expect(:id))
-    current_section = params[:current_section]&.to_sym || :active
-    @status_update_result = Reading::UpdateStatus.new(
-      reading_progress, params[:status], current_user
-    ).call
-    refresh_library_list(current_section)
-    render_library_list(current_section)
+    section = current_section_param
+    @status_update_result = update_reading_status(reading_progress)
+    readings = section_readings(section)
+    notice = moved_notice(reading_progress, section)
+    return render_row_removal(reading_progress, notice) if notice && readings.any?
+
+    paginate_readings(readings)
+    render_library_list(section, notice)
   end
 
   private
 
-  def refresh_library_list(section)
-    library_data = Library::SectionDataBuilder.new(current_user, section).call
-    @pagy, @paginated_readings = pagy_array(library_data[:section_data], limit: 8)
+  def paginate_readings(readings)
+    @pagy, @paginated_readings = pagy_array(readings, limit: 8)
+    Library::EntryPreload.call(@paginated_readings, viewer: current_user)
+  end
+
+  def update_reading_status(reading_progress)
+    Reading::UpdateStatus.new(reading_progress, params[:status], current_user).call
+  end
+
+  def section_readings(section)
+    Library::SectionDataBuilder.new(current_user, section).call[:section_data]
+  end
+
+  def current_section_param
+    section = params[:current_section].to_s
+    ReadingProgress.statuses.key?(section) ? section.to_sym : :active
+  end
+
+  def moved_notice(reading_progress, section)
+    return unless @status_update_result.success?
+    return t('library.shelf_menu.removed') if reading_progress.destroyed?
+
+    status = reading_progress.status.to_sym
+    t('library.shelf_menu.moved', shelf: Library::ReadingState.status_label_for(status)) unless status == section
+  end
+
+  def render_row_removal(reading_progress, notice)
+    render turbo_stream: [turbo_stream.remove("reading-progress-#{reading_progress.id}"), *turbo_stream_notice(notice)]
   end
 
   def related_fictions
@@ -57,9 +86,10 @@ class LibraryController < ApplicationController
     params.fetch(:section, :active).to_sym
   end
 
-  def render_library_list(section)
+  def render_library_list(section, notice)
     streams = turbo_stream_list_refresh(library_list_stream(section))
-    streams.concat(invalid_reading_status_notice) if @status_update_result&.failure?
+    streams.concat(turbo_stream_notice(notice)) if notice
+    streams.concat(invalid_reading_status_notice) if @status_update_result.failure?
     render turbo_stream: streams
   end
 

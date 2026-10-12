@@ -15,7 +15,7 @@ module Reading
     end
 
     def call
-      ReadingChapterRead.read_keys(user: @user, fiction: @fiction).merge(legacy_chapter_ids.keys)
+      sparse_keys | legacy_chapter_ids.keys
     end
 
     # Key => id of the first listed translation, for every chapter the legacy snapshot covers.
@@ -31,6 +31,11 @@ module Reading
     end
 
     private
+
+    def sparse_keys
+      Library::RequestMemo.peek(:read_keys, @user.id, @fiction.id) ||
+        ReadingChapterRead.read_keys(user: @user, fiction: @fiction)
+    end
 
     def listed_chapter_ids
       Library::ChapterCatalog.ordered_chapters(@fiction, viewer: @user)

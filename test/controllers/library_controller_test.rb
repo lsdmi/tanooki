@@ -33,7 +33,7 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'a[data-turbo-preload="true"][href*="/chapters/"]', count: 1
-    assert_select 'span', text: 'Читати далі'
+    assert_select 'a[data-turbo-preload="true"]', text: 'Почати читати'
   end
 
   test 'accidental latest open still offers continue reading at that chapter' do
@@ -44,7 +44,7 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
     get library_url(section: :active)
 
     assert_select "#reading-progress-#{reading_progresses(:one).id} a[href=?]", chapter_path(chapters(:two), resume: 1)
-    assert_select "#reading-progress-#{reading_progresses(:one).id}", text: /Все прочитано/, count: 0
+    assert_select "#reading-progress-#{reading_progresses(:one).id}", text: /усе прочитано/, count: 0
   end
 
   test 'completed latest chapter shows all read with the sparse count' do
@@ -55,8 +55,8 @@ class LibraryControllerTest < ActionDispatch::IntegrationTest
 
     card = "#reading-progress-#{reading_progresses(:one).id}"
 
-    assert_select card, text: /Все прочитано/
-    assert_select "#{card} span.font-bold", text: '1'
+    assert_select "#{card} p", text: '1 з 2 · усе прочитано'
+    assert_select "#{card} a[href=?]", fiction_path(fictions(:one), anchor: 'chapters'), text: 'Розділи'
   end
 
   test 'should not change status for invalid status param' do

@@ -4,7 +4,18 @@
       <%= tag.h2 title, id: heading_id, class: TITLE %>
       <%= tag.p subtitle, class: 'text-sm/5 text-fg-muted' if subtitle %>
     </div>
-    <%= action if action? %>
+    <% if action? || fold %>
+      <div class="flex shrink-0 items-center gap-2">
+        <%= action if action? %>
+        <% if fold %>
+          <%= tag.button type: 'button', title: 'Розгорнути або згорнути', aria: { expanded: false, labelledby: heading_id },
+                         data: { panel_fold_target: 'toggle button', action: 'panel-fold#toggle' },
+                         class: 'group/chevron -m-1 inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+            <svg class="size-5 transition-transform duration-300 group-aria-expanded/chevron:rotate-180 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
   <%= content %>
 <% end %>

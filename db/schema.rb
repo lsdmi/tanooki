@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -116,6 +116,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_120000) do
     t.index ["scanlator_id"], name: "index_chapter_scanlators_on_scanlator_id"
   end
 
+  create_table "chapter_thanks", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "chapter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chapter_id"], name: "index_chapter_thanks_on_chapter_id"
+    t.index ["user_id", "chapter_id"], name: "index_chapter_thanks_on_user_and_chapter", unique: true
+  end
+
   create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "api_token_id"
     t.integer "comments_count", default: 0
@@ -127,6 +136,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_120000) do
     t.datetime "published_at"
     t.string "slug", null: false
     t.string "status", limit: 16, default: "published", null: false
+    t.integer "thanks_count", default: 0, null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -793,6 +803,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_120000) do
   add_foreign_key "chapter_revisions", "users"
   add_foreign_key "chapter_scanlators", "chapters"
   add_foreign_key "chapter_scanlators", "scanlators"
+  add_foreign_key "chapter_thanks", "chapters", on_delete: :cascade
+  add_foreign_key "chapter_thanks", "users", on_delete: :cascade
   add_foreign_key "chapters", "api_tokens", on_delete: :nullify
   add_foreign_key "chapters", "fictions", on_delete: :cascade
   add_foreign_key "chapters", "users", on_delete: :cascade

@@ -25,9 +25,9 @@
     <rect x="10" y="60" width="30" height="30" fill="#f472b6" rx="8" />
   </svg>
   <% if paginated_readings.any? %>
-    <ul class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+    <ul class="relative flex flex-col gap-3">
       <% paginated_readings.each_with_index do |reading, index| %>
-        <%= render 'reading_progresses/reading_progress', reading: reading, section: section, preload_continue: index.zero? %>
+        <%= render Library::EntryComponent.new(reading:, section:, viewer: current_user, preload: index.zero?) %>
       <% end %>
     </ul>
     <%= ui_pagination(

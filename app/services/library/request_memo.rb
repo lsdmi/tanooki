@@ -12,5 +12,16 @@ module Library
 
       values[key] = yield
     end
+
+    # For a batch loaded ahead of the callers that would each ask for their own part.
+    def store(*key, value)
+      self.values ||= {}
+      values[key] = value
+    end
+
+    # Only what a batch stored: callers that write in the same request must not get a stale value.
+    def peek(*key)
+      values&.[](key)
+    end
   end
 end

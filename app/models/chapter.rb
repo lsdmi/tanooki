@@ -7,6 +7,7 @@ class Chapter < ApplicationRecord
   extend FriendlyId
   include SoftDeletable
   include Draftable
+  include Thankable
 
   normalizes_squished :title
   friendly_id :slug_candidates

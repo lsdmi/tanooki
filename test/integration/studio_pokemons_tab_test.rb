@@ -49,6 +49,19 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
     assert_select '#pokemon-top-trainers li[aria-current=true]', count: 1, text: /#{place}\s+#{user.name}/
   end
 
+  test 'a trainer below the podium keeps their row in sight while the list is folded' do
+    user = users(:user_one)
+    ids = [*User.where.not(id: user.id).limit(4).pluck(:id), user.id]
+    Rails.cache.write(Pokemons::DexLeaderboard::TOP_CACHE_KEY, ids.map.with_index(1) { |id, rank| [id, rank, 50] })
+    row = /5\s+#{user.name}/
+    sign_in user
+
+    get tab_studio_path('pokemons')
+
+    assert_select '#pokemon-top-trainers ol[hidden][data-panel-fold-target=open] li[aria-current=true]', text: row
+    assert_select '#pokemon-top-trainers ol[data-panel-fold-target=closed] li[aria-current=true]', text: row
+  end
+
   test 'a trainer who has not battled lately is told how to get into the top' do
     users(:user_two).trainer_profile.update!(last_battle_at: 1.day.ago)
     sign_in users(:user_one)

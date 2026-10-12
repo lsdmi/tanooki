@@ -1,4 +1,4 @@
-<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка', html: { class: 'lg:flex-1' }) do %>
+<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка', fold: 'history') do %>
   <%= turbo_frame_tag "pokemon-history-list" do %>
     <%= render 'users/pokemons/history_record', battle: battle_history if battle_history.present? %>
   <% end %>
