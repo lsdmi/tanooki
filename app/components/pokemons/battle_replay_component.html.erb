@@ -17,7 +17,7 @@
   <% end %>
 
   <div class="flex flex-col gap-1 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line">
-    <h3 class="text-sm/5 font-semibold text-fg">Бій завершено!</h3>
+    <%= tag.h3 battle.legacy? ? 'Бій завершено!' : t('pokemons.battle.finished', count: rounds.size), class: 'text-sm/5 font-semibold text-fg' %>
     <p class="text-sm/5 text-fg-secondary">
       Останній покемон
       <span class="font-semibold text-status-danger-solid"><%= loser_name %></span>

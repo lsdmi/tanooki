@@ -3,47 +3,41 @@
 <% mine_below = rest.find { |entry| entry.user == current_user } %>
 <% outside = dex_leaderboard && top.none? { |entry| entry.user == current_user } %>
 <% my_place = dex_leaderboard.top_place_for(current_user) if outside %>
-<%# Folded to the podium; places 4–20 unfold below it, and the viewer's own place stays in sight either way. %>
-<%= render Pokemons::PanelComponent.new(title: 'Топ тренерів', subtitle: 'Хто бився за останні 30 днів', id: 'pokemon-top-trainers', fold: 'top') do %>
+<section id="pokemon-top-trainers" class="group/fold flex min-w-0 flex-col gap-3" data-controller="panel-fold" data-panel-fold-key-value="top"
+         style="view-transition-name: pokemon-top; view-transition-class: pokemon-panel">
   <% if top.empty? %>
-    <p class="rounded-lg bg-surface p-5 text-center text-sm/5 text-fg-muted ring-1 ring-inset ring-line"><%= t('pokemons.top.empty') %></p>
+    <p class="text-sm/5 text-fg-subtle"><%= t('pokemons.top.empty') %></p>
   <% else %>
-    <div class="mx-auto flex w-full max-w-3xl flex-col gap-4">
-      <ol class="mx-auto grid w-full max-w-md grid-cols-3 items-end gap-2 sm:gap-3">
-        <% podium.each do |entry| %>
-          <% first = entry.rank == 1 %>
-          <% mine = entry.user == current_user %>
-          <%= tag.li class: class_names('flex min-w-0 flex-col items-center gap-2 text-center', 'col-start-2 row-start-1' => first, 'col-start-1 row-start-1' => entry.rank == 2, 'col-start-3 row-start-1' => entry.rank == 3), aria: { current: mine || nil } do %>
-            <%= image_tag avatar_image_url(entry.user.avatar.image), alt: '', loading: :lazy,
-                                                                     class: class_names('shrink-0 rounded-full object-cover', first ? 'size-16 ring-4 ring-status-warning-subtle-border md:size-20' : 'size-12 ring-2 ring-line md:size-14', 'outline-2 outline-offset-2 outline-brand' => mine) %>
-            <div class="flex min-w-0 max-w-full flex-col items-center gap-0.5">
-              <%= link_to entry.user.name, profile_path(entry.user.sqid), turbo_drive_visit_data.merge(class: class_names('max-w-full truncate text-sm/5 font-semibold hover:text-fg-brand', mine ? 'text-fg-brand' : 'text-fg')) %>
-              <span class="line-clamp-2 max-w-full text-xs/4 text-balance text-fg-muted"><%= dex_title(entry.percentile) %></span>
-            </div>
-            <%= tag.div class: class_names('flex w-full items-start justify-center gap-1 rounded-t-lg pt-2 text-lg/6 font-bold tabular-nums ring-1 ring-inset',
-                                           first ? 'h-16 bg-status-warning-subtle-bg text-status-warning-subtle-fg ring-status-warning-subtle-border' : 'bg-surface-strong text-fg-secondary ring-line',
-                                           'h-12' => entry.rank == 2, 'h-9' => entry.rank == 3) do %>
-              <%= trophy_icon('mt-0.5 size-4') if first %>
-              <span class="sr-only">Місце</span><%= entry.rank %>
-            <% end %>
-          <% end %>
-        <% end %>
-      </ol>
-
-      <% if rest.any? %>
-        <%= tag.ol class: '-mx-2 sm:columns-2 sm:gap-x-8', hidden: true, data: Pokemons::PanelComponent.open_target do %>
-          <%= render partial: 'users/pokemons/top_trainer_row', collection: rest, as: :entry %>
+    <ol class="flex flex-col gap-2">
+      <% podium.each do |entry| %>
+        <% mine = entry.user == current_user %>
+        <%= tag.li class: class_names('flex items-baseline gap-3 text-sm/5', 'text-fg-brand' => mine), aria: { current: mine || nil } do %>
+          <span class="w-4 shrink-0 text-right tabular-nums text-fg-subtle"><%= entry.rank %></span>
+          <%= link_to entry.user.name, profile_path(entry.user.sqid), turbo_drive_visit_data.merge(class: 'min-w-0 flex-1 truncate font-medium text-fg hover:text-fg-brand') %>
+          <span class="shrink-0 text-xs/4 text-fg-muted"><%= dex_title(entry.percentile) %></span>
         <% end %>
       <% end %>
+    </ol>
 
-      <% if my_place || mine_below %>
-        <%= tag.ol class: 'border-t border-dashed border-line pt-3', data: (Pokemons::PanelComponent.closed_target if mine_below) do %>
-          <%= render 'users/pokemons/top_trainer_row',
-                     entry: mine_below || Pokemons::DexLeaderboard::TopEntry.new(user: current_user, rank: my_place, percentile: dex_leaderboard.percentile_for(current_user)) %>
-        <% end %>
-      <% elsif outside %>
-        <p class="border-t border-dashed border-line pt-3 text-center text-sm/5 text-fg-muted"><%= t('pokemons.top.join') %></p>
+    <% if rest.any? %>
+      <%= tag.button type: 'button', title: 'Решта топу', aria: { expanded: false },
+                     data: { panel_fold_target: 'toggle button', action: 'panel-fold#toggle' },
+                     class: 'self-start text-xs/4 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+        <span data-panel-fold-target="closed">ще <%= rest.size %></span>
+        <span data-panel-fold-target="open" hidden>згорнути</span>
       <% end %>
-    </div>
+      <%= tag.ol class: 'flex flex-col gap-2', hidden: true, data: Pokemons::PanelComponent.open_target do %>
+        <%= render partial: 'users/pokemons/top_trainer_row', collection: rest, as: :entry %>
+      <% end %>
+    <% end %>
+
+    <% if my_place || mine_below %>
+      <%= tag.ol class: 'border-t border-line-muted pt-3', data: (Pokemons::PanelComponent.closed_target if mine_below) do %>
+        <%= render 'users/pokemons/top_trainer_row',
+                   entry: mine_below || Pokemons::DexLeaderboard::TopEntry.new(user: current_user, rank: my_place, percentile: dex_leaderboard.percentile_for(current_user)) %>
+      <% end %>
+    <% elsif outside %>
+      <p class="text-sm/5 text-fg-subtle"><%= t('pokemons.top.join') %></p>
+    <% end %>
   <% end %>
-<% end %>
+</section>

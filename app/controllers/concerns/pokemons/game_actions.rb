@@ -27,7 +27,7 @@ module Pokemons
       dex_leaderboard = Pokemons::DexLeaderboard.new
       matchmaker = Pokemons::Matchmaker.new(user, leaderboard: dex_leaderboard)
       cooldown = Pokemons::BattleLeaderboardCooldown.call(user)
-      { dex_leaderboard:, cooldown:,
+      { dex_leaderboard:, cooldown:, has_party: user.user_pokemons.exists?,
         opponent: (matchmaker.opponent unless cooldown), can_reroll: matchmaker.reroll_available? }
     end
   end

@@ -1,18 +1,11 @@
-<%= render Pokemons::PanelComponent.new(title: 'Остання сутичка', fold: 'history') do %>
+<section class="group/fold flex min-w-0 flex-col gap-2" data-controller="panel-fold" data-panel-fold-key-value="history"
+         style="view-transition-name: pokemon-history; view-transition-class: pokemon-panel">
   <%= turbo_frame_tag "pokemon-history-list" do %>
     <%= render 'users/pokemons/history_record', battle: battle_history if battle_history.present? %>
   <% end %>
   <% if battle_history.blank? %>
-    <%= turbo_frame_tag "pokemon-history-call", class: 'flex flex-1 flex-col justify-center' do %>
-      <div class="flex items-center gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
-        <%= image_tag 'battle.webp', alt: '', class: 'hidden size-12 shrink-0 sm:block' %>
-        <div class="flex min-w-0 flex-col gap-1">
-          <p class="text-base/6 font-semibold text-fg">Вперед до бою!</p>
-          <p class="text-sm/5 text-fg-secondary">
-            Ваші покемони рвуться в бій! Натисніть «До бою!» у блоці «Мій виклик», аби розпочати поєдинок.
-          </p>
-        </div>
-      </div>
+    <%= turbo_frame_tag "pokemon-history-call" do %>
+      <p class="text-sm/5 text-fg-subtle">Ще не билися — результат з’явиться тут.</p>
     <% end %>
   <% end %>
-<% end %>
+</section>

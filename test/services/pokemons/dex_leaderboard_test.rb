@@ -4,6 +4,8 @@ require 'test_helper'
 
 module Pokemons
   class DexLeaderboardTest < ActiveSupport::TestCase
+    include PokemonBattleHelpers
+
     setup do
       @leaderboard = DexLeaderboard.new
       @first = users(:user_one)
@@ -18,9 +20,11 @@ module Pokemons
         character: 'lucky'
       )
 
-      @first.trainer_profile.update!(glicko_rating: 1800, glicko_deviation: 100, last_battle_at: 1.day.ago)
-      @second.trainer_profile.update!(glicko_rating: 1700, glicko_deviation: 80, last_battle_at: 1.day.ago)
-      @third.trainer_profile.update!(glicko_rating: 1500, glicko_deviation: 80, last_battle_at: 1.day.ago)
+      @first.trainer_profile.update!(glicko_rating: 1800, glicko_deviation: 100)
+      @second.trainer_profile.update!(glicko_rating: 1700, glicko_deviation: 80)
+      @third.trainer_profile.update!(glicko_rating: 1500, glicko_deviation: 80)
+      create_pokemon_battle(attacker: @first, defender: @second)
+      create_pokemon_battle(attacker: @second, defender: @third)
     end
 
     test 'ranks by rating minus two deviations' do
@@ -44,7 +48,7 @@ module Pokemons
       assert_equal 1, @leaderboard.rank_for(@third)
     end
 
-    test 'percentile counts battled trainers ranked strictly lower, so a tie shares one' do
+    test 'percentile counts season fighters ranked strictly lower, so a tie shares one' do
       @second.trainer_profile.update!(glicko_rating: 1500, glicko_deviation: 80)
 
       assert_in_delta 2.0 / 3, @leaderboard.percentile_for(@first)
@@ -52,17 +56,19 @@ module Pokemons
       assert_in_delta 0.0, @leaderboard.percentile_for(@third)
     end
 
-    test 'percentile compares with recently active trainers only' do
-      @third.trainer_profile.update!(glicko_rating: 2000, last_battle_at: 31.days.ago)
+    test 'percentile compares with open-season fighters only' do
+      PokemonBattle.involving(@third).find_each { |battle| battle.update!(pokemon_season: nil) }
+      @third.trainer_profile.update!(glicko_rating: 2000)
+      leaderboard = DexLeaderboard.new
 
-      assert_in_delta 0.5, @leaderboard.percentile_for(@first)
-      assert_in_delta 1.0, @leaderboard.percentile_for(@third)
+      assert_in_delta 0.5, leaderboard.percentile_for(@first)
+      assert_nil leaderboard.percentile_for(@third)
     end
 
-    test 'a trainer who never battled has no percentile' do
-      @third.trainer_profile.update!(last_battle_at: nil)
+    test 'a trainer who has not fought this season has no percentile' do
+      PokemonBattle.involving(@third).find_each { |battle| battle.update!(pokemon_season: nil) }
 
-      assert_nil @leaderboard.percentile_for(@third)
+      assert_nil DexLeaderboard.new.percentile_for(@third)
     end
 
     test 'returns nil for users not on the leaderboard' do

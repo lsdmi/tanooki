@@ -56,7 +56,22 @@ module Pokemons
       lucide_icon(TROPHY_PATHS, size)
     end
 
+    # «Сезон 1 · вересень–жовтень» from the season's dates (Europe/Kiev).
+    def season_label(season)
+      t('pokemons.seasons.label', number: season.number, range: season_month_range(season))
+    end
+
+    def season_result_badge(result)
+      t('pokemons.seasons.badge', title: dex_title(result.percentile), place: result.place)
+    end
+
     private
+
+    def season_month_range(season)
+      from = t("pokemons.seasons.months.#{season.starts_on.month}")
+      to = t("pokemons.seasons.months.#{season.ends_on.month}")
+      from == to ? from : t('pokemons.seasons.range', from:, to:)
+    end
 
     def battle_result_icon(won)
       lucide_icon(won ? TROPHY_PATHS : SHIELD_X_PATHS, 'size-3.5')

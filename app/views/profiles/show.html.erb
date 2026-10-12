@@ -182,6 +182,19 @@
             <div class="text-sm text-fg-secondary">Рейтинг</div>
           </div>
         </div>
+        <% if @season_results.any? %>
+          <div class="mt-4 relative z-10">
+            <h3 class="text-sm font-semibold text-fg-secondary mb-2"><%= t('pokemons.seasons.section') %></h3>
+            <ul class="flex flex-col gap-2">
+              <% @season_results.each do |result| %>
+                <li class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-brand-subtle px-3 py-2 ring-1 ring-inset ring-line">
+                  <span class="text-sm/5 font-medium text-fg"><%= season_label(result.pokemon_season) %></span>
+                  <span class="text-sm/5 text-fg-secondary"><%= season_result_badge(result) %></span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
       </div>
 
       <!-- My Comments -->

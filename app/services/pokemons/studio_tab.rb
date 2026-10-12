@@ -9,6 +9,7 @@ module Pokemons
     def initialize(user)
       @user = user
       @pokemons = UserPokemonListQuery.new(user).call.load
+      @dex_leaderboard = Pokemons::DexLeaderboard.new
       assign_pokemon_details if @pokemons.any?
     end
 
@@ -31,7 +32,6 @@ module Pokemons
     def assign_pokemon_details
       @selected_pokemon = @pokemons.first
       @evolution = @selected_pokemon.next_evolution
-      @dex_leaderboard = Pokemons::DexLeaderboard.new
       assign_opponent
       @battle_history = user.latest_battle
     end

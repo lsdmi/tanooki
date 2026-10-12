@@ -4,6 +4,7 @@ require 'test_helper'
 
 class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include PokemonBattleHelpers
 
   test 'a trainer with no Pokémon sees empty party and challenge cards' do
     sign_in User.find(101) # users fixture user_101: no user_pokemons rows
@@ -25,9 +26,29 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
     assert_includes response.body, battle_start_path
   end
 
+  test 'the tab opens with the season line and the arena stage' do
+    sign_in users(:user_one)
+
+    get tab_studio_path('pokemons')
+
+    assert_select 'h1', text: /Сезон/
+    assert_select '[aria-label=Арена]'
+  end
+
+  test 'folded party is an overlapping dock and details keep a quiet stat line' do
+    user = users(:user_one)
+    strip = [user.user_pokemons.size, 5].min
+    sign_in user
+
+    get tab_studio_path('pokemons')
+
+    assert_select '#pokemon-data-screen [data-panel-fold-target=closed] button', count: strip
+    assert_select '#pokemon-details p[data-panel-fold-target=closed]', text: /витривалість/
+  end
+
   test 'a trainer in the top is marked on the board without a separate own row' do
     user = users(:user_one)
-    user.trainer_profile.update!(last_battle_at: 1.day.ago)
+    create_pokemon_battle(attacker: user, defender: users(:user_two))
     sign_in user
 
     get tab_studio_path('pokemons')
@@ -38,10 +59,10 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
 
   test 'a trainer outside the top sees their own place under it' do
     user = users(:user_one)
-    [user, users(:user_two)].each { |trainer| trainer.trainer_profile.update!(last_battle_at: 1.day.ago) }
+    create_pokemon_battle(attacker: user, defender: users(:user_two))
     place = Pokemons::DexLeaderboard.new.top_place_for(user)
     others = Pokemons::DexLeaderboard.new.top_rows.reject { |id, *| id == user.id }
-    Rails.cache.write(Pokemons::DexLeaderboard::TOP_CACHE_KEY, others)
+    Rails.cache.write(Pokemons::DexLeaderboard.top_cache_key, others)
     sign_in user
 
     get tab_studio_path('pokemons')
@@ -52,7 +73,7 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
   test 'a trainer below the podium keeps their row in sight while the list is folded' do
     user = users(:user_one)
     ids = [*User.where.not(id: user.id).limit(4).pluck(:id), user.id]
-    Rails.cache.write(Pokemons::DexLeaderboard::TOP_CACHE_KEY, ids.map.with_index(1) { |id, rank| [id, rank, 50] })
+    Rails.cache.write(Pokemons::DexLeaderboard.top_cache_key, ids.map.with_index(1) { |id, rank| [id, rank, 50] })
     row = /5\s+#{user.name}/
     sign_in user
 
@@ -62,8 +83,10 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
     assert_select '#pokemon-top-trainers ol[data-panel-fold-target=closed] li[aria-current=true]', text: row
   end
 
-  test 'a trainer who has not battled lately is told how to get into the top' do
-    users(:user_two).trainer_profile.update!(last_battle_at: 1.day.ago)
+  test 'a trainer who has not fought this season is told how to get into the top' do
+    third = User.find(102)
+    UserPokemon.create!(user: third, pokemon: pokemons(:one), character: :lucky, battle_experience: 1)
+    create_pokemon_battle(attacker: users(:user_two), defender: third)
     sign_in users(:user_one)
 
     get tab_studio_path('pokemons')

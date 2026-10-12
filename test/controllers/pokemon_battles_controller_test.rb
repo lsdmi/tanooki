@@ -43,7 +43,7 @@ class PokemonBattlesControllerTest < ActionDispatch::IntegrationTest
     post battle_start_path(format: :turbo_stream)
 
     assert_response :success
-    assert_includes @response.body, 'Перерва в'
+    assert_includes @response.body, 'Перерва'
     assert_includes @response.body, 'pokemon-leaderboard-screen'
   end
 

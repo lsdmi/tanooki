@@ -1,0 +1,5 @@
+<ul class="mt-2 space-y-1 text-sm text-fg-muted">
+  <% usage.each do |key, window| %>
+    <li><%= t("api_tokens.limits.#{key}") %>: <%= t('api_tokens.limits_count', used: window[:used], limit: window[:limit]) %></li>
+  <% end %>
+</ul>

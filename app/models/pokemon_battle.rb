@@ -6,6 +6,7 @@ class PokemonBattle < ApplicationRecord
   belongs_to :attacker, class_name: 'User'
   belongs_to :defender, class_name: 'User'
   belongs_to :winner, class_name: 'User'
+  belongs_to :pokemon_season, optional: true
 
   FLOAT_DIGITS = 4
   # Converted from pokemon_battle_logs: who fought, who won and when, nothing to replay.
@@ -24,14 +25,14 @@ class PokemonBattle < ApplicationRecord
     SecureRandom.random_number(1 << 63)
   end
 
-  # +rating_deltas+ by user id, or nil for an unranked battle.
-  def self.record!(teams:, seed:, result:, rating_deltas:)
+  # +rating_deltas+ by user id, or nil for an unranked battle. +season+ defaults to the open season.
+  def self.record!(teams:, seed:, result:, rating_deltas:, season: PokemonSeason.ensure_open!)
     attacker, defender = teams.trainers
     create!(attacker:, defender:, winner: result.attacker_won? ? attacker : defender, seed:,
             engine_version: result.engine_version, events: serialize(result.events),
             attacker_team: teams.stored(:attacker), defender_team: teams.stored(:defender), ranked: !rating_deltas.nil?,
             rating_delta_attacker: rating_deltas&.fetch(attacker.id) || 0,
-            rating_delta_defender: rating_deltas&.fetch(defender.id) || 0)
+            rating_delta_defender: rating_deltas&.fetch(defender.id) || 0, pokemon_season: season)
   end
 
   # True when the pair already fought within Balance::RANKED_REMATCH_GAP, either side attacking.

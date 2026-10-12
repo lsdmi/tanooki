@@ -29,11 +29,11 @@ module Pokemons
       assert_nil tab.evolution
     end
 
-    test 'with no pokemons leaves dex leaderboard, opponent, and battle history unset' do
+    test 'with no pokemons keeps the season board but skips opponent and battle history' do
       user = User.find(101) # users fixture user_101: no user_pokemons rows
       tab = StudioTab.new(user)
 
-      assert_nil tab.dex_leaderboard
+      assert_instance_of DexLeaderboard, tab.dex_leaderboard
       assert_nil tab.opponent
       assert_nil tab.battle_history
     end

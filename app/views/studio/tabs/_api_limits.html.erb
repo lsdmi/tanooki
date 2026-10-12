@@ -1,0 +1,4 @@
+<div class="mt-4 rounded-lg border border-line bg-surface-strong p-4">
+  <p class="text-sm font-medium text-fg"><%= t('api_tokens.limits_title') %></p>
+  <%= render 'shared/api_limits', usage: Api::Limits::Usage.snapshot(current_user) %>
+</div>

@@ -9,8 +9,9 @@ module Pokemons
     setup do
       @first = users(:user_one)
       @second = users(:user_two)
-      @first.trainer_profile.update!(glicko_rating: 1800, glicko_deviation: 100, last_battle_at: 1.day.ago)
-      @second.trainer_profile.update!(glicko_rating: 1700, glicko_deviation: 80, last_battle_at: 1.day.ago)
+      @first.trainer_profile.update!(glicko_rating: 1800, glicko_deviation: 100)
+      @second.trainer_profile.update!(glicko_rating: 1700, glicko_deviation: 80)
+      create_pokemon_battle(attacker: @first, defender: @second)
     end
 
     test 'lists trainers in rank order with their title percentile' do
@@ -19,16 +20,22 @@ module Pokemons
       assert_equal [[@first, 1, 0.5], [@second, 2, 0.0]], rows
     end
 
-    test 'leaves out trainers who have not battled within the title window' do
-      @first.trainer_profile.update!(last_battle_at: (DexLeaderboard::TITLE_WINDOW + 1.day).ago)
+    test 'leaves out trainers who have not fought in the open season' do
+      third = User.find(102)
+      UserPokemon.create!(user: third, pokemon: pokemons(:one), character: :lucky, battle_experience: 1)
+      create_pokemon_battle(attacker: @second, defender: third)
+      drop_from_season(PokemonBattle.where(attacker: @first, defender: @second))
 
-      rows = DexLeaderboard.top.map { |entry| [entry.user, entry.rank] }
+      rows = DexLeaderboard.top.map { |entry| [entry.user.id, entry.rank] }
 
-      assert_equal [[@second, 1]], rows
+      assert_equal [[@second.id, 1], [third.id, 2]], rows
     end
 
-    test 'the place in the top skips trainers outside the window' do
-      @first.trainer_profile.update!(last_battle_at: (DexLeaderboard::TITLE_WINDOW + 1.day).ago)
+    test 'the place in the top skips trainers outside the season' do
+      third = User.find(102)
+      UserPokemon.create!(user: third, pokemon: pokemons(:one), character: :lucky, battle_experience: 1)
+      create_pokemon_battle(attacker: @second, defender: third)
+      drop_from_season(PokemonBattle.where(attacker: @first, defender: @second))
       leaderboard = DexLeaderboard.new
 
       assert_equal [2, 1], [leaderboard.rank_for(@second), leaderboard.top_place_for(@second)]
@@ -61,16 +68,20 @@ module Pokemons
       assert_equal [['Renamed', 1]], rows
     end
 
-    test 'a cached top neither ranks again nor loads avatars one by one' do
-      @second.update!(avatar: avatars(:two))
-      [@first, @second].each do |user|
-        user.avatar.image.attach(io: file_fixture('cover_valid.webp').open, filename: 'avatar.webp')
-      end
+    test 'a cached top neither ranks again nor loads users one by one' do
       DexLeaderboard.top
 
-      assert_no_queries_match(/trainer_profiles|user_pokemons|active_storage_blobs/) do
-        DexLeaderboard.top.each { |entry| entry.user.avatar.image.blob }
+      assert_no_queries_match(/trainer_profiles|user_pokemons/) do
+        names = DexLeaderboard.top.map { |entry| entry.user.name }
+
+        assert_equal [@first.name, @second.name], names
       end
+    end
+
+    private
+
+    def drop_from_season(scope)
+      scope.find_each { |battle| battle.update!(pokemon_season: nil) }
     end
   end
 end

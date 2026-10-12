@@ -15,7 +15,8 @@ module Pokemons
     # A pair that fought this recently (either side attacking) plays unranked.
     RANKED_REMATCH_GAP = 24.hours
     # Opponents are trainers who attacked, caught or trained this recently. Being attacked does not count: a trainer
-    # who left would otherwise stay "active" from the battles they are offered for.
+    # who left would otherwise stay "active" from the battles they are offered for. Seasons are a separate clock
+    # (two calendar months); this window only gates who Matchmaker offers.
     ACTIVE_WINDOW = 30.days
     # The opponent is drawn from this many active trainers with the nearest Glicko-2 ratings.
     NEAREST_OPPONENTS = 5

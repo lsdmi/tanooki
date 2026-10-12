@@ -31,9 +31,9 @@ class UserPokemonListQueryTest < ActiveSupport::TestCase
     assert_respond_to result, :includes
   end
 
-  test 'call preloads pokemon and sprite blob' do
+  test 'call preloads pokemon types and sprite blob' do
     result = UserPokemonListQuery.new(@user).call
 
-    assert_includes result.includes_values, { pokemon: { sprite_attachment: :blob } }
+    assert_includes result.includes_values, { pokemon: [:pokemon_types, { sprite_attachment: :blob }] }
   end
 end

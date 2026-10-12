@@ -44,6 +44,7 @@ class StudioFrameEscapeTest < ActionDispatch::IntegrationTest
 
     assert_select 'turbo-frame#tab-content a[data-turbo-frame="_top"][href="/developers"]',
                   text: I18n.t('api_tokens.docs')
+    assert_select 'turbo-frame#tab-content', text: /0 з 60/
   end
 
   test 'studio notifications empty state escapes frame for browse CTAs' do

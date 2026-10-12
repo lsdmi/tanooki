@@ -1,50 +1,59 @@
 <% fold = Pokemons::PanelComponent %>
-<%# Folded, the party is a fanned stack (the selected Pokémon on top); its tiles share view-transition names with the grid, so they fly into place. %>
-<% stack = [selected_pokemon, *pokemons].compact.uniq.first(5) %>
-<% fan = %w[-rotate-6 -rotate-3 rotate-0 rotate-3 rotate-6][(5 - stack.size) / 2, stack.size] %>
-<%= render fold.new(title: 'Мої покемони', subtitle: ("У колекції: #{pokemons.size}" if pokemons.any?), fold: 'party',
-                         html: { class: 'lg:only:col-span-full' }) do %>
+<% stack = [selected_pokemon, *pokemons].compact.uniq.first(10) %>
+<% fanned = stack.first(5) %>
+<%# Party as a dock under the arena — no section title, no card. %>
+<section class="group/fold flex min-w-0 flex-col items-center gap-4" data-controller="panel-fold" data-panel-fold-key-value="party"
+         style="view-transition-name: pokemon-party; view-transition-class: pokemon-panel" aria-label="Команда">
   <% if pokemons.any? %>
-    <%= tag.button type: 'button', data: { panel_fold_target: 'toggle closed', action: 'panel-fold#toggle' }, aria: { expanded: false },
-                   class: 'group/stack -m-1 flex items-center gap-4 self-start rounded-xl p-1 pr-3 text-left transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
-      <span class="flex items-center pl-4">
-        <% stack.each_with_index do |user_pokemon, index| %>
-          <%= tag.span class: "#{fan[index]} -ml-4 flex size-12 shrink-0 items-center justify-center rounded-xl bg-surface shadow-sm ring-1 ring-inset ring-line transition-[margin,rotate] duration-300 group-hover/stack:-ml-2 group-hover/stack:rotate-0 motion-reduce:transition-none sm:size-14 xl:size-16",
-                       style: "view-transition-name: pokemon-tile-#{user_pokemon.id}; z-index: #{stack.size - index}" do %>
-            <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain') %>
-          <% end %>
+    <%= tag.div data: { controller: 'pokemon-image-click', panel_fold_target: 'closed' },
+                class: 'flex items-end justify-center' do %>
+      <% fanned.each_with_index do |user_pokemon, index| %>
+        <%= button_to pokemon_details_path(pokemon_id: user_pokemon),
+              aria: { pressed: selected_pokemon&.id == user_pokemon.id, label: user_pokemon.pokemon.name },
+              title: user_pokemon.pokemon.name,
+              style: "view-transition-name: pokemon-tile-#{user_pokemon.id}; z-index: #{fanned.size - index}",
+              data: { turbo_stream: '', 'turbo-method': :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' },
+              class: class_names(
+                'flex size-14 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line transition-transform hover:z-20 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:ring-2 aria-pressed:ring-brand sm:size-16',
+                ('-ml-3 sm:-ml-4' if index.positive?)
+              ) do %>
+          <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-10 object-contain sm:size-12') %>
         <% end %>
-      </span>
-      <span class="flex flex-col">
-        <span class="text-sm/5 font-semibold text-fg-brand">Розкласти всіх</span>
-        <% if pokemons.size > stack.size %>
-          <span class="text-xs/4 text-fg-muted">і ще <%= pokemons.size - stack.size %> у колекції</span>
-        <% end %>
-      </span>
+      <% end %>
+      <% if pokemons.size > fanned.size %>
+        <span class="-ml-2 flex size-10 items-center justify-center text-xs/4 text-fg-subtle sm:size-12">+<%= pokemons.size - fanned.size %></span>
+      <% end %>
     <% end %>
 
-    <%= tag.ul class: 'grid grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-2 md:grid-cols-[repeat(auto-fill,minmax(3.75rem,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))]',
-               hidden: true, data: { controller: 'pokemon-image-click', **fold.open_target } do %>
-      <% pokemons.each do |user_pokemon| %>
-        <li>
-          <%= button_to pokemon_details_path(pokemon_id: user_pokemon),
-                aria: { pressed: selected_pokemon&.id == user_pokemon.id, label: user_pokemon.pokemon.name },
-                title: user_pokemon.pokemon.name,
-                style: ("view-transition-name: pokemon-tile-#{user_pokemon.id}" if stack.include?(user_pokemon)),
-                data: { turbo_stream: "", "turbo-method": :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' },
-                class: 'group flex aspect-square w-full items-center justify-center rounded-lg bg-surface ring-1 ring-inset ring-line transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:bg-brand-subtle aria-pressed:ring-2 aria-pressed:ring-brand' do %>
-            <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110') %>
-          <% end %>
-        </li>
+    <% if pokemons.size > fanned.size %>
+      <%= tag.button type: 'button', title: 'Уся команда', aria: { expanded: false },
+                     data: { panel_fold_target: 'toggle button', action: 'panel-fold#toggle' },
+                     class: 'text-xs/4 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+        <span data-panel-fold-target="closed">усі <%= pokemons.size %></span>
+        <span data-panel-fold-target="open" hidden>згорнути</span>
       <% end %>
-      <li class="flex aspect-square items-center justify-center rounded-lg border border-dashed border-line-strong" title="Ловіть більше покемонів на сторінках сайту">
-        <%= image_tag 'pokeball.webp', alt: 'Ловіть більше покемонів на сторінках сайту', class: 'size-2/3 object-contain opacity-40' %>
-      </li>
+
+      <%= tag.ul class: 'grid w-full grid-cols-[repeat(auto-fill,minmax(3.25rem,1fr))] gap-1',
+                 hidden: true, data: { controller: 'pokemon-image-click', **fold.open_target } do %>
+        <% pokemons.each do |user_pokemon| %>
+          <li>
+            <%= button_to pokemon_details_path(pokemon_id: user_pokemon),
+                  aria: { pressed: selected_pokemon&.id == user_pokemon.id, label: user_pokemon.pokemon.name },
+                  title: user_pokemon.pokemon.name,
+                  style: ("view-transition-name: pokemon-tile-#{user_pokemon.id}" if stack.include?(user_pokemon)),
+                  data: { turbo_stream: '', 'turbo-method': :post, pokemon_image_click_target: 'button', action: 'pokemon-image-click#select' },
+                  class: 'group flex aspect-square w-full items-center justify-center rounded-full transition-colors hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:bg-brand-subtle' do %>
+              <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110') %>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
     <% end %>
   <% else %>
     <%= render 'users/pokemons/empty', message: t('pokemons.party.empty') %>
   <% end %>
-<% end %>
+</section>
+
 <% if selected_pokemon %>
   <%= render 'users/pokemons/details', selected_pokemon:, evolution: %>
 <% end %>

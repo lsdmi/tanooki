@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
   has_many :pokemon_encounters, dependent: :delete_all
+  has_many :season_results, dependent: :delete_all
 
   has_many :api_tokens, dependent: :destroy
   has_many :scanlator_users, dependent: :destroy
@@ -68,7 +69,7 @@ class User < ApplicationRecord
 
   def latest_battle
     PokemonBattle.involving(self)
-                 .includes(:winner, attacker: { avatar: :image_attachment }, defender: { avatar: :image_attachment })
+                 .includes(:winner, :attacker, :defender)
                  .order(created_at: :desc, id: :desc).first
   end
 

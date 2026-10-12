@@ -1,11 +1,10 @@
-<div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line md:p-5">
-  <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard) %>
+<div class="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+  <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard), large: true %>
 
-  <%= button_to battle_start_path, data: { turbo_stream: "" }, aria: { label: 'Розпочати бій' }, title: 'Розпочати бій',
-                class: 'group flex flex-col items-center gap-1 rounded-xl p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
-    <%= image_tag 'battle.webp', alt: '', class: 'size-12 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 md:size-14' %>
-    <span class="text-xs/4 font-semibold text-fg-brand">До бою!</span>
+  <%= button_to battle_start_path, data: { turbo_stream: '' }, aria: { label: 'Розпочати бій' }, title: 'Розпочати бій',
+                class: 'shrink-0 px-1 text-sm/5 font-semibold tracking-wide text-fg-brand underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+    Бій
   <% end %>
 
-  <%= render 'users/pokemons/trainer', user: opponent, caption: trainer_caption(opponent, dex_leaderboard) %>
+  <%= render 'users/pokemons/trainer', user: opponent, caption: trainer_caption(opponent, dex_leaderboard), large: true %>
 </div>

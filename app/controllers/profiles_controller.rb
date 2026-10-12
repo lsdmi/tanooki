@@ -2,6 +2,8 @@
 
 # Public user profile pages.
 class ProfilesController < ApplicationController
+  helper Pokemons::DexHelper
+
   before_action :set_user, only: :show
   before_action :pokemon_appearance, only: [:show]
 

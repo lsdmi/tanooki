@@ -21,6 +21,10 @@ production:
     class: Youtube::SyncAllChannelsJob
     schedule: "0 0 * * * Europe/Kiev"
 
+  close_pokemon_season:
+    class: Pokemons::CloseSeasonJob
+    schedule: "5 0 * * * Europe/Kiev"
+
   purge_expired_epub_exports:
     class: Books::PurgeExpiredEpubExportsJob
     schedule: "0 4 * * * Europe/Kiev"

@@ -36,8 +36,14 @@ module UserProfile
       total_pokemon: Pokemon.wild.count,
       victories: battle_victory_count,
       total_battles: battle_total_count,
-      user_rating: dex_leader_rank
+      user_rating: dex_leader_rank,
+      season_results: profile_season_results
     }
+  end
+
+  # Newest closed season first; only seasons the trainer fought in.
+  def profile_season_results
+    season_results.includes(:pokemon_season).joins(:pokemon_season).order('pokemon_seasons.number DESC')
   end
 
   def battle_victory_count

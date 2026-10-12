@@ -1,0 +1,24 @@
+<%# locals: (season:, dex_leaderboard: nil) %>
+<% place = dex_leaderboard&.top_place_for(current_user) %>
+<% title = dex_title(dex_leaderboard.percentile_for(current_user)) if place %>
+<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm/5 text-fg-muted">
+  <h1 class="text-sm/5 font-medium text-fg"><%= season_label(season) %></h1>
+  <% if place %>
+    <span aria-hidden="true">·</span>
+    <span><%= t('pokemons.seasons.standing', title:, place:) %></span>
+  <% else %>
+    <span aria-hidden="true">·</span>
+    <span class="text-fg-subtle"><%= t('pokemons.top.join') %></span>
+  <% end %>
+  <span aria-hidden="true">·</span>
+  <details class="group relative">
+    <summary class="cursor-pointer list-none text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden">
+      Правила
+    </summary>
+    <ul class="absolute left-0 z-10 mt-2 w-64 list-disc rounded-lg bg-main p-3 pl-7 text-xs/5 text-fg-secondary shadow-popover ring-1 ring-line">
+      <li>Ловіть покемонів на сторінках сайту.</li>
+      <li>Тренуйте команду й бийтеся з іншими тренерами.</li>
+      <li>Місце в топі й звання — у межах сезону.</li>
+    </ul>
+  </details>
+</div>

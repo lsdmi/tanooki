@@ -1,16 +1,24 @@
 <% attacker_won = battle.attacker == battle.winner %>
-<div class="flex flex-col gap-4">
-  <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
-    <%= render 'users/pokemons/trainer', user: battle.attacker, caption: 'Нападник', badge: battle_result_badge(attacker_won) %>
-    <div class="flex flex-col items-center gap-1 text-fg-subtle" aria-hidden="true">
-      <svg class="size-7 text-fg-brand md:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5" /><path d="m13 19 6-6" /><path d="m16 16 4 4" /><path d="m19 21 2-2" /><path d="M14.5 6.5 18 3h3v3l-3.5 3.5" /><path d="m5 14 4 4" /><path d="m7 17-3 3" /><path d="m3 19 2 2" /></svg>
-      <span class="text-xs/4 font-medium uppercase tracking-wide">проти</span>
-    </div>
-    <%= render 'users/pokemons/trainer', user: battle.defender, caption: 'Захисник', badge: battle_result_badge(!attacker_won) %>
+<div class="flex flex-col gap-3">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm/5">
+    <span class="text-fg-subtle">Остання</span>
+    <%= link_to battle.attacker.name, profile_path(battle.attacker.sqid), turbo_drive_visit_data.merge(class: 'font-medium text-fg hover:text-fg-brand') %>
+    <%= battle_result_badge(attacker_won) %>
+    <span class="text-fg-subtle" aria-hidden="true">·</span>
+    <%= link_to battle.defender.name, profile_path(battle.defender.sqid), turbo_drive_visit_data.merge(class: 'font-medium text-fg hover:text-fg-brand') %>
+    <%= battle_result_badge(!attacker_won) %>
+    <%= tag.button type: 'button', title: 'Раунди', aria: { expanded: false },
+                   data: { panel_fold_target: 'toggle button', action: 'panel-fold#toggle' },
+                   class: 'ml-auto text-xs/4 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+      <span data-panel-fold-target="closed">раунди</span>
+      <span data-panel-fold-target="open" hidden>згорнути</span>
+    <% end %>
   </div>
   <% unless battle.ranked? %>
-    <p class="text-center text-sm/5 text-fg-muted"><%= t('pokemons.battle.unranked') %></p>
+    <p class="text-xs/4 text-fg-muted"><%= t('pokemons.battle.unranked') %></p>
   <% end %>
 
-  <%= render Pokemons::BattleReplayComponent.new(battle:, folded: true) %>
+  <%= tag.div hidden: true, data: Pokemons::PanelComponent.open_target do %>
+    <%= render Pokemons::BattleReplayComponent.new(battle:) %>
+  <% end %>
 </div>

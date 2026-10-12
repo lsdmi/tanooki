@@ -1,8 +1,12 @@
-<%# locals: (user:, caption: nil, badge: nil) %>
-<div class="flex min-w-0 flex-col items-center gap-2 text-center">
-  <%= image_tag avatar_image_url(user.avatar.image), alt: '', class: 'size-14 rounded-full object-cover ring-2 ring-main md:size-16' %>
+<%# locals: (user:, caption: nil, badge: nil, large: false) %>
+<div class="flex min-w-0 flex-col items-center gap-1.5 text-center">
+  <%= image_tag avatar_image_url(user.avatar.image), alt: '',
+                                                     class: class_names('rounded-full object-cover ring-1 ring-inset ring-line',
+                                                                        large ? 'size-14 md:size-16' : 'size-12 md:size-14') %>
   <div class="flex min-w-0 max-w-full flex-col items-center gap-0.5">
-    <%= link_to user.name, profile_path(user.sqid), turbo_drive_visit_data.merge(class: 'max-w-full truncate text-sm/5 font-semibold text-fg hover:text-fg-brand md:text-base/6') %>
+    <%= link_to user.name, profile_path(user.sqid),
+                turbo_drive_visit_data.merge(class: class_names('max-w-full truncate font-semibold text-fg hover:text-fg-brand',
+                                                                large ? 'text-sm/5 md:text-base/6' : 'text-sm/5')) %>
     <%= tag.span caption, class: 'max-w-full truncate text-xs/4 text-fg-muted' if caption %>
   </div>
   <%= badge %>

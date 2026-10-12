@@ -4,6 +4,7 @@
 # Stamps both trainers' last_battle_at like Pokemons::BattleStart does.
 module PokemonBattleHelpers
   def create_pokemon_battle(attacker:, defender:, winner: attacker, **attributes)
+    attributes = { pokemon_season: PokemonSeason.current }.merge(attributes)
     battle = PokemonBattle.create!(attacker:, defender:, winner:, seed: 1, engine_version: Pokemons::Engine::VERSION,
                                    attacker_team: [], defender_team: [], events: [], rating_delta_attacker: 0,
                                    rating_delta_defender: 0, **attributes)

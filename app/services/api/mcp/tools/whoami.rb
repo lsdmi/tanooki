@@ -9,7 +9,8 @@ module Api
 
         tool_name 'whoami'
         title 'Who am I'
-        description 'The signed-in user, their teams, and the token scopes. Call this first to confirm the connection.'
+        description 'The signed-in user, their teams, token scopes, and remaining limits. ' \
+                    'Tell the user those numbers when they ask or before many published edits.'
         read_only
 
         def self.call(server_context:)
@@ -20,12 +21,20 @@ module Api
         end
 
         def self.profile(actor)
-          token = actor.token
           {
             user: { id: actor.user.id, name: actor.user.name },
-            teams: actor.user.scanlators.order(:title).map { |team| { id: team.id, name: team.title } },
-            token: { prefix: token.token_prefix, scopes: token.scopes, expires_at: token.expires_at.iso8601 }
+            teams: teams(actor.user),
+            token: token_payload(actor.token),
+            limits: Limits::Usage.snapshot(actor.user)
           }
+        end
+
+        def self.teams(user)
+          user.scanlators.order(:title).map { |team| { id: team.id, name: team.title } }
+        end
+
+        def self.token_payload(token)
+          { prefix: token.token_prefix, scopes: token.scopes, expires_at: token.expires_at.iso8601 }
         end
       end
     end

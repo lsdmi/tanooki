@@ -30,10 +30,11 @@ module Api
         refused.each { |tool| assert_predicate call(tool, write_args(tool), context), :error? }
       end
 
-      test 'whoami works for any token and lists the user' do
+      test 'whoami reports remaining published edits' do
         body = json(call(Tools::Whoami, {}, actor(%w[images:write])))
 
         assert_equal @user.id, body.dig('user', 'id')
+        assert_equal 60, body.dig('limits', 'published_edits_this_hour', 'remaining')
       end
 
       test 'a draft can be edited and reverted' do

@@ -1,0 +1,17 @@
+<section class="mx-auto max-w-3xl px-4 py-10">
+  <h1 class="text-2xl font-bold text-fg"><%= t('admin.api_limits.title') %></h1>
+  <p class="mt-2 text-sm/6 text-fg-muted"><%= t('admin.api_limits.intro') %></p>
+
+  <% if @accounts.empty? %>
+    <p class="mt-8 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm/5 text-fg-muted"><%= t('admin.api_limits.empty') %></p>
+  <% else %>
+    <div class="mt-8 flex flex-col gap-4">
+      <% @accounts.each do |user, usage| %>
+        <article class="rounded-xl border border-line bg-main p-4">
+          <h2 class="text-base/6 font-semibold text-fg"><%= user.name %></h2>
+          <%= render 'shared/api_limits', usage: %>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+</section>

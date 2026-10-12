@@ -21,14 +21,14 @@ module Pokemons
 
       assert_selector 'li', count: rounds
       assert_selector 'span', text: "Раунд #{rounds}"
-      assert_selector 'h3', text: 'Бій завершено!'
+      assert_selector 'h3', text: I18n.t('pokemons.battle.finished', count: rounds)
     end
 
     test 'folded, the rounds wait for the panel to unfold and the result stays' do
       render_inline(BattleReplayComponent.new(battle: fought_battle, folded: true))
 
       assert_selector 'ol[hidden][data-panel-fold-target=open]', visible: :all
-      assert_selector 'h3', text: 'Бій завершено!'
+      assert_selector 'h3', text: /\AБій завершено за \d+ раунд/
     end
 
     test 'marks the Pokémon that fainted in each round' do
@@ -85,6 +85,15 @@ module Pokemons
       assert_text 'Раунди цього бою не збереглися'
       assert_no_selector 'span', text: 'Раунд'
       assert_selector 'h3 + p span.text-status-danger-solid', text: @attacker.name
+    end
+
+    test 'a legacy battle names no round count' do
+      battle = create_pokemon_battle(attacker: @attacker, defender: @defender, winner: @defender,
+                                     engine_version: PokemonBattle::LEGACY_VERSION)
+
+      render_inline(BattleReplayComponent.new(battle:))
+
+      assert_selector 'h3', exact_text: 'Бій завершено!'
     end
 
     test 'a new battle has no legacy note' do

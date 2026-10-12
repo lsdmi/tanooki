@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_180000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -362,6 +362,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
     t.json "defender_team", null: false
     t.integer "engine_version", limit: 2, null: false
     t.json "events", null: false
+    t.bigint "pokemon_season_id"
     t.boolean "ranked", default: true, null: false
     t.integer "rating_delta_attacker", limit: 2, null: false
     t.integer "rating_delta_defender", limit: 2, null: false
@@ -369,6 +370,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
     t.bigint "winner_id", null: false
     t.index ["attacker_id", "created_at"], name: "index_pokemon_battles_on_attacker_id_and_created_at"
     t.index ["defender_id", "created_at"], name: "index_pokemon_battles_on_defender_id_and_created_at"
+    t.index ["pokemon_season_id"], name: "index_pokemon_battles_on_pokemon_season_id"
     t.index ["winner_id"], name: "index_pokemon_battles_on_winner_id"
   end
 
@@ -396,6 +398,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
     t.datetime "updated_at", null: false
     t.index ["from_id", "to_id"], name: "index_pokemon_evolutions_on_from_id_and_to_id", unique: true
     t.index ["to_id"], name: "index_pokemon_evolutions_on_to_id"
+  end
+
+  create_table "pokemon_seasons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.date "ends_on", null: false
+    t.integer "number", null: false
+    t.date "starts_on", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_pokemon_seasons_on_number", unique: true
+    t.index ["starts_on"], name: "index_pokemon_seasons_on_starts_on"
   end
 
   create_table "pokemon_type_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -542,6 +555,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_scanlators_on_slug", unique: true
+  end
+
+  create_table "season_results", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "battles", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.float "glicko_deviation", limit: 53, null: false
+    t.float "glicko_floor", limit: 53, null: false
+    t.float "glicko_rating", limit: 53, null: false
+    t.float "percentile", limit: 53, null: false
+    t.integer "place", null: false
+    t.bigint "pokemon_season_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "wins", default: 0, null: false
+    t.index ["pokemon_season_id", "place"], name: "index_season_results_on_pokemon_season_id_and_place"
+    t.index ["pokemon_season_id", "user_id"], name: "index_season_results_on_pokemon_season_id_and_user_id", unique: true
+    t.index ["pokemon_season_id"], name: "index_season_results_on_pokemon_season_id"
+    t.index ["user_id"], name: "index_season_results_on_user_id"
   end
 
   create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -826,6 +857,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
+  add_foreign_key "pokemon_battles", "pokemon_seasons"
   add_foreign_key "pokemon_battles", "users", column: "attacker_id", on_delete: :cascade
   add_foreign_key "pokemon_battles", "users", column: "defender_id", on_delete: :cascade
   add_foreign_key "pokemon_battles", "users", column: "winner_id", on_delete: :cascade
@@ -848,6 +880,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150000) do
   add_foreign_key "reading_progresses", "users", on_delete: :cascade
   add_foreign_key "scanlator_users", "scanlators"
   add_foreign_key "scanlator_users", "users"
+  add_foreign_key "season_results", "pokemon_seasons"
+  add_foreign_key "season_results", "users", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

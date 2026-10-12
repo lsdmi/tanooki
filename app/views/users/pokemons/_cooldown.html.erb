@@ -1,13 +1,7 @@
-<div class="flex flex-col items-center gap-4 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line sm:flex-row md:p-5">
-  <div class="shrink-0 sm:w-40">
-    <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard) %>
-  </div>
-  <div class="flex min-w-0 flex-1 flex-col items-center gap-2 text-center sm:items-start sm:border-l sm:border-line sm:pl-5 sm:text-left">
-    <p class="text-base/6 font-semibold text-fg">Перерва в Центрі покемонів</p>
-    <p class="text-sm/5 text-fg-secondary">Команда відпочиває! Незабаром покемони знову будуть готові до бою.</p>
-    <span class="inline-flex items-center gap-1.5 rounded-full bg-status-info-subtle-bg px-2.5 py-1 text-xs/4 font-semibold text-status-info-subtle-fg ring-1 ring-inset ring-status-info-subtle-border">
-      <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-      <%= "Наступний бій через #{reason_for_cooldown(current_user)}" %>
-    </span>
+<div class="flex flex-col items-center gap-2 text-center">
+  <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard), large: true %>
+  <div class="flex max-w-xs flex-col gap-0.5">
+    <p class="text-sm/5 font-semibold tracking-tight text-fg">Перерва</p>
+    <p class="text-xs/4 tabular-nums text-fg-muted"><%= "через #{reason_for_cooldown(current_user)}" %></p>
   </div>
 </div>

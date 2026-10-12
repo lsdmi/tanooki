@@ -21,10 +21,16 @@ module Pokemons
       assert_selector 'button', text: 'Тренувати'
     end
 
-    test 'extra classes join the shell' do
+    test 'extra classes join the journal shell' do
       render_inline(PanelComponent.new(title: 'Топ тренерів', html: { class: 'lg:flex-1', data: { qa: 'top' } }))
 
-      assert_selector 'section.rounded-xl.lg\:flex-1[data-qa=top]'
+      assert_selector 'section.border-b.lg\:flex-1[data-qa=top]'
+    end
+
+    test 'the arena tone uses a stage shell' do
+      render_inline(PanelComponent.new(title: 'Арена', tone: :arena))
+
+      assert_selector 'section.rounded-2xl.bg-surface'
     end
 
     test 'a folded panel wires the fold controller to a chevron named by the heading' do

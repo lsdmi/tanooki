@@ -24,7 +24,9 @@ module Pokemons
     attr_reader :user, :pokemon_id
 
     def selected_pokemon
-      @selected_pokemon ||= user.user_pokemons.includes(pokemon: { sprite_attachment: :blob }).find(pokemon_id)
+      @selected_pokemon ||= user.user_pokemons
+                                .includes(pokemon: [:pokemon_types, { sprite_attachment: :blob }])
+                                .find(pokemon_id)
     end
   end
 end
