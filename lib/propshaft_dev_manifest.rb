@@ -49,6 +49,9 @@ module PropshaftDevManifest
     return true if manifest_missing_assets?(manifest_path)
 
     manifest_mtime = manifest_path.mtime
+    # A new or updated gem can bring its own assets (engines such as mission_control-jobs).
+    return true if Rails.root.join('Gemfile.lock').mtime > manifest_mtime
+
     WATCHED_TREES.any? { |tree| stale_tree?(Rails.root.join(tree), manifest_mtime) }
   end
 

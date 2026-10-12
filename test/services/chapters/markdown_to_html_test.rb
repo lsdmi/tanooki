@@ -36,10 +36,10 @@ module Chapters
       end
     end
 
-    test 'headings start at h2 and stop at h4, without generated ids' do
+    test 'markdown heading levels stay, and h5 and h6 fold up to h4, without generated ids' do
       fragment = html("# Один\n\n## Два\n\n### Три\n\n#### Чотири\n\n##### П'ять\n\n###### Шість")
 
-      assert_equal %w[h2 h2 h3 h4 h4 h4], fragment.element_children.map(&:name)
+      assert_equal %w[h1 h2 h3 h4 h4 h4], fragment.element_children.map(&:name)
       assert_nil fragment.at_css('[id]')
     end
 

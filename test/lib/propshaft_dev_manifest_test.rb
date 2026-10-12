@@ -53,6 +53,13 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     assert_includes helper.asset_path('baka-telegram-mockup.webp'), 'baka-telegram-mockup'
   end
 
+  test 'stale? is true when Gemfile.lock is newer than the manifest' do
+    past = Rails.root.join('Gemfile.lock').mtime - 1
+    File.utime(past, past, @manifest_path)
+
+    assert PropshaftDevManifest.stale?(@manifest_path)
+  end
+
   test 'stale? watches top-level javascript files, not only controllers' do
     roots = []
     PropshaftDevManifest.stub(:stale_tree?, ->(root, _mtime) { roots.push(root).empty? }) do

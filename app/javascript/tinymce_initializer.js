@@ -778,6 +778,7 @@ const initializeTinymce = () => {
     'Block': 'Тип блоку',
     'Blocks': 'Блоки',
     'Paragraph': 'Абзац',
+    'Heading 1': 'Заголовок 1',
     'Heading 2': 'Заголовок 2',
     'Heading 3': 'Заголовок 3',
     'Heading 4': 'Заголовок 4',
@@ -877,8 +878,8 @@ const initializeTinymce = () => {
       'wordcount'
     ],
     menubar: false,
-    // No Heading 1: the chapter title is its own field, and the API sanitizer renames h1 to h2.
-    block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Blockquote=blockquote',
+    // `# ` is h1, the same as Markdown. The chapter title field is separate from headings in the body.
+    block_formats: 'Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Blockquote=blockquote',
     // The default preview copies the editor canvas color. On a dark theme that paints each row black.
     preview_styles: 'font-size font-weight font-style text-decoration color',
     // Chapter and publication editors share this toolbar. Font, size, line-height, color, and justify stay off it.
@@ -905,9 +906,10 @@ const initializeTinymce = () => {
     text_patterns: [
       { start: '*', end: '*', format: 'italic' },
       { start: '**', end: '**', format: 'bold' },
-      { start: '###', format: 'h4', trigger: 'space' },
-      { start: '##', format: 'h3', trigger: 'space' },
-      { start: '#', format: 'h2', trigger: 'space' },
+      { start: '####', format: 'h4', trigger: 'space' },
+      { start: '###', format: 'h3', trigger: 'space' },
+      { start: '##', format: 'h2', trigger: 'space' },
+      { start: '#', format: 'h1', trigger: 'space' },
       { start: '1. ', cmd: 'InsertOrderedList' },
       { start: '* ', cmd: 'InsertUnorderedList' },
       { start: '- ', cmd: 'InsertUnorderedList' }

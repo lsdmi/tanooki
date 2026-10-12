@@ -39,6 +39,10 @@ Rails.application.routes.draw do
   get '/session/new', to: redirect('/login')
   get '/register/new', to: redirect('/register')
 
+  authenticate :user, ->(user) { user.admin? } do
+    mount MissionControl::Jobs::Engine, at: '/admin/jobs'
+  end
+
   namespace :admin do
     resources :avatars, except: %i[new edit show update]
     resources :genres, except: %i[new show]

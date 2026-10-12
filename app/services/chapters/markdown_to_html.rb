@@ -13,8 +13,8 @@ module Chapters
     }.freeze
     PLUGINS = { syntax_highlighter: nil }.freeze
 
-    # The chapter title is the page h1, so headings start at h2; the composer offers nothing below h4.
-    HEADING_LEVELS = { 'h1' => 'h2', 'h5' => 'h4', 'h6' => 'h4' }.freeze
+    # Markdown levels stay: # is h1. The composer offers nothing below h4, so h5 and h6 fold up.
+    HEADING_LEVELS = { 'h5' => 'h4', 'h6' => 'h4' }.freeze
     WHOLE_DOCUMENT_FENCE = /\A\s*```[ \t]*(?:markdown|md|text|plaintext)?[ \t]*\n(?<body>.*?)\n[ \t]*```\s*\z/mi
     FENCE_LINE = /\A[ \t]*(```|~~~)/
 

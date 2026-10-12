@@ -66,7 +66,7 @@ module Chapters
     end
 
     def self.heading_prefix(node)
-      { 'h2' => '## ', 'h3' => '### ', 'h4' => '#### ', 'blockquote' => '> ' }.fetch(node.name, '')
+      { 'h1' => '# ', 'h2' => '## ', 'h3' => '### ', 'h4' => '#### ', 'blockquote' => '> ' }.fetch(node.name, '')
     end
 
     def self.inline(node)

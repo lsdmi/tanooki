@@ -43,7 +43,7 @@ module Chapters
     test 'Claude: heading, scene break, note and a system message in angle brackets' do
       fragment = answer('claude_translation')
 
-      assert_equal ['Розділ 251: Крок тіні', 1], [fragment.at_css('h2').text, fragment.css('hr').size]
+      assert_equal ['Розділ 251: Крок тіні', 1], [fragment.at_css('h1').text, fragment.css('hr').size]
       assert_equal 'тіні', fragment.at_css('span.note-reference').text
       assert_includes fragment.css('p').map(&:text), '<Попередження: витривалість 12/100>'
     end

@@ -69,8 +69,8 @@ module Chapters
       assert_equal "#{note} звичайний без примітки", clean(html).html
     end
 
-    test 'headings outside h2 to h4 and old strikethrough tags are renamed' do
-      assert_equal '<h2>1</h2><h4>5</h4><h4>6</h4><s>a</s><s>b</s>',
+    test 'h1 through h4 stay, h5 and h6 become h4, and old strikethrough tags are renamed' do
+      assert_equal '<h1>1</h1><h4>5</h4><h4>6</h4><s>a</s><s>b</s>',
                    clean('<h1>1</h1><h5>5</h5><h6>6</h6><del>a</del><strike>b</strike>').html
     end
 

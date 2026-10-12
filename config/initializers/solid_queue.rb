@@ -6,4 +6,9 @@
 SolidQueue.shutdown_timeout = 90.seconds
 
 # Runs in the bin/jobs supervisor only; web processes never start Solid Queue.
-SolidQueue.on_start { Workers::MemoryGuard.start }
+SolidQueue.on_start do
+  Workers::MemoryGuard.start
+  Analytics::JobStats.subscribe
+end
+# After running jobs have finished, so their runs make it into the last write.
+SolidQueue.on_exit { Analytics::JobStats.shutdown }

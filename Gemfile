@@ -69,6 +69,8 @@ end
 # Durable cache and job queue (MySQL-backed; same stack as production).
 gem 'solid_cache'
 gem 'solid_queue'
+# Admin dashboard for Solid Queue at /admin/jobs.
+gem 'mission_control-jobs'
 
 group :production do
   gem 'aws-sdk-s3'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -284,6 +284,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_210000) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
     t.index ["slug"], name: "index_genres_on_slug", unique: true
+  end
+
+  create_table "job_stats", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.float "duration_ms_max", null: false
+    t.float "duration_ms_sum", null: false
+    t.string "error_sample", limit: 500
+    t.integer "failures", null: false
+    t.string "job_class", null: false
+    t.integer "jobs", null: false
+    t.datetime "period_start", null: false
+    t.float "wait_ms_max", null: false
+    t.float "wait_ms_sum", null: false
+    t.index ["period_start", "job_class"], name: "index_job_stats_on_period_start_and_job_class"
   end
 
   create_table "oauth_access_grants", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|

@@ -8,12 +8,12 @@ module Chapters
   class ApiContentSanitizer
     Result = Data.define(:html, :changes)
 
-    TAGS = %w[p br strong b em i u s blockquote h2 h3 h4 hr ul ol li table thead tbody tr th td a img span].freeze
+    TAGS = %w[p br strong b em i u s blockquote h1 h2 h3 h4 hr ul ol li table thead tbody tr th td a img span].freeze
     ATTRIBUTES = {
       'a' => %w[href], 'img' => %w[src alt], 'span' => %w[class data-note data-note-id],
       'th' => %w[colspan rowspan], 'td' => %w[colspan rowspan]
     }.freeze
-    RENAMES = { 'h1' => 'h2', 'h5' => 'h4', 'h6' => 'h4', 'del' => 's', 'strike' => 's' }.freeze
+    RENAMES = { 'h5' => 'h4', 'h6' => 'h4', 'del' => 's', 'strike' => 's' }.freeze
     # Removed with everything inside; any other unknown tag is unwrapped and its text kept.
     DROP_WITH_CONTENT = %w[script style iframe frame frameset object embed applet noscript template svg math form
                            input button select textarea option canvas audio video source track link meta base

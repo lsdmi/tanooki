@@ -24,11 +24,14 @@ module Workers
       nil
     end
 
+    # The guard starts with the worker, so its own start time stands in for the process uptime.
     def initialize(limit_mb: ENV.fetch('WORKER_MEMORY_LIMIT_MB', LIMIT_MB).to_i, logger: Rails.logger,
-                   stop: -> { Process.kill('TERM', Process.pid) })
+                   stop: -> { Process.kill('TERM', Process.pid) },
+                   started_at: Process.clock_gettime(Process::CLOCK_MONOTONIC))
       @limit_mb = limit_mb
       @logger = logger
       @stop = stop
+      @started_at = started_at
       @last_logged_at = nil
       @stopping = false
     end
@@ -82,7 +85,12 @@ module Workers
       @last_logged_at = now
       yjit = yjit_mb
       @logger.info("[MemoryGuard] rss=#{rss}MB cgroup=#{cgroup_mb || '-'}MB yjit=#{yjit ? "#{yjit}MB" : 'off'} " \
-                   "limit=#{@limit_mb}MB")
+                   "limit=#{@limit_mb}MB uptime=#{uptime(now)}")
+    end
+
+    def uptime(now)
+      minutes = ((now - @started_at) / 60).floor
+      format('%<hours>dh%<minutes>02dm', hours: minutes / 60, minutes: minutes % 60)
     end
 
     def stop_worker(rss)

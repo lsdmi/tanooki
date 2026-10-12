@@ -25,6 +25,15 @@ module Chapters
       assert_equal 'Перший абзац.', error.details[:current]
     end
 
+    test 'an h1 is read and written as a markdown heading' do
+      html = '<h1><strong>Пролог</strong></h1>'
+      listed = Paragraphs.list(html)
+      rewritten = Paragraphs.apply(html, [{ n: 1, old: listed.first[:markdown], new: '# Пролог 2' }])
+
+      assert_equal '# **Пролог**', listed.first[:markdown]
+      assert_equal '<h1>Пролог 2</h1>', rewritten
+    end
+
     test 'an empty replacement deletes the block and blank lines split one' do
       deleted = Paragraphs.apply(@html, [{ n: 1, old: 'Перший абзац.', new: '' }])
       split = Paragraphs.apply(@html, [{ n: 1, old: 'Перший абзац.', new: "Альфа\n\nБета" }])

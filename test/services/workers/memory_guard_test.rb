@@ -7,7 +7,7 @@ module Workers
     setup do
       @log = StringIO.new
       @stops = 0
-      @guard = MemoryGuard.new(limit_mb: 750, logger: Logger.new(@log), stop: -> { @stops += 1 })
+      @guard = MemoryGuard.new(limit_mb: 750, logger: Logger.new(@log), stop: -> { @stops += 1 }, started_at: 0)
     end
 
     test 'logs on the first check and then every five minutes' do
@@ -50,6 +50,15 @@ module Workers
       assert_includes @log.string, 'rss=400MB'
       assert_includes @log.string, 'yjit=42MB'
       assert_includes @log.string, 'yjit=off'
+    end
+
+    test 'logs how long the worker has been up' do
+      @guard.stub(:rss_mb, 400) do
+        @guard.check(now: 0)
+        @guard.check(now: (2 * 3600) + (7 * 60) + 30)
+      end
+
+      assert_equal %w[uptime=0h00m uptime=2h07m], @log.string.scan(/uptime=\S+/)
     end
 
     test 'reads VmRSS from proc status in megabytes' do
