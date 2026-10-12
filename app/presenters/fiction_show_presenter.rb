@@ -69,13 +69,7 @@ class FictionShowPresenter
 
   def order = @params[:order] || :desc
 
-  def sorted_chapters_locals
-    {
-      fiction: @fiction,
-      order:,
-      filter: @params[:filter]
-    }
-  end
+  def sorted_chapters_locals = { fiction: @fiction, order:, filter: @params[:filter], team: @params[:team] }
 
   def bookmarks_total_count
     bookmark_stats.sum

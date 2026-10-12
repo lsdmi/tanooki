@@ -11,8 +11,8 @@ module Library
       @chapter_two = chapters(:two)
     end
 
-    test 'navigation, size and drawer share one chapter list load' do
-      assert_queries_count(1) do
+    test 'navigation, size and drawer share one chapter list and one team lookup' do
+      assert_queries_count(2) do
         ChapterNavigation.previous_chapter(@fiction, @chapter_two)
         ChapterNavigation.following_chapter(@fiction, @chapter_one)
         ChapterCatalog.chapters_size(@fiction)

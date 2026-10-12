@@ -56,7 +56,13 @@ module Fictions
         section_key: params[:section],
         order: order,
         read_filter: chapter_section_read_filter
-      )
+      ).for_team(chapter_section_team_id)
+    end
+
+    def chapter_section_team_id
+      return if chapter_section_reader_drawer?
+
+      params[:team].presence
     end
 
     def chapter_section_read_filter
@@ -86,7 +92,10 @@ module Fictions
       shown = @section_chapters.size
       total = limit && shown >= limit ? chapter_section_loader(order).total : shown
       filter = chapter_section_read_filter&.value
-      { total:, section_url: chapter_section_fiction_path(@fiction, section: params[:section], order:, filter:) }
+      url = chapter_section_fiction_path(
+        @fiction, section: params[:section], order:, filter:, team: chapter_section_team_id
+      )
+      { total:, section_url: url }
     end
   end
 end

@@ -16,6 +16,11 @@ module Fictions
       @read_filter = read_filter
     end
 
+    def for_team(team_id)
+      @team_id = team_id.presence
+      self
+    end
+
     def call(offset: 0, limit: nil)
       scope.includes(:scanlators).reorder(list_order_sql).offset(offset.to_i.clamp(0..).nonzero?).limit(limit)
     end
@@ -36,9 +41,15 @@ module Fictions
     private
 
     def scope
-      @scope ||= read_filter_scope(
-        apply_section_filter(Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer))
+      @scope ||= team_scope(
+        read_filter_scope(apply_section_filter(Library::ChapterCatalog.chapters_scope_for_list(@fiction, @viewer)))
       )
+    end
+
+    def team_scope(scope)
+      return scope if @team_id.blank?
+
+      scope.where(id: ChapterScanlator.where(scanlator_id: @team_id).select(:chapter_id))
     end
 
     def read_filter_scope(scope)

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
       get :similar_fictions
       post :toggle_order
       post :chapter_filter
+      post :chapter_team
     end
   end
   resources :fictions do

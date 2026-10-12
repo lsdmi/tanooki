@@ -19,6 +19,18 @@ module Fictions
       assert_selector 'span', text: 'Видається'
     end
 
+    test 'credits put the team with more chapters first' do
+      other = scanlators(:two)
+      FictionScanlator.create!(fiction: @fiction, scanlator: other)
+      [chapters(:one), chapters(:two)].each { |chapter| ChapterScanlator.create!(chapter:, scanlator: other) }
+      extra = Chapter.create!(fiction: @fiction, user: @user, title: 'Extra', number: 3, content: 'x' * 500,
+                              scanlator_ids: [other.id])
+      ChapterScanlator.create!(chapter: extra, scanlator: other)
+      render_hero
+
+      assert_selector 'p.author', text: /Переклад:\s+Two, One/
+    end
+
     test 'credits link the author and every translation team' do
       @fiction.update!(author: 'Автор Твору')
       render_hero

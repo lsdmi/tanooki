@@ -34,7 +34,7 @@
         <section class="flex flex-col gap-6 md:gap-5">
           <% if fiction_has_listable_chapters?(@fiction, current_user) %>
             <%= turbo_frame_tag 'sort-chapters' do %>
-              <%= render 'chapters', fiction: @fiction, order: @show_presenter.order, continue_chapter: @show_presenter.list_continue_chapter %>
+              <%= render 'chapters', fiction: @fiction, order: @show_presenter.order, continue_chapter: @show_presenter.list_continue_chapter, team: remembered_chapter_team(@fiction) %>
             <% end %>
           <% elsif @fiction.license_chapters_state == :removed %>
             <%= render 'license_removed', fiction: @fiction, progress_chapter: @show_presenter.reading_progress&.chapter %>

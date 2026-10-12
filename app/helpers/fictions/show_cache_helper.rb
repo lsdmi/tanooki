@@ -20,8 +20,13 @@ module Fictions
         I18n.locale,
         cookies[:color_theme].presence || 'light',
         (adult_content_acknowledged? if fiction.age_labelled?),
+        remembered_chapter_team(fiction),
         fragment_cache_version_bucket(GUEST_FRAGMENT_EXPIRY)
       ]
+    end
+
+    def remembered_chapter_team(fiction)
+      Chapters::TeamChoice.read(cookies, fiction.id)
     end
 
     def guest_fiction_show_fragment_expires_in

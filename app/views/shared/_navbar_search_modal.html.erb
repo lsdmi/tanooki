@@ -36,12 +36,12 @@
       <div class="mb-4">
         <h3 class="text-sm font-semibold text-fg mb-2">Щойно Переглянуті Ранобе</h3>
         <ul class="text-sm font-normal text-fg-muted space-y-2">
-          <% recent_ranobe.each do |progress| %>
+          <% recent_ranobe.each do |fiction| %>
             <li class="flex items-center">
               <svg class="w-4 h-4 text-fg-muted me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
               </svg>
-              <%= link_to progress.fiction_title, fiction_path(progress.fiction), class: 'hover:underline' %>
+              <%= link_to fiction.title, fiction_path(fiction), class: 'hover:underline' %>
             </li>
           <% end %>
         </ul>

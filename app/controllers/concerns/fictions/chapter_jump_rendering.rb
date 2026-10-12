@@ -11,7 +11,8 @@ module Fictions
 
     def chapter_jump_payload(order)
       listed = Library::ChapterCatalog.listed_chapters(@fiction, viewer: current_user)
-      result = chapter_jump_result(chapter_jump_filter.listed(listed), order)
+      visible = chapter_jump_filter.listed(chapter_jump_team.listed(listed))
+      result = chapter_jump_result(visible, order)
       return { error: chapter_jump_error(result, listed) } unless result.found?
 
       html = render_to_string(partial: 'fictions/chapter_section_items', formats: :html,
@@ -22,7 +23,9 @@ module Fictions
     def chapter_jump_result(listed, order)
       Fictions::ChapterJump.new(
         listed:,
-        sections: helpers.chapter_list_section_index(@fiction, order:, read_filter: chapter_jump_filter),
+        sections: helpers.chapter_list_section_index(
+          @fiction, order:, read_filter: chapter_jump_filter, team_filter: chapter_jump_team
+        ),
         query: params[:number],
         section_rows: ->(section) { helpers.fiction_section_chapters(@fiction, section, order:, scanlators: false) },
         chapter_id: Integer(params[:chapter_id].to_s, 10, exception: false)
@@ -57,7 +60,13 @@ module Fictions
     end
 
     def chapter_jump_section_url(section, order)
-      helpers.fiction_chapter_section_path(@fiction, section[:section_key], order:, filter: chapter_jump_filter.value)
+      helpers.fiction_chapter_section_path(
+        @fiction, section[:section_key], order:, filter: chapter_jump_filter.value, team: chapter_jump_team.value
+      )
+    end
+
+    def chapter_jump_team
+      @chapter_jump_team ||= Chapters::TeamFilter.new(params[:team], teams: Fictions::TeamsByChapters.call(@fiction))
     end
 
     def chapter_jump_filter

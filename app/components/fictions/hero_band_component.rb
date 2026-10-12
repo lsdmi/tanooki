@@ -81,7 +81,7 @@ module Fictions
     end
 
     def scanlators
-      @scanlators ||= fiction.scanlators.to_a
+      @scanlators ||= TeamsByChapters.call(fiction)
     end
   end
 end

@@ -24,7 +24,7 @@ class FictionsController < ApplicationController
   ].freeze
 
   GUEST_SHOW_ACTIONS = %i[comments sidebar_stats similar_fictions].freeze
-  CHAPTER_LIST_ACTIONS = %i[toggle_order chapter_filter chapter_section chapter_jump].freeze
+  CHAPTER_LIST_ACTIONS = %i[toggle_order chapter_filter chapter_team chapter_section chapter_jump].freeze
 
   before_action :authenticate_user!, except: %i[index show details] + CHAPTER_LIST_ACTIONS + GUEST_SHOW_ACTIONS
   before_action :set_fiction, only: %i[show edit update destroy] + CHAPTER_LIST_ACTIONS + GUEST_SHOW_ACTIONS
@@ -79,6 +79,12 @@ class FictionsController < ApplicationController
   end
 
   def chapter_filter
+    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
+    render turbo_stream: sorted_chapters_turbo_streams
+  end
+
+  def chapter_team
+    Chapters::TeamChoice.write(cookies, @fiction.id, params[:team])
     @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
     render turbo_stream: sorted_chapters_turbo_streams
   end

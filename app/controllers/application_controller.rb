@@ -107,8 +107,8 @@ class ApplicationController < ActionController::Base
   end
 
   def recent_ranobe
-    Rails.cache.fetch('recent_ranobe', expires_in: 1.hour) do
-      ReadingProgress.includes(:fiction).order(:updated_at).last(3)
+    Rails.cache.fetch('recent_ranobe/v2', expires_in: 1.hour) do
+      Reading::RecentRanobe.call
     end
   end
 

@@ -3,10 +3,10 @@
 module Chapters
   # View helpers for chapter list accordion sections.
   module ListSectionsHelper
-    def chapter_list_section_index(fiction, order:, viewer: current_user, read_filter: nil)
+    def chapter_list_section_index(fiction, order:, viewer: current_user, read_filter: nil, team_filter: nil)
       listed = Library::ChapterCatalog.listed_chapters(fiction, viewer:)
       sections = ListSectionIndex.new(listed, order:).call
-      read_filter ? read_filter.sections(sections, listed) : sections
+      filtered_sections(sections, listed, team_filter, read_filter)
     end
 
     # A licensed work lists only its preview, so the group says so: «Том 1 · Ознайомчий фрагмент · Розділи 1–6».
@@ -39,8 +39,15 @@ module Chapters
       t('fictions.chapters_tab.jump.placeholder_range', range: fiction.license_preview.available_range)
     end
 
-    def fiction_chapter_section_path(fiction, section_key, order:, filter: nil)
-      chapter_section_fiction_path(fiction, section: section_key, order:, filter:)
+    def fiction_chapter_section_path(fiction, section_key, order:, filter: nil, team: nil)
+      chapter_section_fiction_path(fiction, section: section_key, order:, filter:, team:)
+    end
+
+    def filtered_sections(sections, listed, team_filter, read_filter)
+      sections = team_filter.sections(sections, listed) if team_filter&.active?
+      return sections unless read_filter&.active?
+
+      read_filter.sections(sections, listed)
     end
 
     # Only the fiction page list shows scanlator names; the reader drawer does not.

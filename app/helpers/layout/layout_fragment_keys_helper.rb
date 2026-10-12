@@ -9,7 +9,7 @@ module Layout
 
     def navbar_fragment_cache_key(section = :brand)
       [
-        'navbar/v5/shared',
+        'navbar/v6/shared',
         section.to_s,
         I18n.locale,
         cookies[:color_theme].presence || 'light',
