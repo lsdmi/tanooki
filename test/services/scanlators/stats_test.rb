@@ -44,6 +44,22 @@ module Scanlators
       assert_equal 0, stats.total_views
     end
 
+    test 'counts thanks on non-draft chapters' do
+      chapter = scanlators(:one).chapters.not_draft.first
+      ChapterThank.create!(user: users(:user_two), chapter:)
+
+      assert_equal 1, Stats.compute(scanlators(:one)).total_thanks_count
+    end
+
+    test 'old cache hashes without thanks still load as zero' do
+      stats = Stats.from_h(
+        chapters_count: 1, total_views: 2, active_recently: true,
+        average_rating: 4.0, total_rating_count: 1
+      )
+
+      assert_equal 0, stats.total_thanks_count
+    end
+
     private
 
     def backdate_scanlator_chapters!(scanlator, time)

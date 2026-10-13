@@ -1,0 +1,45 @@
+<%= tag.section id: 'chapter-thanks', class: ROOT, aria: { labelledby: 'chapter-thanks-title' },
+                data: (stimulus_data if can_thank?) do %>
+  <h2 id="chapter-thanks-title" class="<%= TITLE %>"><%= title %></h2>
+
+  <% if can_thank? %>
+    <%= tag.button type: 'button', class: pill_class,
+                   aria: { pressed: thanked?, label: "#{button_label}, #{count_label}" },
+                   data: { chapter_thanks_target: 'button', action: 'chapter-thanks#toggle' } do %>
+      <span data-chapter-thanks-target="idleIcon" class="<%= 'hidden' if thanked? %>">
+        <%= stroke_icon(:heart, HEART) %>
+      </span>
+      <span data-chapter-thanks-target="thankedIcon" class="<%= thanked? ? '' : 'hidden' %>">
+        <%= stroke_icon(:heart, HEART_THANKED) %>
+      </span>
+      <span data-chapter-thanks-target="label"><%= button_label %></span>
+      <span class="<%= DIVIDER %>" aria-hidden="true">|</span>
+      <span data-chapter-thanks-target="count" aria-live="polite"><%= thanks_count %></span>
+    <% end %>
+  <% elsif owner? %>
+    <p class="<%= OWNER_COUNT %>" aria-live="polite"><%= count_label %></p>
+    <p class="<%= CREDIT %>"><%= t('chapters.thanks.owner_description') %></p>
+  <% else %>
+    <p class="<%= OWNER_COUNT %>" aria-live="polite"><%= count_label %></p>
+    <p class="<%= GUEST %>">
+      <%= link_to t('chapters.thanks.guest_cta'), login_path, class: GUEST_LINK %>
+    </p>
+  <% end %>
+
+  <% if credit %>
+    <p class="<%= CREDIT %>"><%= credit %></p>
+  <% end %>
+
+  <% if can_thank? %>
+    <%= tag.p t('chapters.thanks.status_thanked'), class: "#{STATUS}#{' hidden' unless thanked?}",
+              data: { chapter_thanks_target: 'status' } %>
+  <% end %>
+
+  <% if support_url %>
+    <%= tag.p class: "#{SUPPORT}#{' hidden' unless show_support?}", data: { chapter_thanks_target: 'support' } do %>
+      <%= t('chapters.thanks.support_prompt') %>
+      <%= link_to t('chapters.thanks.support_link'), support_url, class: SUPPORT_LINK,
+                 target: '_blank', rel: 'noopener noreferrer' %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -98,7 +98,7 @@ class ChaptersController < ApplicationController
   end
 
   def set_chapter
-    @chapter = @commentable = Chapter.friendly.find(params.expect(:id))
+    @chapter = @commentable = Chapter.friendly.includes(:scanlators).find(params.expect(:id))
   end
 
   def chapter_params

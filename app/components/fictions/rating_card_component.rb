@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fictions
-  # «Якість перекладу» (Figma 10089:11997): the average, five stars and the rating count. Signed-in readers rate with
+  # «Оцінка твору» (Figma 10089:11997): the average, five stars and the rating count. Signed-in readers rate with
   # the stars (rating_controller.js), which show their own rating; guests see the average and a login prompt.
   class RatingCardComponent < ViewComponent::Base
     include AboutCardStyles

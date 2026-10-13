@@ -1,5 +1,6 @@
-/* Adult content gate: blur chapter prose until the user dismisses the 18+ banner */
-.immersive-reader .adult-content-gate--locked #user-content {
+/* Adult content gate: blur chapter prose and the thanks bar until the user dismisses the 18+ banner */
+.immersive-reader .adult-content-gate--locked #user-content,
+.immersive-reader .adult-content-gate--locked .chapter-thanks-bar {
   filter: blur(2.5px);
   pointer-events: none;
   user-select: none;
@@ -7,7 +8,8 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .immersive-reader #user-content {
+  .immersive-reader #user-content,
+  .immersive-reader .chapter-thanks-bar {
     transition: filter 200ms ease;
   }
 }

@@ -73,6 +73,14 @@ end %>
             ·
           <% end %>
           <%= l(chapter.public_at, format: :shortest) %>
+          <% if chapter.thanks_count.positive? %>
+            <span class="mx-1" aria-hidden="true">·</span>
+            <span class="inline-flex items-center gap-0.5">
+              <span class="sr-only"><%= t('chapters.thanks.list_aria') %></span>
+              <%= stroke_icon(:heart, 'size-3 shrink-0 fill-current text-status-danger-solid') %>
+              <%= chapter.thanks_count %>
+            </span>
+          <% end %>
         </p>
         <% if continue_row %>
           <p class="text-xs/5 font-semibold text-fg-brand md:hidden" aria-hidden="true"><%= t('fictions.chapters_tab.continue_mobile') %></p>

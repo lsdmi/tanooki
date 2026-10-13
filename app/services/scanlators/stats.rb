@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 module Scanlators
-  # Aggregated scanlator show-page stats (chapters, views, activity, ratings).
+  # Aggregated scanlator show-page stats (chapters, views, activity, ratings, thanks).
   class Stats
     ACTIVE_WINDOW = 60.days
 
-    attr_reader :chapters_count, :total_views, :average_rating, :total_rating_count
+    attr_reader :chapters_count, :total_views, :average_rating, :total_rating_count, :total_thanks_count
 
-    def initialize(chapters_count:, total_views:, active_recently:, average_rating:, total_rating_count:)
-      @chapters_count = chapters_count
-      @total_views = total_views
-      @active_recently = active_recently
-      @average_rating = average_rating
-      @total_rating_count = total_rating_count
+    def initialize(**attrs)
+      @chapters_count = attrs.fetch(:chapters_count)
+      @total_views = attrs.fetch(:total_views)
+      @active_recently = attrs.fetch(:active_recently)
+      @average_rating = attrs.fetch(:average_rating)
+      @total_rating_count = attrs.fetch(:total_rating_count)
+      @total_thanks_count = attrs.fetch(:total_thanks_count, 0)
     end
 
     def active_recently?
@@ -25,7 +26,8 @@ module Scanlators
         total_views: total_views,
         active_recently: active_recently?,
         average_rating: average_rating,
-        total_rating_count: total_rating_count
+        total_rating_count: total_rating_count,
+        total_thanks_count: total_thanks_count
       }
     end
 
@@ -35,7 +37,8 @@ module Scanlators
         total_views: hash[:total_views],
         active_recently: hash.fetch(:active_recently) { hash[:active_this_month] },
         average_rating: hash[:average_rating],
-        total_rating_count: hash[:total_rating_count]
+        total_rating_count: hash[:total_rating_count],
+        total_thanks_count: hash.fetch(:total_thanks_count, 0)
       )
     end
 
@@ -47,6 +50,7 @@ module Scanlators
         chapters_count: chapters.count,
         total_views: chapters.sum(:views),
         active_recently: active_recently?(chapters),
+        total_thanks_count: chapters.sum(:thanks_count),
         **rating_stats(fiction_ids)
       )
     end

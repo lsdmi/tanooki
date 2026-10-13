@@ -6,7 +6,7 @@ module Scanlators
     CACHE_EXPIRY = 1.hour
 
     delegate :chapters_count, :total_views, :active_recently?, :average_rating, :total_rating_count,
-             to: :stats
+             :total_thanks_count, to: :stats
 
     def initialize(scanlator)
       @scanlator = scanlator

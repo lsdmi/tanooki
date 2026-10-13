@@ -59,4 +59,15 @@ class FictionsChapterListLayoutTest < ActionDispatch::IntegrationTest
     assert_select "#{row} span.hidden.md\\:inline", text: 'Розділ 1 — Директор Хо'
     assert_select "#{row} span.md\\:hidden", text: 'Директор Хо'
   end
+
+  test 'a chapter with thanks shows a heart next to the date' do
+    chapter = chapters(:two)
+    ChapterThank.where(chapter:).delete_all
+    ChapterThank.create!(user: users(:user_two), chapter:)
+    sign_in @user
+    get fiction_url(@fiction)
+
+    assert_select "#chapter_list_chapter_#{chapter.id}", text: /1/
+    assert_select "#chapter_list_chapter_#{chapter.id} .sr-only", text: I18n.t('chapters.thanks.list_aria')
+  end
 end

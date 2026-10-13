@@ -7,6 +7,7 @@ class Fiction < ApplicationRecord
   include FictionListingProgress
   include FictionLicense
   include FictionContentRating
+  include FictionThanks
   include NormalizesWhitespace
 
   normalizes_squished :title, :alternative_title, :english_title, :author, :description, :short_description

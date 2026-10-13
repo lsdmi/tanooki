@@ -99,6 +99,11 @@ Rails.application.routes.draw do
     member do
       post :record_progress
     end
+    resources :revisions, only: [], module: :chapters do
+      member do
+        post :revert
+      end
+    end
     resource :read, only: %i[create destroy], module: :chapters
     resources :thanks, only: :create, controller: 'chapter_thanks'
   end

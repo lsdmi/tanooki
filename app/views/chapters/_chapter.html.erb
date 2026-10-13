@@ -8,6 +8,8 @@
     <%= reader_content.render %>
   </div>
 
+  <%= render Chapters::ThanksBarComponent.new(chapter:, user: current_user) %>
+
   <%= render "shared/adsense_chapter_reader_slot", placement: :bottom, navigation_key: chapter.id %>
   <%= render "chapter_navigation", previous_chapter: previous_chapter, next_chapter: next_chapter, placement: :bottom %>
   <%= render "reader_bottom_section", chapter: chapter, fiction: chapter.fiction %>

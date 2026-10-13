@@ -1,0 +1,38 @@
+<section class="mb-6 rounded-2xl border border-line bg-card p-4 shadow-lg sm:p-6">
+  <h2 class="text-lg font-semibold text-fg"><%= t('chapters.revisions.title') %></h2>
+  <p class="mt-1 text-sm text-fg-muted"><%= t('chapters.revisions.intro') %></p>
+  <ul class="mt-4 divide-y divide-line">
+    <% revisions.each do |revision| %>
+      <% changes = changes_for(revision) %>
+      <li class="py-3">
+        <details class="group">
+          <summary class="cursor-pointer list-none text-sm font-medium text-fg [&::-webkit-details-marker]:hidden">
+            <%= l(revision.created_at, format: :short_datetime) %>
+          </summary>
+          <div class="mt-3 space-y-2 text-sm text-fg-secondary">
+            <% if changes[:previous_title] %>
+              <p><%= t('chapters.revisions.previous_title', title: changes[:previous_title]) %></p>
+            <% end %>
+            <% changes[:rows].each do |row| %>
+              <% case row[:change] %>
+              <% when 'changed' %>
+                <p><span class="font-medium text-fg"><%= t('chapters.revisions.was') %>:</span> <%= snippet(row[:old]) %></p>
+                <p><span class="font-medium text-fg"><%= t('chapters.revisions.now') %>:</span> <%= snippet(row[:new]) %></p>
+              <% when 'removed' %>
+                <p><span class="font-medium text-fg"><%= t('chapters.revisions.removed') %>:</span> <%= snippet(row[:old]) %></p>
+              <% when 'added' %>
+                <p><span class="font-medium text-fg"><%= t('chapters.revisions.added') %>:</span> <%= snippet(row[:new]) %></p>
+              <% end %>
+            <% end %>
+            <% if changes[:hidden].positive? %>
+              <p class="text-fg-muted"><%= t('chapters.revisions.more', count: changes[:hidden]) %></p>
+            <% end %>
+          </div>
+          <%= button_to t('chapters.revisions.restore'), revert_path(revision), method: :post,
+                        class: 'mt-3 text-sm font-medium text-fg underline underline-offset-2',
+                        form: { data: { turbo_confirm: t('chapters.revisions.confirm') } } %>
+        </details>
+      </li>
+    <% end %>
+  </ul>
+</section>

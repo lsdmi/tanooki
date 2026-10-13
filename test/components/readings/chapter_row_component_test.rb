@@ -55,6 +55,15 @@ module Readings
       assert_selector "button.sweet-alert-button[data-sweet-alert-url-value='#{reading_path(@chapter, page: 1)}']"
     end
 
+    test 'shows the thanks count next to comments' do
+      ChapterThank.find_by(user: users(:user_two), chapter: @chapter)&.destroy!
+      ChapterThank.create!(user: users(:user_two), chapter: @chapter)
+      render_inline(ChapterRowComponent.new(chapter: @chapter.reload, variant: :table_row, pagy_page: 1))
+
+      assert_text @chapter.thanks_count.to_s
+      assert_text I18n.t('chapters.thanks.studio_label')
+    end
+
     test 'rejects unknown variant' do
       assert_raises(ArgumentError) do
         ChapterRowComponent.new(chapter: @chapter, variant: :grid)

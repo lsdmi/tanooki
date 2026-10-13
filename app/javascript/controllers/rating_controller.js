@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// «Якість перекладу» card: the stars show the reader's own rating; the average and count come back from the server.
+// «Оцінка твору» card: the stars show the reader's own rating; the average and count come back from the server.
 export default class extends Controller {
   static targets = ["star", "average", "summary"]
   static values = { url: String }

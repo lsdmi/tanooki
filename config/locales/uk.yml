@@ -699,13 +699,13 @@ uk:
         postponed: Відкладено
         dropped: Покинуто
       rating:
-        title: Якість перекладу
+        title: Оцінка твору
         info: Про оцінку
-        info_text: Середня оцінка читачів за якість перекладу, від 1 до 5 зірок.
+        info_text: Середня оцінка читачів за сам твір, від 1 до 5 зірок.
         summary: з 5 · %{ratings}
-        hint: Натисніть на зірку, щоб поставити свою оцінку
+        hint: Натисніть на зірку, щоб оцінити твір
         login: Увійдіть,
-        login_hint: щоб оцінити переклад
+        login_hint: щоб оцінити твір
         star:
           one: Оцінити на %{count} зірку
           few: Оцінити на %{count} зірки
@@ -729,6 +729,21 @@ uk:
       other: Показати ще %{count} відповіді
   chapters:
     thanks:
+      title: Сподобався розділ?
+      status_thanked: Дякуємо! Команда це побачить.
+      button: Дякую
+      button_thanked: Ви подякували
+      credit: "Переклад: %{teams}"
+      support_prompt: Хочете підтримати команду більше?
+      support_link: Підтримати →
+      owner_title: Подяки читачів
+      owner_description: Читачі дякують за цей розділ
+      guest_cta: Увійдіть, щоб подякувати перекладачам
+      list_aria: Подяки
+      fiction_total: Подяки читачів
+      scanlator_label: Подяк
+      studio_label: подяк
+      error: Не вдалося зберегти подяку. Спробуйте ще раз.
       count:
         one: "%{count} подяка"
         few: "%{count} подяки"
@@ -743,6 +758,7 @@ uk:
       destroy_success: Розділ видалено.
       draft_saved: Начерк збережено.
       unpublished: Повернуто в начерк.
+      revision_restored: Попередній варіант розділу повернуто.
     buttons:
       back_to_chapters: Назад до розділів
       cancel: Скасувати
@@ -751,6 +767,17 @@ uk:
       publish: Надіслати
     confirms:
       unpublish: Розділ зникне зі сторінки твору та каталогу. Продовжити?
+    revisions:
+      title: Історія змін
+      intro: Варіанти тексту до правок із чату. «Повернути» замінює поточний текст на обраний варіант.
+      previous_title: "Заголовок був «%{title}»."
+      was: Було
+      now: Стало
+      removed: Прибрано
+      added: Додано
+      more: Ще %{count} змін не показано.
+      restore: Повернути
+      confirm: Замінити поточний текст розділу на цей варіант?
     alerts:
       draft: Начерк
       not_yet_public: Цей розділ ще недоступний для читання.

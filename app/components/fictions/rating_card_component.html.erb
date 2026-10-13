@@ -33,4 +33,11 @@
       <%= t('fictions.about.rating.login_hint') %>
     </p>
   <% end %>
+  <% if fiction.thanks_count.positive? %>
+    <p class="flex items-center gap-1.5 text-xs/5 text-fg-muted">
+      <%= stroke_icon(:heart, 'size-3.5 shrink-0 fill-current text-status-danger-solid') %>
+      <span><%= t('chapters.thanks.fiction_total') %></span>
+      <span class="font-medium text-fg"><%= t('chapters.thanks.count', count: fiction.thanks_count) %></span>
+    </p>
+  <% end %>
 <% end %>

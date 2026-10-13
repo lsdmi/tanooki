@@ -4,6 +4,7 @@ module Readings
   # Table row or mobile card for a chapter on the readings (author studio) list.
   class ChapterRowComponent < ViewComponent::Base
     include ChapterRowComponentStyles
+    include Ui::StrokeIconHelper
     include Layout::SweetAlertHelper
     include Layout::TurboDriveHelper
 

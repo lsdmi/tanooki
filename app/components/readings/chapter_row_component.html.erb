@@ -31,6 +31,11 @@
           <span class="font-medium"><%= chapter.comments_count %></span>
           <span class="text-xs">коментарів</span>
         </div>
+        <div class="flex items-center space-x-2">
+          <%= stroke_icon(:heart, "#{Readings::ChapterRowComponentStyles::STAT_ICON_CLASSES} fill-current") %>
+          <span class="font-medium"><%= chapter.thanks_count %></span>
+          <span class="text-xs"><%= t('chapters.thanks.studio_label') %></span>
+        </div>
       </div>
     </td>
     <td class="p-4 text-right">
@@ -59,6 +64,11 @@
         </svg>
         <span class="font-medium text-fg"><%= chapter.comments_count %></span>
         <span class="text-xs text-fg-muted">коментарів</span>
+      </div>
+      <div class="flex items-center space-x-1">
+        <%= stroke_icon(:heart, "#{Readings::ChapterRowComponentStyles::STAT_ICON_CLASSES} fill-current") %>
+        <span class="font-medium text-fg"><%= chapter.thanks_count %></span>
+        <span class="text-xs text-fg-muted"><%= t('chapters.thanks.studio_label') %></span>
       </div>
     </div>
     <div class="flex items-center justify-end pt-3 border-t border-line">

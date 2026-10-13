@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Database numbers for the monthly health check: buffer pool, memory areas, largest tables,
+# and the heaviest digests. Same queries as the Measure block in docs/completed/MYSQL_MEMORY_AND_LOAD.md.
+#
+#   bin/db-health
+#
+# Runs through bin/prod-db (read-only). Needs .env.production.local.
+
+PROD_DB = File.expand_path('prod-db', __dir__)
+
+def run_sql(sql)
+  system(PROD_DB, '--batch', '-e', sql) || abort('bin/prod-db failed')
+end
+
+def query(sql)
+  IO.popen([PROD_DB, '--batch', '-N', '-e', sql], err: %i[child out]) do |io|
+    out = io.read
+    abort "bin/prod-db failed:\n#{out}" unless Process.wait2.last.success?
+
+    out
+  end
+end
+
+def status_value(name)
+  query("SELECT VARIABLE_VALUE FROM performance_schema.global_status WHERE VARIABLE_NAME = '#{name}'").to_f
+end
+
+def print_section(title)
+  puts "\n#{title}"
+end
+
+def print_buffer_pool_summary
+  print_section('Buffer pool and connections')
+  reads = status_value('Innodb_buffer_pool_reads')
+  requests = status_value('Innodb_buffer_pool_read_requests')
+  miss_pct = requests.positive? ? ((100.0 * reads) / requests).round(3) : 0
+
+  puts "buffer_pool_mb\t#{query('SELECT ROUND(@@innodb_buffer_pool_size / 1024 / 1024)').to_i}"
+  puts "miss_pct\t#{miss_pct}"
+  puts "uptime_days\t#{(status_value('Uptime') / 86_400).round(1)}"
+end
+
+def print_status_counters
+  run_sql([
+    'SELECT VARIABLE_NAME AS name, VARIABLE_VALUE AS value',
+    'FROM performance_schema.global_status',
+    "WHERE VARIABLE_NAME IN ('Uptime', 'Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests',",
+    "'Created_tmp_tables', 'Created_tmp_disk_tables', 'Threads_connected', 'Max_used_connections')",
+    "ORDER BY FIELD(VARIABLE_NAME, 'Uptime', 'Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests',",
+    "'Created_tmp_tables', 'Created_tmp_disk_tables', 'Threads_connected', 'Max_used_connections')"
+  ].join(' '))
+end
+
+def print_memory_areas
+  print_section('MySQL memory by area (MB)')
+  run_sql([
+    "SELECT SUBSTRING_INDEX(event_name, '/', 2) AS area,",
+    'ROUND(SUM(current_number_of_bytes_used) / 1048576) AS cur_mb',
+    'FROM performance_schema.memory_summary_global_by_event_name',
+    'GROUP BY area ORDER BY cur_mb DESC LIMIT 6'
+  ].join(' '))
+end
+
+def print_largest_tables
+  print_section('Largest tables (MB)')
+  run_sql([
+    'SELECT table_name, ROUND((data_length + index_length) / 1048576) AS mb,',
+    'ROUND(data_free / 1048576) AS free_mb',
+    'FROM information_schema.tables',
+    'WHERE table_schema = DATABASE()',
+    'ORDER BY data_length + index_length DESC LIMIT 10'
+  ].join(' '))
+end
+
+def print_top_digests
+  print_section('Top digests by total time')
+  run_sql([
+    'SELECT LEFT(digest_text, 120) AS q, count_star,',
+    'ROUND(avg_timer_wait / 1e9) AS avg_ms,',
+    'ROUND(sum_timer_wait / 1e12) AS total_s,',
+    'sum_rows_examined',
+    'FROM performance_schema.events_statements_summary_by_digest',
+    'WHERE schema_name = DATABASE()',
+    'ORDER BY sum_timer_wait DESC LIMIT 10'
+  ].join(' '))
+end
+
+puts 'Database health (tanooki production)'
+print_buffer_pool_summary
+print_status_counters
+print_memory_areas
+print_largest_tables
+print_top_digests
