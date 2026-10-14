@@ -33,7 +33,7 @@ module Api
       record.scopes.to_a
     end
 
-    delegate :expires_at, to: :record
+    delegate :expires_at, :application_id, to: :record
 
     def permits?(scope)
       scope = scope.to_s

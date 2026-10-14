@@ -10,6 +10,7 @@ module Api
         tool_name 'get_chapter'
         title 'Get chapter'
         description 'One chapter this token can see: paragraphs, version, and edit_url. ' \
+                    'Image addresses are in html. Call view_chapter_image to see one picture. ' \
                     'Pass chapter_id, or fiction plus number. Several matches is an error. ' \
                     'Needs chapters:read.'
         input_schema(

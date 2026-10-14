@@ -24,6 +24,7 @@ module Pokemons
     # Id order keeps two battles between the same pair from deadlocking; reloading under the lock lets the cooldown
     # check stop a second tab from fighting again before the first battle commits.
     def lock_profiles(*users)
+      ActiveRecord::Associations::Preloader.new(records: users, associations: :trainer_profile).call
       users.sort_by(&:id).each { |user| user.trainer_profile.lock! }
     end
 

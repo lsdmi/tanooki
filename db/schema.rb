@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_14_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -98,12 +98,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_180000) do
     t.text "body", size: :long, null: false
     t.bigint "chapter_id", null: false
     t.datetime "created_at", null: false
+    t.bigint "oauth_application_id"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["api_token_id"], name: "index_chapter_revisions_on_api_token_id"
     t.index ["chapter_id", "created_at"], name: "index_chapter_revisions_on_chapter_id_and_created_at"
     t.index ["chapter_id"], name: "index_chapter_revisions_on_chapter_id"
+    t.index ["oauth_application_id"], name: "index_chapter_revisions_on_oauth_application_id"
     t.index ["user_id"], name: "index_chapter_revisions_on_user_id"
   end
 
@@ -831,6 +833,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_180000) do
   add_foreign_key "bookshelves", "users"
   add_foreign_key "chapter_revisions", "api_tokens", on_delete: :nullify
   add_foreign_key "chapter_revisions", "chapters"
+  add_foreign_key "chapter_revisions", "oauth_applications", on_delete: :nullify
   add_foreign_key "chapter_revisions", "users"
   add_foreign_key "chapter_scanlators", "chapters"
   add_foreign_key "chapter_scanlators", "scanlators"

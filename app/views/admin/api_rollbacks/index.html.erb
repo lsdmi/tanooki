@@ -1,0 +1,11 @@
+<section class="mx-auto max-w-3xl px-4 py-10">
+  <h1 class="text-2xl font-bold text-fg"><%= t('admin.api_rollbacks.title') %></h1>
+  <p class="mt-2 text-sm/6 text-fg-muted"><%= t('admin.api_rollbacks.intro') %></p>
+
+  <% if @tokens.empty? && @oauth.empty? %>
+    <p class="mt-8 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm/5 text-fg-muted"><%= t('admin.api_rollbacks.empty') %></p>
+  <% else %>
+    <%= render 'sources', title: t('admin.api_rollbacks.tokens'), rows: @tokens, kind: :token %>
+    <%= render 'sources', title: t('admin.api_rollbacks.chats'), rows: @oauth, kind: :oauth %>
+  <% end %>
+</section>

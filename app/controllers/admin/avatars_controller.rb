@@ -6,7 +6,7 @@ module Admin
     before_action :authenticate_user!, :verify_user_permissions
 
     def index
-      @avatars = Avatar.order(created_at: :desc)
+      @avatars = Avatar.includes(image_attachment: :blob).order(created_at: :desc)
       @avatar = Avatar.new
     end
 

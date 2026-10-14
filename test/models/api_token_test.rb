@@ -35,24 +35,13 @@ class ApiTokenTest < ActiveSupport::TestCase
     end
   end
 
-  test 'a member who left every team can still read' do
+  test 'a member who left every team is rejected' do
     user = users(:user_two)
     token, secret = issue(user:)
     user.scanlator_users.destroy_all
 
-    assert_equal token, ApiToken.authenticate(secret)
-    assert ApiToken.authenticate(secret).permits?('chapters:read')
-  end
-
-  test 'a member who left every team cannot write' do
-    user = users(:user_two)
-    _token, secret = issue(user:)
-    user.scanlator_users.destroy_all
-    found = ApiToken.authenticate(secret)
-
-    assert_not found.permits?('chapters:write')
-    assert_not found.permits?('chapters:publish')
-    assert_not found.permits?('images:write')
+    assert token.reload.revoked_at
+    assert_nil ApiToken.authenticate(secret)
   end
 
   test 'an admin without a team cannot create a token' do

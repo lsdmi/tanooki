@@ -32,7 +32,9 @@
 !/app/assets/builds/.keep
 
 .env
+.env.analytics
 .env.production.local
+/config/google-analytics-credentials.json
 bin/prod-db
 bin/db-local-access
 bin/prod/

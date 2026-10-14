@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     resources :genres, except: %i[new show]
     resources :tags, except: %i[new show]
     resources :api_limits, only: :index
+    resources :api_rollbacks, only: %i[index create]
     resources :fiction_duplicates, only: :index do
       collection do
         post :merge

@@ -36,14 +36,16 @@ gem 'image_processing'
 gem 'ruby-vips'
 
 group :development, :test do
+  gem 'bullet'
   gem 'debug'
+  gem 'dotenv-rails'
 end
 
 group :development do
   gem 'brakeman', require: false
-  gem 'bullet'
   gem 'bundler-audit'
   gem 'erb_lint', require: false
+  gem 'google-analytics-data', require: false
   gem 'hotwire-livereload'
   gem 'letter_opener'
   gem 'lookbook'
@@ -80,7 +82,6 @@ gem 'commonmarker'
 gem 'devise'
 gem 'diff-lcs'
 gem 'doorkeeper'
-gem 'dotenv-rails'
 gem 'fastimage'
 gem 'friendly_id'
 gem 'gepub'

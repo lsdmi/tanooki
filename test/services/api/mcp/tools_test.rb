@@ -15,7 +15,10 @@ module Api
 
       test 'read tools refuse a token without chapters read' do
         context = actor(%w[images:write])
-        refused = [Tools::ListMyFictions, Tools::ListChapters, Tools::GetChapter, Tools::GetChapters, Tools::ChapterDiff]
+        refused = [
+          Tools::ListMyFictions, Tools::ListChapters, Tools::GetChapter, Tools::GetChapters,
+          Tools::ViewChapterImage, Tools::ChapterDiff
+        ]
 
         refused.each { |tool| assert_predicate call(tool, read_args(tool), context), :error? }
       end
@@ -76,7 +79,7 @@ module Api
         case tool.tool_name
         when 'list_my_fictions' then {}
         when 'list_chapters', 'get_chapters' then { fiction: @fiction.slug, from: 1, to: 2 }
-        when 'get_chapter' then { chapter_id: chapters(:one).id }
+        when 'get_chapter', 'view_chapter_image' then { chapter_id: chapters(:one).id }
         else { chapter: chapters(:one).id }
         end
       end

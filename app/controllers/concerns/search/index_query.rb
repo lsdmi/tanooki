@@ -33,6 +33,9 @@ module Search
       @fictions = show_fictions? ? @fiction_records : []
       @results = show_publications? ? @publication_records : []
       @videos = show_videos? ? @video_records : []
+      # Searchkick's chained includes is not always applied to the hydrated rows; cover cards need the blob.
+      ActiveRecord::Associations::Preloader.new(records: @fictions, associations: { cover_attachment: :blob }).call
+      ActiveRecord::Associations::Preloader.new(records: @results, associations: { cover_attachment: :blob }).call
     end
 
     def load_search_sidebar_tags
@@ -62,7 +65,7 @@ module Search
         params[:search],
         fields: ['tags^10', 'title^5', 'description'],
         boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-      ).includes(:cover_attachment)
+      ).includes(cover_attachment: :blob)
     end
 
     def video_search

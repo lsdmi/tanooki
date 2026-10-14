@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Advertising traffic summary from the Google Analytics Data API.
+#
+# Setup:
+#   1. Enable https://console.cloud.google.com/apis/library/analyticsdata.googleapis.com
+#   2. Create a service account and download its JSON key to:
+#      config/google-analytics-credentials.json
+#   3. In GA4 Admin → Property access management, add the service-account email as Viewer.
+#   4. Add GOOGLE_ANALYTICS_PROPERTY_ID and GOOGLE_APPLICATION_CREDENTIALS to .env.
+#
+# Usage:
+#   bin/analytics-report
+
+require 'google/analytics/data'
+require 'dotenv'
+
+Dotenv.load(File.expand_path('../.env', __dir__), File.expand_path('../.env.analytics', __dir__))
+
+PROPERTY_ID = ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '357980018')
+PERIODS = { 'Last 28 days' => 28, 'Last 90 days' => 90 }.freeze
+METRICS = %w[activeUsers newUsers sessions screenPageViews].freeze
+
+def date_range(days)
+  { start_date: "#{days}daysAgo", end_date: 'yesterday' }
+end
+
+def report(client, days, dimensions: [], metrics: METRICS)
+  client.run_report(
+    property: "properties/#{PROPERTY_ID}",
+    date_ranges: [date_range(days)],
+    dimensions: dimensions.map { |name| { name: name } },
+    metrics: metrics.map { |name| { name: name } }
+  )
+end
+
+def metric_values(response)
+  response.metric_headers.zip(response.rows.first.metric_values).to_h do |header, value|
+    [header.name, value.value.to_i]
+  end
+end
+
+def rows(response)
+  response.rows.to_h do |row|
+    [row.dimension_values.first.value, row.metric_values.first.value.to_i]
+  end
+end
+
+def percentage(part, total)
+  return 0 if total.zero?
+
+  (100.0 * part / total).round(1)
+end
+
+def delimited(number)
+  number.to_s.reverse.scan(/.{1,3}/).join(',').reverse
+end
+
+def print_period(client, label, days)
+  response = report(client, days)
+  values = metric_values(response)
+
+  puts label
+  puts "  Active users: #{delimited(values.fetch('activeUsers'))}"
+  puts "  New users:    #{delimited(values.fetch('newUsers'))}"
+  puts "  Sessions:     #{delimited(values.fetch('sessions'))}"
+  puts "  Page views:   #{delimited(values.fetch('screenPageViews'))}"
+  puts
+end
+
+def print_audience(client)
+  countries = rows(report(client, 90, dimensions: ['country'], metrics: ['activeUsers']))
+  devices = rows(report(client, 90, dimensions: ['deviceCategory'], metrics: ['activeUsers']))
+  total = metric_values(report(client, 90, metrics: ['activeUsers'])).fetch('activeUsers')
+
+  puts 'Audience, last 90 days'
+  puts "  Ukraine: #{percentage(countries.fetch('Ukraine', 0), total)}%"
+  puts "  Mobile:  #{percentage(devices.fetch('mobile', 0), total)}%"
+end
+
+# Resolve a relative credentials path from the repository root, regardless of the current directory.
+credentials = ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', nil)
+abort <<~MESSAGE unless credentials
+  Missing GOOGLE_APPLICATION_CREDENTIALS.
+  Download the service-account JSON key to config/google-analytics-credentials.json
+  and add its path to .env. See the setup steps at the top of bin/analytics-report.
+MESSAGE
+
+unless credentials.start_with?('/')
+  ENV['GOOGLE_APPLICATION_CREDENTIALS'] = File.expand_path("../#{credentials}", __dir__)
+end
+abort "Credentials file not found: #{ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS')}" unless
+  File.readable?(ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS'))
+
+client = Google::Analytics::Data.analytics_data
+PERIODS.each { |label, days| print_period(client, label, days) }
+print_audience(client)

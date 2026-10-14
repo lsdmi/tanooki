@@ -66,6 +66,8 @@ module TranslationRequestsResponses
     @newest_request = newest_translation_request
     @pagy, @translation_requests = pagy(remaining_translation_requests, limit: 5)
     @total_requests_count = TranslationRequest.count
+    # Cards call current_user.scanlators.include? per row; without a load that is one EXISTS each.
+    current_user&.scanlators&.load
   end
 
   def newest_translation_request

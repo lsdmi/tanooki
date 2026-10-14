@@ -48,6 +48,14 @@ module ActiveSupport
 
     setup do
       Rails.cache.clear
+      Bullet.start_request if defined?(Bullet) && Bullet.enable?
+    end
+
+    teardown do
+      next unless defined?(Bullet) && Bullet.enable?
+
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
     end
   end
 end

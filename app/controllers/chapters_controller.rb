@@ -63,14 +63,12 @@ class ChaptersController < ApplicationController
 
   def persist_chapter(failure_template:)
     saved = Chapters::Persist.call(
-      chapter: @chapter,
-      attributes: chapter_params,
-      intent: params[:intent],
-      user: current_user
+      chapter: @chapter, attributes: chapter_params, intent: params[:intent], user: current_user
     )
-    return render failure_template, status: :unprocessable_content unless saved
+    return redirect_after_persist if saved
 
-    redirect_after_persist
+    current_user.scanlators.load
+    render failure_template, status: :unprocessable_content
   end
 
   def redirect_after_persist

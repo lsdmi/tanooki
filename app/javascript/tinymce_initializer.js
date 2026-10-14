@@ -44,12 +44,13 @@ const imageUploadOptions = (textarea) => {
 const YOUTUBE_EMBED_HOSTS = new Set(['www.youtube.com', 'www.youtube-nocookie.com']);
 const YOUTUBE_ID = /^[A-Za-z0-9_-]+$/;
 
+// Decode &amp; last so a single pass cannot turn &amp;lt; into < (and similar).
 const decodeAttr = (value) => value
-  .replace(/&amp;/gi, '&')
   .replace(/&quot;/gi, '"')
   .replace(/&#39;|&apos;/gi, "'")
   .replace(/&lt;/gi, '<')
-  .replace(/&gt;/gi, '>');
+  .replace(/&gt;/gi, '>')
+  .replace(/&amp;/gi, '&');
 
 const escapeAttr = (value) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
@@ -507,13 +508,13 @@ const setupReaderAlign = (editor) => {
 const BLOCK_SELECTION_FORMATS = new Set(['p', 'h2', 'h3', 'h4', 'blockquote']);
 const SPLITTABLE_BLOCKS = new Set(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote']);
 
+// Emptiness check only (result is never reinserted as HTML). Use the DOM so tag
+// stripping cannot leave a residual "<script" via incomplete multi-char replaces.
 const isBlankHtml = (html) => {
   if (/<(?:img|iframe|hr)\b/i.test(html)) return false;
-  return html
-    .replace(/<br\s*\/?>/gi, '')
-    .replace(/&nbsp;|&#160;/gi, '')
-    .replace(/<[^>]*>/g, '')
-    .replace(/[\s\u00a0\uFEFF]/g, '') === '';
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  return (template.content.textContent || '').replace(/[\s\u00a0\uFEFF]/g, '') === '';
 };
 
 const htmlFromRange = (editor, range) => {

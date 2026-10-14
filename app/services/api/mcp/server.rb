@@ -6,10 +6,12 @@ module Api
     class Server
       INSTRUCTIONS = 'Draft is the default. Call list_chapters before create_chapter. ' \
                      'Prefer edit_paragraphs over update_chapter for a fix. ' \
-                     'After a write, show edit_url and what changed. One chapter per write.'
+                     'After a write, show edit_url and what changed. One chapter per write. ' \
+                     'To see a picture, call view_chapter_image. Do not download the image URL yourself.'
 
       TOOLS = [
         Tools::Whoami, Tools::ListMyFictions, Tools::ListChapters, Tools::GetChapter, Tools::GetChapters,
+        Tools::ViewChapterImage,
         Tools::CreateChapter, Tools::EditParagraphs, Tools::UpdateChapter, Tools::ChapterDiff,
         Tools::RevertChapter, Tools::PublishChapter, Tools::UploadImageFromUrl
       ].freeze

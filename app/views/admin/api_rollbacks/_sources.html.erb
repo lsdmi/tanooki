@@ -1,0 +1,29 @@
+<% if rows.any? %>
+  <h2 class="mt-8 text-lg font-semibold text-fg"><%= title %></h2>
+  <div class="mt-4 flex flex-col gap-4">
+    <% rows.each do |row| %>
+      <% owner = kind == :token ? row.token.user : row.user %>
+      <% label = kind == :token ? row.token.name : row.application.name %>
+      <article class="rounded-xl border border-line bg-main p-4">
+        <h3 class="text-base/6 font-semibold text-fg"><%= owner.name %></h3>
+        <p class="mt-1 text-sm/5 text-fg-muted">
+          <%= label %>
+          · <%= t('admin.api_rollbacks.revisions', count: row.count) %>
+        </p>
+        <%= form_with url: admin_api_rollbacks_path, class: 'mt-3 flex flex-wrap items-end gap-3' do %>
+          <% if kind == :token %>
+            <%= hidden_field_tag :api_token_id, row.token.id %>
+          <% else %>
+            <%= hidden_field_tag :user_id, row.user.id %>
+            <%= hidden_field_tag :oauth_application_id, row.application.id %>
+          <% end %>
+          <label class="text-sm text-fg">
+            <%= t('admin.api_rollbacks.since') %>
+            <%= datetime_field_tag :since, 1.day.ago.strftime('%Y-%m-%dT%H:%M'), class: 'mt-1 block rounded-md border border-line bg-main px-3 py-2 text-fg' %>
+          </label>
+          <%= submit_tag t('admin.api_rollbacks.revert'), class: 'rounded-md bg-fg px-3 py-2 text-sm font-medium text-main', data: { turbo_confirm: t('admin.api_rollbacks.confirm') } %>
+        <% end %>
+      </article>
+    <% end %>
+  </div>
+<% end %>

@@ -4,7 +4,8 @@ module Api
   module Mcp
     # A POST /mcp is a write only when it calls a tool that changes a chapter or uploads an image.
     class RequestKind
-      READ_TOOLS = %w[whoami list_my_fictions list_chapters get_chapter get_chapters chapter_diff].freeze
+      READ_TOOLS = %w[whoami list_my_fictions list_chapters get_chapter get_chapters view_chapter_image
+                      chapter_diff].freeze
 
       def self.read?(raw)
         new(raw).read?

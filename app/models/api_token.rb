@@ -36,7 +36,9 @@ class ApiToken < ApplicationRecord
     secret = generate_secret
     token = create!(
       user:, name:, scopes:, expires_at:,
-      token_digest: digest(secret), token_prefix: secret.first(PREFIX_LENGTH)
+      token_digest: digest(secret),
+      # Public UI hint (baka_xxx…); only the digest is the credential. Same pattern as GitHub PATs.
+      token_prefix: secret.first(PREFIX_LENGTH) # codeql[rb/clear-text-storage-sensitive-data]
     )
     token.instance_variable_set(:@secret, secret)
     token
@@ -99,7 +101,7 @@ class ApiToken < ApplicationRecord
   end
 
   def member_of_a_team
-    errors.add(:base, :no_team) if user&.scanlators&.none?
+    errors.add(:base, :no_team) if user && !user.scanlator_users.exists?
   end
 
   def within_active_limit
