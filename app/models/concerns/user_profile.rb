@@ -7,7 +7,7 @@ module UserProfile
   def profile_show_assignments
     {
       recent_publications: profile_recent_publications,
-      user_scanlators: scanlators,
+      user_scanlators: scanlators.includes(avatar_attachment: :blob),
       recent_comments: profile_recent_comments,
       recent_readings: profile_recent_readings,
       user_bookshelves: profile_featured_bookshelves
@@ -15,7 +15,7 @@ module UserProfile
   end
 
   def profile_recent_publications
-    publications.published.includes(:cover_attachment).weekly.recent.limit(3)
+    publications.published.includes(cover_attachment: :blob).weekly.recent.limit(3)
   end
 
   def profile_recent_comments
@@ -23,11 +23,11 @@ module UserProfile
   end
 
   def profile_recent_readings
-    readings.includes(fiction: :cover_attachment, chapter: {}).order(updated_at: :desc).limit(4)
+    readings.includes(fiction: { cover_attachment: :blob }, chapter: {}).order(updated_at: :desc).limit(4)
   end
 
   def profile_featured_bookshelves
-    bookshelves.includes(fictions: [:cover_attachment]).most_viewed.limit(1)
+    bookshelves.includes(fictions: { cover_attachment: :blob }).most_viewed.limit(1)
   end
 
   def profile_pokemon_stats

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -129,10 +129,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_140000) do
 
   create_table "chapters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "api_token_id"
+    t.integer "body_bytes", default: 0, null: false
     t.integer "comments_count", default: 0
     t.datetime "created_at", null: false
     t.string "created_via", limit: 16
     t.datetime "deleted_at"
+    t.string "excerpt", limit: 300
     t.bigint "fiction_id", null: false
     t.decimal "number", precision: 9, scale: 2, null: false
     t.datetime "published_at"
@@ -144,6 +146,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_140000) do
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.decimal "volume_number", precision: 9, scale: 1
+    t.integer "word_count", default: 0, null: false
     t.index ["api_token_id"], name: "index_chapters_on_api_token_id"
     t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
     t.index ["fiction_id", "deleted_at", "status", "published_at"], name: "index_chapters_on_fiction_deleted_status_published"

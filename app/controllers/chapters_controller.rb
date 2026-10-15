@@ -3,6 +3,7 @@
 # Chapter reading, comments, and authenticated create/update for translation teams.
 class ChaptersController < ApplicationController
   include Chapters::CreationAuthorization
+  include Chapters::GuestShowCaching
   include Chapters::ReaderAds
   include Chapters::ReadingEvents
   include Chapters::ShowTracking
@@ -29,7 +30,8 @@ class ChaptersController < ApplicationController
     @next_chapter = Library::ChapterNavigation.following_chapter(
       @chapter.fiction, @chapter, viewer: current_user
     )
-    @fiction_sidebar_presenter = FictionShowPresenter.new(@chapter.fiction, current_user, params)
+    # Drawer sort only needs the order param; FictionShowPresenter would pull ranks and similar lists.
+    @chapter_list_order = params[:order].presence || :desc
     assign_reader_ad_drawer_session
   end
 
@@ -96,7 +98,9 @@ class ChaptersController < ApplicationController
   end
 
   def set_chapter
-    @chapter = @commentable = Chapter.friendly.includes(:scanlators).find(params.expect(:id))
+    @chapter = @commentable = Chapter.friendly
+                                     .includes(:scanlators, fiction: { cover_attachment: :blob })
+                                     .find(params.expect(:id))
   end
 
   def chapter_params

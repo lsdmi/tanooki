@@ -31,6 +31,7 @@ module Studio
     attr_reader :user, :active_tab, :params
 
     def blogs_content_loader
+      # List uses publications.excerpt only — do not with_rich_text_description here.
       @pagy, @publications = pagy(user.publications.order(created_at: :desc), limit: 8)
     end
 
@@ -49,9 +50,9 @@ module Studio
 
     def scanlators_scope
       if user.admin?
-        Scanlator.includes(:avatar_attachment).order(:title)
+        Scanlator.includes(avatar_attachment: :blob).order(:title)
       else
-        user.scanlators.includes(:avatar_attachment).order(:title)
+        user.scanlators.includes(avatar_attachment: :blob).order(:title)
       end
     end
 

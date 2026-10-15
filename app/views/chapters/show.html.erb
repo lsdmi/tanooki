@@ -69,7 +69,7 @@
     <%= render 'reader_toc_button' %>
     <%= render "chapter_drawer",
                fiction: @chapter.fiction,
-               order: @fiction_sidebar_presenter.order,
+               order: @chapter_list_order,
                toggle_order_button_id: "toggle-fictions-order-drawer",
                current_chapter: @chapter %>
   <% end %>

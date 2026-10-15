@@ -12,7 +12,7 @@ class BookshelvesController < ApplicationController
   def index; end
 
   def show
-    @pagy, @fictions = pagy(@bookshelf.fictions.includes(:cover_attachment, :genres), limit: 20)
+    @pagy, @fictions = pagy(@bookshelf.fictions.includes(:genres, cover_attachment: :blob), limit: 20)
 
     return unless turbo_frame_request_id == 'fiction-list-page'
 

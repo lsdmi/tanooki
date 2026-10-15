@@ -3,10 +3,12 @@
   <%= render "shared/adsense_chapter_reader_slot", placement: :top, navigation_key: chapter.id %>
   <div class="absolute top-0 left-0 w-full h-2 bg-brand"></div>
 
-  <% reader_content = reader_chapter_content(chapter) %>
-  <div id="user-content" class="prose dark:prose-invert max-w-none min-w-0 break-words text-base sm:text-lg leading-relaxed text-fg" data-controller="note-reference" data-action="click->note-reference#toggle" data-rp-digest="<%= reader_content.digest %>">
-    <%= reader_content.render %>
-  </div>
+  <% cache chapter_reader_body_cache_key(chapter) do %>
+    <% reader_content = reader_chapter_content(chapter) %>
+    <div id="user-content" class="prose dark:prose-invert max-w-none min-w-0 break-words text-base sm:text-lg leading-relaxed text-fg" data-controller="note-reference" data-action="click->note-reference#toggle" data-rp-digest="<%= reader_content.digest %>">
+      <%= reader_content.render %>
+    </div>
+  <% end %>
 
   <%= render Chapters::ThanksBarComponent.new(chapter:, user: current_user) %>
 

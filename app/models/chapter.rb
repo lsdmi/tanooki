@@ -8,6 +8,7 @@ class Chapter < ApplicationRecord
   include SoftDeletable
   include Draftable
   include Thankable
+  include ChapterContentStats
 
   normalizes_squished :title
   friendly_id :slug_candidates

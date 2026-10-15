@@ -18,24 +18,56 @@ module Search
     private
 
     def load_search_results
-      load_search_pagy_results
-      assign_search_collections
+      timings = {}
+      load_search_pagy_results(timings)
+      assign_search_collections(timings)
       load_search_sidebar_tags
+      log_search_timings(timings)
     end
 
-    def load_search_pagy_results
-      @pagy_fictions, @fiction_records = pagy_searchkick_for(fiction_search, limit: fiction_per_page)
-      @pagy_results, @publication_records = pagy_searchkick_for(publication_search, limit: publication_per_page)
-      @pagy_videos, @video_records = pagy_searchkick_for(video_search, limit: video_per_page)
+    def load_search_pagy_results(timings)
+      # Filtered tabs used to still hit OpenSearch three times (limit 1 on the hidden ones). Skip those.
+      @pagy_fictions, @fiction_records = search_section(:fictions, timings) { fiction_search }
+      @pagy_results, @publication_records = search_section(:publications, timings) { publication_search }
+      @pagy_videos, @video_records = search_section(:videos, timings) { video_search }
     end
 
-    def assign_search_collections
-      @fictions = show_fictions? ? @fiction_records : []
-      @results = show_publications? ? @publication_records : []
-      @videos = show_videos? ? @video_records : []
+    def search_section(name, timings)
+      limit = send(:"#{name == :publications ? :publication : name.to_s.singularize}_per_page")
+      show = send(:"show_#{name}?")
+      unless show
+        timings[:"os_#{name}"] = 0.0
+        return [empty_search_pagy(limit), []]
+      end
+
+      started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      result = pagy_searchkick_for(yield, limit:)
+      timings[:"os_#{name}"] = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
+      result
+    end
+
+    def assign_search_collections(timings)
+      @fictions = @fiction_records
+      @results = @publication_records
+      @videos = @video_records
+      started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       # Searchkick's chained includes is not always applied to the hydrated rows; cover cards need the blob.
       ActiveRecord::Associations::Preloader.new(records: @fictions, associations: { cover_attachment: :blob }).call
       ActiveRecord::Associations::Preloader.new(records: @results, associations: { cover_attachment: :blob }).call
+      timings[:sql_hydrate] = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
+    end
+
+    def log_search_timings(timings)
+      Rails.logger.info(
+        '[search.timing] ' \
+        "os_fictions=#{ms(timings[:os_fictions])} os_publications=#{ms(timings[:os_publications])} " \
+        "os_videos=#{ms(timings[:os_videos])} sql_hydrate=#{ms(timings[:sql_hydrate])} " \
+        "filter=#{params[:filter].presence || 'all'}"
+      )
+    end
+
+    def ms(seconds)
+      ((seconds || 0) * 1000).round
     end
 
     def load_search_sidebar_tags

@@ -66,5 +66,20 @@ module Studio
 
       assert_includes service.instance_variable_get(:@publications).to_a, draft
     end
+
+    test 'blogs tab does not preload Action Text descriptions' do
+      user = users(:user_one)
+      service = TabContent.new(user, 'blogs', { page: 1 })
+
+      service.call
+      publications = service.instance_variable_get(:@publications).to_a
+
+      assert_queries_count(0) do
+        publications.each(&:excerpt)
+      end
+      publications.each do |publication|
+        assert_not publication.association(:rich_text_description).loaded?
+      end
+    end
   end
 end
