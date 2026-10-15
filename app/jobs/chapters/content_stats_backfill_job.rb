@@ -23,9 +23,15 @@ module Chapters
     end
 
     def write_stats(batch)
-      Chapter.unscoped.where(id: batch.map(&:id)).includes(:rich_text_content).find_each do |chapter|
-        chapter.assign_attributes(ContentStats.attributes_for(chapter))
-        chapter.save!(validate: false)
+      ids = batch.map(&:id)
+      # Default scope hides soft-deleted bodies, and chapter.content would then build a new row
+      # that collides with the unique index. Read the stored body and write columns only.
+      bodies = ActionText::RichText.with_deleted.where(
+        record_type: 'Chapter', name: 'content', record_id: ids
+      ).index_by(&:record_id)
+
+      Chapter.unscoped.where(id: ids).find_each do |chapter|
+        chapter.update_columns(ContentStats.attributes_from(bodies[chapter.id]))
       end
     end
   end

@@ -6,7 +6,11 @@ module Chapters
     EXCERPT_LENGTH = 300
 
     def self.attributes_for(chapter)
-      rich = chapter.content
+      attributes_from(chapter.content)
+    end
+
+    # `rich` may be nil, or a soft-deleted body. Does not build a new Action Text row.
+    def self.attributes_from(rich)
       html = rich&.body&.to_html.to_s
       plain = rich&.to_plain_text.to_s
 
