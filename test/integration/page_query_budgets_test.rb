@@ -2,18 +2,20 @@
 
 require 'test_helper'
 
-# SQL-count ceilings for guest key pages (PERFORMANCE_INITIATIVE Stream 3). Counts are cold (cache cleared):
-# a regression that only hits an uncached fragment still fails. Budgets are local fixture numbers with headroom;
+# SQL-count ceilings for guest key pages (docs/completed/PERFORMANCE_INITIATIVE.md Stream 3).
+# Counts are cold (cache cleared): a regression that only hits an uncached fragment still fails.
+# Budgets are local fixture numbers with headroom;
 # production p95 is higher because of data size, not because these pages may grow unbounded here.
 class PageQueryBudgetsTest < ActionDispatch::IntegrationTest
   include QueryBudgetHelper
   include SearchControllerTesting
 
-  # Cold query ceilings (measured 2026-10-15 on fixtures, then +~25% headroom).
+  # Cold query ceilings (fixture counts + ~25% headroom). Chapter show re-measured 2026-10-16
+  # after lazy comments/TOC drawers (~12 queries cold).
   HOME_QUERIES = 70
   FICTIONS_INDEX_QUERIES = 80
   FICTION_SHOW_QUERIES = 50
-  CHAPTER_SHOW_QUERIES = 20
+  CHAPTER_SHOW_QUERIES = 15
   SEARCH_QUERIES = 50
 
   setup do

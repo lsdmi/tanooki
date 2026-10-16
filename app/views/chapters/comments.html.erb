@@ -1,0 +1,6 @@
+<%= turbo_frame_tag 'reader-comments-list' do %>
+  <%= render 'comments/drawer_list',
+             comments: @comments,
+             comment: @comment,
+             commentable: @commentable %>
+<% end %>

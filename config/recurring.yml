@@ -37,9 +37,17 @@ production:
     class: Chapters::PruneRevisionsJob
     schedule: "30 4 * * * Europe/Kiev"
 
+  # Soft-delete cleanup only (no full reindex). Was Sunday 05:00 UTC; moved to 02:00 so any
+  # residual RSS does not overlap morning EPUB builds (see Stream 6 / 2026-10-11).
   searchkick_sync_soft_deletable:
     class: Searchkick::SyncSoftDeletableJob
-    schedule: "0 5 * * 0 UTC"
+    schedule: "0 2 * * 0 UTC"
+
+  # Full reindex is rare heal (missed callbacks). Batched per model, staggered; quiet hour.
+  searchkick_full_reindex_soft_deletable:
+    class: Searchkick::SyncSoftDeletableJob
+    args: [full_reindex]
+    schedule: "0 2 1 * * UTC"
 
   telegram_digest_youtube:
     class: TelegramDigests::PostJob

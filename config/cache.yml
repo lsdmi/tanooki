@@ -1,8 +1,10 @@
+# Solid Cache stays on primary MySQL (PERFORMANCE_INITIATIVE Stream 6, closed 2026-10-16).
+# Do not add a second DBaaS just for cache, and do not move to Redis until Redis exists for
+# something else (Action Cable is still async). max_size caps logical byte_size sum; InnoDB
+# table size is higher because of BLOB/index overhead — that is expected, not a missed eviction.
 default: &default
   database: primary
   store_options:
-    # Cap age of oldest cache entry to fulfill retention policies
-    # max_age: <%= 60.days.to_i %>
     max_size: <%= 256.megabytes %>
     namespace: <%= Rails.env %>
 
@@ -17,3 +19,6 @@ test:
 
 production:
   <<: *default
+  store_options:
+    max_size: <%= 256.megabytes %>
+    namespace: <%= Rails.env %>

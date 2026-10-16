@@ -1,0 +1,10 @@
+<%= turbo_frame_tag 'reader-chapter-list' do %>
+  <%= turbo_frame_tag 'sort-chapters-reader-drawer' do %>
+    <%= render 'fictions/chapters',
+               fiction: @chapter.fiction,
+               order: @chapter_list_order,
+               toggle_order_button_id: 'toggle-fictions-order-drawer',
+               reader_drawer: true,
+               current_chapter: @chapter %>
+  <% end %>
+<% end %>

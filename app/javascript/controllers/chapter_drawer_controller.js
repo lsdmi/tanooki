@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 /** Slide-out chapter list on the immersive chapter reader. */
 export default class extends Controller {
-  static targets = ["backdrop", "panel", "trigger"]
+  static targets = ["backdrop", "panel", "trigger", "frame"]
 
   connect() {
     this._onEscape = this._onEscape.bind(this)
@@ -21,6 +21,8 @@ export default class extends Controller {
     event?.stopPropagation()
     if (!this.hasBackdropTarget || !this.hasPanelTarget) return
 
+    this.ensureFrameLoaded()
+
     this.backdropTarget.classList.remove("opacity-0", "pointer-events-none")
     this.backdropTarget.classList.add("opacity-100", "pointer-events-auto")
     this.backdropTarget.setAttribute("aria-hidden", "false")
@@ -35,11 +37,7 @@ export default class extends Controller {
     document.body.classList.add("overflow-hidden")
     document.addEventListener("keydown", this._onEscape)
 
-    const accordionRoot = this.panelTarget.querySelector('[data-controller*="chapters-accordion"]')
-    if (accordionRoot) {
-      const accordion = this.application.getControllerForElementAndIdentifier(accordionRoot, "chapters-accordion")
-      window.requestAnimationFrame(() => accordion?.initializeSections())
-    }
+    this.initializeAccordionWhenReady()
   }
 
   close() {
@@ -61,6 +59,29 @@ export default class extends Controller {
     this.resetChapterDrawerSearch()
     if (wasOpen && this.focusWasInDrawer()) this.opener?.focus({ preventScroll: true })
     this.opener = null
+  }
+
+  ensureFrameLoaded() {
+    if (!this.hasFrameTarget) return
+    if (this.frameTarget.getAttribute("src")) return
+
+    const src = this.frameTarget.dataset.chapterDrawerSrcValue
+    if (src) this.frameTarget.setAttribute("src", src)
+  }
+
+  initializeAccordionWhenReady() {
+    const tryInit = () => {
+      const accordionRoot = this.panelTarget.querySelector('[data-controller*="chapters-accordion"]')
+      if (!accordionRoot) return false
+
+      const accordion = this.application.getControllerForElementAndIdentifier(accordionRoot, "chapters-accordion")
+      window.requestAnimationFrame(() => accordion?.initializeSections())
+      return true
+    }
+
+    if (tryInit()) return
+
+    this.frameTarget?.addEventListener("turbo:frame-load", () => tryInit(), { once: true })
   }
 
   focusWasInDrawer() {

@@ -1,4 +1,6 @@
-<%# locals: fiction:, order:, toggle_order_button_id:, current_chapter: (optional) %>
+<%# locals: fiction:, order:, current_chapter: (optional) %>
+<%# Section index + search JSON load on first open (turbo frame src set by chapter-drawer). %>
+<% current_chapter = local_assigns[:current_chapter] %>
 <div data-chapter-drawer-target="backdrop"
      class="fixed inset-0 z-[51] bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
      data-action="click->chapter-drawer#close"
@@ -49,13 +51,14 @@
   </div>
 
   <div class="reader-chapter-drawer__scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
-    <%= turbo_frame_tag 'sort-chapters-reader-drawer' do %>
-      <%= render 'fictions/chapters',
-                 fiction: fiction,
-                 order: order,
-                 toggle_order_button_id: toggle_order_button_id,
-                 reader_drawer: true,
-                 current_chapter: local_assigns[:current_chapter] %>
+    <%= turbo_frame_tag 'reader-chapter-list',
+                        data: {
+                          chapter_drawer_target: 'frame',
+                          chapter_drawer_src_value: (
+                            current_chapter ? chapter_list_chapter_path(current_chapter, order: order) : nil
+                          )
+                        } do %>
+      <p class="px-4 py-8 text-center text-sm text-fg-muted"><%= t('chapters.reader_chapter_drawer.loading') %></p>
     <% end %>
   </div>
 </aside>

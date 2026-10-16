@@ -12,14 +12,14 @@ class ChaptersControllerGuestCommentsTest < ActionDispatch::IntegrationTest
   end
 
   test 'guest sees login prompt in comments drawer when chapter has comments' do
-    get chapter_url(@chapter)
+    get comments_chapter_url(@chapter)
 
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_prompt')
     assert_includes response.body, I18n.t('chapters.reader_comments_drawer.login_to_comment')
   end
 
   test 'guest comments drawer links to login instead of empty state' do
-    get chapter_url(@chapter)
+    get comments_chapter_url(@chapter)
 
     assert_not_includes response.body, Comments::Presentation.empty_state_for('chapters')
     assert_includes response.body, new_user_session_path

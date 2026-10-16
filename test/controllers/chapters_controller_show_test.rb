@@ -81,16 +81,16 @@ class ChaptersControllerShowTest < ActionDispatch::IntegrationTest
     get chapter_url(@chapter)
 
     assert_includes response.body, 'reader-chapter-drawer'
-    assert_includes response.body, 'chapter-drawer-search'
-    assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.search_placeholder')
-  end
-
-  test 'show renders chapter drawer progress and list panel' do
-    get chapter_url(@chapter)
-
-    assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.progress_current')
     assert_includes response.body, 'reader-chapter-list-panel'
     assert_includes response.body, 'data-chapter-drawer-target="panel"'
+  end
+
+  test 'chapter list frame renders search and progress labels' do
+    get chapter_list_chapter_url(@chapter)
+
+    assert_includes response.body, 'chapter-drawer-search'
+    assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.search_placeholder')
+    assert_includes response.body, I18n.t('chapters.reader_chapter_drawer.progress_current')
   end
 
   test 'show renders reader bottom cards' do

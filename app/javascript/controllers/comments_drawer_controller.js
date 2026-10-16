@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 /** Slide-out comments panel on the immersive chapter reader. */
 export default class extends Controller {
-  static targets = ["backdrop", "panel", "trigger"]
+  static targets = ["backdrop", "panel", "trigger", "frame"]
 
   connect() {
     this._onEscape = this._onEscape.bind(this)
@@ -20,6 +20,8 @@ export default class extends Controller {
     event?.preventDefault()
     event?.stopPropagation()
     if (!this.hasBackdropTarget || !this.hasPanelTarget) return
+
+    this.ensureFrameLoaded()
 
     this.backdropTarget.classList.remove("opacity-0", "pointer-events-none")
     this.backdropTarget.classList.add("opacity-100", "pointer-events-auto")
@@ -48,6 +50,14 @@ export default class extends Controller {
 
     document.body.classList.remove("overflow-hidden")
     document.removeEventListener("keydown", this._onEscape)
+  }
+
+  ensureFrameLoaded() {
+    if (!this.hasFrameTarget) return
+    if (this.frameTarget.getAttribute("src")) return
+
+    const src = this.frameTarget.dataset.commentsDrawerSrcValue
+    if (src) this.frameTarget.setAttribute("src", src)
   }
 
   _onEscape(event) {

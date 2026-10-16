@@ -8,6 +8,7 @@ module SolidQueue
       Books::PurgeExpiredEpubExportsJob
       Fictions::WarmIndexCacheJob
       Searchkick::SyncSoftDeletableJob
+      Searchkick::SyncSoftDeletableModelJob
       Searchkick::ReindexV2Job
     ].freeze
 

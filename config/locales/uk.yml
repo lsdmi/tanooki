@@ -842,6 +842,7 @@ uk:
     reader_chapter_drawer:
       close: Закрити список розділів
       toc: Зміст
+      loading: Завантаження змісту…
       search_label: Шукати розділ
       search_placeholder: Шукати назву або розділ
       search_empty: Розділів не знайдено
@@ -863,6 +864,7 @@ uk:
     reader_comments_drawer:
       title: Коментарі
       close: Закрити коментарі
+      loading: Завантаження коментарів…
       count:
         one: "%{count} коментар до цього розділу"
         few: "%{count} коментарі до цього розділу"

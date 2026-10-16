@@ -99,6 +99,8 @@ Rails.application.routes.draw do
   resources :chapters, except: %i[index destroy] do
     member do
       post :record_progress
+      get :comments
+      get :chapter_list
     end
     resources :revisions, only: [], module: :chapters do
       member do

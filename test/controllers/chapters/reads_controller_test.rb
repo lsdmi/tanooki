@@ -80,17 +80,17 @@ module Chapters
     end
 
     test 'reader drawer rows offer the toggle' do
-      get chapter_url(chapters(:two))
+      get chapter_list_chapter_url(chapters(:two))
 
-      assert_select '#reader-chapter-list-panel form[action=?] button[aria-label=?]',
+      assert_select 'turbo-frame#reader-chapter-list form[action=?] button[aria-label=?]',
                     chapter_read_path(chapters(:two)), I18n.t('chapters.reader_chapter_drawer.mark_read')
     end
 
     test 'reader drawer rows have no toggle for guests' do
       sign_out @user
-      get chapter_url(chapters(:two))
+      get chapter_list_chapter_url(chapters(:two))
 
-      assert_select '#reader-chapter-list-panel form[action=?]', chapter_read_path(chapters(:two)), count: 0
+      assert_select 'turbo-frame#reader-chapter-list form[action=?]', chapter_read_path(chapters(:two)), count: 0
     end
 
     test 'guest cannot mark chapters' do

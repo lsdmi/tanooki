@@ -20,7 +20,7 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     sign_in @user
     unread = Chapter.create!(fiction: @fiction, user: @user, title: 'Chapter 3', number: 3, content: 'x' * 500,
                              scanlator_ids: [scanlators(:one).id])
-    get chapter_url(unread)
+    get chapter_list_chapter_url(unread)
     in_progress = drawer_row(chapters(:two), :in_progress)
 
     assert_select "#{drawer_row(chapters(:one), :read)} > div#{WASH}"
@@ -68,7 +68,7 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
     sign_in @user
     unread = Chapter.create!(fiction: @fiction, user: @user, title: 'Chapter 3', number: 3, content: 'x' * 500,
                              scanlator_ids: [scanlators(:one).id])
-    get chapter_url(unread)
+    get chapter_list_chapter_url(unread)
 
     assert_select '[data-read-toggle-scope] [data-read-toggle-kit]', count: 1
     assert_select "#{drawer_row(unread, :current)} form [data-read-toggle-target=icon] span[aria-label=?]",
@@ -77,14 +77,14 @@ class ChapterListStatusTest < ActionDispatch::IntegrationTest
 
   test 'the drawer has no row menu' do
     sign_in @user
-    get chapter_url(chapters(:one))
+    get chapter_list_chapter_url(chapters(:one))
 
     assert_select '[data-row-menu-button], [data-controller~=chapter-row-menu], li[data-read-through]', count: 0
   end
 
   test 'drawer search results clone labelled status icons from templates' do
     sign_in @user
-    get chapter_url(chapters(:one))
+    get chapter_list_chapter_url(chapters(:one))
 
     assert_includes response.body, %(data-status="in_progress">)
     %w[read current in_progress].each do |status|

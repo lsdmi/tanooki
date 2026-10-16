@@ -4,6 +4,7 @@
 class ChaptersController < ApplicationController
   include Chapters::CreationAuthorization
   include Chapters::GuestShowCaching
+  include Chapters::LazyDrawers
   include Chapters::ReaderAds
   include Chapters::ReadingEvents
   include Chapters::ShowTracking
@@ -12,18 +13,14 @@ class ChaptersController < ApplicationController
   include ChapterScheduleParams
   include FictionQuery
 
-  before_action :authenticate_user!, except: %i[show]
-  before_action :set_chapter, only: %i[show edit update record_progress]
+  before_action :authenticate_user!, unless: :public_chapter_action?
   before_action :set_list_page, only: %i[edit update]
   before_action :set_fiction_for_chapter_create, only: %i[new create]
   before_action :authorize_chapter_creation, only: %i[new create]
-  before_action :redirect_if_chapter_not_yet_public, only: %i[show record_progress]
   before_action :track_chapter_visit, only: :show
-  before_action :verify_permissions, except: %i[new create show record_progress]
+  before_action :verify_permissions, unless: :skip_chapter_permission_check?
 
   def show
-    @comments = load_chapter_comments
-    @comment = Comment.new
     @previous_chapter = Library::ChapterNavigation.previous_chapter(
       @chapter.fiction, @chapter, viewer: current_user
     )
@@ -88,13 +85,6 @@ class ChaptersController < ApplicationController
   def set_list_page
     page = params[:page].to_i
     @list_page = page if page > 1
-  end
-
-  def load_chapter_comments
-    @chapter.comments.parents.includes(
-      user: { avatar: :image_attachment },
-      replies: { user: { avatar: :image_attachment } }
-    ).order(created_at: :desc)
   end
 
   def set_chapter

@@ -12,7 +12,7 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
   test 'drawer renders comments frame so the first comment has a stream target' do
     chapter = chapters(:one)
 
-    get chapter_url(chapter)
+    get comments_chapter_url(chapter)
 
     assert_response :success
     assert_includes response.body, '<turbo-frame id="comments">'

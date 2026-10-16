@@ -18,7 +18,7 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get comments' do
     @chapter.comments << comments(:comment_one)
-    get chapter_url(@chapter)
+    get comments_chapter_url(@chapter)
 
     assert_equal @chapter.comments, assigns(:comments)
   end
