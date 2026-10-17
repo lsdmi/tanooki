@@ -51,7 +51,7 @@ module Catalog
       RefreshChapterStats.call(@fiction)
 
       assert_in_delta 3.days.ago, @fiction.reload.last_chapter_at, 2.seconds
-      assert_equal 2, @fiction.chapter_count
+      assert_equal 1, @fiction.chapter_count
     end
 
     test 'clears last_chapter_at when every remaining chapter is still scheduled' do
@@ -59,7 +59,7 @@ module Catalog
 
       RefreshChapterStats.call(@fiction)
 
-      assert_equal 1, @fiction.reload.chapter_count
+      assert_equal 0, @fiction.reload.chapter_count
       assert_nil @fiction.last_chapter_at
     end
 

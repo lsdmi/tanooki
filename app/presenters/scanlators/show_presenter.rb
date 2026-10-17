@@ -13,7 +13,7 @@ module Scanlators
     end
 
     def self.cache_key_for(scanlator_id)
-      "scanlator:#{scanlator_id}:stats"
+      "scanlator:#{scanlator_id}:stats:v2"
     end
 
     def self.invalidate(scanlator_id)

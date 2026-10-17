@@ -19,7 +19,7 @@ module Catalog
     test 'a fiction whose only chapter is scheduled stays announced until it goes live' do
       @fiction.reload
 
-      assert_equal 1, @fiction.chapter_count
+      assert_equal 0, @fiction.chapter_count
       assert_equal :announced, @fiction.listing_state
     end
 
@@ -28,6 +28,7 @@ module Catalog
         RefreshChapterStatsJob.perform_now(@fiction.id)
 
         assert_in_delta @release_at, @fiction.reload.last_chapter_at, 1.second
+        assert_equal 1, @fiction.chapter_count
         assert_equal :ongoing, @fiction.listing_state
       end
     end

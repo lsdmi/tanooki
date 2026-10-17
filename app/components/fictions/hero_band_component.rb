@@ -69,10 +69,15 @@ module Fictions
     end
 
     def chapters_text
-      return t('fictions.hero.stats.chapters', count: fiction.chapter_count) unless license_cut?
+      return t('fictions.hero.stats.chapters', count: visible_chapter_count) unless license_cut?
 
       t('fictions.hero.stats.chapters_available', available: fiction.license_readable_count,
                                                   count: fiction.license_preview.released_count)
+    end
+
+    # Public slots only. A chapter on a timer is omitted until it is visible to everyone.
+    def visible_chapter_count
+      Catalog::ChapterSlots.call(fiction)
     end
 
     # Something released is no longer readable: past the preview, or all of it after the takedown.

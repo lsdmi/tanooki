@@ -80,7 +80,7 @@ module Reading
     end
 
     def read_through_label(chapter)
-      [listable.last.number, chapter.number].map { |number| Chapters::Formatting.format_decimal(number) }.join('–')
+      Chapters::Formatting.number_span(listable.last.number, chapter.number)
     end
 
     private

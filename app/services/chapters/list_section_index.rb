@@ -54,7 +54,7 @@ module Chapters
     end
 
     def range_title(chapters)
-      first, last = chapters.map(&:number).minmax.map { |number| Formatting.format_decimal(number) }
+      first, last = chapters.map(&:number).minmax.map { |number| Formatting.range_bound(number) }
       first == last ? "Розділ #{first}" : "Розділи #{first}–#{last}"
     end
 

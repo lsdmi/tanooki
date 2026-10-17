@@ -17,6 +17,14 @@ module Fictions
       assert_equal %w[1–6 7–8], [preview.available_range, preview.hidden_range]
     end
 
+    test 'preview and hidden ranges floor decimal bounds' do
+      chapters(:one).update!(number: BigDecimal('1.1'), scanlator_ids: chapters(:one).scanlators.ids)
+      @extra.last.update!(number: BigDecimal('8.2'), scanlator_ids: [scanlators(:one).id])
+      preview = LicensePreview.new(@fiction)
+
+      assert_equal %w[1–6 7–8], [preview.available_range, preview.hidden_range]
+    end
+
     test 'a chapter translated twice counts once and keeps both translations' do
       second = add_chapter(1, scanlator: scanlators(:two))
       preview = LicensePreview.new(@fiction)

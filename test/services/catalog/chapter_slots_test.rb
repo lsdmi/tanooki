@@ -54,8 +54,9 @@ module Catalog
       assert_equal 1, ChapterSlots.call(@fiction.reload)
     end
 
-    test 'includes scheduled chapters' do
-      create_chapter(number: 1, published_at: 1.day.from_now)
+    test 'excludes chapters still on a timer' do
+      create_chapter(number: 1)
+      create_chapter(number: 2, published_at: 1.day.from_now)
 
       assert_equal 1, ChapterSlots.call(@fiction)
     end

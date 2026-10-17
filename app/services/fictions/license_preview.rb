@@ -65,8 +65,7 @@ module Fictions
     def number_range(keys)
       return if keys.empty?
 
-      first, last = [keys.first, keys.last].map { |number, _volume| Chapters::Formatting.format_decimal(number).to_s }
-      first == last ? first : "#{first}–#{last}"
+      Chapters::Formatting.number_span(keys.first.first, keys.last.first)
     end
   end
 end

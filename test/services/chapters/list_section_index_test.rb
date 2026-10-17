@@ -31,6 +31,16 @@ module Chapters
       assert_equal ['Розділи 0.5–100', 'Розділи 1901–1999'], ListSectionIndex.new(chapters).call.pluck(:title)
     end
 
+    test 'range titles use whole numbers and keep a prologue below 1' do
+      decimal = [1.1, 9.1].each_with_index.map { |number, id| chapter(id, number:) }
+      same_whole = [chapter(10, number: 3.1), chapter(11, number: 3.9)]
+      volume = [chapter(20, number: 1.1, volume: 2), chapter(21, number: 4.8, volume: 2)]
+
+      assert_equal ['Розділи 1–9'], ListSectionIndex.new(decimal).call.pluck(:title)
+      assert_equal ['Розділ 3'], ListSectionIndex.new(same_whole).call.pluck(:title)
+      assert_equal ['Том 2 · Розділи 1–4'], ListSectionIndex.new(volume).call.pluck(:title)
+    end
+
     test 'desc reverses section order but keeps chapter ids ascending' do
       chapters = [chapter(1, number: 2, volume: 1), chapter(2, number: 1, volume: 1), chapter(3, number: 1, volume: 2)]
 

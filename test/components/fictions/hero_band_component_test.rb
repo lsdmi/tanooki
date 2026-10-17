@@ -78,12 +78,13 @@ module Fictions
       render_hero
 
       assert_selector 'li', text: '5.1т переглядів'
-      assert_selector 'li', text: '106 розділів'
+      assert_selector 'li', text: '2 розділи'
     end
 
     test 'stats line without ratings and small view counts' do
       @fiction.fiction_ratings.delete_all
-      @fiction.update!(views: 22, chapter_count: 1)
+      chapters(:two).update!(status: :draft, scanlator_ids: chapters(:two).scanlators.ids)
+      @fiction.update!(views: 22, chapter_count: 99)
       render_hero
 
       assert_selector 'li', text: /\A\s*—\s*\z/

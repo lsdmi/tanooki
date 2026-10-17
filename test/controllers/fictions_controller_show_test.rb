@@ -94,8 +94,8 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select 'section[aria-labelledby="fiction-title"] li', text: '160 розділів'
-    assert_select 'section[aria-labelledby="fiction-title"]', text: /2334/, count: 0
+    assert_select 'section[aria-labelledby="fiction-title"] li', text: '2 розділи'
+    assert_select 'section[aria-labelledby="fiction-title"]', text: /2334|160 розділів/, count: 0
   end
 
   test 'hero chapter count is the live count when expected is unknown' do
@@ -104,7 +104,7 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_response :success
-    assert_select 'section[aria-labelledby="fiction-title"] li', text: '307 розділів'
+    assert_select 'section[aria-labelledby="fiction-title"] li', text: '2 розділи'
   end
 
   test 'a finished fiction shows the finished notice instead of the add-chapter CTA' do

@@ -2,7 +2,7 @@
 
 module Catalog
   # Writes listing projections from live chapters. Does not touch status or expected_chapters.
-  # last_chapter_at is the latest already-public time; scheduled rows still count in chapter_count.
+  # chapter_count and last_chapter_at both ignore chapters that are still scheduled.
   class RefreshChapterStats
     def self.call(fiction)
       new(fiction).call

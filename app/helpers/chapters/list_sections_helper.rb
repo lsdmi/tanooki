@@ -73,10 +73,10 @@ module Chapters
       [page_size, ((focus_index / step) + 1) * step].max
     end
 
-    # «1622–1700», or «1700» for one chapter.
+    # «1622–1700», or «1700» for one chapter. Decimal bounds floor, same as a group heading.
     def chapter_number_range(chapters)
-      first, last = chapters.map(&:number).minmax.map { |number| Formatting.format_decimal(number).to_s }
-      first == last ? first : "#{first}–#{last}"
+      first, last = chapters.map(&:number).minmax
+      Formatting.number_span(first, last)
     end
 
     # The group holding the continue chapter, or the first group in the current sort.

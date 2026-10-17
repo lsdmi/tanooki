@@ -33,6 +33,13 @@ module Scanlators
       assert_predicate Stats.compute(scanlator), :active_recently?
     end
 
+    test 'excludes chapters still on a timer from the chapter count' do
+      chapter = scanlators(:one).chapters.first
+      chapter.update!(published_at: 1.day.from_now, scanlator_ids: chapter.scanlators.ids)
+
+      assert_equal 1, Stats.compute(scanlators(:one)).chapters_count
+    end
+
     test 'excludes drafts from chapter counts and views' do
       scanlator = scanlators(:one)
       draft = scanlator.chapters.first

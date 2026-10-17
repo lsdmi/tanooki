@@ -14,8 +14,32 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select '[role=tablist] [role=tab]', 3
-    assert_select '#fiction-tab-chapters', text: /Розділи · #{@fiction.chapter_count}/
+    visible = Catalog::ChapterSlots.call(@fiction)
+
+    assert_select '#fiction-tab-chapters', text: /Розділи · #{visible}/
     assert_select '#fiction-tab-comments', text: /Коментарі · #{@fiction.comments_count}/
+  end
+
+  test 'a guest tab skips chapters still on a timer' do
+    sign_out :user
+    schedule_chapter(chapters(:one))
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-tab-chapters', text: /Розділи · 1/
+  ensure
+    clear_chapter_schedule(chapters(:one))
+  end
+
+  test 'the translating team tab also skips chapters still on a timer' do
+    sign_in_team_member
+    schedule_chapter(chapters(:one))
+
+    get fiction_url(@fiction)
+
+    assert_select '#fiction-tab-chapters', text: /Розділи · 1/
+  ensure
+    clear_chapter_schedule(chapters(:one))
   end
 
   test 'About is open before reading starts' do
@@ -107,5 +131,13 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     member = users(:user_one_one_zero)
     ScanlatorUser.create!(user: member, scanlator: scanlators(:one))
     sign_in member
+  end
+
+  def schedule_chapter(chapter)
+    chapter.update!(published_at: 1.day.from_now, scanlator_ids: chapter.scanlators.ids)
+  end
+
+  def clear_chapter_schedule(chapter)
+    chapter.update!(published_at: nil, scanlator_ids: chapter.scanlators.ids)
   end
 end
