@@ -45,6 +45,21 @@ module Ui
       assert_no_selector 'span[class*="shadow-"]'
     end
 
+    test 'outline novelty matches genre-pill chrome' do
+      render_inline(EditorialTagComponent.new(kind: :novelty, variant: :outline))
+
+      assert_selector 'span.rounded-md.ring-1.bg-fg\\/3.text-fg.ring-fg\\/70'
+      assert_selector 'span.dark\\:bg-white\\/10.dark\\:text-white.dark\\:ring-white\\/70'
+      assert_no_selector 'span.bg-violet-600'
+    end
+
+    test 'outline popular uses the same neutral chrome as novelty' do
+      render_inline(EditorialTagComponent.new(kind: :popular, variant: :outline))
+
+      assert_selector 'span.bg-fg\\/3.ring-fg\\/70'
+      assert_no_selector 'span.bg-fuchsia-700'
+    end
+
     test 'renders update label with refresh icon' do
       render_inline(EditorialTagComponent.new(kind: :update))
 
@@ -55,6 +70,12 @@ module Ui
     test 'rejects unknown kind' do
       assert_raises(ArgumentError) do
         EditorialTagComponent.new(kind: :unknown)
+      end
+    end
+
+    test 'rejects unknown variant' do
+      assert_raises(ArgumentError) do
+        EditorialTagComponent.new(kind: :novelty, variant: :ghost)
       end
     end
   end

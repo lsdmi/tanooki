@@ -55,7 +55,7 @@ module Pokemons
     end
 
     HpBalance::V2 = HpBalance.new(
-      team_size: 6,
+      team_size: Pokemons::Balance::TEAM_SIZE,
       stat_exponent: 0.2,
       mean_hp: BaseStats.mean(:hp),
       mean_attack: BaseStats.mean(:attack),

@@ -241,6 +241,7 @@ Rails.application.routes.draw do
   get '/pokemon/wild', to: 'wild_encounters#show', as: :wild_encounter
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon
+  patch '/pokemon/teams', to: 'pokemon_teams#update', as: :pokemon_teams
 
   post '/pokemon/opponent/regenerate', to: 'user_pokemons#regenerate_opponent', as: :regenerate_pokemon_opponent
 

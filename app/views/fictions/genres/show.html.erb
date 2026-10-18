@@ -1,15 +1,22 @@
-<div class="max-w-[1300px] mx-auto px-4 pb-16 lg:pb-20 z-10 relative">
-  <div class="px-2 xl:px-0 py-6 sm:py-8 lg:py-10">
+<div class="relative z-10 mx-auto max-w-[1300px] px-4">
+  <div class="px-2 pt-6 pb-5 sm:pt-8 sm:pb-6 lg:pt-10 lg:pb-8 xl:px-0">
     <%= render 'fictions/genres/breadcrumbs', skeleton: @skeleton %>
     <%= render 'fictions/genres/genre_heading', skeleton: @skeleton %>
-    <% if @genre_showcase.any? %>
-      <%= render 'fictions/showcase_carousel',
-                 showcase: @genre_showcase,
-                 popular_novelty_ids: @genre_showcase_popular_ids,
-                 top_fiction_ids: @genre_showcase_top_ids,
-                 latest_update_ids: @genre_showcase_latest_ids %>
-    <% end %>
-    <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton, section_class: 'mt-8 lg:mt-12 mb-8' %>
+  </div>
+</div>
+
+<% if @genre_showcase.any? %>
+  <%= render 'fictions/showcase_carousel',
+             showcase: @genre_showcase,
+             popular_novelty_ids: @genre_showcase_popular_ids,
+             top_fiction_ids: @genre_showcase_top_ids,
+             latest_update_ids: @genre_showcase_latest_ids,
+             melt_top: true %>
+<% end %>
+
+<div class="relative z-10 mx-auto max-w-[1300px] px-4 pb-16 lg:pb-20">
+  <div class="px-2 xl:px-0">
+    <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton, section_class: 'mt-4 lg:mt-6 mb-8' %>
     <%= render "shared/adsense_collapse_safe",
                placement: :genres_show_top,
                navigation_key: "top",

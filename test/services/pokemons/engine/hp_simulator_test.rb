@@ -28,12 +28,12 @@ module Pokemons
         assert_equal HpSimulator.call(attacker:, defender:, rng: Random.new(3)), result
       end
 
-      test 'fields the strongest by HP x attack, at most the smaller team, up to the team size' do
-        attacker = team(1, [*Array.new(7) { [129, 0] }, [143, 0]])
-        result = HpSimulator.call(attacker:, defender: team(101, Array.new(8) { [25, 0] }), rng: Random.new(1))
+      test 'fields combatants in snapshot order, capped by team size' do
+        attacker = team(1, [*Array.new(5) { [129, 0] }, [143, 0]])
+        result = HpSimulator.call(attacker:, defender: team(101, Array.new(4) { [25, 0] }), rng: Random.new(1))
         starts = result.events_of(:round_started)
 
-        assert_equal 8, starts.first.data[:attacker]
+        assert_equal 1, starts.first.data[:attacker]
         assert_operator starts.map { |event| event.data[:attacker] }.uniq.size, :<=, HpBalance::V2.team_size
         assert_operator starts.map { |event| event.data[:defender] }.uniq.size, :<=, HpBalance::V2.team_size
       end

@@ -1,15 +1,18 @@
 <%# locals: slide:, frame_class: %>
-<% frame_class = local_assigns.fetch(:frame_class, 'h-[calc(16rem+1em)] max-w-sm') %>
-<div class="relative overflow-hidden rounded-2xl border border-gray-200 shadow-xl <%= frame_class %> w-full">
-  <%= image_tag 'banner/banner_desktop_orv_1.webp',
-                alt: '',
-                aria: { hidden: true },
-                class: 'absolute inset-0 h-full w-full object-cover object-center' %>
-  <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80%"></div>
+<% frame_class = local_assigns.fetch(:frame_class, 'h-[19rem] max-w-lg') %>
+<% art_melt = '[mask-image:linear-gradient(to_bottom,#000_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,#000_55%,transparent)]' %>
+<div class="relative -mb-8 overflow-hidden <%= frame_class %> w-full bg-main">
+  <div class="absolute inset-0 <%= art_melt %>" aria-hidden="true">
+    <%= image_tag 'banner/banner_desktop_orv_1.webp',
+                  alt: '',
+                  aria: { hidden: true },
+                  class: 'absolute inset-0 z-0 size-full object-cover object-center' %>
+    <div class="absolute inset-0 z-[1] bg-linear-to-b from-main/78 via-main/88 to-main/97 dark:from-main/55 dark:via-main/75 dark:to-main/95"></div>
+  </div>
   <%= render slide %>
-  <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2" aria-hidden="true">
-    <span class="h-1.5 w-8 rounded-lg bg-cyan-700 shadow-sm dark:bg-rose-500"></span>
-    <span class="h-1.5 w-3.5 rounded-lg bg-white/35"></span>
-    <span class="h-1.5 w-3.5 rounded-lg bg-white/35"></span>
+  <div class="absolute inset-x-0 bottom-10 z-30 flex justify-center gap-2 md:bottom-14" aria-hidden="true">
+    <span class="h-1 w-6 rounded-full bg-fg dark:bg-white"></span>
+    <span class="h-1 w-1.5 rounded-full bg-fg/35 dark:bg-white/45"></span>
+    <span class="h-1 w-1.5 rounded-full bg-fg/35 dark:bg-white/45"></span>
   </div>
 </div>

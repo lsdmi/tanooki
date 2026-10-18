@@ -1,0 +1,39 @@
+<%# locals: (pokemons:, attack_team:, defense_team:) %>
+<%# Parent must own data-controller=pokemon-team. %>
+<% size = Pokemons::Balance::TEAM_SIZE %>
+<section id="pokemon-team-roster" class="flex min-w-0 flex-col items-center gap-3" aria-label="<%= t('pokemons.teams.label') %>">
+  <div class="flex items-baseline gap-3 text-sm/5">
+    <%= tag.button type: 'button',
+                   data: { pokemon_team_target: 'roleButton', pokemon_team_role_param: 'attack', action: 'pokemon-team#switchRole' },
+                   class: 'font-semibold text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                   aria: { pressed: true } do %>
+      <%= t('pokemons.teams.attack') %>
+    <% end %>
+    <span class="text-fg-subtle" aria-hidden="true">·</span>
+    <%= tag.button type: 'button',
+                   data: { pokemon_team_target: 'roleButton', pokemon_team_role_param: 'defense', action: 'pokemon-team#switchRole' },
+                   class: 'font-semibold text-fg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                   aria: { pressed: false } do %>
+      <%= t('pokemons.teams.defense') %>
+    <% end %>
+  </div>
+
+  <p data-pokemon-team-target="hint" class="text-xs/4 text-fg-muted" hidden>
+    <%= t('pokemons.teams.defense_hint') %>
+  </p>
+
+  <ol class="flex max-w-full flex-wrap items-center justify-center gap-2">
+    <% size.times do |index| %>
+      <li>
+        <%= tag.button type: 'button',
+                       title: t('pokemons.teams.clear_slot'),
+                       data: { pokemon_team_target: 'slot', pokemon_team_index_param: index, action: 'pokemon-team#focusSlot' },
+                       class: 'flex size-12 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong sm:size-14' do %>
+          <%= tag.img alt: '', data: { pokemon_team_sprite: true }, class: 'size-9 object-contain sm:size-10', hidden: true %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+
+  <p class="text-xs/4 text-fg-subtle"><%= t('pokemons.teams.pick_hint') %></p>
+</section>

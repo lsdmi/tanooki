@@ -4,12 +4,14 @@ module Pokemons
   # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history, top trainers.
   class StudioTab
     attr_reader :user, :pokemons, :selected_pokemon, :evolution, :dex_leaderboard,
-                :opponent, :battle_history
+                :opponent, :battle_history, :attack_team, :defense_team
 
     def initialize(user)
       @user = user
       @pokemons = UserPokemonListQuery.new(user).call.load
       @dex_leaderboard = Pokemons::DexLeaderboard.new
+      @attack_team = TeamRoster.new(user, :attack, party: @pokemons).records
+      @defense_team = TeamRoster.new(user, :defense, party: @pokemons).records
       assign_pokemon_details if @pokemons.any?
     end
 

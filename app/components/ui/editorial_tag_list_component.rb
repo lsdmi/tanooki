@@ -3,12 +3,14 @@
 module Ui
   # Renders up to HERO_MAX editorial tags for hero banners.
   class EditorialTagListComponent < ViewComponent::Base
-    def initialize(kinds:, max: EditorialTagComponent::HERO_MAX, labels: {}, html: {})
+    def initialize(kinds:, max: EditorialTagComponent::HERO_MAX, labels: {}, html: {},
+                   variant: :solid)
       super()
       @kinds = kinds
       @max = max
       @labels = labels
       @html = html
+      @variant = variant
     end
 
     def render?
@@ -17,7 +19,7 @@ module Ui
 
     private
 
-    attr_reader :kinds, :max, :labels, :html
+    attr_reader :kinds, :max, :labels, :html, :variant
 
     def visible_kinds
       kinds.first(max)

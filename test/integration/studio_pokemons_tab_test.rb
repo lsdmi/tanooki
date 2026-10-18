@@ -26,6 +26,24 @@ class StudioPokemonsTabTest < ActionDispatch::IntegrationTest
     assert_includes response.body, battle_start_path
   end
 
+  test 'a trainer with Pokémon sees the roster picker shell' do
+    sign_in users(:user_one)
+
+    get tab_studio_path('pokemons')
+
+    assert_select '#pokemon-team-roster'
+    assert_select '[data-controller~=pokemon-team]'
+  end
+
+  test 'a trainer with Pokémon sees attack and defense roster labels' do
+    sign_in users(:user_one)
+
+    get tab_studio_path('pokemons')
+
+    assert_select '#pokemon-team-roster', text: /Напад/
+    assert_select '#pokemon-team-roster', text: /Оборона/
+  end
+
   test 'the tab opens with the season line and the arena stage' do
     sign_in users(:user_one)
 

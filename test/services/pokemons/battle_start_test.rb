@@ -43,7 +43,8 @@ module Pokemons
       battle = fight
       deltas = battle.values_at(:rating_delta_attacker, :rating_delta_defender)
 
-      assert_equal @attacker.user_pokemons.order(:id).pluck(:pokemon_id), battle.attacker_team.pluck('pokemon_id')
+      assert_equal TeamRoster.new(@attacker, :attack).records.map(&:pokemon_id),
+                   battle.attacker_team.pluck('pokemon_id')
       assert_equal battle.attacker_won? ? [162, -162] : [-162, 162], deltas
     end
 

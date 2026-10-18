@@ -40,7 +40,7 @@ class UserPokemonsController < ApplicationController
   private
 
   def pokemons
-    UserPokemon.includes(pokemon: { sprite_attachment: :blob }).where(user_id: current_user).order('pokemons.dex_id')
+    UserPokemonListQuery.new(current_user).call.load
   end
 
   def refresh_error_screen
@@ -49,12 +49,20 @@ class UserPokemonsController < ApplicationController
 
   def refresh_screen
     selected_pokemon = current_user.user_pokemons.find(params.expect(:user_pokemon_id))
+    party = pokemons
 
-    turbo_stream.update(
-      'pokemon-data-screen',
-      partial: 'users/pokemons/list',
-      locals: { pokemons:, selected_pokemon:, evolution: selected_pokemon.next_evolution }
-    )
+    turbo_stream.update('pokemon-data-screen', partial: 'users/pokemons/list',
+                                               locals: pokemon_screen_locals(selected_pokemon, party))
+  end
+
+  def pokemon_screen_locals(selected_pokemon, party)
+    {
+      pokemons: party,
+      selected_pokemon:,
+      evolution: selected_pokemon.next_evolution,
+      attack_team: Pokemons::TeamRoster.new(current_user, :attack, party:).records,
+      defense_team: Pokemons::TeamRoster.new(current_user, :defense, party:).records
+    }
   end
 
   def remove_pokemon

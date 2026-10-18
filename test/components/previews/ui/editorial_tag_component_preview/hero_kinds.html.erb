@@ -1,5 +1,18 @@
-<div class="flex flex-wrap gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
-  <% Ui::EditorialTagComponent::KINDS.each_key do |kind| %>
-    <%= render Ui::EditorialTagComponent.new(kind: kind) %>
-  <% end %>
+<div class="space-y-6">
+  <div>
+    <p class="mb-3 text-sm font-medium text-fg-muted">Solid</p>
+    <div class="flex flex-wrap gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+      <% Ui::EditorialTagComponent::KINDS.each_key do |kind| %>
+        <%= render Ui::EditorialTagComponent.new(kind: kind) %>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <p class="mb-3 text-sm font-medium text-fg-muted">Outline (showcase)</p>
+    <div class="flex flex-wrap gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+      <% Ui::EditorialTagComponent::KINDS.each_key do |kind| %>
+        <%= render Ui::EditorialTagComponent.new(kind: kind, variant: :outline) %>
+      <% end %>
+    </div>
+  </div>
 </div>

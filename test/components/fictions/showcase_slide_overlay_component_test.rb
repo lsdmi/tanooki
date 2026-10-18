@@ -17,64 +17,61 @@ module Fictions
       @links = { read: '/read', fiction: '/fiction' }
     end
 
-    test 'mobile minimal hides metadata and buttons' do
+    test 'mobile minimal shows the title' do
       render_inline(component(layout: :mobile_minimal))
 
       assert_text 'Точка зору всезнаючого читача'
-      assert_text 'Оновлення'
-      assert_no_text 'Читати зараз'
     end
 
-    test 'mobile minimal uses single-line title and asymmetric padding' do
+    test 'mobile minimal hides blurb meta and read link' do
       render_inline(component(layout: :mobile_minimal))
 
-      assert_selector 'h2.line-clamp-1'
-      assert_selector '.pl-4.pr-8'
-    end
-
-    test 'mobile minimal hides author metadata' do
-      render_inline(component(layout: :mobile_minimal))
-
+      assert_no_text 'Читати'
+      assert_no_text 'Життя Кіма'
       assert_no_text 'singNsong'
     end
 
-    test 'full layout shows metadata and buttons' do
+    test 'full layout shows title blurb and editorial tag' do
       render_inline(component(layout: :full, editorial_kinds: %i[popular]))
 
-      assert_text 'Читати зараз'
-      assert_text 'singNsong'
+      assert_text 'Точка зору всезнаючого читача'
+      assert_text 'Популярне'
+      assert_text 'Життя Кіма'
+    end
+
+    test 'full layout shows meta and read link' do
+      render_inline(component(layout: :full, editorial_kinds: %i[popular]))
+
       assert_text '4,9'
+      assert_text 'singNsong'
+      assert_text 'Читати'
     end
 
-    test 'responsive layout hides buttons and metadata below sm' do
-      render_inline(component(layout: :responsive))
-
-      assert_selector '[class*="max-sm:hidden"]', text: 'Читати зараз'
-      assert_selector 'h2.line-clamp-1'
-    end
-
-    test 'responsive layout spans full banner width below sm' do
+    test 'overlay uses the content rail and theme type' do
       rendered = render_inline(component(layout: :responsive))
+      html = rendered.to_html
 
-      assert_includes rendered.to_html, 'sm:max-w-[min(30rem,calc(100%-2rem))]'
-      assert_no_match(/(?<![:\w])max-w-\[min\(30rem/, rendered.to_html)
+      assert_includes html, 'max-w-[1300px]'
+      assert_includes html, 'text-fg'
+      assert_includes html, 'dark:text-white'
     end
 
-    test 'responsive layout uses mobile padding and tight body stack below sm' do
-      render_inline(component(layout: :responsive))
+    test 'without content rail the overlay skips the page column max width' do
+      rendered = render_inline(component(layout: :responsive, content_rail: false))
 
-      assert_selector '.max-sm\\:pl-4.max-sm\\:pr-8'
-      assert_selector '[class*="max-sm:mb-0"][class*="max-sm:space-y-0"]'
+      assert_no_match(/max-w-\[1300px\]/, rendered.to_html)
+      assert_text 'Читати'
     end
 
     private
 
-    def component(layout:, editorial_kinds: %i[update])
+    def component(layout:, editorial_kinds: %i[update], content_rail: true)
       ShowcaseSlideOverlayComponent.new(
         fiction: @fiction,
         editorial_kinds: editorial_kinds,
         links: @links,
-        layout: layout
+        layout: layout,
+        content_rail: content_rail
       )
     end
   end

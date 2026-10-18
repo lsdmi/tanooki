@@ -22,5 +22,7 @@ module Pokemons
     NEAREST_OPPONENTS = 5
     # Recent defenders the attacker is not offered again while anyone else is available.
     RECENT_OPPONENTS = 3
+    # Ordered attack / defense roster size (Phase 5.1). Engine v2 caps the field at the same number.
+    TEAM_SIZE = 6
   end
 end

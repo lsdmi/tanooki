@@ -1,10 +1,23 @@
-<%# locals: showcase:, popular_novelty_ids:, top_fiction_ids:, latest_update_ids: %>
-<% carousel_nav_visible = showcase.any? %>
+<%# locals: showcase:, popular_novelty_ids:, top_fiction_ids:, latest_update_ids:, content_rail:, melt_top: %>
+<% content_rail = local_assigns.fetch(:content_rail, true) %>
+<% melt_top = local_assigns.fetch(:melt_top, false) %>
+<% carousel_nav_visible = showcase.size > 1 %>
 <% first_fiction = showcase.first %>
 <% first_desktop_url = first_fiction && banner_showcase_url(first_fiction.banner) %>
 <% first_mobile_url = first_fiction && banner_showcase_url(first_fiction.banner, size: :mobile) %>
 <% first_lcp_url = first_mobile_url || first_desktop_url %>
 <% eager_first_slide = first_lcp_url.present? %>
+<%# Mikai-style veil + mask so art dissolves into the page (bottom always; top when nestled under a heading). %>
+<% slide_veil = 'absolute inset-0 z-[1] bg-linear-to-b from-main/78 via-main/88 to-main/97 dark:from-main/55 dark:via-main/75 dark:to-main/95' %>
+<% art_melt = if melt_top
+                '[mask-image:linear-gradient(to_bottom,transparent,#000_16%,#000_55%,transparent)] ' \
+                  '[-webkit-mask-image:linear-gradient(to_bottom,transparent,#000_16%,#000_55%,transparent)]'
+              else
+                '[mask-image:linear-gradient(to_bottom,#000_55%,transparent)] ' \
+                  '[-webkit-mask-image:linear-gradient(to_bottom,#000_55%,transparent)]'
+              end %>
+<%# Genre pages sit under a heading — a bit taller so the dual melt still leaves room for type. %>
+<% slide_h = melt_top ? 'h-[23rem] md:h-[29rem]' : 'h-[20rem] md:h-[25rem]' %>
 <% if eager_first_slide %>
   <% content_for :head do %>
     <% if first_mobile_url.present? && first_desktop_url.present? && first_mobile_url != first_desktop_url %>
@@ -17,27 +30,29 @@
     <% end %>
   <% end %>
 <% end %>
-<section class="relative overflow-hidden mb-4 rounded-2xl shadow-xl border border-line hover:shadow-2xl transition-shadow duration-500">
-  <div class="mx-auto max-w-screen-2xl">
-    <div data-controller="custom-carousel"
-         <% if eager_first_slide %> data-custom-carousel-eager-first-slide-value="true" <% end %>
-         class="relative w-full overflow-hidden h-[calc(16rem+1em)] md:h-[calc(24rem+1em)]">
-      <!-- Spinner overlay -->
-      <div data-custom-carousel-target="spinner" class="absolute inset-0 flex items-center justify-center bg-black/80 z-40<%= ' hidden' if eager_first_slide %>">
-        <svg class="animate-spin h-8 w-8 text-fg-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-      </div>
-      <div data-custom-carousel-target="slides" class="flex transition-transform duration-700 ease-in-out w-full h-[calc(16rem+1em)] sm:h-[calc(24rem+1em)]" style="transform: translateX(0);">
-        <% showcase.each_with_index do |fiction, index| %>
-          <% desktop_url = index.zero? ? first_desktop_url : banner_showcase_url(fiction.banner) %>
-          <% mobile_url = index.zero? ? first_mobile_url : banner_showcase_url(fiction.banner, size: :mobile) %>
-          <% banner_url = desktop_url || mobile_url %>
-          <% eager_slide = index.zero? && first_lcp_url.present? %>
-          <div class="min-w-full flex-shrink-0 relative h-[calc(16rem+1em)] md:h-[calc(24rem+1em)] overflow-hidden rounded-2xl">
+<section class="relative <%= melt_top ? '-mt-8 -mb-8 md:-mt-10 md:-mb-10' : '-mb-8 md:-mb-10' %>" aria-label="Вітрина творів">
+  <div data-controller="custom-carousel"
+       data-action="pointerdown->custom-carousel#pointerDown"
+       <% if eager_first_slide %> data-custom-carousel-eager-first-slide-value="true" <% end %>
+       class="relative w-full touch-pan-y overflow-hidden <%= slide_h %>">
+    <div data-custom-carousel-target="spinner" class="absolute inset-0 z-40 flex items-center justify-center bg-main/40<%= ' hidden' if eager_first_slide %>">
+      <svg class="h-7 w-7 animate-spin text-fg-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
+
+    <div data-custom-carousel-target="slides" class="flex w-full transition-transform duration-700 ease-in-out <%= slide_h %>" style="transform: translateX(0);">
+      <% showcase.each_with_index do |fiction, index| %>
+        <% desktop_url = index.zero? ? first_desktop_url : banner_showcase_url(fiction.banner) %>
+        <% mobile_url = index.zero? ? first_mobile_url : banner_showcase_url(fiction.banner, size: :mobile) %>
+        <% banner_url = desktop_url || mobile_url %>
+        <% eager_slide = index.zero? && first_lcp_url.present? %>
+        <div class="relative min-w-full flex-shrink-0 overflow-hidden <%= slide_h %>">
+          <%# Art + veil melt together; overlay/indicators stay crisp above the fade. %>
+          <div class="absolute inset-0 <%= art_melt %>" aria-hidden="true">
             <% if eager_slide %>
-              <picture class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2">
+              <picture class="absolute inset-0 z-0 block size-full">
                 <% if first_desktop_url.present? && first_desktop_url != first_lcp_url %>
                   <source media="(min-width: 768px)" srcset="<%= first_desktop_url %>">
                 <% end %>
@@ -49,7 +64,7 @@
                       decoding: "async",
                       width: banner_showcase_mobile_dimensions[0],
                       height: banner_showcase_mobile_dimensions[1],
-                      class: "block h-full w-full object-cover object-center rounded-2xl" %>
+                      class: "block size-full object-cover object-center" %>
               </picture>
             <% else %>
               <div
@@ -59,29 +74,34 @@
                 <% if mobile_url.present? && mobile_url != banner_url %>
                   data-lazy-bg-small-url-value="<%= mobile_url %>"
                 <% end %>
-                class="absolute left-1/2 top-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat rounded-2xl"
+                class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
                 id="lazy-bg-<%= fiction.id %>"
                 style="background-image: none;"></div>
             <% end %>
-            <div class="absolute inset-0 bg-black/80 sm:bg-transparent sm:bg-gradient-to-r sm:from-black/80 sm:via-black/70 sm:to-black/15 sm:from-0% sm:via-40% md:to-80% transition-opacity duration-700 ease-in-out"></div>
-            <% first_readable_chapter = ordered_chapters(fiction, viewer: current_user).first %>
-            <% read_href = first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction) %>
-            <%= render Fictions::ShowcaseSlideOverlayComponent.new(
-                  fiction: fiction,
-                  editorial_kinds: Fictions::HeroEditorialTags.new(
-                    fiction,
-                    popular_novelty_ids: popular_novelty_ids,
-                    top_fiction_ids: top_fiction_ids,
-                    latest_update_ids: latest_update_ids
-                  ).call,
-                  links: { read: read_href, fiction: fiction_path(fiction) },
-                  eager_link_preload: index.zero? && first_readable_chapter.present?
-                ) %>
+            <div class="<%= slide_veil %>"></div>
           </div>
-        <% end %>
-      </div>
-      <% if carousel_nav_visible %>
-        <div class="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2" role="group" aria-label="Навігація по слайдах вітрини">
+
+          <% first_readable_chapter = ordered_chapters(fiction, viewer: current_user).first %>
+          <% read_href = first_readable_chapter ? chapter_path(first_readable_chapter) : fiction_path(fiction) %>
+          <%= render Fictions::ShowcaseSlideOverlayComponent.new(
+                fiction: fiction,
+                editorial_kinds: Fictions::HeroEditorialTags.new(
+                  fiction,
+                  popular_novelty_ids: popular_novelty_ids,
+                  top_fiction_ids: top_fiction_ids,
+                  latest_update_ids: latest_update_ids
+                ).call,
+                links: { read: read_href, fiction: fiction_path(fiction) },
+                eager_link_preload: index.zero? && first_readable_chapter.present?,
+                content_rail: content_rail
+              ) %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if carousel_nav_visible %>
+      <div class="pointer-events-none absolute inset-x-0 bottom-10 z-30 md:bottom-14 <%= content_rail ? 'mx-auto max-w-[1300px] px-4' : 'px-4' %>">
+        <div class="pointer-events-auto flex items-center justify-center gap-2" role="group" aria-label="Навігація по слайдах вітрини">
           <% showcase.each_with_index do |fiction, idx| %>
             <% indicator_active = idx.zero? %>
             <button
@@ -91,10 +111,10 @@
               data-index="<%= idx %>"
               aria-label="Перейти до слайду <%= idx + 1 %> з <%= showcase.size %>: <%= fiction.title %>"
               <% if indicator_active %> aria-current="true"<% end %>
-              class="carousel-indicator shrink-0 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 <%= indicator_active ? 'h-1.5 w-8 rounded-lg bg-brand shadow-sm' : 'h-1.5 w-3.5 rounded-lg bg-white/35 hover:bg-white/55' %>"></button>
+              class="carousel-indicator shrink-0 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand <%= indicator_active ? 'h-1 w-6 bg-fg dark:bg-white' : 'h-1 w-1.5 bg-fg/35 hover:bg-fg/55 dark:bg-white/45 dark:hover:bg-white/70' %>"></button>
           <% end %>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </section>

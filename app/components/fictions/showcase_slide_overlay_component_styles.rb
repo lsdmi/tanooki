@@ -1,79 +1,49 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Tailwind classes for ShowcaseSlideOverlayComponent layout variants.
+  # Mikai-style: centered type over a full-slide page-color veil.
+  # Light mode → dark ink on a light wash; dark mode → white ink on a dark wash (same as mikai).
   module ShowcaseSlideOverlayComponentStyles
-    GHOST_BUTTON_CLASSES = 'shrink-0 !border-white/50 !bg-transparent !text-white hover:!border-white ' \
-                           'hover:!bg-white/10 hover:!text-white dark:!border-white/40 dark:!bg-transparent ' \
-                           'dark:!text-white dark:hover:!border-white/70 dark:hover:!bg-white/10'
-
     def wrapper_classes
       [
-        'z-10 min-w-0 w-full transition-all duration-700 ease-in-out absolute left-0',
-        position_classes,
-        width_classes
+        'pointer-events-none absolute inset-0 z-[2] flex items-center justify-center',
+        'pt-14 pb-20 md:pt-16 md:pb-20',
+        rail? ? 'mx-auto w-full max-w-[1300px] px-4' : 'w-full px-4'
       ].join(' ')
     end
 
-    def position_classes
-      if mobile_minimal?
-        'bottom-0 pl-4 pr-8 pb-10'
-      elsif full?
-        'top-1/2 -translate-y-1/2 px-4 md:px-12'
-      else
-        'max-sm:top-auto max-sm:bottom-0 max-sm:translate-y-0 max-sm:pl-4 max-sm:pr-8 max-sm:pb-10 ' \
-          'top-1/2 -translate-y-1/2 px-4 md:px-12'
-      end
-    end
-
-    def width_classes
-      if mobile_minimal?
-        'w-full'
-      elsif full?
-        'max-w-[min(40rem,calc(100%-3rem))] lg:max-w-[min(50rem,calc(100%-3rem))]'
-      else
-        'sm:max-w-[min(30rem,calc(100%-2rem))] md:max-w-[min(40rem,calc(100%-3rem))] ' \
-          'lg:max-w-[min(50rem,calc(100%-3rem))]'
-      end
+    def stack_classes
+      'pointer-events-auto flex w-full max-w-3xl flex-col items-center gap-3 px-2 text-center xl:px-0 md:gap-4'
     end
 
     def tag_list_classes
-      mobile_minimal? ? 'mb-3' : 'max-sm:mb-3 mb-4'
+      'mb-0 justify-center'
     end
 
     def title_classes
-      base = 'font-extrabold tracking-tight leading-tight text-white drop-shadow-lg'
-
-      case layout
-      when :mobile_minimal
-        "#{base} mb-2 text-2xl line-clamp-1"
-      when :full
-        "#{base} mb-2 md:mb-4 text-2xl md:text-4xl lg:text-5xl line-clamp-1"
-      else
-        "#{base} mb-2 md:mb-4 text-2xl md:text-4xl lg:text-5xl line-clamp-1 max-sm:line-clamp-1"
-      end
+      'text-balance text-2xl/tight font-semibold tracking-tight text-fg ' \
+        'dark:text-white sm:text-3xl/tight md:text-4xl/tight line-clamp-2'
     end
 
-    def body_wrapper_classes
-      case layout
-      when :mobile_minimal
-        'space-y-0'
-      when :full
-        'mb-4 md:mb-8 flex flex-col gap-4'
-      else
-        'max-sm:mb-0 max-sm:space-y-0 sm:mb-4 md:mb-8 sm:flex sm:flex-col sm:gap-4'
-      end
+    def title_link_classes
+      'token-raw underline-offset-[0.22em] decoration-transparent decoration-2 ' \
+        'transition-[color,text-decoration-color,opacity] duration-200 ' \
+        'hover:underline hover:decoration-fg/40 hover:opacity-90 ' \
+        'dark:hover:decoration-white/45'
     end
 
     def description_classes
-      [
-        'font-medium leading-snug text-white/90 drop-shadow-md tracking-tight',
-        mobile_minimal? ? 'text-sm line-clamp-2' : 'text-sm md:text-base line-clamp-2 md:line-clamp-3'
-      ].join(' ')
+      base = 'max-w-2xl text-pretty text-sm/5 text-fg-secondary line-clamp-2 ' \
+             'dark:text-white/80 sm:text-base/6'
+
+      case layout
+      when :full then base
+      else "max-sm:hidden #{base}"
+      end
     end
 
-    def metadata_wrapper_classes
-      base = 'flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm md:text-base text-white/90'
+    def metadata_classes
+      base = 'flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-sm/5'
 
       case layout
       when :mobile_minimal then 'hidden'
@@ -82,18 +52,22 @@ module Fictions
       end
     end
 
-    def buttons_wrapper_classes
-      base = 'flex flex-wrap items-center gap-3'
-
-      case layout
-      when :mobile_minimal then 'hidden'
-      when :full then base
-      else "max-sm:hidden #{base}"
-      end
+    def meta_rating_classes
+      'inline-flex items-center gap-1 font-semibold text-amber-500'
     end
 
-    def ghost_button_classes
-      GHOST_BUTTON_CLASSES
+    def meta_muted_classes
+      'inline-flex min-w-0 items-center gap-1.5 text-fg-secondary dark:text-white/90'
+    end
+
+    def meta_icon_classes
+      'h-4 w-4 shrink-0'
+    end
+
+    def read_link_classes
+      'mb-6 inline-flex w-fit items-center gap-1.5 text-sm/5 font-medium text-fg-secondary ' \
+        'underline-offset-4 transition-colors hover:text-fg hover:underline ' \
+        'dark:text-white/90 dark:hover:text-white'
     end
   end
 end

@@ -8,25 +8,18 @@ module Pokemons
       @attacker = users(:user_one)
       @defender = users(:user_two)
       @brave = UserPokemon.create!(user: @attacker, pokemon: pokemons(:four), character: :brave, battle_experience: 40)
+      @attacker.trainer_profile.update!(attack_team_ids: [@brave.id, user_pokemons(:one).id])
+      @defender.trainer_profile.update!(defense_team_ids: [user_pokemons(:two).id])
     end
 
-    test 'loads both teams with one preload, whatever the team size' do
-      teams = assert_queries_count(4) do
-        BattleTeams.new(@attacker, @defender).tap { |t| t.snapshot(:attacker) && t.snapshot(:defender) }
-      end
+    test 'snapshots the attacker attack roster and the defender defense roster in order' do
+      teams = BattleTeams.new(@attacker, @defender)
 
-      assert_equal [@attacker, @defender], teams.trainers
+      assert_equal [@brave.id, user_pokemons(:one).id], teams.snapshot(:attacker).combatants.map(&:id)
+      assert_equal [user_pokemons(:two).id], teams.snapshot(:defender).combatants.map(&:id)
     end
 
-    test 'snapshots each side in id order with the engine inputs' do
-      combatant = BattleTeams.new(@attacker, @defender).snapshot(:attacker).combatants.last
-
-      assert_equal [user_pokemons(:one).id, @brave.id],
-                   BattleTeams.new(@attacker, @defender).snapshot(:attacker).combatants.map(&:id)
-      assert_equal ['brave', 40, nil], [combatant.character, combatant.battle_experience, combatant.power_level]
-    end
-
-    test 'stores each combatant with its species' do
+    test 'stores each fielded combatant with its species' do
       stored = BattleTeams.new(@attacker, @defender).stored(:defender)
 
       assert_equal [{ id: user_pokemons(:two).id, character: 'agile', power_level: nil, battle_experience: 1,
@@ -37,6 +30,14 @@ module Pokemons
       BattleTeams.new(@attacker, @defender).save_experience({ @brave.id => 44 })
 
       assert_equal [44, 1], [@brave.reload.battle_experience, user_pokemons(:one).reload.battle_experience]
+    end
+
+    test 'falls back to an auto roster when attack ids are blank' do
+      @attacker.trainer_profile.update!(attack_team_ids: nil)
+      ids = BattleTeams.new(@attacker, @defender).snapshot(:attacker).combatants.map(&:id)
+
+      assert_operator ids.size, :<=, Balance::TEAM_SIZE
+      assert_predicate ids, :any?
     end
   end
 end

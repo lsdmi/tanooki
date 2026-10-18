@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # Both trainers' Pokémon from one query: engine snapshots for the simulation, the rows a PokemonBattle stores (each
-  # combatant plus its species, for rendering), and the experience the battle earned written back.
+  # Both trainers' fielded rosters: the attacker's attack team and the defender's defense team (ordered, ≤ TEAM_SIZE).
+  # Engine snapshots for the simulation, the rows a PokemonBattle stores, and experience written back.
   class BattleTeams
     attr_reader :trainers
 
     def initialize(attacker, defender)
       @trainers = [attacker, defender]
-      @records = UserPokemon.where(user_id: [attacker.id, defender.id])
-                            .includes(pokemon: :pokemon_types).order(:id).to_a
+      @rosters = {
+        attacker: TeamRoster.new(attacker, :attack).records,
+        defender: TeamRoster.new(defender, :defense).records
+      }
+      ids = @rosters.values.flat_map { |records| records.map(&:id) }.uniq
+      @records = UserPokemon.where(id: ids).includes(pokemon: :pokemon_types).index_by(&:id)
     end
 
     def snapshot(side)
@@ -21,8 +25,7 @@ module Pokemons
     end
 
     def save_experience(experience)
-      by_id = @records.index_by(&:id)
-      experience.each { |id, battle_experience| by_id.fetch(id).update!(battle_experience:) }
+      experience.each { |id, battle_experience| @records.fetch(id).update!(battle_experience:) }
     end
 
     private
@@ -33,8 +36,9 @@ module Pokemons
 
     def combatants(side)
       @combatants ||= {}
-      @combatants[side] ||= @records.select { |record| record.user_id == trainer(side).id }.map do |record|
-        [combatant(record), record]
+      @combatants[side] ||= @rosters.fetch(side).filter_map do |record|
+        loaded = @records[record.id] || record
+        [combatant(loaded), loaded]
       end
     end
 

@@ -11,8 +11,10 @@
                                                 has_party: pokemon_show.pokemons.any? %>
   <% end %>
 
-  <%= turbo_frame_tag "pokemon-data-screen", class: 'min-w-0' do %>
-    <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon, evolution: pokemon_show.evolution %>
+  <%= turbo_frame_tag "pokemon-data-screen", class: 'min-w-0 w-full' do %>
+    <%= render 'users/pokemons/list', pokemons: pokemon_show.pokemons, selected_pokemon: pokemon_show.selected_pokemon,
+                                      evolution: pokemon_show.evolution, attack_team: pokemon_show.attack_team,
+                                      defense_team: pokemon_show.defense_team %>
   <% end %>
 
   <footer class="flex flex-col gap-8 border-t border-line pt-8">

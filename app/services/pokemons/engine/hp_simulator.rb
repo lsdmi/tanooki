@@ -41,13 +41,14 @@ module Pokemons
 
       attr_reader :balance, :rng
 
+      # Snapshot order is the fight order (Phase 5.1 attack/defense teams). Cap at +team_size+.
       def roster(snapshots)
         limit = [balance.team_size, *snapshots.values.map { |snapshot| snapshot.combatants.size }].min
-        snapshots.transform_values { |snapshot| strongest(snapshot, limit) }
+        snapshots.transform_values { |snapshot| fielded(snapshot, limit) }
       end
 
-      def strongest(snapshot, limit)
-        snapshot.combatants.map { |combatant| fighter(combatant) }.sort_by { |f| [-f.power, f.id] }.first(limit)
+      def fielded(snapshot, limit)
+        snapshot.combatants.first(limit).map { |combatant| fighter(combatant) }
       end
 
       def fighter(combatant)

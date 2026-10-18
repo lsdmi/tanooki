@@ -63,7 +63,8 @@ module FictionGenrePageNewReleases
   end
 
   def genre_links_for_card(fiction)
-    genre_links = fiction.genres.order(:name).limit(4).map { |g| { name: g.name, slug: g.slug } }
+    # Sort in memory so the genres preload is actually used (`.order` would re-query and trip Bullet).
+    genre_links = fiction.genres.to_a.sort_by(&:name).first(4).map { |g| { name: g.name, slug: g.slug } }
     fiction.with_content_rating_genre_links(genre_links).first(4)
   end
 

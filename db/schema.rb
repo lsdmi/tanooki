@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_17_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_18_155038) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -720,7 +720,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_17_180000) do
   end
 
   create_table "trainer_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.json "attack_team_ids"
     t.datetime "created_at", null: false
+    t.json "defense_team_ids"
     t.float "glicko_deviation", limit: 53, default: 350.0, null: false
     t.virtual "glicko_floor", type: :float, limit: 53, as: "(`glicko_rating` - (2 * `glicko_deviation`))", stored: true
     t.float "glicko_rating", limit: 53, default: 1500.0, null: false
