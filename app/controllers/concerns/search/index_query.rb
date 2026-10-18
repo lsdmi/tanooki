@@ -5,20 +5,13 @@ module Search
   module IndexQuery
     extend ActiveSupport::Concern
     include Search::IndexPagination
+    include Search::IndexSearchBuilders
     include Search::IndexTurboStreams
-
-    OPENSEARCH_CONNECTION_ERRORS = [
-      Faraday::Error,
-      Errno::ECONNREFUSED,
-      SocketError,
-      Timeout::Error,
-      OpenSearch::Transport::Transport::Error
-    ].freeze
 
     private
 
     def load_search_results
-      timings = {}
+      timings = Concurrent::Map.new
       load_search_pagy_results(timings)
       assign_search_collections(timings)
       load_search_sidebar_tags
@@ -26,10 +19,30 @@ module Search
     end
 
     def load_search_pagy_results(timings)
-      # Filtered tabs used to still hit OpenSearch three times (limit 1 on the hidden ones). Skip those.
+      # filter=all used to run three OpenSearch queries back-to-back; wall clock ≈ sum.
+      # Run them in parallel so wall clock ≈ max(leg). Filtered tabs stay sequential (one OS hit).
+      if all_filter?
+        load_search_pagy_results_parallel(timings)
+      else
+        load_search_pagy_results_serial(timings)
+      end
+    end
+
+    def load_search_pagy_results_serial(timings)
       @pagy_fictions, @fiction_records = search_section(:fictions, timings) { fiction_search }
       @pagy_results, @publication_records = search_section(:publications, timings) { publication_search }
       @pagy_videos, @video_records = search_section(:videos, timings) { video_search }
+    end
+
+    def load_search_pagy_results_parallel(timings)
+      loaded = Search::ParallelSections.call(
+        fictions: -> { search_section(:fictions, timings) { fiction_search } },
+        publications: -> { search_section(:publications, timings) { publication_search } },
+        videos: -> { search_section(:videos, timings) { video_search } }
+      )
+      @pagy_fictions, @fiction_records = loaded.fetch(:fictions)
+      @pagy_results, @publication_records = loaded.fetch(:publications)
+      @pagy_videos, @video_records = loaded.fetch(:videos)
     end
 
     def search_section(name, timings)
@@ -83,41 +96,6 @@ module Search
       return nil if terms.empty?
 
       params[:search] = terms
-    end
-
-    def fiction_search
-      Fiction.pagy_searchkick(
-        params[:search],
-        fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
-      ).includes(cover_attachment: :blob)
-    end
-
-    def publication_search
-      Publication.pagy_searchkick(
-        params[:search],
-        fields: ['tags^10', 'title^5', 'description'],
-        boost_by_recency: { created_at: { scale: '7d', decay: 0.9 } }
-      ).includes(cover_attachment: :blob)
-    end
-
-    def video_search
-      YoutubeVideo.pagy_searchkick(
-        params[:search],
-        fields: ['title^2', 'description', 'tags'],
-        boost_by_recency: { published_at: { scale: '7d', decay: 0.9 } }
-      )
-    end
-
-    def pagy_searchkick_for(search_args, limit:)
-      pagy_searchkick(search_args, limit: limit, limit_extra: false)
-    rescue *OPENSEARCH_CONNECTION_ERRORS => e
-      Rails.logger.warn("[search] OpenSearch unavailable: #{e.class}: #{e.message}")
-      @search_unavailable = true
-      [empty_search_pagy(limit), []]
-    end
-
-    def empty_search_pagy(limit)
-      Pagy.new(count: 0, page: params[:page] || 1, limit: [limit, 1].max)
     end
 
     def trending_tag_labels_for_sidebar

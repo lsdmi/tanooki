@@ -7,6 +7,7 @@ require 'test_helper'
 # Budgets are local fixture numbers with headroom;
 # production p95 is higher because of data size, not because these pages may grow unbounded here.
 class PageQueryBudgetsTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   include QueryBudgetHelper
   include SearchControllerTesting
 
@@ -16,7 +17,10 @@ class PageQueryBudgetsTest < ActionDispatch::IntegrationTest
   FICTIONS_INDEX_QUERIES = 80
   FICTION_SHOW_QUERIES = 50
   CHAPTER_SHOW_QUERIES = 15
-  SEARCH_QUERIES = 50
+  # Cold fixture count for filter=all is ~36 after skipping inactive OS sections; 45 ≈ +25% headroom.
+  SEARCH_QUERIES = 45
+  # Studio blogs list uses publications.excerpt only (~30 cold); 40 ≈ +25% headroom.
+  STUDIO_BLOGS_QUERIES = 40
 
   setup do
     @fiction = fictions(:one)
@@ -57,5 +61,12 @@ class PageQueryBudgetsTest < ActionDispatch::IntegrationTest
         assert_response :success
       end
     end
+  end
+
+  test 'studio blogs tab stays within its SQL budget and loads no Action Text' do
+    sign_in users(:user_one)
+    Rails.cache.clear
+    assert_list_page_query_budget(STUDIO_BLOGS_QUERIES) { get studio_index_url(tab: 'blogs') }
+    assert_response :success
   end
 end

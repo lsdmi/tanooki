@@ -120,7 +120,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                       </svg>
                       <span class="text-sm font-semibold text-fg-brand">
-                        <%= bookshelf.fictions.count %>
+                        <%= bookshelf.fictions.size %>
                       </span>
                     </div>
                   </div>
@@ -159,43 +159,14 @@
     <!-- Right Column (2/3) -->
     <div class="lg:col-span-2 space-y-6">
 
-      <!-- Pokemon Stats -->
-      <div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
-        <%= render 'shared/ornament' %>
-        <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
-          <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-          </svg>
-          Статистика Покемонів
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
-          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
-            <div class="text-2xl font-bold text-fg-brand"><%= @pokemon_count %> / <%= @total_pokemon %></div>
-            <div class="text-sm text-fg-secondary">Покедекс</div>
-          </div>
-          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
-            <div class="text-2xl font-bold text-fg-brand"><%= @victories %> / <%= @total_battles %></div>
-            <div class="text-sm text-fg-secondary">Вдалі Виклики</div>
-          </div>
-          <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
-            <div class="text-2xl font-bold text-fg-brand">#<%= @user_rating %></div>
-            <div class="text-sm text-fg-secondary">Рейтинг</div>
-          </div>
+      <%# Dex / battles / seasons are SQL-heavy; load when the frame intersects. %>
+      <%= turbo_frame_tag 'profile-pokemon-stats',
+                          src: pokemon_stats_profile_path(params[:id]),
+                          loading: :lazy do %>
+        <div class="rounded-lg border border-line bg-card p-6 shadow-sm">
+          <p class="text-sm text-fg-muted"><%= t('profiles.pokemon_stats.loading') %></p>
         </div>
-        <% if @season_results.any? %>
-          <div class="mt-4 relative z-10">
-            <h3 class="text-sm font-semibold text-fg-secondary mb-2"><%= t('pokemons.seasons.section') %></h3>
-            <ul class="flex flex-col gap-2">
-              <% @season_results.each do |result| %>
-                <li class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-brand-subtle px-3 py-2 ring-1 ring-inset ring-line">
-                  <span class="text-sm/5 font-medium text-fg"><%= season_label(result.pokemon_season) %></span>
-                  <span class="text-sm/5 text-fg-secondary"><%= season_result_badge(result) %></span>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
-      </div>
+      <% end %>
 
       <!-- My Comments -->
       <% if @recent_comments.any? %>

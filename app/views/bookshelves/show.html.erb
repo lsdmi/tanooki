@@ -40,8 +40,10 @@
 
     <main class="min-w-0">
       <div class="rounded-xl border border-line bg-surface p-3 shadow-md sm:p-4">
-        <%= render partial: 'fiction_lists/dynamic_content',
-                   locals: { fictions: @fictions, pagy: @pagy } %>
+        <%= render 'bookshelves/fiction_list',
+                   bookshelf: @bookshelf,
+                   fictions: @fictions,
+                   pagy: @pagy %>
       </div>
     </main>
   </div>

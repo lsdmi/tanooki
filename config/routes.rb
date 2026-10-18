@@ -187,7 +187,11 @@ Rails.application.routes.draw do
   end
   resources :users, only: :update
 
-  resources :profiles, only: :show, param: :id, path: 'profile'
+  resources :profiles, only: :show, param: :id, path: 'profile' do
+    member do
+      get :pokemon_stats
+    end
+  end
 
   resources :youtube_videos, path: 'watch', only: %i[index show] do
     collection do

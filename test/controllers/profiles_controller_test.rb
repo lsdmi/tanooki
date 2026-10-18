@@ -12,7 +12,6 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     get "/profile/#{@sqid}"
 
     assert_response :success
-    assert_not_nil assigns(:user)
     assert_equal @user, assigns(:user)
   end
 
@@ -23,9 +22,17 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'should set user instance variable' do
-    get "/profile/#{@sqid}"
+  test 'show shells pokemon stats as a lazy turbo frame' do
+    get profile_url(@sqid)
 
-    assert_equal @user, assigns(:user)
+    assert_select 'turbo-frame#profile-pokemon-stats[src=?]', pokemon_stats_profile_path(@sqid)
+    assert_nil assigns(:pokemon_count)
+  end
+
+  test 'pokemon_stats frame returns the dex card' do
+    get pokemon_stats_profile_url(@sqid)
+
+    assert_select 'turbo-frame#profile-pokemon-stats', text: /Покедекс/
+    assert_not_nil assigns(:pokemon_count)
   end
 end

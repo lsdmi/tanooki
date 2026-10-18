@@ -4,12 +4,17 @@
 class ProfilesController < ApplicationController
   helper Pokemons::DexHelper
 
-  before_action :set_user, only: :show
-  before_action :pokemon_appearance, only: [:show]
+  before_action :set_user, only: %i[show pokemon_stats]
+  before_action :pokemon_appearance, only: :show
 
   def show
     load_user_data
+  end
+
+  # Dex / battle / season stats load on first intersect (turbo frame), not on the shell HTML.
+  def pokemon_stats
     load_pokemon_stats
+    render layout: false
   end
 
   private

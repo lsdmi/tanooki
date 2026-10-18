@@ -1,0 +1,37 @@
+<%# Pokemon dex / battles / seasons for ProfilesController#pokemon_stats. %>
+<div class="bg-card rounded-lg shadow-sm border border-line p-6 relative overflow-hidden">
+  <%= render 'shared/ornament' %>
+  <h2 class="text-lg font-semibold text-fg mb-4 flex items-center relative z-10">
+    <svg class="w-5 h-5 mr-2 text-fg-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+    </svg>
+    <%= t('profiles.pokemon_stats.title') %>
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+    <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+      <div class="text-2xl font-bold text-fg-brand"><%= @pokemon_count %> / <%= @total_pokemon %></div>
+      <div class="text-sm text-fg-secondary"><%= t('profiles.pokemon_stats.dex') %></div>
+    </div>
+    <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+      <div class="text-2xl font-bold text-fg-brand"><%= @victories %> / <%= @total_battles %></div>
+      <div class="text-sm text-fg-secondary"><%= t('profiles.pokemon_stats.battles') %></div>
+    </div>
+    <div class="text-center p-4 bg-brand-subtle rounded-lg border border-line">
+      <div class="text-2xl font-bold text-fg-brand">#<%= @user_rating %></div>
+      <div class="text-sm text-fg-secondary"><%= t('profiles.pokemon_stats.rank') %></div>
+    </div>
+  </div>
+  <% if @season_results.any? %>
+    <div class="mt-4 relative z-10">
+      <h3 class="text-sm font-semibold text-fg-secondary mb-2"><%= t('pokemons.seasons.section') %></h3>
+      <ul class="flex flex-col gap-2">
+        <% @season_results.each do |result| %>
+          <li class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-brand-subtle px-3 py-2 ring-1 ring-inset ring-line">
+            <span class="text-sm/5 font-medium text-fg"><%= season_label(result.pokemon_season) %></span>
+            <span class="text-sm/5 text-fg-secondary"><%= season_result_badge(result) %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

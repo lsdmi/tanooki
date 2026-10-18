@@ -3,11 +3,13 @@
 # Counts SQL for a request and fails when it grows past a budget (Stream 3 guardrails).
 module QueryBudgetHelper
   RICH_TEXT_SQL = /action_text_rich_texts/i
+  # Solid Cache uses the same MySQL DB; those reads/writes are store noise, not page SQL.
+  CACHE_STORE_SQL = /solid_cache_entries/i
 
   def count_queries(&)
     counter = ActiveRecord::Assertions::QueryAssertions::SQLCounter.new
     ActiveSupport::Notifications.subscribed(counter, 'sql.active_record', &)
-    counter.log
+    counter.log.grep_v(CACHE_STORE_SQL)
   end
 
   def assert_queries_at_most(max, message = nil, &)

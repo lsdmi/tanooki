@@ -20,6 +20,10 @@ module Bookshelves
       normalized_fiction_ids.each do |fiction_id|
         bookshelf.bookshelf_fictions.create!(fiction_id:)
       end
+
+      # Bust the fiction-list fragment cache on membership changes.
+      bookshelf.fiction_ids = normalized_fiction_ids
+      bookshelf.update!(updated_at: Time.current)
     end
 
     private

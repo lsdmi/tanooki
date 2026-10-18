@@ -1,0 +1,4 @@
+<%# locals: bookshelf:, fictions:, pagy: %>
+<% cache bookshelf.fiction_list_fragment_cache_key(page: pagy.page) do %>
+  <%= render partial: 'fiction_lists/dynamic_content', locals: { fictions:, pagy: } %>
+<% end %>

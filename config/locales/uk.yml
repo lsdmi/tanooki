@@ -358,6 +358,13 @@ uk:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
       destroy_success: Полицю видалено.
+  profiles:
+    pokemon_stats:
+      title: Статистика Покемонів
+      dex: Покедекс
+      battles: Вдалі Виклики
+      rank: Рейтинг
+      loading: Завантаження статистики…
   fiction_lists:
     filters:
       include_eighteen: Показувати 18+

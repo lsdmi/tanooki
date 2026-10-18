@@ -16,8 +16,9 @@ class BookshelvesController < ApplicationController
 
     return unless turbo_frame_request_id == 'fiction-list-page'
 
-    render partial: 'fiction_lists/dynamic_content',
+    render partial: 'bookshelves/fiction_list',
            locals: {
+             bookshelf: @bookshelf,
              fictions: @fictions,
              pagy: @pagy
            }
