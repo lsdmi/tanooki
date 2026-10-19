@@ -34,11 +34,12 @@ class ApiToken < ApplicationRecord
 
   def self.issue!(user:, name:, scopes:, expires_at: DEFAULT_TTL.from_now)
     secret = generate_secret
+    digest_hex = digest(secret)
     token = create!(
       user:, name:, scopes:, expires_at:,
-      token_digest: digest(secret),
-      # Public UI hint (baka_xxx…); only the digest is the credential. Same pattern as GitHub PATs.
-      token_prefix: secret.first(PREFIX_LENGTH) # codeql[rb/clear-text-storage-sensitive-data]
+      token_digest: digest_hex,
+      # Public list hint only — derived from the digest, never a cleartext slice of the secret.
+      token_prefix: public_prefix(digest_hex)
     )
     token.instance_variable_set(:@secret, secret)
     token
@@ -54,6 +55,11 @@ class ApiToken < ApplicationRecord
 
   def self.digest(secret)
     Digest::SHA256.hexdigest(secret)
+  end
+
+  # Stable UI label (baka_ + hex); not usable as a credential and not a substring of the secret.
+  def self.public_prefix(digest_hex)
+    "#{PREFIX}#{digest_hex.first(PREFIX_LENGTH - PREFIX.length)}"
   end
 
   def revoke!
@@ -89,7 +95,7 @@ class ApiToken < ApplicationRecord
     ('1' * bytes.bytes.take_while(&:zero?).count) + encoded
   end
 
-  private_class_method :generate_secret, :encode_base58
+  private_class_method :generate_secret, :encode_base58, :public_prefix
 
   def normalize_scopes
     self.scopes = Array(scopes).compact_blank.map(&:to_s).uniq

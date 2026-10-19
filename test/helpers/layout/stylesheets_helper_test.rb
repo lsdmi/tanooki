@@ -85,6 +85,28 @@ module Layout
       assign_controller(:home, :index)
 
       assert_equal %w[adsense_slots], page_stylesheets
+      assert deferred_page_stylesheet?('adsense_slots')
+      assert_not deferred_page_stylesheet?('adult_content_disclaimer')
+    end
+
+    test 'deferred page stylesheet uses print media with onload flip to all' do
+      define_singleton_method(:adsense_adblock_check?) { true }
+      assign_controller(:home, :index)
+      html = CGI.unescapeHTML(page_stylesheet_link_tag('adsense_slots'))
+
+      assert_includes html, 'media="print"'
+      assert_includes html, "onload=\"this.media='all'\""
+      assert_includes html, '<noscript>'
+    end
+
+    test 'blocking page stylesheet keeps default media' do
+      fiction = fictions(:one)
+      fiction.update!(content_rating: :eighteen)
+      assign_controller(:fictions, :show, fiction: fiction)
+      html = page_stylesheet_link_tag('adult_content_disclaimer')
+
+      assert_not_includes html, 'media="print"'
+      assert_includes html, 'adult_content_disclaimer'
     end
 
     private

@@ -8,7 +8,9 @@
 <% first_lcp_url = first_mobile_url || first_desktop_url %>
 <% eager_first_slide = first_lcp_url.present? %>
 <%# Mikai-style veil + mask so art dissolves into the page (bottom always; top when nestled under a heading). %>
-<% slide_veil = 'absolute inset-0 z-[1] bg-linear-to-b from-main/78 via-main/88 to-main/97 dark:from-main/55 dark:via-main/75 dark:to-main/95' %>
+<%# Light theme: slight black wash under the page veil so banner art reads a bit darker. %>
+<% slide_dim = 'absolute inset-0 z-[1] bg-black/22 dark:hidden' %>
+<% slide_veil = 'absolute inset-0 z-[1] bg-linear-to-b from-main/72 via-main/84 to-main/96 dark:from-main/55 dark:via-main/75 dark:to-main/95' %>
 <% art_melt = if melt_top
                 '[mask-image:linear-gradient(to_bottom,transparent,#000_16%,#000_55%,transparent)] ' \
                   '[-webkit-mask-image:linear-gradient(to_bottom,transparent,#000_16%,#000_55%,transparent)]'
@@ -78,6 +80,7 @@
                 id="lazy-bg-<%= fiction.id %>"
                 style="background-image: none;"></div>
             <% end %>
+            <div class="<%= slide_dim %>"></div>
             <div class="<%= slide_veil %>"></div>
           </div>
 

@@ -58,19 +58,17 @@ class FictionsControllerShowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'section[aria-labelledby="fiction-title"] picture source[type="image/avif"]'
     assert_select 'section[aria-labelledby="fiction-title"] picture ' \
-                  'img[src*="representations"][fetchpriority="high"][loading="eager"]', count: 1
+                  'img[src*="representations"][loading="eager"]', count: 1
   end
 
-  test 'hero backdrop reuses the cover image instead of preloading a separate background' do
+  test 'hero preloads the backdrop as CSS and keeps a single cover img' do
     skip 'libvips not installed' unless Attachments::VariantProcessing.available?
 
     get fiction_url(@fiction)
 
-    assert_response :success
-    assert_select 'link[rel="preload"][as="image"]', count: 0
-    cover_sources = css_select('section[aria-labelledby="fiction-title"] picture img').pluck('src')
-
-    assert_equal [cover_sources.first] * 2, cover_sources
+    assert_select 'link[rel="preload"][as="image"][fetchpriority="high"]', count: 1
+    assert_select 'section[aria-labelledby="fiction-title"] picture img', count: 1
+    assert_select 'section[aria-labelledby="fiction-title"] [aria-hidden="true"] img', count: 0
   end
 
   test 'show does not load reader-only google fonts' do

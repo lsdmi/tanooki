@@ -28,9 +28,19 @@ module Fictions
       fiction.cover.attached?
     end
 
-    def cover_tag(classes:, **)
-      cover_card_picture_tag(fiction.cover, class: classes, width: 400, height: 600, loading: 'eager',
-                                            decoding: 'async', **)
+    # Prefer a thumb under the blur; if variants are unavailable this falls back to the same URL as the card img
+    # so the browser fetches the cover once.
+    def backdrop_image_url
+      cover_thumbnail_url(fiction.cover).presence || cover_card_url(fiction.cover)
+    end
+
+    def backdrop_style
+      "background-image: url('#{backdrop_image_url}')"
+    end
+
+    def cover_tag
+      cover_card_picture_tag(fiction.cover, class: COVER_IMAGE, alt: fiction.title, loading: 'eager',
+                                            decoding: 'async')
     end
 
     def original_title

@@ -10,8 +10,8 @@ module Fictions
     # A fixed-height strip at the top, so long content runs past the art onto the plain page background.
     BACKDROP = 'absolute inset-x-0 top-0 h-[26rem] overflow-hidden'
     # Cropped toward the top. Only a light blur: more turns the art to mush under the wash. scale-105 hides the soft
-    # edges the blur leaves.
-    BACKDROP_IMAGE = 'absolute inset-0 size-full scale-105 object-cover object-[50%_10%] blur-[2px]'
+    # edges the blur leaves. CSS background (not a second <img>) so it can share the cover URL or a cheap thumb.
+    BACKDROP_IMAGE = 'absolute inset-0 size-full scale-105 bg-cover bg-[position:50%_10%] blur-[2px]'
     # Ends in the page's own `bg-surface`, so the art fades into the page with no edge.
     # Light needs the stronger wash: light art is close in brightness to the text and pills on it.
     WASH = 'absolute inset-0 bg-linear-to-b from-surface/75 to-surface dark:from-surface/70'

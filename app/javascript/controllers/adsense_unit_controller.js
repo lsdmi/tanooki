@@ -45,6 +45,7 @@ export default class extends Controller {
     document.removeEventListener("baka:adsense-ready", this.boundReady)
     document.removeEventListener("baka:adsense-visit", this.boundVisit)
     this.clearRetry()
+    this.clearScriptTimeout()
     this.stopWatching()
   }
 
@@ -80,6 +81,7 @@ export default class extends Controller {
   resetForNavigation() {
     this.visitGeneration += 1
     this.clearRetry()
+    this.clearScriptTimeout()
     this.stopWatching()
     this.clearMeasuring()
     this.replaceAdElement()
@@ -134,9 +136,11 @@ export default class extends Controller {
     }
 
     if (!window.adsbygoogle) {
+      this.scheduleScriptTimeout(generation)
       return
     }
 
+    this.clearScriptTimeout()
     this.beginMeasuring()
 
     if (!this.slotIsRenderable(ins)) {
@@ -151,6 +155,23 @@ export default class extends Controller {
     } catch (_error) {
       this.hideSlot()
     }
+  }
+
+  scheduleScriptTimeout(generation) {
+    if (this.scriptTimeout) return
+
+    this.scriptTimeout = window.setTimeout(() => {
+      this.scriptTimeout = null
+      if (generation !== this.visitGeneration) return
+      if (!window.adsbygoogle) this.hideSlot()
+    }, this.fillTimeoutMs())
+  }
+
+  clearScriptTimeout() {
+    if (!this.scriptTimeout) return
+
+    window.clearTimeout(this.scriptTimeout)
+    this.scriptTimeout = null
   }
 
   slotIsRenderable(ins) {
@@ -244,6 +265,7 @@ export default class extends Controller {
   hideSlot() {
     this.preserveScroll(() => {
       this.clearRetry()
+      this.clearScriptTimeout()
       this.stopWatching()
       this.clearMeasuring()
       this.element.classList.remove(FILLED_CLASS)

@@ -15,7 +15,7 @@ module Chapters
 
     # Markdown levels stay: # is h1. The composer offers nothing below h4, so h5 and h6 fold up.
     HEADING_LEVELS = { 'h5' => 'h4', 'h6' => 'h4' }.freeze
-    WHOLE_DOCUMENT_OPEN = /\A```[ \t]*(?:markdown|md|text|plaintext)?[ \t]*\z/i
+    WHOLE_DOCUMENT_LANGS = %w[markdown md text plaintext].freeze
     FENCE_LINE = /\A[ \t]*(```|~~~)/
 
     def self.call(markdown)
@@ -47,14 +47,14 @@ module Chapters
       dedent(text)
     end
 
-    # Line-based unwrap avoids a polynomial regex on attacker-controlled markdown.
+    # Line-based unwrap: no regex on the opening fence (avoids CodeQL rb/polynomial-redos).
     def unwrap_whole_document_fence(text)
       stripped = text.strip
       return text unless stripped.end_with?('```')
 
       open_end = stripped.index("\n")
       return text unless open_end
-      return text unless stripped[0...open_end].match?(WHOLE_DOCUMENT_OPEN)
+      return text unless whole_document_open_fence?(stripped[0...open_end])
 
       without_close = stripped.delete_suffix('```')
       close_line_start = without_close.rindex("\n")
@@ -62,6 +62,13 @@ module Chapters
       return text unless without_close[(close_line_start + 1)..].match?(/\A[ \t]*\z/)
 
       without_close[(open_end + 1)...close_line_start]
+    end
+
+    def whole_document_open_fence?(line)
+      return false unless line.start_with?('```')
+
+      lang = line.delete_prefix('```').strip.downcase
+      lang.empty? || WHOLE_DOCUMENT_LANGS.include?(lang)
     end
 
     # Pasted novel text often indents paragraphs, which CommonMark reads as code blocks. Dropping leading

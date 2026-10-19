@@ -52,9 +52,7 @@
     <% if requires_flatpickr_styles? %>
       <%= stylesheet_link_tag flatpickr_stylesheet_url, media: 'all' %>
     <% end %>
-    <% page_stylesheets.each do |stylesheet| %>
-      <%= stylesheet_link_tag stylesheet, "data-turbo-track": "reload" %>
-    <% end %>
+    <%= page_stylesheet_link_tags %>
     <%= stylesheet_link_tag reader_google_fonts_stylesheet_url, media: 'all' if requires_reader_google_fonts? %>
     <%= javascript_importmap_tags %>
     <%= favicon_link_tag asset_path('favicon.ico') %>

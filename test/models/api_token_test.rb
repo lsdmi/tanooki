@@ -11,11 +11,11 @@ class ApiTokenTest < ActiveSupport::TestCase
     assert_equal token, ApiToken.authenticate(secret)
   end
 
-  test 'the secret is shown once and starts with the stored prefix' do
+  test 'the secret is shown once and the stored prefix is a public digest hint' do
     token, secret = issue
 
     assert_match(/\Abaka_[1-9A-HJ-NP-Za-km-z]+\z/, secret)
-    assert_equal secret.first(8), token.token_prefix
+    assert_equal "baka_#{Digest::SHA256.hexdigest(secret).first(3)}", token.token_prefix
     assert_not_includes token.reload.attributes.keys, 'secret'
   end
 

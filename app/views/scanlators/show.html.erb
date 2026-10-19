@@ -145,7 +145,7 @@
             <% end %>
           </div>
         <% else %>
-          <%# Ad-only column: collapses entirely when adblock / collapsed so fiction can go full width. %>
+          <%# Ad-only column: drops out when unfilled/blocked; flex justify-center then centres the card. %>
           <div class="scanlator-show__sidebar-ad lg:col-span-1 flex flex-col gap-5">
             <div class="scanlator-show__ad scanlator-show__ad--sidebar">
               <%= render "shared/adsense_slot",

@@ -7,6 +7,10 @@ module Layout
 
     GLOBAL_STYLESHEETS = [].freeze
 
+    # Below-fold / late UI: load without blocking first paint (print→all onload trick).
+    # Keep sheets that style above-the-fold gates (e.g. adult_content_disclaimer) blocking.
+    DEFERRED_PAGE_STYLESHEETS = %w[adsense_slots].freeze
+
     FEATURE_STYLESHEETS = [
       ['pagy', :requires_pagy_styles?],
       ['slimselect', :requires_slimselect_styles?],
@@ -31,10 +35,39 @@ module Layout
       ]
     end
 
+    def deferred_page_stylesheet?(stylesheet)
+      DEFERRED_PAGE_STYLESHEETS.include?(stylesheet.to_s)
+    end
+
+    # Ad slots sit below the fold on most browse pages; blocking their CSS delays FCP/LCP for ~0.
+    def page_stylesheet_link_tags
+      safe_join(page_stylesheets.map { |stylesheet| page_stylesheet_link_tag(stylesheet) })
+    end
+
+    def page_stylesheet_link_tag(stylesheet)
+      if deferred_page_stylesheet?(stylesheet)
+        deferred_stylesheet_link_tag(stylesheet)
+      else
+        stylesheet_link_tag(stylesheet, 'data-turbo-track': 'reload')
+      end
+    end
+
     private
 
     def feature_stylesheets
       FEATURE_STYLESHEETS.map { |sheet, predicate| [sheet, public_send(predicate)] }
+    end
+
+    def deferred_stylesheet_link_tag(stylesheet)
+      safe_join([deferred_print_stylesheet_link_tag(stylesheet), deferred_stylesheet_noscript_tag(stylesheet)])
+    end
+
+    def deferred_print_stylesheet_link_tag(stylesheet)
+      stylesheet_link_tag(stylesheet, media: 'print', onload: "this.media='all'", 'data-turbo-track': 'reload')
+    end
+
+    def deferred_stylesheet_noscript_tag(stylesheet)
+      content_tag(:noscript) { stylesheet_link_tag(stylesheet, media: 'all', 'data-turbo-track': 'reload') }
     end
   end
 end

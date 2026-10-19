@@ -31,10 +31,12 @@ html.adblock-likely .bookshelf-show__ad,
   display: none !important;
 }
 
-/* Scanlator show: ad-only left column is removed when blocked.
-   Only collapse on adblock / explicit collapsed — not while waiting to measure (offsetParent). */
+/* Scanlator show: ad-only column drops out when blocked / unfilled / never started.
+   Flex + justify-center keeps the fiction card centred whenever that column is gone
+   (our collapse, adblock-likely, or an extension hiding the column). */
 html.adblock-likely .scanlator-show__sidebar-ad,
-.scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed) {
+.scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed),
+.scanlator-show__sidebar-ad:not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--preview)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
   display: none !important;
 }
 
@@ -44,18 +46,25 @@ html.adblock-likely .scanlator-show__ad--full,
 }
 
 @media (min-width: 1024px) {
-  html.adblock-likely .scanlator-show__grid--ad-sidebar,
-  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) {
-    grid-template-columns: minmax(0, 1fr);
+  .scanlator-show__grid--ad-sidebar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
   }
 
-  /* Hold the 2-of-3 column width (two tracks plus the gap between them) and centre it,
-     so losing the ad column shifts the fiction card instead of widening it. */
-  html.adblock-likely .scanlator-show__grid--ad-sidebar .scanlator-show__fictions,
-  .scanlator-show__grid--ad-sidebar:has(> .scanlator-show__sidebar-ad .reader-ad-slot--collapsed) .scanlator-show__fictions {
-    grid-column: 1 / -1;
-    width: calc((200% - 2rem) / 3);
-    justify-self: center;
+  .scanlator-show__grid--ad-sidebar .scanlator-show__sidebar-ad {
+    flex: 0 0 calc((100% - 2rem) / 3);
+    width: calc((100% - 2rem) / 3);
+    max-width: calc((100% - 2rem) / 3);
+  }
+
+  /* Same width as two of three grid tracks (+ the gap between them). */
+  .scanlator-show__grid--ad-sidebar .scanlator-show__fictions {
+    flex: 0 0 calc(2 * (100% - 2rem) / 3);
+    width: calc(2 * (100% - 2rem) / 3);
+    max-width: calc(2 * (100% - 2rem) / 3);
   }
 }
 

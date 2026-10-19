@@ -56,6 +56,15 @@ module Fictions
       assert_includes html, 'dark:text-white'
     end
 
+    test 'responsive layout keeps the blurb visible on small screens' do
+      rendered = render_inline(component(layout: :responsive))
+      blurb = rendered.css('p').find { |node| node.text.include?('Життя Кіма') }
+
+      assert blurb
+      assert_includes blurb['class'], 'line-clamp-2'
+      assert_not_includes blurb['class'], 'max-sm:hidden'
+    end
+
     test 'without content rail the overlay skips the page column max width' do
       rendered = render_inline(component(layout: :responsive, content_rail: false))
 

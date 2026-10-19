@@ -33,13 +33,9 @@ module Fictions
     end
 
     def description_classes
-      base = 'max-w-2xl text-pretty text-sm/5 text-fg-secondary line-clamp-2 ' \
-             'dark:text-white/80 sm:text-base/6'
-
-      case layout
-      when :full then base
-      else "max-sm:hidden #{base}"
-      end
+      # Blurb stays visible on small screens (line-clamp-2); meta row still hides below sm.
+      'max-w-2xl text-pretty text-sm/5 text-fg-secondary line-clamp-2 ' \
+        'dark:text-white/80 sm:text-base/6'
     end
 
     def metadata_classes
