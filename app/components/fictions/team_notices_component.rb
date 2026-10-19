@@ -23,7 +23,7 @@ module Fictions
     attr_reader :fiction
 
     def teams
-      @teams ||= fiction.scanlators.select { |scanlator| scanlator.notice.present? }
+      @teams ||= Fictions::TeamsByChapters.call(fiction).select { |scanlator| scanlator.notice.present? }
     end
   end
 end

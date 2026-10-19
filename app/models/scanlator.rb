@@ -36,6 +36,11 @@ class Scanlator < ApplicationRecord
   validates :telegram_id, length: { minimum: 3, maximum: 50 }, allow_blank: true
   validate :avatar_format, :banner_format
 
+  # Public profile: only fictions where this team still has a non-draft chapter.
+  def fictions_with_published_chapters
+    fictions.where(id: chapters.not_draft.select(:fiction_id))
+  end
+
   def avatar_format
     return unless avatar.attached?
     return if avatar.content_type.in?(%w[image/jpeg image/png image/svg+xml image/webp])

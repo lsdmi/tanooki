@@ -63,5 +63,13 @@ module Meta
 
       assert_equal I18n.t('meta.title.genres.show', name: genre.name), title
     end
+
+    test 'resolve returns fiction SEO title on fiction show' do
+      fiction = fictions(:one)
+
+      title = PageTitle.new(fiction: fiction).resolve
+
+      assert_equal 'Test Fiction | Ранобе українською | Бака', title
+    end
   end
 end

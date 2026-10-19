@@ -41,16 +41,29 @@ module StructuredData
     end
 
     def fiction_book_graph(fiction)
-      url = fiction_url(fiction, only_path: false, **default_public_url_options)
+      seo = Meta::FictionSeo.new(fiction)
+      fiction_book_base_node(fiction, seo)
+        .merge(content_rating_node(fiction), fiction_alternate_name_node(seo))
+    end
+
+    def fiction_book_base_node(fiction, seo)
       {
         '@context': 'https://schema.org',
         '@type': 'Book',
         name: fiction.title,
         author: fiction_author_node(fiction),
         image: [@asset_url.call(fiction.cover)],
-        url:,
+        url: fiction_url(fiction, only_path: false, **default_public_url_options),
+        description: seo.json_ld_description,
         inLanguage: 'uk-UA'
-      }.merge(content_rating_node(fiction))
+      }
+    end
+
+    def fiction_alternate_name_node(seo)
+      names = seo.alternate_names
+      return {} if names.empty?
+
+      { alternateName: names.one? ? names.first : names }
     end
 
     def fiction_author_node(fiction)

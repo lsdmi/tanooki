@@ -21,13 +21,23 @@ module Meta
       assert_equal expected, description
     end
 
-    test 'resolve returns fiction description without scanlators' do
+    test 'resolve returns fiction SEO description without scanlators' do
       fiction = fictions(:one)
       fiction.scanlators.clear
 
       description = PageDescription.new(fiction: fiction).resolve
 
-      assert_equal "Читати ранобе \"#{fiction.title}\" за авторства \"#{fiction.author}\".", description
+      assert_equal Meta::FictionSeo.new(fiction).meta_description, description
+      assert_includes description, 'Читати українською на Баці'
+      assert_includes description, fiction.author
+    end
+
+    test 'resolve returns fiction page title via PageTitle SEO pattern' do
+      fiction = fictions(:one)
+
+      title = PageTitle.new(fiction: fiction).resolve
+
+      assert_equal Meta::FictionSeo.new(fiction).page_title, title
     end
 
     test 'static_path? matches configured index routes' do

@@ -1,0 +1,235 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Search demand from the Google Search Console Search Analytics API.
+#
+# Setup (once):
+#   1. Enable https://console.cloud.google.com/apis/library/searchconsole.googleapis.com
+#      in the same GCP project as the GA service account.
+#   2. Reuse GOOGLE_APPLICATION_CREDENTIALS (config/google-analytics-credentials.json).
+#   3. Search Console → Settings → Users → add the service-account email as Full user.
+#   4. Set GOOGLE_SEARCH_CONSOLE_SITE_URL in .env to the property URL exactly as in GSC
+#      (e.g. https://baka.in.ua/ or sc-domain:baka.in.ua).
+#
+# Usage:
+#   bin/search-console                 # top queries (default)
+#   bin/search-console queries
+#   bin/search-console pages
+#   bin/search-console low-ctr
+#   bin/search-console gaps
+#   bin/search-console sites           # list properties this SA can see
+#   bin/search-console --days 28 queries
+#   bin/search-console --json queries
+
+require 'dotenv'
+require 'json'
+require 'optparse'
+
+Dotenv.load(
+  File.expand_path('../.env', __dir__),
+  File.expand_path('../.env.analytics', __dir__)
+)
+
+DEFAULT_SITE = 'sc-domain:baka.in.ua'
+DEFAULT_DAYS = 90
+DEFAULT_LIMIT = 50
+WEBMASTERS_SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly'
+
+def resolve_credentials!
+  credentials = ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', nil)
+  abort <<~MSG unless credentials
+    Missing GOOGLE_APPLICATION_CREDENTIALS.
+    Same JSON key as bin/analytics-report (see setup at top of bin/search-console).
+  MSG
+
+  unless credentials.start_with?('/')
+    ENV['GOOGLE_APPLICATION_CREDENTIALS'] = File.expand_path("../#{credentials}", __dir__)
+  end
+  path = ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS')
+  abort "Credentials file not found: #{path}" unless File.readable?(path)
+  path
+end
+
+def parse_args(argv)
+  options = { days: DEFAULT_DAYS, limit: DEFAULT_LIMIT, json: false }
+  parser = OptionParser.new do |opts|
+    opts.banner = 'Usage: bin/search-console [options] [queries|pages|low-ctr|gaps|sites]'
+    opts.on('--days N', Integer, "Lookback days (default #{DEFAULT_DAYS})") { |n| options[:days] = n }
+    opts.on('--limit N', Integer, "Row limit (default #{DEFAULT_LIMIT})") { |n| options[:limit] = n }
+    opts.on('--json', 'Machine-readable JSON') { options[:json] = true }
+    opts.on('-h', '--help', 'Show help') do
+      puts opts
+      exit
+    end
+  end
+  rest = parser.parse(argv)
+  command = rest.first || 'queries'
+  unless %w[queries pages low-ctr gaps sites].include?(command)
+    abort "Unknown command #{command.inspect}. Try: queries pages low-ctr gaps sites"
+  end
+  [command, options]
+end
+
+def load_apis!
+  require 'google/apis/searchconsole_v1'
+  require 'googleauth'
+end
+
+def authorize!(credentials_path)
+  Google::Auth::ServiceAccountCredentials.make_creds(
+    json_key_io: File.open(credentials_path),
+    scope: WEBMASTERS_SCOPE
+  )
+end
+
+def service(credentials_path)
+  load_apis!
+  svc = Google::Apis::SearchconsoleV1::SearchConsoleService.new
+  svc.authorization = authorize!(credentials_path)
+  svc
+end
+
+def site_url
+  ENV.fetch('GOOGLE_SEARCH_CONSOLE_SITE_URL', DEFAULT_SITE)
+end
+
+def date_window(days)
+  end_date = Date.today - 1
+  start_date = end_date - (days - 1)
+  [start_date.iso8601, end_date.iso8601]
+end
+
+def query_analytics(svc, dimensions:, days:, row_limit:, start_row: 0)
+  start_date, end_date = date_window(days)
+  request = Google::Apis::SearchconsoleV1::SearchAnalyticsQueryRequest.new(
+    start_date: start_date,
+    end_date: end_date,
+    dimensions: dimensions,
+    row_limit: row_limit,
+    start_row: start_row,
+    type: 'web'
+  )
+  svc.query_searchanalytic(site_url, request)
+rescue Google::Apis::ClientError => e
+  abort <<~MSG
+    Search Console API error: #{e.message}
+    Site URL tried: #{site_url.inspect}
+    Check GOOGLE_SEARCH_CONSOLE_SITE_URL matches GSC exactly, and the service
+    account is a user on that property. Run: bin/search-console sites
+  MSG
+end
+
+def rows_as_hashes(response, key_name)
+  Array(response.rows).map do |row|
+    {
+      key_name => row.keys.first,
+      clicks: row.clicks.to_i,
+      impressions: row.impressions.to_i,
+      ctr: row.ctr.to_f,
+      position: row.position.to_f
+    }
+  end
+end
+
+def print_table(title, rows, key_header, days)
+  puts "#{title} (last #{days} days, site #{site_url})"
+  puts format(
+    '%-48s %8s %12s %7s %8s',
+    key_header, 'clicks', 'impr', 'CTR%', 'pos'
+  )
+  puts '-' * 88
+  rows.each do |row|
+    key = row.values.first.to_s
+    key = "#{key[0, 45]}..." if key.length > 48
+    puts format(
+      '%-48s %8d %12d %6.1f%% %8.1f',
+      key,
+      row[:clicks],
+      row[:impressions],
+      row[:ctr] * 100,
+      row[:position]
+    )
+  end
+  puts
+end
+
+def emit(payload, options)
+  if options[:json]
+    puts JSON.pretty_generate(payload)
+  else
+    yield
+  end
+end
+
+def run_queries(svc, options)
+  response = query_analytics(svc, dimensions: ['query'], days: options[:days], row_limit: options[:limit])
+  rows = rows_as_hashes(response, :query)
+  emit({ command: 'queries', site: site_url, days: options[:days], rows: rows }, options) do
+    print_table('Top queries by clicks', rows, 'query', options[:days])
+  end
+end
+
+def run_pages(svc, options)
+  response = query_analytics(svc, dimensions: ['page'], days: options[:days], row_limit: options[:limit])
+  rows = rows_as_hashes(response, :page)
+  emit({ command: 'pages', site: site_url, days: options[:days], rows: rows }, options) do
+    print_table('Top pages by clicks', rows, 'page', options[:days])
+  end
+end
+
+def run_low_ctr(svc, options)
+  # Pull a wider set, then filter: high impressions, weak CTR (title/snippet candidates).
+  response = query_analytics(svc, dimensions: ['query'], days: options[:days], row_limit: [options[:limit] * 5, 250].max)
+  rows = rows_as_hashes(response, :query)
+  filtered = rows
+    .select { |r| r[:impressions] >= 50 && r[:ctr] < 0.05 && r[:position] <= 20 }
+    .sort_by { |r| -r[:impressions] }
+    .first(options[:limit])
+  emit({ command: 'low-ctr', site: site_url, days: options[:days], rows: filtered }, options) do
+    print_table('High impressions, low CTR (≤5%, pos≤20, impr≥50)', filtered, 'query', options[:days])
+    puts '(Candidates for title/description fixes — spike 2.1.2)'
+  end
+end
+
+def run_gaps(svc, options)
+  # Demand without payoff: impressions but almost no clicks, or buried positions.
+  response = query_analytics(svc, dimensions: ['query'], days: options[:days], row_limit: [options[:limit] * 5, 250].max)
+  rows = rows_as_hashes(response, :query)
+  filtered = rows
+    .select { |r| r[:impressions] >= 30 && (r[:clicks] <= 1 || r[:position] > 10) }
+    .sort_by { |r| [-r[:impressions], r[:position]] }
+    .first(options[:limit])
+  emit({ command: 'gaps', site: site_url, days: options[:days], rows: filtered }, options) do
+    print_table('Demand gaps (impr≥30, clicks≤1 or pos>10)', filtered, 'query', options[:days])
+    puts '(Check whether a strong landing page exists — spike 2.1.3)'
+  end
+end
+
+def run_sites(svc, options)
+  list = svc.list_sites
+  sites = Array(list.site_entry).map do |entry|
+    { site_url: entry.site_url, permission_level: entry.permission_level }
+  end
+  emit({ command: 'sites', rows: sites }, options) do
+    puts 'Search Console properties visible to this service account'
+    if sites.empty?
+      puts '  (none — add the SA email as a user in GSC)'
+    else
+      sites.each { |s| puts "  #{s[:permission_level]}\t#{s[:site_url]}" }
+    end
+    puts
+    puts "Configured GOOGLE_SEARCH_CONSOLE_SITE_URL=#{site_url.inspect}"
+  end
+end
+
+credentials_path = resolve_credentials!
+command, options = parse_args(ARGV)
+svc = service(credentials_path)
+
+case command
+when 'queries' then run_queries(svc, options)
+when 'pages' then run_pages(svc, options)
+when 'low-ctr' then run_low_ctr(svc, options)
+when 'gaps' then run_gaps(svc, options)
+when 'sites' then run_sites(svc, options)
+end

@@ -17,11 +17,12 @@ class ReadingsController < ApplicationController
   end
 
   def destroy
-    stack_size = @chapter.fiction.chapters.by_user_scanlators(current_user).size
+    fiction = @chapter.fiction
+    team_ids = managed_chapter_scanlator_ids
     @chapter.destroy
 
-    handle_scanlators_destruction(stack_size)
-    Catalog::RefreshChapterStats.call(@chapter.fiction)
+    unlink_teams_without_published_chapters(fiction, team_ids)
+    Catalog::RefreshChapterStats.call(fiction)
 
     reload_fiction_chapters
     render turbo_stream: turbo_stream_destroy_success(refresh_list, t('chapters.notices.destroy_success'))
@@ -45,12 +46,30 @@ class ReadingsController < ApplicationController
     render turbo_stream: turbo_stream_alert(t('chapters.alerts.licensed'))
   end
 
-  def handle_scanlators_destruction(stack_size)
-    return unless @chapter.fiction.scanlators.size > 1 && stack_size == 1
+  # Teams the deleter can drop from a shared fiction (admins: every team on the chapter).
+  def managed_chapter_scanlator_ids
+    ids = @chapter.scanlators.ids
+    return ids if current_user.admin?
 
-    current_user.scanlators.each do |scanlator|
-      Fictions::ScanlatorAssociationRemover.new(@chapter.fiction, scanlator).call
+    ids & current_user.scanlators.ids
+  end
+
+  # Drop a team from a shared fiction once it has no published chapters left.
+  # Leftover drafts do not keep the public credit; Remover soft-deletes them with the link.
+  def unlink_teams_without_published_chapters(fiction, team_ids)
+    return if team_ids.empty?
+    return unless fiction.scanlators.size > 1
+
+    team_ids.each do |scanlator_id|
+      next if published_chapters_remain?(fiction, scanlator_id)
+
+      Fictions::ScanlatorAssociationRemover.new(fiction, Scanlator.find(scanlator_id)).call
     end
+  end
+
+  def published_chapters_remain?(fiction, scanlator_id)
+    fiction.chapters.not_draft.joins(:chapter_scanlators)
+           .exists?(chapter_scanlators: { scanlator_id: })
   end
 
   def reload_fiction_chapters

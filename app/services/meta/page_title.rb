@@ -60,7 +60,13 @@ module Meta
     end
 
     def default_title
-      [context[:publication], context[:fiction]].compact.map(&:title).first || DEFAULT_TITLE
+      publication = context[:publication]
+      return publication.title if publication&.persisted?
+
+      fiction = context[:fiction]
+      return FictionSeo.new(fiction).page_title if fiction&.persisted?
+
+      DEFAULT_TITLE
     end
 
     def chapter_title(chapter)

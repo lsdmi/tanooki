@@ -46,6 +46,7 @@ group :development do
   gem 'bundler-audit'
   gem 'erb_lint', require: false
   gem 'google-analytics-data', require: false
+  gem 'google-apis-searchconsole_v1', require: false
   gem 'hotwire-livereload'
   gem 'letter_opener'
   gem 'lookbook'

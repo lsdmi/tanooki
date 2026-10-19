@@ -17,6 +17,17 @@ module StructuredData
       assert_equal fiction.author, payload['author']['name']
     end
 
+    test 'fiction_book_json includes SEO description and alternate names' do
+      fiction = fictions(:one)
+      fiction.english_title = 'English Title'
+      fiction.alternative_title = 'Alt Title'
+      seo = Meta::FictionSeo.new(fiction)
+      payload = JSON.parse(@graphs.fiction_book_json(fiction))
+
+      assert_equal seo.json_ld_description, payload['description']
+      assert_equal seo.alternate_names, payload['alternateName']
+    end
+
     test 'fiction_book_json omits contentRating for everyone' do
       payload = JSON.parse(@graphs.fiction_book_json(fictions(:one)))
 

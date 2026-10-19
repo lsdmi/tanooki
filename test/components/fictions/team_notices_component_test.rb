@@ -9,9 +9,11 @@ module Fictions
     end
 
     test 'shows every team notice with the team name' do
-      FictionScanlator.find_or_create_by!(fiction: @fiction, scanlator: scanlators(:two))
+      other = scanlators(:two)
+      FictionScanlator.find_or_create_by!(fiction: @fiction, scanlator: other)
+      ChapterScanlator.create!(chapter: chapters(:one), scanlator: other)
       fiction = @fiction.reload
-      notices = { scanlators(:one).id => 'Нові розділи щосуботи', scanlators(:two).id => 'Шукаємо редактора: https://t.me/example' }
+      notices = { scanlators(:one).id => 'Нові розділи щосуботи', other.id => 'Шукаємо редактора: https://t.me/example' }
       fiction.scanlators.each { |team| team.notice = notices[team.id] }
 
       render_inline(TeamNoticesComponent.new(fiction:))

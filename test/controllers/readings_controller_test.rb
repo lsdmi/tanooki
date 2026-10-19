@@ -64,4 +64,27 @@ class ReadingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_not FictionScanlator.exists?(fiction: @fiction, scanlator: scanlators(:one))
   end
+
+  test 'leftover drafts do not keep the team linked after the last published chapter is destroyed' do
+    FictionScanlator.create!(fiction: @fiction, scanlator: scanlators(:two))
+    chapters(:two).destroy
+    draft = Chapter.create!(
+      fiction: @fiction,
+      user: @user,
+      title: 'Draft leftover',
+      number: 3,
+      status: :draft,
+      content: 'x' * 500,
+      scanlator_ids: [scanlators(:one).id]
+    )
+    ChapterScanlator.create!(chapter: draft, scanlator: scanlators(:one))
+
+    assert_difference('FictionScanlator.count' => -1, 'Chapter.count' => -2) do
+      delete reading_url(@chapter), as: :turbo_stream
+    end
+
+    assert_equal [false, true],
+                 [FictionScanlator.exists?(fiction: @fiction, scanlator: scanlators(:one)),
+                  Chapter.only_deleted.exists?(draft.id)]
+  end
 end

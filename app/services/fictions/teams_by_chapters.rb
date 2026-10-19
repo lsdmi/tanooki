@@ -13,7 +13,9 @@ module Fictions
 
     def call
       counts = chapter_counts
-      @fiction.scanlators.sort_by { |scanlator| [-counts[scanlator.id].to_i, scanlator.title.to_s] }
+      @fiction.scanlators
+              .select { |scanlator| counts[scanlator.id].to_i.positive? }
+              .sort_by { |scanlator| [-counts[scanlator.id], scanlator.title.to_s] }
     end
 
     private

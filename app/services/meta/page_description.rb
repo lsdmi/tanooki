@@ -89,11 +89,7 @@ module Meta
     end
 
     def fiction_description
-      if fiction.scanlators.any?
-        "Читати ранобе \"#{fiction.title}\" у перекладі команди \"#{fiction.scanlators.map(&:title).to_sentence}\"."
-      else
-        "Читати ранобе \"#{fiction.title}\" за авторства \"#{fiction.author}\"."
-      end
+      FictionSeo.new(fiction).meta_description
     end
 
     def bookshelf_description
