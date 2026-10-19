@@ -1,11 +1,6 @@
-<% if cover? %>
-  <% content_for :head do %>
-    <%= tag.link rel: 'preload', as: 'image', href: backdrop_image_url, fetchpriority: 'high' %>
-  <% end %>
-<% end %>
 <section class="<%= ROOT %>" aria-labelledby="fiction-title">
   <div class="<%= BACKDROP %>" aria-hidden="true">
-    <%= tag.div class: BACKDROP_IMAGE, style: backdrop_style if cover? %>
+    <%= cover_tag(classes: BACKDROP_IMAGE, alt: '') if cover? %>
     <div class="<%= WASH %>"></div>
   </div>
 
@@ -15,7 +10,7 @@
     <div class="<%= GRID %>">
       <div class="<%= COVER_CELL %>">
         <% if cover? %>
-          <%= cover_tag %>
+          <%= cover_tag(classes: COVER_IMAGE, alt: fiction.title, fetchpriority: 'high') %>
         <% else %>
           <div class="<%= COVER_PLACEHOLDER %>"></div>
         <% end %>

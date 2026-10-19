@@ -9,12 +9,12 @@ module Fictions
     ROOT = 'relative z-20 isolate text-fg has-[[role=dialog]:not([hidden])]:z-40'
     # A fixed-height strip at the top, so long content runs past the art onto the plain page background.
     BACKDROP = 'absolute inset-x-0 top-0 h-[26rem] overflow-hidden'
-    # Cropped toward the top. Very light blur only — enough to soften under text, not mash the art.
-    # scale-105 hides the soft edges blur leaves. CSS background shares the cover card URL (one fetch).
-    BACKDROP_IMAGE = 'absolute inset-0 size-full scale-105 bg-cover bg-[position:50%_10%] blur-[1px]'
+    # Cropped toward the top. Only a light blur: more turns the art to mush under the wash. scale-105 hides the soft
+    # edges the blur leaves.
+    BACKDROP_IMAGE = 'absolute inset-0 size-full scale-105 object-cover object-[50%_10%] blur-[2px]'
     # Ends in the page's own `bg-surface`, so the art fades into the page with no edge.
-    # Keep the wash light enough that the cover still reads through (was /75 — too milky on thumb).
-    WASH = 'absolute inset-0 bg-linear-to-b from-surface/55 to-surface dark:from-surface/50'
+    # Light needs the stronger wash: light art is close in brightness to the text and pills on it.
+    WASH = 'absolute inset-0 bg-linear-to-b from-surface/75 to-surface dark:from-surface/70'
     # Same width and gutters as the navbar (`shared/_navbar`), so the edges line up.
     CONTAINER = 'relative mx-auto flex max-w-screen-xl flex-col gap-5 px-4 pt-4 pb-6 ' \
                 'md:gap-8 md:pt-10 md:pb-12 2xl:px-0'

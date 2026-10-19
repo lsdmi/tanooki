@@ -92,15 +92,15 @@ module Fictions
       assert_selector 'li', text: '1 розділ'
     end
 
-    test 'hero uses one cover img and a CSS backdrop from the cover, not the banner' do
+    test 'backdrop is the cover even when the fiction has a banner' do
       @fiction.cover.attach(valid_cover_upload)
       @fiction.banner.attach(valid_cover_upload)
       render_hero
 
-      assert_selector 'picture img', visible: :all, count: 1
-      assert_no_selector '[aria-hidden="true"] img, source[media]', visible: :all
-      assert_includes page.find('[aria-hidden="true"] [style*="background-image"]', visible: :all)['style'],
-                      '/rails/active_storage/'
+      assert_no_selector 'source[media]', visible: :all
+      backdrop_src, cover_src = page.all('picture img', visible: :all).pluck('src')
+
+      assert_equal cover_src, backdrop_src
     end
 
     test 'notice slot renders above the cover' do

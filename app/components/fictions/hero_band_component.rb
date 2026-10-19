@@ -28,19 +28,9 @@ module Fictions
       fiction.cover.attached?
     end
 
-    # Same card URL as the foreground <picture>, so the browser fetches once and the wash stays sharp
-    # (a 160px thumb under blur looked milky). Preload in :head still targets this URL for LCP.
-    def backdrop_image_url
-      cover_card_url(fiction.cover)
-    end
-
-    def backdrop_style
-      "background-image: url('#{backdrop_image_url}')"
-    end
-
-    def cover_tag
-      cover_card_picture_tag(fiction.cover, class: COVER_IMAGE, alt: fiction.title, loading: 'eager',
-                                            decoding: 'async')
+    def cover_tag(classes:, **)
+      cover_card_picture_tag(fiction.cover, class: classes, width: 400, height: 600, loading: 'eager',
+                                            decoding: 'async', **)
     end
 
     def original_title

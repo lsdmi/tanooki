@@ -4,19 +4,26 @@ require 'test_helper'
 
 module Meta
   class CoverCardPresetsTest < ActiveSupport::TestCase
-    test 'card webp keeps high quality and strips metadata' do
-      avif, webp = CoverCardPresets.transformations_for(:card)
+    test 'card webp resizes without a custom saver' do
+      _avif, webp = CoverCardPresets.transformations_for(:card)
 
-      assert_equal 88, webp.dig(:saver, :quality)
-      assert_equal 80, avif.dig(:saver, :quality)
-      assert webp.dig(:saver, :strip)
+      assert_equal [400, 600], webp[:resize_to_limit]
+      assert_equal :webp, webp[:format]
+      assert_nil webp[:saver]
     end
 
-    test 'thumb webp uses a smaller limit and lower quality than card' do
+    test 'card avif resizes without a custom saver' do
+      avif, _webp = CoverCardPresets.transformations_for(:card)
+
+      assert_equal :avif, avif[:format]
+      assert_nil avif[:saver]
+    end
+
+    test 'thumb transformations use a smaller limit than card' do
       _thumb_avif, thumb_webp = CoverCardPresets.transformations_for(:thumb)
 
-      assert_equal 65, thumb_webp.dig(:saver, :quality)
       assert_equal [160, 240], thumb_webp[:resize_to_limit]
+      assert_nil thumb_webp[:saver]
     end
   end
 end
