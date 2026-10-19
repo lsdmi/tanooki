@@ -55,8 +55,19 @@ module Meta
       assert_equal I18n.t('meta.description.fictions.index'), description
     end
 
-    test 'resolve returns genre description on genre show pages' do
+    test 'resolve returns genre DB description on genre show pages' do
       genre = genres(:one)
+      genre.description = 'Унікальний опис жанру для пошуку та читачів.'
+
+      description = PageDescription.new(genre: genre, genre_show_page: true).resolve
+
+      assert_includes description, 'Унікальний опис жанру'
+      assert_includes description, 'Читати українською на Баці'
+    end
+
+    test 'resolve falls back to I18n genre copy when description is blank' do
+      genre = genres(:one)
+      genre.description = ''
 
       description = PageDescription.new(genre: genre, genre_show_page: true).resolve
 

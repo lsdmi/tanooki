@@ -44,6 +44,18 @@ module Catalog
       assert_in_delta 1.hour.ago, @fiction.reload.last_chapter_at, 2.seconds
     end
 
+    test 'bumps fiction updated_at for sitemap lastmod' do
+      create_chapter(number: 1)
+      @fiction.record_timestamps = false
+      @fiction.update!(updated_at: 3.days.ago)
+      @fiction.record_timestamps = true
+      before = @fiction.reload.updated_at
+
+      RefreshChapterStats.call(@fiction)
+
+      assert_operator @fiction.reload.updated_at, :>, before
+    end
+
     test 'ignores scheduled published_at when setting last_chapter_at' do
       travel_to(3.days.ago) { create_chapter(number: 1) }
       create_chapter(number: 2, published_at: 2.days.from_now)
@@ -102,15 +114,6 @@ module Catalog
 
       assert_equal 1, @fiction.chapter_count
       assert_equal 1, @fiction.reload.chapter_count
-    end
-
-    test 'does not bump updated_at' do
-      create_chapter(number: 1)
-      before = @fiction.reload.updated_at
-
-      RefreshChapterStats.call(@fiction)
-
-      assert_equal before, @fiction.reload.updated_at
     end
 
     private

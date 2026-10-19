@@ -17,6 +17,12 @@ class AuthPagesRobotsTest < ActionDispatch::IntegrationTest
     assert_select 'meta[name="robots"][content="max-image-preview:large"]', count: 1
   end
 
+  test 'search results are noindex' do
+    get search_index_path, params: { search: ['ранобе'] }
+
+    assert_select 'meta[name="robots"][content="noindex, follow"]', count: 1
+  end
+
   test 'sign-in page has a text-only Google button' do
     get new_user_session_path
 

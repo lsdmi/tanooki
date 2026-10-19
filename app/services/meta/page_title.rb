@@ -3,7 +3,7 @@
 module Meta
   # Resolves page <title> copy from search terms, I18n, and page assigns.
   class PageTitle
-    DEFAULT_TITLE = 'Бака: про аніме українською'
+    DEFAULT_TITLE = 'Бака — ранобе українською'
     CONTENT_RECORD_PRIORITY = %i[chapter youtube_video scanlator user bookshelf].freeze
 
     def initialize(**context)

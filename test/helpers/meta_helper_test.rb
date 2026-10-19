@@ -11,7 +11,7 @@ class MetaHelperTest < ActionView::TestCase
   test 'should get meta_title for root path' do
     request.path = root_path
 
-    assert_equal 'Бака: про аніме українською', meta_title
+    assert_equal 'Бака — ранобе українською', meta_title
   end
 
   test 'should get meta_title for search path' do
@@ -28,27 +28,22 @@ class MetaHelperTest < ActionView::TestCase
   end
 
   test 'should get meta_description for root path' do
-    description = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, манзі, культурі Сходу, ' \
-                  'а також перекладається ранобе українською мовою.'
-
     request.path = root_path
 
-    assert_equal description, meta_description
+    assert_equal Meta::PageDescription::DEFAULT_DESCRIPTION, meta_description
+    assert_includes meta_description, 'ранобе'
   end
 
   test 'should get meta_description for publication path' do
     @publication = publications(:tale_approved_one)
 
-    assert_equal  @publication.description.to_plain_text.split(/(?<=[.?!])\s+/).first, meta_description
+    assert_equal @publication.description.to_plain_text.split(/(?<=[.?!])\s+/).first, meta_description
   end
 
   test 'should get meta_description for search path' do
-    description = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, манзі, культурі Сходу, ' \
-                  'а також перекладається ранобе українською мовою.'
-
     request.path = search_index_path
 
-    assert_equal description, meta_description
+    assert_equal Meta::PageDescription::DEFAULT_DESCRIPTION, meta_description
   end
 
   test 'meta_image returns expected URL for home controller' do

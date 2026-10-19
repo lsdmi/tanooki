@@ -32,8 +32,8 @@ module Sitemaps
     end
 
     def fiction_entries
-      Fiction.order(:id).pluck(:slug, :updated_at).map do |slug, updated_at|
-        entry(:fiction_url, slug, lastmod: updated_at)
+      Fiction.order(:id).pluck(:slug, :updated_at, :last_chapter_at).map do |slug, updated_at, last_chapter_at|
+        entry(:fiction_url, slug, lastmod: [updated_at, last_chapter_at].compact.max)
       end
     end
 

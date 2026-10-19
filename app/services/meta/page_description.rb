@@ -5,8 +5,9 @@ module Meta
   class PageDescription
     include Rails.application.routes.url_helpers
 
-    DEFAULT_DESCRIPTION = 'Бака - винятковий портал, де зібрані усі новини, блоги, відео по аніме, ' \
-                          'манзі, культурі Сходу, а також перекладається ранобе українською мовою.'
+    DEFAULT_DESCRIPTION = 'Читати ранобе, веб-новели та фанфіки українською онлайн на Баці. ' \
+                          'Сотні історій і щоденні оновлення; також новини аніме та манґи.'
+    MAX_GENRE_DESCRIPTION_LENGTH = 160
     STATIC_DESCRIPTION_PATHS = %i[
       fictions_path
       youtube_videos_path
@@ -109,7 +110,11 @@ module Meta
     end
 
     def genre_meta_description
-      I18n.t('meta.description.genres.show', name: genre.name, count: genre.fictions.count)
+      blurb = genre.description.to_s.strip.presence
+      return I18n.t('meta.description.genres.show', name: genre.name, count: genre.fictions.count) if blurb.blank?
+
+      tail = ' Читати українською на Баці.'
+      "#{blurb.truncate(MAX_GENRE_DESCRIPTION_LENGTH - tail.length, separator: /\s/, omission: '…')}#{tail}"
     end
 
     def first_sentence(text)
@@ -117,17 +122,11 @@ module Meta
     end
 
     def publication = context[:publication]
-
     def fiction = context[:fiction]
-
     def chapter = context[:chapter]
-
     def youtube_video = context[:youtube_video]
-
     def bookshelf = context[:bookshelf]
-
     def scanlator = context[:scanlator]
-
     def genre = context[:genre]
 
     attr_reader :context
