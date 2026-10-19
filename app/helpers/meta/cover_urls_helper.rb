@@ -6,15 +6,17 @@ module Meta
     include CoverCardPictureHelper
     include CoverCardDimensionsHelper
 
-    PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp }.freeze
-    BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp }.freeze
+    WEBP_SAVER = CoverCardPresets::WEBP_SAVER
+    PUBLICATION_HEADER_TRANSFORMATIONS = { resize_to_limit: [1600, 600], format: :webp, saver: WEBP_SAVER }.freeze
+    BACKGROUND_TRANSFORMATIONS = { resize_to_limit: [1280, 1920], format: :webp, saver: WEBP_SAVER }.freeze
     SHOWCASE_SIZE = [1600, 540].freeze
     SHOWCASE_MOBILE_SIZE = [768, 320].freeze
-    SHOWCASE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_SIZE, format: :webp }.freeze
-    SHOWCASE_MOBILE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_MOBILE_SIZE, format: :webp }.freeze
-    AVATAR_TRANSFORMATIONS = { resize_to_limit: [128, 128], format: :webp }.freeze
-    SCANLATOR_AVATAR_TRANSFORMATIONS = { resize_to_limit: [256, 256], format: :webp }.freeze
-    VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp }.freeze
+    SHOWCASE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_SIZE, format: :webp, saver: WEBP_SAVER }.freeze
+    SHOWCASE_MOBILE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_MOBILE_SIZE, format: :webp,
+                                        saver: WEBP_SAVER }.freeze
+    AVATAR_TRANSFORMATIONS = { resize_to_limit: [128, 128], format: :webp, saver: WEBP_SAVER }.freeze
+    SCANLATOR_AVATAR_TRANSFORMATIONS = { resize_to_limit: [256, 256], format: :webp, saver: WEBP_SAVER }.freeze
+    VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp, saver: WEBP_SAVER }.freeze
 
     def cover_card_url(attachment)
       urls = cover_card_variant_urls(attachment)

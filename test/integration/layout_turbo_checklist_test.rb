@@ -36,9 +36,9 @@ class LayoutTurboChecklistTest < ActionDispatch::IntegrationTest
   test 'static page layout loads compressed theme logos' do
     get privacy_path
 
-    assert_select '#site-logo[src*="logo-default"][src*=".webp"]'
+    assert_select '#site-logo[src*="logo-default-nav"][src*=".webp"]'
     assert_select '#site-logo[src*="logo-dark"]', count: 0
-    assert_select 'footer img[src*="logo-dark"][src*=".webp"]'
+    assert_select 'footer img[src*="logo-dark"][src*=".webp"]:not([src*="logo-dark-nav"])'
   end
 
   test 'static page layout omits svg logos' do

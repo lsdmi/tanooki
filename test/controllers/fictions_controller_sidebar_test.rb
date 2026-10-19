@@ -32,6 +32,7 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
 
     assert_select 'turbo-frame#fiction_sidebar_stats #fiction-honors-title', text: 'Відзнаки та нагороди'
     assert_select '#fiction_sidebar_stats a[href="/fictions/genres/comedy"]', text: /#1/
+    assert_select '#fiction_sidebar_stats img[src*="badges/thumbs/comedy"][loading="lazy"][width="52"][height="52"]'
   ensure
     Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
   end

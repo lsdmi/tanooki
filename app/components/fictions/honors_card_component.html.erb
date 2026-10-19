@@ -8,7 +8,8 @@
         <%= link_to fiction_genre_fictions_path(slug),
                     turbo_drive_visit_data.merge(class: 'group flex flex-col items-center gap-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong') do %>
           <span class="relative block size-14">
-            <%= image_tag asset_path("badges/#{slug}.webp"), alt: '', loading: 'lazy',
+            <%= image_tag asset_path("badges/thumbs/#{slug}.webp"), alt: '', loading: 'lazy',
+                                                              width: 52, height: 52,
                                                               class: 'size-13 m-0.5 rounded-full border-2 border-white object-cover shadow-[0_4px_12px_rgb(15_23_41/0.18)] transition-transform group-hover:-translate-y-0.5' %>
             <span class="<%= rank_classes(rank) %>">#<%= rank %></span>
           </span>

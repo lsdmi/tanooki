@@ -27,7 +27,7 @@ class Genre < ApplicationRecord
     [name.to_s.downcase]
   end
 
-  # Badge files are `public/badges/{slug}.webp` — uses DB `slug` for the matching genre name.
+  # Honors artwork: `app/assets/images/badges/thumbs/{slug}.webp` (masters in design/badge-masters/).
   def self.badge_asset_slug(name)
     return if name.blank?
 

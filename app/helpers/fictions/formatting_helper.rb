@@ -17,7 +17,7 @@ module Fictions
     def badge_asset_available?(badge_slug)
       return false if badge_slug.blank?
 
-      Rails.application.assets.load_path.find("badges/#{badge_slug}.webp").present?
+      Rails.application.assets.load_path.find("badges/thumbs/#{badge_slug}.webp").present?
     end
 
     def format_view_count(count)
