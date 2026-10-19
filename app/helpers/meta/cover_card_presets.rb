@@ -8,9 +8,11 @@ module Meta
     WIDE_CARD_SIZE = [1280, 720].freeze
     THUMB_SIZE = [160, 240].freeze
 
-    # Strip metadata; quality tuned for card/list tiles (PSI image-delivery on show).
-    WEBP_SAVER = { quality: 72, strip: true }.freeze
-    AVIF_SAVER = { quality: 65, strip: true }.freeze
+    # Strip metadata only. Card/featured/wide stay near-default quality — the hero cover
+    # on fictions#show is product UI, not a PSI knob. Thumbs stay aggressive for blur
+    # backdrops and list tiles where size matters more than fidelity.
+    WEBP_SAVER = { quality: 88, strip: true }.freeze
+    AVIF_SAVER = { quality: 80, strip: true }.freeze
     THUMB_WEBP_SAVER = { quality: 65, strip: true }.freeze
     THUMB_AVIF_SAVER = { quality: 55, strip: true }.freeze
 

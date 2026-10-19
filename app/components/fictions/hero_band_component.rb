@@ -28,10 +28,10 @@ module Fictions
       fiction.cover.attached?
     end
 
-    # Prefer a thumb under the blur; if variants are unavailable this falls back to the same URL as the card img
-    # so the browser fetches the cover once.
+    # Same card URL as the foreground <picture>, so the browser fetches once and the wash stays sharp
+    # (a 160px thumb under blur looked milky). Preload in :head still targets this URL for LCP.
     def backdrop_image_url
-      cover_thumbnail_url(fiction.cover).presence || cover_card_url(fiction.cover)
+      cover_card_url(fiction.cover)
     end
 
     def backdrop_style

@@ -4,10 +4,11 @@ require 'test_helper'
 
 module Meta
   class CoverCardPresetsTest < ActiveSupport::TestCase
-    test 'card webp saver quality strips metadata for smaller transfers' do
-      _avif, webp = CoverCardPresets.transformations_for(:card)
+    test 'card webp keeps high quality and strips metadata' do
+      avif, webp = CoverCardPresets.transformations_for(:card)
 
-      assert_equal 72, webp.dig(:saver, :quality)
+      assert_equal 88, webp.dig(:saver, :quality)
+      assert_equal 80, avif.dig(:saver, :quality)
       assert webp.dig(:saver, :strip)
     end
 
