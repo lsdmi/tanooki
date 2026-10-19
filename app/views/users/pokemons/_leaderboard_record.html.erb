@@ -1,10 +1,14 @@
-<div class="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+<div class="grid w-full grid-cols-[1fr_auto_1fr] items-start gap-2 sm:gap-3">
   <%= render 'users/pokemons/trainer', user: current_user, caption: trainer_caption(current_user, dex_leaderboard), large: true %>
 
   <%= button_to battle_start_path, data: { turbo_stream: '' }, aria: { label: 'Розпочати бій' }, title: 'Розпочати бій',
-                class: 'shrink-0 px-1 text-sm/5 font-semibold tracking-wide text-fg-brand underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' do %>
+                class: 'mt-4 shrink-0 px-1 text-sm/5 font-semibold tracking-wide text-fg-brand underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong sm:mt-5' do %>
     Бій
   <% end %>
 
-  <%= render 'users/pokemons/trainer', user: opponent, caption: trainer_caption(opponent, dex_leaderboard), large: true %>
+  <%= render 'users/pokemons/trainer',
+             user: opponent,
+             caption: trainer_caption(opponent, dex_leaderboard),
+             large: true,
+             corner: (render 'users/pokemons/defense_scout', opponent:) %>
 </div>

@@ -20,6 +20,22 @@ module Pokemons
       assert_select 'span.rounded-full.bg-red-500', text: 'Вогняний'
     end
 
+    test 'pokemon_type_icon renders the type glyph' do
+      render html: pokemon_type_icon(PokemonType.new(key: 'fire'))
+
+      assert_select 'img[alt="Вогняний"][title="Вогняний"][src*="pokemon_types/fire"]'
+    end
+
+    test 'pokemon_type_pair renders dual-type icons with labels' do
+      fire = PokemonType.new(key: 'fire')
+      flying = PokemonType.new(key: 'flying')
+      render html: pokemon_type_pair([fire, flying])
+
+      assert_select 'span[title="Вогняний · Повітряний"][aria-label="Вогняний, Повітряний"]'
+      assert_select 'img[alt="Вогняний"][src*="pokemon_types/fire"]', count: 1
+      assert_select 'img[alt="Повітряний"][src*="pokemon_types/flying"]', count: 1
+    end
+
     test 'experience_to_sentence returns correct sentence for 0' do
       assert_equal 'Відсутній', experience_to_sentence(0)
     end

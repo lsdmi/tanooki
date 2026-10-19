@@ -14,6 +14,21 @@ module Pokemons
       assert_select 'svg[aria-hidden=true]', count: 2
     end
 
+    test 'scout_icon renders decorative binoculars' do
+      render html: scout_icon
+
+      assert_select 'svg[aria-hidden=true].size-3\\.5'
+      assert_select 'svg path', count: BINOCULARS_PATHS.size
+    end
+
+    test 'defense_away_sentence joins only the non-zero sides' do
+      line = defense_away_sentence(DefenseAway::Report.new(2, 1))
+
+      assert_equal 'Поки вас не було · 2 перемоги · 1 поразка', line
+      assert_equal 'Поки вас не було · 1 перемога',
+                   defense_away_sentence(DefenseAway::Report.new(1, 0))
+    end
+
     test 'dex_title gives a trainer without battles the first title' do
       assert_equal 'Новачок', dex_title(nil)
     end

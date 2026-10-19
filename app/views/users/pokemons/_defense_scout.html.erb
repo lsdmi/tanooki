@@ -1,0 +1,21 @@
+<%# locals: (opponent:) %>
+<%# Avatar corner control; type icons open on click. Levels stay hidden. %>
+<% roster = Pokemons::TeamRoster.new(opponent, :defense).records %>
+<% if roster.any? %>
+  <details class="group relative">
+    <summary class="inline-flex size-6 cursor-pointer list-none items-center justify-center rounded-full bg-main text-fg-subtle shadow-sm ring-1 ring-line hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden"
+             title="<%= t('pokemons.teams.scout') %>"
+             aria-label="<%= t('pokemons.teams.scout') %>">
+      <%= scout_icon('size-3') %>
+    </summary>
+    <ol class="absolute right-0 z-20 mt-1.5 w-max grid grid-cols-3 justify-items-center gap-x-2 gap-y-1.5 rounded-lg bg-main p-2 shadow-popover ring-1 ring-line"
+        aria-label="<%= t('pokemons.teams.scout') %>">
+      <% roster.each_with_index do |user_pokemon, index| %>
+        <li class="flex items-center gap-0.5">
+          <span class="text-[9px]/3 tabular-nums text-fg-subtle/70" aria-hidden="true"><%= index + 1 %></span>
+          <%= pokemon_type_pair(user_pokemon.pokemon.types) %>
+        </li>
+      <% end %>
+    </ol>
+  </details>
+<% end %>

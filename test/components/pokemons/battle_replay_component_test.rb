@@ -13,43 +13,54 @@ module Pokemons
       UserPokemon.create!(user: @defender, pokemon: pokemons(:five), character: :hardy, battle_experience: 10)
     end
 
-    test 'one card per round with both species, then the result' do
+    test 'wires the battle-replay stage controls' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle))
+
+      assert_selector '[data-controller="battle-replay"]'
+      assert_selector '[data-battle-replay-target="stepBack"]'
+      assert_selector '[data-battle-replay-target="stepForward"]'
+    end
+
+    test 'exposes play skip and speed on the stage' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle))
+
+      assert_selector '[data-battle-replay-target="play"]', text: I18n.t('pokemons.battle.replay.play')
+      assert_selector 'button[data-action="battle-replay#skip"]', text: I18n.t('pokemons.battle.replay.skip')
+      assert_selector '[data-battle-replay-target="speed"]'
+    end
+
+    test 'labels attack and defense sides with a finished header' do
       battle = fought_battle
-      rounds = battle.events_of(:round_started).size
 
       render_inline(BattleReplayComponent.new(battle:))
 
-      assert_selector 'li', count: rounds
-      assert_selector 'span', text: "Раунд #{rounds}"
-      assert_selector 'h3', text: I18n.t('pokemons.battle.finished', count: rounds)
+      assert_text I18n.t('pokemons.teams.attack')
+      assert_text I18n.t('pokemons.teams.defense')
+      assert_selector 'h3', text: I18n.t('pokemons.battle.finished', count: battle.events_of(:round_started).size)
     end
 
-    test 'folded, the rounds wait for the panel to unfold and the result stays' do
+    test 'version 2 battles paint HP meters' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle))
+
+      assert_selector '[data-battle-replay-target="attackerHp"]'
+      assert_selector '[data-battle-replay-target="defenderHp"]'
+    end
+
+    test 'version 2 battles put HP into the replay script' do
+      render_inline(BattleReplayComponent.new(battle: fought_battle))
+
+      script = JSON.parse(page.find('[data-controller="battle-replay"]')['data-battle-replay-script-value'])
+
+      assert script['hp']
+      assert(script['events'].any? { |event| event['type'] == 'hit' })
+      assert(script['fighters'].values.all? { |fighter| fighter['maxHp'].present? })
+    end
+
+    test 'folded, the stage waits for the panel to unfold and the result stays' do
       render_inline(BattleReplayComponent.new(battle: fought_battle, folded: true))
 
-      assert_selector 'ol[hidden][data-panel-fold-target=open]', visible: :all
+      assert_selector '[data-controller="battle-replay"][hidden][data-panel-fold-target=open]', visible: :all
       assert_selector 'h3', text: /\AБій завершено за \d+ раунд/
-    end
-
-    test 'marks the Pokémon that fainted in each round' do
-      battle = fought_battle
-
-      render_inline(BattleReplayComponent.new(battle:))
-
-      assert_selector 'li span', text: 'вибуває', count: battle.events_of(:fainted).size
-    end
-
-    test 'shows the species each Pokémon fought as, even after it evolved' do
-      battle = fought_battle
-      species = fought_species(battle)
-      UserPokemon.where(line_root_id: pokemons(:one).id).find_each do |user_pokemon|
-        user_pokemon.update!(pokemon: pokemons(:three))
-      end
-
-      render_inline(BattleReplayComponent.new(battle:))
-
-      assert_includes species, pokemons(:one).name
-      assert_equal species, page.all('img').pluck(:alt).uniq.sort
     end
 
     test 'names the winner and the loser' do
@@ -62,28 +73,14 @@ module Pokemons
       assert_selector 'h3 + p span', text: winner.name
     end
 
-    test 'a species deleted since the battle leaves an empty ring' do
-      battle = create_pokemon_battle(
-        attacker: @attacker, defender: @defender,
-        attacker_team: [{ 'id' => 1, 'pokemon_id' => 0 }], defender_team: [{ 'id' => 2, 'pokemon_id' => 0 }],
-        events: [{ 'type' => 'round_started', 'round' => 1, 'data' => { 'attacker' => 1, 'defender' => 2 } },
-                 { 'type' => 'fainted', 'round' => 1, 'data' => { 'combatant' => 2, 'side' => 'defender' } }]
-      )
-
-      render_inline(BattleReplayComponent.new(battle:))
-
-      assert_selector 'span', text: 'Раунд 1'
-      assert_no_selector 'img'
-    end
-
-    test 'a legacy battle shows the header and the result without rounds' do
+    test 'a legacy battle shows the header and the result without the stage' do
       battle = create_pokemon_battle(attacker: @attacker, defender: @defender, winner: @defender,
                                      engine_version: PokemonBattle::LEGACY_VERSION)
 
       render_inline(BattleReplayComponent.new(battle:))
 
       assert_text 'Раунди цього бою не збереглися'
-      assert_no_selector 'span', text: 'Раунд'
+      assert_no_selector '[data-controller="battle-replay"]'
       assert_selector 'h3 + p span.text-status-danger-solid', text: @attacker.name
     end
 
@@ -108,12 +105,6 @@ module Pokemons
       Matchmaker.new(@attacker).opponent
       BattleStart.new(@attacker).call
       PokemonBattle.last
-    end
-
-    def fought_species(battle)
-      pokemon_ids = (battle.attacker_team + battle.defender_team).to_h { |entry| entry.values_at('id', 'pokemon_id') }
-      ids = battle.events_of(:round_started).flat_map { |event| event['data'].values_at('attacker', 'defender') }
-      Pokemon.where(id: pokemon_ids.values_at(*ids)).pluck(:name).sort
     end
   end
 end

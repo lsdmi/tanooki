@@ -22,9 +22,34 @@ module Pokemons
     }.freeze
 
     TYPE_BADGE = 'inline-flex items-center rounded-full px-2 py-0.5 text-xs/4 font-medium text-white'
+    TYPE_ICON = 'pokemon_types/%<key>s.svg'
 
     def pokemon_type_badge(type)
       tag.span(type.label, class: "#{TYPE_BADGE} #{TYPE_COLORS[type.key]}")
+    end
+
+    # Official-style type glyph (vendored MIT SVGs under app/assets/images/pokemon_types).
+    def pokemon_type_icon(type, classes: 'size-4')
+      image_tag(
+        format(TYPE_ICON, key: type.key),
+        alt: type.label,
+        title: type.label,
+        class: "#{classes} shrink-0",
+        loading: 'lazy',
+        decoding: 'async'
+      )
+    end
+
+    # Compact scout HUD: one or two type icons per fighter.
+    def pokemon_type_pair(types)
+      labels = types.map(&:label)
+      tag.span(
+        class: 'inline-flex items-center -space-x-1',
+        title: labels.join(' · '),
+        aria: { label: labels.join(', ') }
+      ) do
+        safe_join(types.map { |type| pokemon_type_icon(type, classes: 'size-5') })
+      end
     end
 
     # The species' standing as a word (StatTiers): +kind+ is :might, :stamina or :strike.

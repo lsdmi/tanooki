@@ -100,5 +100,28 @@ module Pokemons
       assert_instance_of DexLeaderboard, tab.dex_leaderboard
       assert_equal 1, tab.dex_leaderboard.rank_for(user)
     end
+
+    test 'claim_visit exposes defense away and stamps the studio visit' do
+      user = users(:user_one)
+      user.trainer_profile.update!(last_studio_visit_at: 1.day.ago)
+      create_pokemon_battle(attacker: users(:user_two), defender: user, winner: user, created_at: 2.hours.ago)
+
+      tab = StudioTab.new(user, claim_visit: true)
+
+      assert_equal [1, 0], [tab.defense_away.wins, tab.defense_away.losses]
+      assert_not_nil user.trainer_profile.reload.last_studio_visit_at
+    end
+
+    test 'without claim_visit leaves the away report empty' do
+      user = users(:user_one)
+      user.trainer_profile.update!(last_studio_visit_at: 1.day.ago)
+      create_pokemon_battle(attacker: users(:user_two), defender: user, winner: users(:user_two),
+                            created_at: 1.hour.ago)
+
+      tab = StudioTab.new(user)
+
+      assert_equal DefenseAway::NONE, tab.defense_away
+      assert_in_delta 1.day.ago, user.trainer_profile.reload.last_studio_visit_at, 1.second
+    end
   end
 end

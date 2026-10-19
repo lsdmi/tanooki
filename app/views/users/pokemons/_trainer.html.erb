@@ -1,8 +1,13 @@
-<%# locals: (user:, caption: nil, badge: nil, large: false) %>
+<%# locals: (user:, caption: nil, badge: nil, corner: nil, large: false) %>
 <div class="flex min-w-0 flex-col items-center gap-1.5 text-center">
-  <%= image_tag avatar_image_url(user.avatar.image), alt: '',
-                                                     class: class_names('rounded-full object-cover ring-1 ring-inset ring-line',
-                                                                        large ? 'size-14 md:size-16' : 'size-12 md:size-14') %>
+  <div class="relative">
+    <%= image_tag avatar_image_url(user.avatar.image), alt: '',
+                                                       class: class_names('rounded-full object-cover ring-1 ring-inset ring-line',
+                                                                          large ? 'size-14 md:size-16' : 'size-12 md:size-14') %>
+    <% if corner.present? %>
+      <div class="absolute -right-1 -top-1 z-10"><%= corner %></div>
+    <% end %>
+  </div>
   <div class="flex min-w-0 max-w-full flex-col items-center gap-0.5">
     <%= link_to user.name, profile_path(user.sqid),
                 turbo_drive_visit_data.merge(class: class_names('max-w-full truncate font-semibold text-fg hover:text-fg-brand',

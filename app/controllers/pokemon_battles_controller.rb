@@ -4,7 +4,8 @@
 class PokemonBattlesController < ApplicationController
   include Pokemons::GameActions
 
-  helper Pokemons::DexHelper
+  helper Pokemons::DexHelper,
+         Pokemons::StatsHelper
 
   before_action :authenticate_user!
   pokemon_rate_limit to: 5, only: :start

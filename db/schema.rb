@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_18_155038) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_19_193000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -729,6 +729,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_155038) do
     t.float "glicko_volatility", limit: 53, default: 0.06, null: false
     t.datetime "last_battle_at"
     t.datetime "last_catch_at"
+    t.datetime "last_studio_visit_at"
     t.datetime "last_training_at"
     t.datetime "opponent_rerolled_at"
     t.bigint "pinned_opponent_id"

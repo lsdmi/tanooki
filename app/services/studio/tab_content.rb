@@ -36,7 +36,7 @@ module Studio
     end
 
     def pokemons_content_loader
-      @pokemon_show = Pokemons::StudioTab.new(user)
+      @pokemon_show = Pokemons::StudioTab.new(user, claim_visit: true)
     end
 
     def teams_content_loader

@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 module Pokemons
-  # The battle log rendered from a PokemonBattle's stored events: one card per round (the Pokémon that fainted dimmed
-  # and marked), then the result. Species come from the stored teams, so a Pokémon that evolved later still shows as
-  # it fought. A legacy battle has no events: a note and the result only. +folded+ hides the rounds until the panel-fold
-  # around it unfolds them; the result stays.
+  # Battle log from a PokemonBattle's stored events. Non-legacy fights use +battle_replay_controller+ (sprites, HP,
+  # callouts). A legacy battle has no events: a note and the result only. +folded+ hides the stage until the panel
+  # unfolds; the result stays.
   class BattleReplayComponent < ViewComponent::Base
     include SpriteHelper
 
-    Round = Data.define(:number, :attacker, :defender, :victory)
-    SPRITE_RING = 'flex size-10 shrink-0 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line'
+    SPRITE_RING = 'flex size-14 shrink-0 items-center justify-center rounded-full bg-main ' \
+                  'ring-1 ring-inset ring-line sm:size-16'
 
     def initialize(battle:, folded: false)
       super()
@@ -21,16 +20,20 @@ module Pokemons
 
     attr_reader :battle, :folded
 
-    def rounds_attributes
-      folded ? { hidden: true, data: PanelComponent.open_target } : {}
+    def script
+      @script ||= BattleReplayScript.new(battle, view: helpers)
     end
 
-    def rounds
-      @rounds ||= battle.events_of(:round_started).zip(battle.events_of(:fainted)).map.with_index(1) do |events, number|
-        start, fainted = events.map { |event| event['data'] }
-        Round.new(number:, attacker: species_of(start['attacker']), defender: species_of(start['defender']),
-                  victory: fainted['side'] == 'defender')
-      end
+    def stage_attributes
+      data = { controller: 'battle-replay', battle_replay_script_value: script.as_json }
+      data.merge!(PanelComponent.open_target) if folded
+      attrs = { class: 'flex flex-col gap-3', data: }
+      attrs[:hidden] = true if folded
+      attrs
+    end
+
+    def rounds_count
+      @rounds_count ||= battle.events_of(:round_started).size
     end
 
     def winner_name
@@ -41,32 +44,6 @@ module Pokemons
       (battle.attacker_won? ? battle.defender : battle.attacker).name
     end
 
-    def fighter(pokemon, fainted:, align: :start)
-      tag.div(class: ['flex min-w-0 items-center gap-2', ('flex-row-reverse text-right' if align == :end)]) do
-        safe_join([tag.div(sprite(pokemon), class: [SPRITE_RING, ('opacity-50 grayscale' if fainted)]),
-                   tag.div(class: 'flex min-w-0 flex-col') do
-                     safe_join([tag.span(pokemon&.name, class: ['truncate text-sm/5 font-medium',
-                                                                fainted ? 'text-fg-muted' : 'text-fg']),
-                                (tag.span('вибуває', class: 'text-xs/4 text-status-danger-solid') if fainted)])
-                   end])
-      end
-    end
-
-    # A species deleted since the battle shows an empty ring.
-    def sprite(pokemon)
-      pokemon_sprite_tag(pokemon, class: 'size-9 object-contain') if pokemon
-    end
-
-    def species_of(combatant_id)
-      species[pokemon_ids[combatant_id]]
-    end
-
-    def pokemon_ids
-      @pokemon_ids ||= (battle.attacker_team + battle.defender_team).to_h { |entry| [entry['id'], entry['pokemon_id']] }
-    end
-
-    def species
-      @species ||= Pokemon.where(id: pokemon_ids.values.uniq).includes(sprite_attachment: :blob).index_by(&:id)
-    end
+    def hp_bars? = script.hp_bars?
   end
 end

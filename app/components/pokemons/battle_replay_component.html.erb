@@ -1,23 +1,86 @@
 <div class="flex flex-col gap-3">
   <% if battle.legacy? %>
-    <%= tag.p 'Раунди цього бою не збереглися', class: 'text-xs/4 text-fg-subtle', **rounds_attributes %>
+    <%= tag.p 'Раунди цього бою не збереглися',
+              class: 'text-xs/4 text-fg-subtle',
+              **(folded ? { hidden: true, data: Pokemons::PanelComponent.open_target } : {}) %>
   <% else %>
-    <%= tag.ol class: 'grid grid-cols-1 gap-2 sm:grid-cols-2', **rounds_attributes do %>
-      <% rounds.each do |round| %>
-        <li class="flex flex-col gap-2 rounded-lg bg-surface p-3 ring-1 ring-inset ring-line">
-          <span class="text-xs/4 font-medium text-fg-muted">Раунд <%= round.number %></span>
-          <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
-            <%= fighter(round.attacker, fainted: !round.victory) %>
-            <span class="text-xs/4 text-fg-subtle" aria-hidden="true">vs</span>
-            <%= fighter(round.defender, fainted: round.victory, align: :end) %>
+    <%= tag.div(**stage_attributes) do %>
+      <div class="flex items-center justify-between gap-2 text-xs/4 text-fg-muted">
+        <span data-battle-replay-target="round"></span>
+        <div class="flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
+          <button type="button"
+                  class="underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong disabled:pointer-events-none disabled:opacity-40"
+                  data-battle-replay-target="stepBack"
+                  data-action="battle-replay#stepBack"
+                  aria-label="<%= t('pokemons.battle.replay.step_back') %>">‹</button>
+          <button type="button"
+                  class="underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong disabled:pointer-events-none disabled:opacity-40"
+                  data-battle-replay-target="stepForward"
+                  data-action="battle-replay#stepForward"
+                  aria-label="<%= t('pokemons.battle.replay.step_forward') %>">›</button>
+          <button type="button"
+                  class="underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                  data-battle-replay-target="play"
+                  data-action="battle-replay#togglePlay"><%= t('pokemons.battle.replay.play') %></button>
+          <button type="button"
+                  class="underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                  data-action="battle-replay#skip"><%= t('pokemons.battle.replay.skip') %></button>
+          <button type="button"
+                  class="tabular-nums underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                  data-battle-replay-target="speed"
+                  data-action="battle-replay#cycleSpeed"
+                  title="<%= t('pokemons.battle.replay.speed_hint') %>">1×</button>
+        </div>
+      </div>
+
+      <div class="grid cursor-pointer grid-cols-3 items-center gap-2 rounded-lg bg-surface p-3 ring-1 ring-inset ring-line sm:gap-3 sm:p-4"
+           data-action="click->battle-replay#stepForward"
+           title="<%= t('pokemons.battle.replay.step_forward') %>">
+        <div class="flex min-w-0 flex-col items-center gap-1 justify-self-center">
+          <span class="text-[10px]/3 tracking-wide text-fg-subtle"><%= t('pokemons.teams.attack') %></span>
+          <div data-battle-replay-target="attackerRing" class="<%= Pokemons::BattleReplayComponent::SPRITE_RING %>">
+            <img data-battle-replay-target="attackerSprite" alt="" class="size-12 object-contain sm:size-14" hidden decoding="async">
           </div>
-        </li>
-      <% end %>
+          <% if hp_bars? %>
+            <div class="h-1.5 w-full max-w-[6.5rem] overflow-hidden rounded-full bg-line"
+                 data-battle-replay-target="attackerMeter"
+                 role="meter" aria-label="HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <div data-battle-replay-target="attackerHp" class="h-full w-full bg-status-success-solid transition-[width] duration-300 ease-out"></div>
+            </div>
+          <% end %>
+          <span data-battle-replay-target="attackerName" class="max-w-full truncate text-sm/5 font-medium text-fg"></span>
+        </div>
+
+        <div class="flex min-h-[1.25rem] flex-col items-center justify-center gap-1 px-1">
+          <p data-battle-replay-target="turn"
+             class="text-[10px]/3 tracking-wide text-fg-muted"
+             aria-live="polite"></p>
+          <p data-battle-replay-target="callout"
+             class="text-center text-xs/4 font-medium text-fg-brand"
+             aria-live="polite"></p>
+        </div>
+
+        <div class="flex min-w-0 flex-col items-center gap-1 justify-self-center">
+          <span class="text-[10px]/3 tracking-wide text-fg-subtle"><%= t('pokemons.teams.defense') %></span>
+          <div data-battle-replay-target="defenderRing" class="<%= Pokemons::BattleReplayComponent::SPRITE_RING %>">
+            <img data-battle-replay-target="defenderSprite" alt="" class="size-12 object-contain sm:size-14" hidden decoding="async">
+          </div>
+          <% if hp_bars? %>
+            <div class="h-1.5 w-full max-w-[6.5rem] overflow-hidden rounded-full bg-line"
+                 data-battle-replay-target="defenderMeter"
+                 role="meter" aria-label="HP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <div data-battle-replay-target="defenderHp" class="h-full w-full bg-status-success-solid transition-[width] duration-300 ease-out"></div>
+            </div>
+          <% end %>
+          <span data-battle-replay-target="defenderName" class="max-w-full truncate text-sm/5 font-medium text-fg"></span>
+        </div>
+      </div>
     <% end %>
   <% end %>
 
   <div class="flex flex-col gap-1 rounded-lg bg-surface p-4 ring-1 ring-inset ring-line">
-    <%= tag.h3 battle.legacy? ? 'Бій завершено!' : t('pokemons.battle.finished', count: rounds.size), class: 'text-sm/5 font-semibold text-fg' %>
+    <%= tag.h3 battle.legacy? ? 'Бій завершено!' : t('pokemons.battle.finished', count: rounds_count),
+               class: 'text-sm/5 font-semibold text-fg' %>
     <p class="text-sm/5 text-fg-secondary">
       Останній покемон
       <span class="font-semibold text-status-danger-solid"><%= loser_name %></span>
