@@ -63,15 +63,24 @@
     delete window.adsbygoogle
   }
 
-  function afterLcp(callback) {
+  // Wait for LCP (or 4s fallback), then an idle slice so adsbygoogle does not contend with paint.
+  function afterLcpThenIdle(callback) {
     var finished = false
+
+    function runWhenIdle() {
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(callback, { timeout: 2000 })
+        return
+      }
+      requestAnimationFrame(function () {
+        requestAnimationFrame(callback)
+      })
+    }
 
     function finish() {
       if (finished) return
       finished = true
-      requestAnimationFrame(function () {
-        requestAnimationFrame(callback)
-      })
+      runWhenIdle()
     }
 
     window.setTimeout(finish, 4000)
@@ -90,7 +99,7 @@
 
   function syncAdSense() {
     if (adsenseEnabled()) {
-      afterLcp(function () {
+      afterLcpThenIdle(function () {
         injectAdSense()
         scheduleAdsenseReadyForUnits()
       })

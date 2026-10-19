@@ -180,11 +180,28 @@ html.adblock-likely .scanlator-show__ad--full,
   font-family: ui-monospace, monospace;
 }
 
-/* Fiction show: the About grid gap already spaces the slot */
+/* Fiction show: reserve one banner height from first paint through fill so late
+   AdSense (after LCP/idle) does not shove description/sidebar. Collapse still
+   zero-heights the slot via .reader-ad-slot--collapsed. About grid gap spaces it. */
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--preview,
-.fiction-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled {
+.fiction-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled,
+.fiction-show__ad .reader-ad-slot.reader-ad-slot--pending,
+.fiction-show__ad .reader-ad-slot.reader-ad-slot--measuring {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.fiction-show__ad .reader-ad-slot .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--adsense-filled .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--preview .reader-ad-slot__frame {
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+}
+
+.fiction-show__ad:has(.reader-ad-slot--collapsed) {
+  display: none;
 }
 
 /* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */

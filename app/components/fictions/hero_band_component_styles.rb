@@ -66,7 +66,8 @@ module Fictions
       'col-span-2 row-start-4 mt-2 text-xs/5 text-fg-secondary',
       'md:col-span-1 md:col-start-2 md:mt-4 md:text-sm/5'
     ].join(' ').freeze
-    CREDIT_LINK = 'text-fg underline-offset-4 hover:underline'
+    # Always underlined: PSI link-in-text-block fails when links match surrounding text by color only.
+    CREDIT_LINK = 'text-fg underline underline-offset-4'
 
     ACTIONS_CELL = 'col-span-2 row-start-5 mt-5 md:col-span-1 md:col-start-2 md:mt-4'
   end

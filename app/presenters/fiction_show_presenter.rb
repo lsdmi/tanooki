@@ -58,9 +58,14 @@ class FictionShowPresenter
   end
 
   def ranks
-    @ranks ||= Rails.cache.fetch("fiction-#{@fiction.slug}-ranks", expires_in: 1.hour) do
+    @ranks ||= Rails.cache.fetch(ranks_cache_key, expires_in: 1.hour) do
       Fictions::Ranker.new(fiction: @fiction).call.sort_by { |_genre, rank| rank }.to_h
     end
+  end
+
+  # Warm-cache only — no Ranker. Used on show to inline honors without CLS or cold TTFB hit.
+  def ranks_if_cached
+    Rails.cache.read(ranks_cache_key)
   end
 
   def similar_fictions
@@ -80,6 +85,8 @@ class FictionShowPresenter
   end
 
   private
+
+  def ranks_cache_key = "fiction-#{@fiction.slug}-ranks"
 
   def comments_page_with_lookahead
     @comments_page_with_lookahead ||= @fiction.comments.parents

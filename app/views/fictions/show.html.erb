@@ -60,8 +60,12 @@
         </div>
       <% end %>
 
-      <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(@fiction), loading: :lazy, class: 'mt-8 block md:mt-14' do %>
-        <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
+      <%# Placeholder height lives inside the frame so an empty response does not leave a blank band. %>
+      <%= turbo_frame_tag 'fiction_similar', src: similar_fictions_fiction_path(@fiction), loading: :lazy,
+                                            class: 'mt-8 block md:mt-14' do %>
+        <div class="min-h-72 md:min-h-96" aria-hidden="true">
+          <p class="py-4 text-center text-sm text-fg-muted">Завантаження…</p>
+        </div>
       <% end %>
     </main>
   </div>

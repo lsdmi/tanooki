@@ -37,9 +37,14 @@
 
   <aside class="flex min-w-0 flex-col gap-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:gap-6">
     <%= render 'fictions/official_edition_card', fiction: fiction if fiction.licensed? %>
-    <%# Lazy and empty until loaded; the negative margin cancels its gap so an empty frame leaves no space. %>
-    <%= turbo_frame_tag 'fiction_sidebar_stats', src: sidebar_stats_fiction_path(fiction), loading: :lazy,
-                                                 class: 'block [&:not(:has(section))]:-mb-8 lg:[&:not(:has(section))]:-mb-6' %>
+    <%# Warm ranks → inline (no CLS). Cold miss → lazy frame; empty response collapses via :not(:has(section)). %>
+    <% cached_ranks = show_presenter.ranks_if_cached %>
+    <% if cached_ranks %>
+      <%= render Fictions::HonorsCardComponent.new(ranks: cached_ranks) %>
+    <% else %>
+      <%= turbo_frame_tag 'fiction_sidebar_stats', src: sidebar_stats_fiction_path(fiction), loading: :lazy,
+                                                   class: 'block [&:not(:has(section))]:-mb-8 lg:[&:not(:has(section))]:-mb-6' %>
+    <% end %>
 
     <section class="<%= Fictions::AboutCardStyles::SHELVES_CARD %>" aria-labelledby="fiction-shelves-title">
       <h2 id="fiction-shelves-title" class="<%= Fictions::AboutCardStyles::SMALL_TITLE %>"><%= t('fictions.about.shelves.title') %></h2>

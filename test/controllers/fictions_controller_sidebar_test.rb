@@ -10,31 +10,63 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
     @fiction = fictions(:one)
   end
 
-  test 'show defers sidebar stats in lazy turbo frame' do
+  test 'show defers sidebar stats in lazy turbo frame when ranks cache is cold' do
+    Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
+
     get fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_sidebar_stats[loading="lazy"][src=?]', sidebar_stats_fiction_path(@fiction)
     assert_not_includes response.body, 'Відзнаки та нагороди'
   end
 
-  test 'show defers similar fictions in lazy turbo frame' do
+  test 'show inlines honors from warm ranks cache without a lazy frame' do
+    seed_comedy_rank_one!
+    get fiction_url(@fiction)
+
+    assert_select 'turbo-frame#fiction_sidebar_stats', 0
+    assert_select '#fiction-honors-title', text: 'Відзнаки та нагороди'
+    assert_select 'a[href="/fictions/genres/comedy"] img[src*="badges/thumbs/comedy"][width="52"][height="52"]'
+  ensure
+    clear_ranks_cache!
+  end
+
+  test 'show omits honors and the lazy frame when warm ranks cache is empty' do
+    Rails.cache.write("fiction-#{@fiction.slug}-ranks", {})
+
+    get fiction_url(@fiction)
+
+    assert_select 'turbo-frame#fiction_sidebar_stats', 0
+    assert_not_includes response.body, 'Відзнаки та нагороди'
+  ensure
+    clear_ranks_cache!
+  end
+
+  test 'show defers similar fictions in lazy turbo frame with a loading placeholder height' do
     get fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_similar[loading="lazy"][src=?]', similar_fictions_fiction_path(@fiction)
+    assert_select 'turbo-frame#fiction_similar > div.min-h-72', count: 1
     assert_select '#fiction-similar-title', 0
   end
 
   test 'sidebar_stats frame renders honors for ranked genres with badge artwork' do
-    Genre.create!(name: 'Комедія', slug: 'comedy')
-    Rails.cache.write("fiction-#{@fiction.slug}-ranks", { 'Комедія' => 1, 'Жанр Альфа' => 2 })
-
+    seed_comedy_rank_one!
     get sidebar_stats_fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_sidebar_stats #fiction-honors-title', text: 'Відзнаки та нагороди'
     assert_select '#fiction_sidebar_stats a[href="/fictions/genres/comedy"]', text: /#1/
     assert_select '#fiction_sidebar_stats img[src*="badges/thumbs/comedy"][loading="lazy"][width="52"][height="52"]'
   ensure
-    Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
+    clear_ranks_cache!
+  end
+
+  test 'sidebar_stats honors chip uses high-contrast red for rank one' do
+    seed_comedy_rank_one!
+    get sidebar_stats_fiction_url(@fiction)
+
+    assert_select '#fiction_sidebar_stats span.bg-red-700', text: '#1'
+  ensure
+    clear_ranks_cache!
   end
 
   test 'sidebar_stats frame stays empty without ranks' do
@@ -73,5 +105,16 @@ class FictionsControllerSidebarTest < ActionDispatch::IntegrationTest
     get similar_fictions_fiction_url(@fiction)
 
     assert_select 'turbo-frame#fiction_similar #fiction-similar-title', 0
+  end
+
+  private
+
+  def seed_comedy_rank_one!
+    Genre.create!(name: 'Комедія', slug: 'comedy')
+    Rails.cache.write("fiction-#{@fiction.slug}-ranks", { 'Комедія' => 1, 'Жанр Альфа' => 2 })
+  end
+
+  def clear_ranks_cache!
+    Rails.cache.delete("fiction-#{@fiction.slug}-ranks")
   end
 end

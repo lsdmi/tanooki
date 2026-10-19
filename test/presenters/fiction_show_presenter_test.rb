@@ -39,4 +39,17 @@ class FictionShowPresenterTest < ActiveSupport::TestCase
     assert_equal chapters(:two), @presenter.send(:last_chapter)
     assert_same @presenter.send(:ordered_chapters), @presenter.instance_variable_get(:@ordered_chapters)
   end
+
+  test 'ranks_if_cached is nil on a cold cache and returns the warm hash without Ranker' do
+    key = "fiction-#{@fiction.slug}-ranks"
+    Rails.cache.delete(key)
+
+    assert_nil @presenter.ranks_if_cached
+
+    Rails.cache.write(key, { 'Комедія' => 1 })
+
+    assert_equal({ 'Комедія' => 1 }, @presenter.ranks_if_cached)
+  ensure
+    Rails.cache.delete(key)
+  end
 end

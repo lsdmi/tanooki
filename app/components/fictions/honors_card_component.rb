@@ -29,7 +29,8 @@ module Fictions
     end
 
     def rank_classes(rank)
-      tone = rank == 1 ? 'bg-red-600' : 'bg-blue-500'
+      # blue-500 + white ≈ 3.7:1; blue-700 / red-700 clear WCAG AA (≥ 4.5:1) for the #rank chip.
+      tone = rank == 1 ? 'bg-red-700' : 'bg-blue-700'
       'token-raw absolute -top-1 -right-1 flex size-6 items-center justify-center rounded-full border-2 border-white ' \
         "#{tone} text-[10px]/4 font-bold text-white"
     end

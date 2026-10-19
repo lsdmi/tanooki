@@ -35,8 +35,8 @@ module Fictions
       @fiction.update!(author: 'Автор Твору')
       render_hero
 
-      assert_selector 'a', text: 'Автор Твору'
-      @fiction.scanlators.each { |scanlator| assert_selector "a[href='/scanlators/#{scanlator.slug}']" }
+      assert_selector 'a.underline', text: 'Автор Твору'
+      @fiction.scanlators.each { |scanlator| assert_selector "a.underline[href='/scanlators/#{scanlator.slug}']" }
     end
 
     test 'stats name the original language as a fact about the work, not the translation' do
