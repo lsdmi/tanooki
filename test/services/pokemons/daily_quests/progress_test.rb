@@ -10,18 +10,18 @@ module Pokemons
         @user = users(:user_one)
         TrainerDailyQuest.where(user: @user).delete_all
         travel_to Time.zone.local(2026, 10, 19, 12)
-        force_quests(%w[catch_pokemon win_battle_water read_fantasy_chapters])
+        force_quests(%w[train_pokemon win_battle_water win_ranked read_fantasy_chapters])
       end
 
       teardown { travel_back }
 
-      test 'a catch completes the catch quest and ignores the others' do
-        Progress.call(@user, event: :catch)
+      test 'training completes the train quest and ignores the others' do
+        Progress.call(@user, event: :training)
 
         assert_equal(
-          { 'catch_pokemon' => [1, true], 'win_battle_water' => [0, false],
+          { 'train_pokemon' => [1, true], 'win_battle_water' => [0, false],
             'read_fantasy_chapters' => [0, false] },
-          %w[catch_pokemon win_battle_water read_fantasy_chapters]
+          %w[train_pokemon win_battle_water read_fantasy_chapters]
             .index_with { |key| [quest(key).progress, quest(key).completed?] }
         )
       end
@@ -38,6 +38,16 @@ module Pokemons
         assert_equal 0, quest('win_battle_water').progress
       end
 
+      test 'a ranked win completes the ranked quest only when ranked' do
+        Progress.call(@user, event: :battle_win, ranked: false)
+
+        assert_equal 0, quest('win_ranked').progress
+
+        Progress.call(@user, event: :battle_win, ranked: true)
+
+        assert_predicate quest('win_ranked'), :completed?
+      end
+
       test 'fantasy chapter reads accumulate to the target' do
         Progress.call(@user, event: :chapter_read, genre_slugs: %w[fantasy])
         Progress.call(@user, event: :chapter_read, genre_slugs: %w[fantasy])
@@ -49,9 +59,9 @@ module Pokemons
       end
 
       test 'progress never exceeds the target' do
-        3.times { Progress.call(@user, event: :catch) }
+        3.times { Progress.call(@user, event: :training) }
 
-        assert_equal 1, quest('catch_pokemon').progress
+        assert_equal 1, quest('train_pokemon').progress
       end
 
       private

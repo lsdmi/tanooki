@@ -1,6 +1,8 @@
 /*
  * Site-wide base styles. Feature CSS (pagy, slimselect, actiontext, chapters_reader,
  * sweetal2, adsense_slots) is linked from the layout via Layout::StylesheetsHelper#page_stylesheets.
+ * Deferred sheets (adsense_slots, pagy, sweetal2) must not own above-fold CLS reservations —
+ * those live in the "Critical AdSense reservation" block below.
  */
 
 /* Montserrat variable (300–900), self-hosted Google Fonts subsets. Browsers fetch only subsets the page uses. */
@@ -103,73 +105,89 @@
     }
 }
 
-/* Expandable Note styles for TinyMCE content */
-.note-reference {
+/* Critical AdSense reservation (always blocking). Preview chrome / filled layout stay in deferred adsense_slots.css. */
+.reader-ad-slot {
+  margin: 0;
+  padding: 0;
+  overflow-anchor: none;
+}
+
+.reader-ad-slot__frame {
   position: relative;
-  display: inline-block;
-  cursor: pointer;
-  border-bottom: 1px dotted rgba(8, 145, 178, 0.6);
-  color: inherit;
-  transition: all 0.2s ease;
+  width: 100%;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.dark .note-reference {
-  border-bottom-color: rgba(244, 63, 94, 0.6);
+html.adblock-likely .reader-ad-slot,
+.reader-ad-slot--collapsed {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
-.note-reference:hover {
-  background-color: rgba(8, 145, 178, 0.1);
-  border-bottom-color: rgba(8, 145, 178, 1);
+.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
+  min-height: 90px;
+  max-height: 120px;
 }
 
-.dark .note-reference:hover {
-  background-color: rgba(244, 63, 94, 0.1);
-  border-bottom-color: rgba(244, 63, 94, 1);
+.fiction-show__ad .reader-ad-slot .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--adsense-filled .reader-ad-slot__frame,
+.fiction-show__ad .reader-ad-slot--preview .reader-ad-slot__frame {
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
 }
 
-.note-reference::after {
-  content: '📝';
-  font-size: 0.7em;
-  margin-left: 2px;
-  opacity: 0.7;
-}
-
-.note-content {
+.fiction-show__ad:has(.reader-ad-slot--collapsed) {
   display: none;
-  margin: 8px 0 16px 0;
-  padding: 12px;
-  background: rgba(248, 250, 252, 0.95);
-  border: 1px solid rgba(8, 145, 178, 0.2);
-  border-left: 3px solid rgba(8, 145, 178, 0.6);
-  border-radius: 4px;
-  font-size: 0.9em;
-  line-height: 1.4;
-  color: rgba(55, 65, 81, 0.9);
-  font-style: italic;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.dark .note-content {
-  background: rgba(31, 41, 55, 0.95);
-  border-color: rgba(244, 63, 94, 0.3);
-  border-left-color: rgba(244, 63, 94, 0.6);
-  color: rgba(209, 213, 219, 0.9);
+.home-banner-slot--preview,
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  aspect-ratio: 626 / 166;
 }
 
-.note-content.show {
-  display: block;
-  animation: slideDown 0.2s ease;
+.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
+  display: flex;
+  min-height: 0;
+  max-height: none;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+html.adblock-likely .home-banner-slot.reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.index-banners .reader-ad-slot .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+}
+
+html.adblock-likely .index-banners .reader-ad-slot {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* --- Turbo Drive transitions (Phase 2) --- */

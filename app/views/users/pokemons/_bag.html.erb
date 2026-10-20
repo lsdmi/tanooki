@@ -1,0 +1,68 @@
+<%# locals: (items:, pokemons:, lure_types:) %>
+<details class="group" data-exclusive-details-target="panel"
+         data-action="toggle->exclusive-details#sync">
+  <summary class="inline-flex h-5 cursor-pointer list-none items-center gap-1 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden"
+           title="<%= t('pokemons.items.bag') %>">
+    <%= pokemon_bag_icon %>
+    <span class="sr-only"><%= t('pokemons.items.bag') %></span>
+  </summary>
+
+  <% if items.any? %>
+    <ul class="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs/4 text-fg-muted" data-controller="exclusive-details">
+      <% items.each do |row| %>
+        <% key = row.item_key %>
+        <% definition = Pokemons::Items::Catalog.fetch(key) %>
+        <% name = pokemon_item_name(key) %>
+        <li>
+          <details class="group/item relative" data-exclusive-details-target="panel"
+                   data-action="toggle->exclusive-details#sync">
+            <summary class="inline-flex cursor-pointer list-none items-center gap-1 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden"
+                     title="<%= name %>">
+              <%= pokemon_item_icon(key, size: 'size-3.5') %>
+              <span>×<%= row.quantity %></span>
+              <span class="sr-only"><%= name %></span>
+            </summary>
+
+            <div class="absolute left-0 z-20 mt-1 w-64 rounded-lg bg-main p-3 text-left shadow-popover ring-1 ring-line">
+              <p class="text-xs/4 font-medium text-fg"><%= name %></p>
+              <p class="mt-1 text-xs/4 text-fg-secondary"><%= pokemon_item_flavor(key) %></p>
+
+              <div class="mt-2">
+                <% if key == 'protein' && pokemons.any? %>
+                  <ul class="grid max-h-40 grid-cols-5 gap-1 overflow-y-auto">
+                    <% pokemons.each do |user_pokemon| %>
+                      <li>
+                        <%= button_to pokemon_items_path(item_key: key, user_pokemon_id: user_pokemon.id),
+                                      method: :post,
+                                      form: { class: 'block' },
+                                      class: 'flex size-10 cursor-pointer items-center justify-center rounded-md ring-1 ring-inset ring-transparent hover:bg-surface hover:ring-line focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                                      title: "#{user_pokemon.pokemon_name} · р. #{user_pokemon.current_level}",
+                                      aria: { label: "#{t('pokemons.items.use')}: #{user_pokemon.pokemon_name}" } do %>
+                          <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-8 object-contain') %>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% elsif key == 'lure' && lure_types.any? %>
+                  <ul class="grid max-h-44 grid-cols-2 gap-1 overflow-y-auto">
+                    <% lure_types.each do |type| %>
+                      <li class="min-w-0">
+                        <%= button_to t("pokemons.types.#{type}"),
+                                      pokemon_items_path(item_key: key, habitat: type), method: :post,
+                                      form: { class: 'block' },
+                                      class: 'block w-full cursor-pointer truncate rounded-md px-2 py-1 text-left text-xs/4 text-fg ring-1 ring-inset ring-line hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong' %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% elsif definition['effect'] != 'level_up' && definition['effect'] != 'lure' %>
+                  <%= button_to t('pokemons.items.use'), pokemon_items_path(item_key: key), method: :post,
+                                class: 'inline-flex cursor-pointer items-center justify-center rounded-md bg-brand px-2.5 py-1 text-xs/4 font-medium text-fg-on-brand hover:bg-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+                <% end %>
+              </div>
+            </div>
+          </details>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</details>

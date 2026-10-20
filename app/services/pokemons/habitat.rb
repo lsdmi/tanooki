@@ -47,13 +47,15 @@ module Pokemons
     end
     private_class_method :tag_names_for
 
-    def initialize(genre_slugs: [], tag_names: [])
-      @genre_slugs = Array(genre_slugs).filter_map { |slug| slug.to_s.downcase.presence }.uniq
-      @tag_names = Array(tag_names).filter_map { |name| name.to_s.downcase.presence }.uniq
+    def initialize(genre_slugs: [], tag_names: [], type_keys: [])
+      @genre_slugs = normalize_keys(genre_slugs)
+      @tag_names = normalize_keys(tag_names)
+      @explicit_type_keys = normalize_keys(type_keys)
     end
 
     def type_keys
-      keys = genre_slugs.flat_map { |slug| types_for('genres', slug) }
+      keys = explicit_type_keys.dup
+      keys.concat(genre_slugs.flat_map { |slug| types_for('genres', slug) })
       keys.concat(tag_names.flat_map { |name| types_for('tags', name) })
       keys.uniq & self.class.known_type_keys
     end
@@ -64,7 +66,11 @@ module Pokemons
 
     private
 
-    attr_reader :genre_slugs, :tag_names
+    attr_reader :genre_slugs, :tag_names, :explicit_type_keys
+
+    def normalize_keys(values)
+      Array(values).filter_map { |value| value.to_s.downcase.presence }.uniq
+    end
 
     def types_for(section, key)
       Array(self.class.config.dig(section, key)).map(&:to_s)

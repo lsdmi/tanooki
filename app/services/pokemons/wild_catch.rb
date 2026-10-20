@@ -25,31 +25,65 @@ module Pokemons
     # A ticket for the pop-up frame, or nil. +habitat+ is optional (+Pokemons::Habitat+).
     def roll(habitat: nil)
       stamp_new_guest
-      return unless eligible? && rand < ENCOUNTER_CHANCE
+      habitat = lure_habitat || habitat
+      forced = incense_armed?
+      return unless eligible?(ignore_delay: forced) && (forced || rand < ENCOUNTER_CHANCE)
 
-      self.class.verifier.generate(ticket_payload(habitat), expires_in: TICKET_TTL)
+      self.class.verifier.generate(ticket_payload(habitat, incense: forced), expires_in: TICKET_TTL)
     end
 
     # The encounter, or nil when the ticket is not this visitor's or a pop-up was shown within the delay.
     def call(ticket)
       payload = decode_ticket(ticket)
-      return unless payload && payload['o'] == owner
-      return unless eligible? && !encountered_recently?
+      return unless ticket_usable?(payload)
 
-      encounter(boost_types: payload['t'])&.tap { session[:pokemon_catch_last_seen] = Time.zone.now }
+      encounter(boost_types: payload['t'])&.tap do
+        session[:pokemon_catch_last_seen] = Time.zone.now
+        consume_wild_item_effects! if user
+      end
     end
 
     private
+
+    def ticket_usable?(payload)
+      return false unless payload && payload['o'] == owner
+
+      incense = payload['i']
+      eligible?(ignore_delay: incense) && (incense || !encountered_recently?)
+    end
 
     def owner
       user ? "user:#{user.id}" : 'guest'
     end
 
-    def ticket_payload(habitat)
+    def ticket_payload(habitat, incense: false)
       payload = { 'o' => owner }
       types = Array(habitat&.type_keys).presence
       payload['t'] = types if types
+      payload['i'] = true if incense
       payload
+    end
+
+    def lure_habitat
+      type = user&.trainer_profile&.item_effect('lure')
+      return if type.blank?
+      return unless Habitat.known_type_keys.include?(type)
+
+      Habitat.new(type_keys: [type])
+    end
+
+    def incense_armed?
+      user&.trainer_profile&.item_effect('incense').present?
+    end
+
+    def consume_wild_item_effects!
+      profile = user.trainer_profile
+      profile.with_lock do
+        effects = profile.item_effects.is_a?(Hash) ? profile.item_effects.dup : {}
+        effects.delete('lure')
+        effects.delete('incense')
+        profile.update!(item_effects: effects)
+      end
     end
 
     # Legacy tickets were a bare owner string; current tickets are a Hash.
@@ -78,9 +112,10 @@ module Pokemons
       session[:pokemon_catch_last_seen] ||= Time.zone.now if user.nil?
     end
 
-    def eligible?
-      return false if shown_recently?
+    def eligible?(ignore_delay: false)
+      return false if !ignore_delay && shown_recently?
       return session[:pokemon_catch_last_seen].present? if user.nil?
+      return true if ignore_delay
 
       !user.trainer_profile.last_catch_at&.after?(Balance::ENCOUNTER_DELAY.ago)
     end

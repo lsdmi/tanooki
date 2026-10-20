@@ -4,7 +4,24 @@
 class TrainerProfile < ApplicationRecord
   belongs_to :user
 
+  attribute :item_effects, :json, default: -> { {} }
+
   validate :team_rosters_are_valid
+
+  def item_effect(key)
+    effects = item_effects
+    effects.is_a?(Hash) ? effects[key.to_s] : nil
+  end
+
+  def write_item_effect!(key, value)
+    effects = item_effects.is_a?(Hash) ? item_effects.dup : {}
+    if value.nil?
+      effects.delete(key.to_s)
+    else
+      effects[key.to_s] = value
+    end
+    update!(item_effects: effects)
+  end
 
   def training_on_cooldown?
     last_training_at&.after?(Pokemons::Balance::TRAINING_COOLDOWN.ago) || false

@@ -6,8 +6,9 @@ module Pokemons
   class BattleTeams
     attr_reader :trainers
 
-    def initialize(attacker, defender)
+    def initialize(attacker, defender, attacker_attack_bonus: 1.0)
       @trainers = [attacker, defender]
+      @attacker_attack_bonus = attacker_attack_bonus.to_f
       @rosters = {
         attacker: TeamRoster.new(attacker, :attack).records,
         defender: TeamRoster.new(defender, :defense).records
@@ -38,15 +39,17 @@ module Pokemons
       @combatants ||= {}
       @combatants[side] ||= @rosters.fetch(side).filter_map do |record|
         loaded = @records[record.id] || record
-        [combatant(loaded), loaded]
+        [combatant(loaded, side), loaded]
       end
     end
 
-    def combatant(record)
+    def combatant(record, side)
       species = record.pokemon
+      attack = species.base_attack
+      attack = (attack * @attacker_attack_bonus).round if side == :attacker && @attacker_attack_bonus > 1
       Engine::Combatant.new(id: record.id, character: record.character,
                             battle_experience: record.battle_experience, types: species.types.map(&:key),
-                            base_hp: species.base_hp, base_attack: species.base_attack)
+                            base_hp: species.base_hp, base_attack: attack)
     end
   end
 end

@@ -1,0 +1,40 @@
+# Item catalog for trainer bags. Effects are applied by Pokemons::Items::Use / command hooks.
+# quest_rewards: weighted pool rolled once per completed daily quest (plus candies).
+
+quest_candy_reward: 5
+
+quest_rewards:
+  protein: 3
+  lure: 2
+  incense: 2
+  lucky_egg: 3
+  training_tonic: 3
+  battle_tonic: 3
+  reroll_ticket: 3
+  x_attack: 2
+  profile_frame: 1
+  card_background: 1
+
+items:
+  protein:
+    effect: level_up
+  lure:
+    effect: lure
+  incense:
+    effect: incense
+  lucky_egg:
+    effect: lucky_egg
+  training_tonic:
+    effect: clear_training_cooldown
+  battle_tonic:
+    effect: clear_battle_cooldown
+  reroll_ticket:
+    effect: reroll_ticket
+  x_attack:
+    effect: x_attack
+  profile_frame:
+    effect: cosmetic
+    flag: profile_frame
+  card_background:
+    effect: cosmetic
+    flag: card_background

@@ -34,18 +34,31 @@ module Pokemons
         definitions.keys.sample(pick, random: Random.new(seed))
       end
 
-      def self.matches?(definition, event:, types: [], genre_slugs: [])
+      def self.matches?(definition, event:, **filters)
         return false unless definition.fetch('event').to_s == event.to_s
-        return false unless need_met?(definition['type'], types)
-        return false unless need_met?(definition['genre'], genre_slugs)
+
+        needs_met?(definition, filters)
+      end
+
+      def self.needs_met?(definition, filters)
+        return false unless need_met?(definition['type'], filters.fetch(:types, []))
+        return false unless need_met?(definition['genre'], filters.fetch(:genre_slugs, []))
+        return false if definition['ranked'] && !filters.fetch(:ranked, false)
+        return false unless side_met?(definition['side'], filters[:side])
 
         true
       end
+      private_class_method :needs_met?
 
       def self.need_met?(need, values)
         need.blank? || Array(values).map(&:to_s).include?(need.to_s)
       end
       private_class_method :need_met?
+
+      def self.side_met?(need, side)
+        need.blank? || need.to_s == side.to_s
+      end
+      private_class_method :side_met?
     end
   end
 end

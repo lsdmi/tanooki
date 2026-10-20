@@ -38,20 +38,20 @@ module Pokemons
 
     test 'daily quest labels use Ukrainian copy' do
       open = TrainerDailyQuest.new(quest_key: 'read_fantasy_chapters', progress: 1, target: 2)
-      done = TrainerDailyQuest.new(quest_key: 'catch_pokemon', progress: 1, target: 1,
+      done = TrainerDailyQuest.new(quest_key: 'win_battle', progress: 1, target: 1,
                                    completed_at: Time.current)
 
       assert_equal 'Прочитайте 2 розділи фентезі', daily_quest_label(open)
-      assert_equal 'Спіймайте покемона', daily_quest_label(done)
+      assert_equal 'Виграйте бій', daily_quest_label(done)
     end
 
     test 'daily quest progress uses Ukrainian copy' do
       open = TrainerDailyQuest.new(quest_key: 'read_fantasy_chapters', progress: 1, target: 2)
-      done = TrainerDailyQuest.new(quest_key: 'catch_pokemon', progress: 1, target: 1,
+      done = TrainerDailyQuest.new(quest_key: 'win_battle', progress: 1, target: 1,
                                    completed_at: Time.current)
 
       assert_equal '1/2', daily_quest_progress_label(open)
-      assert_equal 'готово', daily_quest_progress_label(done)
+      assert_equal 'виконано', daily_quest_progress_label(done)
     end
 
     test 'dex_title gives a trainer without battles the first title' do

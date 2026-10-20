@@ -12,6 +12,10 @@ module Pokemons
       assert_equal %w[dragon ghost poison psychic], habitat.type_keys.sort
     end
 
+    test 'accepts explicit pokemon type keys' do
+      assert_equal %w[dragon], Habitat.new(type_keys: %w[dragon fairy]).type_keys
+    end
+
     test 'drops types that are not in the type chart' do
       Habitat.stub(:config, { 'boost' => 4, 'genres' => { 'fantasy' => %w[dragon fairy] }, 'tags' => {} }) do
         assert_equal %w[dragon], Habitat.new(genre_slugs: %w[fantasy]).type_keys

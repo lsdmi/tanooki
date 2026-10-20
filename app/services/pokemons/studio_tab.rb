@@ -4,7 +4,8 @@ module Pokemons
   # Read-model for the Studio "Pokémons" tab: party list, dex ranks, opponent, battle history, top trainers.
   class StudioTab
     attr_reader :user, :pokemons, :selected_pokemon, :evolution, :dex_leaderboard,
-                :opponent, :battle_history, :attack_team, :defense_team, :defense_away
+                :opponent, :battle_history, :attack_team, :defense_team, :defense_away,
+                :daily_quests, :bag_items, :candies, :lure_types
 
     # +claim_visit:+ stamps last_studio_visit_at after reading the away report (Studio tab only).
     def initialize(user, claim_visit: false)
@@ -14,6 +15,7 @@ module Pokemons
       @attack_team = TeamRoster.new(user, :attack, party: @pokemons).records
       @defense_team = TeamRoster.new(user, :defense, party: @pokemons).records
       @defense_away = claim_visit ? DefenseAway.claim!(user) : DefenseAway::NONE
+      assign_inventory
       assign_pokemon_details if @pokemons.any?
     end
 
@@ -32,6 +34,13 @@ module Pokemons
     end
 
     private
+
+    def assign_inventory
+      @daily_quests = DailyQuests::EnsureToday.call(user)
+      @candies = user.trainer_profile.candies
+      @bag_items = user.trainer_items.where('quantity > 0').order(:item_key).to_a
+      @lure_types = Habitat.known_type_keys.sort
+    end
 
     def assign_pokemon_details
       @selected_pokemon = @pokemons.first

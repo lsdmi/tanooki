@@ -21,7 +21,7 @@ module WildEncounterHelpers
         service.define_singleton_method(:rand) { |*| 0.0 }
         next unless skip_delay
 
-        service.define_singleton_method(:eligible?) { true }
+        service.define_singleton_method(:eligible?) { |**| true }
         service.define_singleton_method(:encountered_recently?) { false }
       end
     }

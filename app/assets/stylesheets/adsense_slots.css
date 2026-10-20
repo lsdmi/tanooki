@@ -1,30 +1,5 @@
-/* AdSense slot layout (browse + in-chapter units). Loaded only when slots can render. */
-
-/* In-flow AdSense slots (chapter reader + browse): zero footprint until filled */
-.reader-ad-slot {
-  margin: 0;
-  padding: 0;
-  overflow-anchor: none;
-}
-
-.reader-ad-slot__frame {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  min-height: 0;
-}
-
-html.adblock-likely .reader-ad-slot,
-.reader-ad-slot--collapsed {
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
+/* AdSense slot chrome (browse + in-chapter). Deferred via DEFERRED_PAGE_STYLESHEETS.
+   CLS reservations (base slot, collapse, show/index/home measuring heights) live in application.css. */
 
 html.adblock-likely .bookshelf-show__ad,
 .bookshelf-show__ad:has(.reader-ad-slot--collapsed) {
@@ -85,11 +60,6 @@ html.adblock-likely .scanlator-show__ad--full,
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
   }
-}
-
-.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame {
-  min-height: 90px;
-  max-height: 120px;
 }
 
 .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__adsense {
@@ -180,28 +150,13 @@ html.adblock-likely .scanlator-show__ad--full,
   font-family: ui-monospace, monospace;
 }
 
-/* Fiction show: reserve one banner height from first paint through fill so late
-   AdSense (after LCP/idle) does not shove description/sidebar. Collapse still
-   zero-heights the slot via .reader-ad-slot--collapsed. About grid gap spaces it. */
+/* Fiction show: kill default slot margins (frame height reserved in application.css). */
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--preview,
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled,
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--pending,
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--measuring {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-.fiction-show__ad .reader-ad-slot .reader-ad-slot__frame,
-.fiction-show__ad .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
-.fiction-show__ad .reader-ad-slot--adsense-filled .reader-ad-slot__frame,
-.fiction-show__ad .reader-ad-slot--preview .reader-ad-slot__frame {
-  height: 280px;
-  min-height: 280px;
-  max-height: 280px;
-}
-
-.fiction-show__ad:has(.reader-ad-slot--collapsed) {
-  display: none;
 }
 
 /* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */
@@ -291,11 +246,6 @@ html.adblock-likely .scanlator-show__ad--full,
   }
 }
 
-.home-banner-slot--preview,
-.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
-  aspect-ratio: 626 / 166;
-}
-
 .home-banner-slot--preview {
   display: flex;
   flex-direction: column;
@@ -332,26 +282,9 @@ html.adblock-likely .scanlator-show__ad--full,
   margin: 0;
 }
 
-.home-banner-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .home-banner-slot__frame {
-  display: flex;
-  min-height: 0;
-  max-height: none;
-}
-
 .home-banners:not(:has(.home-banner-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
   display: none;
   margin: 0;
-}
-
-html.adblock-likely .home-banner-slot.reader-ad-slot {
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
 }
 
 .home-banners__slot:has(.reader-ad-slot--collapsed) {
@@ -383,18 +316,8 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
   margin: 0;
 }
 
-/* Every state shares one fixed height so the row never reflows as units fill.
-   min-height carries the size: .reader-ad-slot__preview inherits it to fill the box.
-   max-height is load-bearing — without it the measuring state clamps the frame to 120px. */
-.index-banners .reader-ad-slot .reader-ad-slot__frame,
-.index-banners .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
-.index-banners .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
-  height: 280px;
-  min-height: 280px;
-  max-height: 280px;
-}
-
-/* Right cell is optional: an unfilled or blocked unit leaves the left one full-width. */
+/* Right cell is optional: an unfilled or blocked unit leaves the left one full-width.
+   Frame height for all states is reserved in application.css. */
 .index-banners__slot:has(.reader-ad-slot--collapsed) {
   display: none;
 }
@@ -402,15 +325,4 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
 .index-banners:not(:has(.reader-ad-slot--preview)):not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
   display: none;
   margin: 0;
-}
-
-html.adblock-likely .index-banners .reader-ad-slot {
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
 }

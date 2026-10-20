@@ -17,8 +17,15 @@ module Pokemons
         CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: @user.id).trap
         encounter
       end
-      DailyQuests::Progress.call(@user, event: :catch) if encounter
+      DailyQuests::Progress.call(@user, event: :catch, types: catch_types(encounter)) if encounter
       encounter
+    end
+
+    private
+
+    def catch_types(encounter)
+      pokemon = encounter.pokemon
+      pokemon.types.map(&:key)
     end
   end
 end

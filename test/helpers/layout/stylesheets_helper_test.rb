@@ -48,10 +48,11 @@ module Layout
       assert_empty page_stylesheets
     end
 
-    test 'studio index loads sweetalert styles' do
+    test 'studio index loads sweetalert styles deferred' do
       assign_controller(:studio, :index)
 
       assert_equal %w[sweetal2], page_stylesheets
+      assert deferred_page_stylesheet?('sweetal2')
     end
 
     test 'fiction show with reader support card does not load chapters_reader' do
@@ -74,10 +75,11 @@ module Layout
       assert_equal %w[slimselect flatpickr_overrides], page_stylesheets
     end
 
-    test 'pagy stylesheet loads when a pagy assign is present' do
+    test 'pagy stylesheet loads deferred when a pagy assign is present' do
       assign_controller(:fictions, :index, pagy: Pagy.new(count: 20, page: 1, limit: 10))
 
       assert_equal %w[pagy], page_stylesheets
+      assert deferred_page_stylesheet?('pagy')
     end
 
     test 'adsense slot stylesheet loads when adblock check is on' do
@@ -87,6 +89,14 @@ module Layout
       assert_equal %w[adsense_slots], page_stylesheets
       assert deferred_page_stylesheet?('adsense_slots')
       assert_not deferred_page_stylesheet?('adult_content_disclaimer')
+    end
+
+    test 'global page stylesheets load deferred' do
+      define_singleton_method(:adsense_adblock_check?) { true }
+      assign_controller(:home, :index)
+
+      assert deferred_page_stylesheet?('pagy')
+      assert deferred_page_stylesheet?('sweetal2')
     end
 
     test 'deferred page stylesheet uses print media with onload flip to all' do

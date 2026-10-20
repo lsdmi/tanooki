@@ -21,12 +21,13 @@ class UserPokemon < ApplicationRecord
 
   def character_label = self.class.character_label(character)
 
-  def train!
+  def train!(experience_multiplier: 1)
     return level_up_training! if rand(2).zero?
 
     cap = Pokemons::Balance::EXPERIENCE_CAP
     if battle_experience < cap
-      update(battle_experience: [battle_experience + Pokemons::Balance::TRAINING_EXPERIENCE, cap].min)
+      gain = Pokemons::Balance::TRAINING_EXPERIENCE * experience_multiplier.to_i.clamp(1, 5)
+      update(battle_experience: [battle_experience + gain, cap].min)
     end
     { alert: I18n.t('pokemons.training.experience', name: pokemon_name) }
   end

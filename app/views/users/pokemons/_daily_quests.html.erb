@@ -1,14 +1,21 @@
 <%# locals: (quests:) %>
 <% if quests.any? %>
-  <div class="flex flex-col gap-1">
-    <p class="text-xs/4 font-medium text-fg-subtle"><%= t('pokemons.daily_quests.headline') %></p>
-    <ul class="flex flex-col gap-0.5 text-sm/5 text-fg-muted">
+  <% done = quests.count(&:completed?) %>
+  <details class="group" data-exclusive-details-target="panel"
+           data-action="toggle->exclusive-details#sync">
+    <summary class="inline-flex h-5 cursor-pointer list-none items-center gap-1 text-fg-subtle underline-offset-4 hover:text-fg hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden"
+             title="<%= t('pokemons.daily_quests.headline') %>">
+      <%= pokemon_missions_icon %>
+      <span class="sr-only"><%= t('pokemons.daily_quests.headline') %></span>
+      <span><%= done %>/<%= quests.size %></span>
+    </summary>
+    <ul class="mt-1.5 flex flex-col gap-0.5 text-xs/4 text-fg-muted">
       <% quests.each do |quest| %>
-        <li>
+        <li class="<%= 'text-fg-subtle' if quest.completed? %>">
           <%= daily_quest_label(quest) %>
           <span class="text-fg-subtle">· <%= daily_quest_progress_label(quest) %></span>
         </li>
       <% end %>
     </ul>
-  </div>
+  </details>
 <% end %>

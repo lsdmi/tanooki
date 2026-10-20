@@ -244,6 +244,7 @@ Rails.application.routes.draw do
   patch '/pokemon/teams', to: 'pokemon_teams#update', as: :pokemon_teams
 
   post '/pokemon/opponent/regenerate', to: 'user_pokemons#regenerate_opponent', as: :regenerate_pokemon_opponent
+  post '/pokemon/items', to: 'pokemon_items#create', as: :pokemon_items
 
   post :battle_start, to: 'pokemon_battles#start', as: :battle_start
   get '/pokemon/battles/:id/og.png', to: 'pokemon_battles#og', as: :pokemon_battle_og, defaults: { format: :png }

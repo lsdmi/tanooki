@@ -36,6 +36,7 @@ module Pokemons
 
     def reroll_available?
       return false if BattleLeaderboardCooldown.call(user)
+      return true if profile.item_effect('reroll_ticket')
 
       profile.opponent_rerolled_at.nil? || profile.opponent_rerolled_at <= Balance::BATTLE_COOLDOWN.ago
     end
@@ -46,7 +47,11 @@ module Pokemons
       profile.with_lock do
         next false unless reroll_available?
 
-        profile.opponent_rerolled_at = Time.current
+        if profile.item_effect('reroll_ticket')
+          profile.write_item_effect!('reroll_ticket', nil)
+        else
+          profile.opponent_rerolled_at = Time.current
+        end
         pin(pick(excluding: [profile.pinned_opponent_id]) || pinned_opponent)
         true
       end

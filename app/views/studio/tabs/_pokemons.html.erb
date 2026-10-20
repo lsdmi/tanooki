@@ -1,10 +1,22 @@
 <%# One column, fight-first: season whisper → duel stage → party dock → quiet footer. %>
 <div id="section" class="mx-auto flex w-full max-w-xl flex-col gap-8 md:gap-10">
-  <% if (season = PokemonSeason.current) %>
-    <%= render 'users/pokemons/season_banner', season:, dex_leaderboard: pokemon_show.dex_leaderboard %>
-  <% end %>
-  <%= render 'users/pokemons/defense_away', report: pokemon_show.defense_away %>
-  <%# Daily quests strip: show with rewards in 5.8; progress still records in the background. %>
+  <div class="flex flex-col gap-1.5">
+    <% if (season = PokemonSeason.current) %>
+      <%= render 'users/pokemons/season_banner', season:, dex_leaderboard: pokemon_show.dex_leaderboard %>
+    <% end %>
+    <%= render 'users/pokemons/defense_away', report: pokemon_show.defense_away %>
+    <div class="flex flex-wrap items-start gap-x-2 gap-y-1 text-sm/5 text-fg-muted"
+         data-controller="exclusive-details">
+      <%= render 'users/pokemons/daily_quests', quests: pokemon_show.daily_quests %>
+      <% if pokemon_show.daily_quests.any? %>
+        <span class="inline-flex h-5 items-center" aria-hidden="true">·</span>
+      <% end %>
+      <%= render 'users/pokemons/candies', candies: pokemon_show.candies %>
+      <span class="inline-flex h-5 items-center" aria-hidden="true">·</span>
+      <%= render 'users/pokemons/bag', items: pokemon_show.bag_items,
+                                       pokemons: pokemon_show.pokemons, lure_types: pokemon_show.lure_types %>
+    </div>
+  </div>
 
   <%= turbo_frame_tag "pokemon-leaderboard-screen", class: 'min-w-0', style: 'view-transition-name: pokemon-challenge; view-transition-class: pokemon-panel' do %>
     <%= render 'users/pokemons/dex_leaderboard', dex_leaderboard: pokemon_show.dex_leaderboard, opponent: pokemon_show.opponent,

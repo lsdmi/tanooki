@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_143000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -91,6 +91,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.index ["user_id"], name: "index_bookshelves_on_user_id"
+  end
+
+  create_table "candy_transactions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "amount", null: false
+    t.datetime "created_at", null: false
+    t.string "reason", limit: 64, null: false
+    t.bigint "source_id"
+    t.string "source_type", limit: 64
+    t.bigint "user_id", null: false
+    t.index ["source_type", "source_id"], name: "index_candy_transactions_on_source_type_and_source_id"
+    t.index ["user_id", "created_at"], name: "index_candy_transactions_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_candy_transactions_on_user_id"
   end
 
   create_table "chapter_revisions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -732,14 +744,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
     t.index ["user_id"], name: "index_trainer_daily_quests_on_user_id"
   end
 
+  create_table "trainer_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "item_key", limit: 64, null: false
+    t.integer "quantity", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "item_key"], name: "index_trainer_items_on_user_and_key", unique: true
+    t.index ["user_id"], name: "index_trainer_items_on_user_id"
+  end
+
   create_table "trainer_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "attack_team_ids"
+    t.integer "candies", default: 0, null: false
     t.datetime "created_at", null: false
     t.json "defense_team_ids"
     t.float "glicko_deviation", limit: 53, default: 350.0, null: false
     t.virtual "glicko_floor", type: :float, limit: 53, as: "(`glicko_rating` - (2 * `glicko_deviation`))", stored: true
     t.float "glicko_rating", limit: 53, default: 1500.0, null: false
     t.float "glicko_volatility", limit: 53, default: 0.06, null: false
+    t.json "item_effects", null: false
     t.datetime "last_battle_at"
     t.datetime "last_catch_at"
     t.datetime "last_studio_visit_at"
@@ -850,6 +874,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
   add_foreign_key "bookshelf_fictions", "bookshelves"
   add_foreign_key "bookshelf_fictions", "fictions"
   add_foreign_key "bookshelves", "users"
+  add_foreign_key "candy_transactions", "users", on_delete: :cascade
   add_foreign_key "chapter_revisions", "api_tokens", on_delete: :nullify
   add_foreign_key "chapter_revisions", "chapters"
   add_foreign_key "chapter_revisions", "oauth_applications", on_delete: :nullify
@@ -911,6 +936,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "trainer_daily_quests", "users", on_delete: :cascade
+  add_foreign_key "trainer_items", "users", on_delete: :cascade
   add_foreign_key "trainer_profiles", "users", on_delete: :cascade
   add_foreign_key "translation_request_votes", "translation_requests", on_delete: :cascade
   add_foreign_key "translation_request_votes", "users", on_delete: :cascade
