@@ -10,7 +10,6 @@ module ApplicationHelper
   include Comments::PresentationHelper
   include ExternalUrls::UrlsHelper
   include Fictions::FormattingHelper
-  include Fictions::GenresPromoHelper
   include Fictions::HotNoveltyHelper
   include Fictions::IndexNavigationHubHelper
   include Layout::Helper

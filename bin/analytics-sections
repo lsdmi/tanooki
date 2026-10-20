@@ -1,0 +1,216 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Section traffic from GA4 (pagePath → checklist buckets for PB-21).
+#
+# Setup: same as bin/analytics-report (.env.analytics + service-account JSON).
+#
+# Usage:
+#   bin/analytics-sections
+
+require 'google/analytics/data'
+require 'dotenv'
+
+Dotenv.load(File.expand_path('../.env', __dir__), File.expand_path('../.env.analytics', __dir__))
+
+PROPERTY_ID = ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '357980018')
+PERIODS = { 28 => '28d', 90 => '90d' }.freeze
+PAGE_LIMIT = 10_000
+FICTION_RESERVED = %w[alphabetical calendar genres lookup].freeze
+
+# Order matters: first matching rule wins.
+SECTION_RULES = [
+  ['home', ->(p) { p == '/' }],
+  ['reader', ->(p) { p.match?(%r{\A/chapters/[^/]+\z}) }],
+  ['fictions_index', ->(p) { p == '/fictions' }],
+  ['storage', ->(p) { p.start_with?('/fictions/alphabetical') }],
+  ['calendar', ->(p) { p.start_with?('/fictions/calendar') }],
+  ['genres', ->(p) { p.start_with?('/fictions/genres/') }],
+  ['fiction_show', lambda { |p|
+    return false unless (m = p.match(%r{\A/fictions/([^/]+)\z}))
+
+    !FICTION_RESERVED.include?(m[1])
+  }],
+  ['search', ->(p) { p.start_with?('/search') }],
+  ['library', ->(p) { p == '/library' || p.start_with?('/library/') }],
+  ['video', ->(p) { p.start_with?('/watch') }],
+  ['tales', ->(p) { p.start_with?('/tales') }],
+  ['translate', ->(p) { p.start_with?('/translate') }],
+  ['bookshelves', ->(p) { p.start_with?('/bookshelves') }],
+  ['studio', ->(p) { p.start_with?('/studio') || %w[/blogs /pokemons /avatars /readings /notifications /epub_exports].include?(p) }],
+  ['pokemon', ->(p) { p.start_with?('/pokemon') }],
+  ['chat', ->(p) { p.start_with?('/chat') }],
+  ['friends', ->(p) { p == '/friends' }],
+  ['about', ->(p) { %w[/about /rules /privacy /developers].include?(p) || p.start_with?('/privacy') }],
+  ['scanlators', ->(p) { p.start_with?('/scanlators') }],
+  ['other', ->(_p) { true }]
+].freeze
+
+DISPLAY_ORDER = %w[
+  site_total home reader fictions_index fiction_show storage search library
+  video tales translate calendar genres bookshelves studio pokemon chat friends about scanlators other
+].freeze
+
+def date_range(days)
+  { start_date: "#{days}daysAgo", end_date: 'yesterday' }
+end
+
+def resolve_credentials!
+  credentials = ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', nil)
+  abort <<~MESSAGE unless credentials
+    Missing GOOGLE_APPLICATION_CREDENTIALS.
+    See setup at the top of bin/analytics-report.
+  MESSAGE
+
+  unless credentials.start_with?('/')
+    ENV['GOOGLE_APPLICATION_CREDENTIALS'] = File.expand_path("../#{credentials}", __dir__)
+  end
+  path = ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS')
+  abort "Credentials file not found: #{path}" unless File.readable?(path)
+end
+
+def fetch_page_rows(client, days)
+  rows = []
+  offset = 0
+
+  loop do
+    response = client.run_report(
+      property: "properties/#{PROPERTY_ID}",
+      date_ranges: [date_range(days)],
+      dimensions: [{ name: 'pagePath' }],
+      metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
+      limit: PAGE_LIMIT,
+      offset: offset,
+      order_bys: [{ metric: { metric_name: 'screenPageViews' }, desc: true }]
+    )
+
+    batch = response.rows || []
+    break if batch.empty?
+
+    batch.each do |row|
+      path = row.dimension_values.first.value
+      views = row.metric_values[0].value.to_i
+      users = row.metric_values[1].value.to_i
+      rows << [path, views, users]
+    end
+
+    break if batch.size < PAGE_LIMIT
+
+    offset += PAGE_LIMIT
+  end
+
+  rows
+end
+
+def classify(path)
+  SECTION_RULES.each do |id, predicate|
+    return id if predicate.call(path)
+  end
+  'other'
+end
+
+def aggregate(rows)
+  buckets = Hash.new { |h, k| h[k] = { views: 0, users: 0, paths: 0 } }
+  site_views = 0
+  site_users_paths = 0
+
+  rows.each do |path, views, users|
+    site_views += views
+    site_users_paths += users
+    id = classify(path)
+    buckets[id][:views] += views
+    buckets[id][:users] += users
+    buckets[id][:paths] += 1
+  end
+
+  buckets['site_total'] = { views: site_views, users: site_users_paths, paths: rows.size }
+  buckets
+end
+
+def percentage(part, total)
+  return 0.0 if total.zero?
+
+  (100.0 * part / total).round(2)
+end
+
+def views_per_user(views, users)
+  return 0.0 if users.zero?
+
+  (views.to_f / users).round(2)
+end
+
+def print_period(label, buckets)
+  total_views = buckets.fetch('site_total')[:views]
+  puts "## #{label}"
+  puts
+  puts '| ID | Views | Users* | V/U* | % site views | Paths |'
+  puts '|---|---:|---:|---:|---:|---:|'
+
+  DISPLAY_ORDER.each do |id|
+    next unless buckets.key?(id)
+
+    b = buckets[id]
+    pct = id == 'site_total' ? 100.0 : percentage(b[:views], total_views)
+    vu = id == 'site_total' ? '—' : views_per_user(b[:views], b[:users])
+    users = id == 'site_total' ? '—' : b[:users]
+    puts "| #{id} | #{b[:views]} | #{users} | #{vu} | #{pct}% | #{b[:paths]} |"
+  end
+
+  puts
+  puts '* Users are summed per pagePath row (not deduped across paths in a section). Use for V/U signal only.'
+  puts
+end
+
+def markdown_decision_rows(buckets_28, buckets_90)
+  total_28 = buckets_28.fetch('site_total')[:views]
+  total_90 = buckets_90.fetch('site_total')[:views]
+
+  mapping = {
+    'site_total' => ['—', 'Site total'],
+    'reader' => ['—', 'Reader'],
+    'home' => ['—', 'Home'],
+    'video' => ['S-video', 'Відео `/watch`'],
+    'tales' => ['S-tales', 'Tales `/tales`'],
+    'translate' => ['S-translate', 'Translate'],
+    'calendar' => ['S-calendar', 'Calendar'],
+    'genres' => ['S-genres', 'Genres'],
+    'bookshelves' => ['S-bookshelves', 'Bookshelves'],
+    'studio' => ['S-studio', 'Studio'],
+    'pokemon' => ['S-pokemon', 'Pokémon'],
+    'storage' => ['—', 'Сховище'],
+    'fictions_index' => ['—', 'Fictions index'],
+    'fiction_show' => ['—', 'Fiction show'],
+    'search' => ['—', 'Search'],
+    'library' => ['—', 'Library'],
+    'chat' => ['S-chat', 'Chat'],
+    'friends' => ['S-friends', 'Friends'],
+    'about' => ['S-about', 'About / rules / privacy'],
+    'scanlators' => ['S-scanlators', 'Scanlators'],
+    'other' => ['—', 'Other']
+  }
+
+  puts '## Decision table rows (copy into §7)'
+  puts
+  mapping.each do |key, (sid, label)|
+    b28 = buckets_28[key] || { views: 0, users: 0 }
+    b90 = buckets_90[key] || { views: 0, users: 0 }
+    pct28 = key == 'site_total' ? 100.0 : percentage(b28[:views], total_28)
+    pct90 = key == 'site_total' ? 100.0 : percentage(b90[:views], total_90)
+    users = key == 'site_total' ? '—' : b28[:users]
+    views = key == 'site_total' ? b28[:views] : b28[:views]
+    puts "| #{sid} | #{label} | #{views} | #{users} | #{pct28}% | #{pct90}% | skip | | |"
+  end
+  puts
+end
+
+resolve_credentials!
+client = Google::Analytics::Data.analytics_data
+results = {}
+
+PERIODS.each do |days, label|
+  rows = fetch_page_rows(client, days)
+  results[days] = aggregate(rows)
+  print_period(label, results[days])
+end
+
+markdown_decision_rows(results.fetch(28), results.fetch(90))

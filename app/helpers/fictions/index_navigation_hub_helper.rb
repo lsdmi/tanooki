@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 module Fictions
-  # Closing navigation tiles on the fictions index (catalog / calendar / library).
+  # Closing navigation tiles on the fictions index (writings / storage / calendar).
   module IndexNavigationHubHelper
-    GUEST_LIBRARY_BUTTON_LABEL = 'Увійти до читальні'
-    SIGNED_IN_LIBRARY_BUTTON_LABEL = 'Відкрити читальню'
+    GUEST_WRITINGS_BUTTON_LABEL = 'Увійти та почати писати'
+    SIGNED_IN_WRITINGS_BUTTON_LABEL = 'Відкрити писальню'
     HUB_BANNER_CLASS = 'fiction-index-hub-banner'
-    HUB_CARD_KEYS = %i[storage calendar library].freeze
+    HUB_CARD_KEYS = %i[writings storage calendar].freeze
 
     HUB_CARD_BASE = {
+      writings: {
+        title: 'Твори із Бакою',
+        description: 'Завантажуй власну роботу чи переклад — історії, ранобе чи фанфіки.',
+        button_icon: 'fictions/navigation_hub/writings_button_icon',
+        background_image: 'fiction-genre-writings-promo.webp'
+      },
       storage: {
         title: 'Сховище',
         description: 'Усі твори в єдинім сховку. Поділяйте за жанром, статусом та популярністю.',
@@ -22,12 +28,6 @@ module Fictions
         button_label: 'Відкрити календар',
         button_icon: 'fictions/navigation_hub/calendar_button_icon',
         background_image: 'fiction-index-hub-calendar.webp'
-      },
-      library: {
-        title: 'Читальня',
-        description: 'Тримайте свої мандрівки, таємні книжні дороги та скарби прочитані на єдиній полиці.',
-        button_icon: 'fictions/navigation_hub/library_button_icon',
-        background_image: 'fiction-index-hub-library.webp'
       }
     }.freeze
 
@@ -68,9 +68,9 @@ module Fictions
     ].join(' ')
 
     HUB_PROMO_BACKGROUND_DELAY = {
-      storage: nil,
-      calendar: '[animation-delay:-10s]',
-      library: '[animation-delay:-20s]'
+      writings: nil,
+      storage: '[animation-delay:-10s]',
+      calendar: '[animation-delay:-20s]'
     }.freeze
 
     def fiction_index_navigation_hub_cards
@@ -95,16 +95,16 @@ module Fictions
 
     def hub_card_href(key)
       case key
+      when :writings then user_signed_in? ? readings_path : new_user_session_path
       when :storage then alphabetical_fictions_path
       when :calendar then calendar_fictions_path
-      when :library then user_signed_in? ? library_path : new_user_session_path
       end
     end
 
     def hub_card_button_label(key, card)
-      return card.fetch(:button_label) unless key == :library
+      return card.fetch(:button_label) unless key == :writings
 
-      user_signed_in? ? SIGNED_IN_LIBRARY_BUTTON_LABEL : GUEST_LIBRARY_BUTTON_LABEL
+      user_signed_in? ? SIGNED_IN_WRITINGS_BUTTON_LABEL : GUEST_WRITINGS_BUTTON_LABEL
     end
   end
 end

@@ -17,16 +17,7 @@
 <div class="relative z-10 mx-auto max-w-[1300px] px-4 pb-16 lg:pb-20">
   <div class="px-2 xl:px-0">
     <%= render 'fictions/genres/new_releases_section', skeleton: @skeleton, section_class: 'mt-4 lg:mt-6 mb-8' %>
-    <%= render "shared/adsense_collapse_safe",
-               placement: :genres_show_top,
-               navigation_key: "top",
-               wrapper_class: "mb-8 lg:mb-10" %>
-    <%= render 'fictions/genres/promo_row' %>
-    <%= render "shared/adsense_collapse_safe",
-               placement: :genres_show_mid,
-               navigation_key: "mid",
-               measure_as: "bottom",
-               wrapper_class: "mb-8 lg:mb-10" %>
+    <%= render 'shared/adsense_genres_show_banners', wrapper_class: 'mb-8 lg:mb-10' %>
     <% if @pagy_genre_recent.count.positive? %>
       <%= render 'fictions/genres/recommended_section',
                  skeleton: @skeleton,

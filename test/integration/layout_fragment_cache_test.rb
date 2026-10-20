@@ -44,14 +44,22 @@ class LayoutFragmentCacheTest < ActionDispatch::IntegrationTest
     assert_select 'nav #user-dropdown'
   end
 
-  test 'signed in navbar renders shared menus and uncached auth dropdown' do
+  test 'signed in navbar renders the three catalog links' do
     sign_in users(:user_one)
 
     get fictions_path
 
-    assert_response :success
-    assert_select 'nav #user-dropdown'
-    assert_select 'nav #categoriesDropdownButton1'
+    assert_select 'nav[aria-label="Основна навігація"] a[href=?]', fictions_path, text: 'Ранобе'
+    assert_select 'nav[aria-label="Основна навігація"] a[href=?]', calendar_fictions_path, text: 'Календар'
+    assert_select 'nav[aria-label="Основна навігація"] a[href=?]', alphabetical_fictions_path, text: 'Сховище'
+  end
+
+  test 'signed in navbar omits retired mega-menu labels' do
+    sign_in users(:user_one)
+
+    get fictions_path
+
+    assert_select 'nav[aria-label="Основна навігація"]', text: /Блоги|Відео|Переклад/, count: 0
   end
 
   test 'navbar keeps toolbar before nav links in dom order' do
@@ -60,6 +68,6 @@ class LayoutFragmentCacheTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_operator response.body.index('eCommerceSearchModalButton'),
                     :<,
-                    response.body.index('categoriesDropdownButton1')
+                    response.body.index('aria-label="Основна навігація"')
   end
 end

@@ -37,31 +37,15 @@ module Adsense
     end
 
     test 'adsense_fictions_index_banners_renderable? follows development preview rules' do
-      define_singleton_method(:adsense_allowed?) { false }
+      assert_banner_row_follows_preview_rules(:adsense_fictions_index_banners_renderable?)
+    end
 
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-        assert_predicate self, :adsense_fictions_index_banners_renderable?
-      end
-
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        define_singleton_method(:adsense_allowed?) { true }
-
-        assert_predicate self, :adsense_fictions_index_banners_renderable?
-      end
+    test 'adsense_genres_show_banners_renderable? follows development preview rules' do
+      assert_banner_row_follows_preview_rules(:adsense_genres_show_banners_renderable?)
     end
 
     test 'adsense_home_banners_renderable? follows development preview rules' do
-      define_singleton_method(:adsense_allowed?) { false }
-
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-        assert_predicate self, :adsense_home_banners_renderable?
-      end
-
-      Rails.stub(:env, ActiveSupport::StringInquirer.new('production')) do
-        define_singleton_method(:adsense_allowed?) { true }
-
-        assert_predicate self, :adsense_home_banners_renderable?
-      end
+      assert_banner_row_follows_preview_rules(:adsense_home_banners_renderable?)
     end
 
     test 'adsense_slot_live? is false when adsense is disabled' do
@@ -127,6 +111,24 @@ module Adsense
 
       Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
         assert_predicate self, :calendar_adsense_renderable?
+      end
+    end
+
+    private
+
+    def assert_banner_row_follows_preview_rules(predicate)
+      define_singleton_method(:adsense_allowed?) { false }
+
+      assert_predicate_in_env('development', predicate)
+
+      define_singleton_method(:adsense_allowed?) { true }
+
+      assert_predicate_in_env('production', predicate)
+    end
+
+    def assert_predicate_in_env(env_name, predicate)
+      Rails.stub(:env, ActiveSupport::StringInquirer.new(env_name)) do
+        assert_predicate self, predicate
       end
     end
   end

@@ -39,10 +39,12 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     verify_fiction_index_presenter_lists(index_presenter)
   end
 
-  test 'index renders writings promo' do
+  test 'index renders navigation hub with writings storage and calendar' do
     get fictions_path
 
-    assert_select '.fiction-genre-writings-banner a[href="/readings"]', text: /Відкрити писальню/
+    assert_select '[aria-label="Писальня, сховище і календар"]', text: /Твори із Бакою/
+    assert_select '[aria-label="Писальня, сховище і календар"]', text: /Сховище/
+    assert_select '.fiction-genre-writings-banner', count: 0
   end
 
   test 'should get new' do

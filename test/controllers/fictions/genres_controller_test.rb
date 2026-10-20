@@ -15,21 +15,12 @@ module Fictions
       assert_template :show
     end
 
-    test 'show renders writings promo for guest' do
+    test 'show does not render writings promo row' do
       get fiction_genre_fictions_url(genres(:one).slug)
 
-      assert_select '.fiction-genre-writings-banner a[href="/login"]', text: /Увійти та почати писати/
-      assert_select '.fiction-genre-writings-banner span', text: 'Для авторів'
-    end
-
-    test 'show writings promo links to studio for signed-in user' do
-      genre = genres(:one)
-      sign_in users(:user_one)
-
-      get fiction_genre_fictions_url(genre.slug)
-
       assert_response :success
-      assert_select '.fiction-genre-writings-banner a[href="/readings"]', text: /Відкрити писальню/
+      assert_select '.fiction-genre-writings-banner', count: 0
+      assert_select '[aria-label="Писальня та сховище"]', count: 0
     end
 
     test 'should assign genre and skeleton on show' do

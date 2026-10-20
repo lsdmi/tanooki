@@ -38,6 +38,11 @@ module Adsense
     fictions_index_mid: 'mid'
   }.freeze
 
+  GENRES_SHOW_BANNER_PLACEMENTS = {
+    genres_show_top: 'top',
+    genres_show_mid: 'mid'
+  }.freeze
+
   CHAPTER_READER_SLOTS = {
     top: SLOTS[:chapter_reader_top],
     bottom: SLOTS[:chapter_reader_bottom]

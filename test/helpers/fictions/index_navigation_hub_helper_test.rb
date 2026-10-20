@@ -6,6 +6,31 @@ module Fictions
   class IndexNavigationHubHelperTest < ActionView::TestCase
     include IndexNavigationHubHelper
 
+    test 'hub card order is writings, storage, calendar' do
+      define_singleton_method(:user_signed_in?) { false }
+
+      assert_equal ['Твори із Бакою', 'Сховище', 'Календар'],
+                   fiction_index_navigation_hub_cards.pluck(:title)
+    end
+
+    test 'writings card for guest points to login' do
+      define_singleton_method(:user_signed_in?) { false }
+
+      writings = fiction_index_navigation_hub_cards.find { |card| card[:title] == 'Твори із Бакою' }
+
+      assert_equal new_user_session_path, writings[:href]
+      assert_equal 'Увійти та почати писати', writings[:button_label]
+    end
+
+    test 'writings card for signed-in user points to studio writings' do
+      define_singleton_method(:user_signed_in?) { true }
+
+      writings = fiction_index_navigation_hub_cards.find { |card| card[:title] == 'Твори із Бакою' }
+
+      assert_equal readings_path, writings[:href]
+      assert_equal 'Відкрити писальню', writings[:button_label]
+    end
+
     test 'storage card points to the alphabetical catalog' do
       define_singleton_method(:user_signed_in?) { false }
 
@@ -24,33 +49,15 @@ module Fictions
       assert_equal 'Відкрити календар', calendar[:button_label]
     end
 
-    test 'library card for guest points to login' do
-      define_singleton_method(:user_signed_in?) { false }
-
-      library = fiction_index_navigation_hub_cards.find { |card| card[:title] == 'Читальня' }
-
-      assert_equal new_user_session_path, library[:href]
-      assert_equal 'Увійти до читальні', library[:button_label]
-    end
-
-    test 'library card for signed-in user points to library' do
-      define_singleton_method(:user_signed_in?) { true }
-
-      library = fiction_index_navigation_hub_cards.find { |card| card[:title] == 'Читальня' }
-
-      assert_equal library_path, library[:href]
-      assert_equal 'Відкрити читальню', library[:button_label]
-    end
-
     test 'hub cards use dedicated background images' do
       define_singleton_method(:user_signed_in?) { false }
 
       images = fiction_index_navigation_hub_cards.pluck(:background_image)
 
       assert_equal %w[
+        fiction-genre-writings-promo.webp
         fiction-index-hub-storage.webp
         fiction-index-hub-calendar.webp
-        fiction-index-hub-library.webp
       ], images
     end
   end
