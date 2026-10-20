@@ -15,6 +15,20 @@ module Meta
       end
     end
 
+    # Real pixel size when the OG image is an ActiveStorage attachment; omit tags otherwise
+    # (hardcoded landscape sizes mis-crop portrait fiction covers in Discord/Telegram).
+    def meta_image_dimensions
+      return if meta_assign(:pokemon_battle)&.persisted?
+
+      cover = path_to_cover
+      return unless cover.respond_to?(:blob) && cover.blob
+
+      width, height = cover.blob.metadata.values_at('width', 'height')
+      return if width.blank? || height.blank?
+
+      { width: width.to_i, height: height.to_i }
+    end
+
     private
 
     def pokemon_battle_cover

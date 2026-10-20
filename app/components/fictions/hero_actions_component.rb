@@ -107,6 +107,14 @@ module Fictions
       new_user_session_path(return_to: fiction_path(fiction))
     end
 
+    def share_url
+      helpers.fiction_url(fiction)
+    end
+
+    def share_text
+      t('fictions.hero.share.text', title: fiction.title)
+    end
+
     # «востаннє» is the last chapter visit; a shelf change also touches updated_at, so it is not a fallback.
     def reading_progress_line
       return unless reading_started? && continue_reading.total.positive?

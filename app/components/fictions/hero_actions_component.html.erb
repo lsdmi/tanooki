@@ -45,6 +45,27 @@
       <% end %>
       <%= render Fictions::TeamMenuComponent.new(fiction:, user:) %>
     <% end %>
+
+    <%# Phones: label + icon; from md: icon-only square, same as team «Керування». %>
+    <%= tag.div class: 'w-full md:w-auto',
+                data: {
+                  controller: 'share-link',
+                  share_link_url_value: share_url,
+                  share_link_title_value: fiction.title,
+                  share_link_text_value: share_text,
+                  share_link_copied_value: t('fictions.hero.share.copied'),
+                  share_link_idle_value: t('fictions.hero.share.label')
+                } do %>
+      <%= render Ui::ButtonComponent.new(label: t('fictions.hero.share.label'), variant: :on_media, full_width: true,
+                                         html: {
+                                           class: 'md:size-10 md:px-0',
+                                           title: t('fictions.hero.share.label'),
+                                           data: { action: 'share-link#share' }
+                                         }) do %>
+        <%= stroke_icon(:share) %>
+        <span class="md:sr-only" data-share-link-target="label"><%= t('fictions.hero.share.label') %></span>
+      <% end %>
+    <% end %>
   </div>
 
   <% if stopped_past_license? %>

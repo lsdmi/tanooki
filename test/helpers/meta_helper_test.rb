@@ -104,4 +104,19 @@ class MetaHelperTest < ActionView::TestCase
 
     assert_equal 'article', meta_type
   end
+
+  test 'meta_image_dimensions reads blob metadata for publication covers' do
+    @publication = publications(:tale_approved_one)
+    @publication.cover.blob.update!(metadata: { 'width' => 600, 'height' => 900 })
+
+    assert_equal({ width: 600, height: 900 }, meta_image_dimensions)
+  end
+
+  test 'meta_image_dimensions is nil for asset-path fallbacks' do
+    request.path = search_index_path
+    @results = []
+    @publication = nil
+
+    assert_nil meta_image_dimensions
+  end
 end

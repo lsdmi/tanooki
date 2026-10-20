@@ -10,8 +10,11 @@
 <%= tag.meta property: 'og:site_name', content: 'Бака' %>
 <%= tag.meta property: 'og:description', content: meta_description %>
 <%= tag.meta property: 'og:image', content: meta_image %>
-<%= tag.meta property: 'og:image:width', content: '1400' %>
-<%= tag.meta property: 'og:image:height', content: '700' %>
+<% meta_image_size = meta_image_dimensions %>
+<% if meta_image_size %>
+  <%= tag.meta property: 'og:image:width', content: meta_image_size[:width] %>
+  <%= tag.meta property: 'og:image:height', content: meta_image_size[:height] %>
+<% end %>
 <%= tag.meta property: 'og:locale', content: 'uk_UA' %>
 <%= tag.meta property: 'og:type', content: meta_type %>
 <%= tag.meta property: 'og:url', content: canonical_url %>
