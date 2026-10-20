@@ -10,13 +10,15 @@ module Pokemons
 
     # Returns the caught encounter, or nil (on cooldown, or a stale, foreign, or already caught token).
     def call
-      CooldownClaim.call(@user, :catch) do
+      encounter = CooldownClaim.call(@user, :catch) do
         encounter = @user.pokemon_encounters.for_catch_token(@token)
         next unless encounter&.claim!
 
         CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: @user.id).trap
         encounter
       end
+      DailyQuests::Progress.call(@user, event: :catch) if encounter
+      encounter
     end
   end
 end

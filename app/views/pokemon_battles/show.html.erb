@@ -1,0 +1,28 @@
+<%# Public shareable battle: result + replay. Same quiet HUD language as Studio. %>
+<div class="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-8 md:gap-8 md:py-12">
+  <header class="flex flex-col gap-2">
+    <p class="text-xs/4 tracking-wide text-fg-subtle"><%= t('pokemons.battle.share_label') %></p>
+    <h1 class="text-lg/6 font-semibold text-fg sm:text-xl/7">
+      <%= t('pokemons.battle.share_title', winner: @battle.winner.name, loser: @battle.loser.name) %>
+    </h1>
+    <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm/5 text-fg-secondary">
+      <%= link_to @battle.attacker.name, profile_path(@battle.attacker.sqid),
+                  turbo_drive_visit_data.merge(class: 'font-medium text-fg hover:text-fg-brand') %>
+      <%= battle_result_badge(@battle.attacker_won?) %>
+      <span class="text-fg-subtle" aria-hidden="true">·</span>
+      <%= link_to @battle.defender.name, profile_path(@battle.defender.sqid),
+                  turbo_drive_visit_data.merge(class: 'font-medium text-fg hover:text-fg-brand') %>
+      <%= battle_result_badge(!@battle.attacker_won?) %>
+    </p>
+    <% unless @battle.ranked? %>
+      <p class="text-xs/4 text-fg-muted"><%= t('pokemons.battle.unranked') %></p>
+    <% end %>
+  </header>
+
+  <%= render Pokemons::BattleReplayComponent.new(battle: @battle) %>
+
+  <p class="text-sm/5 text-fg-subtle">
+    <%= link_to t('pokemons.battle.back_to_studio'), pokemons_path,
+                turbo_drive_visit_data.merge(class: 'underline-offset-4 hover:text-fg hover:underline') %>
+  </p>
+</div>

@@ -1,0 +1,35 @@
+# Daily quest pool. Studio assigns `pick` keys per user per Kiev calendar day.
+# Progress events: catch | battle_win | training | chapter_read
+# Optional filters: type (Pokémon type key), genre (fiction genre slug).
+
+pick: 3
+
+quests:
+  catch_pokemon:
+    event: catch
+    target: 1
+  win_battle:
+    event: battle_win
+    target: 1
+  win_battle_water:
+    event: battle_win
+    target: 1
+    type: water
+  win_battle_fire:
+    event: battle_win
+    target: 1
+    type: fire
+  train_pokemon:
+    event: training
+    target: 1
+  read_chapters:
+    event: chapter_read
+    target: 3
+  read_fantasy_chapters:
+    event: chapter_read
+    target: 2
+    genre: fantasy
+  read_romance_chapters:
+    event: chapter_read
+    target: 2
+    genre: romance

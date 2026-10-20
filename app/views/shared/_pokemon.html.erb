@@ -1,11 +1,15 @@
 <% pokemon = encounter.pokemon %>
 <% label = t('pokemons.wild.catch', name: pokemon.name) %>
 <%# Hidden anywhere on the page (top is a share of the body's height), so the reader has to find it; capped so the button (sprite at most 6rem plus padding) stays inside the page. Temporary so a back navigation does not restore a used token. %>
-<%= tag.div class: 'absolute z-50', data: { turbo_temporary: true },
+<%= tag.div class: "#{Pokemons::CatchUiHelper::SHELL} absolute z-50",
+            data: { controller: ('pokemon-catch' if current_user.present?), turbo_temporary: true },
             style: "left: min(#{rand(5..85)}vw, calc(100vw - 8rem)); top: min(#{rand(2..95)}%, calc(100% - 8rem));" do %>
   <% if current_user.present? %>
-    <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, aria: { label: }, data: { turbo_stream: "", "turbo-method": :post } do %>
-      <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'cursor-pointer max-h-24 max-w-24 object-contain') %>
+    <%= button_to catch_pokemon_path, params: { encounter: encounter.catch_token }, aria: { label: },
+                  form: { data: { turbo: false, action: 'submit->pokemon-catch#submit' } } do %>
+      <%= pokemon_sprite_tag(pokemon, loading: :eager,
+                             class: Pokemons::CatchUiHelper::SPRITE,
+                             data: { pokemon_catch_target: 'sprite' }) %>
     <% end %>
   <% else %>
     <%= link_to register_path(pokenotice: true), aria: { label: }, data: { turbo_frame: '_top' } do %>

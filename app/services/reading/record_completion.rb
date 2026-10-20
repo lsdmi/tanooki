@@ -17,6 +17,7 @@ module Reading
 
       sync_progress
       ProgressCacheInvalidation.new(user, fiction).clear
+      Pokemons::DailyQuests::Progress.call(user, event: :chapter_read, genre_slugs: fiction_genre_slugs)
       true
     end
 
@@ -24,6 +25,10 @@ module Reading
 
     def fiction
       chapter.fiction
+    end
+
+    def fiction_genre_slugs
+      fiction.genres.map(&:slug)
     end
 
     def insert_read

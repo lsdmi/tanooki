@@ -27,6 +27,12 @@ module Pokemons
       'M4 21a2 2 0 0 1-2-2v-3.851c0-1.39 2-2.962 2-4.829V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2z',
       'M9 7V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3'
     ].freeze
+    # Lucide «external-link» — open the shareable battle page from history.
+    EXTERNAL_LINK_PATHS = [
+      'M15 3h6v6',
+      'M10 14 21 3',
+      'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'
+    ].freeze
     ICON_STROKE = {
       stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
     }.freeze
@@ -69,12 +75,26 @@ module Pokemons
       lucide_icon(BINOCULARS_PATHS, size)
     end
 
+    def battle_share_icon(size = 'size-3.5')
+      lucide_icon(EXTERNAL_LINK_PATHS, size)
+    end
+
     # One quiet line: «Поки вас не було · 2 перемоги · 1 поразка».
     def defense_away_sentence(report)
       parts = []
       parts << t('pokemons.away.wins', count: report.wins) if report.wins.positive?
       parts << t('pokemons.away.losses', count: report.losses) if report.losses.positive?
       [t('pokemons.away.headline'), *parts].join(' · ')
+    end
+
+    def daily_quest_label(quest)
+      t("pokemons.daily_quests.#{quest.quest_key}", count: quest.target)
+    end
+
+    def daily_quest_progress_label(quest)
+      return t('pokemons.daily_quests.done') if quest.completed?
+
+      "#{quest.progress}/#{quest.target}"
     end
 
     # «Сезон 1 · вересень–жовтень» from the season's dates (Europe/Kiev).

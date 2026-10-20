@@ -4,6 +4,11 @@ module Meta
   # View entry point for page titles; delegates to Meta::PageTitle.
   module TitleHelper
     def meta_title
+      battle = meta_assign(:pokemon_battle)
+      if battle&.persisted?
+        return I18n.t('meta.title.pokemon_battles.show', winner: battle.winner.name, loser: battle.loser.name)
+      end
+
       Meta::PageTitle.new(**page_title_context).resolve
     end
 

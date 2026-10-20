@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_193000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_003000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -719,6 +719,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_193000) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "trainer_daily_quests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.integer "progress", default: 0, null: false
+    t.string "quest_key", limit: 64, null: false
+    t.date "quest_on", null: false
+    t.integer "target", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "quest_on", "quest_key"], name: "index_trainer_daily_quests_on_user_day_key", unique: true
+    t.index ["user_id"], name: "index_trainer_daily_quests_on_user_id"
+  end
+
   create_table "trainer_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "attack_team_ids"
     t.datetime "created_at", null: false
@@ -897,6 +910,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_193000) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "trainer_daily_quests", "users", on_delete: :cascade
   add_foreign_key "trainer_profiles", "users", on_delete: :cascade
   add_foreign_key "translation_request_votes", "translation_requests", on_delete: :cascade
   add_foreign_key "translation_request_votes", "users", on_delete: :cascade

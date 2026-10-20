@@ -40,7 +40,7 @@ class WildPokemonChromeTest < ActionDispatch::IntegrationTest
     called = false
     Pokemons::WildCatch.stub(:new, lambda { |**|
       called = true
-      Object.new.tap { |o| o.define_singleton_method(:roll) { nil } }
+      Object.new.tap { |o| o.define_singleton_method(:roll) { |**| nil } }
     }) do
       get root_path
     end

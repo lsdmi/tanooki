@@ -246,6 +246,8 @@ Rails.application.routes.draw do
   post '/pokemon/opponent/regenerate', to: 'user_pokemons#regenerate_opponent', as: :regenerate_pokemon_opponent
 
   post :battle_start, to: 'pokemon_battles#start', as: :battle_start
+  get '/pokemon/battles/:id/og.png', to: 'pokemon_battles#og', as: :pokemon_battle_og, defaults: { format: :png }
+  get '/pokemon/battles/:id', to: 'pokemon_battles#show', as: :pokemon_battle
 
   resources :downloads, only: [] do
     member { get :epub }

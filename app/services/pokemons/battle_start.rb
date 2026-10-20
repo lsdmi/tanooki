@@ -36,7 +36,15 @@ module Pokemons
       battle = PokemonBattle.record!(teams:, seed:, result:, rating_deltas: update_ratings(result, defender))
       [@attacker, defender].each { |user| user.trainer_profile.update!(last_battle_at: battle.created_at) }
       Matchmaker.new(@attacker).release!
+      record_quest_win(result, teams, defender)
       :fought
+    end
+
+    def record_quest_win(result, teams, defender)
+      winner = result.attacker_won? ? @attacker : defender
+      side = result.attacker_won? ? :attacker : :defender
+      types = teams.snapshot(side).combatants.flat_map(&:types).uniq
+      DailyQuests::Progress.call(winner, event: :battle_win, types:)
     end
 
     # nil for a rematch inside Balance::RANKED_REMATCH_GAP: it plays unranked.

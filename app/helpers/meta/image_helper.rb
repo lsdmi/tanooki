@@ -4,6 +4,8 @@ module Meta
   # Open Graph image URL resolution by route and page assigns.
   module ImageHelper
     def meta_image
+      return pokemon_battle_cover if pokemon_battle_cover
+
       result_cover = path_to_cover
 
       if result_cover.is_a?(String) || result_cover&.persisted?
@@ -14,6 +16,13 @@ module Meta
     end
 
     private
+
+    def pokemon_battle_cover
+      battle = meta_assign(:pokemon_battle)
+      return unless battle&.persisted?
+
+      pokemon_battle_og_url(battle)
+    end
 
     def fictions_cover
       if params[:action] == 'index'

@@ -14,9 +14,13 @@ class UserPokemonsController < ApplicationController
   pokemon_rate_limit to: 5, only: :regenerate_opponent
 
   def create
-    caught = Pokemons::Catch.new(current_user, params[:encounter]).call
+    caught = Pokemons::Catch.new(current_user, params[:encounter]).call.present?
     message = t(caught ? 'pokemons.catch.success' : 'pokemons.catch.failure')
-    render turbo_stream: [remove_pokemon, *update_notice(message)]
+
+    respond_to do |format|
+      format.json { render json: { caught:, message: } }
+      format.turbo_stream { render turbo_stream: [remove_pokemon, *update_notice(message)] }
+    end
   end
 
   def training

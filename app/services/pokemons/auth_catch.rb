@@ -21,6 +21,7 @@ module Pokemons
 
       GUEST_SESSION_KEYS.each { |key| session.delete(key) }
       CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: user.id).trap
+      DailyQuests::Progress.call(user, event: :catch)
       encounter
     end
 

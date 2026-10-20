@@ -30,5 +30,13 @@ module Pokemons
 
       assert_operator level_one_count, :>, level_four_weight
     end
+
+    test 'habitat boost multiplies matching type weight' do
+      normal_id = pokemons(:one).id
+      base = WildCatchPool.weighted_ids.count(normal_id)
+      boosted = WildCatchPool.weighted_ids(boost_types: %w[normal]).count(normal_id)
+
+      assert_equal base * Habitat.boost, boosted
+    end
   end
 end

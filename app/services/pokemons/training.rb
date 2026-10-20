@@ -10,7 +10,9 @@ module Pokemons
 
     # Returns the notice text, or nil while on cooldown.
     def call
-      CooldownClaim.call(@user, :training) { @user.user_pokemons.find(@user_pokemon_id).train![:alert] }
+      notice = CooldownClaim.call(@user, :training) { @user.user_pokemons.find(@user_pokemon_id).train![:alert] }
+      DailyQuests::Progress.call(@user, event: :training) if notice
+      notice
     end
   end
 end

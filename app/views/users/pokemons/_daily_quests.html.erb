@@ -1,0 +1,14 @@
+<%# locals: (quests:) %>
+<% if quests.any? %>
+  <div class="flex flex-col gap-1">
+    <p class="text-xs/4 font-medium text-fg-subtle"><%= t('pokemons.daily_quests.headline') %></p>
+    <ul class="flex flex-col gap-0.5 text-sm/5 text-fg-muted">
+      <% quests.each do |quest| %>
+        <li>
+          <%= daily_quest_label(quest) %>
+          <span class="text-fg-subtle">· <%= daily_quest_progress_label(quest) %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

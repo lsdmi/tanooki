@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :user_pokemons, dependent: :destroy
   has_many :pokemons, through: :user_pokemons
   has_many :pokemon_encounters, dependent: :delete_all
+  has_many :trainer_daily_quests, dependent: :delete_all
   has_many :season_results, dependent: :delete_all
 
   has_many :api_tokens, dependent: :destroy

@@ -1,0 +1,31 @@
+# Wild encounter habitats: genre slugs / publication tag names → Pokémon type keys.
+# Matching wild species get `boost`× their rarity weight; the rest stay in the pool.
+# Unknown keys and types missing from the dex are ignored. No Fairy/Dark in Gen 1.
+
+boost: 4
+
+genres:
+  fantasy: [dragon, psychic]
+  mystic: [ghost, psychic]
+  horror: [ghost, poison]
+  action: [fighting, fire]
+  adventure: [ground, flying]
+  romance: [normal, grass]
+  lifeslice: [normal, grass]
+  comedy: [normal, flying]
+  scifi: [electric, psychic]
+  thriller: [poison, fighting]
+  tragedy: [ghost, poison]
+  psychological: [psychic]
+  detective: [psychic, fighting]
+  sport: [fighting]
+  school: [normal]
+  isekai: [dragon, psychic]
+  history: [rock, fighting]
+  wuxia: [fighting]
+  xianxia: [dragon, flying]
+  xuanhuan: [dragon, psychic]
+  drama: [normal, psychic]
+
+# Publication tag names (downcase). Series titles usually stay unmapped; thematic tags go here.
+tags: {}

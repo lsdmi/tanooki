@@ -4,6 +4,11 @@ module Meta
   # View entry point for page meta descriptions; delegates to Meta::PageDescription.
   module DescriptionHelper
     def meta_description
+      battle = meta_assign(:pokemon_battle)
+      if battle&.persisted?
+        return I18n.t('meta.description.pokemon_battles.show', winner: battle.winner.name, loser: battle.loser.name)
+      end
+
       Meta::PageDescription.new(**page_description_context).resolve
     end
 

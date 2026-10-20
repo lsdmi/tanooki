@@ -4,7 +4,8 @@ module Pokemons
   # Wild encounters in two steps, so a pop-up only counts once it is on screen. Turbo prefetches pages on hover, so
   # the page view (#roll) only rolls the 2% chance and writes nothing; a hit renders a frame whose request, made when
   # the page is actually shown, records the encounter and starts the gap (#call). The frame URL carries a signed
-  # ticket, so that endpoint cannot be called to skip the roll.
+  # ticket, so that endpoint cannot be called to skip the roll. Habitat type boosts are sealed into the ticket at
+  # roll time (the pop-up request has no fiction/genre assigns).
   # Guests keep only the encounter id and their guest token in the session; see AuthCatch.guest_encounter.
   class WildCatch
     ENCOUNTER_CHANCE = 0.02
@@ -21,26 +22,45 @@ module Pokemons
       @session = session
     end
 
-    # A ticket for the pop-up frame, or nil.
-    def roll
+    # A ticket for the pop-up frame, or nil. +habitat+ is optional (+Pokemons::Habitat+).
+    def roll(habitat: nil)
       stamp_new_guest
       return unless eligible? && rand < ENCOUNTER_CHANCE
 
-      self.class.verifier.generate(owner, expires_in: TICKET_TTL)
+      self.class.verifier.generate(ticket_payload(habitat), expires_in: TICKET_TTL)
     end
 
     # The encounter, or nil when the ticket is not this visitor's or a pop-up was shown within the delay.
     def call(ticket)
-      return unless ticket.is_a?(String) && self.class.verifier.verified(ticket) == owner
+      payload = decode_ticket(ticket)
+      return unless payload && payload['o'] == owner
       return unless eligible? && !encountered_recently?
 
-      encounter&.tap { session[:pokemon_catch_last_seen] = Time.zone.now }
+      encounter(boost_types: payload['t'])&.tap { session[:pokemon_catch_last_seen] = Time.zone.now }
     end
 
     private
 
     def owner
       user ? "user:#{user.id}" : 'guest'
+    end
+
+    def ticket_payload(habitat)
+      payload = { 'o' => owner }
+      types = Array(habitat&.type_keys).presence
+      payload['t'] = types if types
+      payload
+    end
+
+    # Legacy tickets were a bare owner string; current tickets are a Hash.
+    def decode_ticket(ticket)
+      return unless ticket.is_a?(String)
+
+      data = self.class.verifier.verified(ticket)
+      case data
+      when String then { 'o' => data }
+      when Hash then data.stringify_keys
+      end
     end
 
     # Every response rewrites the session cookie, so a request that overlaps this one (a hover prefetch) can drop the
@@ -71,8 +91,8 @@ module Pokemons
       shown_at.present? && Time.zone.parse(shown_at.to_s) > Balance::ENCOUNTER_DELAY.ago
     end
 
-    def encounter
-      pokemon = find_pokemon(WildCatchPool.sample_id)
+    def encounter(boost_types: nil)
+      pokemon = find_pokemon(WildCatchPool.sample_id(boost_types:))
       return nil if pokemon.nil?
 
       user ? PokemonEncounter.roll!(pokemon:, user:) : guest_encounter(pokemon)
@@ -81,8 +101,8 @@ module Pokemons
     def guest_encounter(pokemon)
       session[:pokemon_guest_token] ||= SecureRandom.base58(24)
       session.delete(:pokemon_guest_caught)
-      PokemonEncounter.roll!(pokemon:, guest_token: session[:pokemon_guest_token]).tap do |encounter|
-        session[:pokemon_encounter_id] = encounter.id
+      PokemonEncounter.roll!(pokemon:, guest_token: session[:pokemon_guest_token]).tap do |row|
+        session[:pokemon_encounter_id] = row.id
       end
     end
 

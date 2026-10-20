@@ -1,7 +1,14 @@
 <% attacker_won = battle.attacker == battle.winner %>
 <div class="flex flex-col gap-3">
   <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm/5">
-    <span class="text-fg-subtle">Остання</span>
+    <%= link_to pokemon_battle_path(battle),
+                turbo_drive_visit_data.merge(
+                  class: 'inline-flex shrink-0 text-fg-subtle hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                  title: t('pokemons.battle.share_link'),
+                  aria: { label: t('pokemons.battle.share_link') }
+                ) do %>
+      <%= battle_share_icon('size-3.5') %>
+    <% end %>
     <%= link_to battle.attacker.name, profile_path(battle.attacker.sqid), turbo_drive_visit_data.merge(class: 'font-medium text-fg hover:text-fg-brand') %>
     <%= battle_result_badge(attacker_won) %>
     <span class="text-fg-subtle" aria-hidden="true">·</span>

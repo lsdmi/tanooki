@@ -99,6 +99,63 @@
   --animate-writings-banner-md: writings-banner-pan-md 28s ease-in-out infinite;
   --animate-writings-banner-lg: writings-banner-pan-lg 26s ease-in-out infinite;
   --animate-writings-banner-xl: writings-banner-pan-xl 24s ease-in-out infinite;
+  --animate-pokemon-catch-pulse: pokemon-catch-pulse 0.45s ease-in-out infinite;
+  --animate-pokemon-catch-sprite-in: pokemon-catch-sprite-in 0.85s ease-out forwards;
+  --animate-pokemon-catch-sprite-out: pokemon-catch-sprite-out 0.75s ease-out forwards;
+
+  @keyframes pokemon-catch-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes pokemon-catch-sprite-in {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+      filter: none;
+    }
+
+    100% {
+      transform: scale(0.35);
+      opacity: 0;
+      filter: saturate(1.4);
+    }
+  }
+
+  @keyframes pokemon-catch-sprite-out {
+    0% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    20% {
+      transform: translateX(-5px) scale(1);
+    }
+
+    40% {
+      transform: translateX(5px) scale(1);
+    }
+
+    60% {
+      transform: translateX(-4px) scale(1);
+    }
+
+    80% {
+      transform: translateX(3px) scale(1.02);
+      opacity: 0.4;
+    }
+
+    100% {
+      transform: scale(1.05) translateY(-6px);
+      opacity: 0;
+    }
+  }
 
   @keyframes writings-banner-pan-sm {
     0%,

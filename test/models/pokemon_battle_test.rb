@@ -64,6 +64,14 @@ class PokemonBattleTest < ActiveSupport::TestCase
     assert(Array.new(20) { PokemonBattle.new_seed }.all? { |seed| seed.between?(0, (2**63) - 1) })
   end
 
+  test 'sqid looks up the battle and names the loser' do
+    battle = create_pokemon_battle(attacker: @attacker, defender: @defender, winner: @attacker)
+
+    assert_equal battle, PokemonBattle.by_sqid(battle.sqid).sole
+    assert_equal battle.sqid, battle.to_param
+    assert_equal @defender, battle.loser
+  end
+
   test 'an unknown engine version does not replay' do
     battle = create_pokemon_battle(attacker: @attacker, defender: @defender, engine_version: 99)
 

@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-# Starts authenticated Pokemon battles and refreshes related battle UI.
+# Starts authenticated Pokemon battles and serves the public shareable battle page.
 class PokemonBattlesController < ApplicationController
   include Pokemons::GameActions
 
   helper Pokemons::DexHelper,
          Pokemons::StatsHelper
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: :start
+  before_action :set_battle, only: %i[show og]
   pokemon_rate_limit to: 5, only: :start
 
   def start
@@ -20,7 +21,21 @@ class PokemonBattlesController < ApplicationController
     end
   end
 
+  def show
+    @pokemon_battle = @battle
+  end
+
+  def og
+    expires_in 1.week, public: true
+    send_data Pokemons::BattleOgImage.new(@battle).png, type: 'image/png', disposition: 'inline',
+                                                        filename: 'battle.png'
+  end
+
   private
+
+  def set_battle
+    @battle = PokemonBattle.by_sqid(params[:id]).includes(:attacker, :defender, :winner).first!
+  end
 
   def refresh_history
     turbo_stream.update(

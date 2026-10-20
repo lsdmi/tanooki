@@ -81,5 +81,13 @@ module Pokemons
       assert_nil roll(user: @user, dice: WildCatch::ENCOUNTER_CHANCE + 0.01)
       assert roll(user: @user, dice: WildCatch::ENCOUNTER_CHANCE - 0.001)
     end
+
+    test 'a habitat seals boost types into the ticket for the pop-up sample' do
+      ticket = wild_catch(user: @user).roll(habitat: Habitat.new(genre_slugs: %w[fantasy]))
+      payload = WildCatch.verifier.verified(ticket)
+
+      assert_equal "user:#{@user.id}", payload['o']
+      assert_equal %w[dragon psychic], payload['t'].sort
+    end
   end
 end

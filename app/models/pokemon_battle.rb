@@ -19,6 +19,10 @@ class PokemonBattle < ApplicationRecord
     where(attacker_id: one.id, defender_id: other.id).or(where(attacker_id: other.id, defender_id: one.id))
   }
   scope :legacy, -> { where(engine_version: LEGACY_VERSION) }
+  scope :by_sqid, lambda { |sqid_string|
+    decoded = Sqids.new.decode(sqid_string.to_s)
+    decoded.any? ? where(id: decoded.first) : none
+  }
 
   # Fits the signed BIGINT column.
   def self.new_seed
@@ -76,7 +80,19 @@ class PokemonBattle < ApplicationRecord
     winner_id == attacker_id
   end
 
+  def loser
+    attacker_won? ? defender : attacker
+  end
+
   def legacy?
     engine_version == LEGACY_VERSION
+  end
+
+  def sqid
+    Sqids.new.encode([id])
+  end
+
+  def to_param
+    sqid
   end
 end
