@@ -75,6 +75,8 @@ if [ "${1-}" = "runner" ]; then
     )
     export SECRET_KEY_BASE
   fi
+  # shellcheck disable=SC1091
+  . ./bin/prod/rails_boot_env.sh
   exec bundle exec rails runner "$@"
 fi
 

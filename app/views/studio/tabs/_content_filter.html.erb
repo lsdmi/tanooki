@@ -1,0 +1,76 @@
+<% preference = current_content_filter %>
+<% selected_rating = preference.max_rating.nil? ? '' : preference.max_rating.to_s %>
+<% hidden_ids = preference.hidden_genre_ids %>
+<% rating_options = [
+     ['', t('content_filters.ratings.all')],
+     ['16', t('content_filters.ratings.no_eighteen')],
+     ['0', t('content_filters.ratings.no_sixteen')]
+   ] %>
+<div id="content-filter-card" class="rounded-lg border border-line bg-card shadow-sm relative overflow-hidden">
+  <%= render 'shared/decorative_ornament' %>
+
+  <div class="p-6 sm:p-8">
+    <div class="text-center mb-8">
+      <h3 class="text-xl font-semibold text-fg mb-2"><%= t('content_filters.title') %></h3>
+      <p class="text-sm text-fg-muted"><%= t('content_filters.hint') %></p>
+    </div>
+
+    <%= form_with url: content_filter_path, method: :patch, data: { turbo_stream: '' } do %>
+      <div class="max-w-2xl mx-auto space-y-8">
+        <fieldset>
+          <legend class="block text-center text-lg font-medium text-fg mb-4"><%= t('content_filters.rating_legend') %></legend>
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <% rating_options.each do |value, label| %>
+              <label class="inline-flex items-center cursor-pointer" for="content_filter_rating_<%= value.presence || 'all' %>">
+                <%= radio_button_tag :max_content_rating, value, selected_rating == value,
+                      id: "content_filter_rating_#{value.presence || 'all'}",
+                      class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong focus:ring-line-strong focus:ring-2' %>
+                <span class="ml-2 text-fg font-medium"><%= label %></span>
+              </label>
+            <% end %>
+          </div>
+        </fieldset>
+
+        <fieldset data-controller="genre-blocklist">
+          <legend class="block text-center text-lg font-medium text-fg mb-4"><%= t('content_filters.genres_legend') %></legend>
+          <label for="content_filter_genre_search" class="sr-only"><%= t('content_filters.genres_search') %></label>
+          <input id="content_filter_genre_search" type="search" autocomplete="off"
+                 placeholder="<%= t('content_filters.genres_search') %>"
+                 data-genre-blocklist-target="query"
+                 data-action="input->genre-blocklist#filter keydown->genre-blocklist#preventSubmit"
+                 class="w-full mb-4 bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-line-strong focus:border-line-strong">
+          <div class="flex flex-wrap justify-center gap-2 max-h-48 overflow-y-auto">
+            <% ContentFilters::GenreChoices.call.each do |genre| %>
+              <label class="cursor-pointer" data-genre-blocklist-target="option" data-name="<%= genre.name.downcase %>">
+                <%= check_box_tag 'hidden_genre_ids[]', genre.id, hidden_ids.include?(genre.id),
+                      id: "content_filter_genre_#{genre.id}",
+                      class: 'peer sr-only' %>
+                <span class="inline-block rounded-full border border-line px-3 py-1 text-sm text-fg peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand">
+                  <%= genre.name %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+          <p class="mt-3 text-center text-sm text-fg-muted hidden" data-genre-blocklist-target="empty">
+            <%= t('content_filters.genres_empty') %>
+          </p>
+        </fieldset>
+
+        <% if local_assigns[:error].present? %>
+          <p class="text-sm text-status-danger-solid text-center"><%= error %></p>
+        <% end %>
+
+        <div class="text-center">
+          <%= ui_button(t('content_filters.save'), as: :submit, size: :md) %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-4">
+      <%= button_to t('content_filters.reset'), content_filter_path, method: :patch,
+            params: { max_content_rating: '' },
+            class: 'text-sm text-fg-muted underline hover:text-fg',
+            form: { class: 'inline', data: { turbo_stream: '' } } %>
+    </div>
+  </div>
+</div>

@@ -43,6 +43,8 @@ class User < ApplicationRecord
   has_many :translation_requests, dependent: :destroy
   has_many :translation_request_votes, dependent: :destroy
   has_many :chapter_thanks, dependent: :destroy
+  has_one :content_filter, class_name: 'UserContentFilter', dependent: :destroy
+  has_many :hidden_genres, class_name: 'UserHiddenGenre', dependent: :destroy, inverse_of: :user
 
   scope :avatarless, -> { where(avatar_id: nil) }
 

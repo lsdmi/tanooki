@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include TurboFlashStream
   include TurboFlashStreamResponse
+  include ContentFilterable
 
   # Handlers declared later win, so the catch-all must come first or every missing record becomes a 500.
   rescue_from StandardError, with: :handle_error

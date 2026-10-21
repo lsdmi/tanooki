@@ -369,6 +369,24 @@ uk:
       battles: Вдалі Виклики
       rank: Рейтинг
       loading: Завантаження статистики…
+  content_filters:
+    title: Що показувати
+    hint: Твори не зникають з Баки — ви просто не бачите їх у списках. Пряме посилання працює.
+    rating_legend: Віковий рейтинг у списках
+    genres_legend: Приховані жанри
+    genres_search: Пошук жанру
+    genres_empty: Нічого не знайдено
+    save: Зберегти
+    reset: Скинути
+    saved: Налаштування збережено
+    ratings:
+      all: Все
+      no_eighteen: Без 18+
+      no_sixteen: Без 16+ і 18+
+    errors:
+      rating: Оберіть один із варіантів рейтингу
+      cap: Можна приховати не більше ніж 30 жанрів
+      genre: Цей жанр не можна приховати
   fiction_lists:
     filters:
       include_eighteen: Показувати 18+

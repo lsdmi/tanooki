@@ -186,6 +186,7 @@ Rails.application.routes.draw do
     resources :translation_request_votes, only: [:create], path: 'votes'
   end
   resources :users, only: :update
+  resource :content_filter, only: :update, controller: 'users/content_filters'
 
   resources :profiles, only: :show, param: :id, path: 'profile' do
     member do
