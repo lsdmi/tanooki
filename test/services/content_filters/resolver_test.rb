@@ -17,6 +17,15 @@ module ContentFilters
       assert_equal 1, filter_reads
     end
 
+    test 'an account keeps only the oldest package' do
+      user = users(:user_two)
+      user.hidden_packages.create!(package_key: 'another_world', created_at: 1.day.from_now)
+
+      preference = Resolver.call(user:, cookies: nil)
+
+      assert_equal ['shelves'], preference.package_keys
+    end
+
     test 'an account rating cap is read with its genres' do
       preference = Resolver.call(user: users(:user_one), cookies: cookie_jar('no18'))
 

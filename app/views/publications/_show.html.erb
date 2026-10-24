@@ -15,7 +15,7 @@
                      wrapper_class: 'mb-0',
                      link_class: 'text-fg font-semibold hover:text-brand hover:underline transition-all duration-200' %>
           <span class="bg-fg-subtle w-2 h-2 rounded-full hidden sm:inline-block" aria-hidden="true"></span>
-          <%= tag.span l(publication.created_at, format: :short).downcase.downcase, class: 'text-fg-muted ' %>
+          <%= tag.span l(publication.public_at, format: :short).downcase.downcase, class: 'text-fg-muted ' %>
         </div>
         <aside aria-label="content controls">
           <div class="flex gap-2">

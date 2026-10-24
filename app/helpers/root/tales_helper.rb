@@ -37,7 +37,7 @@ module Root
     end
 
     def tale_published_date(publication)
-      l(publication.created_at, format: :short).downcase
+      l(publication.public_at, format: :short).downcase
     end
 
     def home_tales_empty_editorial
@@ -48,7 +48,7 @@ module Root
       tales.to_a
            .reject { |tale| tale == hero }
            .uniq
-           .sort_by(&:created_at)
+           .sort_by(&:public_at)
            .reverse
            .first(EDITORIAL_TALE_LIMIT)
     end

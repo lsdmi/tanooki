@@ -21,7 +21,7 @@ class HomeController < ApplicationController
   def tales
     scope = Publication.published
                        .includes(cover_attachment: :blob)
-                       .order(created_at: :desc)
+                       .recent
     scope = scope.where.not(id: @top_tale.id) if @top_tale
     scope.limit(Root::TalesHelper::EDITORIAL_TALE_LIMIT)
   end
@@ -53,7 +53,7 @@ class HomeController < ApplicationController
 
   def top_tale
     publication_id = Rails.cache.fetch(Publications::PublicCache::TOP_TALE_KEY, expires_in: 12.hours) do
-      Publication.published.highlights.order(created_at: :desc).limit(1).pick(:id)
+      Publication.published.highlights.recent.limit(1).pick(:id)
     end
     return if publication_id.blank?
 

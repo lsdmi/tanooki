@@ -22,7 +22,7 @@
 <% if article_author_meta?(publication) %>
   <%= tag.meta name: 'author', content: publication.username %>
   <%= tag.meta property: 'article:author', content: publication_author_profile_url(publication) %>
-  <%= tag.meta property: 'article:published_time', content: publication.created_at.iso8601 %>
+  <%= tag.meta property: 'article:published_time', content: publication.public_at.iso8601 %>
   <%= tag.meta property: 'article:modified_time', content: publication.updated_at.iso8601 %>
 <% elsif fiction_author_meta?(fiction) %>
   <%= tag.meta name: 'author', content: fiction.author %>

@@ -17,7 +17,7 @@ module StructuredData
         '@type': 'NewsArticle',
         headline: publication.title,
         image: [url_for(publication.cover)],
-        datePublished: publication.created_at.iso8601,
+        datePublished: publication.public_at.iso8601,
         dateModified: publication.updated_at.iso8601,
         author: article_author_data(publication)
       }.to_json

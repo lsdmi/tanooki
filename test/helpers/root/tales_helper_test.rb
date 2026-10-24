@@ -69,10 +69,29 @@ module Root
       )
     end
 
-    test 'tale_published_date formats created_at in Ukrainian short form' do
+    test 'tale_published_date formats created_at when the post was published immediately' do
       publication = Publication.new(created_at: Time.zone.parse('2026-06-25 10:00'))
 
       assert_equal '25 червень 2026', tale_published_date(publication)
+    end
+
+    test 'tale_published_date uses the publish time of a deferred sketch' do
+      publication = Publication.new(
+        created_at: Time.zone.parse('2026-10-19 18:00'),
+        published_at: Time.zone.parse('2026-10-23 12:00')
+      )
+
+      assert_equal '23 жовтень 2026', tale_published_date(publication)
+    end
+
+    test 'home_tales_editorial_cards orders deferred tales by publication time' do
+      hero = publications(:tale_approved_one)
+      deferred = Publication.new(created_at: Time.zone.parse('2026-10-19'), published_at: Time.zone.parse('2026-10-23'))
+      fresh = Publication.new(created_at: Time.zone.parse('2026-10-21'), published_at: Time.zone.parse('2026-10-21'))
+
+      cards = home_tales_editorial_cards(hero, [fresh, deferred])
+
+      assert_equal [deferred, fresh], cards[:left]
     end
   end
 end

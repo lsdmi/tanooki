@@ -37,10 +37,13 @@ class Publication < ApplicationRecord
 
   before_save :refresh_excerpt, if: :description_loaded?
 
+  # When readers first saw the post: the publish stamp, or created_at when it went live immediately.
+  PUBLIC_TIME_SQL = 'COALESCE(publications.published_at, publications.created_at)'
+
   scope :highlights, -> { where(highlight: true) }
-  scope :weekly, -> { where(created_at: 7.days.ago..) }
+  scope :weekly, -> { where("#{PUBLIC_TIME_SQL} >= ?", 7.days.ago) }
   scope :popular, -> { order(views: :desc) }
-  scope :recent, -> { order(created_at: :desc) }
+  scope :recent, -> { order(Arel.sql("#{PUBLIC_TIME_SQL} DESC")) }
 
   def self.excerpt_from(rich_text)
     rich_text&.to_plain_text.to_s.squish.truncate(EXCERPT_LENGTH).presence
@@ -79,6 +82,10 @@ class Publication < ApplicationRecord
 
   def username
     user.name
+  end
+
+  def public_at
+    published_at || created_at
   end
 
   private

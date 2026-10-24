@@ -6,11 +6,11 @@ module ContentFilters
   class ReplaceTest < ActiveSupport::TestCase
     test 'saves a rating cap and replaces packages' do
       user = users(:user_two)
-      result = Replace.call(user:, max_content_rating: '0', package_keys: %w[shelves another_world])
+      result = Replace.call(user:, max_content_rating: '0', package_keys: ['shelves'])
 
       assert_predicate result, :success?
       assert_equal 0, user.reload.content_filter.max_content_rating
-      assert_equal %w[another_world shelves], user.hidden_packages.pluck(:package_key).sort
+      assert_equal ['shelves'], user.hidden_packages.pluck(:package_key)
     end
 
     test 'a blank rating clears the cap and the packages' do
@@ -34,11 +34,11 @@ module ContentFilters
       assert_empty user.hidden_packages
     end
 
-    test 'rejects an unknown package and a third package' do
+    test 'rejects an unknown package and a second package' do
       user = users(:user_one_one_zero)
 
       unknown = Replace.call(user:, max_content_rating: '', package_keys: ['not-a-package'])
-      capped = Replace.call(user:, max_content_rating: '16', package_keys: %w[shelves another_world romance_bl])
+      capped = Replace.call(user:, max_content_rating: '16', package_keys: %w[shelves another_world])
 
       assert_equal I18n.t('content_filters.errors.package'), unknown.error
       assert_equal I18n.t('content_filters.errors.cap'), capped.error

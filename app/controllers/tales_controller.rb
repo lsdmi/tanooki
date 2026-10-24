@@ -74,24 +74,24 @@ class TalesController < ApplicationController
   end
 
   def catalog_publications
-    Publication.published.includes(cover_attachment: :blob).order(created_at: :desc)
+    Publication.published.includes(cover_attachment: :blob).recent
   end
 
   def highlights
-    Publication.published.includes(%i[cover_attachment tags]).where(id: highlight_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment tags]).where(id: highlight_ids).recent
   end
 
   def publications
     cached_ids = Rails.cache.fetch(Publications::PublicCache::EXCLUDING_HIGHLIGHTS_KEY,
                                    expires_in: Publications::PublicCache::LIST_TTL) do
-      Publication.published.where.not(id: highlight_ids).order(created_at: :desc).pluck(:id)
+      Publication.published.where.not(id: highlight_ids).recent.pluck(:id)
     end
-    Publication.published.includes(%i[cover_attachment tags]).where(id: cached_ids).order(created_at: :desc)
+    Publication.published.includes(%i[cover_attachment tags]).where(id: cached_ids).recent
   end
 
   def highlight_ids
     Rails.cache.fetch(Publications::PublicCache::HIGHLIGHTS_KEY, expires_in: Publications::PublicCache::LIST_TTL) do
-      Publication.published.order(created_at: :desc).limit(HIGHLIGHTS_LIMIT).pluck(:id)
+      Publication.published.recent.limit(HIGHLIGHTS_LIMIT).pluck(:id)
     end
   end
 

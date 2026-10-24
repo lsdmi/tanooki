@@ -6,19 +6,19 @@ module Users
   class ContentFiltersControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    test 'an account saves a rating cap and two packages' do
+    test 'an account saves a rating cap and one package' do
       user = users(:user_one)
       sign_in user
 
       patch content_filter_path,
-            params: { max_content_rating: '0', package_keys: %w[shelves another_world] },
+            params: { max_content_rating: '0', package_keys: ['shelves'] },
             as: :turbo_stream
 
       assert_response :success
       assert_turbo_stream_flash_notice(I18n.t('content_filters.saved'))
-      stored = [user.reload.content_filter.max_content_rating, user.hidden_packages.pluck(:package_key).sort]
+      stored = [user.reload.content_filter.max_content_rating, user.hidden_packages.pluck(:package_key)]
 
-      assert_equal [0, %w[another_world shelves]], stored
+      assert_equal [0, ['shelves']], stored
     end
 
     test 'profile portraits write the hidden avatar field' do
@@ -105,12 +105,12 @@ module Users
       assert_nil user.reload.content_filter
     end
 
-    test 'an account cannot turn off a third package' do
+    test 'an account cannot turn off a second package' do
       user = users(:user_one_one_zero)
       sign_in user
 
       patch content_filter_path,
-            params: { max_content_rating: '16', package_keys: %w[shelves another_world romance_bl] },
+            params: { max_content_rating: '16', package_keys: %w[shelves another_world] },
             as: :turbo_stream
 
       assert_response :unprocessable_content

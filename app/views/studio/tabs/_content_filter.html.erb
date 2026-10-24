@@ -31,7 +31,7 @@
           </div>
         </fieldset>
 
-        <fieldset data-controller="package-limit">
+        <fieldset data-controller="package-limit" data-package-limit-max-value="<%= ContentFilters::Packages::MAX %>">
           <legend class="block text-center text-lg font-medium text-fg mb-1"><%= t('content_filters.packages_legend') %></legend>
           <p class="mb-4 text-center text-sm text-fg-muted"><%= t('content_filters.packages_hint') %></p>
           <% columns = [%i[relationships moods], %i[worlds]] %>

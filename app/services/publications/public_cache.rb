@@ -6,10 +6,10 @@ module Publications
     HIGHLIGHTS_LIMIT = 10
     SHOW_TTL = 1.hour
     LIST_TTL = 4.hours
-    HIGHLIGHTS_KEY = "highlights_#{HIGHLIGHTS_LIMIT}".freeze
-    EXCLUDING_HIGHLIGHTS_KEY = "publications_excluding_#{HIGHLIGHTS_LIMIT}".freeze
-    POPULAR_BLOGS_KEY = 'popular_blogs'
-    TOP_TALE_KEY = 'top_tale/v2'
+    HIGHLIGHTS_KEY = "highlights_#{HIGHLIGHTS_LIMIT}/v2".freeze
+    EXCLUDING_HIGHLIGHTS_KEY = "publications_excluding_#{HIGHLIGHTS_LIMIT}/v2".freeze
+    POPULAR_BLOGS_KEY = 'popular_blogs/v2'
+    TOP_TALE_KEY = 'top_tale/v3'
     LIST_KEYS = [HIGHLIGHTS_KEY, EXCLUDING_HIGHLIGHTS_KEY, POPULAR_BLOGS_KEY, TOP_TALE_KEY].freeze
 
     def self.show_key(id_or_slug)

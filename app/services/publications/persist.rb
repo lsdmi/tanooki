@@ -37,21 +37,39 @@ module Publications
     attr_reader :publication, :attributes, :intent
 
     def assign_and_apply_intent
+      was_draft = publication.draft?
       publication.assign_attributes(attributes)
-      apply_intent
+      apply_intent(was_draft:)
       apply_placeholder_title if publication.draft?
     end
 
     def rollback_status(previous_status)
-      publication.status = previous_status if publication.persisted?
+      return unless publication.persisted?
+
+      publication.status = previous_status
+      publication.published_at = publication.published_at_was
     end
 
     def after_save
       PublicCache.bust(publication)
     end
 
-    def apply_intent
-      publication.status = intent == DRAFT_INTENT ? :draft : :published
+    def apply_intent(was_draft:)
+      if intent == DRAFT_INTENT
+        publication.status = :draft
+        publication.published_at = nil
+      else
+        publication.status = :published
+        stamp_release(was_draft:)
+      end
+    end
+
+    # A sketch published later gets the moment it went live. Editing a live post keeps that time.
+    def stamp_release(was_draft:)
+      return if publication.published_at.present?
+      return unless was_draft || publication.new_record?
+
+      publication.published_at = Time.current
     end
 
     def apply_placeholder_title

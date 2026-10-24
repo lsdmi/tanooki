@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module ContentFilters
-  # The only genre cuts a reader can turn on. At most two keys at once.
+  # The only genre cuts a reader can turn on. One key at a time until the catalogue is larger.
   module Packages
-    MAX = 2
+    MAX = 1
     PLAIN_ROMANCE = 'romance_bl'
     SIMPLE_SLUGS = {
       'shelves' => %w[bl gl lgbt],
