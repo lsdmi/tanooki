@@ -53,6 +53,17 @@ module Fictions
       )
     end
 
+    def hot_novelty_hidden?(fiction)
+      params[:variant] == 'hot_novelty' && !current_content_filter.apply(Fiction.where(id: fiction.id)).exists?
+    end
+
+    def render_hidden_hot_novelty
+      render turbo_stream: turbo_stream.replace(
+        'fiction_details',
+        html: helpers.tag.div(id: 'fiction_details')
+      )
+    end
+
     def details_partial
       @details_partial ||=
         if params[:variant] == 'hot_novelty'

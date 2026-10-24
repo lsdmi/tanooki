@@ -1,5 +1,5 @@
-<%# locals: fictions:, latest_chapters_by_fiction: %>
-<% cards = recently_updated_cards(fictions, latest_chapters_by_fiction) %>
+<%# locals: fictions:, latest_chapters_by_fiction:, hidden_count: 0 %>
+<% cards = fictions.present? ? recently_updated_cards(fictions, latest_chapters_by_fiction) : [] %>
 
 <section class="mb-8 mt-8 lg:mb-14 lg:mt-14" aria-labelledby="home-recently-updated">
   <header class="mb-6 flex items-stretch gap-3 sm:gap-4 lg:mb-8">
@@ -14,6 +14,10 @@
     </div>
   </header>
 
+  <%= render Ui::FilteredNoticeComponent.new(count: local_assigns[:hidden_count].to_i, change_path: content_filter_change_path) %>
+  <% if cards.empty? %>
+    <p class="text-sm font-medium text-fg-muted"><%= t('content_filters.empty') %></p>
+  <% else %>
   <div
     class="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] -mr-5 sm:hidden"
     role="group"
@@ -37,4 +41,5 @@
       </li>
     <% end %>
   </ul>
+  <% end %>
 </section>

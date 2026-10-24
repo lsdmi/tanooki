@@ -9,7 +9,7 @@ module ContentFilters
         preference = Resolver.call(user: users(:user_two), cookies: cookie_jar('no18'))
 
         assert_nil preference.max_rating
-        assert_equal [genres(:one).id, genres(:two).id].sort, preference.hidden_genre_ids.sort
+        assert_equal [[genres(:bl).id], ['shelves']], [preference.hidden_genre_ids, preference.package_keys]
       end
 
       filter_reads = queries.count { |sql| sql.include?('user_content_filters') }

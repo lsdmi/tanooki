@@ -27,16 +27,28 @@ class HomeController < ApplicationController
   end
 
   def top_fictions
-    Fictions::IndexVariablesManager.hot_updates.includes(:genres, :fiction_ratings)
+    shown = Fictions::IndexVariablesManager.hot_updates(filter: current_content_filter)
+                                           .includes(:genres, :fiction_ratings)
+                                           .limit(10)
+                                           .to_a
+    @top_fictions_hidden = hidden_among(Fictions::IndexHotUpdates.head_ids(10), shown)
+    shown
   end
 
   def assign_recently_updated
-    @recently_updated_fictions = Fictions::IndexVariablesManager.latest_updates_for_homepage
-    return if @recently_updated_fictions.blank?
-
-    @recently_updated_chapters = Fictions::LatestReleasedChapters.for_fiction_ids(
-      @recently_updated_fictions.map(&:id)
+    shown = Fictions::IndexVariablesManager.latest_updates_for_homepage(filter: current_content_filter).to_a
+    @recently_updated_fictions = shown
+    @recently_updated_hidden = hidden_among(
+      Fictions::IndexVariablesManager.pool_head(:latest_updates, Fictions::IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT),
+      shown
     )
+    return if shown.blank?
+
+    @recently_updated_chapters = Fictions::LatestReleasedChapters.for_fiction_ids(shown.map(&:id))
+  end
+
+  def hidden_among(pool_ids, shown)
+    current_content_filter.dropped_from(pool_ids, shown.map(&:id))
   end
 
   def top_tale

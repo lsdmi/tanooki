@@ -20,13 +20,19 @@
           </div>
         </header>
 
-        <%= render 'root/fictions', fictions: @top_fictions.limit(10) %>
+        <%= render Ui::FilteredNoticeComponent.new(count: @top_fictions_hidden, change_path: content_filter_change_path) %>
+        <% if @top_fictions.blank? && @top_fictions_hidden.to_i.positive? %>
+          <p class="text-sm font-medium text-fg-muted"><%= t('content_filters.empty') %></p>
+        <% else %>
+          <%= render 'root/fictions', fictions: @top_fictions %>
+        <% end %>
       </div>
 
-      <% if @recently_updated_fictions.any? %>
+      <% if @recently_updated_fictions.any? || @recently_updated_hidden.to_i.positive? %>
         <%= render 'root/recently_updated',
                    fictions: @recently_updated_fictions,
-                   latest_chapters_by_fiction: @recently_updated_chapters %>
+                   latest_chapters_by_fiction: @recently_updated_chapters,
+                   hidden_count: @recently_updated_hidden %>
       <% end %>
 
       <%= render 'shared/adsense_home_banners' %>

@@ -1,0 +1,7 @@
+<p role="status" class="mb-6 text-sm font-medium text-fg-muted">
+  <%= message %>
+  ·
+  <%= link_to t('content_filters.change'), change_path,
+              class: 'text-fg-brand underline-offset-2 hover:underline',
+              data: { turbo_frame: '_top' } %>
+</p>

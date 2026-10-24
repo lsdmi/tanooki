@@ -24,14 +24,22 @@ module Fictions
       end
     end
 
-    def initialize(fiction)
+    def initialize(fiction, filter: ContentFilters::Preference.open)
       @fiction = fiction
+      @filter = filter
+      @hidden_count = 0
     end
 
+    attr_reader :hidden_count
+
+    # Ranked ids stay in one shared cache. The filter runs when those ids are loaded.
     def fictions
-      ids = Rails.cache.fetch("similar-to/v3/#{@fiction.id}", expires_in: CACHE_TTL) { ranked_ids }
-      records = Fiction.where(id: ids).includes(:genres, :fiction_ratings, cover_attachment: :blob).index_by(&:id)
-      ids.filter_map { |id| records[id] }
+      ids = Rails.cache.fetch("similar-to/v4/#{@fiction.id}", expires_in: CACHE_TTL) { ranked_ids }
+      visible = @filter.apply(Fiction.where(id: ids))
+      records = visible.includes(:genres, :fiction_ratings, cover_attachment: :blob).index_by(&:id)
+      ordered = ids.filter_map { |id| records[id] }
+      @hidden_count = @filter.dropped_from(ids, ordered.map(&:id))
+      ordered.first(LIMIT)
     end
 
     def ranked_ids

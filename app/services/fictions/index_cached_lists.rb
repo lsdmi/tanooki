@@ -9,18 +9,18 @@ module Fictions
 
     def self.expire!
       Rails.cache.delete(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY)
-      Rails.cache.delete('recent_fiction_ids')
+      Rails.cache.delete(IndexVariablesManager::RECENT_FICTION_IDS_CACHE_KEY)
       Rails.cache.delete(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY)
-      Rails.cache.delete(['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS])
+      Rails.cache.delete(IndexVariablesManager.most_reads_ids_cache_key)
     end
 
     # Class methods mixed into IndexVariablesManager.
     module ClassMethods
-      def popular_novelty
-        load_fictions_by_cached_ids(
-          cached_popular_novelty_ids,
-          includes: %i[cover_attachment]
-        )
+      def popular_novelty(filter: ContentFilters::Preference.open)
+        load_fictions_by_cached_ids(cached_popular_novelty_ids,
+                                    includes: %i[cover_attachment],
+                                    filter:,
+                                    limit: IndexVariablesManager::POPULAR_NOVELTY_INDEX_CARDS)
       end
 
       def popular_novelty_ids_for_badges
@@ -42,29 +42,29 @@ module Fictions
         end
       end
 
-      def most_reads
-        load_fictions_by_cached_ids(
-          cached_most_reads_ids,
-          includes: %i[cover_attachment genres fiction_ratings]
-        )
+      def most_reads(filter: ContentFilters::Preference.open)
+        load_fictions_by_cached_ids(cached_most_reads_ids,
+                                    includes: %i[cover_attachment genres fiction_ratings],
+                                    filter:,
+                                    limit: IndexVariablesManager::MOST_READS_INDEX_CARDS)
       end
 
       def most_reads_ids_for_badges
         Set.new(cached_most_reads_ids)
       end
 
-      def latest_updates
-        load_fictions_by_cached_ids(
-          cached_latest_updates_ids.first(IndexVariablesManager::LATEST_UPDATES_INDEX_CARDS),
-          includes: %i[cover_attachment]
-        )
+      def latest_updates(filter: ContentFilters::Preference.open)
+        load_fictions_by_cached_ids(cached_latest_updates_ids,
+                                    includes: %i[cover_attachment],
+                                    filter:,
+                                    limit: IndexVariablesManager::LATEST_UPDATES_INDEX_CARDS)
       end
 
-      def latest_updates_for_homepage
-        load_fictions_by_cached_ids(
-          cached_latest_updates_ids.first(IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT),
-          includes: %i[cover_attachment]
-        )
+      def latest_updates_for_homepage(filter: ContentFilters::Preference.open)
+        load_fictions_by_cached_ids(cached_latest_updates_ids,
+                                    includes: %i[cover_attachment],
+                                    filter:,
+                                    limit: IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT)
       end
 
       def latest_updates_ids_for_badges
@@ -78,7 +78,7 @@ module Fictions
                .group(:id)
                .where(id: cached_recent_fiction_ids)
                .order('COUNT(reading_progresses.fiction_id) DESC')
-               .limit(IndexVariablesManager::POPULAR_NOVELTY_INDEX_CARDS)
+               .limit(IndexVariablesManager.pool_size)
       end
 
       def cached_popular_novelty_ids
@@ -91,18 +91,20 @@ module Fictions
       end
 
       def cached_recent_fiction_ids
-        Rails.cache.fetch('recent_fiction_ids', expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
-          Fiction.order(id: :desc).limit(IndexVariablesManager::POPULAR_NOVELTY_POOL).pluck(:id)
+        limit = IndexVariablesManager.pool_size
+        Rails.cache.fetch(IndexVariablesManager::RECENT_FICTION_IDS_CACHE_KEY,
+                          expires_in: IndexVariablesManager::POPULAR_NOVELTY_CACHE_EXPIRY) do
+          Fiction.order(id: :desc).limit(limit).pluck(:id)
         end
       end
 
       def most_reads_scope
-        Fiction.most_reads.limit(IndexVariablesManager::MOST_READS_INDEX_CARDS)
+        Fiction.most_reads.limit(IndexVariablesManager.pool_size)
       end
 
       def cached_most_reads_ids
         Rails.cache.fetch(
-          ['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS],
+          IndexVariablesManager.most_reads_ids_cache_key,
           expires_in: IndexVariablesManager::MOST_READS_CACHE_EXPIRY
         ) do
           most_reads_scope.pluck(:id)
@@ -115,7 +117,7 @@ module Fictions
           .merge(Chapter.released)
           .group('fictions.id')
           .order(Arel.sql("MAX(#{Chapter::PUBLIC_TIME_SQL}) DESC"))
-          .limit(IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT)
+          .limit(IndexVariablesManager.pool_size)
       end
 
       def cached_latest_updates_ids
@@ -125,12 +127,12 @@ module Fictions
         end
       end
 
-      def load_fictions_by_cached_ids(ids, includes:)
+      def load_fictions_by_cached_ids(ids, includes:, filter: ContentFilters::Preference.open, limit: nil)
         return Fiction.none if ids.blank?
 
-        Fiction.where(id: ids)
-               .preload(includes)
-               .in_order_of(:id, ids)
+        scope = filter.apply(Fiction.where(id: ids)).preload(includes).in_order_of(:id, ids)
+        scope = scope.limit(limit) if limit
+        scope
       end
     end
   end

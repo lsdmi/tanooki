@@ -1,8 +1,0 @@
-<%# users.yml and genres.yml set explicit ids, so a label reference would point at a different id. %>
-user_two_alpha:
-  user_id: 2
-  genre_id: 1
-
-user_two_beta:
-  user_id: 2
-  genre_id: 2

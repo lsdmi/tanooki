@@ -13,20 +13,18 @@ module Fictions
     def call
       return if genre_ids.nil?
 
-      create_fiction_genres
-      destroy_fiction_genres
+      current = existing_genre_ids
+      submitted = submitted_genre_ids
+      write_genre_links(current, submitted)
+      # Search indexes genre_ids off the fiction row, so a genre edit has to save it or search stays stale.
+      fiction.update!(updated_at: Time.current) if current.sort != submitted.sort
     end
 
     private
 
-    def create_fiction_genres
-      genres_to_add = submitted_genre_ids - existing_genre_ids
-      genres_to_add.each { |genre_id| fiction.fiction_genres.create(genre_id:) }
-    end
-
-    def destroy_fiction_genres
-      genres_to_remove = existing_genre_ids - submitted_genre_ids
-      genres_to_remove.each { |genre_id| fiction.fiction_genres.find_by(genre_id:).destroy }
+    def write_genre_links(current, submitted)
+      (submitted - current).each { |genre_id| fiction.fiction_genres.create(genre_id:) }
+      (current - submitted).each { |genre_id| fiction.fiction_genres.find_by(genre_id:).destroy }
     end
 
     def existing_genre_ids

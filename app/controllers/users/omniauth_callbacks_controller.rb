@@ -39,6 +39,7 @@ module Users
     end
 
     def success_google_oauth
+      ContentFilters::AdoptGuestCookie.call(user: @user, cookies:)
       notice_pokemon_catch
       sign_in_and_redirect @user, event: :authentication
     end

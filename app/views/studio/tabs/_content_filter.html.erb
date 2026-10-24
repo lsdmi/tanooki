@@ -1,6 +1,6 @@
 <% preference = current_content_filter %>
 <% selected_rating = preference.max_rating.nil? ? '' : preference.max_rating.to_s %>
-<% hidden_ids = preference.hidden_genre_ids %>
+<% selected_packages = preference.package_keys %>
 <% rating_options = [
      ['', t('content_filters.ratings.all')],
      ['16', t('content_filters.ratings.no_eighteen')],
@@ -16,7 +16,7 @@
     </div>
 
     <%= form_with url: content_filter_path, method: :patch, data: { turbo_stream: '' } do %>
-      <div class="max-w-2xl mx-auto space-y-8">
+      <div class="mx-auto max-w-2xl space-y-8 lg:max-w-5xl">
         <fieldset>
           <legend class="block text-center text-lg font-medium text-fg mb-4"><%= t('content_filters.rating_legend') %></legend>
           <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
@@ -31,29 +31,28 @@
           </div>
         </fieldset>
 
-        <fieldset data-controller="genre-blocklist">
-          <legend class="block text-center text-lg font-medium text-fg mb-4"><%= t('content_filters.genres_legend') %></legend>
-          <label for="content_filter_genre_search" class="sr-only"><%= t('content_filters.genres_search') %></label>
-          <input id="content_filter_genre_search" type="search" autocomplete="off"
-                 placeholder="<%= t('content_filters.genres_search') %>"
-                 data-genre-blocklist-target="query"
-                 data-action="input->genre-blocklist#filter keydown->genre-blocklist#preventSubmit"
-                 class="w-full mb-4 bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-line-strong focus:border-line-strong">
-          <div class="flex flex-wrap justify-center gap-2 max-h-48 overflow-y-auto">
-            <% ContentFilters::GenreChoices.call.each do |genre| %>
-              <label class="cursor-pointer" data-genre-blocklist-target="option" data-name="<%= genre.name.downcase %>">
-                <%= check_box_tag 'hidden_genre_ids[]', genre.id, hidden_ids.include?(genre.id),
-                      id: "content_filter_genre_#{genre.id}",
-                      class: 'peer sr-only' %>
-                <span class="inline-block rounded-full border border-line px-3 py-1 text-sm text-fg peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand">
-                  <%= genre.name %>
-                </span>
-              </label>
+        <fieldset data-controller="package-limit">
+          <legend class="block text-center text-lg font-medium text-fg mb-1"><%= t('content_filters.packages_legend') %></legend>
+          <p class="mb-4 text-center text-sm text-fg-muted"><%= t('content_filters.packages_hint') %></p>
+          <% columns = [%i[relationships moods], %i[worlds]] %>
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-x-10">
+            <% columns.each do |column| %>
+              <div class="space-y-6">
+                <% column.each do |group| %>
+                  <div>
+                    <h4 class="mb-2 text-center text-sm font-semibold text-fg"><%= t("content_filters.groups.#{group}") %></h4>
+                    <div class="space-y-1">
+                      <% ContentFilters::Packages::GROUPS.fetch(group).each do |package_key| %>
+                        <%= render 'studio/tabs/content_filter_package',
+                                   package_key:,
+                                   selected: selected_packages.include?(package_key) %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
           </div>
-          <p class="mt-3 text-center text-sm text-fg-muted hidden" data-genre-blocklist-target="empty">
-            <%= t('content_filters.genres_empty') %>
-          </p>
         </fieldset>
 
         <% if local_assigns[:error].present? %>

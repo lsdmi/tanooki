@@ -22,7 +22,7 @@ module Fictions
       IndexCacheWarmer.call
 
       assert Rails.cache.exist?(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY)
-      assert Rails.cache.exist?('recent_fiction_ids')
+      assert Rails.cache.exist?(IndexVariablesManager::RECENT_FICTION_IDS_CACHE_KEY)
     end
 
     test 'call populates featured novelty chapter count next to popular novelty ids' do
@@ -37,7 +37,7 @@ module Fictions
     test 'call populates most reads ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?(['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS])
+      assert Rails.cache.exist?(IndexVariablesManager.most_reads_ids_cache_key)
     end
 
     test 'call populates latest updates ids cache' do
@@ -49,13 +49,13 @@ module Fictions
     test 'call populates originals ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?(['fiction_index/originals_ids', IndexVariablesManager::ORIGINALS_INDEX_CARDS])
+      assert Rails.cache.exist?(IndexVariablesManager.originals_ids_cache_key)
     end
 
     test 'call populates fanfiction ids cache' do
       IndexCacheWarmer.call
 
-      assert Rails.cache.exist?(['fiction_index/fanfiction_ids', IndexVariablesManager::FANFICTION_INDEX_CARDS])
+      assert Rails.cache.exist?(IndexVariablesManager.fanfiction_ids_cache_key)
     end
 
     test 'call populates genre spotlight cache' do

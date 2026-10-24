@@ -19,11 +19,11 @@ class MorphHeadParityTest < ActionDispatch::IntegrationTest
     assert_no_match(/chapters_reader|actiontext/, hrefs)
   end
 
-  test 'studio index tracks sweetalert stylesheet for turbo reload' do
+  test 'studio index loads sweetalert stylesheet without a turbo reload track' do
     sign_in users(:user_one)
     get studio_index_path
 
-    assert_select 'link[href*="sweetal2"][data-turbo-track="reload"]'
+    assert_select 'link[href*="sweetal2"][data-turbo-track="dynamic"]'
   end
 
   test 'chapter reader tracks reader and actiontext stylesheets' do

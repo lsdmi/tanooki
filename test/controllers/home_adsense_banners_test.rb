@@ -17,7 +17,7 @@ class HomeAdsenseBannersTest < ActionDispatch::IntegrationTest
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
       Search::TagCounts.stub(:call, {}) { get root_url }
 
-      assert_select 'link[href*="adsense_slots"][data-turbo-track="reload"][media="print"][onload]'
+      assert_select 'link[href*="adsense_slots"][data-turbo-track="dynamic"][media="print"][onload]'
     end
   end
 

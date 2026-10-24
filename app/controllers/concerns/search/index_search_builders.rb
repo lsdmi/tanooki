@@ -12,14 +12,17 @@ module Search
       Timeout::Error,
       OpenSearch::Transport::Transport::Error
     ].freeze
+    FICTION_SEARCH_FIELDS = ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators'].freeze
 
     private
 
     def fiction_search
-      Fiction.pagy_searchkick(
-        params[:search],
-        fields: ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
-      ).includes(cover_attachment: :blob)
+      Fiction.pagy_searchkick(params[:search], **fiction_search_options).includes(cover_attachment: :blob)
+    end
+
+    def fiction_search_options
+      where = current_content_filter.searchkick_where
+      { fields: FICTION_SEARCH_FIELDS }.tap { |options| options[:where] = where if where.present? }
     end
 
     def publication_search

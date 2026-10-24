@@ -2,10 +2,11 @@
 
 # View-model for fiction#show: chapters, comments, reading progress, and sidebar data.
 class FictionShowPresenter
-  def initialize(fiction, current_user, params = {})
+  def initialize(fiction, current_user, params = {}, content_filter: ContentFilters::Preference.open)
     @fiction = fiction
     @current_user = current_user
     @params = params
+    @content_filter = content_filter
   end
 
   COMMENTS_PAGE_SIZE = 10
@@ -68,9 +69,9 @@ class FictionShowPresenter
     Rails.cache.read(ranks_cache_key)
   end
 
-  def similar_fictions
-    @similar_fictions ||= @fiction.similar_fictions
-  end
+  def similar_fictions = @similar_fictions ||= similar_finder.fictions
+
+  def similar_hidden_count = similar_fictions && similar_finder.hidden_count
 
   def order = @params[:order] || :desc
 
@@ -85,6 +86,8 @@ class FictionShowPresenter
   end
 
   private
+
+  def similar_finder = @similar_finder ||= Fictions::SimilarFictions.new(@fiction, filter: @content_filter)
 
   def ranks_cache_key = "fiction-#{@fiction.slug}-ranks"
 

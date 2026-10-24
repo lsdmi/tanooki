@@ -26,6 +26,29 @@ module Users
       assert_predicate PokemonEncounter.last, :caught?
     end
 
+    test 'sign-in adopts a guest hide-18 cookie when the account has no row' do
+      user = users(:user_one_one_zero)
+      user.update!(password: 'password', password_confirmation: 'password')
+      patch content_filter_path, params: { max_content_rating: '16' }
+
+      post user_session_path, params: { user: { email: user.email, password: 'password' } }
+
+      assert_response :redirect
+      assert_equal 16, user.reload.content_filter.max_content_rating
+      assert_match(/max-age=0/i, response.get_header('Set-Cookie').to_s)
+    end
+
+    test 'sign-in does not replace an existing rating cap' do
+      @user.content_filter.update!(max_content_rating: 0)
+      patch content_filter_path, params: { max_content_rating: '16' }
+
+      post user_session_path, params: { user: { email: @user.email, password: 'password' } }
+
+      assert_response :redirect
+      assert_equal 0, @user.reload.content_filter.max_content_rating
+      assert_no_match(/max-age=0/i, response.get_header('Set-Cookie').to_s)
+    end
+
     test 'should create new user session without catch_pokemon' do
       post user_session_path, params: { user: { email: @user.email, password: 'password' } }
 

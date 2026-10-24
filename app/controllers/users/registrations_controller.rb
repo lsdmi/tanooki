@@ -18,6 +18,7 @@ module Users
       super do |user|
         if user.persisted?
           inactive_kind = Pokemons::AuthCatch.assign_on_signup!(user: user, session: session)
+          ContentFilters::AdoptGuestCookie.call(user:, cookies:)
           set_flash_message! :notice, :"signed_up_but_#{inactive_kind}" if inactive_kind
         else
           set_flash_message! :alert, :sign_up_error

@@ -47,6 +47,41 @@ module ContentFilters
       assert_equal({ _not: { genre_ids: [genres(:one).id, genres(:two).id] } }, forward.searchkick_where)
     end
 
+    test 'except_genre keeps an explicitly opened genre and still hides the others' do
+      preference = Preference.new(max_rating: 16, hidden_genre_ids: [genres(:one).id, genres(:two).id])
+      opened = preference.except_genre(genres(:one).id)
+
+      assert_equal [@everyone.id], listed_ids(opened)
+      assert_predicate preference, :hides_eighteen?
+      assert_not_predicate Preference.open, :hides_eighteen?
+    end
+
+    test 'plain romance hides unless the work has bl, gl, or lgbt' do
+      romance = Genre.create!(name: 'Романтика', slug: 'romance')
+      lgbt = Genre.create!(name: 'LGBT', slug: 'lgbt')
+      omega = Genre.create!(name: 'Омегаверс', slug: 'omegaverse')
+      FictionGenre.create!(fiction: @everyone, genre: romance)
+      FictionGenre.create!(fiction: @sixteen, genre: romance)
+      FictionGenre.create!(fiction: @sixteen, genre: lgbt)
+      FictionGenre.create!(fiction: @eighteen, genre: romance)
+      FictionGenre.create!(fiction: @eighteen, genre: omega)
+      preference = Preference.new(package_keys: ['romance_bl'])
+
+      assert_equal [@sixteen.id], listed_ids(preference)
+      assert_not preference.rejects_genre_ids?([romance.id, genres(:bl).id])
+      assert preference.rejects_genre_ids?([romance.id, omega.id])
+    end
+
+    test 'two packages hide the union of their genres' do
+      fantasy = Genre.create!(name: 'Фентезі', slug: 'fantasy')
+      FictionGenre.create!(fiction: @everyone, genre: genres(:bl))
+      FictionGenre.create!(fiction: @sixteen, genre: fantasy)
+      ids = Packages.genre_ids_for(%w[shelves another_world])
+      preference = Preference.new(package_keys: %w[shelves another_world], hidden_genre_ids: ids)
+
+      assert_equal [@eighteen.id], listed_ids(preference)
+    end
+
     test 'rating and genres compose' do
       preference = Preference.new(max_rating: 16, hidden_genre_ids: [genres(:two).id])
 

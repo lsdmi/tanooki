@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_24_180000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -811,14 +811,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.index ["user_id"], name: "index_user_content_filters_on_user_id", unique: true
   end
 
-  create_table "user_hidden_genres", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "user_hidden_packages", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "genre_id", null: false
+    t.string "package_key", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.index ["genre_id"], name: "index_user_hidden_genres_on_genre_id"
-    t.index ["user_id", "genre_id"], name: "index_user_hidden_genres_on_user_id_and_genre_id", unique: true
-    t.index ["user_id"], name: "index_user_hidden_genres_on_user_id"
+    t.index ["user_id", "package_key"], name: "index_user_hidden_packages_on_user_id_and_package_key", unique: true
+    t.index ["user_id"], name: "index_user_hidden_packages_on_user_id"
   end
 
   create_table "user_pokemons", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -961,8 +960,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
   add_foreign_key "translation_requests", "scanlators"
   add_foreign_key "translation_requests", "users", on_delete: :cascade
   add_foreign_key "user_content_filters", "users", on_delete: :cascade
-  add_foreign_key "user_hidden_genres", "genres", on_delete: :cascade
-  add_foreign_key "user_hidden_genres", "users", on_delete: :cascade
+  add_foreign_key "user_hidden_packages", "users", on_delete: :cascade
   add_foreign_key "user_pokemons", "pokemons"
   add_foreign_key "user_pokemons", "pokemons", column: "line_root_id"
   add_foreign_key "user_pokemons", "users"

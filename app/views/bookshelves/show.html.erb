@@ -43,7 +43,9 @@
         <%= render 'bookshelves/fiction_list',
                    bookshelf: @bookshelf,
                    fictions: @fictions,
-                   pagy: @pagy %>
+                   pagy: @pagy,
+                   hidden_fiction_count: @hidden_fiction_count,
+                   content_filter_fingerprint: @content_filter_fingerprint %>
       </div>
     </main>
   </div>

@@ -5,13 +5,19 @@ module Fictions
   module IndexHotUpdates
     module_function
 
-    def fictions
+    def head_ids(limit)
+      Array(cached_ids).first(limit)
+    end
+
+    def fictions(filter: ContentFilters::Preference.open)
       ids = cached_ids
       return Fiction.none if ids.blank?
 
-      Fiction.where(id: ids)
-             .includes({ cover_attachment: :blob })
-             .in_order_of(:id, ids)
+      filter.apply(
+        Fiction.where(id: ids)
+               .includes({ cover_attachment: :blob })
+               .in_order_of(:id, ids)
+      )
     end
 
     def counts

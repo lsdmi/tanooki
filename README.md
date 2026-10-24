@@ -73,6 +73,8 @@ Production — [DigitalOcean App Platform](https://docs.digitalocean.com/product
 | **Worker** (`tanooki2`) | `bundle exec bin/jobs` | Solid Queue in one process (separate from Puma web); scheduled jobs in `config/recurring.yml` |
 | **Pre-deploy** (`db-migrate`) | `bundle exec rails db:migrate` | Перед web + worker |
 
+Після деплою фільтра списків один раз на воркері: `bundle exec rails searchkick:reindex_fictions` (`Fiction.reindex(mode: :async)`). Поки індекс старий, пошук з фільтром не бачить `content_rating` і `genre_ids`.
+
 Managed add-ons: MySQL, OpenSearch. Asset CDN — `config/platform_config.rb` (Spaces bucket + CDN host).
 
 ## Структура

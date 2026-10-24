@@ -96,7 +96,7 @@ module Fictions
 
     test 'expires the fiction index caches' do
       latest = IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY
-      reads = ['most_reads_ids', IndexVariablesManager::MOST_READS_INDEX_CARDS]
+      reads = IndexVariablesManager.most_reads_ids_cache_key
       Rails.cache.write(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY, [1])
       Rails.cache.write(latest, [1])
       Rails.cache.write(reads, [1])

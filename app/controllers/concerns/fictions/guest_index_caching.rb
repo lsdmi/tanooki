@@ -50,12 +50,14 @@ module Fictions
     end
 
     def guest_fiction_index_etag
-      [
-        'fictions/index/v4',
+      etag = [
+        'fictions/index/v5',
         I18n.locale,
         cookies[:color_theme].presence || 'light',
         Fictions::IndexVariablesManager.http_cache_fingerprint
       ]
+      etag << current_content_filter.fingerprint if current_content_filter.active?
+      etag
     end
   end
 end

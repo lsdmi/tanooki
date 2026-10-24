@@ -101,7 +101,11 @@ class FictionUpdatesPresenter
       scanlator_bank_url: scanlator&.donation_url,
       scanlator_slug: scanlator&.slug,
       scanlator_title: scanlator&.title
-    }
+    }.merge(calendar_filter_fields(fiction))
+  end
+
+  def calendar_filter_fields(fiction)
+    { content_rating: fiction.content_rating_before_type_cast, genre_ids: fiction.genres.map(&:id) }
   end
 
   def min_public_at_formatted(fiction_chapters)

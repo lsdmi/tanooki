@@ -8,21 +8,19 @@ module Fictions
     CACHE_KEY = 'fiction_showcase_ids'
     INDEX_CACHE_EXPIRY = 1.hour
     GENRE_CACHE_EXPIRY = 12.hours
+    CARD_LIMIT = 5
+    SAMPLE_SIZE = CARD_LIMIT * 2
 
-    def self.for_index
+    def self.for_index(filter: ContentFilters::Preference.open)
       ids = Rails.cache.fetch(CACHE_KEY, expires_in: INDEX_CACHE_EXPIRY) { random_sample_index }
-      return Fiction.none if ids.blank?
-
-      load_fictions(ids)
+      load_fictions(ids, filter)
     end
 
-    def self.for_genre(genre)
+    def self.for_genre(genre, filter: ContentFilters::Preference.open)
       ids = Rails.cache.fetch(['fiction_showcase_genre', genre.id], expires_in: GENRE_CACHE_EXPIRY) do
         random_sample_for_genre(genre)
       end
-      return Fiction.none if ids.blank?
-
-      load_fictions(ids)
+      load_fictions(ids, filter)
     end
 
     class << self
@@ -44,7 +42,7 @@ module Fictions
           .joins(:banner_attachment)
           .distinct
           .pluck(:id)
-          .sample(5)
+          .sample(SAMPLE_SIZE)
       end
 
       def random_sample_for_genre(genre)
@@ -56,15 +54,18 @@ module Fictions
           .where(genres: { id: genre.id })
           .distinct
           .pluck(:id)
-          .sample(5)
+          .sample(SAMPLE_SIZE)
       end
 
-      def load_fictions(ids)
-        Fiction
-          .not_licensed
-          .where(id: ids)
-          .includes(:fiction_ratings, :banner_attachment)
-          .in_order_of(:id, ids)
+      def load_fictions(ids, filter)
+        return Fiction.none if ids.blank?
+
+        filter.apply(
+          Fiction.not_licensed
+                 .where(id: ids)
+                 .includes(:fiction_ratings, :banner_attachment)
+                 .in_order_of(:id, ids)
+        ).limit(CARD_LIMIT)
       end
     end
   end

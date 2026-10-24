@@ -21,7 +21,7 @@ class FictionsIndexGenreSpotlightTest < ActionDispatch::IntegrationTest
     genres(:fanfiction).tap do |genre|
       @shared.genres << genre unless @shared.genres.exists?(genre.id)
     end
-    Rails.cache.delete(['fiction_index/fanfiction_ids', Fictions::IndexVariablesManager::FANFICTION_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.fanfiction_ids_cache_key)
 
     get fictions_path
 

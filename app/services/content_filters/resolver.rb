@@ -14,11 +14,12 @@ module ContentFilters
 
     def self.for_account(user)
       rows = User.where(id: user.id)
-                 .left_outer_joins(:content_filter, :hidden_genres)
-                 .pluck('user_content_filters.max_content_rating', 'user_hidden_genres.genre_id')
+                 .left_outer_joins(:content_filter, :hidden_packages)
+                 .pluck('user_content_filters.max_content_rating', 'user_hidden_packages.package_key')
       return Preference.open if rows.empty?
 
-      Preference.new(max_rating: rows.first.first, hidden_genre_ids: rows.filter_map(&:last).uniq.freeze)
+      keys = rows.filter_map(&:last).uniq.select { |key| Packages.key?(key) }
+      Preference.new(max_rating: rows.first.first, package_keys: keys, hidden_genre_ids: Packages.genre_ids_for(keys))
     end
     private_class_method :for_account
 

@@ -43,7 +43,9 @@ module Fictions
         result = IndexVariablesManager.popular_novelty
         ids = IndexVariablesManager.send(:cached_popular_novelty_ids)
 
-        assert_equal ids, result.ids if ids.any?
+        cards = IndexVariablesManager::POPULAR_NOVELTY_INDEX_CARDS
+
+        assert_equal ids.first(cards), result.ids if ids.any?
       end
     end
 

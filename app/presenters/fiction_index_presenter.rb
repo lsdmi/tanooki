@@ -2,8 +2,12 @@
 
 # View-model for the fictions index carousels and sections.
 class FictionIndexPresenter
+  def initialize(filter: ContentFilters::Preference.open)
+    @filter = filter
+  end
+
   def popular_novelty
-    @popular_novelty ||= Fictions::IndexVariablesManager.popular_novelty
+    @popular_novelty ||= Fictions::IndexVariablesManager.popular_novelty(filter: @filter)
   end
 
   def popular_novelty_featured
@@ -26,23 +30,23 @@ class FictionIndexPresenter
   end
 
   def most_reads
-    @most_reads ||= Fictions::IndexVariablesManager.most_reads
+    @most_reads ||= Fictions::IndexVariablesManager.most_reads(filter: @filter)
   end
 
   def originals
-    @originals ||= Fictions::IndexVariablesManager.originals
+    @originals ||= Fictions::IndexVariablesManager.originals(filter: @filter)
   end
 
   def fanfictions
-    @fanfictions ||= Fictions::IndexVariablesManager.fanfictions
+    @fanfictions ||= Fictions::IndexVariablesManager.fanfictions(filter: @filter)
   end
 
   def genre_spotlight
-    @genre_spotlight ||= Fictions::IndexVariablesManager.genre_spotlight
+    @genre_spotlight ||= Fictions::IndexVariablesManager.genre_spotlight(filter: @filter)
   end
 
   def latest_updates
-    @latest_updates ||= Fictions::IndexVariablesManager.latest_updates
+    @latest_updates ||= Fictions::IndexVariablesManager.latest_updates(filter: @filter)
   end
 
   def latest_update_chapters
@@ -62,6 +66,6 @@ class FictionIndexPresenter
   end
 
   def showcase
-    @showcase ||= Fictions::IndexVariablesManager.showcase
+    @showcase ||= Fictions::IndexVariablesManager.showcase(filter: @filter)
   end
 end

@@ -38,7 +38,7 @@ class FictionsController < ApplicationController
   def index
     return if serve_fresh_guest_fiction_index?
 
-    @index_presenter = FictionIndexPresenter.new
+    @index_presenter = FictionIndexPresenter.new(filter: current_content_filter)
   end
 
   def show
@@ -107,7 +107,7 @@ class FictionsController < ApplicationController
 
   def details
     @fiction = Fiction.includes(:genres, :fiction_ratings, cover_attachment: :blob).find(params.expect(:id))
-    render_fiction_details
+    hot_novelty_hidden?(@fiction) ? render_hidden_hot_novelty : render_fiction_details
   rescue ActiveRecord::RecordNotFound
     redirect_merged_fiction || raise
   end

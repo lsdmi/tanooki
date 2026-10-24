@@ -11,10 +11,10 @@ class FictionListsController < ApplicationController
 
   def alphabetical
     @pagy, @fictions = paginated_fictions
+    @explicit_hidden_genre = explicit_hidden_genre?
 
     if turbo_frame_request_id == 'fiction-list-page'
-      return render partial: 'fiction_lists/dynamic_content',
-                    locals: { fictions: @fictions, pagy: @pagy }
+      return render partial: 'fiction_lists/dynamic_content', locals: list_locals
     end
 
     respond_to do |format|
@@ -26,15 +26,24 @@ class FictionListsController < ApplicationController
   private
 
   def paginated_fictions
-    base_scope = catalog_include_eighteen? ? Fiction.all : Fiction.not_eighteen
-
     pagy(
-      FictionListQueryBuilder.new(
-        base_scope,
-        Fictions::ListFilters.permit_for_query(params)
-      ).call,
+      FictionListQueryBuilder.new(catalog_scope, Fictions::ListFilters.permit_for_query(params)).call,
       limit: 20
     )
+  end
+
+  def catalog_scope
+    base = catalog_include_eighteen? ? Fiction.all : Fiction.not_eighteen
+    current_content_filter.apply(base)
+  end
+
+  def explicit_hidden_genre?
+    genre_id = params[:genre].to_i
+    genre_id.positive? && current_content_filter.hidden_genre_ids.include?(genre_id)
+  end
+
+  def list_locals
+    { fictions: @fictions, pagy: @pagy, explicit_hidden_genre: @explicit_hidden_genre, content_filter_notice: true }
   end
 
   def render_fictions_list
@@ -42,10 +51,7 @@ class FictionListsController < ApplicationController
       turbo_stream.update(
         'fiction-list-page',
         partial: 'fiction_lists/dynamic_content',
-        locals: {
-          fictions: @fictions,
-          pagy: @pagy
-        }
+        locals: list_locals
       )
     )
   end

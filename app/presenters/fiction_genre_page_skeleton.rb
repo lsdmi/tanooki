@@ -5,11 +5,12 @@ class FictionGenrePageSkeleton
   include Rails.application.routes.url_helpers
   include FictionGenrePageNewReleases
 
-  def initialize(genre)
+  def initialize(genre, filter: ContentFilters::Preference.open)
     @genre = genre
+    @filter = filter
   end
 
-  attr_reader :genre
+  attr_reader :genre, :filter
 
   def breadcrumbs
     [

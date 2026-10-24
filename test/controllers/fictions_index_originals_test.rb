@@ -10,7 +10,7 @@ class FictionsIndexOriginalsTest < ActionDispatch::IntegrationTest
     [@older, @newer].each do |fiction|
       fiction.genres << @genre unless fiction.genres.exists?(@genre.id)
     end
-    Rails.cache.delete(['fiction_index/originals_ids', Fictions::IndexVariablesManager::ORIGINALS_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.originals_ids_cache_key)
   end
 
   test 'renders originals after popular ranobe' do
@@ -105,7 +105,7 @@ class FictionsIndexOriginalsTest < ActionDispatch::IntegrationTest
 
   test 'hides the section when no original fictions exist' do
     FictionGenre.where(genre_id: @genre.id).delete_all
-    Rails.cache.delete(['fiction_index/originals_ids', Fictions::IndexVariablesManager::ORIGINALS_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.originals_ids_cache_key)
 
     get fictions_path
 

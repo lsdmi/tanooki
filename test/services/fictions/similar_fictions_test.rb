@@ -84,7 +84,21 @@ module Fictions
       first.destroy!
 
       assert_equal [second.id], SimilarFictions.new(base).fictions.map(&:id)
-      assert Rails.cache.exist?("similar-to/v3/#{base.id}")
+      assert Rails.cache.exist?("similar-to/v4/#{base.id}")
+    end
+
+    test 'a rating cap drops an 18+ match when the shared ids are loaded' do
+      base = listed('base', genres: [@rare], team: @team)
+      adult = listed('adult', genres: [@rare], content_rating: :eighteen)
+      plain = listed('plain', genres: [@rare])
+      filter = ContentFilters::Preference.new(max_rating: 16, hidden_genre_ids: [].freeze)
+      Rails.cache.write("similar-to/v4/#{base.id}", [plain.id, adult.id])
+      finder = SimilarFictions.new(base, filter:)
+      ids = finder.fictions.map(&:id)
+
+      assert_includes ids, plain.id
+      assert_not_includes ids, adult.id
+      assert_equal 1, finder.hidden_count
     end
 
     private

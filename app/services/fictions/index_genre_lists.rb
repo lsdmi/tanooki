@@ -9,34 +9,39 @@ module Fictions
 
     # Class methods mixed into IndexVariablesManager.
     module ClassMethods
-      def originals
+      def originals(filter: ContentFilters::Preference.open)
         load_fictions_by_cached_ids(
           cached_originals_ids,
-          includes: %i[cover_attachment scanlators]
+          includes: %i[cover_attachment scanlators],
+          filter:,
+          limit: IndexVariablesManager::ORIGINALS_INDEX_CARDS
         )
       end
 
-      def fanfictions
+      def fanfictions(filter: ContentFilters::Preference.open)
         load_fictions_by_cached_ids(
           cached_fanfiction_ids,
-          includes: %i[cover_attachment genres fiction_ratings scanlators]
+          includes: %i[cover_attachment genres fiction_ratings scanlators],
+          filter:,
+          limit: IndexVariablesManager::FANFICTION_INDEX_CARDS
         )
       end
 
-      def genre_recent_updates_excluding(genre, exclude_ids: [])
+      def genre_recent_updates_excluding(genre, exclude_ids: [], filter: ContentFilters::Preference.open)
         base = Fiction.joins(:genres, :chapters).where(genres: { id: genre.id }).merge(Chapter.released)
         base = base.where.not(id: exclude_ids) if exclude_ids.present?
         ranked = base.select("fictions.id, MAX(#{Chapter::PUBLIC_TIME_SQL}) AS genre_sort_at").group('fictions.id')
-        Fiction.includes(:cover_attachment, :fiction_ratings)
-               .joins("INNER JOIN (#{ranked.to_sql}) AS genre_recent_agg ON genre_recent_agg.id = fictions.id")
-               .order(Arel.sql('genre_recent_agg.genre_sort_at DESC'))
+        scope = Fiction.includes(:cover_attachment, :fiction_ratings)
+                       .joins("INNER JOIN (#{ranked.to_sql}) AS genre_recent_agg ON genre_recent_agg.id = fictions.id")
+                       .order(Arel.sql('genre_recent_agg.genre_sort_at DESC'))
+        filter.apply(scope)
       end
 
       private
 
       def cached_originals_ids
         Rails.cache.fetch(
-          ['fiction_index/originals_ids', IndexVariablesManager::ORIGINALS_INDEX_CARDS],
+          IndexVariablesManager.originals_ids_cache_key,
           expires_in: IndexVariablesManager::ORIGINALS_CACHE_EXPIRY
         ) do
           originals_ids_from_db
@@ -46,13 +51,13 @@ module Fictions
       def originals_ids_from_db
         recent_fiction_ids_for_genre_slug(
           Genre::ORIGINAL_SLUG,
-          IndexVariablesManager::ORIGINALS_INDEX_CARDS
+          IndexVariablesManager.pool_size
         )
       end
 
       def cached_fanfiction_ids
         Rails.cache.fetch(
-          ['fiction_index/fanfiction_ids', IndexVariablesManager::FANFICTION_INDEX_CARDS],
+          IndexVariablesManager.fanfiction_ids_cache_key,
           expires_in: IndexVariablesManager::FANFICTION_CACHE_EXPIRY
         ) do
           fanfiction_ids_from_db
@@ -62,7 +67,7 @@ module Fictions
       def fanfiction_ids_from_db
         recent_fiction_ids_for_genre_slug(
           Genre::FANFICTION_SLUG,
-          IndexVariablesManager::FANFICTION_INDEX_CARDS
+          IndexVariablesManager.pool_size
         )
       end
 

@@ -373,20 +373,46 @@ uk:
     title: Що показувати
     hint: Твори не зникають з Баки — ви просто не бачите їх у списках. Пряме посилання працює.
     rating_legend: Віковий рейтинг у списках
-    genres_legend: Приховані жанри
-    genres_search: Пошук жанру
-    genres_empty: Нічого не знайдено
+    packages_legend: Що прибрати зі списків
+    packages_hint: Можна вимкнути два пакети разом.
+    groups:
+      relationships: Стосунки
+      worlds: Світи
+      moods: Настрій
+    packages:
+      romance_bl:
+        name: Романтика з BL, GL чи LGBT
+        note: Ховає «Романтика», якщо поряд немає BL, GL або LGBT
+      shelves:
+        name: Тільки він і вона
+        note: Ховає BL, GL і LGBT
+      another_world:
+        name: Вантажівка схибила
+        note: Ховає фентезі та ісекай
+      heavens:
+        name: Небожителі на перерві
+        note: Ховає сянься, вуся і сюаньхвань
+      lights_on:
+        name: Монстри взяли вихідний
+        note: Ховає жахи і трилер
     save: Зберегти
     reset: Скинути
     saved: Налаштування збережено
+    guest_hide_eighteen: Не показувати 18+ у списках
+    change: Змінити
+    eighteen_locked: Приховано у налаштуваннях
+    genre_hidden: Цей жанр у вас приховано
+    hidden_count: Приховано %{count} за вашими налаштуваннями
+    some_hidden: Деякі результати приховано
+    empty: У цьому списку нічого не лишилось за вашими налаштуваннями
     ratings:
       all: Все
       no_eighteen: Без 18+
       no_sixteen: Без 16+ і 18+
     errors:
       rating: Оберіть один із варіантів рейтингу
-      cap: Можна приховати не більше ніж 30 жанрів
-      genre: Цей жанр не можна приховати
+      cap: Можна вимкнути не більше ніж два пакети
+      package: Такого пакета немає
   fiction_lists:
     filters:
       include_eighteen: Показувати 18+

@@ -27,8 +27,8 @@ module Fictions
     test 'popular_novelty omits deleted fictions from cached ids' do
       with_memory_cache do
         fiction = fictions(:one)
-        Rails.cache.write('popular_novelty_ids', [fiction.id, 999_999], expires_in: 1.hour)
-
+        Rails.cache.write(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY,
+                          [fiction.id, 999_999], expires_in: 1.hour)
         loaded_ids = IndexVariablesManager.popular_novelty.pluck(:id)
 
         assert_equal [fiction.id], loaded_ids
@@ -55,27 +55,30 @@ module Fictions
       end
     end
 
-    test 'latest_updates_for_homepage loads only eight cached ids' do
+    test 'latest_updates_for_homepage limits the overfetched pool to the home card count' do
       with_memory_cache do
         ids = (1..12).to_a
-        Rails.cache.write('latest_updates_ids', ids, expires_in: IndexVariablesManager::LATEST_UPDATES_CACHE_EXPIRY)
+        Rails.cache.write(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY, ids, expires_in: IndexVariablesManager::LATEST_UPDATES_CACHE_EXPIRY)
         loaded_ids = nil
+        loaded_limit = nil
 
-        IndexVariablesManager.stub(:load_fictions_by_cached_ids, lambda { |cached_ids, **|
+        IndexVariablesManager.stub(:load_fictions_by_cached_ids, lambda { |cached_ids, **kwargs|
           loaded_ids = cached_ids
+          loaded_limit = kwargs[:limit]
           Fiction.none
         }) do
           IndexVariablesManager.latest_updates_for_homepage
         end
 
-        assert_equal ids.first(8), loaded_ids
+        assert_equal ids, loaded_ids
+        assert_equal IndexVariablesManager::LATEST_UPDATES_HOME_LIMIT, loaded_limit
       end
     end
 
     test 'novelty badges use the recent pool not the ranked cards' do
       with_memory_cache do
-        Rails.cache.write('recent_fiction_ids', [1, 2, 3], expires_in: 1.hour)
-        Rails.cache.write('popular_novelty_ids', [1], expires_in: 1.hour)
+        Rails.cache.write(IndexVariablesManager::RECENT_FICTION_IDS_CACHE_KEY, [1, 2, 3], expires_in: 1.hour)
+        Rails.cache.write(IndexVariablesManager::POPULAR_NOVELTY_IDS_CACHE_KEY, [1], expires_in: 1.hour)
 
         assert_equal Set.new([1, 2, 3]), IndexVariablesManager.popular_novelty_ids_for_badges
       end
@@ -83,7 +86,7 @@ module Fictions
 
     test 'badge id sets reuse cached list ids' do
       with_memory_cache do
-        Rails.cache.write('latest_updates_ids', [1, 2, 3], expires_in: 1.hour)
+        Rails.cache.write(IndexVariablesManager::LATEST_UPDATES_IDS_CACHE_KEY, [1, 2, 3], expires_in: 1.hour)
 
         IndexVariablesManager.stub(:latest_updates_ranked, -> { raise 'cache miss' }) do
           assert_equal Set.new([1, 2, 3]), IndexVariablesManager.latest_updates_ids_for_badges

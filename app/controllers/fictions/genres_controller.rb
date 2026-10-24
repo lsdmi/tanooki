@@ -9,8 +9,10 @@ module Fictions
     before_action :pokemon_appearance, only: [:show]
 
     def show
-      @skeleton = FictionGenrePageSkeleton.new(@genre)
-      @index_presenter = FictionIndexPresenter.new
+      @page_filter = current_content_filter.except_genre(@genre.id)
+      @hidden_genre_page = current_content_filter.hidden_genre_ids.include?(@genre.id)
+      @skeleton = FictionGenrePageSkeleton.new(@genre, filter: @page_filter)
+      @index_presenter = FictionIndexPresenter.new(filter: @page_filter)
       assign_genre_showcase_carousel
       assign_genre_recent_releases
       render_genre_recent_releases_frame? && return
@@ -38,7 +40,7 @@ module Fictions
     # Same partial as fictions#index; carousel uses IndexVariablesManager.showcase_for_genre (aligned with showcase).
     def assign_genre_showcase_carousel
       in_genre = @genre.fiction_ids.to_set
-      @genre_showcase = Fictions::IndexVariablesManager.showcase_for_genre(@genre)
+      @genre_showcase = Fictions::IndexVariablesManager.showcase_for_genre(@genre, filter: @page_filter)
       @genre_showcase_popular_ids = @index_presenter.carousel_popular_novelty_ids & in_genre
       @genre_showcase_top_ids = @index_presenter.carousel_most_read_ids & in_genre
       @genre_showcase_latest_ids = @index_presenter.carousel_latest_update_ids & in_genre
@@ -46,7 +48,9 @@ module Fictions
 
     def assign_genre_recent_releases
       exclude_ids = @skeleton.popular_top_eight_fiction_ids
-      scope = Fictions::IndexVariablesManager.genre_recent_updates_excluding(@genre, exclude_ids: exclude_ids)
+      scope = Fictions::IndexVariablesManager.genre_recent_updates_excluding(
+        @genre, exclude_ids: exclude_ids, filter: @page_filter
+      )
       @pagy_genre_recent, @genre_recent_fictions = pagy(scope, limit: 12)
     end
   end

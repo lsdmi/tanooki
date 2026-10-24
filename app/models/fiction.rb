@@ -91,7 +91,8 @@ class Fiction < ApplicationRecord
       scanlators: scanlators.pluck(:title).to_sentence,
       title:,
       licensed: licensed?,
-      active: true
+      active: true,
+      content_rating: self.class.content_ratings.fetch(content_rating), genre_ids: fiction_genres.pluck(:genre_id)
     }
   end
 

@@ -20,16 +20,17 @@ module Catalog
 
     test 'checking complete stamps completed_at once' do
       freeze_time do
+        stamped = Time.current
         UpdateListingEditorial.call(@fiction, complete: true)
         @fiction.save!
 
-        assert_equal Time.current, @fiction.reload.completed_at
+        assert_equal stamped, @fiction.reload.completed_at
 
         travel 1.day
         UpdateListingEditorial.call(@fiction, complete: true)
         @fiction.save!
 
-        assert_equal 1.day.ago, @fiction.reload.completed_at
+        assert_equal stamped, @fiction.reload.completed_at
       end
     end
 

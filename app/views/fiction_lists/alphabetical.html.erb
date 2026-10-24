@@ -17,7 +17,7 @@
     <div class="bg-card rounded-xl p-4 sm:p-6 shadow-md border border-line">
       <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
       <%= turbo_frame_tag "filters" do %>
-        <%= render partial: 'fiction_lists/filter_form' %>
+        <%= render partial: 'fiction_lists/filter_form', locals: { guest_toggle_id: 'guest-content-filter-mobile' } %>
       <% end %>
     </div>
   </div>
@@ -29,7 +29,7 @@
       <div class="bg-card rounded-xl p-6 shadow-md border border-line">
         <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
         <%= turbo_frame_tag "filters" do %>
-          <%= render partial: 'fiction_lists/filter_form' %>
+          <%= render partial: 'fiction_lists/filter_form', locals: { guest_toggle_id: 'guest-content-filter-desktop' } %>
         <% end %>
       </div>
     </aside>
@@ -38,7 +38,8 @@
     <main class="flex-1 p-2 sm:p-4 bg-surface rounded-lg shadow-md overflow-hidden border border-line">
       <%= turbo_frame_tag 'fiction-list-page', data: { controller: 'fiction-picker' }, class: 'mb-4' do %>
         <%= render partial: 'fiction_lists/dynamic_content',
-                   locals: { fictions: @fictions, pagy: @pagy } %>
+                   locals: { fictions: @fictions, pagy: @pagy, explicit_hidden_genre: @explicit_hidden_genre,
+                             content_filter_notice: true } %>
       <% end %>
     </main>
   </div>

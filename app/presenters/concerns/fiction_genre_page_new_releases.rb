@@ -18,7 +18,13 @@ module FictionGenrePageNewReleases
   private
 
   def top_eight_most_read_in_genre
-    @top_eight_most_read_in_genre ||= Fictions::Ranker.most_read_fictions_for_genre(genre, limit: 8)
+    @top_eight_most_read_in_genre ||= filtered_most_read_in_genre
+  end
+
+  def filtered_most_read_in_genre
+    fictions = Fictions::Ranker.most_read_fictions_for_genre(genre, limit: 8)
+    visible_ids = filter.apply(Fiction.where(id: fictions.map(&:id))).ids
+    fictions.select { |fiction| visible_ids.include?(fiction.id) }
   end
 
   def new_releases_ranked_cards

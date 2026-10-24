@@ -76,7 +76,9 @@ module Fictions
     end
 
     def render_fiction_show_fragment
-      @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
+      @show_presenter = FictionShowPresenter.new(
+        @fiction, current_user, params, content_filter: current_content_filter
+      )
       render layout: false
     end
   end

@@ -7,8 +7,8 @@ module Fictions
 
     COVER_CANDIDATE_POOL = 30
 
-    def self.call
-      new.call
+    def self.call(filter: ContentFilters::Preference.open)
+      new(filter).call
     end
 
     def self.warm!
@@ -19,7 +19,8 @@ module Fictions
       [
         'fiction_index/genre_spotlight',
         IndexVariablesManager::GENRE_SPOTLIGHT_INDEX_CARDS,
-        IndexVariablesManager::GENRE_SPOTLIGHT_COVERS
+        IndexVariablesManager::GENRE_SPOTLIGHT_COVERS,
+        IndexVariablesManager::CANDIDATE_POOL
       ]
     end
 
@@ -33,11 +34,15 @@ module Fictions
       new.send(:build_payload)
     end
 
+    def initialize(filter = ContentFilters::Preference.open)
+      @filter = filter
+    end
+
     def call
       payload = self.class.cached_payload
       return [] if payload.blank?
 
-      hydrate(payload)
+      hydrate(payload).first(IndexVariablesManager::GENRE_SPOTLIGHT_INDEX_CARDS)
     end
 
     private
@@ -53,7 +58,6 @@ module Fictions
         fiction_ids = unique_cover_ids_for(genre_id, claimed)
         next if fiction_ids.empty?
 
-        claimed.merge(fiction_ids)
         { genre_id:, fiction_ids:, fictions_count: counts.fetch(genre_id, 0) }
       end
     end
@@ -66,14 +70,19 @@ module Fictions
 
       scope.group('genres.id')
            .order(Arel.sql("MAX(#{Chapter::PUBLIC_TIME_SQL}) DESC"))
-           .limit(IndexVariablesManager::GENRE_SPOTLIGHT_INDEX_CARDS)
+           .limit(IndexVariablesManager.pool_size)
            .pluck('genres.id')
     end
 
+    # Claim only the covers an open reader sees. Extras stay unclaimed so a filter can refill a tile
+    # without changing the open catalogue's cover sets.
     def unique_cover_ids_for(genre_id, claimed)
-      limit = IndexVariablesManager::GENRE_SPOTLIGHT_COVERS
+      covers = IndexVariablesManager::GENRE_SPOTLIGHT_COVERS
       candidates = IndexVariablesManager.send(:recent_fiction_ids_for_genre_id, genre_id, COVER_CANDIDATE_POOL)
-      candidates.reject { |id| claimed.include?(id) }.first(limit)
+      available = candidates.reject { |id| claimed.include?(id) }
+      shown = available.first(covers)
+      claimed.merge(shown)
+      shown + available.drop(covers).first(covers)
     end
 
     def hydrate(payload)
@@ -84,9 +93,10 @@ module Fictions
     end
 
     def spotlight_fictions_by_id(payload)
-      Fiction.where(id: payload.flat_map { |row| row[:fiction_ids] })
-             .preload(:cover_attachment)
-             .index_by(&:id)
+      ids = payload.flat_map { |row| row[:fiction_ids] }
+      return {} if ids.empty?
+
+      @filter.apply(Fiction.where(id: ids).preload(:cover_attachment)).index_by(&:id)
     end
 
     def hydrate_entry(row, genres_by_id, fictions_by_id)
@@ -94,6 +104,7 @@ module Fictions
       return unless genre
 
       fictions = row[:fiction_ids].filter_map { |id| fictions_by_id[id] }
+      fictions = fictions.first(IndexVariablesManager::GENRE_SPOTLIGHT_COVERS)
       return if fictions.empty?
 
       Entry.new(genre:, fictions:, fictions_count: row[:fictions_count])

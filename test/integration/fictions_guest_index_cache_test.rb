@@ -29,6 +29,21 @@ class FictionsGuestIndexCacheTest < ActionDispatch::IntegrationTest
     assert_no_match(GUEST_CACHE_MAX_AGE_PATTERN, response.headers['Cache-Control'].to_s)
   end
 
+  test 'open guest etag is unchanged and a no18 guest etag differs' do
+    get fictions_path
+    open_etag = response.headers['ETag']
+
+    patch content_filter_path, params: { max_content_rating: '16' }
+    get fictions_path
+
+    assert_not_equal open_etag, response.headers['ETag']
+
+    patch content_filter_path, params: { max_content_rating: '' }
+    get fictions_path
+
+    assert_equal open_etag, response.headers['ETag']
+  end
+
   test 'guest fictions index returns not modified when etag matches' do
     get fictions_path
 

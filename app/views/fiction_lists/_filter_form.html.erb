@@ -51,15 +51,7 @@
       <span class="ml-2 text-base sm:text-lg group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none"><%= t('fiction_lists.filters.licensed') %></span>
     </label>
   </div>
-  <div>
-    <input type="hidden" name="filters_applied" value="1">
-    <label class="inline-flex items-center mt-2">
-      <input type="checkbox" name="include_eighteen" value="1"
-             <%= 'checked' if catalog_include_eighteen? %>
-             class="h-5 w-5 rounded border-line-strong text-brand focus:ring-brand bg-card transition duration-150">
-      <span class="ml-2 text-base sm:text-lg group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none"><%= t('fiction_lists.filters.include_eighteen') %></span>
-    </label>
-  </div>
+  <%= render 'fiction_lists/include_eighteen', guest_toggle_id: local_assigns.fetch(:guest_toggle_id, 'guest-content-filter') %>
   <div class="pt-2 flex justify-center">
     <%= ui_button(as: :submit, size: :lg) do %>
       <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -69,3 +61,4 @@
     <% end %>
   </div>
 <% end %>
+<%= render 'fiction_lists/guest_content_filter', dom_id: local_assigns.fetch(:guest_toggle_id, 'guest-content-filter') if current_user.nil? %>

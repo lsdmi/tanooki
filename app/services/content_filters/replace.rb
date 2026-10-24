@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ContentFilters
-  # Replaces an account's rating cap and hidden genres in one transaction.
+  # Replaces an account's rating cap and packages in one transaction.
   class Replace
     RATINGS = { nil => nil, '' => nil, '0' => 0, '16' => 16, 0 => 0, 16 => 16 }.freeze
     Result = Data.define(:error) do
@@ -10,14 +10,14 @@ module ContentFilters
       end
     end
 
-    def self.call(user:, max_content_rating:, hidden_genre_ids:)
-      new(user:, max_content_rating:, hidden_genre_ids:).call
+    def self.call(user:, max_content_rating:, package_keys:)
+      new(user:, max_content_rating:, package_keys:).call
     end
 
-    def initialize(user:, max_content_rating:, hidden_genre_ids:)
+    def initialize(user:, max_content_rating:, package_keys:)
       @user = user
       @max_content_rating = max_content_rating
-      @hidden_genre_ids = hidden_genre_ids
+      @package_keys = package_keys
     end
 
     def call
@@ -32,8 +32,8 @@ module ContentFilters
 
     def validation_error
       return I18n.t('content_filters.errors.rating') unless RATINGS.key?(@max_content_rating)
-      return I18n.t('content_filters.errors.cap') if genre_ids.size > UserHiddenGenre::MAX_PER_USER
-      return I18n.t('content_filters.errors.genre') if genre_ids.size != hideable_ids.size
+      return I18n.t('content_filters.errors.cap') if keys.size > Packages::MAX
+      return I18n.t('content_filters.errors.package') if keys.any? { |key| !Packages.key?(key) }
 
       nil
     end
@@ -41,16 +41,9 @@ module ContentFilters
     def persist
       @user.transaction do
         sync_rating
-        @user.hidden_genres.delete_all
-        genres = Genre.where(id: genre_ids).index_by(&:id)
-        genre_ids.each { |genre_id| save_genre(genres.fetch(genre_id)) }
+        @user.hidden_packages.delete_all
+        keys.each { |key| @user.hidden_packages.create!(package_key: key) }
       end
-    end
-
-    def save_genre(genre)
-      hidden = @user.hidden_genres.build(genre:)
-      hidden.skip_cap = true
-      hidden.save!
     end
 
     def sync_rating
@@ -68,12 +61,8 @@ module ContentFilters
       RATINGS[@max_content_rating]
     end
 
-    def genre_ids
-      @genre_ids ||= Array(@hidden_genre_ids).filter_map { |id| Integer(id, exception: false) }.uniq
-    end
-
-    def hideable_ids
-      Genre.where(id: genre_ids).where.not(name: Genre::RATING_LABELS).pluck(:id)
+    def keys
+      @keys ||= Array(@package_keys).map(&:to_s).uniq
     end
   end
 end

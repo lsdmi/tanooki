@@ -1,3 +1,4 @@
+<%= render Ui::FilteredNoticeComponent.new(count: local_assigns[:content_filter_hidden].to_i, change_path: content_filter_change_path) %>
 <% if user_signed_in? %>
   <% all_active = !subscriptions_filter_active %>
   <% subs_active = subscriptions_filter_active %>

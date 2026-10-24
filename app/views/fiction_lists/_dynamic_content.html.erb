@@ -1,4 +1,16 @@
 <%= turbo_frame_tag 'fiction-list-page', data: { controller: 'fiction-picker' }, class: 'mb-4' do %>
+  <% if local_assigns[:content_filter_notice] && current_content_filter.active? && !local_assigns[:explicit_hidden_genre] %>
+    <%= render Ui::FilteredNoticeComponent.new(count: nil, change_path: content_filter_change_path) %>
+  <% end %>
+  <% if local_assigns[:explicit_hidden_genre] %>
+    <p role="status" class="px-2 pt-4 text-sm font-medium text-fg-muted">
+      <%= t('content_filters.genre_hidden') %>
+      ·
+      <%= link_to t('content_filters.change'), content_filter_settings_path,
+                  class: 'text-fg-brand underline-offset-2 hover:underline',
+                  data: { turbo_frame: '_top' } %>
+    </p>
+  <% end %>
   <% if fictions.any? %>
     <div class="block w-full max-w-full overflow-x-auto">
       <div class="flex space-x-2 pt-4 pb-4 mb-2 px-2 min-w-max overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-700 dark:scrollbar-thumb-rose-700">
@@ -35,8 +47,12 @@
       <svg class="w-16 h-16 mb-4 text-fg-brand" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
       </svg>
-      <div class="text-lg font-semibold text-fg mb-2">Нічого не знайдено</div>
-      <div class="text-fg-muted">Спробуйте змінити фільтри або пошукати іншу назву.</div>
+      <% if local_assigns[:content_filter_notice] && current_content_filter.active? %>
+        <div class="text-lg font-semibold text-fg mb-2"><%= t('content_filters.empty') %></div>
+      <% else %>
+        <div class="text-lg font-semibold text-fg mb-2">Нічого не знайдено</div>
+        <div class="text-fg-muted">Спробуйте змінити фільтри або пошукати іншу назву.</div>
+      <% end %>
     </div>
   <% end %>
 <% end %>

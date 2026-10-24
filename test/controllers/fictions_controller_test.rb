@@ -130,6 +130,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     novelty_titles = [Fiction.find('two').title, Fiction.find('one').title]
 
     assert_equal novelty_titles, index_presenter.popular_novelty.map(&:title)
-    assert_equal novelty_titles + [Fiction.find('eighteen').title], index_presenter.most_reads.map(&:title)
+    # user_one hides 18+, so the adult fixture stays off this rail.
+    assert_equal novelty_titles, index_presenter.most_reads.map(&:title)
   end
 end

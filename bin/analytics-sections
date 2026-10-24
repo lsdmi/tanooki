@@ -203,6 +203,24 @@ def markdown_decision_rows(buckets_28, buckets_90)
   puts
 end
 
+def print_content_filter_metrics
+  require_relative '../config/environment'
+  report = ContentFilters::Metrics.call
+  share = report.readers.zero? ? 0 : (100.0 * report.filtered / report.readers).round(1)
+
+  puts '## Content filters'
+  puts "Readers #{report.readers}, with a filter #{report.filtered} (#{share}%)"
+  report.top.each { |name, count| puts "#{name}: #{count}" }
+  puts 'Guest no18: not logged'
+rescue StandardError => error
+  warn "Content filter metrics skipped: #{error.message}"
+end
+
+if ARGV.delete('--only-content-filters')
+  print_content_filter_metrics
+  exit 0
+end
+
 resolve_credentials!
 client = Google::Analytics::Data.analytics_data
 results = {}
@@ -214,3 +232,4 @@ PERIODS.each do |days, label|
 end
 
 markdown_decision_rows(results.fetch(28), results.fetch(90))
+print_content_filter_metrics

@@ -2,6 +2,18 @@
   <div class="px-2 pt-6 pb-5 sm:pt-8 sm:pb-6 lg:pt-10 lg:pb-8 xl:px-0">
     <%= render 'fictions/genres/breadcrumbs', skeleton: @skeleton %>
     <%= render 'fictions/genres/genre_heading', skeleton: @skeleton %>
+    <% if @hidden_genre_page %>
+      <p role="status" class="mt-4 text-sm font-medium text-fg-muted">
+        <%= t('content_filters.genre_hidden') %>
+        ·
+        <%= link_to t('content_filters.change'), content_filter_settings_path,
+                    class: 'text-fg-brand underline-offset-2 hover:underline',
+                    data: { turbo_frame: '_top' } %>
+      </p>
+    <% end %>
+    <% if @page_filter.active? %>
+      <%= render Ui::FilteredNoticeComponent.new(count: nil, change_path: content_filter_change_path) %>
+    <% end %>
   </div>
 </div>
 

@@ -13,15 +13,20 @@ module Fictions
     end
 
     def guest_fiction_show_fragment_cache_key(fiction, show_presenter)
+      key = guest_fiction_show_fragment_parts(fiction, show_presenter)
+      key << current_content_filter.fingerprint if current_content_filter.active?
+      key << fragment_cache_version_bucket(GUEST_FRAGMENT_EXPIRY)
+    end
+
+    def guest_fiction_show_fragment_parts(fiction, show_presenter)
       [
-        'fiction_show/v51/guest',
+        'fiction_show/v52/guest',
         fiction,
         show_presenter.order,
         I18n.locale,
         cookies[:color_theme].presence || 'light',
         (adult_content_acknowledged? if fiction.age_labelled?),
-        remembered_chapter_team(fiction),
-        fragment_cache_version_bucket(GUEST_FRAGMENT_EXPIRY)
+        remembered_chapter_team(fiction)
       ]
     end
 

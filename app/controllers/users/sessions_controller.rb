@@ -18,6 +18,7 @@ module Users
     def create
       super
       catch_pokemon(resource)
+      ContentFilters::AdoptGuestCookie.call(user: resource, cookies:) if resource&.persisted?
     end
 
     # DELETE /resource/sign_out

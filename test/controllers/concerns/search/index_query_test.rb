@@ -11,6 +11,10 @@ class SearchIndexQueryTest < ActiveSupport::TestCase
     def initialize(params)
       @params = params
     end
+
+    def current_content_filter
+      ContentFilters::Preference.open
+    end
   end
 
   setup do

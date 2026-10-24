@@ -1,0 +1,12 @@
+<%# locals: (package_key:, selected:) %>
+<label class="flex cursor-pointer items-start gap-3 rounded-lg px-1 py-1.5 has-[:disabled]:cursor-default has-[:disabled]:opacity-50"
+       for="content_filter_package_<%= package_key %>">
+  <%= check_box_tag 'package_keys[]', package_key, selected,
+        id: "content_filter_package_#{package_key}",
+        class: 'mt-1 h-4 w-4 border-line-strong bg-surface text-fg-secondary focus:ring-2 focus:ring-line-strong',
+        data: { package_limit_target: 'box', action: 'change->package-limit#toggle' } %>
+  <span class="min-w-0">
+    <span class="block font-medium text-fg"><%= t("content_filters.packages.#{package_key}.name") %></span>
+    <span class="block text-sm text-fg-muted"><%= t("content_filters.packages.#{package_key}.note") %></span>
+  </span>
+</label>

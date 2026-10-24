@@ -103,9 +103,10 @@ module Layout
       define_singleton_method(:adsense_adblock_check?) { true }
       assign_controller(:home, :index)
       html = CGI.unescapeHTML(page_stylesheet_link_tag('adsense_slots'))
+      print_tag = html[/link[^>]*media="print"[^>]*/]
 
-      assert_includes html, 'media="print"'
-      assert_includes html, "onload=\"this.media='all'\""
+      assert_includes print_tag, "onload=\"this.media='all'\""
+      assert_includes print_tag, 'data-turbo-track="dynamic"'
       assert_includes html, '<noscript>'
     end
 

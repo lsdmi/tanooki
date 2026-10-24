@@ -63,8 +63,10 @@ module Layout
       safe_join([deferred_print_stylesheet_link_tag(stylesheet), deferred_stylesheet_noscript_tag(stylesheet)])
     end
 
+    # `dynamic`, not `reload`: onload flips media to "all", and Turbo's reload signature is the
+    # whole tag. A mismatch throws the response away and reloads, which drops flashes such as a failed login.
     def deferred_print_stylesheet_link_tag(stylesheet)
-      stylesheet_link_tag(stylesheet, media: 'print', onload: "this.media='all'", 'data-turbo-track': 'reload')
+      stylesheet_link_tag(stylesheet, media: 'print', onload: "this.media='all'", 'data-turbo-track': 'dynamic')
     end
 
     def deferred_stylesheet_noscript_tag(stylesheet)

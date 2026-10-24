@@ -12,6 +12,6 @@ class ContentFilterableTest < ActionDispatch::IntegrationTest
     end
 
     assert_predicate queries, :any?
-    assert(queries.none? { |sql| sql.include?('user_content_filters') || sql.include?('user_hidden_genres') })
+    assert(queries.none? { |sql| sql.match?(/user_content_filters|user_hidden_packages/) })
   end
 end

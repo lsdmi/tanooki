@@ -10,7 +10,7 @@ class FictionsIndexFanfictionsTest < ActionDispatch::IntegrationTest
     [@older, @newer].each do |fiction|
       fiction.genres << @genre unless fiction.genres.exists?(@genre.id)
     end
-    Rails.cache.delete(['fiction_index/fanfiction_ids', Fictions::IndexVariablesManager::FANFICTION_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.fanfiction_ids_cache_key)
   end
 
   test 'renders fanfictions after originals when both are present' do
@@ -18,7 +18,7 @@ class FictionsIndexFanfictionsTest < ActionDispatch::IntegrationTest
     [@older, @newer].each do |fiction|
       fiction.genres << original unless fiction.genres.exists?(original.id)
     end
-    Rails.cache.delete(['fiction_index/originals_ids', Fictions::IndexVariablesManager::ORIGINALS_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.originals_ids_cache_key)
 
     get fictions_path
 
@@ -63,7 +63,7 @@ class FictionsIndexFanfictionsTest < ActionDispatch::IntegrationTest
 
   test 'hides the section when no fanfiction fictions exist' do
     FictionGenre.where(genre_id: @genre.id).delete_all
-    Rails.cache.delete(['fiction_index/fanfiction_ids', Fictions::IndexVariablesManager::FANFICTION_INDEX_CARDS])
+    Rails.cache.delete(Fictions::IndexVariablesManager.fanfiction_ids_cache_key)
 
     get fictions_path
 

@@ -36,6 +36,20 @@ module Users
       verify_signup_user_matches_params
     end
 
+    test 'sign-up adopts a guest hide-18 cookie' do
+      patch content_filter_path, params: { max_content_rating: '16' }
+      @user_params[:user][:email] = 'hide18@email.com'
+      @user_params[:user][:name] = 'Hide Eighteen'
+
+      post register_path, params: @user_params
+
+      created = User.find_by!(email: 'hide18@email.com')
+
+      assert_response :redirect
+      assert_equal 16, created.content_filter.max_content_rating
+      assert_match(/max-age=0/i, response.get_header('Set-Cookie').to_s)
+    end
+
     test 'should render the sign-up form with invalid parameters' do
       @user_params[:user][:name] = ''
       post register_path, params: @user_params

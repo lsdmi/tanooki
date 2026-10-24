@@ -12,16 +12,11 @@ class BookshelvesController < ApplicationController
   def index; end
 
   def show
-    @pagy, @fictions = pagy(@bookshelf.fictions.includes(:genres, cover_attachment: :blob), limit: 20)
+    prepare_bookshelf_fictions
 
     return unless turbo_frame_request_id == 'fiction-list-page'
 
-    render partial: 'bookshelves/fiction_list',
-           locals: {
-             bookshelf: @bookshelf,
-             fictions: @fictions,
-             pagy: @pagy
-           }
+    render partial: 'bookshelves/fiction_list', locals: bookshelf_list_locals
   end
 
   def fiction_options
@@ -63,6 +58,23 @@ class BookshelvesController < ApplicationController
   end
 
   private
+
+  def prepare_bookshelf_fictions
+    relation, @hidden_fiction_count, @content_filter_fingerprint = Bookshelves::VisibleFictions.call(
+      bookshelf: @bookshelf, viewer: current_user, filter: current_content_filter
+    )
+    @pagy, @fictions = pagy(relation.includes(:genres, cover_attachment: :blob), limit: 20)
+  end
+
+  def bookshelf_list_locals
+    {
+      bookshelf: @bookshelf,
+      fictions: @fictions,
+      pagy: @pagy,
+      hidden_fiction_count: @hidden_fiction_count,
+      content_filter_fingerprint: @content_filter_fingerprint
+    }
+  end
 
   def set_bookshelf
     @bookshelf = if action_name == 'show'

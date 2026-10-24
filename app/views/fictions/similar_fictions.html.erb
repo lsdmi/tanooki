@@ -1,5 +1,8 @@
 <%= turbo_frame_tag 'fiction_similar' do %>
   <% if @show_presenter.similar_fictions.any? %>
     <%= render 'similar_fictions_list', show_presenter: @show_presenter %>
+  <% elsif @show_presenter.similar_hidden_count.positive? %>
+    <%= render Ui::FilteredNoticeComponent.new(count: @show_presenter.similar_hidden_count, change_path: content_filter_change_path) %>
+    <p class="text-sm font-medium text-fg-muted"><%= t('content_filters.empty') %></p>
   <% end %>
 <% end %>

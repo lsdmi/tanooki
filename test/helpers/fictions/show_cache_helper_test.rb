@@ -13,6 +13,7 @@ module Fictions
       define_singleton_method(:cookies) { {} }
       define_singleton_method(:current_user) { nil }
       define_singleton_method(:session) { {} }
+      define_singleton_method(:current_content_filter) { ContentFilters::Preference.open }
     end
 
     test 'guest_fiction_show_fragment_cacheable? is true without a signed-in user' do
@@ -27,7 +28,7 @@ module Fictions
 
     test 'guest_fiction_show_fragment_cache_key includes fiction order' do
       key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
-      expected = ['fiction_show/v51/guest', @fiction, :asc, I18n.locale, 'light', nil]
+      expected = ['fiction_show/v52/guest', @fiction, :asc, I18n.locale, 'light', nil]
 
       assert_equal expected, key.first(6)
       assert_kind_of Integer, key.last
@@ -44,6 +45,16 @@ module Fictions
       assert_not_equal unacked_key, acked_key
       assert_not unacked_key[5]
       assert acked_key[5]
+    end
+
+    test 'guest cache key gains a fingerprint only when the filter is active' do
+      open_key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
+      filtered = ContentFilters::Preference.new(max_rating: 16, hidden_genre_ids: [].freeze)
+      define_singleton_method(:current_content_filter) { filtered }
+      filtered_key = guest_fiction_show_fragment_cache_key(@fiction, @presenter)
+
+      assert_not_includes open_key, filtered.fingerprint
+      assert_includes filtered_key, filtered.fingerprint
     end
   end
 end

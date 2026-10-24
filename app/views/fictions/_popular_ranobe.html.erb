@@ -13,5 +13,9 @@
     </div>
   </header>
 
-  <%= render 'root/fictions', fictions:, ranked: true %>
+  <% if fictions.present? %>
+    <%= render 'root/fictions', fictions:, ranked: true %>
+  <% elsif current_content_filter.active? %>
+    <p class="text-sm font-medium text-fg-muted"><%= t('content_filters.empty') %></p>
+  <% end %>
 </section>

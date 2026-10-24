@@ -47,5 +47,7 @@
                  released_chapter_count: released_chapter_count,
                  eager_cover: true %>
     <% end %>
+  <% elsif current_content_filter.active? %>
+    <p class="text-sm font-medium text-fg-muted"><%= t('content_filters.empty') %></p>
   <% end %>
 </section>
