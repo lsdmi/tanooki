@@ -13,7 +13,7 @@
 
   <%# Uniform gap between rows; my-auto hands the leftover height back as equal top/bottom margin. %>
   <div class="my-auto flex min-w-0 flex-1 flex-col gap-1.5 lg:gap-2">
-    <h3 class="line-clamp-1 text-base font-bold leading-snug text-fg lg:text-xl">
+    <h3 class="line-clamp-2 text-base font-bold leading-snug text-fg lg:text-xl">
       <%= link_to fiction.title, fiction_path(fiction), turbo_drive_visit_data.merge(class: text_link_class) %>
     </h3>
     <p class="line-clamp-1 text-xs text-fg-muted lg:text-sm">

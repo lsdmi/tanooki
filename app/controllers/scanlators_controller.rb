@@ -2,7 +2,7 @@
 
 # Handles translation team pages and authenticated team management.
 class ScanlatorsController < ApplicationController
-  helper Scanlators::SelectOptionsHelper
+  helper Scanlators::SelectOptionsHelper, Ui::StrokeIconHelper
 
   include FictionQuery
 

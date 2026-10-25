@@ -28,7 +28,7 @@
         <% end %>
         <div class="flex min-w-0 flex-col gap-1">
           <%= link_to similar_fiction.title, fiction_path(similar_fiction),
-                      turbo_drive_visit_data.merge(class: 'line-clamp-1 text-sm/5 font-semibold text-fg hover:text-fg-brand md:text-base/6') %>
+                      turbo_drive_visit_data.merge(class: 'line-clamp-2 text-sm/5 font-semibold text-fg hover:text-fg-brand md:text-base/6') %>
           <% if card[:genres].present? %>
             <% genre_slugs = card[:genres].to_h { |genre| [genre[:name], genre[:slug]] } %>
             <%= render Ui::TagListComponent.new(

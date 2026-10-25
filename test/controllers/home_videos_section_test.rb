@@ -35,11 +35,11 @@ class HomeVideosSectionTest < ActionDispatch::IntegrationTest
     assert_no_match %r{youtube\.com/embed}, response.body
   end
 
-  test 'popular videos section uses featured and compact title clamps' do
+  test 'popular videos section uses two-line title clamps' do
     Search::TagCounts.stub(:call, {}) { get root_url }
 
-    assert_select '[aria-label="Популярні Відео"] a.line-clamp-1', minimum: 1
     assert_select '[aria-label="Популярні Відео"] a.line-clamp-2', minimum: 1
+    assert_select '[aria-label="Популярні Відео"] a.line-clamp-1', count: 0
   end
 
   test 'popular videos section uses asymmetrical desktop grid' do

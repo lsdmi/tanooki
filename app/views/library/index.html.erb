@@ -91,7 +91,7 @@
                     class: "w-10 h-10 lg:w-12 lg:h-12 rounded-full object-cover mb-2 object-cover shadow-sm border border-brand",
                     loading: "lazy" %>
                 <% end %>
-                <%= link_to translator.title, scanlator_path(translator), class: 'leading-tight text-xs lg:text-sm font-semibold text-fg line-clamp-1 hover:text-brand transition-colors duration-300 tracking-tight text-center' %>
+                <%= link_to translator.title, scanlator_path(translator), class: 'leading-tight text-xs lg:text-sm font-semibold text-fg line-clamp-2 hover:text-brand transition-colors duration-300 tracking-tight text-center' %>
                 <% if translator.telegram_id? %>
                   <%= link_to "@#{translator.telegram_id}", telegram_profile_url(translator.telegram_id), target: '_blank', rel: 'noopener noreferrer', class: 'text-xs text-fg-subtle font-light tracking-tight line-clamp-1 mt-1 text-center hover:text-brand transition-colors duration-300 tracking-tight' %>
                 <% else %>

@@ -18,7 +18,7 @@
   <div class="flex-1 my-1 lg:col-span-2">
     <div>
       <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'group') do %>
-        <h3 class="text-xl sm:text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none">
+        <h3 class="text-xl sm:text-2xl line-clamp-2 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-tight">
           <%= fiction.title %>
         </h3>
       <% end %>
