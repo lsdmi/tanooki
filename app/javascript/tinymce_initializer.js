@@ -216,6 +216,19 @@ const editorContentCss = (isDark) => {
       text-align: start;
       overflow-wrap: anywhere;
     }
+    /* Word character frames paste as a red background and white-space:nowrap. */
+    #tinymce :where(p, div, li, blockquote, h1, h2, h3, h4, h5, h6, td, th, mark, span:not(.note-reference)) {
+      white-space: normal !important;
+      overflow-wrap: anywhere !important;
+      min-width: 0 !important;
+      background-color: transparent !important;
+      background-image: none !important;
+    }
+    #tinymce :where(pre, code) {
+      white-space: pre-wrap !important;
+      overflow-wrap: anywhere !important;
+    }
+    #tinymce table { max-width: 100% !important; }
     @media (max-width: 639px) {
       #tinymce { padding: 12px 8px; }
     }
@@ -917,19 +930,21 @@ const initializeTinymce = () => {
     ],
     link_title: false,
     // GDocs/WebKit paste: drop background, color, family, size, and line-height.
-    // Bold, italic, and underline stay. Stored HTML is not rewritten.
+    // Bold, italic, and underline stay. A Word character frame also arrives as
+    // white-space:nowrap (and a red background); that would scroll sideways.
     paste_webkit_styles: 'font-weight font-style text-decoration',
     paste_postprocess: function(editor, args) {
-      const stripNonInheritedPasteStyles = function(styleStr) {
+      const dropPastedStyle = function(name, tagName) {
+        if (name.indexOf('background') === 0 || name.indexOf('mso-') === 0) return true;
+        if (name === 'color' || name === 'text-decoration-color' || name === '-webkit-text-fill-color') return true;
+        // font shorthand sets family and size, so it goes with those four.
+        if (name === 'font' || name === 'font-family' || name === 'font-size' || name === 'line-height') return true;
+        if (name === 'white-space') return true;
+        if ((name === 'width' || name === 'min-width' || name === 'max-width') && tagName !== 'IMG' && tagName !== 'IFRAME') return true;
+        return false;
+      };
+      const stripNonInheritedPasteStyles = function(styleStr, tagName) {
         if (!styleStr || !styleStr.trim()) return null;
-        const dropName = function(name) {
-          if (name.indexOf('background') === 0) return true;
-          if (name === 'color' || name === 'text-decoration-color') return true;
-          if (name === '-webkit-text-fill-color') return true;
-          // font shorthand sets family and size, so it goes with those four.
-          if (name === 'font' || name === 'font-family' || name === 'font-size' || name === 'line-height') return true;
-          return false;
-        };
         const next = styleStr
           .split(';')
           .map(function(s) { return s.trim(); })
@@ -937,7 +952,7 @@ const initializeTinymce = () => {
           .filter(function(decl) {
             const prop = decl.split(':')[0];
             if (!prop) return true;
-            return !dropName(prop.trim().toLowerCase());
+            return !dropPastedStyle(prop.trim().toLowerCase(), tagName);
           })
           .join('; ');
         return next.length ? next : null;
@@ -946,20 +961,25 @@ const initializeTinymce = () => {
       const walk = function(node) {
         if (node.nodeType !== 1) return;
         const el = node;
+        if (el.tagName === 'STYLE' || el.tagName === 'LINK' || el.tagName === 'META') {
+          el.remove();
+          return;
+        }
         stripForeignClasses(el);
+        if (el.tagName !== 'IMG' && el.tagName !== 'IFRAME') el.removeAttribute('width');
+        el.removeAttribute('nowrap');
+        el.removeAttribute('bgcolor');
         if (el.hasAttribute('style')) {
-          const cleaned = stripNonInheritedPasteStyles(el.getAttribute('style'));
+          const cleaned = stripNonInheritedPasteStyles(el.getAttribute('style'), el.tagName);
           if (cleaned) el.setAttribute('style', cleaned);
           else el.removeAttribute('style');
         }
         if (el.hasAttribute('data-mce-style')) {
-          const cleanedMce = stripNonInheritedPasteStyles(el.getAttribute('data-mce-style'));
+          const cleanedMce = stripNonInheritedPasteStyles(el.getAttribute('data-mce-style'), el.tagName);
           if (cleanedMce) el.setAttribute('data-mce-style', cleanedMce);
           else el.removeAttribute('data-mce-style');
         }
-        for (let i = 0; i < el.children.length; i++) {
-          walk(el.children[i]);
-        }
+        for (let i = el.children.length - 1; i >= 0; i--) walk(el.children[i]);
       };
 
       walk(args.node);

@@ -7,6 +7,8 @@ module FictionListingProgress
 
   STALE_AFTER = 90.days
 
+  RELEASES = %w[ongoing paused finished].freeze
+
   LISTING_STATE_LABELS = {
     finished: 'Завершено',
     stale: 'Без оновлень',
@@ -22,6 +24,7 @@ module FictionListingProgress
     validates :chapter_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :expected_chapters, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
     validate :expected_chapters_at_least_chapter_count, if: :will_save_change_to_expected_chapters?
+    validate :paused_at_requires_chapters
 
     scope :finished, -> { where.not(completed_at: nil) }
     scope :live, lambda {
@@ -50,6 +53,14 @@ module FictionListingProgress
     LISTING_STATE_LABELS.fetch(listing_state)
   end
 
+  # Form value for the release radios. Finished wins when both timestamps are set.
+  def listing_release
+    return 'finished' if completed_at
+    return 'paused' if paused_at
+
+    'ongoing'
+  end
+
   def listing_state_label_short
     return LISTING_STATE_SHORT_LABELS[listing_state] if LISTING_STATE_SHORT_LABELS.key?(listing_state)
 
@@ -70,5 +81,13 @@ module FictionListingProgress
     return if expected_chapters >= chapter_count
 
     errors.add(:expected_chapters, :greater_than_or_equal_to, count: chapter_count)
+  end
+
+  def paused_at_requires_chapters
+    return unless will_save_change_to_paused_at?
+    return if paused_at.blank?
+    return if chapter_count.to_i.positive?
+
+    errors.add(:paused_at, :requires_chapters)
   end
 end

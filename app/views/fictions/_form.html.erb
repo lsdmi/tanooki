@@ -68,14 +68,28 @@
       </div>
 
       <div class="relative mb-4">
-        <div class="flex items-center">
-          <%= hidden_field_tag 'fiction[complete]', '0', id: nil %>
-          <%= check_box_tag 'fiction[complete]', '1', fiction.completed_at.present?,
-                            id: 'fiction_complete',
-                            class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong rounded focus:ring-line-strong focus:ring-2' %>
-          <%= label_tag 'fiction_complete', 'Переклад на Баці завершено', class: 'ml-2 text-fg-secondary text-lg font-semibold' %>
-        </div>
-        <p class="text-fg-muted text-sm mt-1">Позначте, якщо нових розділів на цій сторінці не буде.</p>
+        <fieldset>
+          <legend class="block text-fg-secondary text-lg font-semibold mb-2">
+            <%= t('fictions.form.release.legend') %>
+          </legend>
+          <div class="flex flex-col gap-3">
+            <% FictionListingProgress::RELEASES.each do |release| %>
+              <div>
+                <label class="inline-flex items-center cursor-pointer" for="fiction_release_<%= release %>">
+                  <%= radio_button_tag 'fiction[release]', release, fiction.listing_release == release,
+                                       id: "fiction_release_#{release}",
+                                       class: 'w-4 h-4 text-fg-secondary bg-surface border-line-strong focus:ring-line-strong focus:ring-2' %>
+                  <span class="ml-2 text-fg-secondary text-lg font-semibold">
+                    <%= t("fictions.form.release.#{release}.label") %>
+                  </span>
+                </label>
+                <% hint = t("fictions.form.release.#{release}.hint", default: '') %>
+                <%= tag.p hint, class: 'text-fg-muted text-sm mt-1 ml-6' if hint.present? %>
+              </div>
+            <% end %>
+          </div>
+        </fieldset>
+        <%= tag.p fiction.errors[:paused_at].to_sentence, class: 'mt-1 text-xs text-status-danger-solid' if fiction.errors[:paused_at].any? %>
       </div>
 
       <%= render 'fictions/license_fields', f: f, fiction: fiction if fiction.persisted? %>

@@ -14,6 +14,9 @@ module UserContent
     YOUTUBE_EMBED_PATH = %r{\A/embed/[A-Za-z0-9_-]+/?\z}
     INVISIBLE_TEXT = /[[:space:]\u200B-\u200D\u2060\uFEFF]/
     HIDDEN_STYLE = /display\s*:\s*none|visibility\s*:\s*hidden/i
+    # Word writes a character frame (w:bdr w:frame="1") as a red background plus
+    # white-space:nowrap, so the paragraph is one line wider than the editor.
+    WIDTH_STYLE_TAGS = %w[img iframe].freeze
     # Text pasted from another site keeps its utility classes (`mx-auto max-w-3xl`), which the site's
     # Tailwind would apply to the article. Only classes the editor itself writes are kept.
     CONTENT_CLASSES = %w[note-reference explanation].freeze
@@ -40,6 +43,12 @@ module UserContent
 
     def scrub(node)
       if node.element? && node.name == 'iframe' && !self.class.youtube_embed?(node['src'])
+        node.remove
+        return STOP
+      end
+
+      # A pasted stylesheet would paint the whole chapter. Drop the tag and the CSS text.
+      if node.element? && %w[style link meta].include?(node.name)
         node.remove
         return STOP
       end
@@ -71,6 +80,7 @@ module UserContent
     def scrub_attributes(node)
       super
       scrub_classes(node)
+      scrub_frame_paste(node)
       return unless node.name == 'a' && self.class.external?(node['href'])
 
       if invisible?(node)
@@ -92,6 +102,39 @@ module UserContent
       return true if node.key?('hidden') || node['style'].to_s.match?(HIDDEN_STYLE)
 
       node.text.gsub(INVISIBLE_TEXT, '').empty? && node.at_css('img, iframe').nil?
+    end
+
+    def scrub_frame_paste(node)
+      scrub_overflow_styles(node)
+      scrub_presentational_width(node)
+    end
+
+    def scrub_overflow_styles(node)
+      return unless node.key?('style')
+
+      kept = node['style'].split(';').filter_map { |declaration| kept_declaration(node, declaration) }
+      node['style'] = kept.join('; ')
+      node.remove_attribute('style') if node['style'].blank?
+    end
+
+    def kept_declaration(node, declaration)
+      text = declaration.strip
+      return if text.empty? || overflow_style?(node, text.split(':', 2).first.to_s.strip.downcase)
+
+      text
+    end
+
+    def overflow_style?(node, property)
+      return true if property.start_with?('background', 'mso-') || property == 'white-space'
+      return true if %w[width min-width max-width].include?(property) && WIDTH_STYLE_TAGS.exclude?(node.name)
+
+      false
+    end
+
+    def scrub_presentational_width(node)
+      return if WIDTH_STYLE_TAGS.include?(node.name)
+
+      node.remove_attribute('width')
     end
   end
 end

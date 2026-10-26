@@ -110,6 +110,15 @@ class LicensedFictionFreezeTest < ActionDispatch::IntegrationTest
     assert_select 'input[name=?]', 'fiction[title]'
   end
 
+  test 'the team cannot pause a licensed fiction' do
+    @fiction.update!(chapter_count: 2)
+
+    patch fiction_url(@fiction), params: { fiction: { release: 'paused', licensed: '1',
+                                                      license_publisher: 'Видавництво Тест' } }
+
+    assert_nil @fiction.reload.paused_at
+  end
+
   private
 
   def license!(at)

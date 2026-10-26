@@ -10,7 +10,7 @@ class FictionForm
   validate :cover_is_valid
 
   FORM_ONLY_PARAMS = %i[
-    genre_ids scanlator_ids expected_chapters complete licensed license_publisher license_url
+    genre_ids scanlator_ids expected_chapters release licensed license_publisher license_url
     chapters_hidden different_work
   ].freeze
 
@@ -66,7 +66,7 @@ class FictionForm
   def editorial_fields
     fields = {}
     fields[:expected] = params[:expected_chapters] if param?(:expected_chapters)
-    fields[:complete] = params[:complete] if param?(:complete)
+    fields[:release] = params[:release] if param?(:release)
     fields
   end
 

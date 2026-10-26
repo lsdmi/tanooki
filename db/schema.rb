@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_24_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -289,6 +289,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_200000) do
     t.json "listing_nudge_dismissals"
     t.bigint "merged_into_id"
     t.string "origin"
+    t.datetime "paused_at"
     t.text "short_description"
     t.string "slug", null: false
     t.string "title", null: false
@@ -299,6 +300,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_200000) do
     t.index ["created_at"], name: "index_fictions_on_created_at"
     t.index ["licensed_at"], name: "index_fictions_on_licensed_at"
     t.index ["merged_into_id"], name: "index_fictions_on_merged_into_id"
+    t.index ["paused_at"], name: "index_fictions_on_paused_at"
     t.index ["slug"], name: "index_fictions_on_slug", unique: true
     t.index ["views"], name: "index_fictions_on_views"
   end

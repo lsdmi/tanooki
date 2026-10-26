@@ -17,6 +17,20 @@
   text-indent: 1.5em;
 }
 
+/* Word character frames paste as nowrap plus a red background. */
+.epub-content :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, td, th, span, div) {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
+  max-width: 100%;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.epub-content :where(pre, code) {
+  white-space: pre-wrap !important;
+}
+
 /* Images */
 .epub-content img {
   max-width: 100%;

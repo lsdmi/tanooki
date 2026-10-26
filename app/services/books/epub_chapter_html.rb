@@ -9,6 +9,11 @@ module Books
     # font shorthand is included: it sets family and size. font-weight and background-color do not match.
     HAS_READER_OWNED_STYLE = /font-family\s*:|font-size\s*:|line-height\s*:|(?<![\w-])color\s*:|(?<![\w-])font\s*:/i
     READER_OWNED_DECLARATION = /(?:\A|;)\s*(?:font(?:-family|-size)?|line-height|color)\s*:\s*[^;]*/i
+    # Word character frames: red background and nowrap. Inline !important would beat the book CSS.
+    HAS_OVERFLOW_STYLE = /white-space\s*:|background(?:-[a-z]+)?\s*:|min-width\s*:|max-width\s*:|mso-/i
+    OVERFLOW_DECLARATION = /
+      (?:\A|;)\s*(?:white-space|min-width|max-width|background(?:-[a-z]+)?|mso-[\w-]+)\s*:\s*[^;]*
+    /ix
 
     class << self
       def html(chapter, book: nil, chapter_key: 'chapter', export_request_id: nil)
@@ -70,7 +75,7 @@ module Books
       def format_content(content)
         html = UserContent::ExplanationNotes.call(content.to_s)
         html = EpubFootnotes.call(html)
-        html = strip_reader_owned_styles(html)
+        html = strip_inline_styles(html)
         html = html.gsub('</hr>', '').gsub('</br>', '').gsub('</HR>', '').gsub('</BR>', '')
         html = html.gsub('&nbsp;', '&#160;').gsub('&NBSP;', '&#160;')
         return html if html.bytesize >= LARGE_CONTENT_BYTES
@@ -80,16 +85,21 @@ module Books
         normalize_img_tag(html)
       end
 
-      def strip_reader_owned_styles(html)
-        return html unless html.match?(HAS_READER_OWNED_STYLE)
+      def strip_inline_styles(html)
+        html = strip_style_declarations(html, HAS_READER_OWNED_STYLE, READER_OWNED_DECLARATION)
+        strip_style_declarations(html, HAS_OVERFLOW_STYLE, OVERFLOW_DECLARATION)
+      end
+
+      def strip_style_declarations(html, detector, declaration)
+        return html unless html.match?(detector)
 
         html.gsub(STYLE_ATTRIBUTE) do
           quoted = Regexp.last_match(1)
           value = quoted[1..-2]
-          next Regexp.last_match(0) unless value.match?(READER_OWNED_DECLARATION)
+          next Regexp.last_match(0) unless value.match?(declaration)
 
           quote = quoted[0]
-          cleaned = value.gsub(READER_OWNED_DECLARATION, '')
+          cleaned = value.gsub(declaration, '')
           cleaned = cleaned.sub(/\A\s*;\s*/, '').gsub(/;\s*;/, ';').strip.sub(/;\s*\z/, '')
           cleaned.empty? ? '' : %( style=#{quote}#{cleaned}#{quote})
         end

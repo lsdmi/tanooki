@@ -60,6 +60,20 @@ module Books
                       '<p>Only</p><p style="text-align: center">Size</p><p style="border-color: red">Edge</p>'
     end
 
+    test 'drops Word frame styles that stop a paragraph from wrapping' do
+      body = word_frame_epub_body
+
+      assert_not_includes body, 'white-space'
+      assert_not_includes body, 'background'
+    end
+
+    test 'keeps weight and indent next to a Word frame' do
+      body = word_frame_epub_body
+
+      assert_includes body, 'font-weight: 700'
+      assert_includes body, 'padding-left: 2em'
+    end
+
     test 'keeps the book stylesheet line-height and link color' do
       html = reader_style_html
 
@@ -76,6 +90,12 @@ module Books
     end
 
     private
+
+    def word_frame_epub_body
+      epub_html_for_body(
+        '<p style="white-space: nowrap; background-color: red; font-weight: 700; padding-left: 2em">Рядок</p>'
+      ).split('<body', 2).last
+    end
 
     def reader_style_html
       epub_html_for_body(

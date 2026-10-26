@@ -23,19 +23,57 @@ class FictionFormListingEditorialTest < ActiveSupport::TestCase
     assert_nil fiction.reload.expected_chapters
   end
 
-  test 'checking complete stamps completed_at' do
+  test 'release finished stamps completed_at and clears a pause' do
     fiction = fictions(:one)
+    fiction.update!(chapter_count: 2, paused_at: 1.day.ago)
 
-    assert listing_form(fiction, expected_chapters: fiction.expected_chapters, complete: '1').save
+    assert listing_form(fiction, release: 'finished').save
     assert_not_nil fiction.reload.completed_at
+    assert_nil fiction.paused_at
   end
 
-  test 'unchecking complete clears completed_at' do
+  test 'release ongoing clears both timestamps' do
     fiction = fictions(:one)
-    fiction.update!(completed_at: Time.current)
+    fiction.update!(chapter_count: 2, completed_at: Time.current, paused_at: 1.day.ago)
 
-    assert listing_form(fiction, expected_chapters: fiction.expected_chapters, complete: '0').save
-    assert_nil fiction.reload.completed_at
+    assert listing_form(fiction, release: 'ongoing').save
+
+    fiction.reload
+
+    assert_nil fiction.completed_at
+    assert_nil fiction.paused_at
+  end
+
+  test 'release paused with no chapters is invalid' do
+    fiction = fictions(:one)
+    fiction.update!(chapter_count: 0, completed_at: Time.current)
+    form = listing_form(fiction, release: 'paused')
+
+    assert_not form.save
+    assert_not_empty fiction.errors[:paused_at]
+  end
+
+  test 'release paused with no chapters does not persist' do
+    fiction = fictions(:one)
+    fiction.update!(chapter_count: 0, completed_at: Time.current)
+    listing_form(fiction, release: 'paused').save
+
+    fiction.reload
+
+    assert_nil fiction.paused_at
+    assert_not_nil fiction.completed_at
+  end
+
+  test 'release paused stamps paused_at when chapters exist' do
+    fiction = fictions(:one)
+    fiction.update!(chapter_count: 2, completed_at: Time.current)
+
+    assert listing_form(fiction, release: 'paused').save
+
+    fiction.reload
+
+    assert_not_nil fiction.paused_at
+    assert_nil fiction.completed_at
   end
 
   test 'rejects expected_chapters below live chapter_count' do
