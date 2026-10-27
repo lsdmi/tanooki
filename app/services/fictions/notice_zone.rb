@@ -9,7 +9,7 @@ module Fictions
     Notice = Data.define(:kind, :title, :body)
 
     AGE_KINDS = { 'eighteen' => :adult, 'sixteen' => :teen }.freeze
-    STATUS_KINDS = { stale: :dropped, announced: :announced, finished: :finished }.freeze
+    STATUS_KINDS = { stale: :dropped, paused: :paused, announced: :announced, finished: :finished }.freeze
 
     module_function
 

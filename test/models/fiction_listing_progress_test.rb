@@ -77,6 +77,39 @@ class FictionListingProgressTest < ActiveSupport::TestCase
     assert_equal 'Без онов.', @fiction.listing_state_label_short
   end
 
+  test 'listing_state is paused over a recent chapter' do
+    @fiction.chapter_count = 4
+    @fiction.last_chapter_at = 1.day.ago
+    @fiction.paused_at = Time.current
+
+    assert_equal :paused, @fiction.listing_state
+    assert_equal 'Призупинено', @fiction.listing_state_label
+    assert_equal 'Призуп.', @fiction.listing_state_label_short
+  end
+
+  test 'listing_state is paused over a long silence' do
+    @fiction.chapter_count = 4
+    @fiction.last_chapter_at = 120.days.ago
+    @fiction.paused_at = Time.current
+
+    assert_equal :paused, @fiction.listing_state
+  end
+
+  test 'finished wins over a pause' do
+    @fiction.completed_at = Time.current
+    @fiction.paused_at = Time.current
+    @fiction.chapter_count = 4
+
+    assert_equal :finished, @fiction.listing_state
+  end
+
+  test 'a pause with no chapters stays announced' do
+    @fiction.chapter_count = 0
+    @fiction.paused_at = Time.current
+
+    assert_equal :announced, @fiction.listing_state
+  end
+
   test 'listing_state is ongoing when last_chapter_at is recent' do
     @fiction.chapter_count = 10
     @fiction.last_chapter_at = 1.day.ago

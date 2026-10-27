@@ -17,11 +17,12 @@ module Fictions
     test 'each listing state maps to its status notice' do
       kinds = {
         stale: { last_chapter_at: 4.months.ago },
+        paused: { paused_at: Time.current },
         announced: { chapter_count: 0, last_chapter_at: nil },
         finished: { completed_at: 1.day.ago }
       }.transform_values { |attrs| NoticeZone.for(@fiction.dup.tap { |f| f.assign_attributes(attrs) }).map(&:kind) }
 
-      assert_equal({ stale: [:dropped], announced: [:announced], finished: [:finished] }, kinds)
+      assert_equal({ stale: [:dropped], paused: [:paused], announced: [:announced], finished: [:finished] }, kinds)
     end
 
     test 'the age notice comes first and can be left out' do
@@ -53,6 +54,15 @@ module Fictions
       assert_equal 'Твір офіційно ліцензовано в Україні. ' \
                    'Опубліковані розділи лишаються доступними, нових на сайті не буде.',
                    NoticeZone.licensed(@fiction).body
+    end
+
+    test 'a pause notice says the author stopped the release' do
+      @fiction.assign_attributes(paused_at: Time.current)
+      notice = NoticeZone.for(@fiction).sole
+
+      assert_equal :paused, notice.kind
+      assert_equal 'ВИПУСК ПРИЗУПИНЕНО', notice.title
+      assert_equal I18n.t('fictions.notice_zone.paused.body'), notice.body
     end
 
     test 'notices carry the uk copy' do

@@ -31,8 +31,8 @@ module Ui
     end
 
     test 'each kind maps to its status family' do
-      { adult: 'danger', teen: 'warning', licensed: 'licensed', dropped: 'warning', announced: 'info',
-        finished: 'success' }.each do |kind, family|
+      { adult: 'danger', teen: 'warning', licensed: 'licensed', dropped: 'warning', paused: 'warning',
+        announced: 'info', finished: 'success' }.each do |kind, family|
         render_inline(NoticeComponent.new(kind:, title: 'Заголовок'))
 
         assert_selector "div.bg-status-#{family}-subtle-bg"
@@ -74,7 +74,7 @@ module Ui
     end
 
     test 'rejects unknown kind and style' do
-      assert_raises(ArgumentError) { NoticeComponent.new(kind: :paused, title: 'X') }
+      assert_raises(ArgumentError) { NoticeComponent.new(kind: :unknown, title: 'X') }
       assert_raises(ArgumentError) { NoticeComponent.new(kind: :adult, title: 'X', style: :banner) }
     end
   end

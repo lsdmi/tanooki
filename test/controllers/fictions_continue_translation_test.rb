@@ -33,6 +33,15 @@ class FictionsContinueTranslationTest < ActionDispatch::IntegrationTest
     assert_select '[role="note"] a[href^="/login"]', text: 'Увійдіть, щоб продовжити переклад'
   end
 
+  test 'a paused fiction shows the pause badge and notice without a pickup link' do
+    @fiction.update!(last_chapter_at: 1.day.ago, paused_at: Time.current)
+    get fiction_url(@fiction)
+
+    assert_select 'span', text: 'Призупинено'
+    assert_includes response.body, I18n.t('fictions.notice_zone.paused.title')
+    assert_select 'a[href=?]', @new_chapter, count: 0
+  end
+
   test 'an ongoing translation has no notice action, only the chapters tab line' do
     @fiction.update!(last_chapter_at: 1.day.ago)
     sign_in users(:user_two)

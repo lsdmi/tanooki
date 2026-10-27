@@ -20,7 +20,7 @@ module Fictions
     end
 
     def render?
-      fiction.listing_state != :finished && !fiction.licensed?
+      fiction.listing_state != :finished && fiction.listing_state != :paused && !fiction.licensed?
     end
 
     private

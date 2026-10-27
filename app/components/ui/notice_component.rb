@@ -11,6 +11,7 @@ module Ui
       teen: { family: :warning, icon: :triangle_alert },
       licensed: { family: :licensed, icon: :lock },
       dropped: { family: :warning, icon: :circle_pause },
+      paused: { family: :warning, icon: :circle_pause },
       announced: { family: :info, icon: :megaphone },
       finished: { family: :success, icon: :circle_check_big }
     }.freeze

@@ -32,6 +32,14 @@ class FictionLicenseTest < ActiveSupport::TestCase
     assert_equal 'Ліценз.', @licensed.public_listing_label_short
   end
 
+  test 'a licensed paused work still shows Ліцензовано' do
+    @licensed.assign_attributes(chapter_count: 3, last_chapter_at: 1.day.ago, paused_at: Time.current)
+
+    assert_equal :paused, @licensed.listing_state
+    assert_equal 'Ліцензовано', @licensed.public_listing_label
+    assert_equal 'Ліценз.', @licensed.public_listing_label_short
+  end
+
   test 'a licensed finished work keeps completed_at' do
     @licensed.assign_attributes(chapter_count: 5, last_chapter_at: 200.days.ago, completed_at: 150.days.ago)
 

@@ -32,6 +32,20 @@ class FictionListingScopesTest < ActiveSupport::TestCase
     assert_not_includes Fiction.live, @fiction
   end
 
+  test 'a pause stays out of live and stale' do
+    @fiction.update!(chapter_count: 3, last_chapter_at: 1.day.ago, paused_at: Time.current)
+
+    assert_not_includes Fiction.live, @fiction
+    assert_not_includes Fiction.stale, @fiction
+  end
+
+  test 'a pause stays out of announced and finished' do
+    @fiction.update!(chapter_count: 3, last_chapter_at: 91.days.ago, paused_at: Time.current)
+
+    assert_not_includes Fiction.announced, @fiction
+    assert_not_includes Fiction.finished, @fiction
+  end
+
   test 'stale is old last_chapter_at without complete' do
     @fiction.update!(chapter_count: 3, last_chapter_at: 91.days.ago, completed_at: nil)
 

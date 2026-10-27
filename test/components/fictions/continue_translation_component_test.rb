@@ -51,6 +51,14 @@ module Fictions
       assert_selector "a[href='#{@new_chapter}']", text: 'Додати розділ'
     end
 
+    test 'a paused fiction offers no continuation' do
+      @fiction.assign_attributes(chapter_count: 3, last_chapter_at: 1.day.ago, paused_at: Time.current)
+
+      render_continue(users(:user_two), :chapters)
+
+      assert_no_selector 'a'
+    end
+
     test 'finished translations get nothing' do
       @fiction.completed_at = Time.current
       render_continue(users(:user_two), :chapters)

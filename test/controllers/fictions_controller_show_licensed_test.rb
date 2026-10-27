@@ -31,6 +31,17 @@ class FictionsControllerShowLicensedTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: @fiction.listing_state_label, count: 0
   end
 
+  test 'a licensed paused work shows the licensed tag, not the pause' do
+    license!
+    @fiction.update!(chapter_count: 3, last_chapter_at: 1.day.ago, paused_at: Time.current)
+
+    get fiction_url(@fiction)
+
+    assert_select 'span', text: I18n.t('fictions.license.label')
+    assert_select 'span', text: 'Призупинено', count: 0
+    assert_not_includes response.body, I18n.t('fictions.notice_zone.paused.title')
+  end
+
   test 'a licensed work quiet for months shows the licensed tag and notice, not the dropped ones' do
     license!
     @fiction.update!(chapter_count: 3, last_chapter_at: 4.months.ago)

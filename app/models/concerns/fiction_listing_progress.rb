@@ -11,12 +11,13 @@ module FictionListingProgress
 
   LISTING_STATE_LABELS = {
     finished: 'Завершено',
+    paused: 'Призупинено',
     stale: 'Без оновлень',
     announced: 'Анонсовано',
     ongoing: 'Видається'
   }.freeze
   # Cutting «Без оновлень» to six letters leaves «Без он.».
-  LISTING_STATE_SHORT_LABELS = { stale: 'Без онов.' }.freeze
+  LISTING_STATE_SHORT_LABELS = { stale: 'Без онов.', paused: 'Призуп.' }.freeze
 
   included do
     before_validation :normalize_expected_chapters
@@ -26,16 +27,16 @@ module FictionListingProgress
     validate :expected_chapters_at_least_chapter_count, if: :will_save_change_to_expected_chapters?
     validate :paused_at_requires_chapters
 
-    scope :finished, -> { where.not(completed_at: nil) }
+    scope :finished, -> { where.not(completed_at: nil).where(paused_at: nil) }
     scope :live, lambda {
-      where(completed_at: nil).where.not(chapter_count: 0).where(last_chapter_at: STALE_AFTER.ago..)
+      where(completed_at: nil, paused_at: nil).where.not(chapter_count: 0).where(last_chapter_at: STALE_AFTER.ago..)
     }
     scope :announced, lambda {
       table = arel_table
-      where(completed_at: nil).where(table[:chapter_count].eq(0).or(table[:last_chapter_at].eq(nil)))
+      where(completed_at: nil, paused_at: nil).where(table[:chapter_count].eq(0).or(table[:last_chapter_at].eq(nil)))
     }
     scope :stale, lambda {
-      where(completed_at: nil)
+      where(completed_at: nil, paused_at: nil)
         .where.not(chapter_count: 0)
         .where(arel_table[:last_chapter_at].lt(STALE_AFTER.ago))
     }
@@ -43,6 +44,7 @@ module FictionListingProgress
 
   def listing_state
     return :finished if completed_at
+    return :paused if paused_at && chapter_count.positive?
     return :announced if chapter_count.zero? || last_chapter_at.blank?
     return :stale if last_chapter_at < STALE_AFTER.ago
 

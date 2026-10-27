@@ -44,6 +44,18 @@ module Catalog
       assert_nil ListingNudge.for(@fiction)
     end
 
+    test 'no gone quiet when the author paused the release' do
+      @fiction.update!(
+        expected_chapters: nil,
+        chapter_count: 5,
+        last_chapter_at: FictionListingProgress::STALE_AFTER.ago - 1.day,
+        paused_at: Time.current
+      )
+
+      assert_equal :paused, @fiction.listing_state
+      assert_not_equal ListingNudge::GONE_QUIET, ListingNudge.for(@fiction)&.kind
+    end
+
     test 'no gone quiet when already complete' do
       @fiction.update!(
         expected_chapters: nil,
