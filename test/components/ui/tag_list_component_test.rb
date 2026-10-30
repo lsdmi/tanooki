@@ -74,6 +74,37 @@ module Ui
       assert_selector 'span.lg\\:hidden', text: '+1'
     end
 
+    test 'compact_max_sm hides the third pill below sm' do
+      render_inline(
+        TagListComponent.new(
+          labels: %w[Бойовик Ісекай Фентезі],
+          variant: :genre,
+          compact_max: 3,
+          compact_max_sm: 2,
+          href_builder: ->(label) { "/genres/#{label}" }
+        )
+      )
+
+      assert_selector 'a:not(.max-sm\\:hidden):not(.max-lg\\:hidden)', text: 'Бойовик'
+      assert_selector 'a.max-sm\\:hidden', text: 'Фентезі'
+      assert_selector 'span.sm\\:hidden', text: '+1'
+    end
+
+    test 'compact_max_sm does not show the lg overflow counter' do
+      render_inline(
+        TagListComponent.new(
+          labels: %w[Бойовик Ісекай Фентезі],
+          variant: :genre,
+          compact_max: 3,
+          compact_max_sm: 2,
+          href_builder: ->(label) { "/genres/#{label}" }
+        )
+      )
+
+      assert_selector 'a:not(.max-sm\\:hidden):not(.max-lg\\:hidden)', text: 'Ісекай'
+      assert_no_selector 'span.lg\\:hidden'
+    end
+
     test 'renders overflow tag when max exceeded' do
       render_inline(
         TagListComponent.new(

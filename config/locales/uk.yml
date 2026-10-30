@@ -416,9 +416,43 @@ uk:
       cap: Зараз можна вимкнути лише один пакет
       package: Такого пакета немає
   fiction_lists:
+    catalog_count:
+      one: "%{count} твір"
+      few: "%{count} твори"
+      many: "%{count} творів"
+      other: "%{count} творів"
+    search_placeholder: Назва, автор чи англійська назва...
+    view_grid: Сіткою
+    view_list: Списком
+    empty:
+      none: Нічого не знайдено
+      search_title: Нічого не знайшлося за «%{query}»
+      search_hint: Спробуйте іншу назву чи ім’я автора
+    sort:
+      menu: Сортування
+      title_asc: За алфавітом (А-Я)
+      title_desc: За алфавітом (Я-А)
+      updated_desc: За оновленнями (нові оновлення)
+      updated_asc: За оновленнями (старі оновлення)
+      popular_desc: За популярністю (популярні)
+      popular_asc: За популярністю (менш популярні)
+      rating_desc: За рейтингом (найкращі)
+      rating_asc: За рейтингом (найгірші)
     filters:
-      include_eighteen: Показувати 18+
+      title: Фільтри
+      close: Закрити фільтри
+      genres: Жанри
+      all_genres: Усі
+      quick: Добірки
+      only_new: Новинки
+      longreads: Довгочити
+      evening: На вечір
+      top_rated: Топове
+      finished: Завершене
       licensed: Ліцензовані
+      include_eighteen: Показувати 18+
+      apply: Застосувати
+      clear: Очистити фільтри
   fictions:
     license:
       label: Ліцензовано

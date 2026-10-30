@@ -3,6 +3,8 @@
 module Ui
   # Flex row of taxonomy tags with wrapping.
   class TagListComponent < ViewComponent::Base
+    include TagListCompact
+
     def initialize(labels:, variant: :keyword, size: :sm, **options)
       super()
       assign_tag_list_options(labels, variant, size, options)
@@ -14,8 +16,8 @@ module Ui
 
     private
 
-    attr_reader :labels, :variant, :size, :max, :compact_max, :href_builder, :current_label, :counts, :genre_slugs,
-                :html, :tag_html
+    attr_reader :labels, :variant, :size, :max, :compact_max, :compact_max_sm, :href_builder, :current_label,
+                :counts, :genre_slugs, :html, :tag_html
 
     def variant_for(label)
       return variant unless variant == :genre
@@ -45,15 +47,6 @@ module Ui
       labels.size - visible_labels.size
     end
 
-    # Below lg only the first compact_max pills stay, with a +N pill standing in for the rest.
-    def compact_collapsed?
-      compact_max.present? && visible_labels.size > compact_max
-    end
-
-    def compact_overflow_count
-      visible_labels.size - compact_max
-    end
-
     def tag_groups
       adults, regular = visible_labels.partition { |label| priority_label?(label) }
       groups = []
@@ -74,14 +67,6 @@ module Ui
       tag_href = href_for(label)
       { label: label, variant: variant_for(label), size: size, as: tag_href.present? ? :link : :span, href: tag_href,
         current: current?(label), count: count_for(label), html: tag_html_for(label) }
-    end
-
-    # max-lg:hidden rather than a bare hidden: the pill's base inline-flex would otherwise
-    # win or lose on stylesheet order instead of breakpoint.
-    def tag_html_for(label)
-      return tag_html unless compact_collapsed? && visible_labels.index(label).to_i >= compact_max
-
-      tag_html.merge(class: [tag_html[:class], 'max-lg:hidden'].compact.join(' '))
     end
 
     def wrapper_classes
@@ -125,6 +110,7 @@ module Ui
       @size = size
       @max = options[:max]
       @compact_max = options[:compact_max]
+      @compact_max_sm = options[:compact_max_sm]
     end
 
     def assign_tag_list_presentation(options)

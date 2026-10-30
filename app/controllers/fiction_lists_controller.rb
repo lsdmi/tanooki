@@ -25,10 +25,17 @@ class FictionListsController < ApplicationController
 
   private
 
+  def catalog_query_params
+    Fictions::ListFilters.permit_for_query(params).merge(
+      q: params[:q].is_a?(String) ? params[:q] : nil,
+      sort: FictionListQueryBuilder.normalize_sort(params[:sort])
+    )
+  end
+
   def paginated_fictions
     pagy(
-      FictionListQueryBuilder.new(catalog_scope, Fictions::ListFilters.permit_for_query(params)).call,
-      limit: 20
+      FictionListQueryBuilder.new(catalog_scope, catalog_query_params).call,
+      limit: 24
     )
   end
 
@@ -43,7 +50,12 @@ class FictionListsController < ApplicationController
   end
 
   def list_locals
-    { fictions: @fictions, pagy: @pagy, explicit_hidden_genre: @explicit_hidden_genre, content_filter_notice: true }
+    {
+      fictions: @fictions,
+      pagy: @pagy,
+      explicit_hidden_genre: @explicit_hidden_genre,
+      content_filter_notice: true
+    }
   end
 
   def render_fictions_list

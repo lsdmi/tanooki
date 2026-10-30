@@ -26,7 +26,7 @@ class FictionListsControllerTest < ActionDispatch::IntegrationTest
     assert_match(/turbo-stream/, @response.media_type)
   end
 
-  test 'alphabetical default omits eighteen and keeps sixteen' do
+  test 'alphabetical default hides eighteen until the filter is on' do
     get alphabetical_fictions_url
 
     assert_response :success
@@ -77,6 +77,21 @@ class FictionListsControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil session[:catalog_include_eighteen]
     assert_select 'a[href=?]', fiction_path(fictions(:eighteen)), count: 0
+  end
+
+  test 'alphabetical filters drawer opens from the toolbar' do
+    get alphabetical_fictions_url
+
+    assert_select '[data-controller~=catalog-filters]'
+    assert_select '#catalog-filters-panel[data-catalog-filters-target=panel]'
+    assert_select 'button[data-action="click->catalog-filters#open"]'
+  end
+
+  test 'alphabetical filters drawer lists filter fields' do
+    get alphabetical_fictions_url
+
+    assert_select '#catalog-filters-panel input[name=only_new]'
+    assert_select '#catalog-filters-panel input[name=genre]', minimum: 1
   end
 
   test 'signed-in readers also use the session preference' do

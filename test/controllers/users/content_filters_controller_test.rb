@@ -81,8 +81,7 @@ module Users
       get alphabetical_fictions_path
 
       assert_response :success
-      assert_match(/id="guest-content-filter-mobile_toggle"[^>]*checked/, response.body)
-      assert_match(/id="guest-content-filter-desktop_toggle"[^>]*checked/, response.body)
+      assert_match(/id="guest-content-filter_toggle"[^>]*checked/, response.body)
     end
 
     test 'a guest can clear the cookie' do
@@ -91,7 +90,7 @@ module Users
 
       assert_response :success
       assert_match(/max-age=0/i, response.get_header('Set-Cookie'))
-      assert_no_match(/id="guest-content-filter-mobile_toggle"[^>]*checked/, response.body)
+      assert_no_match(/id="guest-content-filter_toggle"[^>]*checked/, response.body)
     end
 
     test 'an account cannot save an unknown package' do

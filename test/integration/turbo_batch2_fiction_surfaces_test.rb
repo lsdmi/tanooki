@@ -5,12 +5,12 @@ require 'test_helper'
 class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test 'alphabetical fiction list details escape turbo frame for fiction show' do
+  test 'alphabetical catalog links escape the list turbo frame for fiction show' do
     get alphabetical_fictions_url
 
     assert_response :success
-    assert_select 'turbo-frame#fiction_details_frame a[data-turbo-frame="_top"][href*="/fictions/"]'
-    assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_fiction_details_frame_html)
+    assert_select '#fiction-list-page a[data-turbo-frame="_top"][href*="/fictions/"]', minimum: 1
+    assert_no_match(/turbo:\s*false|data-turbo="false"/, extract_fiction_list_page_html)
   end
 
   test 'fictions index new releases escape turbo frame for fiction show' do
@@ -59,8 +59,8 @@ class TurboBatch2FictionSurfacesTest < ActionDispatch::IntegrationTest
 
   private
 
-  def extract_fiction_details_frame_html
-    response.body[%r{turbo-frame[^>]*id="fiction_details_frame"[^>]*>.*?</turbo-frame>}m] || ''
+  def extract_fiction_list_page_html
+    response.body[%r{turbo-frame[^>]*id="fiction-list-page"[^>]*>.*?</turbo-frame>}m] || ''
   end
 
   def extract_fiction_details_section_html

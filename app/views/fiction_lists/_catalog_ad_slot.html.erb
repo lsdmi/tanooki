@@ -1,0 +1,9 @@
+<%# Mid-catalog AdSense unit. Full-width; after the first 12 results (two desktop gallery rows). %>
+<%# locals: (wrapper_class: "") %>
+<% page_key = params[:page].presence || 1 %>
+<% view_key = params[:view] == 'list' ? 'list' : 'grid' %>
+<%= render 'shared/adsense_collapse_safe',
+           placement: :fiction_alphabetical,
+           navigation_key: "catalog-#{view_key}-p#{page_key}",
+           measure_as: 'bottom',
+           wrapper_class: "w-full py-6 #{wrapper_class}" %>

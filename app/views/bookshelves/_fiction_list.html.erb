@@ -3,5 +3,5 @@
 <% cache_key << content_filter_fingerprint if content_filter_fingerprint.present? %>
 <% cache cache_key do %>
   <%= render Ui::FilteredNoticeComponent.new(count: hidden_fiction_count.to_i, change_path: content_filter_settings_path) %>
-  <%= render partial: 'fiction_lists/dynamic_content', locals: { fictions:, pagy: } %>
+  <%= render partial: 'fiction_lists/picker_list', locals: { fictions:, pagy: } %>
 <% end %>

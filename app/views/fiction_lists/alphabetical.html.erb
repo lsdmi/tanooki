@@ -1,46 +1,12 @@
-<div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative">
-  <!-- Page Title -->
-  <div class="py-4 sm:pt-8 sm:pb-4">
-    <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-fg tracking-tight leading-none mb-2 sm:mb-4">Сховище</h1>
-    <p class="text-fg text-sm sm:text-lg lg:text-2xl font-light">Усі ранобе, веб-новели та художня проза!</p>
+<%# Drawer must sit outside catalog-alpha's z-10 stacking context or the navbar covers its header. %>
+<div data-controller="catalog-filters">
+  <div class="catalog-alpha relative z-10 mx-auto max-w-screen-xl px-4 py-6 lg:py-12 2xl:px-0">
+    <h1 class="sr-only">Сховище</h1>
+
+    <%= render partial: 'fiction_lists/dynamic_content',
+               locals: { fictions: @fictions, pagy: @pagy, explicit_hidden_genre: @explicit_hidden_genre,
+                         content_filter_notice: true } %>
   </div>
 
-  <%# Full-width horizontal unit below the H1 (responsive AdSense fills the container). %>
-  <div class="mb-6 w-full lg:mb-8">
-    <%= render "shared/adsense_slot",
-               placement: :fiction_alphabetical,
-               navigation_key: "fiction-alphabetical" %>
-  </div>
-
-  <!-- Filters: Top (mobile/tablet only) -->
-  <div class="block lg:hidden w-full mb-6">
-    <div class="bg-card rounded-xl p-4 sm:p-6 shadow-md border border-line">
-      <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
-      <%= turbo_frame_tag "filters" do %>
-        <%= render partial: 'fiction_lists/filter_form', locals: { guest_toggle_id: 'guest-content-filter-mobile' } %>
-      <% end %>
-    </div>
-  </div>
-
-  <!-- Main Layout: Sidebar (filters/ads) + Main Content -->
-  <div class="flex flex-col lg:flex-row gap-8">
-    <!-- Sidebar: Filters & Ads (desktop only) -->
-    <aside class="lg:w-80 w-full flex-shrink-0 flex-col gap-6 hidden lg:flex">
-      <div class="bg-card rounded-xl p-6 shadow-md border border-line">
-        <h2 class="text-2xl line-clamp-1 group-hover:text-brand transition-colors duration-300 font-black text-fg tracking-tight leading-none mb-4">Фільтри</h2>
-        <%= turbo_frame_tag "filters" do %>
-          <%= render partial: 'fiction_lists/filter_form', locals: { guest_toggle_id: 'guest-content-filter-desktop' } %>
-        <% end %>
-      </div>
-    </aside>
-
-    <!-- Main Content: Fiction Picker & Details -->
-    <main class="flex-1 p-2 sm:p-4 bg-surface rounded-lg shadow-md overflow-hidden border border-line">
-      <%= turbo_frame_tag 'fiction-list-page', data: { controller: 'fiction-picker' }, class: 'mb-4' do %>
-        <%= render partial: 'fiction_lists/dynamic_content',
-                   locals: { fictions: @fictions, pagy: @pagy, explicit_hidden_genre: @explicit_hidden_genre,
-                             content_filter_notice: true } %>
-      <% end %>
-    </main>
-  </div>
+  <%= render 'fiction_lists/catalog_filters_drawer' %>
 </div>

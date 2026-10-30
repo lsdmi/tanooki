@@ -36,7 +36,7 @@ class FictionListsContentFilterTest < ActionDispatch::IntegrationTest
     patch content_filter_path, params: { max_content_rating: '16' }, as: :turbo_stream
 
     assert_response :success
-    assert_includes response.body, 'catalog-include-eighteen-guest-content-filter-desktop'
+    assert_includes response.body, 'catalog-include-eighteen-guest-content-filter'
     assert_includes response.body, 'disabled'
   end
 
@@ -47,7 +47,7 @@ class FictionListsContentFilterTest < ActionDispatch::IntegrationTest
 
     assert_select 'a[href=?]', fiction_path(@eighteen), count: 0
     assert_select 'input[name=include_eighteen][disabled]'
-    assert_select 'turbo-frame#filters a[data-turbo-frame=?]', '_top', text: 'Змінити'
+    assert_select '#catalog-include-eighteen-guest-content-filter a[data-turbo-frame=?]', '_top', text: 'Змінити'
   end
 
   test 'picking a hidden genre keeps those works out and says the genre is hidden' do

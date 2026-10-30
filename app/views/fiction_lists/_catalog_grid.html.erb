@@ -1,0 +1,54 @@
+<div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6">
+  <% fictions.each_with_index do |fiction, index| %>
+    <% rating = fiction.average_rating %>
+    <% rating_text = rating.positive? ? number_with_precision(rating, precision: 1, separator: ',') : nil %>
+    <% age_label = fiction.content_rating_label %>
+    <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
+    <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs).first(2) %>
+    <article class="group min-w-0" data-fiction-picker-id-param="<%= fiction.id %>">
+      <%= link_to fiction_path(fiction),
+            class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-md bg-surface-strong transition-[filter,transform] duration-200 ease-out hover:brightness-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand',
+            data: { turbo_frame: '_top' } do %>
+        <%= cover_card_picture_tag(
+              fiction.cover,
+              alt: '',
+              class: 'absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-out group-hover/cover:scale-[1.02]',
+              picture_html: { class: 'absolute inset-0 block h-full w-full' }
+            ) %>
+        <% if age_label %>
+          <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= fiction.content_rating_eighteen? ? 'token-raw border border-rose-700/60 bg-rose-100/80 text-rose-900 dark:border-rose-400/50 dark:bg-rose-950/70 dark:text-rose-100' : 'token-raw border border-amber-800/60 bg-amber-100/80 text-amber-950 dark:border-amber-400/50 dark:bg-amber-950/70 dark:text-amber-100' %>"
+                aria-label="<%= age_label %>"><%= age_label %></span>
+        <% end %>
+        <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10">
+          <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: format_view_count(fiction.views)) %>
+          <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: rating_text) %>
+        </div>
+      <% end %>
+      <div class="pt-2">
+        <h2 class="text-[15px] font-medium leading-5 text-fg">
+          <%= link_to fiction.title, fiction_path(fiction),
+                class: 'line-clamp-2 rounded-md transition-colors hover:text-fg-brand hover:underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                data: { turbo_frame: '_top' } %>
+        </h2>
+        <% if genre_labels.any? %>
+          <%= render Ui::TagListComponent.new(
+                labels: genre_labels,
+                variant: :genre,
+                size: :sm,
+                sort_adult_first: true,
+                genre_slugs: genre_slugs,
+                href_builder: ->(name) {
+                  slug = genre_slugs[name]
+                  fiction_genre_fictions_path(slug) if slug.present?
+                },
+                tag_html: { data: { turbo_frame: '_top' } },
+                html: { class: 'mt-1.5 gap-1 min-w-0' }
+              ) %>
+        <% end %>
+      </div>
+    </article>
+    <% if catalog_mid_ad?(index: index, total: fictions.size) %>
+      <%= render 'fiction_lists/catalog_ad_slot', wrapper_class: 'col-span-full' %>
+    <% end %>
+  <% end %>
+</div>

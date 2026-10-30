@@ -1,12 +1,12 @@
-<div id="<%= dom_id %>" class="pt-4 mt-4 border-t border-line">
+<div id="<%= dom_id %>" class="pt-4">
   <%= form_with url: content_filter_path, method: :patch, data: { turbo_stream: '' } do %>
     <%= hidden_field_tag :max_content_rating, '' %>
-    <label class="inline-flex items-center" for="<%= dom_id %>_toggle">
+    <label class="inline-flex items-start gap-2.5" for="<%= dom_id %>_toggle">
       <%= check_box_tag :max_content_rating, '16', current_content_filter.max_rating == 16,
             id: "#{dom_id}_toggle",
-            class: 'h-5 w-5 rounded border-line-strong text-brand focus:ring-brand bg-card transition duration-150',
+            class: 'mt-0.5 h-5 w-5 rounded border-line-strong text-brand focus:ring-brand bg-main transition duration-150',
             onchange: 'this.form.requestSubmit()' %>
-      <span class="ml-2 text-base sm:text-lg font-black text-fg tracking-tight leading-none">
+      <span class="text-sm font-medium text-fg">
         <%= t('content_filters.guest_hide_eighteen') %>
       </span>
     </label>

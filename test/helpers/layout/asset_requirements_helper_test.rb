@@ -87,6 +87,16 @@ module Layout
       assert_predicate self, :requires_chapters_reader_styles?
     end
 
+    test 'catalog storage styles load on alphabetical fiction list only' do
+      assign_controller(:fiction_lists, :alphabetical)
+
+      assert_predicate self, :requires_catalog_storage_styles?
+
+      assign_controller(:fiction_lists, :index)
+
+      assert_not_predicate self, :requires_catalog_storage_styles?
+    end
+
     test 'actiontext styles load on tale show' do
       assign_controller(:tales, :show)
 

@@ -1,6 +1,8 @@
+/* Hallmark · v2.0.0 · redesign: polish · scope: app · built: the project · genre: editorial */
+/* Hallmark · critique: Storage chrome — brand progress bar, focus, reduced motion, clip overflow; catalog keeps its grid */
 /*
  * Site-wide base styles. Feature CSS (pagy, slimselect, actiontext, chapters_reader,
- * sweetal2, adsense_slots) is linked from the layout via Layout::StylesheetsHelper#page_stylesheets.
+ * catalog_storage, sweetal2, adsense_slots) is linked via Layout::StylesheetsHelper#page_stylesheets.
  * Deferred sheets (adsense_slots, pagy, sweetal2) must not own above-fold CLS reservations —
  * those live in the "Critical AdSense reservation" block below.
  */
@@ -89,20 +91,32 @@
 }
 
 @layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
-}
 
-@layer base {
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-      border-color: var(--color-gray-200, currentColor);
-    }
+  :where(a, button, [role="button"], summary, input, select, textarea):focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  :where(button, [role="button"]):not(:disabled):active {
+    filter: brightness(0.96);
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
 /* Critical AdSense reservation (always blocking). Preview chrome / filled layout stay in deferred adsense_slots.css. */
@@ -115,7 +129,7 @@
 .reader-ad-slot__frame {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: clip;
   min-height: 0;
 }
 
@@ -126,7 +140,7 @@ html.adblock-likely .reader-ad-slot,
   max-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
@@ -166,7 +180,7 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
   max-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
@@ -185,27 +199,20 @@ html.adblock-likely .index-banners .reader-ad-slot {
   max-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
 
 /* --- Turbo Drive transitions (Phase 2) --- */
 
-/* Premium progress bar — fades in only when visit exceeds Turbo.setProgressBarDelay */
+/* Progress bar — solid brand; shows when visit exceeds Turbo.setProgressBarDelay */
 .turbo-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgb(8 145 178) 0%,
-    rgb(244 63 94) 50%,
-    rgb(8 145 178) 100%
-  );
-  background-size: 200% 100%;
-  animation: turbo-progress-shimmer 0.9s ease-in-out infinite;
+  background: var(--color-brand);
   z-index: 9999;
   opacity: 0;
   transition: opacity 0.15s ease;
@@ -214,11 +221,6 @@ html.adblock-likely .index-banners .reader-ad-slot {
 
 .turbo-progress-bar[style*="width"] {
   opacity: 1;
-}
-
-@keyframes turbo-progress-shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
 }
 
 .turbo-progress-bar--hidden {
@@ -261,4 +263,18 @@ html:not(.turbo-transitioning) body {
   height: 100%;
   object-fit: none;
   object-position: left top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .turbo-progress-bar,
+  html.turbo-transitioning body,
+  html:not(.turbo-transitioning) body {
+    transition: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(*) {
+    animation: none !important;
+  }
 }

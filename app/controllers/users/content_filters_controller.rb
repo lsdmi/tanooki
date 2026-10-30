@@ -5,7 +5,7 @@ module Users
   class ContentFiltersController < ApplicationController
     include Fictions::CatalogIncludeEighteenPreference
 
-    GUEST_TOGGLE_IDS = %w[guest-content-filter-mobile guest-content-filter-desktop].freeze
+    GUEST_TOGGLE_IDS = %w[guest-content-filter].freeze
 
     def update
       current_user ? update_account : update_guest

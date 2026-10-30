@@ -75,6 +75,10 @@ module Layout
       chapters_show_page?
     end
 
+    def requires_catalog_storage_styles?
+      controller_path == 'fiction_lists' && action_name == 'alphabetical'
+    end
+
     def requires_sweetalert_styles?
       mapped_page?(SWEETALERT_PAGES)
     end

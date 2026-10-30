@@ -38,14 +38,14 @@ class HotLookupIndexesTest < ActiveSupport::TestCase
   private
 
   def assert_index_used(sql, expected_index)
-    plan = @connection.exec_query("EXPLAIN #{sql}")
+    plan = @connection.exec_query("EXPLAIN FORMAT=TRADITIONAL #{sql}")
     keys = plan.pluck('key')
 
     assert_includes keys, expected_index, "expected #{expected_index} in EXPLAIN keys #{keys.inspect}"
   end
 
   def explain_possible_keys(sql)
-    @connection.exec_query("EXPLAIN #{sql}").flat_map do |row|
+    @connection.exec_query("EXPLAIN FORMAT=TRADITIONAL #{sql}").flat_map do |row|
       row['possible_keys']&.split(/\s*,\s*/) || []
     end
   end

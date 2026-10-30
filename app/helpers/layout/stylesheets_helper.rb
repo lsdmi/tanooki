@@ -17,6 +17,7 @@ module Layout
       ['slimselect', :requires_slimselect_styles?],
       ['actiontext', :requires_actiontext_styles?],
       ['chapters_reader', :requires_chapters_reader_styles?],
+      ['catalog_storage', :requires_catalog_storage_styles?],
       ['sweetal2', :requires_sweetalert_styles?],
       ['adsense_slots', :requires_adsense_slots_styles?]
     ].freeze

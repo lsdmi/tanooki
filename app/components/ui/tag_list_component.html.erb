@@ -10,13 +10,22 @@
       <%= render_tag(group[:label]) %>
     <% end %>
   <% end %>
+  <% if compact_sm_collapsed? %>
+    <%= render Ui::TagComponent.new(
+          label: "+#{compact_sm_overflow_count}",
+          variant: :genre,
+          size: size,
+          as: :span,
+          html: { class: 'pointer-events-none sm:hidden' }
+        ) %>
+  <% end %>
   <% if compact_collapsed? %>
     <%= render Ui::TagComponent.new(
           label: "+#{compact_overflow_count}",
           variant: :genre,
           size: size,
           as: :span,
-          html: { class: 'pointer-events-none lg:hidden' }
+          html: { class: "pointer-events-none #{compact_sm_collapsed? ? 'max-sm:hidden lg:hidden' : 'lg:hidden'}" }
         ) %>
   <% end %>
   <% if overflow_count.positive? %>

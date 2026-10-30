@@ -5,18 +5,18 @@
   <% if eighteen_locked && catalog_include_eighteen? %>
     <input type="hidden" name="include_eighteen" value="1">
   <% end %>
-  <label class="inline-flex items-start mt-2">
+  <label class="inline-flex cursor-pointer items-start gap-2.5">
     <input type="checkbox" name="include_eighteen" value="1"
            <%= 'checked' if !eighteen_locked && catalog_include_eighteen? %>
            <%= 'disabled' if eighteen_locked %>
-           class="mt-0.5 h-5 w-5 rounded border-line-strong text-brand focus:ring-brand bg-card transition duration-150 disabled:opacity-50">
-    <span class="ml-2 text-base sm:text-lg font-black text-fg tracking-tight leading-none">
+           class="mt-0.5 h-5 w-5 rounded border-line-strong text-brand focus:ring-brand bg-main transition duration-150 disabled:opacity-50">
+    <span class="text-sm font-medium text-fg">
       <%= t('fiction_lists.filters.include_eighteen') %>
     </span>
   </label>
   <% if eighteen_locked %>
     <% change_path = current_user ? content_filter_settings_path : "##{guest_toggle_id}" %>
-    <p class="mt-1 ml-7 text-sm font-medium text-fg-muted">
+    <p class="mt-1.5 ml-7 text-sm text-fg-muted">
       <%= t('content_filters.eighteen_locked') %>
       ·
       <%= link_to t('content_filters.change'), change_path,

@@ -1,0 +1,108 @@
+<% current_genre = params[:genre].to_s %>
+<% filter_on = ->(key) { ActiveModel::Type::Boolean.new.cast(params[key]) } %>
+<% chip = 'inline-flex cursor-pointer items-center justify-center rounded-md border border-[var(--catalog-control-line)] bg-main px-3 py-1.5 text-sm text-fg transition-colors hover:bg-surface-hover has-[:checked]:border-brand has-[:checked]:bg-brand-subtle has-[:checked]:font-medium has-[:checked]:text-fg-brand' %>
+
+<div data-catalog-filters-target="backdrop"
+     class="fixed inset-0 z-[51] bg-black/40 opacity-0 pointer-events-none transition-opacity duration-150 ease-out"
+     data-action="click->catalog-filters#close"
+     aria-hidden="true"></div>
+
+<aside id="catalog-filters-panel"
+       data-catalog-filters-target="panel"
+       class="fixed inset-0 z-[52] flex h-dvh max-h-dvh w-full translate-x-full flex-col overflow-hidden bg-main transition-transform duration-150 ease-out md:inset-y-0 md:left-auto md:right-0 md:max-w-md md:border-l md:border-line md:shadow-popover"
+       tabindex="-1"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="catalog-filters-title">
+  <div class="flex shrink-0 items-center justify-between gap-3 border-b border-line px-4 py-4 md:px-5">
+    <h2 id="catalog-filters-title" class="text-base font-semibold text-fg">
+      <%= t('fiction_lists.filters.title') %>
+    </h2>
+    <button type="button"
+            class="shrink-0 rounded-md p-1.5 text-fg-muted transition-colors hover:bg-surface hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+            data-action="click->catalog-filters#close"
+            aria-label="<%= t('fiction_lists.filters.close') %>">
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <%= form_with url: alphabetical_fictions_path, method: :get,
+                class: 'flex min-h-0 flex-1 flex-col',
+                data: {
+                  catalog_filters_target: 'form',
+                  turbo_frame: 'fiction-list-page',
+                  turbo_action: 'advance',
+                  action: 'submit->catalog-filters#prepareSubmit turbo:submit-end->catalog-filters#applied'
+                } do %>
+    <% if params[:q].present? %>
+      <%= hidden_field_tag :q, params[:q] %>
+    <% end %>
+    <% if params[:view] == 'list' %>
+      <%= hidden_field_tag :view, 'list' %>
+    <% end %>
+    <% unless catalog_sort_key == FictionListQueryBuilder::DEFAULT_SORT %>
+      <%= hidden_field_tag :sort, catalog_sort_key %>
+    <% end %>
+
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 md:px-5 md:py-5">
+      <section class="border-b border-line pb-5">
+        <h3 class="mb-3 text-sm font-medium text-fg"><%= t('fiction_lists.filters.genres') %></h3>
+        <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="<%= t('fiction_lists.filters.genres') %>">
+          <label class="<%= chip %>">
+            <input type="radio" name="genre" value="" class="sr-only" <%= 'checked' if current_genre.blank? %>>
+            <%= t('fiction_lists.filters.all_genres') %>
+          </label>
+          <% Genre.order(:name).each do |genre| %>
+            <label class="<%= chip %>">
+              <input type="radio" name="genre" value="<%= genre.id %>" class="sr-only" <%= 'checked' if current_genre == genre.id.to_s %>>
+              <%= genre.name %>
+            </label>
+          <% end %>
+        </div>
+      </section>
+
+      <section class="border-b border-line py-5">
+        <h3 class="mb-3 text-sm font-medium text-fg"><%= t('fiction_lists.filters.quick') %></h3>
+        <div class="flex flex-wrap gap-2">
+          <% [
+               [:only_new, t('fiction_lists.filters.only_new')],
+               [:longreads, t('fiction_lists.filters.longreads')],
+               [:evening, t('fiction_lists.filters.evening')],
+               [:top_rated, t('fiction_lists.filters.top_rated')],
+               [:finished, t('fiction_lists.filters.finished')],
+               [:licensed, t('fiction_lists.filters.licensed')]
+             ].each do |key, label| %>
+            <label class="<%= chip %>">
+              <input type="checkbox" name="<%= key %>" value="1" class="sr-only" <%= 'checked' if filter_on.call(key) %>>
+              <%= label %>
+            </label>
+          <% end %>
+        </div>
+      </section>
+
+      <section class="pt-5">
+        <%= render 'fiction_lists/include_eighteen', guest_toggle_id: 'guest-content-filter' %>
+      </section>
+    </div>
+
+    <div class="shrink-0 space-y-2 border-t border-line px-4 py-4 md:px-5">
+      <%= button_tag t('fiction_lists.filters.apply'),
+            type: 'submit',
+            name: nil,
+            class: 'flex w-full items-center justify-center rounded-md bg-brand px-4 py-2.5 text-sm font-semibold text-fg-on-brand transition-colors hover:bg-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+      <%= button_tag t('fiction_lists.filters.clear'),
+            type: 'button',
+            name: nil,
+            class: 'flex w-full items-center justify-center rounded-md border border-[var(--catalog-control-line)] bg-main px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+            data: { action: 'click->catalog-filters#clear' } %>
+    </div>
+  <% end %>
+
+  <% if current_user.nil? %>
+    <div class="shrink-0 border-t border-line px-4 pb-4 md:px-5 md:pb-5">
+      <%= render 'fiction_lists/guest_content_filter', dom_id: 'guest-content-filter' %>
+    </div>
+  <% end %>
+</aside>

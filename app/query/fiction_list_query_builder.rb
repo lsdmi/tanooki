@@ -3,6 +3,28 @@
 # Builds filtered fiction list scopes from index/list params (genre, filters, ordering).
 class FictionListQueryBuilder
   TOP_RATED_MIN_AVERAGE = 4.5
+  DEFAULT_SORT = 'title_asc'
+  SORTS = %w[
+    title_asc
+    title_desc
+    updated_desc
+    updated_asc
+    popular_desc
+    popular_asc
+    rating_desc
+    rating_asc
+  ].freeze
+
+  FILTER_STEPS = %i[
+    by_genre
+    only_new_fictions
+    longreads_only
+    evening_only
+    top_rated_only
+    finished_only
+    licensed_only
+    matching_query
+  ].freeze
 
   def initialize(relation = Fiction.all, params = {})
     @relation = relation
@@ -10,16 +32,18 @@ class FictionListQueryBuilder
   end
 
   def call
-    results = @relation
-    results = by_genre(results)
-    results = only_new_fictions(results)
-    results = longreads_only(results)
-    results = evening_only(results)
-    results = top_rated_only(results)
-    results = finished_only(results)
-    results = licensed_only(results)
-    results = with_recent_chapters_subquery(results)
-    results.includes(:cover_attachment, :genres)
+    scope = FILTER_STEPS.reduce(@relation) { |results, step| send(step, results) }
+    FictionListSorter.apply(scope, @params['sort'])
+                     .includes(:cover_attachment, :genres, :fiction_ratings)
+  end
+
+  def self.normalize_sort(value)
+    key = value.to_s
+    SORTS.include?(key) ? key : DEFAULT_SORT
+  end
+
+  def self.title_sort_sql(column = 'fictions.title')
+    FictionListSorter.title_sort_sql(column)
   end
 
   private
@@ -27,7 +51,8 @@ class FictionListQueryBuilder
   def by_genre(scope)
     return scope if @params['genre'].blank?
 
-    scope.joins(:genres).where(genres: { id: @params['genre'] })
+    # Filter via subquery so includes(:genres) still loads every genre, not only the matched one.
+    scope.where(id: FictionGenre.where(genre_id: @params['genre']).select(:fiction_id))
   end
 
   def only_new_fictions(scope)
@@ -79,18 +104,22 @@ class FictionListQueryBuilder
     scope.finished
   end
 
+  def matching_query(scope)
+    query = @params['q'].to_s.strip
+    return scope if query.length < 2
+
+    like = "%#{ActiveRecord::Base.sanitize_sql_like(query)}%"
+    scope.where(<<~SQL.squish, q: like)
+      fictions.title LIKE :q
+      OR fictions.alternative_title LIKE :q
+      OR fictions.english_title LIKE :q
+      OR fictions.author LIKE :q
+    SQL
+  end
+
   def licensed_only(scope)
     return scope if @params['licensed'].blank?
 
     scope.licensed
-  end
-
-  def with_recent_chapters_subquery(scope)
-    max_chapters = Chapter.released
-                          .select('fiction_id, MAX(COALESCE(published_at, created_at)) AS max_created_at')
-                          .group(:fiction_id)
-
-    scope.joins("LEFT JOIN (#{max_chapters.to_sql}) AS chapters_max ON chapters_max.fiction_id = fictions.id")
-         .order(Arel.sql('COALESCE(chapters_max.max_created_at, fictions.created_at) DESC'))
   end
 end

@@ -51,4 +51,8 @@
 
   document.addEventListener("turbo:load", onTurboNavigation)
   document.addEventListener("turbo:morph", onTurboNavigation)
+  // Catalog pagination swaps fiction-list-page without a full visit; re-push mid-list units.
+  document.addEventListener("turbo:frame-load", function (event) {
+    if (event.target?.id === "fiction-list-page") scheduleAdsenseRefresh()
+  })
 })()
