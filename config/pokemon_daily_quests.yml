@@ -6,6 +6,12 @@
 
 pick: 3
 
+# Distinct Kiev calendar days in the current Mon–Sun week with ≥1 completed quest.
+# Skipped days do not reset the count; the candy reward pays once per week.
+weekly_streak:
+  days: 5
+  candy_reward: 25
+
 quests:
   train_pokemon:
     event: training

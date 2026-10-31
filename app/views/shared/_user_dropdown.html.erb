@@ -1,6 +1,6 @@
 <div id="user-dropdown" class="relative shrink-0">
   <button id="accountDropdownButton2" data-dropdown-toggle="accountDropdown2" type="button" class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-surface-strong text-sm font-medium leading-none text-fg">
-    <%= image_tag avatar_image_url(current_user.avatar.image), alt: current_user.avatar.blob.filename.to_s, class: 'w-6 h-6 rounded-full rounded-full' %>
+    <%= image_tag avatar_image_url(current_user.avatar.image), alt: current_user.name, class: 'w-6 h-6 rounded-full rounded-full' %>
   </button>
 
   <div id="accountDropdown2" class="z-10 hidden w-52 divide-y divide-line-strong overflow-hidden overflow-y-auto rounded-lg bg-card antialiased shadow dark:bg-surface-strong">

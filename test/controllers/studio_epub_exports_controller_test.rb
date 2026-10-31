@@ -11,7 +11,7 @@ class StudioEpubExportsControllerTest < ActionDispatch::IntegrationTest
 
     get epub_exports_path
 
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'epub_exports')
     assert_equal 'epub_exports', session[:studio_tab]
   end
 

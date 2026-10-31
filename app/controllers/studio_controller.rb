@@ -20,8 +20,9 @@ class StudioController < ApplicationController
   end
 
   def set_tab_and_redirect
-    session[:studio_tab] = Studio::TabCatalog.normalize_tab_id(params[:tab])
-    redirect_to studio_index_path
+    tab = Studio::TabCatalog.normalize_tab_id(params[:tab])
+    session[:studio_tab] = tab
+    redirect_to studio_index_path(tab:)
   end
 
   def tab

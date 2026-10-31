@@ -54,6 +54,18 @@ module Pokemons
       assert_equal 'виконано', daily_quest_progress_label(done)
     end
 
+    test 'weekly streak progress uses Ukrainian copy' do
+      open = Pokemons::DailyQuests::WeeklyStreak::Status.new(
+        days: 3, required: 5, claimed: false, week_start: Date.new(2026, 10, 19)
+      )
+      done = Pokemons::DailyQuests::WeeklyStreak::Status.new(
+        days: 5, required: 5, claimed: true, week_start: Date.new(2026, 10, 19)
+      )
+
+      assert_equal '3/5', weekly_streak_progress_label(open)
+      assert_equal 'виконано', weekly_streak_progress_label(done)
+    end
+
     test 'dex_title gives a trainer without battles the first title' do
       assert_equal 'Новачок', dex_title(nil)
     end

@@ -6,10 +6,13 @@ module Fictions
   class CoverUploadNormalizerTest < ActiveSupport::TestCase
     include CoverUploadHelper
 
-    test 'returns upload unchanged for webp' do
+    test 'keeps webp bytes and uses a neutral filename' do
       upload = valid_cover_upload
+      normalized = CoverUploadNormalizer.call(upload)
 
-      assert_equal upload, CoverUploadNormalizer.call(upload)
+      assert_equal 'image/webp', normalized.content_type
+      assert_equal 'cover.webp', normalized.original_filename
+      assert_equal upload.size, normalized.size
     end
 
     test 'returns upload unchanged when blank' do
@@ -23,8 +26,18 @@ module Fictions
       normalized = CoverUploadNormalizer.call(upload)
 
       assert_equal 'image/webp', normalized.content_type
-      assert_equal 'test_cover_valid.webp', normalized.original_filename
+      assert_equal 'cover.webp', normalized.original_filename
       assert_operator normalized.size, :>, 0
+    end
+
+    test 'replaces russian upload filenames with a neutral name' do
+      path = CoverUploadHelper::VALID_COVER_PATH
+      upload = Rack::Test::UploadedFile.new(path, 'image/webp')
+      upload.define_singleton_method(:original_filename) { 'Новый холст.png' }
+
+      normalized = CoverUploadNormalizer.call(upload)
+
+      assert_equal 'cover.webp', normalized.original_filename
     end
 
     test 'raises when png cannot be converted without libvips' do

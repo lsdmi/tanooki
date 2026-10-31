@@ -1,16 +1,14 @@
 <figure class="attachment attachment--<%= blob.representable? ? "preview" : "file" %> attachment--<%= blob.filename.extension %>">
+  <% blob_alt = blob.try(:caption).presence || t('activestorage.blob.image_alt') %>
   <% if blob.representable? && ReadOnlyStorage.covers?(blob.service_name) %>
-    <%= image_tag blob if blob.image? %>
+    <%= image_tag blob, alt: blob_alt if blob.image? %>
   <% elsif blob.representable? %>
-    <%= image_tag blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]) %>
+    <%= image_tag blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]), alt: blob_alt %>
   <% end %>
 
-  <figcaption class="attachment__caption">
-    <% if caption = blob.try(:caption) %>
+  <% if caption = blob.try(:caption) %>
+    <figcaption class="attachment__caption">
       <%= caption %>
-    <% else %>
-      <span class="attachment__name"><%= blob.filename %></span>
-      <span class="attachment__size"><%= number_to_human_size blob.byte_size %></span>
-    <% end %>
-  </figcaption>
+    </figcaption>
+  <% end %>
 </figure>

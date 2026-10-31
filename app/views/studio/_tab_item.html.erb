@@ -1,7 +1,11 @@
 <li role="presentation">
   <%= link_to(
     tab_studio_path(item[:id]),
-    data: { turbo_frame: "tab-content", turbo_stream: true },
+    data: {
+      turbo_stream: true,
+      tab: item[:id],
+      action: "click->studio-tabs#select"
+    },
     class: "border-line-strong inline-flex w-full items-center justify-center rounded-lg py-3 transition-colors duration-200 #{is_active ? active_classes : inactive_classes}",
     id: "#{item[:id]}-tab",
     role: "tab",

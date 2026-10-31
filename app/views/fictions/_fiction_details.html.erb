@@ -11,7 +11,7 @@
     <% end %>
     <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
       <%= cover_card_picture_tag(fiction.cover,
-        alt: fiction.cover.blob.filename.to_s,
+        alt: fiction.title,
         id: "image-#{fiction.id}",
         class: "w-full h-full object-cover rounded-md shadow-sm#{' opacity-0' unless eager_cover}",
         loading: (eager_cover ? "eager" : "lazy"),

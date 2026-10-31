@@ -20,6 +20,14 @@ module Pokemons
         config.fetch('pick', 3).to_i.clamp(1, 10)
       end
 
+      def self.weekly_streak_days
+        (config.dig('weekly_streak', 'days') || 5).to_i.clamp(1, 7)
+      end
+
+      def self.weekly_streak_candy_reward
+        (config.dig('weekly_streak', 'candy_reward') || 0).to_i
+      end
+
       def self.definitions
         config.fetch('quests')
       end

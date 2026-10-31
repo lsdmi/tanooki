@@ -61,7 +61,7 @@
               <li class="flex items-center gap-2 lg:gap-3 border-b border-brand last:border-b-0 pb-2 lg:pb-3 p-1 lg:p-2 hover:scale-[1.015] transition-all duration-300">
                 <%= link_to fiction_path(fiction), class: 'relative block' do %>
                   <%= cover_card_picture_tag(fiction.cover,
-                    alt: fiction.cover.blob.filename.to_s,
+                    alt: fiction.title,
                     class: "w-12 h-16 lg:w-16 lg:h-22 rounded object-cover shadow-sm border border-brand",
                     loading: "lazy",
                     data: {

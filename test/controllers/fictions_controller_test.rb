@@ -25,7 +25,7 @@ class FictionsControllerTest < ActionDispatch::IntegrationTest
     get blogs_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'blogs')
   end
 
   test 'should get index' do

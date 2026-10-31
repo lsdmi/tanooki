@@ -11,6 +11,11 @@ module Pokemons
         assert_operator Pool.definitions.size, :>=, 10
       end
 
+      test 'weekly streak needs five days and pays candies' do
+        assert_equal 5, Pool.weekly_streak_days
+        assert_equal 25, Pool.weekly_streak_candy_reward
+      end
+
       test 'pool has no catch quests while wild odds stay low' do
         assert_empty Pool.definitions.keys.grep(/\Acatch/)
       end

@@ -3,7 +3,7 @@
  border border-line rounded-lg m-2 bg-card shadow-xl">
   <div class="flex items-center gap-4">
     <div class="h-12 w-12 rounded-full bg-brand-subtle flex items-center justify-center shadow">
-      <%= image_tag scanlator_avatar_url(scanlator.avatar), class: "h-12 w-12 rounded-full object-cover" %>
+      <%= image_tag scanlator_avatar_url(scanlator.avatar), alt: scanlator.title, class: "h-12 w-12 rounded-full object-cover" %>
     </div>
     <div>
       <div class="font-semibold text-fg">

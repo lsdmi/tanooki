@@ -15,8 +15,8 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
 
   test 'refresh! updates tailwind digest when builds change' do
     # Parallel workers share app/assets/builds/tailwind.css; mutating it races the suite.
-    # First worker sets TEST_ENV_NUMBER to "" — still parallel, so key? not present?.
-    skip 'shared tailwind.css is unsafe under parallel workers' if ENV.key?('TEST_ENV_NUMBER')
+    # Rails 8.1+ exposes parallel_worker_id (TEST_ENV_NUMBER is gone); worker 0 is id 0.
+    skip 'shared tailwind.css is unsafe under parallel workers' unless parallel_worker_id.nil?
 
     tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
     original = tailwind_path.read

@@ -10,7 +10,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     get scanlators_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'teams')
   end
 
   test 'should get index as non-admin user' do
@@ -18,7 +18,7 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     get scanlators_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'teams')
   end
 
   test 'should get new' do

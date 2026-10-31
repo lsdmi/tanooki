@@ -2,7 +2,7 @@
 <article class="group flex gap-3 py-3.5">
   <%= link_to tale_path(publication), turbo_drive_visit_data.merge(class: 'relative h-24 w-24 shrink-0 overflow-hidden rounded bg-surface') do %>
     <%= cover_card_picture_tag(publication.cover,
-          alt: publication.cover.blob.filename.to_s,
+          alt: publication.title,
           class: 'h-full w-full object-cover',
           loading: 'lazy',
           width: 192,

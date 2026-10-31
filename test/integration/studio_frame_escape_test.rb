@@ -5,6 +5,32 @@ require 'test_helper'
 class StudioFrameEscapeTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  test 'studio tab list syncs the active tab via stimulus' do
+    sign_in users(:user_one)
+
+    get studio_index_path(tab: 'writings')
+
+    assert_select '#default-tab[data-controller~=studio-tabs]'
+  end
+
+  test 'studio tab links request streams without targeting tab-content as a frame' do
+    sign_in users(:user_one)
+
+    get studio_index_path(tab: 'writings')
+
+    assert_select '#writings-tab[data-turbo-stream]'
+    assert_select '#writings-tab[data-turbo-frame]', count: 0
+    assert_select '#pokemons-tab[data-turbo-stream]'
+  end
+
+  test 'pokemon studio tab link also omits turbo-frame targeting' do
+    sign_in users(:user_one)
+
+    get studio_index_path(tab: 'writings')
+
+    assert_select '#pokemons-tab[data-turbo-frame]', count: 0
+  end
+
   test 'studio writings tab escapes frame for reading links' do
     sign_in users(:user_one)
 

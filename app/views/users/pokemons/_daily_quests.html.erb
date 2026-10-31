@@ -1,4 +1,4 @@
-<%# locals: (quests:) %>
+<%# locals: (quests:, weekly_streak:) %>
 <% if quests.any? %>
   <% done = quests.count(&:completed?) %>
   <details class="group" data-exclusive-details-target="panel"
@@ -16,6 +16,10 @@
           <span class="text-fg-subtle">· <%= daily_quest_progress_label(quest) %></span>
         </li>
       <% end %>
+      <li class="<%= 'text-fg-subtle' if weekly_streak.claimed? %>">
+        <%= t('pokemons.daily_quests.weekly_streak', required: weekly_streak.required) %>
+        <span class="text-fg-subtle">· <%= weekly_streak_progress_label(weekly_streak) %></span>
+      </li>
     </ul>
   </details>
 <% end %>

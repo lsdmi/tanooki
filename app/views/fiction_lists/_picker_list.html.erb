@@ -18,7 +18,7 @@
         <% fictions.each_with_index do |fiction, index| %>
           <div class="relative transition duration-300 transform hover:scale-105 cursor-pointer">
             <%= cover_card_picture_tag(fiction.cover,
-                alt: fiction.cover.blob.filename.to_s,
+                alt: fiction.title,
                 class: "w-14 h-20 sm:w-16 sm:h-24 flex-shrink-0 object-cover rounded-md shadow-sm #{index == 0 ? 'ring-2 ring-brand-hover' : ''}",
                 data: {
                   action: "click->fiction-picker#selectFiction",

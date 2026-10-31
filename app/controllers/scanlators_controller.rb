@@ -14,7 +14,7 @@ class ScanlatorsController < ApplicationController
 
   def index
     session[:studio_tab] = 'teams'
-    redirect_to studio_index_path
+    redirect_to studio_index_path(tab: 'teams')
   end
 
   def show

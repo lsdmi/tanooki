@@ -97,6 +97,12 @@ module Pokemons
       "#{quest.progress}/#{quest.target}"
     end
 
+    def weekly_streak_progress_label(streak)
+      return t('pokemons.daily_quests.done') if streak.claimed?
+
+      "#{streak.days}/#{streak.required}"
+    end
+
     # «Сезон 1 · вересень–жовтень» from the season's dates (Europe/Kiev).
     def season_label(season)
       t('pokemons.seasons.label', number: season.number, range: season_month_range(season))

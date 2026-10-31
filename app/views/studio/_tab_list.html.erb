@@ -7,8 +7,9 @@
   class="-mb-px grid grid-cols-2 flex-wrap gap-4 text-center text-sm font-medium lg:grid-cols-8"
   id="default-tab"
   role="tablist"
-  data-controller="tabs"
-  data-tabs-active-tab-value="<%= active_tab %>">
+  data-controller="studio-tabs"
+  data-studio-tabs-active-value="<%= active_tab %>"
+  data-studio-tabs-path-value="<%= studio_index_path %>">
   <% studio_menu_items.each do |item| %>
     <%= render partial: "studio/tab_item", locals: { item: item, is_active: (active_tab == item[:id]), active_classes: active_classes, inactive_classes: inactive_classes, active_tab: active_tab } %>
   <% end %>

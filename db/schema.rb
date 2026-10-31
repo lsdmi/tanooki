@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_31_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -776,6 +776,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
     t.datetime "pinned_until"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.date "weekly_streak_claimed_on"
     t.index ["glicko_floor", "user_id"], name: "index_trainer_profiles_on_glicko_rank", order: { glicko_floor: :desc }
     t.index ["user_id"], name: "index_trainer_profiles_on_user_id", unique: true
   end

@@ -16,7 +16,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get blogs_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'blogs')
   end
 
   test "should update user's avatar" do
@@ -37,7 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get avatars_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'profile')
   end
 
   test 'should get blogs' do
@@ -45,7 +45,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get blogs_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'blogs')
   end
 
   test 'should get readings' do
@@ -53,7 +53,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get readings_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'writings')
   end
 
   test 'should get pokemons' do
@@ -61,6 +61,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get pokemons_path
 
     assert_response :redirect
-    assert_redirected_to studio_index_path
+    assert_redirected_to studio_index_path(tab: 'pokemons')
   end
 end

@@ -36,7 +36,7 @@
             <% @recent_publications.each do |publication| %>
               <div class="flex items-center p-3 bg-surface-strong rounded-lg">
                 <%= cover_card_picture_tag(publication.cover,
-                        alt: publication.cover.blob.filename.to_s,
+                        alt: publication.title,
                         class: "w-10 h-10 rounded-lg flex items-center justify-center object-cover",
                         loading: "lazy",
                         data: {
@@ -218,7 +218,7 @@
               <div class="flex items-center space-x-3 p-3 bg-surface-strong rounded-lg">
                 <%= link_to fiction_path(reading.fiction), class: 'w-12 h-16 rounded-md overflow-hidden relative block' do %>
                   <%= cover_card_picture_tag(reading.fiction.cover,
-                    alt: reading.fiction.cover.blob.filename.to_s,
+                    alt: reading.fiction.title,
                     class: "w-full h-full object-cover",
                     loading: "lazy",
                     data: {

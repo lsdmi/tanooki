@@ -5,7 +5,7 @@ module Pokemons
   class StudioTab
     attr_reader :user, :pokemons, :selected_pokemon, :evolution, :dex_leaderboard,
                 :opponent, :battle_history, :attack_team, :defense_team, :defense_away,
-                :daily_quests, :bag_items, :candies, :lure_types
+                :daily_quests, :weekly_streak, :bag_items, :candies, :lure_types
 
     # +claim_visit:+ stamps last_studio_visit_at after reading the away report (Studio tab only).
     def initialize(user, claim_visit: false)
@@ -37,6 +37,7 @@ module Pokemons
 
     def assign_inventory
       @daily_quests = DailyQuests::EnsureToday.call(user)
+      @weekly_streak = DailyQuests::WeeklyStreak.status(user)
       @candies = user.trainer_profile.candies
       @bag_items = user.trainer_items.where('quantity > 0').order(:item_key).to_a
       @lure_types = Habitat.known_type_keys.sort

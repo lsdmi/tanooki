@@ -33,11 +33,20 @@ module Pokemons
         definition = Pool.fetch(row.quest_key)
         return unless Pool.matches?(definition, event:, **filters)
 
+        apply_progress!(row, profile)
+      end
+
+      def apply_progress!(row, profile)
         row.progress = [row.progress + 1, row.target].min
         just_completed = row.progress >= row.target
         row.completed_at = Time.current if just_completed
         row.save!
-        grant_rewards!(row, profile) if just_completed
+        finish!(row, profile) if just_completed
+      end
+
+      def finish!(row, profile)
+        grant_rewards!(row, profile)
+        WeeklyStreak.claim_if_eligible!(@user, profile:)
       end
 
       def grant_rewards!(row, profile)
