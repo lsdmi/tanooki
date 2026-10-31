@@ -73,14 +73,34 @@ module Meta
       return {} unless attachment&.attached?
       return { fallback: url_for(attachment) } unless variable_cover?(attachment)
 
-      avif_transform, webp_transform = CoverCardPresets.transformations_for(preset)
+      cover_card_processed_urls(attachment, preset:)
+    rescue ActiveStorage::Error
+      { fallback: url_for(attachment) }
+    end
 
-      {
+    def cover_card_processed_urls(attachment, preset:)
+      avif_transform, webp_transform = CoverCardPresets.transformations_for(preset)
+      urls = {
         avif: url_for(attachment.variant(avif_transform)),
         webp: url_for(attachment.variant(webp_transform))
       }
-    rescue ActiveStorage::Error
-      { fallback: url_for(attachment) }
+      return urls unless preset.to_sym == :card
+
+      urls.merge(cover_card_srcset_urls(attachment))
+    end
+
+    def cover_card_srcset_urls(attachment)
+      {
+        avif_srcset: cover_card_format_srcset(attachment, format: :avif),
+        webp_srcset: cover_card_format_srcset(attachment, format: :webp)
+      }
+    end
+
+    def cover_card_format_srcset(attachment, format:)
+      CoverCardPresets::CARD_SRCSET_WIDTHS.map do |width|
+        transform = CoverCardPresets.card_transformations_for_width(width, format:)
+        "#{url_for(attachment.variant(transform))} #{width}w"
+      end.join(', ')
     end
 
     def showcase_transformations_for(size)

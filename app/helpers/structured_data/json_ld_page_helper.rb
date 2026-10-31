@@ -21,6 +21,10 @@ module StructuredData
       pages_about_page?
     end
 
+    def storage_catalog_meta?
+      fiction_lists_alphabetical_page?
+    end
+
     def article_author_meta?(publication)
       tales_show_page? && publication&.persisted?
     end

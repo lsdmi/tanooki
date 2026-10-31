@@ -94,6 +94,28 @@ class FictionListsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#catalog-filters-panel input[name=genre]', minimum: 1
   end
 
+  test 'alphabetical prioritizes the first covers and lazy-loads the rest' do
+    get alphabetical_fictions_url
+
+    assert_select 'img[fetchpriority=high]', minimum: 1
+    assert_select 'img[loading=lazy]', minimum: 1
+    assert_select 'source[sizes]', minimum: 1
+  end
+
+  test 'alphabetical uses storage catalog title and description' do
+    get alphabetical_fictions_url
+
+    assert_select 'title', text: /Сховище/
+    assert_select 'meta[name=description][content*=?]', 'Сховище'
+  end
+
+  test 'alphabetical embeds CollectionPage ItemList json-ld' do
+    get alphabetical_fictions_url
+
+    assert_match(/"@type":"CollectionPage"/, response.body)
+    assert_match(/"@type":"ItemList"/, response.body)
+  end
+
   test 'signed-in readers also use the session preference' do
     sign_in users(:user_two)
 

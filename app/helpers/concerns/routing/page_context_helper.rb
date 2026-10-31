@@ -35,5 +35,9 @@ module Routing
     def genre_show_page?
       controller_path == 'fictions/genres' && action_name == 'show'
     end
+
+    def fiction_lists_alphabetical_page?
+      controller_path == 'fiction_lists' && action_name == 'alphabetical'
+    end
   end
 end

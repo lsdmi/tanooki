@@ -3,13 +3,18 @@
 # Paginated fiction browse lists (alphabetical index with filters and Turbo updates).
 class FictionListsController < ApplicationController
   include Fictions::CatalogIncludeEighteenPreference
+  include Fictions::GuestAlphabeticalCaching
 
   helper Fictions::ListPaginationHelper
+  helper Fictions::ShowCacheHelper
 
-  before_action :pokemon_appearance, only: [:alphabetical]
+  before_action :pokemon_appearance, only: [:alphabetical], unless: :guest_alphabetical_request?
   before_action :resolve_catalog_include_eighteen, only: [:alphabetical]
+  after_action :set_guest_alphabetical_cache_headers, only: :alphabetical
 
   def alphabetical
+    return if serve_fresh_guest_alphabetical?
+
     @pagy, @fictions = paginated_fictions
     @explicit_hidden_genre = explicit_hidden_genre?
 

@@ -6,13 +6,24 @@
     <% blurb = fiction.short_description.presence || fiction.description.to_s %>
     <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
     <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs) %>
+    <% eager_cover = index < 2 %>
     <article class="flex gap-4 rounded-xl border border-line bg-main p-4"
              data-fiction-picker-id-param="<%= fiction.id %>">
       <%= link_to fiction_path(fiction),
             class: 'relative w-28 shrink-0 self-start overflow-hidden rounded-lg bg-surface-strong sm:w-32',
             data: { turbo_frame: '_top' } do %>
         <div class="aspect-[2/3]">
-          <%= cover_card_picture_tag(fiction.cover, alt: '', class: 'h-full w-full object-cover', picture_html: { class: 'block h-full w-full' }) %>
+          <%= cover_card_picture_tag(
+                fiction.cover,
+                alt: '',
+                class: 'h-full w-full object-cover',
+                picture_html: { class: 'block h-full w-full' },
+                srcset: true,
+                sizes: Meta::CoverCardPresets::CARD_LIST_SIZES,
+                loading: (eager_cover ? 'eager' : 'lazy'),
+                decoding: 'async',
+                fetchpriority: (eager_cover ? 'high' : nil)
+              ) %>
         </div>
         <% if age_label %>
           <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= fiction.content_rating_eighteen? ? 'token-raw border border-rose-700/60 bg-rose-100/80 text-rose-900 dark:border-rose-400/50 dark:bg-rose-950/70 dark:text-rose-100' : 'token-raw border border-amber-800/60 bg-amber-100/80 text-amber-950 dark:border-amber-400/50 dark:bg-amber-950/70 dark:text-amber-100' %>"

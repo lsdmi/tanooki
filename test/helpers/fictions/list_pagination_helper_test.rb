@@ -44,7 +44,7 @@ module Fictions
     end
 
     test 'fiction_list_pagy_custom_params omits the default sort' do
-      controller.params[:sort] = 'title_asc'
+      controller.params[:sort] = 'updated_desc'
 
       assert_empty(fiction_list_pagy_custom_params)
     end

@@ -24,6 +24,8 @@
 
     <%= json_ld_script(about_page_meta) if about_page_meta? %>
 
+    <%= json_ld_script(storage_catalog_meta(@fictions)) if storage_catalog_meta? && @fictions %>
+
     <%= json_ld_script(profile_page_meta(@scanlator)) if profile_page_meta? %>
 
     <%= json_ld_script(user_profile_meta(@user)) if user_profile_meta? %>

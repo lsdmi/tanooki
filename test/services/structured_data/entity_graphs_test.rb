@@ -75,5 +75,14 @@ module StructuredData
       assert_equal 'Article', payload['@type']
       assert_not payload.key?('contentRating')
     end
+
+    test 'storage_catalog_json lists the current page as a CollectionPage ItemList' do
+      fictions = [fictions(:one), fictions(:two)]
+      payload = JSON.parse(@graphs.storage_catalog_json(fictions))
+
+      assert_equal 'CollectionPage', payload['@type']
+      assert_equal 'ItemList', payload.dig('mainEntity', '@type')
+      assert_equal 2, payload.dig('mainEntity', 'numberOfItems')
+    end
   end
 end

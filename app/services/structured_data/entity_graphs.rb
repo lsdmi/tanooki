@@ -4,6 +4,7 @@ module StructuredData
   # Builds Schema.org JSON-LD graph payloads for site, fiction, chapter, and about pages.
   class EntityGraphs
     include Rails.application.routes.url_helpers
+    include StorageCatalogGraph
 
     def initialize(asset_url:)
       @asset_url = asset_url

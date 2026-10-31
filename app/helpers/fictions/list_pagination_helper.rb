@@ -7,10 +7,10 @@ module Fictions
     CATALOG_MID_AD_AFTER = 12
 
     CATALOG_SORT_BUTTON_LABELS = {
-      'title_asc' => 'А-Я',
-      'title_desc' => 'Я-А',
       'updated_desc' => 'Нові оновлення',
       'updated_asc' => 'Старі оновлення',
+      'title_asc' => 'А-Я',
+      'title_desc' => 'Я-А',
       'popular_desc' => 'Популярні',
       'popular_asc' => 'Менш популярні',
       'rating_desc' => 'Найкращі',

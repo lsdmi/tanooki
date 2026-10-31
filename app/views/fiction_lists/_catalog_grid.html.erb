@@ -5,6 +5,7 @@
     <% age_label = fiction.content_rating_label %>
     <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
     <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs).first(2) %>
+    <% eager_cover = index < 2 %>
     <article class="group min-w-0" data-fiction-picker-id-param="<%= fiction.id %>">
       <%= link_to fiction_path(fiction),
             class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-md bg-surface-strong transition-[filter,transform] duration-200 ease-out hover:brightness-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand',
@@ -13,7 +14,12 @@
               fiction.cover,
               alt: '',
               class: 'absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-out group-hover/cover:scale-[1.02]',
-              picture_html: { class: 'absolute inset-0 block h-full w-full' }
+              picture_html: { class: 'absolute inset-0 block h-full w-full' },
+              srcset: true,
+              sizes: Meta::CoverCardPresets::CARD_GRID_SIZES,
+              loading: (eager_cover ? 'eager' : 'lazy'),
+              decoding: 'async',
+              fetchpriority: (eager_cover ? 'high' : nil)
             ) %>
         <% if age_label %>
           <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= fiction.content_rating_eighteen? ? 'token-raw border border-rose-700/60 bg-rose-100/80 text-rose-900 dark:border-rose-400/50 dark:bg-rose-950/70 dark:text-rose-100' : 'token-raw border border-amber-800/60 bg-amber-100/80 text-amber-950 dark:border-amber-400/50 dark:bg-amber-950/70 dark:text-amber-100' %>"

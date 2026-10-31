@@ -2,7 +2,23 @@
 
 require 'test_helper'
 
+module FictionListQueryBuilderTestHelpers
+  def set_chapter_public_time(chapter, time)
+    attrs = {
+      created_at: time,
+      published_at: nil,
+      status: 'published',
+      scanlator_ids: chapter.scanlators.ids.presence || [scanlators(:one).id]
+    }
+    attrs[:content] = ('a' * 500) if chapter.content.blank? ||
+                                     chapter.content.body.to_plain_text.length < 500
+    chapter.update!(attrs)
+  end
+end
+
 class FictionListQueryBuilderTest < ActiveSupport::TestCase
+  include FictionListQueryBuilderTestHelpers
+
   setup do
     @finished = fictions(:one)
     @open = fictions(:two)
@@ -51,14 +67,18 @@ class FictionListQueryBuilderTest < ActiveSupport::TestCase
     assert_includes ids, @open.id
   end
 
-  test 'title_asc is the default sort and orders by title' do
+  test 'updated_desc is the default sort' do
+    assert_equal 'updated_desc', FictionListQueryBuilder.normalize_sort(nil)
+    assert_equal 'updated_desc', FictionListQueryBuilder.normalize_sort('nope')
+  end
+
+  test 'title_asc orders by title' do
     @finished.update!(title: 'Бета')
     @open.update!(title: 'Альфа')
 
-    ids = FictionListQueryBuilder.new(Fiction.all, {}).call.map(&:id)
+    ids = FictionListQueryBuilder.new(Fiction.all, sort: 'title_asc').call.map(&:id)
 
     assert_operator ids.index(@open.id), :<, ids.index(@finished.id)
-    assert_equal 'title_asc', FictionListQueryBuilder.normalize_sort(nil)
   end
 
   test 'title_desc reverses the alphabet' do
@@ -90,7 +110,7 @@ class FictionListQueryBuilderTest < ActiveSupport::TestCase
     set_chapter_public_time(chapters(:two), 5.days.ago)
     set_chapter_public_time(chapters(:three), 1.day.ago)
 
-    ids = FictionListQueryBuilder.new(Fiction.all, sort: 'updated_desc').call.map(&:id)
+    ids = FictionListQueryBuilder.new(Fiction.all, {}).call.map(&:id)
 
     assert_operator ids.index(@open.id), :<, ids.index(@finished.id)
   end
@@ -124,19 +144,5 @@ class FictionListQueryBuilderTest < ActiveSupport::TestCase
 
     assert matched
     assert_equal ['Жанр Альфа', 'Жанр Бета'], matched.genres.map(&:name).sort
-  end
-
-  private
-
-  def set_chapter_public_time(chapter, time)
-    attrs = {
-      created_at: time,
-      published_at: nil,
-      status: 'published',
-      scanlator_ids: chapter.scanlators.ids.presence || [scanlators(:one).id]
-    }
-    attrs[:content] = ('a' * 500) if chapter.content.blank? ||
-                                     chapter.content.body.to_plain_text.length < 500
-    chapter.update!(attrs)
   end
 end

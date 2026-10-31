@@ -25,5 +25,14 @@ module Meta
       assert_equal [160, 240], thumb_webp[:resize_to_limit]
       assert_nil thumb_webp[:saver]
     end
+
+    test 'card srcset widths keep the same aspect ladder' do
+      assert_equal [200, 280, 400], CoverCardPresets::CARD_SRCSET_WIDTHS
+
+      transform = CoverCardPresets.card_transformations_for_width(200, format: :webp)
+
+      assert_equal [200, 300], transform[:resize_to_limit]
+      assert_equal :webp, transform[:format]
+    end
   end
 end

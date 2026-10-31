@@ -3,12 +3,12 @@
 # Builds filtered fiction list scopes from index/list params (genre, filters, ordering).
 class FictionListQueryBuilder
   TOP_RATED_MIN_AVERAGE = 4.5
-  DEFAULT_SORT = 'title_asc'
+  DEFAULT_SORT = 'updated_desc'
   SORTS = %w[
-    title_asc
-    title_desc
     updated_desc
     updated_asc
+    title_asc
+    title_desc
     popular_desc
     popular_asc
     rating_desc

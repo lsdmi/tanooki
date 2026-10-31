@@ -10,7 +10,8 @@ module Layout
     # Below-fold / late UI: load without blocking first paint (print→all onload trick).
     # Keep sheets that style above-the-fold gates (e.g. adult_content_disclaimer) blocking.
     # pagy: pagination usually below fold; sweetal2: modals after gesture (studio/readings).
-    DEFERRED_PAGE_STYLESHEETS = %w[adsense_slots pagy sweetal2].freeze
+    # catalog_storage: toolbar chrome + Turbo busy — above-fold is mostly Tailwind utilities.
+    DEFERRED_PAGE_STYLESHEETS = %w[adsense_slots pagy sweetal2 catalog_storage].freeze
 
     FEATURE_STYLESHEETS = [
       ['pagy', :requires_pagy_styles?],

@@ -80,6 +80,7 @@ module Layout
 
       assert_equal %w[pagy], page_stylesheets
       assert deferred_page_stylesheet?('pagy')
+      assert deferred_page_stylesheet?('catalog_storage')
     end
 
     test 'adsense slot stylesheet loads when adblock check is on' do
