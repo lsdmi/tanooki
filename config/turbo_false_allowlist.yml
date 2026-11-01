@@ -40,4 +40,4 @@ allowed:
   - app/views/studio/tabs/_epub_exports.html.erb:44
   - app/views/studio/tabs/_epub_exports.html.erb:68
   # Catch POST is handled by Stimulus (JSON + ring animation); Turbo Stream would race it.
-  - app/views/shared/_pokemon.html.erb:9
+  - app/views/shared/_pokemon.html.erb:11

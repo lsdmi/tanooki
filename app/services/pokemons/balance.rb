@@ -24,5 +24,9 @@ module Pokemons
     RECENT_OPPONENTS = 3
     # Ordered attack / defense roster size (Phase 5.1). Engine v2 caps the field at the same number.
     TEAM_SIZE = 6
+    # Wild shiny roll: one in SHINY_ODDS encounters. Stored on the encounter and copied to user_pokemons.
+    SHINY_ODDS = 256
+    # Shiny combatants fight a little harder: both HP and attack use this multiplier in engine v2.
+    SHINY_STAT_BONUS = 1.1
   end
 end

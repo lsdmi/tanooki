@@ -20,7 +20,8 @@ module Pokemons
       return unless encounter&.claim!
 
       GUEST_SESSION_KEYS.each { |key| session.delete(key) }
-      CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: user.id).trap
+      CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: user.id, shiny: encounter.shiny?).trap
+
       DailyQuests::Progress.call(user, event: :catch, types: encounter.pokemon.types.map(&:key))
       encounter
     end

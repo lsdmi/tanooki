@@ -38,7 +38,9 @@
                                       class: 'flex size-10 cursor-pointer items-center justify-center rounded-md ring-1 ring-inset ring-transparent hover:bg-surface hover:ring-line focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
                                       title: "#{user_pokemon.pokemon_name} · р. #{user_pokemon.current_level}",
                                       aria: { label: "#{t('pokemons.items.use')}: #{user_pokemon.pokemon_name}" } do %>
-                          <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-8 object-contain') %>
+                          <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', shiny: user_pokemon.shiny?,
+                                                 class: 'size-8 object-contain') %>
+
                         <% end %>
                       </li>
                     <% end %>

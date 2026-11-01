@@ -71,12 +71,20 @@ module Pokemons
     end
 
     def power(record, balance)
+      species = record.pokemon
       combatant = Engine::Combatant.new(
         id: record.id, character: record.character, battle_experience: record.battle_experience,
-        types: record.pokemon.types.map(&:key), base_hp: record.pokemon.base_hp,
-        base_attack: record.pokemon.base_attack
+        types: species.types.map(&:key),
+        base_hp: shiny_stat(species.base_hp, record),
+        base_attack: shiny_stat(species.base_attack, record)
       )
       balance.hp(combatant) * balance.attack(combatant)
+    end
+
+    def shiny_stat(value, record)
+      return value unless record.shiny?
+
+      (value * Balance::SHINY_STAT_BONUS).round
     end
   end
 end

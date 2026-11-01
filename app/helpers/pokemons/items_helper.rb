@@ -11,6 +11,12 @@ module Pokemons
       'M15 12h-5', 'M15 8h-5', 'M19 17V5a2 2 0 0 0-2-2H4',
       'M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3'
     ].freeze
+    # Lucide «book-image» — Pokédex strip affordance (catalog of species).
+    DEX_PATHS = [
+      'm20 13.7-2.1-2.1a2 2 0 0 0-2.8 0L9.7 17',
+      'M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20',
+      'M10 6a2 2 0 1 0 0 4 2 2 0 1 0 0-4'
+    ].freeze
 
     def self.icons
       @icons ||= YAML.safe_load_file(Rails.root.join('config/pokemon_item_icons.yml'))
@@ -43,6 +49,10 @@ module Pokemons
 
     def pokemon_missions_icon(size = 'size-3.5')
       stroke_icon_svg(MISSIONS_PATHS, size)
+    end
+
+    def pokemon_dex_icon(size = 'size-3.5')
+      stroke_icon_svg(DEX_PATHS, size)
     end
 
     private

@@ -284,6 +284,7 @@ export default class extends Controller {
     const fighter = this.fighters[String(id)] || {}
     const sprite = this[`${side}SpriteTarget`]
     const name = this[`${side}NameTarget`]
+    const ring = this[`${side}RingTarget`]
 
     if (fighter.sprite) {
       sprite.src = fighter.sprite
@@ -294,6 +295,8 @@ export default class extends Controller {
       sprite.alt = ""
       sprite.hidden = true
     }
+    sprite.classList.toggle("pokemon-shiny", Boolean(fighter.shiny))
+    ring?.classList.toggle("pokemon-shiny-sparkle", Boolean(fighter.shiny))
     name.textContent = fighter.name || ""
     this.undimSide(side)
 
@@ -302,6 +305,7 @@ export default class extends Controller {
       this.paintHp(side, this.hp[id], fighter.maxHp)
     }
   }
+
 
   setHp(id, value) {
     this.hp[id] = value

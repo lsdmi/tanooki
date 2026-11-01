@@ -31,4 +31,13 @@ class ProfileSeasonResultsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'h3', text: I18n.t('pokemons.seasons.section'), count: 0
   end
+
+  test 'dex completion matches Pokemons::Dex not wild ownership count' do
+    completion = Pokemons::Dex.completion(@user)
+
+    get pokemon_stats_profile_path(@user.sqid)
+
+    assert_equal completion.caught, assigns(:pokemon_count)
+    assert_equal completion.total, assigns(:total_pokemon)
+  end
 end

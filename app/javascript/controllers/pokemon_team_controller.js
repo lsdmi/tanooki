@@ -8,7 +8,7 @@ export default class extends Controller {
     role: { type: String, default: "attack" },
     attackIds: { type: Array, default: [] },
     defenseIds: { type: Array, default: [] },
-    size: { type: Number, default: 3 },
+    size: { type: Number, default: 6 },
     url: String
   }
 
@@ -99,11 +99,18 @@ export default class extends Controller {
         const bank = id && this.spriteFor(id)
         if (img && bank) {
           img.src = bank.currentSrc || bank.src
+          const shiny = bank.classList.contains("pokemon-shiny")
+          img.classList.toggle("pokemon-shiny", shiny)
+          slot.classList.toggle("pokemon-shiny-sparkle", shiny)
           img.hidden = false
         } else if (img) {
           img.removeAttribute("src")
+          img.classList.remove("pokemon-shiny")
+          slot.classList.remove("pokemon-shiny-sparkle")
           img.hidden = true
         }
+
+
       })
     }
 

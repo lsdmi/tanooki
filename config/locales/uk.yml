@@ -1081,9 +1081,13 @@ uk:
           patient: "%{name} вичікував… і відповідає подвійно!"
           persistent: "%{name} падає… і встає знову!"
           prideful: "%{name} домінує — гордість розпалює удар!"
+    shiny:
+      badge: ✦
     catch:
       failure: У-упс, невдала спроба!
       success: Вітаємо, із оновленням у команді!
+      shiny_success: Блискучий улов — шайні в команді!
+
     characters:
       agile: Спритний
       ambitious: Амбітний
@@ -1122,10 +1126,26 @@ uk:
         few: "%{count} поразки"
         many: "%{count} поразок"
         other: "%{count} поразки"
+    dex:
+      title: Покедекс
+      back: До студії
+      all: Усі
+      loading: Завантаження…
+      filters: Фільтр за типом
+      completion: "%{caught}/%{total}"
+      type_completion: "%{label} · %{caught}/%{total}"
+      unknown: "???"
+      empty_type: Немає видів цього типу.
+      states:
+        unknown: Невідомий
+        seen: Бачили
+        caught: Спіймано
+
     daily_quests:
       headline: Місії
       done: виконано
       weekly_streak: "Тиждень (%{required} з 7 днів)"
+
 
       win_battle: Виграйте бій
       win_ranked: Виграйте рейтинговий бій
@@ -1269,6 +1289,8 @@ uk:
       dragon: Драконячий
     wild:
       catch: Спіймати %{name}
+      catch_shiny: Спіймати шайні %{name}
+
   chapter_images:
     errors:
       forbidden: Завантажувати зображення можуть лише учасники команд.

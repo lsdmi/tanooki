@@ -1,0 +1,43 @@
+<%# locals: (dex:) %>
+<div class="flex flex-col gap-2">
+  <p class="text-xs/4 text-fg-muted">
+    <%= t('pokemons.dex.completion', caught: dex.caught_count, total: dex.total_count) %>
+    <% if (type = dex.filtered_type) %>
+      <span class="text-fg-subtle">· <%= type.label %></span>
+    <% end %>
+  </p>
+
+  <nav aria-label="<%= t('pokemons.dex.filters') %>" class="flex flex-wrap gap-1">
+    <%= link_to pokemon_dex_path,
+                data: { turbo_frame: 'pokemon-dex' },
+                class: dex_type_chip_classes(dex.type_key.blank?),
+                title: t('pokemons.dex.all'),
+                aria: { current: (dex.type_key.blank? ? 'true' : nil), label: t('pokemons.dex.all') } do %>
+      <%= pokemon_dex_all_icon %>
+    <% end %>
+
+    <% dex.type_completions.each do |completion| %>
+      <%= link_to pokemon_dex_path(type: completion.type.key),
+                  data: { turbo_frame: 'pokemon-dex' },
+                  class: dex_type_chip_classes(dex.type_key == completion.type.key),
+                  title: t('pokemons.dex.type_completion', label: completion.type.label,
+                                                           caught: completion.caught, total: completion.total),
+                  aria: { current: (dex.type_key == completion.type.key ? 'true' : nil),
+                          label: t('pokemons.dex.type_completion', label: completion.type.label,
+                                                                   caught: completion.caught, total: completion.total) } do %>
+        <%= pokemon_type_icon(completion.type, classes: 'size-3.5') %>
+      <% end %>
+    <% end %>
+  </nav>
+
+  <% if dex.entries.empty? %>
+    <p class="text-xs/4 text-fg-muted"><%= t('pokemons.dex.empty_type') %></p>
+  <% else %>
+    <ol class="grid grid-cols-5 gap-x-1 gap-y-2 sm:grid-cols-6 md:grid-cols-8"
+        aria-label="<%= t('pokemons.dex.title') %>">
+      <% dex.entries.each do |entry| %>
+        <li><%= render 'pokemon_dex/entry', entry: %></li>
+      <% end %>
+    </ol>
+  <% end %>
+</div>

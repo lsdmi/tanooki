@@ -1,0 +1,10 @@
+<%# Full-page fallback (deep links): same panel as the Studio lazy frame. %>
+<% content_for :title, t('pokemons.dex.title') %>
+<div class="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-8 md:py-12">
+  <p class="text-xs/4 tracking-wide text-fg-subtle">
+    <%= link_to t('pokemons.dex.back'), pokemons_path,
+                turbo_drive_visit_data.merge(class: 'underline-offset-4 hover:text-fg hover:underline') %>
+  </p>
+  <h1 class="text-base/6 font-semibold text-fg"><%= t('pokemons.dex.title') %></h1>
+  <%= render 'pokemon_dex/panel', dex: @dex %>
+</div>

@@ -40,7 +40,8 @@ module Pokemons
         side: side.to_s,
         name: species&.name,
         sprite: sprite_url(species),
-        maxHp: max_hp(combatant)
+        maxHp: max_hp(combatant),
+        shiny: entry['shiny'] == true
       }
     end
 

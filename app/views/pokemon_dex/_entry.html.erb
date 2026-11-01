@@ -1,0 +1,21 @@
+<%# locals: (entry:) %>
+<% pokemon = entry.pokemon %>
+<figure class="flex flex-col items-center gap-0.5">
+  <div class="flex size-10 items-center justify-center sm:size-11">
+    <% if entry.caught? %>
+      <%= pokemon_sprite_tag(pokemon, alt: pokemon.name, class: 'size-full object-contain') %>
+    <% else %>
+      <%= pokemon_sprite_tag(pokemon, alt: '', class: 'pokemon-dex-silhouette size-full object-contain') %>
+    <% end %>
+  </div>
+  <figcaption class="w-full truncate text-center text-[10px]/3 text-fg-subtle">
+    <% if entry.unknown? %>
+      #<%= pokemon.dex_id.to_s.rjust(3, '0') %>
+    <% else %>
+      <span class="<%= 'text-fg-muted' if entry.caught? %>" title="<%= pokemon.name %>">
+        <%= pokemon.name %>
+      </span>
+    <% end %>
+  </figcaption>
+  <span class="sr-only"><%= t("pokemons.dex.states.#{entry.state}") %></span>
+</figure>

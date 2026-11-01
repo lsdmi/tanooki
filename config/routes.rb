@@ -240,6 +240,7 @@ Rails.application.routes.draw do
   get '/privacy-policy', to: redirect('/privacy', status: 301)
 
   get '/pokemon/wild', to: 'wild_encounters#show', as: :wild_encounter
+  get '/pokemon/dex', to: 'pokemon_dex#show', as: :pokemon_dex
   post '/pokemon/catch', to: 'user_pokemons#create', as: :catch_pokemon
   post '/pokemon/training', to: 'user_pokemons#training', as: :training_pokemon
   patch '/pokemon/teams', to: 'pokemon_teams#update', as: :pokemon_teams

@@ -265,6 +265,82 @@ html:not(.turbo-transitioning) body {
   object-position: left top;
 }
 
+/* Pokédex: unknown/seen tiles — black silhouette (Tailwind brightness utilities are not in the built CSS). */
+.pokemon-dex-silhouette {
+  filter: brightness(0);
+  opacity: 0.7;
+}
+
+:where(.dark) .pokemon-dex-silhouette {
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* Studio strip: expanded Pokédex takes the full content row (open: utilities may be missing from the build). */
+.pokemon-dex-panel[open] {
+  flex-basis: 100%;
+  width: 100%;
+}
+
+/* Shiny: mild chroma bump on the sprite; sparkle frame adds glow + dust/stars. */
+.pokemon-shiny {
+  filter: hue-rotate(12deg) saturate(1.45) brightness(1.1) contrast(1.05);
+}
+
+.pokemon-shiny-sparkle {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Soft warm bloom behind the sprite. */
+.pokemon-shiny-sparkle::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(255 230 140 / 0.45) 0%, rgb(255 255 255 / 0.12) 42%, transparent 70%);
+  animation: pokemon-shiny-glow 2.6s ease-in-out infinite;
+}
+
+/* Glints, dust and tiny stars over the sprite. */
+.pokemon-shiny-sparkle::after {
+  content: "";
+  position: absolute;
+  inset: -0.4rem;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 22%, #fff 0 0.11rem, transparent 0.16rem),
+    radial-gradient(circle at 78% 18%, #ffe9a8 0 0.09rem, transparent 0.14rem),
+    radial-gradient(circle at 88% 58%, #fff 0 0.07rem, transparent 0.12rem),
+    radial-gradient(circle at 22% 72%, #fff6c8 0 0.08rem, transparent 0.13rem),
+    radial-gradient(circle at 55% 12%, #fff 0 0.05rem, transparent 0.09rem),
+    radial-gradient(circle at 42% 86%, #ffe9a8 0 0.06rem, transparent 0.1rem),
+    radial-gradient(circle at 62% 40%, rgb(255 255 255 / 0.9) 0 0.04rem, transparent 0.08rem),
+    radial-gradient(circle at 35% 38%, rgb(255 240 180 / 0.75) 0 0.035rem, transparent 0.07rem);
+  filter: drop-shadow(0 0 0.15rem rgb(255 236 160 / 0.55));
+  animation: pokemon-shiny-twinkle 2.1s ease-in-out infinite;
+}
+
+.pokemon-shiny-sparkle > .pokemon-shiny,
+.pokemon-shiny-sparkle > img {
+  position: relative;
+  z-index: 0;
+}
+
+@keyframes pokemon-shiny-glow {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+@keyframes pokemon-shiny-twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.97) rotate(-2deg); }
+  40% { opacity: 1; transform: scale(1.03) rotate(1deg); }
+  70% { opacity: 0.65; transform: scale(1) rotate(0deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .turbo-progress-bar,
   html.turbo-transitioning body,
@@ -277,4 +353,11 @@ html:not(.turbo-transitioning) body {
   ::view-transition-group(*) {
     animation: none !important;
   }
+
+  .pokemon-shiny-sparkle::before,
+  .pokemon-shiny-sparkle::after {
+    animation: none;
+    opacity: 0.75;
+  }
 }
+

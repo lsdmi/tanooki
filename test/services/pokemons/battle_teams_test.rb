@@ -23,7 +23,18 @@ module Pokemons
       stored = BattleTeams.new(@attacker, @defender).stored(:defender)
 
       assert_equal [{ id: user_pokemons(:two).id, character: 'agile', power_level: nil, battle_experience: 1,
-                      types: %w[normal], base_hp: 45, base_attack: 65, pokemon_id: pokemons(:one).id }], stored
+                      types: %w[normal], base_hp: 45, base_attack: 65, pokemon_id: pokemons(:one).id,
+                      shiny: false }], stored
+    end
+
+    test 'shiny combatants get the stat bonus baked into the snapshot' do
+      @brave.update!(shiny: true)
+      species = @brave.pokemon
+      stored = BattleTeams.new(@attacker, @defender).stored(:attacker).first
+
+      assert stored[:shiny]
+      assert_equal (species.base_hp * Balance::SHINY_STAT_BONUS).round, stored[:base_hp]
+      assert_equal (species.base_attack * Balance::SHINY_STAT_BONUS).round, stored[:base_attack]
     end
 
     test 'writes back only the experience that changed' do

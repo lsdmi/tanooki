@@ -14,7 +14,7 @@ module Pokemons
         encounter = @user.pokemon_encounters.for_catch_token(@token)
         next unless encounter&.claim!
 
-        CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: @user.id).trap
+        CollectionUpdater.new(pokemon_id: encounter.pokemon_id, user_id: @user.id, shiny: encounter.shiny?).trap
         encounter
       end
       DailyQuests::Progress.call(@user, event: :catch, types: catch_types(encounter)) if encounter

@@ -36,5 +36,15 @@ module Pokemons
       assert_includes hardy, 'шкоди'
       assert_match(/%\{name\}/, hardy)
     end
+
+    test 'fighters carry the shiny flag from the stored team' do
+      entry = @battle.attacker_team.first
+      entry['shiny'] = true
+      @battle.update!(attacker_team: [entry] + @battle.attacker_team.drop(1))
+
+      fighter = BattleReplayScript.new(@battle.reload, view: @view).as_json[:fighters][entry['id'].to_s]
+
+      assert fighter[:shiny]
+    end
   end
 end

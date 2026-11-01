@@ -29,5 +29,11 @@ module Pokemons
     test 'pokemon_sprite_tag renders nothing without a sprite' do
       assert_nil pokemon_sprite_tag(Pokemon.new(name: 'Nobody'))
     end
+
+    test 'pokemon_sprite_tag wraps a shiny sprite in a sparkle frame' do
+      render html: pokemon_sprite_tag(@pokemon, shiny: true, class: 'size-9')
+
+      assert_select 'span.pokemon-shiny-sparkle img.pokemon-shiny.size-9'
+    end
   end
 end

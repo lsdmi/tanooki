@@ -43,10 +43,34 @@ module Pokemons
       assert_raises(ActiveRecord::RecordNotUnique) { duplicate.save! }
     end
 
+    test 'a shiny catch marks a new line shiny' do
+      UserPokemon.where(user_id: @user_pokemon.user_id).delete_all
+
+      trap(pokemons(:four), shiny: true)
+
+      assert_predicate UserPokemon.find_by(user_id: @user_pokemon.user_id), :shiny?
+    end
+
+    test 'a shiny catch upgrades an owned line' do
+      assert_not @user_pokemon.shiny?
+
+      trap(pokemons(:one), shiny: true)
+
+      assert_predicate @user_pokemon.reload, :shiny?
+    end
+
+    test 'a normal catch does not clear shiny on an owned line' do
+      @user_pokemon.update!(shiny: true)
+
+      trap(pokemons(:one), shiny: false)
+
+      assert_predicate @user_pokemon.reload, :shiny?
+    end
+
     private
 
-    def trap(pokemon)
-      CollectionUpdater.new(pokemon_id: pokemon.id, user_id: @user_pokemon.user_id).trap
+    def trap(pokemon, shiny: false)
+      CollectionUpdater.new(pokemon_id: pokemon.id, user_id: @user_pokemon.user_id, shiny:).trap
     end
   end
 end

@@ -9,11 +9,16 @@
          data-panel-fold-key-value="details" style="view-transition-name: pokemon-details; view-transition-class: pokemon-panel"
          aria-labelledby="pokemon-details-heading">
   <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-    <%= pokemon_sprite_tag(pokemon, loading: :eager, class: 'size-10 object-contain') %>
+    <%= pokemon_sprite_tag(pokemon, loading: :eager, shiny: selected_pokemon.shiny?, class: 'size-10 object-contain') %>
+
     <h2 id="pokemon-details-heading" class="text-base/6 font-semibold tracking-tight text-fg">
       <%= selected_pokemon.pokemon_name %>
+      <% if selected_pokemon.shiny? %>
+        <span class="font-normal text-fg-brand"><%= t('pokemons.shiny.badge') %></span>
+      <% end %>
       <span class="font-normal text-fg-muted">· р. <%= selected_pokemon.current_level %></span>
     </h2>
+
     <% pokemon.types.each do |type| %><%= pokemon_type_badge(type) %><% end %>
   </div>
 

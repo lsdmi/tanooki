@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_31_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -405,6 +405,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_120000) do
     t.bigint "user_id"
     t.index ["guest_token"], name: "index_pokemon_encounters_on_guest_token"
     t.index ["pokemon_id"], name: "index_pokemon_encounters_on_pokemon_id"
+    t.index ["user_id", "pokemon_id"], name: "index_pokemon_encounters_on_user_id_and_pokemon_id"
     t.index ["user_id", "status"], name: "index_pokemon_encounters_on_user_id_and_status"
   end
 
@@ -831,6 +832,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_120000) do
     t.integer "current_level", default: 0
     t.bigint "line_root_id", null: false
     t.bigint "pokemon_id"
+    t.boolean "shiny", default: false, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["line_root_id"], name: "index_user_pokemons_on_line_root_id"

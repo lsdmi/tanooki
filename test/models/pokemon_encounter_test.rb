@@ -18,9 +18,19 @@ class PokemonEncounterTest < ActiveSupport::TestCase
   end
 
   test 'roll! defaults to a non-shiny browse encounter' do
-    encounter = PokemonEncounter.roll!(pokemon: @pokemon, user: users(:user_one))
+    PokemonEncounter.stub(:roll_shiny?, false) do
+      encounter = PokemonEncounter.roll!(pokemon: @pokemon, user: users(:user_one))
 
-    assert_equal ['browse', false], [encounter.source, encounter.shiny]
+      assert_equal ['browse', false], [encounter.source, encounter.shiny]
+    end
+  end
+
+  test 'roll! stores a shiny when the odds hit' do
+    PokemonEncounter.stub(:roll_shiny?, true) do
+      encounter = PokemonEncounter.roll!(pokemon: @pokemon, user: users(:user_one))
+
+      assert_predicate encounter, :shiny?
+    end
   end
 
   test 'roll! for a guest stores the guest token and no user' do

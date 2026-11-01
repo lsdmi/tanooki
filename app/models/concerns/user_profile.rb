@@ -31,9 +31,10 @@ module UserProfile
   end
 
   def profile_pokemon_stats
+    completion = Pokemons::Dex.completion(self)
     {
-      pokemon_count: pokemons.count,
-      total_pokemon: Pokemon.wild.count,
+      pokemon_count: completion.caught,
+      total_pokemon: completion.total,
       victories: battle_victory_count,
       total_battles: battle_total_count,
       user_rating: dex_leader_rank,

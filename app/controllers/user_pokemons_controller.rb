@@ -14,11 +14,12 @@ class UserPokemonsController < ApplicationController
   pokemon_rate_limit to: 5, only: :regenerate_opponent
 
   def create
-    caught = Pokemons::Catch.new(current_user, params[:encounter]).call.present?
-    message = t(caught ? 'pokemons.catch.success' : 'pokemons.catch.failure')
+    encounter = Pokemons::Catch.new(current_user, params[:encounter]).call
+    caught = encounter.present?
+    message = catch_notice(encounter)
 
     respond_to do |format|
-      format.json { render json: { caught:, message: } }
+      format.json { render json: { caught:, shiny: encounter&.shiny? || false, message: } }
       format.turbo_stream { render turbo_stream: [remove_pokemon, *update_notice(message)] }
     end
   end
@@ -42,6 +43,13 @@ class UserPokemonsController < ApplicationController
   end
 
   private
+
+  def catch_notice(encounter)
+    return t('pokemons.catch.failure') if encounter.blank?
+    return t('pokemons.catch.shiny_success') if encounter.shiny?
+
+    t('pokemons.catch.success')
+  end
 
   def pokemons
     UserPokemonListQuery.new(current_user).call.load

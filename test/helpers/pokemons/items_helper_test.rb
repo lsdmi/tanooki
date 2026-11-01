@@ -20,6 +20,13 @@ module Pokemons
       assert_select 'svg path', count: MISSIONS_PATHS.size
     end
 
+    test 'pokemon_dex_icon renders decorative book-image' do
+      render html: pokemon_dex_icon
+
+      assert_select 'svg[aria-hidden=true].size-3\\.5'
+      assert_select 'svg path', count: DEX_PATHS.size
+    end
+
     test 'flavor copy is pokemon-styled ukrainian' do
       assert_includes pokemon_item_flavor('incense'), 'Дикі покемони'
       assert_equal 'Протеїн', pokemon_item_name('protein')

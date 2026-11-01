@@ -22,7 +22,9 @@ module Pokemons
     end
 
     def stored(side)
-      combatants(side).map { |combatant, record| combatant.to_h.merge(pokemon_id: record.pokemon_id) }
+      combatants(side).map do |combatant, record|
+        combatant.to_h.merge(pokemon_id: record.pokemon_id, shiny: record.shiny?)
+      end
     end
 
     def save_experience(experience)
@@ -45,11 +47,18 @@ module Pokemons
 
     def combatant(record, side)
       species = record.pokemon
-      attack = species.base_attack
+      hp = shiny_stat(species.base_hp, record)
+      attack = shiny_stat(species.base_attack, record)
       attack = (attack * @attacker_attack_bonus).round if side == :attacker && @attacker_attack_bonus > 1
       Engine::Combatant.new(id: record.id, character: record.character,
                             battle_experience: record.battle_experience, types: species.types.map(&:key),
-                            base_hp: species.base_hp, base_attack: attack)
+                            base_hp: hp, base_attack: attack)
+    end
+
+    def shiny_stat(value, record)
+      return value unless record.shiny?
+
+      (value * Balance::SHINY_STAT_BONUS).round
     end
   end
 end

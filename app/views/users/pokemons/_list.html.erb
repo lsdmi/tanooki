@@ -15,8 +15,9 @@
     <%= render 'users/pokemons/team_roster', pokemons:, attack_team:, defense_team: %>
     <div class="hidden" aria-hidden="true">
       <% pokemons.each do |user_pokemon| %>
-        <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '',
+        <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', shiny: user_pokemon.shiny?,
                                data: { pokemon_team_target: 'sprite', pokemon_id: user_pokemon.id }) %>
+
       <% end %>
     </div>
 
@@ -40,7 +41,9 @@
                   'flex size-14 items-center justify-center rounded-full bg-main ring-1 ring-inset ring-line transition-transform hover:z-20 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:ring-2 aria-pressed:ring-brand sm:size-16',
                   ('-ml-3 sm:-ml-4' if index.positive?)
                 ) do %>
-            <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-10 object-contain sm:size-12') %>
+            <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', shiny: user_pokemon.shiny?,
+                                   class: 'size-10 object-contain sm:size-12') %>
+
           <% end %>
         <% end %>
         <% if pokemons.size > fanned.size %>
@@ -72,7 +75,9 @@
                       action: 'pokemon-image-click#select pokemon-team#assignPokemon'
                     },
                     class: 'group flex aspect-square w-full items-center justify-center rounded-full transition-colors hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong aria-pressed:bg-brand-subtle' do %>
-                <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110') %>
+                <%= pokemon_sprite_tag(user_pokemon.pokemon, alt: '', shiny: user_pokemon.shiny?,
+                                       class: 'size-11/12 object-contain transition-transform duration-200 group-hover:scale-110') %>
+
               <% end %>
             </li>
           <% end %>

@@ -18,8 +18,13 @@ class PokemonEncounter < ApplicationRecord
   validate :exactly_one_owner
 
   def self.roll!(pokemon:, user: nil, guest_token: nil, source: 'browse')
-    create!(pokemon:, user:, guest_token:, source:, expires_at: EXPIRES_IN.from_now)
+    create!(pokemon:, user:, guest_token:, source:, shiny: roll_shiny?, expires_at: EXPIRES_IN.from_now)
   end
+
+  def self.roll_shiny?
+    rand(Pokemons::Balance::SHINY_ODDS).zero?
+  end
+  private_class_method :roll_shiny?
 
   def self.for_catch_token(token)
     find_signed(token, purpose: CATCH_PURPOSE)

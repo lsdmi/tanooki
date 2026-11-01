@@ -5,14 +5,17 @@
       <%= render 'users/pokemons/season_banner', season:, dex_leaderboard: pokemon_show.dex_leaderboard %>
     <% end %>
     <%= render 'users/pokemons/defense_away', report: pokemon_show.defense_away %>
-    <div class="flex flex-wrap items-start gap-x-2 gap-y-1 text-sm/5 text-fg-muted"
+    <div class="flex w-full flex-wrap items-start gap-x-2 gap-y-1 text-sm/5 text-fg-muted"
          data-controller="exclusive-details">
+      <%= render 'users/pokemons/dex' %>
+      <span class="inline-flex h-5 items-center" aria-hidden="true">·</span>
+
       <%= render 'users/pokemons/daily_quests', quests: pokemon_show.daily_quests,
                                                weekly_streak: pokemon_show.weekly_streak %>
+
       <% if pokemon_show.daily_quests.any? %>
         <span class="inline-flex h-5 items-center" aria-hidden="true">·</span>
       <% end %>
-
       <%= render 'users/pokemons/candies', candies: pokemon_show.candies %>
       <span class="inline-flex h-5 items-center" aria-hidden="true">·</span>
       <%= render 'users/pokemons/bag', items: pokemon_show.bag_items,
