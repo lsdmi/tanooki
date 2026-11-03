@@ -1,0 +1,24 @@
+<%= link_to href, class: 'contests-winner-card group flex gap-3 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-none' do %>
+  <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-surface-strong">
+    <% if fiction&.cover&.attached? %>
+      <%= cover_card_picture_tag(fiction.cover, class: 'contests-hero-cover size-full object-cover', alt: '') %>
+    <% else %>
+      <div class="size-full bg-brand-subtle"></div>
+    <% end %>
+  </div>
+  <div class="min-w-0 flex-1">
+    <p class="text-xs font-semibold text-fg-brand"><%= prize.title %></p>
+    <p class="mt-1 line-clamp-2 text-sm font-semibold text-fg group-hover:text-fg-brand"><%= title %></p>
+    <% if author.present? %>
+      <p class="mt-0.5 text-xs text-fg-muted"><%= author %></p>
+    <% end %>
+    <p class="mt-2 text-xs text-fg-subtle"><%= contest.title %></p>
+    <% if aftermath? %>
+      <p class="mt-2 text-xs text-fg-muted">
+        <%= t('contests.show.winner.chapters_after', count: chapters_after) %>
+        · <%= t('contests.show.winner.in_libraries', count: library_count) %>
+        · <%= finished? ? t('contests.show.winner.finished') : t('contests.show.winner.ongoing') %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

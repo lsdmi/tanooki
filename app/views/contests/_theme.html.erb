@@ -1,0 +1,11 @@
+<%# locals: (contest:, presenter:) %>
+<section id="about" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.theme'), id: 'about-heading') %>
+  <div class="prose prose-slate mt-6 max-w-none text-fg dark:prose-invert">
+    <% if contest.description.present? %>
+      <%= contest.description %>
+    <% else %>
+      <p class="text-fg-muted"><%= contest.tagline %></p>
+    <% end %>
+  </div>
+</section>

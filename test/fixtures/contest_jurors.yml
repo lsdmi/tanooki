@@ -1,0 +1,6 @@
+chair:
+  id: 1
+  contest_id: 3
+  user_id: 2
+  role: chair
+  public_bio: Голова журі тестового конкурсу

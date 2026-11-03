@@ -1,0 +1,9 @@
+accepted_author:
+  id: 1
+  contest_entry_id: 1
+  user_id: 1
+
+qualified_author:
+  id: 2
+  contest_entry_id: 4
+  user_id: 1

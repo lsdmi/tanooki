@@ -1,0 +1,9 @@
+<%# locals: (contest:, presenter:) %>
+<section id="past-winners" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.past_winners'), id: 'past-winners-heading') %>
+  <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+    <% presenter.past_winners.each do |award| %>
+      <li><%= render Contests::WinnerCardComponent.new(award:) %></li>
+    <% end %>
+  </ul>
+</section>

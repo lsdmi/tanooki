@@ -1,0 +1,19 @@
+<section id="timeline" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.timeline'), id: 'timeline-heading') %>
+  <ol class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5" aria-labelledby="timeline-heading">
+    <% steps.each do |step| %>
+      <li class="rounded-xl px-4 py-3 ring-1 <%= step[:current] ? 'bg-brand-subtle ring-brand' : 'bg-surface ring-line' %>">
+        <p class="text-xs <%= step[:current] ? 'font-semibold text-fg-brand' : 'text-fg-muted' %>">
+          <%= t("contests.phases.#{step[:key]}") %>
+        </p>
+        <p class="mt-1 text-sm font-medium text-fg">
+          <% if step[:at] %>
+            <%= l(step[:at].to_date) %>
+          <% else %>
+            <%= t('contests.show.timeline.tba') %>
+          <% end %>
+        </p>
+      </li>
+    <% end %>
+  </ol>
+</section>

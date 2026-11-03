@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_145035) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -69,8 +69,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
   end
 
   create_table "avatars", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "contest_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["contest_id"], name: "index_avatars_on_contest_id"
   end
 
   create_table "bookshelf_fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -191,6 +193,144 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "contest_awards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "awarded_at", null: false
+    t.bigint "contest_entry_id", null: false
+    t.bigint "contest_id", null: false
+    t.bigint "contest_prize_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "paid_at"
+    t.string "payout_note"
+    t.datetime "updated_at", null: false
+    t.index ["contest_entry_id", "contest_prize_id"], name: "index_contest_awards_on_entry_and_prize", unique: true
+    t.index ["contest_entry_id"], name: "index_contest_awards_on_contest_entry_id"
+    t.index ["contest_id", "contest_prize_id"], name: "index_contest_awards_on_contest_and_prize"
+    t.index ["contest_id"], name: "index_contest_awards_on_contest_id"
+    t.index ["contest_prize_id"], name: "index_contest_awards_on_contest_prize_id"
+  end
+
+  create_table "contest_entries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "ai_note"
+    t.string "ai_usage", limit: 16, default: "none", null: false
+    t.bigint "contest_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "fiction_id"
+    t.integer "final_rank"
+    t.decimal "final_score", precision: 5, scale: 2
+    t.json "jury_breakdown"
+    t.text "jury_private_review"
+    t.text "jury_review"
+    t.decimal "jury_score", precision: 5, scale: 2
+    t.string "legacy_author"
+    t.string "legacy_title"
+    t.string "legacy_url"
+    t.json "locked_snapshot"
+    t.decimal "reader_score", precision: 5, scale: 2
+    t.json "reader_stats"
+    t.datetime "reviewed_at"
+    t.bigint "reviewed_by_id"
+    t.datetime "rules_accepted_at"
+    t.bigint "scanlator_id"
+    t.string "status", limit: 16, default: "accepted", null: false
+    t.string "status_reason"
+    t.datetime "submitted_at", null: false
+    t.bigint "submitter_id"
+    t.datetime "updated_at", null: false
+    t.index ["contest_id", "fiction_id"], name: "index_contest_entries_on_contest_and_fiction", unique: true
+    t.index ["contest_id", "status"], name: "index_contest_entries_on_contest_and_status"
+    t.index ["contest_id"], name: "index_contest_entries_on_contest_id"
+    t.index ["fiction_id"], name: "index_contest_entries_on_fiction_id"
+    t.index ["reviewed_by_id"], name: "index_contest_entries_on_reviewed_by_id"
+    t.index ["scanlator_id"], name: "index_contest_entries_on_scanlator_id"
+    t.index ["submitter_id"], name: "index_contest_entries_on_submitter_id"
+  end
+
+  create_table "contest_entry_authors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "contest_entry_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["contest_entry_id", "user_id"], name: "index_contest_entry_authors_on_entry_and_user", unique: true
+    t.index ["user_id"], name: "index_contest_entry_authors_on_user_id"
+  end
+
+  create_table "contest_jurors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "contest_id", null: false
+    t.datetime "created_at", null: false
+    t.string "public_bio"
+    t.string "role", limit: 16, default: "member", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["contest_id", "user_id"], name: "index_contest_jurors_on_contest_and_user", unique: true
+    t.index ["user_id"], name: "index_contest_jurors_on_user_id"
+  end
+
+  create_table "contest_prizes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "avatar_id"
+    t.integer "cash_uah", default: 0, null: false
+    t.bigint "contest_id", null: false
+    t.datetime "created_at", null: false
+    t.string "kind", limit: 16, default: "place", null: false
+    t.string "perks"
+    t.integer "place"
+    t.integer "position", default: 0, null: false
+    t.string "title", null: false
+    t.integer "unlock_at_uah"
+    t.datetime "updated_at", null: false
+    t.index ["avatar_id"], name: "index_contest_prizes_on_avatar_id"
+    t.index ["contest_id", "position"], name: "index_contest_prizes_on_contest_and_position"
+    t.index ["contest_id"], name: "index_contest_prizes_on_contest_id"
+  end
+
+  create_table "contests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "announced_at", null: false
+    t.json "announcements_sent", null: false
+    t.string "cancel_reason"
+    t.datetime "cancelled_at"
+    t.integer "carryover_uah", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.json "criteria", null: false
+    t.string "donation_url"
+    t.integer "donations_uah", default: 0, null: false
+    t.string "judged_chapters_scope", limit: 16, default: "until_close", null: false
+    t.integer "judged_word_cap"
+    t.datetime "judging_close_at", null: false
+    t.integer "jury_weight", default: 60, null: false
+    t.string "kind", limit: 16, default: "original", null: false
+    t.integer "max_content_rating", default: 18, null: false
+    t.integer "max_entries_per_user", default: 1, null: false
+    t.integer "max_words"
+    t.integer "min_chapters"
+    t.integer "min_words"
+    t.string "preset_key", limit: 32
+    t.integer "preset_version"
+    t.integer "prize_pool_uah", default: 0, null: false
+    t.datetime "published_at"
+    t.json "report"
+    t.datetime "report_generated_at"
+    t.bigint "required_genre_id"
+    t.boolean "requires_completed", default: false, null: false
+    t.boolean "requires_new_work", default: true, null: false
+    t.datetime "results_published_at"
+    t.json "rule_changes", null: false
+    t.json "rules_snapshot"
+    t.string "slug", null: false
+    t.bigint "source_contest_id"
+    t.json "sponsors", null: false
+    t.datetime "submissions_close_at", null: false
+    t.datetime "submissions_open_at", null: false
+    t.string "tagline", limit: 160
+    t.string "teaser_text", limit: 160
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["required_genre_id"], name: "index_contests_on_required_genre_id"
+    t.index ["results_published_at"], name: "index_contests_on_results_published_at"
+    t.index ["slug"], name: "index_contests_on_slug", unique: true
+    t.index ["source_contest_id"], name: "index_contests_on_source_contest_id"
+    t.index ["submissions_open_at"], name: "index_contests_on_submissions_open_at"
   end
 
   create_table "epub_export_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -894,6 +1034,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_tokens", "users"
+  add_foreign_key "avatars", "contests", on_delete: :nullify
   add_foreign_key "bookshelf_fictions", "bookshelves"
   add_foreign_key "bookshelf_fictions", "fictions"
   add_foreign_key "bookshelves", "users"
@@ -912,6 +1053,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_140000) do
   add_foreign_key "chat_messages", "users"
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :cascade
   add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "contest_awards", "contest_entries", on_delete: :cascade
+  add_foreign_key "contest_awards", "contest_prizes", on_delete: :cascade
+  add_foreign_key "contest_awards", "contests", on_delete: :cascade
+  add_foreign_key "contest_entries", "contests", on_delete: :cascade
+  add_foreign_key "contest_entries", "fictions", on_delete: :cascade
+  add_foreign_key "contest_entries", "scanlators", on_delete: :nullify
+  add_foreign_key "contest_entries", "users", column: "reviewed_by_id", on_delete: :nullify
+  add_foreign_key "contest_entries", "users", column: "submitter_id", on_delete: :nullify
+  add_foreign_key "contest_entry_authors", "contest_entries", on_delete: :cascade
+  add_foreign_key "contest_entry_authors", "users", on_delete: :cascade
+  add_foreign_key "contest_jurors", "contests", on_delete: :cascade
+  add_foreign_key "contest_jurors", "users", on_delete: :cascade
+  add_foreign_key "contest_prizes", "avatars", on_delete: :nullify
+  add_foreign_key "contest_prizes", "contests", on_delete: :cascade
+  add_foreign_key "contests", "contests", column: "source_contest_id", on_delete: :nullify
+  add_foreign_key "contests", "genres", column: "required_genre_id", on_delete: :nullify
   add_foreign_key "epub_export_requests", "users"
   add_foreign_key "fiction_duplicate_dismissals", "fictions", column: "other_fiction_id", on_delete: :cascade
   add_foreign_key "fiction_duplicate_dismissals", "fictions", on_delete: :cascade

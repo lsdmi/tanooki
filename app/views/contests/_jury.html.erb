@@ -1,0 +1,17 @@
+<%# locals: (contest:, presenter:) %>
+<section id="jury" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.jury'), id: 'jury-heading') %>
+  <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <% contest.jurors.includes(:user).order(:id).each do |juror| %>
+      <li class="rounded-xl bg-main p-4 ring-1 ring-line">
+        <p class="font-semibold text-fg"><%= juror.user.name %></p>
+        <% if juror.role.present? %>
+          <p class="text-xs text-fg-muted"><%= juror.role %></p>
+        <% end %>
+        <% if juror.public_bio.present? %>
+          <p class="mt-2 text-sm text-fg-secondary"><%= juror.public_bio %></p>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

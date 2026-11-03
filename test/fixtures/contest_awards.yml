@@ -1,0 +1,6 @@
+legacy_first:
+  id: 1
+  contest_id: 5
+  contest_prize_id: 1
+  contest_entry_id: 7
+  awarded_at: <%= 1.week.ago %>

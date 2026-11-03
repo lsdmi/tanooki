@@ -1,0 +1,71 @@
+<%# locals: (contest:, presenter:) %>
+<section id="rules" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.rules'), id: 'rules-heading') %>
+  <div class="mt-6 space-y-3">
+    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
+      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+        <%= t('contests.show.rules.general') %>
+      </summary>
+      <div class="border-t border-line px-4 py-3">
+        <%= render 'contests/general_rules' %>
+      </div>
+    </details>
+
+    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
+      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+        <%= t('contests.show.rules.criteria') %>
+      </summary>
+      <ul class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
+        <% Array(contest.criteria).each do |row| %>
+          <li class="flex justify-between gap-3 py-1">
+            <span><%= row['label'].presence || row['key'] %></span>
+            <span class="font-medium text-fg"><%= row['weight'] %>%</span>
+          </li>
+        <% end %>
+      </ul>
+    </details>
+
+    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
+      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+        <%= t('contests.show.rules.scoring') %>
+      </summary>
+      <div class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
+        <p><%= t('contests.show.rules.scoring_body', jury: contest.jury_weight, readers: 100 - contest.jury_weight) %></p>
+      </div>
+    </details>
+
+    <% if contest.rules.present? %>
+      <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
+        <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+          <%= t('contests.show.rules.extra') %>
+        </summary>
+        <div class="prose prose-slate border-t border-line px-4 py-3 text-sm dark:prose-invert">
+          <%= contest.rules %>
+        </div>
+      </details>
+    <% end %>
+
+    <% changes = Array(contest.rule_changes) %>
+    <% if changes.any? %>
+      <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
+        <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+          <%= t('contests.show.rules.changes') %>
+        </summary>
+        <ul class="border-t border-line px-4 py-3 text-sm text-fg-secondary space-y-2">
+          <% changes.reverse_each do |row| %>
+            <li>
+              <span class="font-medium text-fg">
+                <%= begin
+                      l(Time.zone.parse(row['at'].to_s).to_date, format: :long)
+                    rescue StandardError
+                      row['at']
+                    end %>
+              </span>
+              — <%= row['reason'] %>
+            </li>
+          <% end %>
+        </ul>
+      </details>
+    <% end %>
+  </div>
+</section>

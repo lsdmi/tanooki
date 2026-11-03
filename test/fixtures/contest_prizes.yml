@@ -1,0 +1,18 @@
+first_place:
+  id: 1
+  contest_id: 5
+  position: 0
+  title: 1 місце
+  kind: place
+  place: 1
+  cash_uah: 1500
+  perks: бейдж, аватарка, промо
+
+readers_choice:
+  id: 2
+  contest_id: 5
+  position: 1
+  title: Вибір читачів
+  kind: nomination
+  cash_uah: 0
+  perks: бейдж, промо

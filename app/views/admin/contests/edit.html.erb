@@ -1,0 +1,11 @@
+<section class="mx-auto max-w-4xl px-4 py-10">
+  <p class="text-sm text-fg-muted"><%= link_to t('admin.contests.back'), admin_contest_path(@contest), class: 'hover:underline' %></p>
+  <h1 class="mt-2 text-2xl font-bold text-fg"><%= t('admin.contests.edit') %>: <%= @contest.title %></h1>
+  <%= render 'form', contest: @contest %>
+
+  <div class="mt-10 border-t border-line pt-6">
+    <%= button_to t('admin.contests.actions.destroy'), admin_contest_path(@contest), method: :delete,
+                  form: { data: { turbo_confirm: t('admin.contests.actions.confirm_destroy') } },
+                  class: 'rounded-lg bg-main px-4 py-2 text-sm font-semibold text-status-danger-solid ring-1 ring-inset ring-line' %>
+  </div>
+</section>

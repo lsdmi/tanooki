@@ -67,6 +67,27 @@ module Ui
       assert_selector 'svg path[d*="13.803-3.7"]'
     end
 
+    test 'renders contest entry with flag and sky fill' do
+      render_inline(EditorialTagComponent.new(kind: :contest_entry, label: 'Учасник · Поріг'))
+
+      assert_text 'Учасник · Поріг'
+      assert_selector 'span.bg-sky-700'
+      assert_selector 'svg'
+    end
+
+    test 'renders contest winner as link when href given' do
+      render_inline(
+        EditorialTagComponent.new(
+          kind: :contest_winner,
+          label: '1 місце · Поріг',
+          href: '/contests/porig',
+          size: :compact
+        )
+      )
+
+      assert_selector 'a.bg-amber-700[href="/contests/porig"]', text: '1 місце · Поріг'
+    end
+
     test 'rejects unknown kind' do
       assert_raises(ArgumentError) do
         EditorialTagComponent.new(kind: :unknown)

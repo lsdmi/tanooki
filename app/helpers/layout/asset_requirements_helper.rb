@@ -20,7 +20,8 @@ module Layout
       'chapters' => %w[new edit create update],
       'publications' => %w[new edit create update],
       'scanlators' => %w[new edit create update],
-      'bookshelves' => %w[new edit create update]
+      'bookshelves' => %w[new edit create update],
+      'admin/contests' => %w[new edit create update]
     }.freeze
 
     SWEETALERT_PAGES = {
@@ -68,7 +69,7 @@ module Layout
     end
 
     def requires_actiontext_styles?
-      chapters_show_page? || tales_show_page?
+      chapters_show_page? || tales_show_page? || controller_path == 'admin/contests'
     end
 
     def requires_chapters_reader_styles?
@@ -77,6 +78,10 @@ module Layout
 
     def requires_catalog_storage_styles?
       controller_path == 'fiction_lists' && action_name == 'alphabetical'
+    end
+
+    def requires_contests_styles?
+      controller_path == 'contests'
     end
 
     def requires_sweetalert_styles?

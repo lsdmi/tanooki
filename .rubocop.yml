@@ -33,3 +33,9 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'app/services/analytics/view_increment.rb'
     - 'app/models/concerns/soft_deletable.rb'
+
+# Soft-delete runs destroy callbacks, so AR :dependent would mutate entries on soft
+# delete. Withdraw happens in after_destroy; hard delete cascades via the FK.
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/concerns/fiction_contest_entries.rb'

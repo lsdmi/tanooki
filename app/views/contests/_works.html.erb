@@ -1,0 +1,21 @@
+<%# locals: (contest:, presenter:) %>
+<section id="works" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.works'), id: 'works-heading') %>
+  <% entries = presenter.gallery_entries.to_a %>
+  <% if entries.any? %>
+    <ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      <% entries.each do |entry| %>
+        <li>
+          <%= render Contests::EntryCardComponent.new(
+                entry:,
+                blur_eighteen: entry.fiction&.content_rating_eighteen? && !current_user&.adult_content_acknowledged?
+              ) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-4 rounded-xl bg-surface px-4 py-8 text-center text-sm text-fg-muted ring-1 ring-line">
+      <%= t('contests.show.works.empty') %>
+    </p>
+  <% end %>
+</section>

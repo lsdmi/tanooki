@@ -1,0 +1,203 @@
+<%# locals: (contest:) %>
+<%= form_with model: [:admin, contest], class: 'mt-6 flex flex-col gap-6' do |f| %>
+  <% if contest.errors.any? %>
+    <div class="rounded-lg border border-status-danger-solid bg-surface px-4 py-3 text-sm text-status-danger-solid">
+      <ul class="list-disc pl-5">
+        <% contest.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="sm:col-span-2">
+      <%= f.label :title, t('admin.contests.fields.title'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.text_field :title, required: true, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= f.label :tagline, t('admin.contests.fields.tagline'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.text_field :tagline, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= f.label :kind, t('admin.contests.fields.kind'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.select :kind, Contest::KINDS.map { |k| [k, k] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div class="sm:col-span-2">
+      <%= f.label :teaser_text, t('admin.contests.fields.teaser_text'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.text_field :teaser_text, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div class="sm:col-span-2">
+      <%= f.label :description, t('admin.contests.fields.description'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.rich_text_area :description, class: 'mt-1 min-h-28 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div class="sm:col-span-2">
+      <%= f.label :rules, t('admin.contests.fields.rules'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.rich_text_area :rules, class: 'mt-1 min-h-28 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+  </div>
+
+  <fieldset class="grid gap-4 rounded-xl border border-line bg-main p-4 sm:grid-cols-2">
+    <legend class="px-1 text-sm font-semibold text-fg">Дати</legend>
+    <% %i[announced_at submissions_open_at submissions_close_at judging_close_at].each do |field| %>
+      <div>
+        <%= f.label field, t("admin.contests.fields.#{field}"), class: 'block text-sm font-medium text-fg' %>
+        <%= f.datetime_local_field field, required: true,
+              value: contest.public_send(field)&.strftime('%Y-%m-%dT%H:%M'),
+              class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <fieldset class="grid gap-4 rounded-xl border border-line bg-main p-4 sm:grid-cols-2">
+    <legend class="px-1 text-sm font-semibold text-fg">Вимоги</legend>
+    <div>
+      <%= f.label :required_genre_id, t('admin.contests.fields.required_genre'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.collection_select :required_genre_id, Genre.order(:name), :id, :name, { include_blank: true },
+                              class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= f.label :max_content_rating, t('admin.contests.fields.max_content_rating'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.select :max_content_rating, Fiction.content_ratings.map { |name, value| [name, value] }, {},
+                   class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <% %i[min_chapters min_words max_words judged_word_cap max_entries_per_user jury_weight].each do |field| %>
+      <div>
+        <%= f.label field, t("admin.contests.fields.#{field}"), class: 'block text-sm font-medium text-fg' %>
+        <%= f.number_field field, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      </div>
+    <% end %>
+    <div>
+      <%= f.label :judged_chapters_scope, t('admin.contests.fields.judged_chapters_scope'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.select :judged_chapters_scope, Contest::JUDGED_CHAPTERS_SCOPES.map { |s| [s, s] }, {},
+                   class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <label class="flex items-center gap-2 text-sm text-fg">
+      <%= f.check_box :requires_new_work, class: 'rounded border-line' %>
+      <%= t('admin.contests.fields.requires_new_work') %>
+    </label>
+    <label class="flex items-center gap-2 text-sm text-fg">
+      <%= f.check_box :requires_completed, class: 'rounded border-line' %>
+      <%= t('admin.contests.fields.requires_completed') %>
+    </label>
+  </fieldset>
+
+  <fieldset class="grid gap-4 rounded-xl border border-line bg-main p-4 sm:grid-cols-2">
+    <legend class="px-1 text-sm font-semibold text-fg">Фонд</legend>
+    <% %i[prize_pool_uah donations_uah carryover_uah].each do |field| %>
+      <div>
+        <%= f.label field, t("admin.contests.fields.#{field}"), class: 'block text-sm font-medium text-fg' %>
+        <%= f.number_field field, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      </div>
+    <% end %>
+    <div class="sm:col-span-2">
+      <%= f.label :donation_url, t('admin.contests.fields.donation_url'), class: 'block text-sm font-medium text-fg' %>
+      <%= f.url_field :donation_url, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="grid gap-4 rounded-xl border border-line bg-main p-4 sm:grid-cols-3">
+    <legend class="px-1 text-sm font-semibold text-fg">Зображення</legend>
+    <% %i[cover entry_placeholder_cover].each do |field| %>
+      <div>
+        <%= f.label field, t("admin.contests.fields.#{field}"), class: 'block text-sm font-medium text-fg' %>
+        <%= f.file_field field, class: 'mt-1 w-full text-sm text-fg' %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <fieldset class="rounded-xl border border-line bg-main p-4">
+    <legend class="px-1 text-sm font-semibold text-fg"><%= t('admin.contests.fields.prizes') %></legend>
+    <div class="mt-2 flex flex-col gap-4">
+      <%= f.fields_for :prizes do |pf| %>
+        <div class="grid gap-2 rounded-lg border border-line bg-surface p-3 sm:grid-cols-3">
+          <%= pf.hidden_field :id %>
+          <div>
+            <%= pf.label :title, t('admin.contests.fields.prize_title'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.text_field :title, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= pf.label :kind, t('admin.contests.fields.prize_kind'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.select :kind, ContestPrize::KINDS.map { |k| [k, k] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= pf.label :place, t('admin.contests.fields.prize_place'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.number_field :place, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= pf.label :position, t('admin.contests.fields.prize_position'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.number_field :position, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= pf.label :cash_uah, t('admin.contests.fields.prize_cash'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.number_field :cash_uah, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= pf.label :unlock_at_uah, t('admin.contests.fields.prize_unlock'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.number_field :unlock_at_uah, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div class="sm:col-span-2">
+            <%= pf.label :perks, t('admin.contests.fields.prize_perks'), class: 'block text-xs text-fg-muted' %>
+            <%= pf.text_field :perks, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <% if pf.object.persisted? %>
+            <label class="flex items-center gap-2 text-sm text-fg">
+              <%= pf.check_box :_destroy %>
+              Видалити
+            </label>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <fieldset class="rounded-xl border border-line bg-main p-4">
+    <legend class="px-1 text-sm font-semibold text-fg"><%= t('admin.contests.fields.jurors') %></legend>
+    <div class="mt-2 flex flex-col gap-4">
+      <%= f.fields_for :jurors do |jf| %>
+        <div class="grid gap-2 rounded-lg border border-line bg-surface p-3 sm:grid-cols-3">
+          <%= jf.hidden_field :id %>
+          <div>
+            <%= jf.label :user_id, t('admin.contests.fields.juror_user'), class: 'block text-xs text-fg-muted' %>
+            <%= jf.select :user_id,
+                          options_from_collection_for_select(User.order(:name), :id, :name, jf.object.user_id),
+                          { include_blank: true },
+                          data: { controller: 'slim' },
+                          class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= jf.label :role, t('admin.contests.fields.juror_role'), class: 'block text-xs text-fg-muted' %>
+            <%= jf.select :role, ContestJuror::ROLES.map { |r| [r, r] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <div>
+            <%= jf.label :public_bio, t('admin.contests.fields.juror_bio'), class: 'block text-xs text-fg-muted' %>
+            <%= jf.text_field :public_bio, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+          </div>
+          <% if jf.object.persisted? %>
+            <label class="flex items-center gap-2 text-sm text-fg">
+              <%= jf.check_box :_destroy %>
+              Видалити
+            </label>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <% if contest.published_at.present? %>
+    <div>
+      <%= label_tag :rule_change_reason, t('admin.contests.fields.rule_change_reason'), class: 'block text-sm font-medium text-fg' %>
+      <%= text_field_tag :rule_change_reason, params[:rule_change_reason],
+                         autocomplete: 'off',
+                         class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg',
+                         placeholder: t('admin.contests.fields.rule_change_reason') %>
+    </div>
+  <% end %>
+
+  <div class="flex flex-wrap gap-2">
+    <%= f.submit t('admin.contests.actions.save'),
+                 class: 'rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+    <%= link_to t('admin.contests.back'), admin_contests_path,
+                class: 'rounded-lg bg-main px-4 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+  </div>
+<% end %>

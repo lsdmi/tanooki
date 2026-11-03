@@ -1,0 +1,5 @@
+<section class="mx-auto max-w-4xl px-4 py-10">
+  <p class="text-sm text-fg-muted"><%= link_to t('admin.contests.back'), admin_contests_path, class: 'hover:underline' %></p>
+  <h1 class="mt-2 text-2xl font-bold text-fg"><%= t('admin.contests.new') %></h1>
+  <%= render 'form', contest: @contest %>
+</section>

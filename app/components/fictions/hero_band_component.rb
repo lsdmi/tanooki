@@ -24,6 +24,12 @@ module Fictions
 
     attr_reader :fiction, :presenter, :user
 
+    def contest_hero_tags
+      return [] unless Contests::PublicAccess.visible?(user)
+
+      @contest_hero_tags ||= Contests::FictionHeroTags.new(fiction).call
+    end
+
     def cover?
       fiction.cover.attached?
     end

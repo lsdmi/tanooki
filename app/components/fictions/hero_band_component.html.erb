@@ -28,6 +28,11 @@
         <% else %>
           <span class="<%= STATUS_TAG %>"><%= fiction.listing_state_label %></span>
         <% end %>
+        <% contest_hero_tags.each do |tag| %>
+          <%= render Ui::EditorialTagComponent.new(
+                kind: tag.kind, label: tag.label, href: tag.href, size: :compact
+              ) %>
+        <% end %>
       </div>
 
       <ul class="<%= STATS_CELL %>">

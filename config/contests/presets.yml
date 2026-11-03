@@ -1,0 +1,127 @@
+# Contest format presets (CONTESTS.md §3 / §7.7.1). Changing a preset is a PR.
+ranobe:
+  version: 1
+  kind: original
+  required_genre: original
+  durations:
+    announce: 3w
+    submissions: 10w
+    judging: 3w
+  requirements:
+    requires_new_work: true
+    requires_completed: false
+    min_chapters: 3
+    min_words: 10000
+    judged_word_cap: 25000
+    judged_chapters_scope: until_close
+    max_content_rating: 18
+    max_entries_per_user: 1
+  jury_weight: 60
+  criteria:
+    - { key: idea, label: Ідея та оригінальність, weight: 25 }
+    - { key: style, label: Мова і стиль, weight: 25 }
+    - { key: characters, label: Персонажі, weight: 20 }
+    - { key: world, label: Світ і атмосфера, weight: 15 }
+    - { key: hook, label: Захопливість, weight: 15 }
+  prize_split:
+    1: 50
+    2: 30
+    3: 20
+  nominations: [readers_choice, jury_choice, debut]
+  donation_goals:
+    - { at_uah: 1500, unlocks: [readers_choice, debut], cash_uah: 300 }
+    - { at_uah: 3000, unlocks: [continuation], cash_uah: 0 }
+
+short_story:
+  version: 1
+  kind: original
+  required_genre: original
+  durations:
+    announce: 2w
+    submissions: 6w
+    judging: 2w
+  requirements:
+    requires_new_work: true
+    requires_completed: true
+    min_chapters: 1
+    min_words: 3000
+    max_words: 12000
+    judged_word_cap: 12000
+    judged_chapters_scope: until_close
+    max_content_rating: 18
+    max_entries_per_user: 1
+  jury_weight: 60
+  criteria:
+    - { key: idea, label: Ідея та оригінальність, weight: 25 }
+    - { key: style, label: Мова і стиль, weight: 25 }
+    - { key: characters, label: Персонажі, weight: 20 }
+    - { key: world, label: Світ і атмосфера, weight: 15 }
+    - { key: hook, label: Захопливість, weight: 15 }
+  prize_split:
+    1: 50
+    2: 30
+    3: 20
+  nominations: [readers_choice, jury_choice, debut]
+  donation_goals: []
+
+fanfiction:
+  version: 1
+  kind: fanfiction
+  required_genre: fanfiction
+  durations:
+    announce: 2w
+    submissions: 8w
+    judging: 2w
+  requirements:
+    requires_new_work: true
+    requires_completed: false
+    min_chapters: 3
+    min_words: 10000
+    judged_word_cap: 25000
+    judged_chapters_scope: until_close
+    max_content_rating: 18
+    max_entries_per_user: 1
+  jury_weight: 50
+  criteria:
+    - { key: idea, label: Ідея та оригінальність, weight: 25 }
+    - { key: style, label: Мова і стиль, weight: 25 }
+    - { key: characters, label: Персонажі, weight: 20 }
+    - { key: world, label: Світ і атмосфера, weight: 15 }
+    - { key: hook, label: Захопливість, weight: 15 }
+  prize_split:
+    1: 50
+    2: 30
+    3: 20
+  nominations: [readers_choice, jury_choice, debut]
+  donation_goals: []
+
+translation:
+  version: 1
+  kind: translation
+  required_genre: null
+  durations:
+    announce: 2w
+    submissions: 8w
+    judging: 2w
+  requirements:
+    requires_new_work: false
+    requires_completed: false
+    min_chapters: 25
+    min_words: null
+    judged_word_cap: null
+    judged_chapters_scope: in_window
+    max_content_rating: 18
+    max_entries_per_user: 1
+  jury_weight: 50
+  criteria:
+    - { key: idea, label: Ідея та оригінальність, weight: 20 }
+    - { key: style, label: Мова і стиль, weight: 30 }
+    - { key: characters, label: Персонажі, weight: 15 }
+    - { key: world, label: Світ і атмосфера, weight: 15 }
+    - { key: hook, label: Захопливість, weight: 20 }
+  prize_split:
+    1: 50
+    2: 30
+    3: 20
+  nominations: [readers_choice, jury_choice]
+  donation_goals: []

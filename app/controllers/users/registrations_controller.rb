@@ -9,6 +9,8 @@ module Users
 
     # GET /resource/sign_up
     def new
+      @return_to = params[:return_to].presence
+      store_location_for(:user, @return_to) if @return_to.present?
       handle_pokemon_notice
       super
     end

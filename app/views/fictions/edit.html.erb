@@ -3,6 +3,14 @@
   <div class="py-8 px-4 sm:px-6 md:px-12 lg:px-24 mx-auto lg:py-8" data-controller="dropzone">
     <%# Kept outside the fiction form: nested forms are invalid HTML and break CSRF. %>
     <%= render 'catalog/listing_nudge', fiction: @fiction, wrapper_class: 'mb-6', field_links: :fragment unless frozen %>
+    <% if contests_publicly_visible? && (contest_entry = contest_entry_for_fiction(@fiction)) %>
+      <p class="mb-6 rounded-xl bg-brand-subtle px-4 py-3 text-sm text-fg ring-1 ring-brand">
+        <%= t('contests.edit_banner.in', contest: contest_entry.contest.title) %>
+        <%= link_to t('contests.edit_banner.my_entry'),
+                    contest_path(contest_entry.contest, anchor: 'my-entry'),
+                    class: 'font-semibold text-fg-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+      </p>
+    <% end %>
     <%= simple_form_for @fiction, as: :fiction, url: fiction_path(@fiction), method: :put, html: { class: "form" }, data: { turbo: false } do |f| %>
       <% if frozen %>
         <%= render 'license_frozen_form', fiction: @fiction, f: f %>

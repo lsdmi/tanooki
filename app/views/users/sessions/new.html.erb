@@ -7,7 +7,7 @@
       </h1>
       <p class="text-lg md:text-xl text-fg-muted font-light mb-6">
         Досі не з нами?
-        <%= link_to 'Зареєструватися', register_path, class: 'font-semibold text-status-success-solid hover:underline transition' %>
+        <%= link_to 'Зареєструватися', register_path(return_to: @return_to), class: 'font-semibold text-status-success-solid hover:underline transition' %>
       </p>
       <div class="token-raw bg-emerald-50 dark:bg-zinc-900/70 rounded-xl shadow-inner p-6 md:p-8 mb-4 border border-line">
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

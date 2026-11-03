@@ -56,6 +56,14 @@
     <% if current_user.admin? %>
       <ul class="p-2 text-start text-sm font-medium text-fg">
         <li>
+          <%= link_to admin_contests_path, class: 'group flex items-center gap-2 rounded-md px-3 py-2 text-fg hover:bg-surface-hover' do %>
+            <svg class="h-4 w-4 text-fg-muted group-hover:text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            <%= t('admin.contests.nav') %>
+          <% end %>
+        </li>
+        <li>
           <%= link_to admin_fiction_duplicates_path, class: 'group flex items-center gap-2 rounded-md px-3 py-2 text-fg hover:bg-surface-hover' do %>
             <svg class="h-4 w-4 text-fg-muted group-hover:text-fg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01" />

@@ -22,8 +22,8 @@ module Fictions
       edit?
     end
 
-    def create?
-      user.admin? || user.scanlators.any?
+    def create?(contest: nil)
+      user.admin? || user.scanlators.any? || contest.present?
     end
   end
 end

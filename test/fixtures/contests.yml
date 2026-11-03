@@ -1,0 +1,175 @@
+draft:
+  id: 1
+  slug: draft-contest
+  title: Чернетка конкурсу
+  tagline: Ще не опубліковано
+  kind: original
+  announced_at: <%= 1.week.from_now %>
+  submissions_open_at: <%= 4.weeks.from_now %>
+  submissions_close_at: <%= 14.weeks.from_now %>
+  judging_close_at: <%= 17.weeks.from_now %>
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 3000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0
+
+announced:
+  id: 2
+  slug: announced-contest
+  title: Анонсований конкурс
+  tagline: Скоро подача
+  kind: original
+  announced_at: <%= 1.week.ago %>
+  submissions_open_at: <%= 2.weeks.from_now %>
+  submissions_close_at: <%= 12.weeks.from_now %>
+  judging_close_at: <%= 15.weeks.from_now %>
+  published_at: <%= 1.week.ago %>
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 3000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0
+
+submissions:
+  id: 3
+  slug: submissions-contest
+  title: Конкурс подачі
+  tagline: Подай твір зараз
+  kind: original
+  announced_at: <%= 4.weeks.ago %>
+  submissions_open_at: <%= 2.weeks.ago %>
+  submissions_close_at: <%= 6.weeks.from_now %>
+  judging_close_at: <%= 9.weeks.from_now %>
+  published_at: <%= 4.weeks.ago %>
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 3000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0
+
+judging:
+  id: 4
+  slug: judging-contest
+  title: Конкурс на оцінюванні
+  tagline: Журі читає
+  kind: original
+  announced_at: <%= 14.weeks.ago %>
+  submissions_open_at: <%= 12.weeks.ago %>
+  submissions_close_at: <%= 1.week.ago %>
+  judging_close_at: <%= 2.weeks.from_now %>
+  published_at: <%= 14.weeks.ago %>
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 3000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0
+
+results:
+  id: 5
+  slug: results-contest
+  title: Конкурс із результатами
+  tagline: Переможці відомі
+  kind: original
+  announced_at: <%= 20.weeks.ago %>
+  submissions_open_at: <%= 18.weeks.ago %>
+  submissions_close_at: <%= 8.weeks.ago %>
+  judging_close_at: <%= 5.weeks.ago %>
+  published_at: <%= 20.weeks.ago %>
+  results_published_at: <%= 1.week.ago %>
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 3000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0
+
+cancelled:
+  id: 6
+  slug: cancelled-contest
+  title: Скасований конкурс
+  tagline: Не відбувся
+  kind: original
+  announced_at: <%= 6.weeks.ago %>
+  submissions_open_at: <%= 4.weeks.ago %>
+  submissions_close_at: <%= 2.weeks.from_now %>
+  judging_close_at: <%= 5.weeks.from_now %>
+  published_at: <%= 6.weeks.ago %>
+  cancelled_at: <%= 1.day.ago %>
+  cancel_reason: Замало учасників
+  requires_new_work: true
+  min_chapters: 3
+  min_words: 10000
+  judged_word_cap: 25000
+  judged_chapters_scope: until_close
+  max_content_rating: 18
+  max_entries_per_user: 1
+  jury_weight: 60
+  required_genre_id: 4
+  criteria: [{"key":"idea","label":"Ідея та оригінальність","weight":25},{"key":"style","label":"Мова і стиль","weight":25},{"key":"characters","label":"Персонажі","weight":20},{"key":"world","label":"Світ і атмосфера","weight":15},{"key":"hook","label":"Захопливість","weight":15}]
+  rule_changes: []
+  sponsors: []
+  announcements_sent: []
+  prize_pool_uah: 1000
+  donations_uah: 0
+  carryover_uah: 0
+  comments_count: 0

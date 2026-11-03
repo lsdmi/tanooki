@@ -8,13 +8,16 @@ module Layout
     end
 
     def navbar_fragment_cache_key(section = :brand)
-      [
-        'navbar/v7/shared',
-        section.to_s,
-        I18n.locale,
-        cookies[:color_theme].presence || 'light',
-        fragment_cache_version_bucket(1.hour)
+      key = [
+        'navbar/v9/shared', section.to_s, I18n.locale,
+        cookies[:color_theme].presence || 'light', fragment_cache_version_bucket(1.hour)
       ]
+      key << navbar_contests_cache_segment if section.to_sym == :nav_links && respond_to?(:contests_publicly_visible?)
+      key
+    end
+
+    def navbar_contests_cache_segment
+      contests_publicly_visible? ? "c:#{contests_navbar_cue.cache_digest}" : 'c:off'
     end
 
     def footer_fragment_cache_key

@@ -45,6 +45,10 @@ class User < ApplicationRecord
   has_many :chapter_thanks, dependent: :destroy
   has_one :content_filter, class_name: 'UserContentFilter', dependent: :destroy
   has_many :hidden_packages, class_name: 'UserHiddenPackage', dependent: :destroy, inverse_of: :user
+  has_many :submitted_contest_entries, class_name: 'ContestEntry', foreign_key: :submitter_id,
+                                       inverse_of: :submitter, dependent: :nullify
+  has_many :contest_entry_authors, dependent: :destroy
+  has_many :contest_jurors, dependent: :destroy
 
   scope :avatarless, -> { where(avatar_id: nil) }
 

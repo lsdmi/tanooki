@@ -15,7 +15,10 @@ module Sitemaps
     end
 
     def to_a
-      static_entries + fiction_entries + tale_entries + youtube_video_entries + scanlator_entries + genre_entries
+      entries = static_entries + fiction_entries + tale_entries + youtube_video_entries + scanlator_entries +
+                genre_entries
+      entries += contest_static_and_show_entries if Contests::PublicAccess.listed?
+      entries
     end
 
     private
@@ -58,6 +61,19 @@ module Sitemaps
     def genre_entries
       Genre.order(:id).pluck(:slug, :updated_at).map do |slug, updated_at|
         entry(:fiction_genre_fictions_url, slug, lastmod: updated_at)
+      end
+    end
+
+    def contest_static_and_show_entries
+      [entry(:contests_url)] + contest_entries
+    end
+
+    # Visible contests only (published + announced; drafts stay out of the sitemap).
+    def contest_entries
+      Contest.visible.order(:id)
+             .pluck(:slug, :updated_at, :results_published_at)
+             .map do |slug, updated_at, results_published_at|
+        entry(:contest_url, slug, lastmod: [updated_at, results_published_at].compact.max)
       end
     end
   end

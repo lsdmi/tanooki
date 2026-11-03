@@ -6,22 +6,30 @@ module Ui
   class EditorialTagComponent < ViewComponent::Base
     HERO_MAX = 2
     VARIANTS = %i[solid outline].freeze
+    SIZES = %i[hero compact].freeze
 
     KINDS = {
       sixteen: { label: '16+', icon: :warning },
       adult: { label: '18+', icon: :warning },
       novelty: { label: 'Новинка', icon: :lightning },
       popular: { label: 'Популярне', icon: :star },
-      update: { label: 'Оновлення', icon: :refresh }
+      update: { label: 'Оновлення', icon: :refresh },
+      # Contest labels are built at call sites («Учасник · …» / place · contest).
+      contest_entry: { label: 'Учасник', icon: :flag },
+      contest_winner: { label: 'Переможець', icon: :trophy }
     }.freeze
 
+    # Doc name KIND_COLORS; kept as SOLID_COLORS for existing call sites.
     SOLID_COLORS = {
       sixteen: 'bg-amber-600',
       adult: 'token-raw bg-rose-600',
       novelty: 'bg-violet-600',
       popular: 'bg-fuchsia-700',
-      update: 'bg-teal-600'
+      update: 'bg-teal-600',
+      contest_entry: 'bg-sky-700',
+      contest_winner: 'bg-amber-700'
     }.freeze
+    KIND_COLORS = SOLID_COLORS
 
     # Neutral veil chip shared by showcase editorial tags.
     # Light: soft gray + secondary ink; dark: white wash on the banner.
@@ -29,19 +37,26 @@ module Ui
                      'dark:bg-white/10 dark:text-white dark:ring-white/70 ' \
                      'dark:hover:bg-white/15 dark:hover:text-white'
 
-    def initialize(kind:, label: nil, variant: :solid)
+    def initialize(kind:, label: nil, variant: :solid, size: :hero, href: nil)
       super()
       @kind = kind.to_sym
       @variant = variant.to_sym
+      @size = size.to_sym
+      @href = href.presence
       raise ArgumentError, "unknown kind: #{@kind}" unless KINDS.key?(@kind)
       raise ArgumentError, "unknown variant: #{@variant}" unless VARIANTS.include?(@variant)
+      raise ArgumentError, "unknown size: #{@size}" unless SIZES.include?(@size)
 
       @label = label.presence || KINDS.fetch(@kind)[:label]
     end
 
     private
 
-    attr_reader :kind, :label, :variant
+    attr_reader :kind, :label, :variant, :size, :href
+
+    def linked?
+      href.present?
+    end
 
     def icon
       KINDS.fetch(kind)[:icon]
@@ -49,6 +64,10 @@ module Ui
 
     def outline?
       variant == :outline
+    end
+
+    def compact?
+      size == :compact
     end
 
     def kind_classes
@@ -59,6 +78,8 @@ module Ui
       if outline?
         'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-sm/4 font-medium ' \
           'ring-1 ring-inset transition-colors'
+      elsif compact?
+        'inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-sm/5 font-medium text-white'
       else
         'inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-sm font-normal text-white ' \
           'md:gap-1.5 md:rounded-xl md:px-3 md:py-1 md:text-lg'
@@ -66,7 +87,9 @@ module Ui
     end
 
     def icon_classes
-      outline? ? 'h-3.5 w-3.5 shrink-0' : 'h-4 w-4 shrink-0 md:h-5 md:w-5'
+      return 'h-3.5 w-3.5 shrink-0' if outline? || compact?
+
+      'h-4 w-4 shrink-0 md:h-5 md:w-5'
     end
   end
 end

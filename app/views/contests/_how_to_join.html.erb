@@ -1,0 +1,29 @@
+<%# locals: (contest:, presenter:) %>
+<section id="how-to-join" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.how_to_join'), id: 'how-to-join-heading') %>
+  <ol class="mt-6 grid gap-4 md:grid-cols-3">
+    <% [
+         %i[step1_title step1_body],
+         %i[step2_title step2_body],
+         %i[step3_title step3_body]
+       ].each_with_index do |(title_key, body_key), index| %>
+      <li class="rounded-xl bg-main p-4 ring-1 ring-line">
+        <p class="text-sm font-semibold text-fg-brand"><%= index + 1 %></p>
+        <p class="mt-2 font-semibold text-fg"><%= t("contests.show.how_to_join.#{title_key}") %></p>
+        <p class="mt-1 text-sm text-fg-muted"><%= t("contests.show.how_to_join.#{body_key}") %></p>
+      </li>
+    <% end %>
+  </ol>
+  <% join = presenter.primary_action if presenter.primary_action&.dig(:label_key)&.end_with?('.join') %>
+  <% if join %>
+    <div class="mt-6">
+      <%= render Ui::ButtonComponent.new(
+            label: t('contests.show.actions.join'),
+            href: join[:href],
+            variant: :primary,
+            size: :lg,
+            as: :link
+          ) %>
+    </div>
+  <% end %>
+</section>

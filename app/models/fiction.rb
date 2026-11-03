@@ -40,6 +40,7 @@ class Fiction < ApplicationRecord
   has_many :users, through: :scanlators
   has_many :bookshelf_fictions, dependent: :destroy
   has_many :bookshelves, through: :bookshelf_fictions
+  include FictionContestEntries
 
   enum :origin, { nknown: 'невідоме', english: 'англійське', bosnian: 'боснійське', italian: 'італійське',
                   chinese: 'китайське', korean: 'корейське', dutch: 'нідерландське', polish: 'польське',

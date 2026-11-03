@@ -10,7 +10,8 @@ module Users
     # GET /resource/sign_in. `return_to` (e.g. the fiction page «Додати до читальні») is where sign-in lands;
     # Devise keeps only its path, so it can't send the user off-site.
     def new
-      store_location_for(:user, params[:return_to]) if params[:return_to].present?
+      @return_to = params[:return_to].presence
+      store_location_for(:user, @return_to) if @return_to.present?
       super
     end
 

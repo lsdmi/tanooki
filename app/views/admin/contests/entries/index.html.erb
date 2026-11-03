@@ -1,0 +1,83 @@
+<section class="mx-auto max-w-5xl px-4 py-10">
+  <p class="text-sm text-fg-muted">
+    <%= link_to t('admin.contests.back'), admin_contests_path, class: 'hover:underline' %>
+    ·
+    <%= link_to @contest.title, admin_contest_path(@contest), class: 'hover:underline' %>
+  </p>
+  <h1 class="mt-2 text-2xl font-bold text-fg"><%= t('admin.contests.entries.title') %></h1>
+  <p class="mt-1 text-sm text-fg-muted"><%= @contest.title %></p>
+  <p class="mt-2 max-w-2xl text-sm text-fg-secondary"><%= t('admin.contests.entries.intro') %></p>
+
+  <div class="mt-4 flex flex-wrap gap-2">
+    <%= link_to t('admin.contests.entries.all'), admin_contest_entries_path(@contest),
+                class: "rounded-lg px-3 py-1.5 text-sm font-semibold ring-1 ring-inset ring-line #{'bg-brand text-fg-on-brand' unless @status_filter}" %>
+    <% ContestEntry::STATUSES.each do |status| %>
+      <%= link_to t("contests.entry_statuses.#{status}", default: status), admin_contest_entries_path(@contest, status:),
+                  class: "rounded-lg px-3 py-1.5 text-sm font-semibold ring-1 ring-inset ring-line #{'bg-brand text-fg-on-brand' if @status_filter == status}" %>
+    <% end %>
+  </div>
+
+  <% if @entries.empty? %>
+    <p class="mt-8 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm text-fg-muted">
+      <%= t('admin.contests.entries.empty') %>
+    </p>
+  <% else %>
+    <ul class="mt-6 flex flex-col gap-4">
+      <% @entries.each do |entry| %>
+        <li class="rounded-xl border border-line bg-main p-4">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="font-semibold text-fg">
+                <% if entry.fiction %>
+                  <%= link_to entry.display_title, fiction_path(entry.fiction), class: 'hover:underline' %>
+                <% else %>
+                  <%= entry.display_title %>
+                  <% if entry.legacy_url.present? %>
+                    · <%= link_to 'джерело', entry.legacy_url, class: 'text-fg-brand hover:underline', target: '_blank', rel: 'noopener' %>
+                  <% end %>
+                <% end %>
+              </p>
+              <p class="text-sm text-fg-muted">
+                <%= t('admin.contests.entries.status') %>:
+                <%= t("contests.entry_statuses.#{entry.status}", default: entry.status) %>
+                · <%= t('admin.contests.entries.submitter') %>: <%= entry.submitter&.name || entry.legacy_author || '—' %>
+                · <%= t('admin.contests.entries.ai') %>: <%= entry.ai_usage %>
+              </p>
+              <% if entry.ai_note.present? %>
+                <p class="mt-2 rounded-lg bg-surface px-3 py-2 text-sm text-fg">
+                  <span class="text-fg-muted"><%= t('admin.contests.entries.ai_note') %>:</span>
+                  <%= entry.ai_note %>
+                </p>
+              <% end %>
+              <% if entry.status_reason.present? %>
+                <p class="mt-1 text-sm text-fg-muted"><%= entry.status_reason %></p>
+              <% end %>
+            </div>
+          </div>
+
+          <% if entry.accepted? || entry.qualified? %>
+            <div class="mt-4 flex flex-wrap items-end gap-2">
+              <%= form_with url: admin_contest_entry_path(@contest, entry), method: :patch, class: 'flex flex-wrap items-end gap-2' do %>
+                <%= hidden_field_tag :moderation, 'reject' %>
+                <%= text_field_tag :reason, nil, required: true, autocomplete: 'off',
+                                   placeholder: t('admin.contests.entries.reason'),
+                                   class: 'rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+                <%= submit_tag t('admin.contests.entries.reject'),
+                               class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+              <% end %>
+
+              <%= form_with url: admin_contest_entry_path(@contest, entry), method: :patch, class: 'flex flex-wrap items-end gap-2' do %>
+                <%= hidden_field_tag :moderation, 'disqualify' %>
+                <%= text_field_tag :reason, nil, required: true, autocomplete: 'off',
+                                   placeholder: t('admin.contests.entries.reason'),
+                                   class: 'rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+                <%= submit_tag t('admin.contests.entries.disqualify'),
+                               class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-status-danger-solid ring-1 ring-inset ring-line' %>
+              <% end %>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>

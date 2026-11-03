@@ -1,0 +1,14 @@
+<%# locals: (contest:, presenter:) %>
+<section id="results" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.results'), id: 'results-heading') %>
+  <% awards = contest.awards.includes(:contest_prize, contest_entry: { fiction: { cover_attachment: :blob } }).order(:id) %>
+  <% if awards.any? %>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+      <% awards.each do |award| %>
+        <li><%= render Contests::WinnerCardComponent.new(award:) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-4 text-sm text-fg-muted"><%= t('contests.show.results.empty') %></p>
+  <% end %>
+</section>

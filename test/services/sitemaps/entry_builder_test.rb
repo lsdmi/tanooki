@@ -24,5 +24,31 @@ module Sitemaps
       assert_includes locs, "http://example.com/fictions/#{fiction.slug}"
       assert(locs.none? { |loc| loc.include?('/chapters/') })
     end
+
+    test 'omits contests from the sitemap while unlisted' do
+      locs = EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
+
+      assert(locs.none? { |loc| loc.include?('/contests') })
+    end
+
+    test 'includes contests hub and visible contests when listed' do
+      locs = listed_locs
+
+      assert_includes locs, 'http://example.com/contests'
+      assert_includes locs, "http://example.com/contests/#{contests(:submissions).slug}"
+      assert_includes locs, "http://example.com/contests/#{contests(:results).slug}"
+    end
+
+    test 'omits draft contests when listed' do
+      assert_not_includes listed_locs, "http://example.com/contests/#{contests(:draft).slug}"
+    end
+
+    private
+
+    def listed_locs
+      Contests::PublicAccess.stub(:listed?, true) do
+        EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
+      end
+    end
   end
 end

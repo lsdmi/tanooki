@@ -9,6 +9,11 @@ module Fictions
 
     private
 
+    def render_sorted_chapters(show_params)
+      @show_presenter = FictionShowPresenter.new(@fiction, current_user, show_params)
+      render turbo_stream: sorted_chapters_turbo_streams
+    end
+
     def sorted_chapters_turbo_streams
       locals = sorted_chapters_frame_locals
       turbo_stream_with_cleared_flash(

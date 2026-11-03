@@ -1,0 +1,12 @@
+<section id="summary" class="border-b border-line bg-main">
+  <div class="mx-auto max-w-screen-xl px-4 py-6 2xl:px-0">
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <% presenter.summary_facts.each do |fact| %>
+        <li class="rounded-xl bg-surface px-4 py-3 ring-1 ring-line">
+          <p class="text-xs text-fg-muted"><%= fact[:label] %></p>
+          <p class="mt-1 text-sm font-semibold text-fg"><%= fact[:value] %></p>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

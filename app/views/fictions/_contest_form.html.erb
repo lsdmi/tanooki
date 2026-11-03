@@ -1,0 +1,136 @@
+<%# locals: (contest:, submission:, fiction:) %>
+<% values = submission.params || {} %>
+<% confirmed = current_user.confirmed? %>
+<% content_rating_hints = Fiction.content_ratings.keys.index_with { |band| t("fictions.form.content_rating.hints.#{band}") } %>
+
+<%= form_with url: fictions_path(contest: contest.slug), method: :post, multipart: true,
+              class: 'space-y-6',
+              data: { turbo: false, controller: 'dropzone contests--ai-usage' } do %>
+  <% if submission.errors[:base].any? %>
+    <div class="rounded-xl bg-status-danger-subtle-bg px-4 py-3 text-sm text-status-danger-subtle-fg ring-1 ring-status-danger-subtle-border" role="alert">
+      <ul class="list-disc space-y-1 pl-4">
+        <% submission.errors[:base].each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <label for="fiction_title" class="block text-sm font-semibold text-fg"><%= t('contests.submit.fields.title') %></label>
+    <input type="text" name="fiction[title]" id="fiction_title" required maxlength="100" autocomplete="off"
+           value="<%= values[:title] %>"
+           class="mt-2 w-full rounded-lg border border-line bg-main px-3 py-3 text-fg placeholder-fg-subtle focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+           placeholder="<%= t('contests.submit.fields.title_placeholder') %>">
+    <% if submission.errors[:title].any? %>
+      <p class="mt-1 text-xs text-status-danger-solid"><%= submission.errors[:title].to_sentence %></p>
+    <% end %>
+  </div>
+
+  <div data-controller="contests--char-count" data-contests--char-count-min-value="25" data-contests--char-count-max-value="1000">
+    <label for="fiction_description" class="block text-sm font-semibold text-fg"><%= t('contests.submit.fields.description') %></label>
+    <textarea name="fiction[description]" id="fiction_description" required rows="5" maxlength="1000"
+              data-contests--char-count-target="input"
+              data-action="input->contests--char-count#update"
+              class="mt-2 w-full rounded-lg border border-line bg-main px-3 py-3 text-fg placeholder-fg-subtle focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+              placeholder="<%= t('contests.submit.fields.description_placeholder') %>"><%= values[:description] %></textarea>
+    <p class="mt-1 text-xs text-fg-muted" data-contests--char-count-target="count">0 / 1000</p>
+    <% if submission.errors[:description].any? %>
+      <p class="mt-1 text-xs text-status-danger-solid"><%= submission.errors[:description].to_sentence %></p>
+    <% end %>
+  </div>
+
+  <div data-controller="content-rating-hint"
+       data-action="change->content-rating-hint#show"
+       data-content-rating-hint-hints-value="<%= content_rating_hints.to_json %>">
+    <fieldset>
+      <legend class="text-sm font-semibold text-fg"><%= t('fictions.form.content_rating.legend') %></legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <% Fiction.content_ratings.each_key do |band| %>
+          <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-surface px-3 py-2 ring-1 ring-line has-[:checked]:bg-brand-subtle has-[:checked]:ring-brand">
+            <input type="radio" name="fiction[content_rating]" value="<%= band %>" required
+                   class="size-4 border-line-strong text-fg-brand focus:ring-brand"
+                   <%= 'checked' if values[:content_rating].to_s == band.to_s %>>
+            <span class="text-sm font-medium text-fg"><%= t("fictions.form.content_rating.labels.#{band}") %></span>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+    <p class="mt-2 text-sm text-fg-muted" data-content-rating-hint-target="hint" aria-live="polite">
+      <%= t("fictions.form.content_rating.hints.#{values[:content_rating].presence || 'everyone'}") %>
+    </p>
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold text-fg"><%= t('contests.submit.fields.cover') %></label>
+    <p class="mt-1 text-sm text-fg-muted"><%= t('contests.submit.fields.cover_hint') %></p>
+    <label for="fictions_cover" class="mt-3 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-line bg-surface px-4 py-8 hover:bg-surface-strong">
+      <span class="text-sm text-fg-muted"><%= t('contests.submit.fields.cover_pick') %></span>
+      <input type="file" name="fiction[cover]" id="fictions_cover" accept="image/webp,image/avif,image/jpeg,image/png"
+             class="hidden" data-action="change->dropzone#update">
+      <span id="cover_name" class="mt-2 text-xs text-fg-subtle"></span>
+    </label>
+    <% if submission.errors[:cover].any? %>
+      <p class="mt-1 text-xs text-status-danger-solid"><%= submission.errors[:cover].to_sentence %></p>
+    <% end %>
+  </div>
+
+  <fieldset data-action="change->contests--ai-usage#sync">
+    <legend class="text-sm font-semibold text-fg"><%= t('contests.submit.fields.ai_usage') %></legend>
+    <div class="mt-3 space-y-2">
+      <% [
+           %w[none contests.submit.ai.none],
+           %w[assist contests.submit.ai.assist],
+           %w[substantial contests.submit.ai.substantial]
+         ].each do |value, key| %>
+        <label class="flex cursor-pointer items-start gap-3 rounded-lg bg-surface px-3 py-3 ring-1 ring-line has-[:checked]:bg-brand-subtle has-[:checked]:ring-brand">
+          <input type="radio" name="fiction[ai_usage]" value="<%= value %>" required
+                 class="mt-0.5 size-4 border-line-strong text-fg-brand focus:ring-brand"
+                 <%= 'checked' if values[:ai_usage].to_s == value %>>
+          <span class="text-sm text-fg"><%= t(key) %></span>
+        </label>
+      <% end %>
+    </div>
+    <% if submission.errors[:ai_usage].any? %>
+      <p class="mt-1 text-xs text-status-danger-solid"><%= submission.errors[:ai_usage].to_sentence %></p>
+    <% end %>
+    <div class="mt-3" data-contests--ai-usage-target="note" hidden>
+      <label for="fiction_ai_note" class="block text-sm font-semibold text-fg"><%= t('contests.submit.fields.ai_note') %></label>
+      <textarea name="fiction[ai_note]" id="fiction_ai_note" rows="2" disabled
+                class="mt-2 w-full rounded-lg border border-line bg-main px-3 py-3 text-sm text-fg focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"><%= values[:ai_note] %></textarea>
+      <p class="mt-1 text-xs text-fg-muted"><%= t('contests.submit.fields.ai_private') %></p>
+    </div>
+  </fieldset>
+
+  <label class="flex cursor-pointer items-start gap-3">
+    <input type="checkbox" name="fiction[rules_accepted]" value="1" required
+           class="mt-1 size-4 rounded border-line-strong text-fg-brand focus:ring-brand"
+           <%= 'checked' if ActiveModel::Type::Boolean.new.cast(values[:rules_accepted]) %>>
+    <span class="text-sm text-fg"><%= t('contests.submit.fields.rules_accepted') %></span>
+  </label>
+  <% if submission.errors[:rules_accepted].any? %>
+    <p class="text-xs text-status-danger-solid"><%= submission.errors[:rules_accepted].to_sentence %></p>
+  <% end %>
+
+  <% unless confirmed %>
+    <div class="rounded-xl bg-status-warning-subtle-bg px-4 py-3 text-sm text-status-warning-subtle-fg ring-1 ring-status-warning-subtle-border">
+      <p class="font-semibold"><%= t('contests.submit.confirm_email') %></p>
+      <p class="mt-1"><%= t('contests.submit.confirm_email_body') %></p>
+      <%= button_to t('contests.submit.resend_confirmation'),
+                    user_confirmation_path,
+                    params: { user: { email: current_user.email } },
+                    method: :post,
+                    form: { class: 'mt-3 inline-block' },
+                    class: 'text-sm font-semibold underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+    </div>
+  <% end %>
+
+  <%= render Ui::ButtonComponent.new(
+        label: t('contests.submit.submit'),
+        variant: :primary,
+        size: :lg,
+        as: :submit,
+        full_width: true,
+        disabled: !confirmed
+      ) %>
+<% end %>

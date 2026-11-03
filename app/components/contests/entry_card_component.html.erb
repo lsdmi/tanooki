@@ -1,0 +1,27 @@
+<%= link_to href, class: 'contests-entry-card group flex flex-col overflow-hidden rounded-xl bg-main ring-1 ring-line focus-visible:outline-none' do %>
+  <div class="relative aspect-[2/3] overflow-hidden bg-surface-strong">
+    <% if fiction.cover.attached? %>
+      <%= cover_card_picture_tag(
+            fiction.cover,
+            class: "contests-hero-cover size-full object-cover #{'blur-md scale-105' if blur?}",
+            alt: blur? ? '' : fiction.title
+          ) %>
+    <% else %>
+      <div class="flex size-full items-end bg-surface p-3">
+        <span class="text-sm font-semibold text-fg"><%= fiction.title %></span>
+      </div>
+    <% end %>
+    <% if eighteen? %>
+      <span class="absolute left-2 top-2 rounded-md bg-status-danger-subtle-bg px-1.5 py-0.5 text-xs font-bold text-status-danger-subtle-fg ring-1 ring-status-danger-subtle-border">18+</span>
+    <% elsif fiction.content_rating_sixteen? %>
+      <span class="absolute left-2 top-2 rounded-md bg-status-warning-subtle-bg px-1.5 py-0.5 text-xs font-bold text-status-warning-subtle-fg ring-1 ring-status-warning-subtle-border">16+</span>
+    <% end %>
+  </div>
+  <div class="flex flex-1 flex-col gap-1 p-3">
+    <p class="line-clamp-2 text-sm font-semibold text-fg group-hover:text-fg-brand"><%= fiction.title %></p>
+    <p class="text-xs text-fg-muted"><%= fiction.author %></p>
+    <p class="mt-auto pt-2 text-xs text-fg-subtle">
+      <%= t('contests.show.works.meta', chapters: chapter_count) %>
+    </p>
+  </div>
+<% end %>

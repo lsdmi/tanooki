@@ -15,6 +15,7 @@ class FictionsController < ApplicationController
   include Fictions::DashboardListing
   include Fictions::FictionControllerSetup
   include Fictions::FictionPersistence
+  include Fictions::ContestSubmission
   include Fictions::GuestIndexCaching
   include Fictions::GuestShowCaching
   include Fictions::TurboStreamResponses
@@ -47,6 +48,8 @@ class FictionsController < ApplicationController
   end
 
   def new
+    return start_contest_submission if contest_mode?
+
     @fiction = Fiction.new
   end
 
@@ -58,6 +61,8 @@ class FictionsController < ApplicationController
   def edit; end
 
   def create
+    return create_contest_submission if contest_mode?
+
     @fiction = Fiction.new
     persist_fiction(:new, t('fictions.notices.create_success'))
   end
@@ -73,20 +78,13 @@ class FictionsController < ApplicationController
     render turbo_stream: turbo_stream_destroy_success(refresh_list, t('fictions.notices.destroy_success'))
   end
 
-  def toggle_order
-    @show_presenter = FictionShowPresenter.new(@fiction, current_user, toggle_order_params)
-    render turbo_stream: sorted_chapters_turbo_streams
-  end
+  def toggle_order = render_sorted_chapters(toggle_order_params)
 
-  def chapter_filter
-    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
-    render turbo_stream: sorted_chapters_turbo_streams
-  end
+  def chapter_filter = render_sorted_chapters(params)
 
   def chapter_team
     Chapters::TeamChoice.write(cookies, @fiction.id, params[:team])
-    @show_presenter = FictionShowPresenter.new(@fiction, current_user, params)
-    render turbo_stream: sorted_chapters_turbo_streams
+    render_sorted_chapters(params)
   end
 
   def chapter_section

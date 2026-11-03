@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class PagesControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   test 'should get rules' do
     get rules_url
 
@@ -21,6 +23,46 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get rules_url
 
     assert_select 'li', text: /під позначкою 16\+ є порушенням правил/
+  end
+
+  test 'rules page hides contest links while contests are unlisted' do
+    get rules_url
+
+    assert_select 'section[aria-labelledby="rules-contests-heading"]', count: 0
+    assert_select '#contest-rules', count: 0
+    assert_select 'a[href=?]', contests_path, count: 0
+  end
+
+  test 'rules page links to contest general rules for admins' do
+    sign_in users(:user_one)
+
+    get rules_url
+
+    assert_select 'section[aria-labelledby="rules-contests-heading"] a[href=?]',
+                  rules_path(anchor: 'contest-rules'),
+                  text: 'Читати загальні правила'
+    assert_select 'section[aria-labelledby="rules-contests-heading"] a[href=?]',
+                  contests_path,
+                  text: 'Актуальні конкурси'
+  end
+
+  test 'rules page shows contest general rules headings for admins' do
+    sign_in users(:user_one)
+
+    get rules_url
+
+    assert_select '#contest-rules h2', text: 'Загальні правила конкурсів'
+    assert_select '#contest-rules h3', text: 'Хто може брати участь'
+    assert_select '#contest-rules h3', text: 'Штучний інтелект'
+  end
+
+  test 'rules page shows contest general rules body for admins' do
+    sign_in users(:user_one)
+
+    get rules_url
+
+    assert_select '#contest-rules li', text: /Вікове маркування за правилами сайту/
+    assert_select '#contest-rules p', text: /які дочитали хоча б один оцінюваний розділ/
   end
 
   test 'should get friends' do

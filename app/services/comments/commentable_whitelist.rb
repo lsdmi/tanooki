@@ -5,6 +5,7 @@ module Comments
   class CommentableWhitelist
     ALLOWED_TYPES = %w[
       Chapter
+      Contest
       Fiction
       Publication
       Tale

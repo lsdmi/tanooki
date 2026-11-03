@@ -1,0 +1,35 @@
+<section class="mx-auto max-w-xl px-4 py-10">
+  <p class="text-sm text-fg-muted"><%= link_to t('admin.contests.back'), admin_contests_path, class: 'hover:underline' %></p>
+  <h1 class="mt-2 text-2xl font-bold text-fg"><%= t('admin.contests.from_preset.title') %></h1>
+  <p class="mt-2 text-sm text-fg-muted"><%= t('admin.contests.from_preset.intro') %></p>
+
+  <%= form_with url: create_from_preset_admin_contests_path, method: :post, class: 'mt-8 space-y-4' do %>
+    <div>
+      <%= label_tag :preset_key, t('admin.contests.from_preset.preset'), class: 'block text-sm font-medium text-fg' %>
+      <%= select_tag :preset_key,
+                     options_for_select(@presets.map { |p| [p.label, p.key] }, 'ranobe'),
+                     required: true,
+                     class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= label_tag :submissions_open_at, t('admin.contests.fields.submissions_open_at'), class: 'block text-sm font-medium text-fg' %>
+      <%= datetime_local_field_tag :submissions_open_at,
+                                   4.weeks.from_now.change(hour: 0, min: 0, sec: 0),
+                                   required: true,
+                                   class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= label_tag :prize_pool_uah, t('admin.contests.fields.prize_pool_uah'), class: 'block text-sm font-medium text-fg' %>
+      <%= number_field_tag :prize_pool_uah, 3000, min: 0, required: true, autocomplete: 'off',
+                           class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <div>
+      <%= label_tag :title, t('admin.contests.fields.title'), class: 'block text-sm font-medium text-fg' %>
+      <%= text_field_tag :title, nil, autocomplete: 'off',
+                         placeholder: t('admin.contests.from_preset.title_optional'),
+                         class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    </div>
+    <%= submit_tag t('admin.contests.from_preset.submit'),
+                   class: 'rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+  <% end %>
+</section>

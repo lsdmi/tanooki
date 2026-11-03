@@ -4,6 +4,7 @@
 class Avatar < ApplicationRecord
   has_one_attached :image
   has_many :users, dependent: :nullify
+  belongs_to :contest, optional: true, inverse_of: :exclusive_avatars
 
   delegate_missing_to :image
 

@@ -55,6 +55,20 @@ Rails.application.routes.draw do
         post :dismiss
       end
     end
+    resources :contests do
+      member do
+        post :publish
+        post :cancel
+        post :publish_results
+        post :duplicate
+      end
+      collection do
+        get :new_from_preset
+        post :create_from_preset
+      end
+      resources :entries, only: %i[index update], module: :contests
+      resources :awards, only: %i[create update], module: :contests
+    end
   end
 
   post '/mcp', to: 'mcp#create'
@@ -88,6 +102,10 @@ Rails.application.routes.draw do
         end
       end
     end
+  end
+
+  resources :contests, only: %i[index show], param: :slug do
+    resource :participation, only: %i[new create destroy], module: :contests
   end
 
   resources :comments, except: %i[index show] do

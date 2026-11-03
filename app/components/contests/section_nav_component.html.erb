@@ -1,0 +1,29 @@
+<% return if items.blank? && primary.blank? %>
+
+<nav id="sections"
+     class="contests-sticky-nav sticky top-0 z-30 border-b border-line bg-main/95 backdrop-blur"
+     data-controller="contests--sticky-nav"
+     aria-label="<%= t('contests.show.nav.aria') %>">
+  <div class="mx-auto flex max-w-screen-xl items-center gap-3 px-4 py-2 2xl:px-0">
+    <ul class="flex min-w-0 flex-1 gap-1 overflow-x-auto">
+      <% items.each do |item| %>
+        <li class="shrink-0">
+          <%= link_to t(item[:label_key]), "##{item[:anchor]}",
+                      class: 'inline-flex rounded-lg px-3 py-2 text-sm text-fg-secondary hover:bg-surface hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+        </li>
+      <% end %>
+    </ul>
+    <% if primary %>
+      <div class="hidden shrink-0 md:block">
+        <%= render Ui::ButtonComponent.new(label: action_label(primary), href: primary[:href], variant: :primary, size: :sm, as: :link) %>
+      </div>
+    <% end %>
+  </div>
+</nav>
+
+<% if primary %>
+  <div class="contests-mobile-cta fixed inset-x-0 bottom-0 z-30 border-t border-line bg-main/95 p-3 backdrop-blur md:hidden"
+       data-controller="contests--mobile-cta">
+    <%= render Ui::ButtonComponent.new(label: action_label(primary), href: primary[:href], variant: :primary, size: :lg, as: :link, full_width: true) %>
+  </div>
+<% end %>

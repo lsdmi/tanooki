@@ -71,8 +71,29 @@ module Fictions
     end
 
     def authorize_fiction_creation
+      return if can_create_fiction?
+
+      redirect_to new_scanlator_path
+    rescue ActiveRecord::RecordNotFound
+      raise unless Contests::PublicAccess.visible?(current_user)
+
+      redirect_to contests_path, alert: t('contests.submit.missing')
+    end
+
+    def can_create_fiction?
       policy = Fictions::Authorization.new(current_user, nil)
-      redirect_to new_scanlator_path unless policy.create?
+      return policy.create? unless contest_mode?
+
+      policy.create?(contest: contest_for_creation!)
+    end
+
+    def contest_for_creation!
+      raise ActiveRecord::RecordNotFound unless Contests::PublicAccess.visible?(current_user)
+
+      contest = Contest.friendly.find(contest_param)
+      raise ActiveRecord::RecordNotFound if contest.draft?
+
+      contest
     end
 
     def render_fiction_show_fragment

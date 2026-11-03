@@ -20,15 +20,13 @@ module Comments
     end
 
     def comment_url(comment)
-      case comment.commentable
-      when Chapter
-        chapter_path(comment.commentable)
-      when YoutubeVideo
-        youtube_video_path(comment.commentable)
-      when Fiction
-        fiction_path(comment.commentable, anchor: 'comments')
-      when Publication
-        tale_path(comment.commentable)
+      commentable = comment.commentable
+      case commentable
+      when Chapter then chapter_path(commentable)
+      when Contest then contest_path(commentable, anchor: 'comments')
+      when YoutubeVideo then youtube_video_path(commentable)
+      when Fiction then fiction_path(commentable, anchor: 'comments')
+      when Publication then tale_path(commentable)
       end
     end
 

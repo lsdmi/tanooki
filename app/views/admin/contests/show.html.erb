@@ -1,0 +1,139 @@
+<section class="mx-auto max-w-4xl px-4 py-10">
+  <p class="text-sm text-fg-muted"><%= link_to t('admin.contests.back'), admin_contests_path, class: 'hover:underline' %></p>
+  <div class="mt-2 flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-fg"><%= @contest.title %></h1>
+      <p class="mt-1 text-sm/6 text-fg-muted">
+        <%= t('admin.contests.phase', phase: t("admin.contests.phases.#{@contest.phase}")) %>
+        · <%= @contest.slug %>
+      </p>
+      <% if @contest.tagline.present? %>
+        <p class="mt-2 text-sm/6 text-fg"><%= @contest.tagline %></p>
+      <% end %>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <%= link_to t('admin.contests.edit'), edit_admin_contest_path(@contest),
+                  class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+      <%= link_to t('admin.contests.entries.link'), admin_contest_entries_path(@contest),
+                  class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+      <%= button_to t('admin.contests.actions.duplicate'), duplicate_admin_contest_path(@contest), method: :post,
+                    form: { data: { turbo_confirm: t('admin.contests.actions.confirm_duplicate') } },
+                    class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+    </div>
+  </div>
+
+  <% if @readiness %>
+    <section class="mt-6 rounded-xl border border-line bg-main p-4">
+      <h2 class="text-sm font-semibold text-fg"><%= t('admin.contests.readiness.title') %></h2>
+      <ul class="mt-3 space-y-1.5 text-sm">
+        <% @readiness.each do |item| %>
+          <li class="<%= item.met? ? 'text-status-success-solid' : 'text-status-danger-solid' %>">
+            <%= item.met? ? '✓' : '✗' %> <%= item.label %>
+          </li>
+        <% end %>
+      </ul>
+      <p class="mt-3">
+        <%= link_to t('admin.contests.readiness.preview'), contest_path(@contest),
+                    class: 'text-sm font-semibold text-fg-brand hover:underline',
+                    target: '_blank', rel: 'noopener' %>
+      </p>
+    </section>
+  <% end %>
+
+  <div class="mt-6 flex flex-wrap gap-2">
+    <% if @contest.published_at.blank? %>
+      <%= button_to t('admin.contests.actions.publish'), publish_admin_contest_path(@contest), method: :post,
+                    form: { data: { turbo_confirm: t('admin.contests.actions.confirm_publish') } },
+                    class: "rounded-lg px-4 py-2 text-sm font-semibold #{@readiness&.all?(&:met?) ? 'bg-brand text-fg-on-brand' : 'bg-surface text-fg-muted ring-1 ring-inset ring-line'}",
+                    disabled: @readiness && !@readiness.all?(&:met?) %>
+    <% end %>
+    <% if @contest.cancelled_at.blank? && @contest.results_published_at.blank? %>
+      <%= form_with url: cancel_admin_contest_path(@contest), method: :post, class: 'flex flex-wrap items-end gap-2' do %>
+        <%= label_tag :cancel_reason, t('admin.contests.fields.cancel_reason'), class: 'sr-only' %>
+        <%= text_field_tag :cancel_reason, nil, required: true, autocomplete: 'off',
+                           placeholder: t('admin.contests.fields.cancel_reason'),
+                           class: 'rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+        <%= submit_tag t('admin.contests.actions.cancel'),
+                       data: { turbo_confirm: t('admin.contests.actions.confirm_cancel') },
+                       class: 'rounded-lg bg-main px-4 py-2 text-sm font-semibold text-status-danger-solid ring-1 ring-inset ring-line' %>
+      <% end %>
+    <% end %>
+    <% if @contest.results_published_at.blank? && @contest.cancelled_at.blank? %>
+      <%= button_to t('admin.contests.actions.publish_results'), publish_results_admin_contest_path(@contest), method: :post,
+                    form: { data: { turbo_confirm: t('admin.contests.actions.confirm_publish_results') } },
+                    class: 'rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+    <% end %>
+  </div>
+
+  <% if @contest.cancel_reason.present? %>
+    <p class="mt-4 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-fg-muted">
+      <%= @contest.cancel_reason %>
+    </p>
+  <% end %>
+
+  <div class="mt-8 grid gap-3 text-sm text-fg sm:grid-cols-2">
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.announced_at') %>:</span> <%= l(@contest.announced_at, format: :long) %></p>
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.submissions_open_at') %>:</span> <%= l(@contest.submissions_open_at, format: :long) %></p>
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.submissions_close_at') %>:</span> <%= l(@contest.submissions_close_at, format: :long) %></p>
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.judging_close_at') %>:</span> <%= l(@contest.judging_close_at, format: :long) %></p>
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.prize_pool_uah') %>:</span> <%= @contest.prize_pool_uah %></p>
+    <p><span class="text-fg-muted"><%= t('admin.contests.fields.donations_uah') %>:</span> <%= @contest.donations_uah %></p>
+  </div>
+
+  <section class="mt-10">
+    <h2 class="text-lg font-semibold text-fg"><%= t('admin.contests.results.section') %></h2>
+
+    <% if @awards.any? %>
+      <ul class="mt-4 divide-y divide-line overflow-hidden rounded-xl border border-line bg-main">
+        <% @awards.each do |award| %>
+          <li class="flex flex-wrap items-start justify-between gap-3 px-4 py-3">
+            <div>
+              <p class="font-medium text-fg">
+                <%= award.contest_prize.title %>
+                →
+                <%= award.contest_entry.display_title %>
+              </p>
+              <p class="text-sm text-fg-muted">
+                <% if award.paid? %>
+                  <%= t('admin.contests.results.paid') %>: <%= l(award.paid_at, format: :long) %>
+                <% else %>
+                  <%= t('admin.contests.results.payout_note') %>: <%= award.payout_note.presence || '—' %>
+                <% end %>
+              </p>
+            </div>
+            <% unless award.paid? %>
+              <%= form_with model: award, url: admin_contest_award_path(@contest, award), method: :patch, class: 'flex flex-wrap items-end gap-2' do |f| %>
+                <%= f.text_field :payout_note, placeholder: t('admin.contests.results.payout_note'),
+                                 class: 'rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+                <%= hidden_field_tag 'contest_award[mark_paid]', '1' %>
+                <%= f.submit t('admin.contests.results.mark_paid'),
+                             class: 'rounded-lg bg-main px-3 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-3 text-sm text-fg-muted"><%= t('admin.contests.results.no_awards') %></p>
+    <% end %>
+
+    <% if @prizes.any? && @unawarded_entries.any? %>
+      <%= form_with url: admin_contest_awards_path(@contest), method: :post, class: 'mt-4 flex flex-wrap items-end gap-2 rounded-xl border border-line bg-main p-4' do %>
+        <div>
+          <%= label_tag :contest_prize_id, t('admin.contests.fields.prizes'), class: 'block text-xs text-fg-muted' %>
+          <%= select_tag :contest_prize_id,
+                         options_from_collection_for_select(@prizes, :id, :title),
+                         class: 'mt-1 rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+        </div>
+        <div>
+          <%= label_tag :contest_entry_id, t('admin.contests.entries.fiction'), class: 'block text-xs text-fg-muted' %>
+          <%= select_tag :contest_entry_id,
+                         options_for_select(@unawarded_entries.map { |e| [e.display_title, e.id] }),
+                         class: 'mt-1 rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+        </div>
+        <%= submit_tag t('admin.contests.results.assign'),
+                       class: 'rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+      <% end %>
+    <% end %>
+  </section>
+</section>

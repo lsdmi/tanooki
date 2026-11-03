@@ -5,7 +5,7 @@ require 'test_helper'
 module Comments
   class CommentableWhitelistTest < ActiveSupport::TestCase
     test 'allows known commentable types' do
-      %w[Chapter Fiction Publication Tale YoutubeVideo].each do |type|
+      %w[Chapter Contest Fiction Publication Tale YoutubeVideo].each do |type|
         assert CommentableWhitelist.allowed?(type)
       end
     end

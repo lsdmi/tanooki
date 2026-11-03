@@ -34,7 +34,8 @@ module Layout
     def optional_stylesheets
       feature_stylesheets + [
         ['adult_content_disclaimer', requires_eighteen_notice_styles?],
-        ['flatpickr_overrides', requires_flatpickr_styles?]
+        ['flatpickr_overrides', requires_flatpickr_styles?],
+        ['contests', requires_contests_styles?]
       ]
     end
 

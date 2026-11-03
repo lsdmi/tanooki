@@ -1,0 +1,88 @@
+<%# Shared 5.1 contest rules — used on contest show, submit modal, and /rules. %>
+<div class="contests-general-rules space-y-5 text-sm leading-relaxed text-fg-secondary">
+  <p class="text-fg"><%= t('contests.rules.intro') %></p>
+
+  <% %i[who what rights].each do |section| %>
+    <div>
+      <h3 class="mb-2 text-base font-semibold text-fg"><%= t("contests.rules.#{section}.title") %></h3>
+      <ul class="list-disc space-y-1.5 pl-5">
+        <% t("contests.rules.#{section}.items").each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <h3 class="mb-2 text-base font-semibold text-fg"><%= t('contests.rules.ai.title') %></h3>
+    <p class="mb-3"><%= t('contests.rules.ai.lead') %></p>
+    <p class="mb-1 font-medium text-fg"><%= t('contests.rules.ai.can_title') %></p>
+    <ul class="mb-3 list-disc space-y-1.5 pl-5">
+      <% t('contests.rules.ai.can_items').each do |item| %>
+        <li><%= item %></li>
+      <% end %>
+    </ul>
+    <p class="mb-1 font-medium text-fg"><%= t('contests.rules.ai.cannot_title') %></p>
+    <ul class="mb-3 list-disc space-y-1.5 pl-5">
+      <% t('contests.rules.ai.cannot_items').each do |item| %>
+        <li><%= item %></li>
+      <% end %>
+    </ul>
+    <ul class="list-disc space-y-1.5 pl-5">
+      <% t('contests.rules.ai.note_items').each do |item| %>
+        <li><%= item %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% %i[volume submit].each do |section| %>
+    <div>
+      <h3 class="mb-2 text-base font-semibold text-fg"><%= t("contests.rules.#{section}.title") %></h3>
+      <ul class="list-disc space-y-1.5 pl-5">
+        <% t("contests.rules.#{section}.items").each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <h3 class="mb-2 text-base font-semibold text-fg"><%= t('contests.rules.scoring.title') %></h3>
+    <p class="mb-3"><%= t('contests.rules.scoring.formula') %></p>
+    <p class="mb-1 font-medium text-fg"><%= t('contests.rules.scoring.jury_title') %></p>
+    <p class="mb-3"><%= t('contests.rules.scoring.jury_body') %></p>
+    <p class="mb-2 font-medium text-fg"><%= t('contests.rules.scoring.criteria_title') %></p>
+    <ul class="mb-3 divide-y divide-line rounded-lg ring-1 ring-line">
+      <% t('contests.rules.scoring.criteria').each do |row| %>
+        <li class="flex justify-between gap-3 px-3 py-2">
+          <span><%= row['label'] || row[:label] %></span>
+          <span class="font-medium text-fg"><%= row['weight'] || row[:weight] %></span>
+        </li>
+      <% end %>
+    </ul>
+    <p class="mb-1 font-medium text-fg"><%= t('contests.rules.scoring.readers_title') %></p>
+    <p class="mb-3"><%= t('contests.rules.scoring.readers_body') %></p>
+    <ul class="mb-3 space-y-2">
+      <% t('contests.rules.scoring.signals').each do |row| %>
+        <li class="rounded-lg px-3 py-2 ring-1 ring-line">
+          <p class="font-medium text-fg"><%= row['label'] || row[:label] %> · <%= row['weight'] || row[:weight] %></p>
+          <p class="mt-0.5"><%= row['how'] || row[:how] %></p>
+        </li>
+      <% end %>
+    </ul>
+    <p class="mb-2"><%= t('contests.rules.scoring.rank_note') %></p>
+    <p class="mb-2"><%= t('contests.rules.scoring.eligible_reader') %></p>
+    <p><%= t('contests.rules.scoring.tie') %></p>
+  </div>
+
+  <% %i[fair prizes after disqualify].each do |section| %>
+    <div>
+      <h3 class="mb-2 text-base font-semibold text-fg"><%= t("contests.rules.#{section}.title") %></h3>
+      <ul class="list-disc space-y-1.5 pl-5">
+        <% t("contests.rules.#{section}.items").each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

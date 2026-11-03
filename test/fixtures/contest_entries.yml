@@ -1,0 +1,88 @@
+accepted:
+  id: 1
+  contest_id: 3
+  fiction_id: 1
+  submitter_id: 1
+  scanlator_id: 1
+  status: accepted
+  ai_usage: none
+  rules_accepted_at: <%= 1.week.ago %>
+  submitted_at: <%= 1.week.ago %>
+
+rejected:
+  id: 2
+  contest_id: 3
+  fiction_id: 2
+  submitter_id: 1
+  scanlator_id: 1
+  status: rejected
+  status_reason: Не відповідає темі
+  ai_usage: assist
+  rules_accepted_at: <%= 1.week.ago %>
+  submitted_at: <%= 1.week.ago %>
+  reviewed_at: <%= 5.days.ago %>
+  reviewed_by_id: 1
+
+withdrawn:
+  id: 3
+  contest_id: 3
+  fiction_id: 3
+  submitter_id: 1
+  scanlator_id: 1
+  status: withdrawn
+  ai_usage: none
+  rules_accepted_at: <%= 1.week.ago %>
+  submitted_at: <%= 1.week.ago %>
+
+qualified:
+  id: 4
+  contest_id: 4
+  fiction_id: 1
+  submitter_id: 1
+  scanlator_id: 1
+  status: qualified
+  ai_usage: none
+  rules_accepted_at: <%= 10.weeks.ago %>
+  submitted_at: <%= 10.weeks.ago %>
+  reviewed_at: <%= 9.weeks.ago %>
+  reviewed_by_id: 1
+
+incomplete:
+  id: 5
+  contest_id: 4
+  fiction_id: 2
+  submitter_id: 1
+  scanlator_id: 1
+  status: incomplete
+  ai_usage: none
+  rules_accepted_at: <%= 10.weeks.ago %>
+  submitted_at: <%= 10.weeks.ago %>
+  reviewed_at: <%= 9.weeks.ago %>
+  reviewed_by_id: 1
+
+disqualified:
+  id: 6
+  contest_id: 4
+  fiction_id: 3
+  submitter_id: 1
+  scanlator_id: 1
+  status: disqualified
+  status_reason: Плагіат
+  ai_usage: substantial
+  rules_accepted_at: <%= 10.weeks.ago %>
+  submitted_at: <%= 10.weeks.ago %>
+  reviewed_at: <%= 8.weeks.ago %>
+  reviewed_by_id: 1
+
+legacy_winner:
+  id: 7
+  contest_id: 5
+  submitter_id:
+  fiction_id:
+  status: qualified
+  legacy_title: Старий переможець
+  legacy_author: Автор 2024
+  legacy_url: https://t.me/baka_ua/1
+  ai_usage: none
+  submitted_at: <%= 16.weeks.ago %>
+  final_rank: 1

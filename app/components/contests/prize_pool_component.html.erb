@@ -1,0 +1,55 @@
+<section id="prizes" class="scroll-mt-24">
+  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.prizes'), id: 'prizes-heading') %>
+
+  <div class="mt-6 rounded-xl bg-surface p-4 ring-1 ring-line md:p-6">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-xs text-fg-muted"><%= t('contests.show.prizes.pool') %></p>
+        <p class="text-2xl font-bold text-fg"><%= money(total) %></p>
+        <p class="mt-1 text-sm text-fg-muted">
+          <%= t('contests.show.prizes.pool_breakdown', guaranteed: money(guaranteed), donations: money(donations)) %>
+        </p>
+      </div>
+      <% if contest.donation_url.present? %>
+        <%= render Ui::ButtonComponent.new(
+              label: t('contests.show.prizes.support'),
+              href: contest.donation_url,
+              variant: :outline,
+              size: :md,
+              as: :link,
+              html: { target: '_blank', rel: 'noopener noreferrer' }
+            ) %>
+      <% end %>
+    </div>
+
+    <div class="mt-4 h-2 overflow-hidden rounded-full bg-main ring-1 ring-line" role="progressbar"
+         aria-valuenow="<%= progress_percent %>" aria-valuemin="0" aria-valuemax="100"
+         aria-label="<%= t('contests.show.prizes.pool') %>">
+      <div class="h-full rounded-full bg-brand" style="width: <%= progress_percent %>%"></div>
+    </div>
+
+    <% if goals.any? %>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        <% goals.each do |goal| %>
+          <li class="rounded-lg px-2.5 py-1 text-xs ring-1 <%= total >= goal.unlock_at_uah ? 'bg-brand-subtle text-fg-brand ring-brand' : 'bg-main text-fg-muted ring-line' %>">
+            <%= money(goal.unlock_at_uah) %>: <%= goal.title %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+
+  <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+    <% prizes.each do |prize| %>
+      <li class="rounded-xl bg-main px-4 py-3 ring-1 ring-line">
+        <p class="font-semibold text-fg"><%= prize.title %></p>
+        <% if prize.cash_uah.positive? %>
+          <p class="mt-1 text-sm text-fg-brand"><%= money(prize.cash_uah) %></p>
+        <% end %>
+        <% if prize.perks.present? %>
+          <p class="mt-1 text-sm text-fg-muted"><%= prize.perks %></p>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

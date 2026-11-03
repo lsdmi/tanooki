@@ -8,6 +8,7 @@ module ApplicationHelper
   include Chapters::CommentsDrawerHelper
   include Chapters::ReaderBottomHelper
   include Comments::PresentationHelper
+  include ContestsHelper
   include ExternalUrls::UrlsHelper
   include Fictions::FormattingHelper
   include Fictions::HotNoveltyHelper

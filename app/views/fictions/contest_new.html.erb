@@ -1,0 +1,61 @@
+<% content_for :title, t('contests.submit.title', contest: @contest.title) %>
+
+<div class="contests-page min-h-screen bg-page pb-16"
+     data-controller="contests--rules-modal">
+  <div class="mx-auto max-w-xl px-4 py-8 2xl:px-0">
+    <header class="mb-8">
+      <p class="text-sm text-fg-muted">
+        <%= link_to @contest.title, contest_path(@contest), class: 'hover:text-fg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+      </p>
+      <h1 class="mt-2 min-w-0 break-words text-2xl font-bold text-fg md:text-3xl">
+        <%= t('contests.submit.heading', contest: @contest.title) %>
+      </h1>
+      <p class="mt-2 text-sm text-fg-secondary"><%= contest_submit_requirements_line(@contest) %></p>
+      <button type="button"
+              class="mt-3 text-sm font-semibold text-fg-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              data-action="contests--rules-modal#open">
+        <%= t('contests.submit.rules_link') %>
+      </button>
+
+      <% existing = @submission.existing_fiction %>
+      <% if existing %>
+        <p class="mt-4 text-sm text-fg-secondary">
+          <%= t('contests.submit.or_existing_prefix') %>
+          <%= link_to t('contests.submit.or_existing_link', title: existing.title),
+                      new_contest_participation_path(@contest, fiction_id: existing.slug),
+                      class: 'font-semibold text-fg-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+        </p>
+      <% end %>
+    </header>
+
+    <%= render 'fictions/contest_form',
+               contest: @contest,
+               submission: @submission,
+               fiction: @fiction %>
+
+    <dialog class="contests-rules-dialog m-auto w-[min(36rem,calc(100%-2rem))] max-h-[80vh] overflow-y-auto rounded-xl bg-main p-0 text-fg shadow-xl ring-1 ring-line backdrop:bg-overlay-scrim-60"
+            data-contests--rules-modal-target="dialog"
+            data-action="click->contests--rules-modal#backdrop">
+      <div class="sticky top-0 flex items-center justify-between border-b border-line bg-main px-4 py-3">
+        <h2 class="text-base font-semibold"><%= t('contests.submit.rules_link') %></h2>
+        <button type="button"
+                class="rounded-lg px-2 py-1 text-sm text-fg-muted hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                data-action="contests--rules-modal#close">
+          <%= t('contests.submit.rules_close') %>
+        </button>
+      </div>
+      <div class="space-y-4 px-4 py-4">
+        <%= render 'contests/general_rules' %>
+        <% if @contest.rules.present? %>
+          <div class="prose prose-slate max-w-none border-t border-line pt-4 text-sm dark:prose-invert">
+            <h3 class="mb-2 text-base font-semibold text-fg"><%= t('contests.show.rules.extra') %></h3>
+            <%= @contest.rules %>
+          </div>
+        <% end %>
+        <p class="border-t border-line pt-4 text-sm text-fg-secondary">
+          <%= t('contests.show.rules.scoring_body', jury: @contest.jury_weight, readers: 100 - @contest.jury_weight) %>
+        </p>
+      </div>
+    </dialog>
+  </div>
+</div>

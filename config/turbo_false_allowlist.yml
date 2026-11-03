@@ -1,10 +1,12 @@
 # Intentional data-turbo=false (Category D/F + admin forms).
 # Every match in app/views, app/helpers, app/components must appear here.
-# Verified: 2026-10-09 — 36 occurrences (composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE).
+# Verified: 2026-11-03 — contest submit forms + fiction edit; composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE.
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
-  - app/views/fictions/edit.html.erb:6
+  - app/views/fictions/edit.html.erb:14
   - app/views/fictions/new.html.erb:5
+  - app/views/fictions/_contest_form.html.erb:8
+  - app/views/contests/participations/new.html.erb:26
   - app/views/scanlators/edit.html.erb:11
   - app/views/scanlators/new.html.erb:15
   - app/views/chapters/edit.html.erb:13
