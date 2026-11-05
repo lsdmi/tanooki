@@ -8,44 +8,46 @@
       <% if entry.status_reason.present? %>
         <p class="mt-2 text-sm text-fg-secondary"><%= t('contests.show.my_participation.reason', reason: entry.status_reason) %></p>
       <% end %>
+    <% elsif entry&.disqualified? %>
+      <p class="font-semibold text-fg"><%= t('contests.show.my_participation.disqualified') %></p>
+      <% if entry.status_reason.present? %>
+        <p class="mt-2 text-sm text-fg-secondary"><%= t('contests.show.my_participation.reason', reason: entry.status_reason) %></p>
+      <% end %>
     <% else %>
       <p class="font-semibold text-fg"><%= t('contests.show.my_participation.in') %></p>
       <p class="mt-1 text-sm text-fg-secondary"><%= t('contests.show.my_participation.next') %></p>
     <% end %>
 
     <% fiction = entry&.fiction %>
-    <% if fiction %>
-      <% chapters = fiction.chapter_count.to_i %>
-      <% words = fiction.chapters.released.sum(:word_count).to_i %>
-      <div class="mt-4 flex flex-wrap gap-3">
-        <% if contest.min_chapters %>
-          <div class="min-w-40 flex-1">
-            <p class="mb-1 text-xs text-fg-muted"><%= t('contests.show.requirements.chapters', count: contest.min_chapters) %></p>
-            <%= render Ui::MiniProgressBarComponent.new(read: chapters, total: contest.min_chapters, html: { aria: { label: 'розділи' } }) %>
-          </div>
-        <% end %>
-        <% if contest.min_words %>
-          <div class="min-w-40 flex-1">
-            <p class="mb-1 text-xs text-fg-muted"><%= t('contests.show.requirements.words', count: number_with_delimiter(contest.min_words, delimiter: ' ')) %></p>
-            <%= render Ui::MiniProgressBarComponent.new(read: words, total: contest.min_words, html: { aria: { label: 'слова' } }) %>
-          </div>
-        <% end %>
+    <% if fiction && !entry.rejected? && !entry.disqualified? %>
+      <div class="mt-5">
+        <%= render Contests::RequirementsChecklistComponent.new(entry:) %>
       </div>
       <div class="mt-4 flex flex-wrap gap-3">
         <%= render Ui::ButtonComponent.new(
-              label: chapters.zero? ? t('contests.show.my_participation.add_first') : t('contests.show.my_participation.add_chapter'),
+              label: fiction.chapter_count.to_i.zero? ? t('contests.show.my_participation.add_first') : t('contests.show.my_participation.add_chapter'),
               href: new_chapter_path(fiction: fiction.slug),
               variant: :primary,
               size: :lg,
               as: :link
             ) %>
-        <% unless contest.results_published? || entry.rejected? %>
+        <% unless contest.results_published? %>
           <%= button_to t('contests.show.my_participation.withdraw'),
                         contest_participation_path(contest),
                         method: :delete,
                         form: { data: { turbo_confirm: t('contests.show.my_participation.withdraw_confirm') } },
                         class: 'inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-fg-secondary ring-1 ring-line hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
         <% end %>
+      </div>
+    <% elsif fiction && (entry.rejected? || entry.disqualified?) %>
+      <div class="mt-4">
+        <%= render Ui::ButtonComponent.new(
+              label: t('contests.show.my_participation.open_fiction'),
+              href: fiction_path(fiction),
+              variant: :outline,
+              size: :lg,
+              as: :link
+            ) %>
       </div>
     <% end %>
   </div>

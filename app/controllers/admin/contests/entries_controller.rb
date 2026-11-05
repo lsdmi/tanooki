@@ -10,6 +10,7 @@ module Admin
       def index
         @entries = filtered_entries.includes(:fiction, :submitter).order(submitted_at: :desc)
         @status_filter = params[:status].presence
+        @unreviewed_after_deadline = @contest.unreviewed_after_deadline?
       end
 
       def update

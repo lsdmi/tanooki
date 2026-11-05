@@ -6,10 +6,6 @@ module ContestsHelper
     Contests::PublicAccess.visible?(current_user)
   end
 
-  def contests_navbar_cue
-    @contests_navbar_cue ||= Contests::NavbarCue.call
-  end
-
   def contest_submit_requirements_line(contest)
     kind = t("contests.kinds.#{contest.kind}").downcase
     parts = [

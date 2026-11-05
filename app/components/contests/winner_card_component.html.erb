@@ -1,7 +1,8 @@
-<%= link_to href, class: 'contests-winner-card group flex gap-3 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-none' do %>
+<%= link_to href, class: 'group flex gap-3 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
   <div class="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-surface-strong">
     <% if fiction&.cover&.attached? %>
-      <%= cover_card_picture_tag(fiction.cover, class: 'contests-hero-cover size-full object-cover', alt: '') %>
+      <%= cover_card_picture_tag(fiction.cover, class: 'size-full object-cover transition-transform duration-[220ms] ease-in-out motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.02]', alt: '') %>
+
     <% else %>
       <div class="size-full bg-brand-subtle"></div>
     <% end %>

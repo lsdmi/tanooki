@@ -5,7 +5,7 @@ export default class extends Controller {
   connect() {
     this.observer = new IntersectionObserver(
       ([entry]) => {
-        this.element.classList.toggle("is-stuck", entry.intersectionRatio < 1)
+        this.element.classList.toggle("shadow-popover", entry.intersectionRatio < 1)
       },
       { threshold: [1], rootMargin: "-1px 0px 0px 0px" }
     )

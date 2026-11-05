@@ -4,12 +4,21 @@
     <%# Kept outside the fiction form: nested forms are invalid HTML and break CSRF. %>
     <%= render 'catalog/listing_nudge', fiction: @fiction, wrapper_class: 'mb-6', field_links: :fragment unless frozen %>
     <% if contests_publicly_visible? && (contest_entry = contest_entry_for_fiction(@fiction)) %>
-      <p class="mb-6 rounded-xl bg-brand-subtle px-4 py-3 text-sm text-fg ring-1 ring-brand">
-        <%= t('contests.edit_banner.in', contest: contest_entry.contest.title) %>
-        <%= link_to t('contests.edit_banner.my_entry'),
-                    contest_path(contest_entry.contest, anchor: 'my-entry'),
-                    class: 'font-semibold text-fg-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
-      </p>
+      <aside class="mb-6 rounded-xl bg-brand-subtle p-4 ring-1 ring-brand md:p-5" aria-labelledby="fiction-contest-heading">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <p id="fiction-contest-heading" class="text-sm font-semibold text-fg">
+            <%= t('contests.edit_banner.in', contest: contest_entry.contest.title) %>
+          </p>
+          <%= link_to t('contests.edit_banner.my_entry'),
+                      contest_path(contest_entry.contest, anchor: 'my-entry'),
+                      class: 'text-sm font-semibold text-fg-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+        </div>
+        <% unless contest_entry.rejected? || contest_entry.disqualified? %>
+          <div class="mt-3">
+            <%= render Contests::RequirementsChecklistComponent.new(entry: contest_entry, compact: true) %>
+          </div>
+        <% end %>
+      </aside>
     <% end %>
     <%= simple_form_for @fiction, as: :fiction, url: fiction_path(@fiction), method: :put, html: { class: "form" }, data: { turbo: false } do |f| %>
       <% if frozen %>

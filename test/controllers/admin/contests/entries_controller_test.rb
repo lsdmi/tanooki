@@ -52,6 +52,16 @@ module Admin
         assert_predicate @entry.reload, :disqualified?
       end
 
+      test 'warns about unreviewed entries after the deadline' do
+        contest = contests(:judging)
+        contest_entries(:qualified).update!(reviewed_at: nil)
+
+        get admin_contest_entries_url(contest)
+
+        assert_response :success
+        assert_select 'p', text: /неперевірені заявки/
+      end
+
       test 'shows private ai_note to admin' do
         @entry.update!(ai_note: 'використовував для правопису')
         get admin_contest_entries_url(@contest)

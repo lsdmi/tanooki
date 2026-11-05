@@ -1,11 +1,12 @@
-<%= link_to href, class: 'contests-entry-card group flex flex-col overflow-hidden rounded-xl bg-main ring-1 ring-line focus-visible:outline-none' do %>
+<%= link_to href, class: 'group flex flex-col overflow-hidden rounded-xl bg-main ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
   <div class="relative aspect-[2/3] overflow-hidden bg-surface-strong">
     <% if fiction.cover.attached? %>
       <%= cover_card_picture_tag(
             fiction.cover,
-            class: "contests-hero-cover size-full object-cover #{'blur-md scale-105' if blur?}",
+            class: "size-full object-cover transition-transform duration-[220ms] ease-in-out motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.02] #{'blur-md scale-105' if blur?}",
             alt: blur? ? '' : fiction.title
           ) %>
+
     <% else %>
       <div class="flex size-full items-end bg-surface p-3">
         <span class="text-sm font-semibold text-fg"><%= fiction.title %></span>

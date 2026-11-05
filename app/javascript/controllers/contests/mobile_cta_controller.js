@@ -5,7 +5,8 @@ export default class extends Controller {
   connect() {
     this.onScroll = () => {
       const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80
-      this.element.classList.toggle("is-near-end", nearBottom)
+      this.element.classList.toggle("opacity-[0.55]", nearBottom)
+      this.element.classList.toggle("pointer-events-none", nearBottom)
     }
     window.addEventListener("scroll", this.onScroll, { passive: true })
     this.onScroll()

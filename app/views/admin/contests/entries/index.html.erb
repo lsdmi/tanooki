@@ -8,6 +8,12 @@
   <p class="mt-1 text-sm text-fg-muted"><%= @contest.title %></p>
   <p class="mt-2 max-w-2xl text-sm text-fg-secondary"><%= t('admin.contests.entries.intro') %></p>
 
+  <% if @unreviewed_after_deadline %>
+    <p class="mt-4 rounded-xl bg-status-warning-subtle-bg px-4 py-3 text-sm text-status-warning-subtle-fg ring-1 ring-status-warning-subtle-border">
+      <%= t('admin.contests.warnings.unreviewed') %>
+    </p>
+  <% end %>
+
   <div class="mt-4 flex flex-wrap gap-2">
     <%= link_to t('admin.contests.entries.all'), admin_contest_entries_path(@contest),
                 class: "rounded-lg px-3 py-1.5 text-sm font-semibold ring-1 ring-inset ring-line #{'bg-brand text-fg-on-brand' unless @status_filter}" %>
@@ -55,7 +61,7 @@
             </div>
           </div>
 
-          <% if entry.accepted? || entry.qualified? %>
+          <% if entry.accepted? || entry.qualified? || entry.incomplete? %>
             <div class="mt-4 flex flex-wrap items-end gap-2">
               <%= form_with url: admin_contest_entry_path(@contest, entry), method: :patch, class: 'flex flex-wrap items-end gap-2' do %>
                 <%= hidden_field_tag :moderation, 'reject' %>

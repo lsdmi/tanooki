@@ -1,7 +1,7 @@
 <% return if items.blank? && primary.blank? %>
 
 <nav id="sections"
-     class="contests-sticky-nav sticky top-0 z-30 border-b border-line bg-main/95 backdrop-blur"
+     class="sticky top-0 z-30 border-b border-line bg-main/95 backdrop-blur transition-[box-shadow,background-color] duration-[160ms] ease-in-out motion-reduce:transition-none"
      data-controller="contests--sticky-nav"
      aria-label="<%= t('contests.show.nav.aria') %>">
   <div class="mx-auto flex max-w-screen-xl items-center gap-3 px-4 py-2 2xl:px-0">
@@ -22,7 +22,7 @@
 </nav>
 
 <% if primary %>
-  <div class="contests-mobile-cta fixed inset-x-0 bottom-0 z-30 border-t border-line bg-main/95 p-3 backdrop-blur md:hidden"
+  <div class="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-main/95 p-3 backdrop-blur transition-opacity duration-[160ms] motion-reduce:transition-none md:hidden"
        data-controller="contests--mobile-cta">
     <%= render Ui::ButtonComponent.new(label: action_label(primary), href: primary[:href], variant: :primary, size: :lg, as: :link, full_width: true) %>
   </div>

@@ -1,0 +1,24 @@
+<%# locals supplied by the component %>
+<ul class="m-0 flex list-none flex-col gap-3 p-0" role="list">
+  <% items.each do |item| %>
+    <li class="<%= row_classes(item) %>">
+      <div class="min-w-0">
+        <p class="m-0 text-sm font-semibold text-fg [overflow-wrap:anywhere]"><%= item.label %></p>
+        <p class="mt-0.5 text-[0.8125rem] text-fg-muted tabular-nums"><%= value_text(item) %></p>
+      </div>
+      <% if numeric?(item) %>
+        <div class="min-w-0">
+          <%= render Ui::MiniProgressBarComponent.new(
+                read: item.current,
+                total: item.required,
+                html: { class: 'w-full', aria: { label: item.label } }
+              ) %>
+        </div>
+      <% else %>
+        <span class="justify-self-start text-base font-semibold text-fg-brand sm:justify-self-end">
+          <%= item.met? ? t('contests.progress.yes') : t('contests.progress.no') %>
+        </span>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

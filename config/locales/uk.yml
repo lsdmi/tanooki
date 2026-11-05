@@ -1013,6 +1013,29 @@ uk:
       qualified: Кваліфіковано
       incomplete: Не завершено
       disqualified: Дискваліфіковано
+    lock:
+      not_closed: Подача ще не закрита — фіксацію рано запускати.
+      cancelled: Конкурс скасовано — заявки не фіксуємо.
+    progress:
+      chapters:
+        one: "%{count} розділ"
+        few: "%{count} розділи"
+        many: "%{count} розділів"
+        other: "%{count} розділів"
+      words:
+        one: "%{count} слово"
+        few: "%{count} слова"
+        many: "%{count} слів"
+        other: "%{count} слів"
+      completed: Твір позначено завершеним
+      genre: "Жанр «%{name}»"
+      rating: "Маркування до %{max}+"
+      rating_value: "%{current}+ з макс. %{max}+"
+      of: "%{current} / %{required}"
+      "yes": Так
+      "no": Ні
+      met: Готово
+      open: Ще ні
     kinds:
       original: Ориджинал
       fanfiction: Фанфік
@@ -1103,11 +1126,13 @@ uk:
         step3_body: Прогрес видно в «Моїй участі».
       my_participation:
         in: Ти в конкурсі!
-        next: "Далі: опублікуй перший розділ"
+        next: "Далі: виконай вимоги до дедлайну"
         rejected: Заявку відхилено
+        disqualified: Заявку дискваліфіковано
         reason: "Причина: %{reason}"
         add_first: Додати перший розділ
         add_chapter: Додати розділ
+        open_fiction: Відкрити твір
         withdraw: Вийти з конкурсу
         withdraw_confirm: Вийти з конкурсу? Твір лишиться на сайті.
       cancellation:
@@ -1188,7 +1213,7 @@ uk:
       subhead: Лишилось підтвердити правила й розказати про ШІ.
       withdrawn: Ти вийшов з конкурсу.
     edit_banner:
-      in: "Бере участь у конкурсі «%{contest}» →"
+      in: "Бере участь у конкурсі «%{contest}»"
       my_entry: Моя участь
   chapters:
     thanks:
@@ -1927,7 +1952,10 @@ uk:
         mark_paid: Позначити виплаченим
         payout_note: Нотатка про виплату
         no_awards: Нагород ще немає — признач приз заявці нижче.
+      warnings:
+        unreviewed: Є неперевірені заявки. Після дедлайну їх можна відхилити або дискваліфікувати.
       entries:
+
         title: Заявки
         link: Заявки
         intro: Список учасників. Заявки вже в конкурсі — тут лише відхилити або дискваліфікувати з причиною, якщо треба.

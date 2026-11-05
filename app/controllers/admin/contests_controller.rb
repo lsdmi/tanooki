@@ -19,10 +19,12 @@ module Admin
       @awards = @contest.awards.includes(:contest_prize, contest_entry: :fiction)
       @unawarded_entries = @contest.entries.where(status: %w[accepted qualified]).order(:id)
       @readiness = ::Contests::Readiness.call(@contest) if @contest.published_at.blank?
+      @unreviewed_after_deadline = @contest.unreviewed_after_deadline?
     end
 
     def new
       @contest = Contest.new(default_contest_attributes)
+
       @contest.prizes.build(DEFAULT_PRIZES)
       @contest.jurors.build
     end

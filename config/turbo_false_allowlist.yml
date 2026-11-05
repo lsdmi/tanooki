@@ -3,7 +3,7 @@
 # Verified: 2026-11-03 — contest submit forms + fiction edit; composer forms opt out of Turbo so 422 re-renders keep SlimSelect/TinyMCE.
 allowed:
   # Category D — TinyMCE / forms / new-* / edit actions
-  - app/views/fictions/edit.html.erb:14
+  - app/views/fictions/edit.html.erb:23
   - app/views/fictions/new.html.erb:5
   - app/views/fictions/_contest_form.html.erb:8
   - app/views/contests/participations/new.html.erb:26

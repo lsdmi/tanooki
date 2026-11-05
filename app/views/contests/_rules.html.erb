@@ -1,9 +1,10 @@
 <%# locals: (contest:, presenter:) %>
+<% summary_class = 'cursor-pointer list-none px-4 py-3 text-sm font-semibold text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden' %>
 <section id="rules" class="scroll-mt-24">
   <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.rules'), id: 'rules-heading') %>
   <div class="mt-6 space-y-3">
-    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
-      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+    <details class="rounded-xl bg-main ring-1 ring-line">
+      <summary class="<%= summary_class %>">
         <%= t('contests.show.rules.general') %>
       </summary>
       <div class="border-t border-line px-4 py-3">
@@ -11,8 +12,8 @@
       </div>
     </details>
 
-    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
-      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+    <details class="rounded-xl bg-main ring-1 ring-line">
+      <summary class="<%= summary_class %>">
         <%= t('contests.show.rules.criteria') %>
       </summary>
       <ul class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
@@ -25,8 +26,8 @@
       </ul>
     </details>
 
-    <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
-      <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+    <details class="rounded-xl bg-main ring-1 ring-line">
+      <summary class="<%= summary_class %>">
         <%= t('contests.show.rules.scoring') %>
       </summary>
       <div class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
@@ -35,8 +36,8 @@
     </details>
 
     <% if contest.rules.present? %>
-      <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
-        <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+      <details class="rounded-xl bg-main ring-1 ring-line">
+        <summary class="<%= summary_class %>">
           <%= t('contests.show.rules.extra') %>
         </summary>
         <div class="prose prose-slate border-t border-line px-4 py-3 text-sm dark:prose-invert">
@@ -47,11 +48,11 @@
 
     <% changes = Array(contest.rule_changes) %>
     <% if changes.any? %>
-      <details class="contests-accordion rounded-xl bg-main ring-1 ring-line">
-        <summary class="cursor-pointer px-4 py-3 text-sm font-semibold text-fg">
+      <details class="rounded-xl bg-main ring-1 ring-line">
+        <summary class="<%= summary_class %>">
           <%= t('contests.show.rules.changes') %>
         </summary>
-        <ul class="border-t border-line px-4 py-3 text-sm text-fg-secondary space-y-2">
+        <ul class="space-y-2 border-t border-line px-4 py-3 text-sm text-fg-secondary">
           <% changes.reverse_each do |row| %>
             <li>
               <span class="font-medium text-fg">

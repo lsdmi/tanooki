@@ -68,3 +68,7 @@ production:
     class: TelegramDigests::PostJob
     args: [publications]
     schedule: "0 15 * * 5 Europe/Kiev"
+
+  contests_tick:
+    class: Contests::TickJob
+    schedule: "*/15 * * * * Europe/Kiev"

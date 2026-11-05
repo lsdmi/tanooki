@@ -88,6 +88,13 @@ class Contest < ApplicationRecord
   def results_published? = results_published_at.present?
   def cancelled? = cancelled_at.present?
 
+  # Accepted (and locked) entries still waiting for admin reject/DQ after the deadline.
+  def unreviewed_after_deadline?(at: Time.current)
+    return false if submissions_close_at.blank? || submissions_close_at > at
+
+    entries.exists?(reviewed_at: nil, status: %w[accepted qualified incomplete])
+  end
+
   def slug_candidates
     [title.to_s.downcase]
   end

@@ -26,7 +26,8 @@
       </div>
     </div>
     <div class="md:col-span-5">
-      <div class="contests-hero-cover aspect-[4/5] min-w-0 overflow-hidden rounded-xl bg-surface-strong ring-1 ring-line">
+      <div class="aspect-[4/5] min-w-0 overflow-hidden rounded-xl bg-surface-strong ring-1 ring-line">
+
         <% if cover? %>
           <%= cover_card_picture_tag(contest.cover, class: 'size-full object-cover', alt: '', loading: 'eager') %>
         <% else %>

@@ -22,6 +22,14 @@
     </div>
   </div>
 
+  <% if @unreviewed_after_deadline %>
+    <p class="mt-6 rounded-xl bg-status-warning-subtle-bg px-4 py-3 text-sm text-status-warning-subtle-fg ring-1 ring-status-warning-subtle-border">
+      <%= t('admin.contests.warnings.unreviewed') %>
+      <%= link_to t('admin.contests.entries.link'), admin_contest_entries_path(@contest),
+                  class: 'ml-1 font-semibold underline' %>
+    </p>
+  <% end %>
+
   <% if @readiness %>
     <section class="mt-6 rounded-xl border border-line bg-main p-4">
       <h2 class="text-sm font-semibold text-fg"><%= t('admin.contests.readiness.title') %></h2>

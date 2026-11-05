@@ -1,4 +1,5 @@
-<%= link_to contest_path(contest), class: 'contests-archive-card group flex gap-4 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-none sm:p-4' do %>
+<%= link_to contest_path(contest), class: 'group flex gap-4 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:p-4' do %>
+
   <div class="h-28 w-20 shrink-0 overflow-hidden rounded-lg bg-surface-strong">
     <% if contest.cover.attached? %>
       <%= cover_card_picture_tag(contest.cover, class: 'size-full object-cover', alt: '') %>

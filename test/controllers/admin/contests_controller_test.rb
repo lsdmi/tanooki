@@ -129,4 +129,23 @@ module Admin
       }
     end
   end
+
+  class ContestsShowTest < ActionDispatch::IntegrationTest
+    include Devise::Test::IntegrationHelpers
+
+    setup do
+      sign_in users(:user_one)
+    end
+
+    test 'show warns about unreviewed entries after the deadline' do
+      contest = contests(:judging)
+      contest_entries(:qualified).update!(reviewed_at: nil)
+
+      get admin_contest_url(contest)
+
+      assert_response :success
+      assert_select 'p', text: /неперевірені заявки/
+      assert_select 'a', text: I18n.t('admin.contests.entries.link')
+    end
+  end
 end

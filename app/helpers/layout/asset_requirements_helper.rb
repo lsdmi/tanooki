@@ -80,10 +80,6 @@ module Layout
       controller_path == 'fiction_lists' && action_name == 'alphabetical'
     end
 
-    def requires_contests_styles?
-      controller_path == 'contests'
-    end
-
     def requires_sweetalert_styles?
       mapped_page?(SWEETALERT_PAGES)
     end
