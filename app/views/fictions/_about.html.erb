@@ -40,7 +40,7 @@
     <%# Warm ranks → inline (no CLS). Cold miss → lazy frame; empty response collapses via :not(:has(section)). %>
     <% cached_ranks = show_presenter.ranks_if_cached %>
     <% if cached_ranks %>
-      <%= render Fictions::HonorsCardComponent.new(ranks: cached_ranks) %>
+      <%= render Fictions::HonorsCardComponent.new(ranks: cached_ranks, fiction:, user: current_user) %>
     <% else %>
       <%= turbo_frame_tag 'fiction_sidebar_stats', src: sidebar_stats_fiction_path(fiction), loading: :lazy,
                                                    class: 'block [&:not(:has(section))]:-mb-8 lg:[&:not(:has(section))]:-mb-6' %>

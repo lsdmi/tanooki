@@ -41,6 +41,21 @@ module Contests
       assert_equal :contest_winner, tags.first.kind
     end
 
+    test 'a top-five badge replaces the winner pill' do
+      fiction = fictions(:one)
+      entry = contest_entries(:qualified)
+      prize = ContestPrize.create!(
+        contest: entry.contest, position: 8, title: '2 місце', kind: :place, place: 2, cash_uah: 0
+      )
+      ContestAward.create!(
+        contest: entry.contest, contest_prize: prize, contest_entry: entry, awarded_at: Time.current
+      )
+
+      tags = Contests::PlaceBadges.stub(:asset?, true) { FictionHeroTags.new(fiction).call }
+
+      assert_nil(tags.find { |tag| tag.kind == :contest_winner })
+    end
+
     test 'omits rejected and withdrawn entries' do
       fiction = fictions(:two)
       tags = FictionHeroTags.new(fiction).call

@@ -29,11 +29,11 @@
     </div>
     <div class="sm:col-span-2">
       <%= f.label :description, t('admin.contests.fields.description'), class: 'block text-sm font-medium text-fg' %>
-      <%= f.rich_text_area :description, class: 'mt-1 min-h-28 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      <%= f.text_area :description, value: contest.description.to_s, class: 'tinymce mt-1 min-h-48 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
     </div>
     <div class="sm:col-span-2">
       <%= f.label :rules, t('admin.contests.fields.rules'), class: 'block text-sm font-medium text-fg' %>
-      <%= f.rich_text_area :rules, class: 'mt-1 min-h-28 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      <%= f.text_area :rules, value: contest.rules.to_s, class: 'tinymce mt-1 min-h-48 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
     </div>
   </div>
 
@@ -160,14 +160,20 @@
           <div>
             <%= jf.label :user_id, t('admin.contests.fields.juror_user'), class: 'block text-xs text-fg-muted' %>
             <%= jf.select :user_id,
-                          options_from_collection_for_select(User.order(:name), :id, :name, jf.object.user_id),
+                          options_for_select([[jf.object.user&.name, jf.object.user_id]], jf.object.user_id),
                           { include_blank: true },
-                          data: { controller: 'slim' },
+                          data: {
+                            controller: 'slim-fiction-search',
+                            slim_fiction_search_url_value: user_options_admin_contests_path,
+                            slim_fiction_search_placeholder_value: 'Оберіть користувача',
+                            slim_fiction_search_search_placeholder_value: 'Пошук за іменем',
+                            slim_fiction_search_close_on_select_value: true
+                          },
                           class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
           </div>
           <div>
             <%= jf.label :role, t('admin.contests.fields.juror_role'), class: 'block text-xs text-fg-muted' %>
-            <%= jf.select :role, ContestJuror::ROLES.map { |r| [r, r] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
+            <%= jf.select :role, ContestJuror::ROLES.map { |r| [t("contests.juror_roles.#{r}"), r] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-2 py-1.5 text-sm text-fg' %>
           </div>
           <div>
             <%= jf.label :public_bio, t('admin.contests.fields.juror_bio'), class: 'block text-xs text-fg-muted' %>

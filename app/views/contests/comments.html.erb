@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "comments_page_#{@comment_page.page}" do %>
+  <%= render 'contests/comments_page', contest: @contest, comment_page: @comment_page %>
+<% end %>

@@ -6,6 +6,6 @@
   <% end %>
 <% else %>
   <%= turbo_frame_tag "reply-#{reply.id}", class: 'block', hidden: local_assigns[:hidden], data: { reveal_target: 'item' } do %>
-    <%= render 'comments/comment_body', comment: reply, commentable: %>
+    <%= render 'comments/comment_body', comment: reply, commentable:, quiet: local_assigns.fetch(:quiet, false) %>
   <% end %>
 <% end %>

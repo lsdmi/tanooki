@@ -19,8 +19,7 @@ module Contests
       my_work_after_cancel: { target: :my_entry, kind: :anchor },
       edit_contest: { target: :admin_edit, kind: :path },
       review_entries: { target: :admin_entries, kind: :path },
-      jury_scores: { target: :admin_show, kind: :path },
-      payouts: { target: :admin_show, kind: :path }
+      jury_scores: { target: :admin_show, kind: :path }
     }.freeze
 
     # phase => role => [primary, secondary]. awaiting_results reuses judging.
@@ -47,7 +46,7 @@ module Contests
         guest: %i[read_winners],
         reader: %i[read_winners],
         participant: %i[my_result],
-        admin: %i[payouts]
+        admin: []
       },
       cancelled: {
         guest: %i[cancellation_info],
@@ -61,22 +60,23 @@ module Contests
     SECTIONS = [
       { id: :hero, anchor: 'hero', component: 'Contests::HeroComponent' },
       { id: :cancellation, anchor: 'cancelled', partial: 'contests/cancellation', phases: %i[cancelled] },
-      { id: :summary, anchor: 'summary', component: 'Contests::SummaryComponent' },
-      { id: :section_nav, anchor: 'sections', component: 'Contests::SectionNavComponent' },
+      { id: :summary, anchor: 'summary', component: 'Contests::SummaryComponent',
+        phases: Phase::ACTIVE_PHASES + %i[cancelled] },
+      { id: :section_nav, anchor: 'sections', component: 'Contests::SectionNavComponent',
+        phases: Phase::ACTIVE_PHASES + %i[cancelled] },
       { id: :results, anchor: 'results', partial: 'contests/results', phases: %i[results] },
       { id: :my_participation, anchor: 'my-entry', partial: 'contests/my_participation',
         phases: %i[submissions judging awaiting_results], roles: %i[participant admin], if: :my_entry },
-      { id: :theme, anchor: 'about', partial: 'contests/theme', nav: 'about' },
       { id: :how_to_join, anchor: 'how-to-join', partial: 'contests/how_to_join',
         phases: %i[announced submissions], nav: 'how_to_join' },
-      { id: :timeline, anchor: 'timeline', component: 'Contests::TimelineComponent' },
-      { id: :requirements, anchor: 'requirements', partial: 'contests/requirements' },
-      { id: :prizes, anchor: 'prizes', component: 'Contests::PrizePoolComponent', nav: 'prizes' },
-      { id: :jury, anchor: 'jury', partial: 'contests/jury', if: :jurors? },
+      { id: :board, anchor: 'about', partial: 'contests/theme',
+        nav_links: [{ nav: 'about', anchor: 'about' }, { nav: 'prizes', anchor: 'prizes' }] },
+      { id: :requirements, anchor: 'requirements', partial: 'contests/requirements',
+        phases: Phase::ACTIVE_PHASES + %i[cancelled] },
       { id: :works, anchor: 'works', partial: 'contests/works', phases: GALLERY_PHASES, nav: 'works' },
       { id: :past_winners, anchor: 'past-winners', partial: 'contests/past_winners', if: :past_winners? },
-      { id: :discussion, anchor: 'discussion', partial: 'contests/discussion', nav: 'discussion' },
-      { id: :rules, anchor: 'rules', partial: 'contests/rules', nav: 'rules' }
+      { id: :closing, anchor: 'discussion', partial: 'contests/closing',
+        nav_links: [{ nav: 'discussion', anchor: 'discussion' }, { nav: 'rules', anchor: 'rules' }] }
     ].freeze
 
     # Sections pinned right after the hero (in this order) for a phase; the rest keep default order.

@@ -1,28 +1,47 @@
-<%= link_to href, class: 'group flex flex-col overflow-hidden rounded-xl bg-main ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
-  <div class="relative aspect-[2/3] overflow-hidden bg-surface-strong">
+<article class="group min-w-0">
+  <%= link_to href,
+        class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-md bg-surface-strong transition-[filter,transform] duration-200 ease-out hover:brightness-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand',
+        data: { turbo_frame: '_top' } do %>
     <% if fiction.cover.attached? %>
       <%= cover_card_picture_tag(
             fiction.cover,
-            class: "size-full object-cover transition-transform duration-[220ms] ease-in-out motion-reduce:transition-none [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.02] #{'blur-md scale-105' if blur?}",
-            alt: blur? ? '' : fiction.title
+            alt: blur? ? '' : fiction.title,
+            class: cover_class,
+            picture_html: { class: 'absolute inset-0 block h-full w-full' },
+            srcset: true,
+            sizes: Meta::CoverCardPresets::CARD_GRID_SIZES,
+            loading: 'lazy',
+            decoding: 'async'
           ) %>
-
-    <% else %>
-      <div class="flex size-full items-end bg-surface p-3">
-        <span class="text-sm font-semibold text-fg"><%= fiction.title %></span>
+    <% end %>
+    <% if age_label %>
+      <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= age_class %>"
+            aria-label="<%= age_label %>"><%= age_label %></span>
+    <% end %>
+    <% unless plain? %>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10">
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: helpers.format_view_count(fiction.views)) %>
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: rating_text) %>
       </div>
     <% end %>
-    <% if eighteen? %>
-      <span class="absolute left-2 top-2 rounded-md bg-status-danger-subtle-bg px-1.5 py-0.5 text-xs font-bold text-status-danger-subtle-fg ring-1 ring-status-danger-subtle-border">18+</span>
-    <% elsif fiction.content_rating_sixteen? %>
-      <span class="absolute left-2 top-2 rounded-md bg-status-warning-subtle-bg px-1.5 py-0.5 text-xs font-bold text-status-warning-subtle-fg ring-1 ring-status-warning-subtle-border">16+</span>
+  <% end %>
+  <div class="pt-1 sm:pt-1.5 md:pt-2 xl:pt-2">
+    <h3 class="font-medium leading-snug text-fg text-xs sm:text-sm md:text-[15px] md:leading-5 lg:text-base xl:text-base 2xl:text-lg">
+      <%= link_to fiction.title, href,
+            class: 'line-clamp-2 rounded-md transition-colors hover:text-fg-brand hover:underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+            data: { turbo_frame: '_top' } %>
+    </h3>
+    <% if !plain? && genre_labels.any? %>
+      <%= render Ui::TagListComponent.new(
+            labels: genre_labels,
+            variant: :genre,
+            size: :sm,
+            sort_adult_first: true,
+            genre_slugs: genre_slugs,
+            href_builder: ->(name) { genre_href(name) },
+            tag_html: { data: { turbo_frame: '_top' } },
+            html: { class: 'mt-1.5 gap-1 min-w-0' }
+          ) %>
     <% end %>
   </div>
-  <div class="flex flex-1 flex-col gap-1 p-3">
-    <p class="line-clamp-2 text-sm font-semibold text-fg group-hover:text-fg-brand"><%= fiction.title %></p>
-    <p class="text-xs text-fg-muted"><%= fiction.author %></p>
-    <p class="mt-auto pt-2 text-xs text-fg-subtle">
-      <%= t('contests.show.works.meta', chapters: chapter_count) %>
-    </p>
-  </div>
-<% end %>
+</article>

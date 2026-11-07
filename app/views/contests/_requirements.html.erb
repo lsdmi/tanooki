@@ -1,24 +1,24 @@
-<%# locals: (contest:, presenter:) %>
+<%# locals: (contest:) %>
 <section id="requirements" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.requirements'), id: 'requirements-heading') %>
-  <ul class="mt-6 space-y-2 text-sm text-fg">
+  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.requirements') %></p>
+  <ul class="mt-4 space-y-2 text-sm text-fg-secondary">
     <% if contest.requires_new_work? %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.new_work') %></li>
+      <li><%= t('contests.show.requirements.new_work') %></li>
     <% end %>
     <% if contest.min_chapters %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.chapters', count: contest.min_chapters) %></li>
+      <li><%= t('contests.show.requirements.chapters', count: contest.min_chapters) %></li>
     <% end %>
     <% if contest.min_words %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.words', count: number_with_delimiter(contest.min_words, delimiter: ' ')) %></li>
+      <li><%= t('contests.show.requirements.words', count: number_with_delimiter(contest.min_words, delimiter: ' ')) %></li>
     <% end %>
     <% if contest.required_genre %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.genre', name: contest.required_genre.name) %></li>
+      <li><%= t('contests.show.requirements.genre', name: contest.required_genre.name) %></li>
     <% end %>
     <% if contest.max_content_rating.positive? %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.rating', rating: contest.max_content_rating) %></li>
+      <li><%= t('contests.show.requirements.rating', rating: contest.max_content_rating) %></li>
     <% end %>
     <% if contest.requires_completed? %>
-      <li class="flex gap-2"><span class="text-fg-brand" aria-hidden="true">•</span><%= t('contests.show.requirements.completed') %></li>
+      <li><%= t('contests.show.requirements.completed') %></li>
     <% end %>
   </ul>
   <p class="mt-4">

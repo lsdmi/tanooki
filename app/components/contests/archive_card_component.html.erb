@@ -1,6 +1,6 @@
 <%= link_to contest_path(contest), class: 'group flex gap-4 overflow-hidden rounded-xl bg-main p-3 ring-1 ring-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:p-4' do %>
 
-  <div class="h-28 w-20 shrink-0 overflow-hidden rounded-lg bg-surface-strong">
+  <div class="aspect-video w-40 shrink-0 overflow-hidden rounded-lg bg-surface-strong sm:w-56">
     <% if contest.cover.attached? %>
       <%= cover_card_picture_tag(contest.cover, class: 'size-full object-cover', alt: '') %>
     <% else %>

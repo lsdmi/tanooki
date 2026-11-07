@@ -15,8 +15,15 @@ class ContestsController < ApplicationController
     preload_contest_cover(@contest)
     @presenter = Contests::ShowPresenter.new(contest: @contest, user: current_user)
     preload_my_entry_fiction(@presenter)
-    @comments = @contest.comments.parents.includes(:user, :rich_text_content)
+    @comment_page = Contests::CommentPage.new(@contest, page: 1)
+    @comments = @comment_page.comments
     @comment = Comment.new
+  end
+
+  def comments
+    @contest = Contest.friendly.find(params.expect(:slug))
+    @comment_page = Contests::CommentPage.new(@contest, page: params[:page])
+    render layout: false
   end
 
   private

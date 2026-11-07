@@ -43,11 +43,19 @@ module Contests
       assert_includes visible, :results
     end
 
+    test 'related blocks share a section' do
+      visible = presenter(:results).visible_sections.pluck(:id)
+
+      assert_includes visible, :board
+      assert_includes visible, :closing
+      assert_empty %i[timeline prizes jury theme discussion rules] & visible
+    end
+
     test 'results phase hides join sections' do
       contest_entries(:accepted).update!(submitter_id: @reader.id)
       visible = presenter(:results, @reader).visible_sections.pluck(:id)
 
-      assert_empty %i[how_to_join my_participation] & visible
+      assert_empty %i[how_to_join my_participation summary section_nav requirements] & visible
     end
 
     test 'announced hides works and results' do

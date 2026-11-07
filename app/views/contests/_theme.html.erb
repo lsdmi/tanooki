@@ -1,11 +1,20 @@
 <%# locals: (contest:, presenter:) %>
-<section id="about" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.theme'), id: 'about-heading') %>
-  <div class="prose prose-slate mt-6 max-w-none text-fg dark:prose-invert">
-    <% if contest.description.present? %>
-      <%= contest.description %>
-    <% else %>
-      <p class="text-fg-muted"><%= contest.tagline %></p>
+<section id="about" class="relative z-10 w-full scroll-mt-24 <%= contest_section_y_class %>">
+  <div class="mx-auto w-full max-w-screen-xl px-4 2xl:px-0">
+    <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.theme') %></p>
+    <div class="prose prose-sm mt-2.5 max-w-none text-fg prose-headings:text-fg prose-p:text-fg prose-li:text-fg
+                sm:mt-3 sm:prose-sm md:mt-3.5 md:prose-base lg:mt-4 lg:prose-base xl:mt-4 xl:prose-lg dark:prose-invert">
+      <% if contest.description.present? %>
+        <%= contest.description %>
+      <% else %>
+        <p><%= contest.tagline %></p>
+      <% end %>
+    </div>
+    <% if presenter.phase == :results && (dates_line = contest_archive_dates_line(contest)) %>
+      <p class="mt-2 text-xs text-fg-muted sm:mt-2.5 sm:text-sm md:mt-3 lg:text-base xl:mt-3"><%= dates_line %></p>
     <% end %>
+    <div class="<%= contest_section_y_class %>">
+      <%= render 'contests/board', contest:, presenter: %>
+    </div>
   </div>
 </section>

@@ -1,0 +1,9 @@
+<%# locals: (contest:, comment_page:) %>
+<%= render partial: 'comments/comment', collection: comment_page.comments, as: :comment,
+           locals: { commentable: contest, quiet: true } %>
+<% if comment_page.more? %>
+  <%= turbo_frame_tag "comments_page_#{comment_page.next_page}", class: 'flex flex-col gap-2 pt-1' do %>
+    <%= link_to t('fictions.comments.more'), comments_contest_path(contest, page: comment_page.next_page),
+                class: 'self-start text-sm font-medium text-fg-brand hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+  <% end %>
+<% end %>

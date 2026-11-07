@@ -47,6 +47,17 @@ class ContestsControllerTest < ActionDispatch::IntegrationTest
     %w[#hero #summary #sections].each { |selector| assert_select selector }
   end
 
+  test 'admin show renders contest comments' do
+    sign_in users(:user_one)
+    contest = contests(:results)
+    contest.comments.create!(user: users(:user_two), content: 'Архівний коментар')
+
+    get contest_path(contest)
+
+    assert_response :success
+    assert_select '#discussion', text: /Архівний коментар/
+  end
+
   test 'admin show puts results under hero' do
     sign_in users(:user_one)
 

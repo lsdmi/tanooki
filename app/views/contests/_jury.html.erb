@@ -1,17 +1,24 @@
-<%# locals: (contest:, presenter:) %>
-<section id="jury" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.jury'), id: 'jury-heading') %>
-  <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    <% contest.jurors.includes(:user).order(:id).each do |juror| %>
-      <li class="rounded-xl bg-main p-4 ring-1 ring-line">
-        <p class="font-semibold text-fg"><%= juror.user.name %></p>
-        <% if juror.role.present? %>
-          <p class="text-xs text-fg-muted"><%= juror.role %></p>
-        <% end %>
+<%# locals: (contest:) %>
+<ul class="mt-2.5 sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4">
+  <% contest.jurors.includes(user: { avatar: :image_attachment }).order(:id).each do |juror| %>
+    <li class="flex gap-2 border-b border-line py-1.5 last:border-b-0 sm:gap-2.5 sm:py-2 md:py-2.5 xl:gap-3 xl:py-2.5">
+      <%= image_tag avatar_image_url(juror.user.avatar.image),
+                    alt: '',
+                    class: 'mt-0.5 size-7 shrink-0 rounded-full object-cover sm:size-8',
+                    height: '32',
+                    width: '32',
+                    loading: 'lazy' %>
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          <p class="text-sm font-medium text-fg md:text-sm lg:text-base"><%= juror.user.name %></p>
+          <% if juror.role.present? %>
+            <p class="text-[11px] text-fg-muted sm:text-xs"><%= t("contests.juror_roles.#{juror.role}") %></p>
+          <% end %>
+        </div>
         <% if juror.public_bio.present? %>
-          <p class="mt-2 text-sm text-fg-secondary"><%= juror.public_bio %></p>
+          <p class="mt-0.5 text-[11px] leading-4 text-fg-secondary sm:text-xs sm:leading-5 lg:text-sm"><%= juror.public_bio %></p>
         <% end %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+      </div>
+    </li>
+  <% end %>
+</ul>

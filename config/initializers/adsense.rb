@@ -23,6 +23,8 @@ module Adsense
     fictions_index_mid: '6887464203',
     genres_show_top: '1140503454',
     genres_show_mid: '3963656072',
+    contests_show_top: '5242672988',
+    contests_show_mid: '3929591319',
     fiction_show: '8311601798',
     scanlator_show: '2428656082',
     profile: '3053404245'
@@ -41,6 +43,11 @@ module Adsense
   GENRES_SHOW_BANNER_PLACEMENTS = {
     genres_show_top: 'top',
     genres_show_mid: 'mid'
+  }.freeze
+
+  CONTESTS_SHOW_BANNER_PLACEMENTS = {
+    contests_show_top: 'top',
+    contests_show_mid: 'mid'
   }.freeze
 
   CHAPTER_READER_SLOTS = {

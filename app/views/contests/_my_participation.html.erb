@@ -1,8 +1,8 @@
 <%# locals: (contest:, presenter:) %>
 <% entry = presenter.my_entry %>
 <section id="my-entry" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.my_participation'), id: 'my-entry-heading') %>
-  <div class="mt-6 rounded-xl bg-brand-subtle p-4 ring-1 ring-brand md:p-6">
+  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.my_participation') %></p>
+  <div class="mt-4">
     <% if entry&.rejected? %>
       <p class="font-semibold text-fg"><%= t('contests.show.my_participation.rejected') %></p>
       <% if entry.status_reason.present? %>

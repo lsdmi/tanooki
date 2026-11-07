@@ -1,39 +1,64 @@
-<section id="hero" class="relative overflow-hidden border-b border-line bg-surface">
-  <div class="mx-auto grid max-w-screen-xl gap-8 px-4 py-10 md:grid-cols-12 md:gap-10 md:py-14 2xl:px-0">
-    <div class="flex min-w-0 flex-col justify-center md:col-span-7">
-      <p class="text-sm text-fg-muted"><%= phase_label %></p>
-      <h1 class="mt-2 min-w-0 break-words text-3xl font-bold tracking-tight text-fg md:text-5xl md:leading-tight">
+<section id="hero" class="relative isolate overflow-hidden">
+  <% if cover? %>
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <%# Same veil and melt as the fictions index showcase: art dissolves, type stays ink on light and white on dark. %>
+      <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,#000_55%,transparent)]">
+        <%= image_tag contest.cover,
+                       class: 'absolute inset-0 size-full scale-105 object-cover object-center motion-safe:animate-contest-hero-drift',
+                       alt: '',
+                       loading: 'eager',
+                       fetchpriority: 'high' %>
+        <div class="absolute inset-0 z-[1] bg-black/22 dark:hidden"></div>
+        <div class="absolute inset-0 z-[1] bg-linear-to-b from-main/72 via-main/84 to-main/96 dark:from-main/55 dark:via-main/75 dark:to-main/95"></div>
+      </div>
+    </div>
+  <% end %>
+  <%# xl padding/height is the ideal; step down below xl. %>
+  <div class="relative mx-auto flex max-w-screen-xl flex-col items-center justify-center px-4 text-center
+              min-h-[18rem] pt-6 pb-10
+              sm:min-h-[20rem] sm:pt-8 sm:pb-12
+              md:min-h-[24rem] md:pt-10 md:pb-16
+              lg:min-h-[26rem] lg:pt-12 lg:pb-20
+              xl:min-h-[30rem] xl:pt-16 xl:pb-28
+              2xl:min-h-[30rem] 2xl:px-0 2xl:pb-28">
+    <div class="mx-auto flex w-full min-w-0 max-w-3xl flex-col items-center text-center
+                gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5 2xl:gap-5">
+      <p class="inline-flex items-center gap-1 rounded-md bg-fg/3 px-2 py-0.5 text-xs/4 font-medium text-fg ring-1 ring-inset ring-fg/70
+                sm:px-2.5 sm:py-1 sm:text-sm/4
+                dark:bg-white/10 dark:text-white dark:ring-white/70">
+        <svg class="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <%= phase_label %>
+      </p>
+      <% if archive_stamp? %>
+        <p class="text-[11px] font-medium text-fg-muted sm:text-xs md:text-sm dark:text-white/70"><%= archive_stamp %></p>
+      <% end %>
+      <h1 class="min-w-0 text-balance break-words font-semibold leading-tight tracking-tight text-fg dark:text-white
+                 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-5xl
+                 <%= ' -mt-0.5 sm:-mt-1 md:-mt-1.5 lg:-mt-2 xl:-mt-2.5' if archive_stamp? %>">
         <%= contest.title %>
       </h1>
       <% if contest.tagline.present? %>
-        <p class="mt-3 max-w-xl text-base text-fg-secondary md:text-lg"><%= contest.tagline %></p>
+        <p class="max-w-2xl text-pretty text-fg-secondary dark:text-white/80
+                  text-sm/5 sm:text-sm/5 md:text-base/6 lg:text-base/6 xl:text-lg/7 2xl:text-lg/7"><%= contest.tagline %></p>
       <% end %>
       <% if deadline_line.present? %>
-        <p class="mt-4 text-sm font-medium text-fg-brand" data-controller="<%= 'contests--deadline' if presenter.phase == :submissions %>"
+        <p class="font-medium text-fg-secondary dark:text-white/90
+                  text-xs/5 sm:text-sm/5 md:text-sm/5 lg:text-base/6"
+           data-controller="<%= 'contests--deadline' if presenter.phase == :submissions %>"
            <% if presenter.phase == :submissions %>
              data-contests--deadline-ends-at-value="<%= contest.submissions_close_at.iso8601 %>"
            <% end %>>
           <span data-contests--deadline-target="label"><%= deadline_line %></span>
         </p>
       <% end %>
-      <div class="mt-6 flex flex-wrap gap-3">
+      <div class="mt-1 flex flex-wrap justify-center gap-2 sm:mt-1.5 sm:gap-2.5 md:mt-2 md:gap-3 xl:gap-3">
         <% if primary %>
           <%= render Ui::ButtonComponent.new(label: action_label(primary), href: primary[:href], variant: :primary, size: :lg, as: :link) %>
         <% end %>
         <% if secondary %>
           <%= render Ui::ButtonComponent.new(label: action_label(secondary), href: secondary[:href], variant: :outline, size: :lg, as: :link) %>
-        <% end %>
-      </div>
-    </div>
-    <div class="md:col-span-5">
-      <div class="aspect-[4/5] min-w-0 overflow-hidden rounded-xl bg-surface-strong ring-1 ring-line">
-
-        <% if cover? %>
-          <%= cover_card_picture_tag(contest.cover, class: 'size-full object-cover', alt: '', loading: 'eager') %>
-        <% else %>
-          <div class="flex size-full items-end bg-brand-subtle p-6">
-            <p class="break-words text-2xl font-bold text-fg-brand"><%= contest.title %></p>
-          </div>
         <% end %>
       </div>
     </div>

@@ -5,6 +5,7 @@ module Meta
   module OpenGraphHelper
     def meta_type
       return 'website' if genre_show_page?
+      return 'website' if meta_assign_persisted?(:contest)
 
       case request.path
       when root_path, search_index_path, fictions_path, youtube_videos_path,

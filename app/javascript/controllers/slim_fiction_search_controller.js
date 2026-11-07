@@ -4,15 +4,20 @@ import { connectSlimSelect, disconnectSlimSelect } from 'slim_select_lifecycle'
 
 // Slim Select with remote fiction search for bookshelf forms.
 export default class extends Controller {
-  static values = { url: String }
+  static values = {
+    url: String,
+    placeholder: { type: String, default: 'Оберіть зі списку' },
+    searchPlaceholder: { type: String, default: 'Пошук за назвою або автором' },
+    closeOnSelect: { type: Boolean, default: false }
+  }
 
   connect() {
     connectSlimSelect(this, () => new SlimSelect({
       select: this.element,
       settings: {
-        closeOnSelect: false,
-        placeholderText: "Оберіть зі списку",
-        searchPlaceholder: 'Пошук за назвою або автором',
+        closeOnSelect: this.closeOnSelectValue,
+        placeholderText: this.placeholderValue,
+        searchPlaceholder: this.searchPlaceholderValue,
         searchText: 'Нічого не знайдено',
         searchingText: 'Пошук...'
       },

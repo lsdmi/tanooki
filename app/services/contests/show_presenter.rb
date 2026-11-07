@@ -50,10 +50,13 @@ module Contests
 
     # Anchor links for the sticky section bar: visible sections that have a nav label.
     def nav_items
-      visible_sections.filter_map do |section|
-        next if section[:nav].blank?
+      visible_sections.flat_map do |section|
+        links = section[:nav_links].presence || [{ nav: section[:nav], anchor: section[:anchor] }]
+        links.filter_map do |link|
+          next if link[:nav].blank?
 
-        { id: section[:id], anchor: section[:anchor], label_key: "contests.show.nav.#{section[:nav]}" }
+          { id: section[:id], anchor: link[:anchor], label_key: "contests.show.nav.#{link[:nav]}" }
+        end
       end
     end
 
@@ -96,10 +99,6 @@ module Contests
     # Prizes with a donation unlock threshold, lowest first.
     def donation_goals
       @donation_goals ||= contest.prizes.where.not(unlock_at_uah: nil).order(:unlock_at_uah).to_a
-    end
-
-    def jurors?
-      contest.jurors.exists?
     end
 
     def past_winners?

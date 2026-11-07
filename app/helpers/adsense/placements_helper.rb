@@ -39,6 +39,10 @@ module Adsense
       Adsense::GENRES_SHOW_BANNER_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
     end
 
+    def adsense_contests_show_banners_renderable?
+      Adsense::CONTESTS_SHOW_BANNER_PLACEMENTS.keys.any? { |placement| adsense_slot_renderable?(placement) }
+    end
+
     def calendar_ad_slots
       slots = Adsense::CALENDAR_SLOTS
       return [] if slots.empty?

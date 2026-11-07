@@ -13,4 +13,24 @@ class ContestsHelperTest < ActionView::TestCase
     assert_match(/10 000/, line)
     assert_match(/3/, line)
   end
+
+  test 'gallery column count fills a row then folds evenly' do
+    expected = { 5 => 5, 6 => 3, 7 => 4, 8 => 4, 9 => 3, 10 => 5, 12 => 4, 15 => 5, 16 => 6 }
+
+    assert_equal(expected, expected.keys.index_with { |count| contest_gallery_column_count(count) })
+  end
+
+  test 'gallery grid class applies sm column count' do
+    assert_includes contest_gallery_grid_class(5), 'sm:grid-cols-5'
+    assert_includes contest_gallery_grid_class(6), 'sm:grid-cols-3'
+    assert_not_includes contest_gallery_grid_class(5), 'sm:grid-cols-3'
+  end
+
+  test 'archive dates line folds months and results day' do
+    contest = contests(:results)
+    line = contest_archive_dates_line(contest)
+
+    assert_match(/· підсумки \d{1,2} [а-яїєґ]+ \d{4} р\./, line)
+    assert_no_match(/Березень|Січень|Лютий/, line)
+  end
 end

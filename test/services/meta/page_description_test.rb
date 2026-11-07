@@ -73,5 +73,13 @@ module Meta
 
       assert_equal I18n.t('meta.description.genres.show', name: genre.name, count: genre.fictions.count), description
     end
+
+    test 'resolve returns contest SEO description on contest show' do
+      contest = contests(:results)
+
+      description = PageDescription.new(contest: contest, request_path: '/contests/results-contest').resolve
+
+      assert_equal ContestSeo.new(contest).meta_description, description
+    end
   end
 end

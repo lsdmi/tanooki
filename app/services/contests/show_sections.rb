@@ -26,6 +26,7 @@ module Contests
         id: definition[:id],
         anchor: definition[:anchor],
         nav: definition[:nav],
+        nav_links: definition[:nav_links],
         partial_or_component: definition[:component] || definition[:partial],
         visible: visible?(definition)
       }

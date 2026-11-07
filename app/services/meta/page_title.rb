@@ -66,6 +66,9 @@ module Meta
       fiction = context[:fiction]
       return FictionSeo.new(fiction).page_title if fiction&.persisted?
 
+      contest = context[:contest]
+      return ContestSeo.new(contest).page_title if contest&.persisted?
+
       DEFAULT_TITLE
     end
 

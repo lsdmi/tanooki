@@ -19,7 +19,7 @@ module Meta
     end
 
     def page_title_assigns
-      %i[publication fiction chapter youtube_video scanlator user bookshelf genre]
+      %i[publication fiction chapter youtube_video scanlator user bookshelf genre contest]
         .index_with { |name| meta_assign(name) }
     end
 

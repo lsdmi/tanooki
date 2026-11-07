@@ -1,21 +1,24 @@
 <%# locals: (contest:, presenter:) %>
-<section id="works" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.works'), id: 'works-heading') %>
-  <% entries = presenter.gallery_entries.to_a %>
-  <% if entries.any? %>
-    <ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-      <% entries.each do |entry| %>
-        <li>
-          <%= render Contests::EntryCardComponent.new(
-                entry:,
-                blur_eighteen: entry.fiction&.content_rating_eighteen? && !current_user&.adult_content_acknowledged?
-              ) %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="mt-4 rounded-xl bg-surface px-4 py-8 text-center text-sm text-fg-muted ring-1 ring-line">
-      <%= t('contests.show.works.empty') %>
-    </p>
-  <% end %>
+<section id="works" class="relative z-10 w-full scroll-mt-24 bg-white/60 dark:bg-white/10 <%= contest_section_y_class %> <%= contest_band_pad_class %>">
+  <div class="mx-auto w-full max-w-screen-xl px-4 2xl:px-0">
+    <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.works') %></p>
+    <% entries = presenter.gallery_entries.to_a %>
+    <% if entries.any? %>
+      <ul class="<%= contest_gallery_grid_class(entries.size) %>">
+        <% entries.each do |entry| %>
+          <li class="min-w-0">
+            <%= render Contests::EntryCardComponent.new(
+                  entry:,
+                  plain: true,
+                  blur_eighteen: entry.fiction&.content_rating_eighteen? && !current_user&.adult_content_acknowledged?
+                ) %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-2.5 text-xs text-fg-muted sm:mt-3 sm:text-sm md:mt-3.5 lg:mt-4 xl:mt-4">
+        <%= t('contests.show.works.empty') %>
+      </p>
+    <% end %>
+  </div>
 </section>

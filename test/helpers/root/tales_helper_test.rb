@@ -72,7 +72,7 @@ module Root
     test 'tale_published_date formats created_at when the post was published immediately' do
       publication = Publication.new(created_at: Time.zone.parse('2026-06-25 10:00'))
 
-      assert_equal '25 червень 2026', tale_published_date(publication)
+      assert_equal '25 червня 2026', tale_published_date(publication)
     end
 
     test 'tale_published_date uses the publish time of a deferred sketch' do
@@ -81,7 +81,7 @@ module Root
         published_at: Time.zone.parse('2026-10-23 12:00')
       )
 
-      assert_equal '23 жовтень 2026', tale_published_date(publication)
+      assert_equal '23 жовтня 2026', tale_published_date(publication)
     end
 
     test 'home_tales_editorial_cards orders deferred tales by publication time' do

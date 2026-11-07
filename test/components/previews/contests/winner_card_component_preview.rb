@@ -9,7 +9,7 @@ module Contests
                                     contest_entry: { fiction: { cover_attachment: :blob } }).first
       return render_missing('Немає нагород у БД') if award.blank?
 
-      render(WinnerCardComponent.new(award:, show_aftermath: true))
+      render(WinnerCardComponent.new(award:))
     end
 
     private

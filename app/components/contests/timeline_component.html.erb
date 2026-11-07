@@ -1,19 +1,27 @@
-<section id="timeline" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.timeline'), id: 'timeline-heading') %>
-  <ol class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5" aria-labelledby="timeline-heading">
+<% unless embedded? %>
+  <section id="timeline" class="scroll-mt-24">
+    <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.timeline'), id: 'timeline-heading') %>
+<% end %>
+  <ol class="relative <%= embedded? ? 'mt-2.5 sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4' : 'mt-4 sm:mt-5 md:mt-5 lg:mt-6 xl:mt-6' %> md:grid md:grid-cols-5" <%= 'aria-labelledby="timeline-heading"' unless embedded? %>>
+    <span class="pointer-events-none absolute top-2 bottom-0 left-[3px] w-px bg-line md:top-[3px] md:bottom-auto md:left-[10%] md:h-px md:w-[80%]" aria-hidden="true"></span>
     <% steps.each do |step| %>
-      <li class="rounded-xl px-4 py-3 ring-1 <%= step[:current] ? 'bg-brand-subtle ring-brand' : 'bg-surface ring-line' %>">
-        <p class="text-xs <%= step[:current] ? 'font-semibold text-fg-brand' : 'text-fg-muted' %>">
-          <%= t("contests.phases.#{step[:key]}") %>
-        </p>
-        <p class="mt-1 text-sm font-medium text-fg">
-          <% if step[:at] %>
-            <%= l(step[:at].to_date) %>
-          <% else %>
-            <%= t('contests.show.timeline.tba') %>
-          <% end %>
-        </p>
+      <li class="relative flex gap-3 pb-3.5 last:pb-0 sm:gap-3.5 sm:pb-4 md:block md:gap-4 md:px-2 md:pb-0 md:text-center xl:pb-0">
+        <span class="relative z-[1] shrink-0 rounded-full md:mx-auto <%= step[:current] ? 'mt-0.5 size-2.5 bg-brand ring-4 ring-brand/20 md:mt-0' : 'mt-1 size-2 bg-fg/35 md:mt-0' %>" aria-hidden="true"></span>
+        <div class="min-w-0 md:mt-2.5 lg:mt-3 xl:mt-3">
+          <p class="text-xs sm:text-sm <%= step[:current] ? 'font-semibold text-fg-brand' : 'font-medium text-fg-secondary' %>">
+            <% if step[:at] %>
+              <%= l(step[:at].to_date) %>
+            <% else %>
+              <%= t('contests.show.timeline.tba') %>
+            <% end %>
+          </p>
+          <p class="mt-0.5 text-[11px] sm:text-xs <%= step[:current] ? 'font-medium text-fg-brand' : 'text-fg-muted' %>">
+            <%= t("contests.phases.#{step[:key]}") %>
+          </p>
+        </div>
       </li>
     <% end %>
   </ol>
-</section>
+<% unless embedded? %>
+  </section>
+<% end %>

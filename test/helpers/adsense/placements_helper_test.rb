@@ -20,7 +20,7 @@ module Adsense
         bookshelf youtube_video youtube_index translation_requests_sidebar
         translation_requests_top tales_index tales_show search_index
         fictions_index_top fictions_index_mid genres_show_top genres_show_mid
-        fiction_show scanlator_show profile
+        contests_show_top contests_show_mid fiction_show scanlator_show profile
       ].each do |placement|
         assert adsense_slot_live?(placement), "expected #{placement} to be live"
         assert_equal Adsense::SLOTS[placement], adsense_slot_id(placement)
@@ -42,6 +42,10 @@ module Adsense
 
     test 'adsense_genres_show_banners_renderable? follows development preview rules' do
       assert_banner_row_follows_preview_rules(:adsense_genres_show_banners_renderable?)
+    end
+
+    test 'adsense_contests_show_banners_renderable? follows development preview rules' do
+      assert_banner_row_follows_preview_rules(:adsense_contests_show_banners_renderable?)
     end
 
     test 'adsense_home_banners_renderable? follows development preview rules' do

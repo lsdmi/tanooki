@@ -37,7 +37,7 @@
       <% if fame.any? %>
         <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <% fame.each do |award| %>
-            <li><%= render Contests::WinnerCardComponent.new(award:, show_aftermath: true) %></li>
+            <li><%= render Contests::WinnerCardComponent.new(award:) %></li>
           <% end %>
         </ul>
       <% else %>

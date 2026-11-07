@@ -12,13 +12,14 @@
 <% else %>
   <% replies = comment.replies.sort_by { |reply| [reply.created_at, reply.id] } %>
   <% hidden_replies = [replies.size - Comments::PresentationHelper::REPLIES_PREVIEW, 0].max %>
+  <% quiet = local_assigns.fetch(:quiet, false) %>
   <%= turbo_frame_tag comment, class: 'flex flex-col gap-3' do %>
-    <%= render 'comments/comment_body', comment:, commentable: %>
+    <%= render 'comments/comment_body', comment:, commentable:, quiet: %>
     <%# Hidden until a reply exists, including one appended by turbo_stream. %>
     <div class="ml-11 flex flex-col gap-2 border-l-2 border-line pl-4 [&:not(:has(article))]:hidden" data-controller="reveal">
       <%= turbo_frame_tag "replies-#{comment.id}", class: 'flex flex-col gap-2' do %>
         <% replies.each_with_index do |reply, index| %>
-          <%= render 'comments/reply', reply:, commentable:, hidden: index >= Comments::PresentationHelper::REPLIES_PREVIEW %>
+          <%= render 'comments/reply', reply:, commentable:, quiet:, hidden: index >= Comments::PresentationHelper::REPLIES_PREVIEW %>
         <% end %>
       <% end %>
       <% if hidden_replies.positive? %>

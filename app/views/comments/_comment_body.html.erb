@@ -1,5 +1,6 @@
-<%# locals: (comment:, commentable: comment.commentable) %>
-<article class="flex flex-col gap-4 rounded-[14px] bg-main p-3 ring-1 ring-inset ring-line">
+<%# locals: (comment:, commentable: comment.commentable, quiet: false) %>
+<% quiet = local_assigns.fetch(:quiet, false) %>
+<article class="<%= quiet ? 'flex flex-col gap-3 border-b border-line py-3' : 'flex flex-col gap-4 rounded-[14px] bg-main p-3 ring-1 ring-inset ring-line' %>">
   <header class="flex items-center gap-2">
     <%= image_tag avatar_image_url(comment.user.avatar.image), alt: '', class: 'size-8 shrink-0 rounded-full object-cover', height: '32', width: '32' %>
     <div class="min-w-0 flex-1">

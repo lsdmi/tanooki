@@ -1,0 +1,16 @@
+<%# locals: (contest:) %>
+<section class="scroll-mt-24">
+  <div class="grid lg:grid-cols-12 lg:items-start <%= contest_split_gap_class %>">
+    <div id="discussion" class="scroll-mt-24 lg:col-span-7">
+      <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.discussion') %></p>
+      <div class="mt-2.5 sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4">
+        <%= render 'contests/discussion', contest: %>
+      </div>
+    </div>
+
+    <div id="rules" class="scroll-mt-24 lg:col-span-5 <%= contest_split_rail_class %>">
+      <p class="<%= contest_section_label_plain_class %>"><%= t('contests.show.sections.rules') %></p>
+      <%= render 'contests/rules', contest: %>
+    </div>
+  </div>
+</section>

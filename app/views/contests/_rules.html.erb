@@ -1,72 +1,77 @@
-<%# locals: (contest:, presenter:) %>
-<% summary_class = 'cursor-pointer list-none px-4 py-3 text-sm font-semibold text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden' %>
-<section id="rules" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.rules'), id: 'rules-heading') %>
-  <div class="mt-6 space-y-3">
-    <details class="rounded-xl bg-main ring-1 ring-line">
+<%# locals: (contest:) %>
+<% summary_class = 'flex cursor-pointer list-none items-center justify-between gap-2.5 py-1.5 text-xs font-medium text-fg sm:gap-3 sm:py-2 sm:text-sm md:py-2.5 md:text-sm lg:text-base xl:py-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden' %>
+<% chevron = capture do %>
+  <svg class="size-4 shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+<% end %>
+<div class="mt-2.5 border-b border-line sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4">
+  <details class="group border-t border-line">
+    <summary class="<%= summary_class %>">
+      <%= t('contests.show.rules.general') %>
+      <%= chevron %>
+    </summary>
+    <div class="pb-3 sm:pb-3.5 md:pb-4 xl:pb-4">
+      <%= render 'contests/general_rules' %>
+    </div>
+  </details>
+
+  <details class="group border-t border-line">
+    <summary class="<%= summary_class %>">
+      <%= t('contests.show.rules.criteria') %>
+      <%= chevron %>
+    </summary>
+    <ul class="pb-2.5 text-xs text-fg-secondary sm:pb-3 sm:text-sm">
+      <% Array(contest.criteria).each do |row| %>
+        <li class="flex justify-between gap-3 py-0.5 sm:py-1">
+          <span><%= row['label'].presence || row['key'] %></span>
+          <span class="font-medium text-fg"><%= row['weight'] %>%</span>
+        </li>
+      <% end %>
+    </ul>
+  </details>
+
+  <details class="group border-t border-line">
+    <summary class="<%= summary_class %>">
+      <%= t('contests.show.rules.scoring') %>
+      <%= chevron %>
+    </summary>
+    <div class="pb-2.5 text-xs text-fg-secondary sm:pb-3 sm:text-sm">
+      <p><%= t('contests.show.rules.scoring_body', jury: contest.jury_weight, readers: 100 - contest.jury_weight) %></p>
+    </div>
+  </details>
+
+  <% if contest.rules.present? %>
+    <details class="group border-t border-line">
       <summary class="<%= summary_class %>">
-        <%= t('contests.show.rules.general') %>
+        <%= t('contests.show.rules.extra') %>
+        <%= chevron %>
       </summary>
-      <div class="border-t border-line px-4 py-3">
-        <%= render 'contests/general_rules' %>
+      <div class="pb-3 text-xs leading-relaxed text-fg sm:pb-3.5 sm:text-sm md:pb-4 xl:pb-4">
+        <%= contest.rules %>
       </div>
     </details>
+  <% end %>
 
-    <details class="rounded-xl bg-main ring-1 ring-line">
+  <% changes = Array(contest.rule_changes) %>
+  <% if changes.any? %>
+    <details class="group border-t border-line">
       <summary class="<%= summary_class %>">
-        <%= t('contests.show.rules.criteria') %>
+        <%= t('contests.show.rules.changes') %>
+        <%= chevron %>
       </summary>
-      <ul class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
-        <% Array(contest.criteria).each do |row| %>
-          <li class="flex justify-between gap-3 py-1">
-            <span><%= row['label'].presence || row['key'] %></span>
-            <span class="font-medium text-fg"><%= row['weight'] %>%</span>
+      <ul class="space-y-1.5 pb-2.5 text-xs text-fg-secondary sm:space-y-2 sm:pb-3 sm:text-sm">
+        <% changes.reverse_each do |row| %>
+          <li>
+            <span class="font-medium text-fg">
+              <%= begin
+                    l(Time.zone.parse(row['at'].to_s).to_date, format: :long)
+                  rescue StandardError
+                    row['at']
+                  end %>
+            </span>
+            — <%= row['reason'] %>
           </li>
         <% end %>
       </ul>
     </details>
-
-    <details class="rounded-xl bg-main ring-1 ring-line">
-      <summary class="<%= summary_class %>">
-        <%= t('contests.show.rules.scoring') %>
-      </summary>
-      <div class="border-t border-line px-4 py-3 text-sm text-fg-secondary">
-        <p><%= t('contests.show.rules.scoring_body', jury: contest.jury_weight, readers: 100 - contest.jury_weight) %></p>
-      </div>
-    </details>
-
-    <% if contest.rules.present? %>
-      <details class="rounded-xl bg-main ring-1 ring-line">
-        <summary class="<%= summary_class %>">
-          <%= t('contests.show.rules.extra') %>
-        </summary>
-        <div class="prose prose-slate border-t border-line px-4 py-3 text-sm dark:prose-invert">
-          <%= contest.rules %>
-        </div>
-      </details>
-    <% end %>
-
-    <% changes = Array(contest.rule_changes) %>
-    <% if changes.any? %>
-      <details class="rounded-xl bg-main ring-1 ring-line">
-        <summary class="<%= summary_class %>">
-          <%= t('contests.show.rules.changes') %>
-        </summary>
-        <ul class="space-y-2 border-t border-line px-4 py-3 text-sm text-fg-secondary">
-          <% changes.reverse_each do |row| %>
-            <li>
-              <span class="font-medium text-fg">
-                <%= begin
-                      l(Time.zone.parse(row['at'].to_s).to_date, format: :long)
-                    rescue StandardError
-                      row['at']
-                    end %>
-              </span>
-              — <%= row['reason'] %>
-            </li>
-          <% end %>
-        </ul>
-      </details>
-    <% end %>
-  </div>
-</section>
+  <% end %>
+</div>

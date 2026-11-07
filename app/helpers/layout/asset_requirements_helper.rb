@@ -8,7 +8,8 @@ module Layout
 
     TINYMCE_FORM_PAGES = {
       'publications' => %w[new edit create update],
-      'chapters' => %w[new edit create update]
+      'chapters' => %w[new edit create update],
+      'admin/contests' => %w[new edit create update]
     }.freeze
 
     FLATPICKR_FORM_PAGES = {

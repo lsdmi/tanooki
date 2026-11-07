@@ -368,9 +368,11 @@ uk:
   date:
     formats:
       default: "%d.%m.%Y"
-      long: "%d %B %Y р."
+      long: "%-d %B %Y р."
     day_names: [Неділя, Понеділок, Вівторок, Середа, Четвер, "П'ятниця", Субота]
-    month_names: [~, Січень, Лютий, Березень, Квітень, Травень, Червень, Липень, Серпень, Вересень, Жовтень, Листопад, Грудень]
+    # %B uses month_names (genitive: «8 березня»). Standalone is nominative («Березень»).
+    month_names: [~, січня, лютого, березня, квітня, травня, червня, липня, серпня, вересня, жовтня, листопада, грудня]
+    standalone_month_names: [~, Січень, Лютий, Березень, Квітень, Травень, Червень, Липень, Серпень, Вересень, Жовтень, Листопад, Грудень]
   chapters_calendar:
     all_updates: Усі оновлення
     my_subscriptions: Моя читальня
@@ -998,6 +1000,9 @@ uk:
       reason_required: Вкажи причину рішення.
     withdraw:
       results_published: Після публікації результатів вийти з конкурсу вже не можна.
+    juror_roles:
+      chair: Голова
+      member: Член журі
     phases:
       draft: Чернетка
       announced: Анонс
@@ -1071,6 +1076,8 @@ uk:
       hero:
         deadline_timer: "До дедлайну · %{date}"
         next_date: "Наступна дата · %{date}"
+        archive_stamp: Архів
+        archive_stamp_year: "Архів · %{year}"
       nav:
         aria: Секції конкурсу
         about: Про конкурс
@@ -1093,7 +1100,6 @@ uk:
         edit_contest: Редагувати
         review_entries: Заявки
         jury_scores: Бали журі
-        payouts: Виплати
       sections:
         timeline: Таймлайн
         prizes: Призи й фонд
@@ -1110,13 +1116,16 @@ uk:
         cancellation: Конкурс скасовано
       timeline:
         tba: незабаром
+        archive_line: "%{span} · підсумки %{results}"
       prizes:
         pool: Фонд
-        pool_breakdown: "гарантовано %{guaranteed} · донати %{donations}"
+        guaranteed: "гарантовано %{amount}"
+        donations: "донати %{amount}"
         support: Підтримати фонд
+        places: Місця і нагороди
+        places_range: "%{from}–%{to} місця"
       works:
         empty: Будь першим — подай роботу й опублікуй перший розділ.
-        meta: "%{chapters} розділів"
       how_to_join:
         step1_title: Натисни «Взяти участь»
         step1_body: Відкриється короткий екран подачі.
@@ -1145,14 +1154,15 @@ uk:
         scoring_body: "Фінальний бал = %{jury}% оцінка журі + %{readers}% бал читачів. Місця визначає формула."
         extra: Положення цього конкурсу
         changes: Зміни в правилах
+      discussion:
+        empty: "Поки тиша. "
+        login: Увійти, щоб написати
       results:
         empty: Переможців ще не призначено.
-      winner:
-        chapters_after: "%{count} розділів після конкурсу"
-        in_libraries: "у %{count} бібліотеках"
-        finished: завершено
-        ongoing: триває
-
+        place_crown:
+          one: Золото
+          two: Срібло
+          three: Бронза
       requirements:
         new_work: Новий твір після старту подачі
         chapters: "Щонайменше %{count} розділів"

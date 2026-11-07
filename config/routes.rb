@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       collection do
         get :new_from_preset
         post :create_from_preset
+        get :user_options
       end
       resources :entries, only: %i[index update], module: :contests
       resources :awards, only: %i[create update], module: :contests
@@ -105,6 +106,9 @@ Rails.application.routes.draw do
   end
 
   resources :contests, only: %i[index show], param: :slug do
+    member do
+      get :comments
+    end
     resource :participation, only: %i[new create destroy], module: :contests
   end
 

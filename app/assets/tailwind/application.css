@@ -99,6 +99,7 @@
   --animate-writings-banner-md: writings-banner-pan-md 28s ease-in-out infinite;
   --animate-writings-banner-lg: writings-banner-pan-lg 26s ease-in-out infinite;
   --animate-writings-banner-xl: writings-banner-pan-xl 24s ease-in-out infinite;
+  --animate-contest-hero-drift: contest-hero-drift 32s ease-in-out infinite;
   --animate-pokemon-catch-pulse: pokemon-catch-pulse 0.45s ease-in-out infinite;
   --animate-pokemon-catch-sprite-in: pokemon-catch-sprite-in 0.85s ease-out forwards;
   --animate-pokemon-catch-sprite-out: pokemon-catch-sprite-out 0.75s ease-out forwards;
@@ -157,6 +158,17 @@
     }
   }
 
+  @keyframes contest-hero-drift {
+    0%,
+    100% {
+      transform: scale(1.05) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: scale(1.1) translate3d(-1.25%, -0.7%, 0);
+    }
+  }
+
   @keyframes writings-banner-pan-sm {
     0%,
     100% {
@@ -200,6 +212,19 @@
       transform: scale(1.09) translate3d(-1.5%, -0.85%, 0);
     }
   }
+}
+
+/* Contest show on light: ink a step darker so type and rules hold over the cover wash. */
+html:not(.dark) .contests-page {
+  --color-fg: var(--color-slate-950);
+  --color-fg-secondary: var(--color-slate-700);
+  --color-fg-muted: var(--color-slate-600);
+  --color-fg-subtle: var(--color-slate-500);
+  --color-line: var(--color-slate-300);
+  --color-line-muted: var(--color-slate-200);
+  --color-line-strong: var(--color-slate-400);
+  --color-fg-brand: var(--color-cyan-800);
+  --color-brand: var(--color-cyan-800);
 }
 
 /* Figma has no dark screens: brand and neutrals follow the site's existing dark palette (rose accent, near-black zinc neutrals). */

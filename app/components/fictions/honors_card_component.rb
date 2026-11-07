@@ -9,10 +9,13 @@ module Fictions
     include Layout::TurboDriveHelper
 
     MAX_BADGES = 4
+    Badge = Data.define(:label, :rank, :slug, :href)
 
-    def initialize(ranks:)
+    def initialize(ranks:, fiction: nil, user: nil)
       super()
       @ranks = ranks
+      @fiction = fiction
+      @user = user
     end
 
     def render?
@@ -22,10 +25,24 @@ module Fictions
     private
 
     def badges
-      @badges ||= @ranks.filter_map do |genre_name, rank|
+      @badges ||= (contest_badges + genre_badges).first(MAX_BADGES)
+    end
+
+    def contest_badges
+      return [] unless @fiction && Contests::PublicAccess.visible?(@user)
+
+      Contests::PlaceBadges.new(@fiction).call.map do |badge|
+        Badge.new(label: badge.label, rank: badge.place, slug: badge.slug, href: badge.href)
+      end
+    end
+
+    def genre_badges
+      @ranks.filter_map do |genre_name, rank|
         slug = genre_badge_slug(genre_name)
-        [genre_name, rank, slug] if badge_asset_available?(slug)
-      end.first(MAX_BADGES)
+        next unless badge_asset_available?(slug)
+
+        Badge.new(label: genre_name, rank:, slug:, href: helpers.fiction_genre_fictions_path(slug))
+      end
     end
 
     def rank_classes(rank)

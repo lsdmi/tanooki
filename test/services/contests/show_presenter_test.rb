@@ -95,6 +95,10 @@ module Contests
       assert_nil presenter(:cancelled, @admin).primary_action
     end
 
+    test 'admin has no payout button on a finished contest' do
+      assert_nil presenter(:results, @admin).primary_action
+    end
+
     private
 
     def new_fiction_path_for(slug)

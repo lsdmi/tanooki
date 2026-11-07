@@ -71,5 +71,13 @@ module Meta
 
       assert_equal 'Test Fiction | Ранобе українською | Бака', title
     end
+
+    test 'resolve returns contest SEO title on contest show' do
+      contest = contests(:results)
+
+      title = PageTitle.new(contest: contest).resolve
+
+      assert_equal ContestSeo.new(contest).page_title, title
+    end
   end
 end

@@ -13,6 +13,7 @@ module Meta
 
     def cover_candidates
       [
+        contest_cover,
         object_cover(cover_object),
         assigned_youtube_video_cover,
         scanlator_cover,
@@ -22,6 +23,13 @@ module Meta
 
     def cover_object
       [publication, fiction, chapter&.fiction].compact.find(&:persisted?)
+    end
+
+    def contest_cover
+      contest = meta_assign(:contest)
+      return unless contest&.persisted? && contest.cover.attached?
+
+      contest.cover
     end
 
     def object_cover(item)

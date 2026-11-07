@@ -1,8 +1,10 @@
-<%# locals: (contest:, presenter:) %>
-<section id="discussion" class="scroll-mt-24">
-  <%= render 'comments/index',
-             comments: @comments,
-             comment: @comment,
-             commentable: contest,
-             no_comments_prompt: t('contests.show.sections.discussion') %>
-</section>
+<%# locals: (contest:) %>
+<%= render 'comments/index',
+           comments: @comments,
+           comment: @comment,
+           commentable: contest,
+           no_comments_prompt: t('contests.show.sections.discussion'),
+           show_heading: false,
+           quiet: true,
+           more_href: (@comment_page.more? ? comments_contest_path(contest, page: @comment_page.next_page) : nil),
+           more_frame: "comments_page_#{@comment_page.next_page}" %>

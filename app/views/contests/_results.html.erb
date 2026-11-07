@@ -1,14 +1,22 @@
-<%# locals: (contest:, presenter:) %>
+<%# locals: (contest:) %>
 <section id="results" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.results'), id: 'results-heading') %>
-  <% awards = contest.awards.includes(:contest_prize, contest_entry: { fiction: { cover_attachment: :blob } }).order(:id) %>
+  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.results') %></p>
+  <% awards = contest.awards.includes(:contest_prize, contest_entry: { fiction: [:genres, { cover_attachment: :blob }] })
+                     .references(:contest_prize)
+                     .order(Arel.sql('contest_prizes.place IS NULL, contest_prizes.place ASC, contest_awards.id ASC'))
+                     .to_a %>
   <% if awards.any? %>
-    <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-      <% awards.each do |award| %>
-        <li><%= render Contests::WinnerCardComponent.new(award:) %></li>
+    <ul class="<%= contest_gallery_grid_class(awards.size) %>"
+        aria-label="<%= t('contests.show.sections.results') %>">
+      <% awards.each_with_index do |award, index| %>
+        <% rank = award.contest_prize.place || (index + 1) %>
+        <li class="min-w-0">
+          <%= render 'contests/result_card', award:, contest:, rank: %>
+        </li>
       <% end %>
     </ul>
   <% else %>
-    <p class="mt-4 text-sm text-fg-muted"><%= t('contests.show.results.empty') %></p>
+    <p class="mt-3 text-xs text-fg-muted sm:mt-4 sm:text-sm"><%= t('contests.show.results.empty') %></p>
   <% end %>
+  <%= render 'shared/adsense_contests_show_banners', wrapper_class: 'mt-3 sm:mt-4 md:mt-4 lg:mt-5 xl:mt-6 2xl:mt-6' %>
 </section>

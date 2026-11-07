@@ -45,6 +45,10 @@ module Admin
       redirect_to new_from_preset_admin_contests_path, alert: e.message
     end
 
+    def user_options
+      render json: ::Admin::UserSearch.call(query: params[:q])
+    end
+
     def edit
       @contest.prizes.build if @contest.prizes.empty?
       @contest.jurors.build if @contest.jurors.empty?

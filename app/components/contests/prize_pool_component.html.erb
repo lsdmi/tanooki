@@ -1,13 +1,15 @@
-<section id="prizes" class="scroll-mt-24">
-  <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.prizes'), id: 'prizes-heading') %>
+<% unless embedded? %>
+  <section id="prizes" class="scroll-mt-24">
+    <%= render Ui::SectionHeadingComponent.new(title: t('contests.show.sections.prizes'), id: 'prizes-heading') %>
+<% end %>
 
-  <div class="mt-6 rounded-xl bg-surface p-4 ring-1 ring-line md:p-6">
+  <div class="<%= embedded? ? 'mt-2.5 sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4' : 'mt-4 sm:mt-5 md:mt-5 lg:mt-6 xl:mt-6' %>">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <p class="text-xs text-fg-muted"><%= t('contests.show.prizes.pool') %></p>
-        <p class="text-2xl font-bold text-fg"><%= money(total) %></p>
-        <p class="mt-1 text-sm text-fg-muted">
-          <%= t('contests.show.prizes.pool_breakdown', guaranteed: money(guaranteed), donations: money(donations)) %>
+        <p class="text-[11px] text-fg-muted sm:text-xs"><%= t('contests.show.prizes.pool') %></p>
+        <p class="text-xl font-bold text-fg sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl"><%= money(total) %></p>
+        <p class="mt-1 text-xs text-fg-muted sm:text-sm md:text-sm">
+          <%= pool_breakdown %>
         </p>
       </div>
       <% if contest.donation_url.present? %>
@@ -18,38 +20,62 @@
               size: :md,
               as: :link,
               html: { target: '_blank', rel: 'noopener noreferrer' }
-            ) %>
+            ) do %>
+          <%= stroke_icon(:coffee) %>
+          <span><%= t('contests.show.prizes.support') %></span>
+        <% end %>
       <% end %>
     </div>
 
-    <div class="mt-4 h-2 overflow-hidden rounded-full bg-main ring-1 ring-line" role="progressbar"
+    <div class="mt-2.5 h-1 overflow-hidden rounded-full bg-line sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4" role="progressbar"
          aria-valuenow="<%= progress_percent %>" aria-valuemin="0" aria-valuemax="100"
          aria-label="<%= t('contests.show.prizes.pool') %>">
       <div class="h-full rounded-full bg-brand" style="width: <%= progress_percent %>%"></div>
     </div>
 
     <% if goals.any? %>
-      <ul class="mt-3 flex flex-wrap gap-2">
+      <ul class="mt-2 space-y-1 sm:mt-2.5 md:mt-3 xl:mt-3">
         <% goals.each do |goal| %>
-          <li class="rounded-lg px-2.5 py-1 text-xs ring-1 <%= total >= goal.unlock_at_uah ? 'bg-brand-subtle text-fg-brand ring-brand' : 'bg-main text-fg-muted ring-line' %>">
-            <%= money(goal.unlock_at_uah) %>: <%= goal.title %>
+          <li class="text-xs <%= total >= goal.unlock_at_uah ? 'text-fg' : 'text-fg-muted' %>">
+            <%= money(goal.unlock_at_uah) %> · <%= goal.title %>
           </li>
         <% end %>
       </ul>
     <% end %>
   </div>
 
-  <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-    <% prizes.each do |prize| %>
-      <li class="rounded-xl bg-main px-4 py-3 ring-1 ring-line">
-        <p class="font-semibold text-fg"><%= prize.title %></p>
-        <% if prize.cash_uah.positive? %>
-          <p class="mt-1 text-sm text-fg-brand"><%= money(prize.cash_uah) %></p>
+  <% if prizes.any? %>
+    <details class="group mt-2.5 border-b border-line sm:mt-3 md:mt-3.5 lg:mt-4 xl:mt-4">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-2.5 py-1.5 text-sm font-medium text-fg sm:gap-3 sm:py-2 xl:py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
+        <span><%= t('contests.show.prizes.places') %></span>
+        <span class="inline-flex items-center gap-2 text-fg-muted">
+          <span class="text-xs font-normal"><%= prizes.size %></span>
+          <svg class="size-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </span>
+      </summary>
+      <ul class="pb-1.5 sm:pb-2">
+        <% paid_prizes.each do |prize| %>
+          <li class="border-t border-line py-2 sm:py-2.5 xl:py-2.5">
+            <div class="flex items-baseline justify-between gap-3">
+              <p class="text-sm font-medium text-fg"><%= prize.title %></p>
+              <p class="shrink-0 text-sm text-fg-secondary"><%= money(prize.cash_uah) %></p>
+            </div>
+            <% if prize.perks.present? %>
+              <p class="mt-0.5 text-xs leading-5 text-fg-muted"><%= prize.perks %></p>
+            <% end %>
+          </li>
         <% end %>
-        <% if prize.perks.present? %>
-          <p class="mt-1 text-sm text-fg-muted"><%= prize.perks %></p>
+        <% honorary_groups.each do |group| %>
+          <li class="border-t border-line py-2 sm:py-2.5 xl:py-2.5">
+            <p class="text-sm font-medium text-fg"><%= honorary_label(group) %></p>
+            <% if group.first.perks.present? %>
+              <p class="mt-0.5 text-xs leading-5 text-fg-muted"><%= group.first.perks %></p>
+            <% end %>
+          </li>
         <% end %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+      </ul>
+    </details>
+  <% end %>
+<% unless embedded? %>
+  </section>
+<% end %>

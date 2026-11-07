@@ -13,7 +13,7 @@ module Layout
       @controller.request = @request
     end
 
-    test 'tinymce is required on chapter and publication forms only' do
+    test 'tinymce is required on chapter and publication forms' do
       assign_controller(:chapters, :new)
 
       assert_predicate self, :requires_tinymce?
@@ -25,6 +25,16 @@ module Layout
       assign_controller(:publications, :edit)
 
       assert_predicate self, :requires_tinymce?
+    end
+
+    test 'tinymce is required on the contest form' do
+      assign_controller(:contests, :edit, path: 'admin/contests')
+
+      assert_predicate self, :requires_tinymce?
+
+      assign_controller(:contests, :index, path: 'admin/contests')
+
+      assert_not_predicate self, :requires_tinymce?
     end
 
     test 'font toggler loads on tale show only' do

@@ -1,22 +1,45 @@
+<% quiet = local_assigns.fetch(:quiet, false) %>
 <section class="">
-  <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-fg mb-4 sm:mb-6 pb-2 border-b border-line">Коментарі</h2>
+  <% if local_assigns.fetch(:show_heading, true) %>
+    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold text-fg mb-4 sm:mb-6 pb-2 border-b border-line">Коментарі</h2>
+  <% end %>
 
   <% if current_user || comments.any? %>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col <%= quiet ? 'gap-3' : 'gap-6' %>">
       <%= turbo_frame_tag "new_comment", class: 'block' do %>
         <%= simple_form_for comment, url: comments_path, method: :post do |f| %>
           <%= render "comments/new", comment: comment, commentable: commentable, f: f %>
         <% end %>
       <% end if current_user %>
 
-      <%= turbo_frame_tag "comments", class: 'flex flex-col gap-3' do %>
-        <%= render partial: 'comments/comment', collection: comments, as: :comment, locals: { commentable: commentable } %>
+      <%= turbo_frame_tag "comments", class: "flex flex-col #{quiet ? 'gap-2' : 'gap-3'}" do %>
+        <%= render partial: 'comments/comment', collection: comments, as: :comment,
+                   locals: { commentable: commentable, quiet: quiet } %>
+        <% if local_assigns[:more_href].present? %>
+          <%= turbo_frame_tag more_frame, class: "flex flex-col #{quiet ? 'gap-2 pt-1' : 'gap-3 pt-3'}" do %>
+            <% if quiet %>
+              <%= link_to t('fictions.comments.more'), more_href,
+                          class: 'self-start text-sm font-medium text-fg-brand hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+            <% else %>
+              <%= ui_button(as: :link, variant: :outline, size: :lg, label: t('fictions.comments.more'),
+                            href: more_href, html: { class: 'w-full md:w-auto md:self-start' }) %>
+            <% end %>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   <% else %>
-    <div class="text-center py-6 sm:py-8">
-      <%= tag.p no_comments_prompt, class: 'text-sm sm:text-base text-fg-muted mb-4' %>
-      <%= ui_button(as: :link, href: new_user_session_path, size: :lg, label: 'Увійти, аби лишити коментар!') %>
-    </div>
+    <% if quiet %>
+      <p class="text-sm text-fg-muted">
+        <%= local_assigns.fetch(:empty_text, t('contests.show.discussion.empty')) %>
+        <%= link_to t('contests.show.discussion.login'), new_user_session_path,
+                    class: 'font-medium text-fg-brand hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+      </p>
+    <% else %>
+      <div class="text-center py-6 sm:py-8">
+        <%= tag.p no_comments_prompt, class: 'text-sm sm:text-base text-fg-muted mb-4' %>
+        <%= ui_button(as: :link, href: new_user_session_path, size: :lg, label: 'Увійти, аби лишити коментар!') %>
+      </div>
+    <% end %>
   <% end %>
 </section>

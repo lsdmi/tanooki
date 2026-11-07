@@ -18,4 +18,18 @@ class PagesApiTest < ActionDispatch::IntegrationTest
     assert_match 'https://baka.in.ua/mcp', response.body
     assert_match 'ChatGPT підключається з цієї ж адреси', response.body
   end
+
+  test 'the docs mention volume_number for chapters' do
+    get api_docs_path
+
+    assert_match 'volume_number', response.body
+    assert_match '"volume_number":2', response.body
+  end
+
+  test 'the docs mention published_at for scheduled release' do
+    get api_docs_path
+
+    assert_match 'published_at', response.body
+    assert_match 'ISO 8601', response.body
+  end
 end

@@ -34,6 +34,8 @@ module Contests
     end
 
     def tag_for(entry)
+      return if PlaceBadges.replaces_tag?(winning_award(entry))
+
       contest = entry.contest
       kind, label = kind_and_label(entry, contest)
       Tag.new(kind:, label:, href: Rails.application.routes.url_helpers.contest_path(contest))

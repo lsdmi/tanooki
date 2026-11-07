@@ -36,6 +36,8 @@ module Api
           },
           post: {
             summary: 'Новий розділ',
+            description: 'Тіло JSON: number, title, content; опційно volume_number (том), ' \
+                         'status, published_at, scanlator_ids, content_format.',
             parameters: [
               { name: 'fiction_id', in: 'path', required: true, schema: { type: 'string' } },
               { name: 'Idempotency-Key', in: 'header', schema: { type: 'string' } }
@@ -59,6 +61,8 @@ module Api
           get: { summary: 'Один розділ', responses: { '200': { description: 'Розділ з абзацами' } } },
           patch: {
             summary: 'Часткова зміна',
+            description: 'Можна передати title, content, volume_number, status, published_at, ' \
+                         'scanlator_ids; для заміни тексту потрібна version.',
             responses: { '200': { description: 'Оновлено' }, '409': { description: 'version застаріла' } }
           }
         },

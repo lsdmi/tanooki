@@ -1,9 +1,13 @@
-<% content_for :title, @contest.title %>
+<% if (bg = cover_background_url(@contest.cover)) %>
+  <% content_for :page_background_url, bg %>
+  <% content_for :page_background_veil, 'opacity-95' %>
+  <% content_for :page_background_motion, 'scale-105 motion-safe:animate-contest-hero-drift' %>
+<% end %>
 
 <% cache_if current_user.blank?,
             [@contest, @contest.updated_at, @contest.entries.maximum(:updated_at), Date.current],
             expires_in: 10.minutes do %>
-  <div class="contests-page min-h-screen bg-page pb-24 md:pb-16">
+  <div class="contests-page min-h-screen pb-12 sm:pb-14 md:pb-16 lg:pb-20 xl:pb-24 2xl:pb-24">
     <% @presenter.visible_sections.each do |section| %>
       <% case section[:id] %>
       <% when :hero %>
@@ -12,19 +16,27 @@
         <%= render Contests::SummaryComponent.new(presenter: @presenter) %>
       <% when :section_nav %>
         <%= render Contests::SectionNavComponent.new(presenter: @presenter) %>
-      <% when :timeline %>
-        <div class="mx-auto max-w-screen-xl px-4 py-10 2xl:px-0">
-          <%= render Contests::TimelineComponent.new(presenter: @presenter) %>
-        </div>
-      <% when :prizes %>
-        <div class="mx-auto max-w-screen-xl px-4 py-10 2xl:px-0">
-          <%= render Contests::PrizePoolComponent.new(presenter: @presenter) %>
+      <% when :board %>
+        <%= render 'contests/theme', contest: @contest, presenter: @presenter %>
+      <% when :works %>
+        <%= render 'contests/works', contest: @contest, presenter: @presenter %>
+      <% when :results %>
+        <%# Pull results closer under the hero without shrinking hero padding. %>
+        <div class="mx-auto max-w-screen-xl px-4 -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-10 xl:-mt-12 2xl:px-0 2xl:-mt-12">
+          <%= render 'contests/results', contest: @contest %>
         </div>
       <% when :cancellation %>
-        <%= render partial: section[:partial_or_component],
-                   locals: { contest: @contest, presenter: @presenter } %>
+        <%= render 'contests/cancellation', contest: @contest %>
+      <% when :closing %>
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0 <%= contest_content_pt_class %>">
+          <%= render 'contests/closing', contest: @contest %>
+        </div>
+      <% when :requirements %>
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0 <%= contest_content_pt_class %>">
+          <%= render 'contests/requirements', contest: @contest %>
+        </div>
       <% else %>
-        <div class="mx-auto max-w-screen-xl px-4 py-10 2xl:px-0">
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0 <%= contest_content_pt_class %>">
           <%= render partial: section[:partial_or_component],
                      locals: { contest: @contest, presenter: @presenter } %>
         </div>

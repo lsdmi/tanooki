@@ -31,50 +31,36 @@ module Meta
     end
 
     def resolve
-      description_from_record ||
-        description_from_genre ||
-        description_from_scanlator ||
-        description_from_static_path ||
-        DEFAULT_DESCRIPTION
+      description_from_record || description_from_genre || description_from_scanlator ||
+        description_from_static_path || DEFAULT_DESCRIPTION
     end
 
     private
 
-    def description_from_record
-      object_description if description_object.present?
-    end
+    attr_reader :context
 
-    def description_from_genre
-      genre_meta_description if context[:genre_show_page]
-    end
-
-    def description_from_scanlator
-      scanlator_description if scanlator&.persisted?
-    end
+    def description_from_record = (object_description if description_object.present?)
+    def description_from_genre = (genre_meta_description if context[:genre_show_page])
+    def description_from_scanlator = (scanlator_description if scanlator&.persisted?)
 
     def description_from_static_path
-      return unless static_description_path?
+      return unless self.class.static_path?(context.fetch(:request_path))
 
       key = "meta.description.#{context[:controller_name]}.#{context[:action_name]}"
       I18n.t(key) if I18n.exists?(key)
     end
 
-    def static_description_path?
-      self.class.static_path?(context.fetch(:request_path))
-    end
-
     def description_object
-      [publication, fiction, chapter&.fiction, youtube_video, bookshelf].compact.find(&:persisted?)
+      [publication, fiction, chapter&.fiction, youtube_video, bookshelf, contest].compact.find(&:persisted?)
     end
 
     def object_description
-      %i[publication fiction chapter bookshelf].each do |kind|
+      %i[publication fiction chapter bookshelf contest].each do |kind|
         record = context[kind]
         next unless record&.persisted?
 
         return send(:"#{kind}_description")
       end
-
       youtube_video&.description
     end
 
@@ -89,18 +75,14 @@ module Meta
         "\"#{chapter.scanlators.map(&:title).to_sentence}\"."
     end
 
-    def fiction_description
-      FictionSeo.new(fiction).meta_description
-    end
+    def fiction_description = FictionSeo.new(fiction).meta_description
+    def contest_description = ContestSeo.new(contest).meta_description
+    def publication_description = first_sentence(publication.description.to_plain_text)
 
     def bookshelf_description
       fiction_titles = bookshelf.fictions.limit(3).pluck(:title).to_sentence
       "#{bookshelf.title} від #{bookshelf.user_name}. #{bookshelf.description}." \
         "Зокрема #{fiction_titles}#{' та інші твори' if bookshelf.fictions.count > 3}."
-    end
-
-    def publication_description
-      first_sentence(publication.description.to_plain_text)
     end
 
     def scanlator_description
@@ -117,9 +99,7 @@ module Meta
       "#{blurb.truncate(MAX_GENRE_DESCRIPTION_LENGTH - tail.length, separator: /\s/, omission: '…')}#{tail}"
     end
 
-    def first_sentence(text)
-      text.to_s.split(SENTENCE_BOUNDARY).first.presence || text.to_s
-    end
+    def first_sentence(text) = text.to_s.split(SENTENCE_BOUNDARY).first.presence || text.to_s
 
     def publication = context[:publication]
     def fiction = context[:fiction]
@@ -128,7 +108,6 @@ module Meta
     def bookshelf = context[:bookshelf]
     def scanlator = context[:scanlator]
     def genre = context[:genre]
-
-    attr_reader :context
+    def contest = context[:contest]
   end
 end

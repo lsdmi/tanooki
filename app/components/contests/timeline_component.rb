@@ -3,14 +3,17 @@
 module Contests
   # Contest lifecycle steps with the current phase highlighted.
   class TimelineComponent < ViewComponent::Base
-    def initialize(presenter:)
+    def initialize(presenter:, embedded: false)
       super()
       @presenter = presenter
+      @embedded = embedded
     end
 
     private
 
-    attr_reader :presenter
+    attr_reader :presenter, :embedded
+
+    def embedded? = embedded
 
     def steps
       presenter.timeline_steps
