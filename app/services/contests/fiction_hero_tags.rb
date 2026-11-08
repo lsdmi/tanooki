@@ -26,7 +26,7 @@ module Contests
     def visible_entries
       fiction.contest_entries
              .joins(:contest)
-             .merge(Contest.visible)
+             .merge(Contests::PublicAccess.discoverable_contests)
              .includes(:contest, awards: :contest_prize)
              .where(status: VISIBLE_STATUSES)
              .order(submitted_at: :desc)

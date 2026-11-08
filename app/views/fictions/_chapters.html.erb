@@ -19,12 +19,13 @@
   </section>
 <% else %>
   <% listed = listed_chapters(fiction, viewer: current_user) %>
-  <% latest = listed.first %>
   <% newest_first = order.to_sym == :desc %>
   <% list_progress = reader_chapter_drawer_progress(fiction) if user_signed_in? %>
-  <% total = chapters_size(fiction, viewer: current_user) %>
   <% read_filter = Chapters::ReadFilter.new(local_assigns[:filter], progress: list_progress) %>
   <% team_filter = Chapters::TeamFilter.new(local_assigns[:team], teams: Fictions::TeamsByChapters.call(fiction)) %>
+  <% scoped = team_filter.listed(listed) %>
+  <% latest = scoped.first %>
+  <% total = unique_chapters(scoped).size %>
   <% continue_chapter = local_assigns[:continue_chapter] %>
   <% continue_chapter = nil unless continue_chapter && read_filter.match?(continue_chapter) && team_filter.match?(continue_chapter) %>
   <% license_partial = fiction.license_chapters_state == :partial %>
@@ -40,10 +41,10 @@
         <% if license_partial %>
           <p class="text-base/6 font-semibold text-fg"><%= license_preview_list_title(fiction) %></p>
         <% end %>
-        <%= render 'fictions/chapter_list_progress', fiction:, listed:, total:, list_progress: %>
+        <%= render 'fictions/chapter_list_progress', fiction:, listed: scoped, total:, list_progress: %>
         <% if latest && !license_partial %>
           <p class="text-sm/5 text-fg-muted">
-            <%= t('fictions.chapters_tab.latest', number: Chapters::Formatting.format_decimal(latest.number), date: l(latest.public_at, format: :shortest)) %>
+            <%= t('fictions.chapters_tab.latest', number: Chapters::Formatting.chapter_ref(latest), date: l(latest.public_at, format: :shortest)) %>
           </p>
         <% end %>
       </div>

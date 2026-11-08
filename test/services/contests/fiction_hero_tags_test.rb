@@ -6,7 +6,7 @@ module Contests
   class FictionHeroTagsTest < ActiveSupport::TestCase
     test 'returns entry tag for accepted fiction' do
       fiction = fictions(:one)
-      tags = FictionHeroTags.new(fiction).call
+      tags = with_discoverable_slug(contests(:submissions).slug) { FictionHeroTags.new(fiction).call }
 
       assert(tags.any? { |tag| tag.kind == :contest_entry })
       entry = tags.find { |tag| tag.kind == :contest_entry }
@@ -33,7 +33,7 @@ module Contests
         awarded_at: Time.current
       )
 
-      tags = FictionHeroTags.new(fiction).call
+      tags = with_discoverable_slug(entry.contest.slug) { FictionHeroTags.new(fiction).call }
       winner = tags.find { |tag| tag.kind == :contest_winner }
 
       assert winner
@@ -51,16 +51,28 @@ module Contests
         contest: entry.contest, contest_prize: prize, contest_entry: entry, awarded_at: Time.current
       )
 
-      tags = Contests::PlaceBadges.stub(:asset?, true) { FictionHeroTags.new(fiction).call }
+      tags = with_discoverable_slug(entry.contest.slug) do
+        Contests::PlaceBadges.stub(:asset?, true) { FictionHeroTags.new(fiction).call }
+      end
 
       assert_nil(tags.find { |tag| tag.kind == :contest_winner })
     end
 
     test 'omits rejected and withdrawn entries' do
       fiction = fictions(:two)
-      tags = FictionHeroTags.new(fiction).call
+      tags = with_discoverable_slug(contests(:submissions).slug) { FictionHeroTags.new(fiction).call }
 
       assert_empty(tags.select { |tag| tag.label.include?(contests(:submissions).title) })
+    end
+
+    test 'omits entries for contests that are not publicly discoverable' do
+      assert_empty FictionHeroTags.new(fictions(:one)).call
+    end
+
+    private
+
+    def with_discoverable_slug(slug, &)
+      Contests::PublicAccess.stub(:public_show_slugs, [slug], &)
     end
   end
 end

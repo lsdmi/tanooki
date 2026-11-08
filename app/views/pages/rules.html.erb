@@ -188,7 +188,7 @@
             </div>
           </section>
 
-          <% if contests_publicly_visible? %>
+          <% if contests_surfaces_visible? %>
             <section class="bg-main rounded-lg shadow-md p-6 border border-line" aria-labelledby="rules-contests-heading">
               <h2 id="rules-contests-heading" class="text-xl font-bold text-fg mb-3">
                 <%= t('contests.hub.title') %>
@@ -200,7 +200,7 @@
                 <%= link_to t('contests.rules.page_link'), rules_path(anchor: 'contest-rules'),
                             class: 'text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline
                                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' %>
-                <%= link_to t('contests.rules.page_hub'), contests_path,
+                <%= link_to t('contests.rules.page_archive_show'), public_archive_contest_path,
                             class: 'text-sm font-medium text-fg-secondary hover:text-fg hover:underline
                                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' %>
               </div>
@@ -209,7 +209,7 @@
         </div>
       </div>
 
-      <% if contests_publicly_visible? %>
+      <% if contests_surfaces_visible? %>
         <section id="contest-rules" class="mt-8 scroll-mt-24 bg-main rounded-lg shadow-md p-6 border border-line"
                  aria-labelledby="contest-rules-heading">
           <h2 id="contest-rules-heading" class="text-2xl font-bold text-fg mb-4">

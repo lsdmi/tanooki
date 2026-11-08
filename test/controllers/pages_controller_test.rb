@@ -25,12 +25,14 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'li', text: /під позначкою 16\+ є порушенням правил/
   end
 
-  test 'rules page hides contest links while contests are unlisted' do
+  test 'rules page links to the public archive contest while hub is unlisted' do
     get rules_url
 
-    assert_select 'section[aria-labelledby="rules-contests-heading"]', count: 0
-    assert_select '#contest-rules', count: 0
+    assert_select 'section[aria-labelledby="rules-contests-heading"] a[href=?]',
+                  contest_path(contests(:results)),
+                  text: 'I конкурс ранобе'
     assert_select 'a[href=?]', contests_path, count: 0
+    assert_select '#contest-rules h2', text: 'Загальні правила конкурсів'
   end
 
   test 'rules page links to contest general rules for admins' do
@@ -42,8 +44,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
                   rules_path(anchor: 'contest-rules'),
                   text: 'Читати загальні правила'
     assert_select 'section[aria-labelledby="rules-contests-heading"] a[href=?]',
-                  contests_path,
-                  text: 'Актуальні конкурси'
+                  contest_path(contests(:results)),
+                  text: 'I конкурс ранобе'
   end
 
   test 'rules page shows contest general rules headings for admins' do
@@ -98,12 +100,24 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'aside a[href=?]', ExternalUrls.site_url, text: 'Спільнота'
   end
 
-  test 'footer includes friends link' do
+  test 'footer includes compact site links' do
     Search::TagCounts.stub(:call, {}) do
       get root_url
     end
 
-    assert_select 'footer nav a[href=?]', friends_path, text: 'Друзі'
+    assert_select 'footer nav[aria-label="Про сайт"] a[href=?]', friends_path, text: 'Друзі'
+    assert_select 'footer nav[aria-label="Про сайт"] a[href=?]', about_path, text: 'Про Бака'
+    assert_select 'footer nav[aria-label="Юридична інформація"] a[href=?]', privacy_path, text: 'Конфіденційність'
+  end
+
+  test 'footer omits trending tags and contest link' do
+    Search::TagCounts.stub(:call, {}) do
+      get root_url
+    end
+
+    assert_select 'footer', text: /Популярні теґи/, count: 0
+    assert_select 'footer a[href=?]', contest_path(contests(:results)), count: 0
+    assert_select 'footer h2', count: 0
   end
 
   test 'should get privacy' do

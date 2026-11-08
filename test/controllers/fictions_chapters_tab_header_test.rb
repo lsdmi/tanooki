@@ -17,7 +17,7 @@ class FictionsChaptersTabHeaderTest < ActionDispatch::IntegrationTest
 
     latest = Library::ChapterCatalog.ordered_chapters_desc(@fiction, viewer: @user).first
     count = Library::ChapterCatalog.chapters_size(@fiction, viewer: @user)
-    latest_line = "Останній розділ: #{Chapters::Formatting.format_decimal(latest.number)} · " \
+    latest_line = "Останній розділ: #{Chapters::Formatting.chapter_ref(latest)} · " \
                   "#{I18n.l(latest.public_at, format: :shortest)}"
 
     assert_select '#sort-chapters p', text: I18n.t('fictions.chapters_tab.count', count:)

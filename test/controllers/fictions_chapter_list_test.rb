@@ -43,13 +43,13 @@ class FictionsChapterListTest < ActionDispatch::IntegrationTest
 
     get fiction_url(@fiction)
 
-    assert_operator response.body.index('Том 2'), :<, response.body.index('Том 1')
+    assert_equal ['Том 2 · Розділ 1', 'Том 1 · Розділ 1'], volume_section_titles(response.body)
 
     post toggle_order_fiction_path(@fiction, order: :desc),
          headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
 
     assert_response :success
-    assert_operator response.body.index('Том 1'), :<, response.body.index('Том 2')
+    assert_equal ['Том 1 · Розділ 1', 'Том 2 · Розділ 1'], volume_section_titles(response.body)
   ensure
     vol2&.destroy
     vol1&.destroy
@@ -98,6 +98,12 @@ class FictionsChapterListTest < ActionDispatch::IntegrationTest
   end
 
   private
+
+  # Accordion h3s only — ignores «Останній розділ: Том N · …» in the list header.
+  def volume_section_titles(html)
+    nodes = Nokogiri::HTML5(html).css('#chapters-list h3, turbo-stream template h3')
+    nodes.map { |node| node.text.strip }.grep(/\AТом /)
+  end
 
   def create_volume_pair_chapters(fiction)
     [create_volume_chapter(fiction, 1, 'Vol 1'), create_volume_chapter(fiction, 2, 'Vol 2')]

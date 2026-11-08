@@ -25,10 +25,12 @@ module Sitemaps
       assert(locs.none? { |loc| loc.include?('/chapters/') })
     end
 
-    test 'omits contests from the sitemap while unlisted' do
+    test 'includes allowlisted archive shows without the hub while unlisted' do
       locs = EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
 
-      assert(locs.none? { |loc| loc.include?('/contests') })
+      assert_not_includes locs, 'http://example.com/contests'
+      assert_includes locs, "http://example.com/contests/#{contests(:results).slug}"
+      assert_not_includes locs, "http://example.com/contests/#{contests(:submissions).slug}"
     end
 
     test 'includes contests hub and visible contests when listed' do

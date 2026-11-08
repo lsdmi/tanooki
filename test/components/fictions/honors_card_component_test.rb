@@ -15,14 +15,16 @@ module Fictions
       )
       entry.contest.update!(slug: 'original')
 
-      render_inline(HonorsCardComponent.new(ranks: {}, fiction:, user: users(:user_one)))
+      Contests::PublicAccess.stub(:public_show_slugs, %w[original]) do
+        render_inline(HonorsCardComponent.new(ranks: {}, fiction:, user: users(:user_one)))
+      end
 
       assert_selector 'a[href="/contests/original"] img[src*="badges/thumbs/original"]'
       assert_selector 'span', text: '#2'
       assert_text entry.contest.title
     end
 
-    test 'hides the contest badge from guests' do
+    test 'shows the contest badge to guests while an archive show is public' do
       fiction = fictions(:one)
       entry = contest_entries(:qualified)
       prize = ContestPrize.create!(
@@ -33,9 +35,11 @@ module Fictions
       )
       entry.contest.update!(slug: 'original')
 
-      render_inline(HonorsCardComponent.new(ranks: {}, fiction:, user: users(:user_two)))
+      Contests::PublicAccess.stub(:public_show_slugs, %w[original]) do
+        render_inline(HonorsCardComponent.new(ranks: {}, fiction:, user: nil))
+      end
 
-      assert_no_selector 'img[src*="badges/thumbs/original"]'
+      assert_selector 'a[href="/contests/original"] img[src*="badges/thumbs/original"]'
     end
   end
 end

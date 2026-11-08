@@ -37,18 +37,28 @@ module Chapters
     # Every group, not only the toggled one: the first read switches all headers from counts to progress.
     def counter_streams(progress)
       listed = Library::ChapterCatalog.listed_chapters(fiction, viewer: current_user)
-      groups = Chapters::ListSectionIndex.new(listed, order: :asc).call.map do |section|
+      team_filter = list_team_filter
+      sections = Chapters::ListSectionIndex.new(listed, order: :asc).call
+      sections = team_filter.sections(sections, listed) if team_filter.active?
+      groups = sections.map do |section|
         locals = { section:, drawer_progress: progress }
         turbo_stream.replace("chapter_group_progress_#{section[:section_key]}",
                              partial: 'fictions/chapter_group_progress', locals:)
       end
-      groups << list_progress_stream(listed, progress)
+      groups << list_progress_stream(team_filter.listed(listed), progress)
     end
 
     def list_progress_stream(listed, progress)
-      total = Library::ChapterCatalog.chapters_size(fiction, viewer: current_user)
+      total = Library::ChapterNavigation.unique_chapters(listed).size
       locals = { fiction:, listed:, total:, list_progress: progress }
       turbo_stream.replace('chapter_list_progress', partial: 'fictions/chapter_list_progress', locals:)
+    end
+
+    def list_team_filter
+      Chapters::TeamFilter.new(
+        Chapters::TeamChoice.read(cookies, fiction.id),
+        teams: Fictions::TeamsByChapters.call(fiction)
+      )
     end
 
     def continue_chip_stream(continue_chapter)

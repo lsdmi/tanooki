@@ -2,7 +2,9 @@
 
 # Public contests hub and contest page.
 class ContestsController < ApplicationController
-  before_action :require_contests_public_access!
+  before_action :require_contests_hub_access!, only: :index
+  before_action :set_contest, only: %i[show comments]
+  before_action :require_contest_show_access!, only: %i[show comments]
 
   def index
     @hub = Contests::HubPresenter.new
@@ -10,7 +12,6 @@ class ContestsController < ApplicationController
   end
 
   def show
-    @contest = Contest.friendly.find(params.expect(:slug))
     preview_draft_contest! if @contest.draft?
     preload_contest_cover(@contest)
     @presenter = Contests::ShowPresenter.new(contest: @contest, user: current_user)
@@ -21,15 +22,22 @@ class ContestsController < ApplicationController
   end
 
   def comments
-    @contest = Contest.friendly.find(params.expect(:slug))
     @comment_page = Contests::CommentPage.new(@contest, page: params[:page])
     render layout: false
   end
 
   private
 
-  def require_contests_public_access!
+  def set_contest
+    @contest = Contest.friendly.find(params.expect(:slug))
+  end
+
+  def require_contests_hub_access!
     raise ActiveRecord::RecordNotFound unless Contests::PublicAccess.visible?(current_user)
+  end
+
+  def require_contest_show_access!
+    raise ActiveRecord::RecordNotFound unless Contests::PublicAccess.show_visible?(@contest, current_user)
   end
 
   def preview_draft_contest!

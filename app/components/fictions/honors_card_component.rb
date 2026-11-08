@@ -29,7 +29,7 @@ module Fictions
     end
 
     def contest_badges
-      return [] unless @fiction && Contests::PublicAccess.visible?(@user)
+      return [] unless @fiction && Contests::PublicAccess.surfaces_visible?(@user)
 
       Contests::PlaceBadges.new(@fiction).call.map do |badge|
         Badge.new(label: badge.label, rank: badge.place, slug: badge.slug, href: badge.href)

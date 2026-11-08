@@ -13,7 +13,9 @@ module Contests
         contest: entry.contest, contest_prize: prize, contest_entry: entry, awarded_at: Time.current
       )
 
-      badges = PlaceBadges.stub(:asset?, true) { PlaceBadges.new(fictions(:one)).call }
+      badges = with_discoverable_slug(entry.contest.slug) do
+        PlaceBadges.stub(:asset?, true) { PlaceBadges.new(fictions(:one)).call }
+      end
 
       assert_equal [2], badges.map(&:place)
       assert_equal entry.contest.slug, badges.first.slug
@@ -29,7 +31,27 @@ module Contests
         contest: entry.contest, contest_prize: prize, contest_entry: entry, awarded_at: Time.current
       )
 
+      assert_empty(with_discoverable_slug(entry.contest.slug) do
+        PlaceBadges.stub(:asset?, true) { PlaceBadges.new(fictions(:one)).call }
+      end)
+    end
+
+    test 'omits awards for contests that are not publicly discoverable' do
+      entry = contest_entries(:qualified)
+      prize = ContestPrize.create!(
+        contest: entry.contest, position: 8, title: '2 місце', kind: :place, place: 2, cash_uah: 0
+      )
+      ContestAward.create!(
+        contest: entry.contest, contest_prize: prize, contest_entry: entry, awarded_at: Time.current
+      )
+
       assert_empty PlaceBadges.stub(:asset?, true) { PlaceBadges.new(fictions(:one)).call }
+    end
+
+    private
+
+    def with_discoverable_slug(slug, &)
+      Contests::PublicAccess.stub(:public_show_slugs, [slug], &)
     end
   end
 end

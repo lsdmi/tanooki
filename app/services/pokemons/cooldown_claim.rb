@@ -14,6 +14,7 @@ module Pokemons
     end
 
     def initialize(user, action)
+      ActiveRecord::Associations::Preloader.new(records: [user], associations: :trainer_profile).call
       @profile = user.trainer_profile
       @column, @cooldown = CLOCKS.fetch(action)
     end

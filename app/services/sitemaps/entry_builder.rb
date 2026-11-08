@@ -17,7 +17,11 @@ module Sitemaps
     def to_a
       entries = static_entries + fiction_entries + tale_entries + youtube_video_entries + scanlator_entries +
                 genre_entries
-      entries += contest_static_and_show_entries if Contests::PublicAccess.listed?
+      entries += if Contests::PublicAccess.listed?
+                   contest_static_and_show_entries
+                 else
+                   public_show_contest_entries
+                 end
       entries
     end
 
@@ -68,11 +72,20 @@ module Sitemaps
       [entry(:contests_url)] + contest_entries
     end
 
+    # Allowlisted archive shows only — hub stays out until LISTED.
+    def public_show_contest_entries
+      contest_url_entries(Contests::PublicAccess.discoverable_contests)
+    end
+
     # Visible contests only (published + announced; drafts stay out of the sitemap).
     def contest_entries
-      Contest.visible.order(:id)
-             .pluck(:slug, :updated_at, :results_published_at)
-             .map do |slug, updated_at, results_published_at|
+      contest_url_entries(Contest.visible)
+    end
+
+    def contest_url_entries(scope)
+      scope.order(:id)
+           .pluck(:slug, :updated_at, :results_published_at)
+           .map do |slug, updated_at, results_published_at|
         entry(:contest_url, slug, lastmod: [updated_at, results_published_at].compact.max)
       end
     end

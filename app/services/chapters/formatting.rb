@@ -21,5 +21,14 @@ module Chapters
     def number_span(first, last)
       [first, last].map { |number| range_bound(number) }.uniq.join('–')
     end
+
+    # Compact chapter pointer for headers: «9», or «Том 2 · 9» when the chapter sits in a volume.
+    def chapter_ref(chapter)
+      number = format_decimal(chapter.number)
+      volume = chapter.volume_number
+      return number.to_s unless volume&.nonzero?
+
+      "Том #{format_decimal(volume)} · #{number}"
+    end
   end
 end

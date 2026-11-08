@@ -63,10 +63,60 @@ module Fictions
       assert_equal 'Розділ 1 приховано фільтром', response.parsed_body['error']
     end
 
+    test 'header count and latest follow the selected team' do
+      clear_reads!
+      post chapter_team_fiction_url(@fiction, order: :desc, team: @other.id), as: :turbo_stream
+      get fiction_url(@fiction)
+
+      assert_select '#chapter_list_progress', text: I18n.t('fictions.chapters_tab.count', count: 1)
+      assert_select '#sort-chapters p', text: latest_line(@theirs)
+    end
+
+    test 'all keeps distinct slots across teams' do
+      clear_reads!
+      add_other_chapter!(number: 2, title: 'Overlap')
+      get fiction_url(@fiction)
+
+      assert_select '#chapter_list_progress', text: I18n.t('fictions.chapters_tab.count', count: 3)
+      assert_select '#sort-chapters p', text: latest_line(@theirs)
+    end
+
+    test 'picking a team after an overlapping slot shows that team only' do
+      clear_reads!
+      add_other_chapter!(number: 2, title: 'Overlap')
+      post chapter_team_fiction_url(@fiction, order: :desc, team: @other.id), as: :turbo_stream
+      get fiction_url(@fiction)
+
+      assert_select '#chapter_list_progress', text: I18n.t('fictions.chapters_tab.count', count: 2)
+      assert_select '#sort-chapters p', text: latest_line(@theirs)
+      assert_equal 2, row_ids.size
+    end
+
     private
 
     def row_ids = css_select('li[id^=chapter_list_chapter_]').pluck('id')
 
     def team_labels = css_select('[aria-label=Переклад] button').map { |button| button.text.squish }
+
+    def clear_reads!
+      ReadingChapterRead.where(user: users(:user_one), fiction: @fiction).delete_all
+    end
+
+    def add_other_chapter!(number:, title:)
+      chapter = Chapter.create!(
+        fiction: @fiction, user: users(:user_two), title:, number:, content: 'x' * 500,
+        scanlator_ids: [@other.id]
+      )
+      ChapterScanlator.create!(chapter:, scanlator: @other) unless chapter.scanlators.exists?(@other.id)
+      chapter
+    end
+
+    def latest_line(chapter)
+      I18n.t(
+        'fictions.chapters_tab.latest',
+        number: Chapters::Formatting.chapter_ref(chapter),
+        date: I18n.l(chapter.public_at, format: :shortest)
+      )
+    end
   end
 end

@@ -23,6 +23,14 @@ module ContestsHelper
     Contests::PublicAccess.visible?(current_user)
   end
 
+  def contests_surfaces_visible?
+    Contests::PublicAccess.surfaces_visible?(current_user)
+  end
+
+  def public_archive_contest_path
+    contest_path(Contests::PublicAccess.public_show_slugs.first)
+  end
+
   # Spacing/type: xl+ is the ideal; smaller breakpoints step down from it.
   def contest_section_label_class
     'border-b border-brand/45 pb-1 text-sm font-semibold text-fg ' \

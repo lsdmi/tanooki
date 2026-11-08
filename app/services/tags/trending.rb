@@ -6,7 +6,6 @@ module Tags
     include Rails.application.routes.url_helpers
 
     TAG_LIMIT = 16
-    FOOTER_DESKTOP_TAG_LIMIT = 12
 
     def tags
       Rails.cache.fetch('trending_tags', expires_in: 12.hours) do

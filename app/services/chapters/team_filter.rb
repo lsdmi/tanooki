@@ -46,11 +46,17 @@ module Chapters
 
     def keep(sections, listed)
       prepare(listed)
+      by_id = listed.index_by(&:id)
       ids = listed.select { |chapter| match?(chapter) }.to_set(&:id)
-      sections.filter_map do |section|
-        shown = section[:chapter_ids].select { |chapter_id| ids.include?(chapter_id) }
-        section.merge(chapter_ids: shown, all_chapter_ids: shown) if shown.any?
-      end
+      sections.filter_map { |section| keep_section(section, ids, by_id) }
+    end
+
+    def keep_section(section, ids, by_id)
+      shown = section[:chapter_ids].select { |chapter_id| ids.include?(chapter_id) }
+      return if shown.empty?
+
+      keys = shown.map { |chapter_id| ReadingChapterRead.chapter_key(by_id.fetch(chapter_id)) }.uniq
+      section.merge(chapter_ids: shown, all_chapter_ids: shown, chapter_keys: keys)
     end
 
     def prepare(chapters)

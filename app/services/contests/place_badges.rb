@@ -36,7 +36,7 @@ module Contests
 
     def awards
       ContestAward.joins(:contest_entry, :contest_prize)
-                  .merge(Contest.visible)
+                  .merge(Contests::PublicAccess.discoverable_contests)
                   .where(contest_entries: { fiction_id: fiction.id, status: FictionHeroTags::VISIBLE_STATUSES })
                   .where(contest_prizes: { kind: :place, place: TOP })
                   .includes(:contest, :contest_prize)
