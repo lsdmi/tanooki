@@ -1,9 +1,0 @@
-<%# locals: (contest:, presenter:) %>
-<section id="past-winners" class="scroll-mt-24">
-  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.past_winners') %></p>
-  <ul class="mt-4 max-w-xl">
-    <% presenter.past_winners.each do |award| %>
-      <li><%= render Contests::WinnerCardComponent.new(award:, plain: true) %></li>
-    <% end %>
-  </ul>
-</section>

@@ -26,11 +26,14 @@
     <% end %>
   <% end %>
   <div class="pt-1 sm:pt-1.5 md:pt-2 xl:pt-2">
-    <h3 class="font-medium leading-snug text-fg text-xs sm:text-sm md:text-[15px] md:leading-5 lg:text-base xl:text-base 2xl:text-lg">
+    <h3 class="font-semibold leading-tight text-fg text-[10px] sm:text-[11px] md:text-xs lg:text-xs xl:text-sm 2xl:text-sm">
       <%= link_to fiction.title, href,
             class: 'line-clamp-2 rounded-md transition-colors hover:text-fg-brand hover:underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand',
             data: { turbo_frame: '_top' } %>
     </h3>
+    <% if entry.display_author.present? %>
+      <p class="mt-0.5 truncate leading-snug text-fg-muted text-[9px] sm:mt-1 sm:text-[10px] md:text-[11px] lg:text-[11px] xl:text-xs 2xl:text-xs"><%= entry.display_author %></p>
+    <% end %>
     <% if !plain? && genre_labels.any? %>
       <%= render Ui::TagListComponent.new(
             labels: genre_labels,

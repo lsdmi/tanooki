@@ -65,11 +65,6 @@ module Contests
       assert_not_includes visible, :results
     end
 
-    test 'past winners section appears when other contests have winners' do
-      assert_includes presenter(:submissions).visible_sections.pluck(:id), :past_winners
-      assert_not_includes presenter(:results).visible_sections.pluck(:id), :past_winners
-    end
-
     test 'nav items are limited to visible nav sections' do
       ids = presenter(:announced).nav_items.pluck(:id)
 
@@ -138,7 +133,7 @@ module Contests
 
     # Touch the preloaded associations the way the gallery cards do (Bullet flags unused eager loads).
     def load_gallery(subject)
-      subject.gallery_entries.to_a.each { |entry| [entry.fiction.cover.attached?, entry.fiction.genres.to_a] }
+      subject.gallery_entries.to_a.each { |entry| entry.fiction.cover.attached? }
     end
   end
 end

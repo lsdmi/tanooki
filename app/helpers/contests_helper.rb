@@ -2,22 +2,7 @@
 
 # View helpers for public contest pages and the one-screen submission form.
 module ContestsHelper
-  # sm+ columns for results/works: 1–5 in one row, then fold into even rows.
-  # sm and md share the same column count (no jump at md).
-  GALLERY_SM_COL_CLASS = {
-    1 => 'sm:mx-auto sm:max-w-[12.5rem] sm:grid-cols-1',
-    2 => 'sm:mx-auto sm:max-w-[26rem] sm:grid-cols-2',
-    3 => 'sm:mx-auto sm:max-w-[40rem] sm:grid-cols-3',
-    4 => 'sm:grid-cols-4',
-    5 => 'sm:grid-cols-5',
-    6 => 'sm:grid-cols-6'
-  }.freeze
-
-  # Counts above 5 fold into even rows (then default to 6).
-  GALLERY_COLUMN_COUNT = {
-    6 => 3, 7 => 4, 8 => 4, 9 => 3, 10 => 5,
-    11 => 4, 12 => 4, 13 => 5, 14 => 5, 15 => 5
-  }.freeze
+  include Contests::GalleryHelper
 
   def contests_publicly_visible?
     Contests::PublicAccess.visible?(current_user)
@@ -27,8 +12,8 @@ module ContestsHelper
     Contests::PublicAccess.surfaces_visible?(current_user)
   end
 
-  def public_archive_contest_path
-    contest_path(Contests::PublicAccess.public_show_slugs.first)
+  def public_archive_contests
+    Contests::PublicAccess.discoverable_contests.order(:results_published_at, :id)
   end
 
   # Spacing/type: xl+ is the ideal; smaller breakpoints step down from it.
@@ -71,21 +56,6 @@ module ContestsHelper
     return span if results_at.blank?
 
     t('contests.show.timeline.archive_line', span:, results: l(results_at.to_date, format: :long))
-  end
-
-  def contest_gallery_grid_class(count)
-    cols = contest_gallery_column_count(count)
-    [
-      'mt-2.5 grid grid-cols-2 gap-2 sm:mt-3 sm:gap-2.5 md:mt-3.5 md:gap-3 lg:mt-4 lg:gap-4 xl:mt-4 xl:gap-5 2xl:gap-5',
-      GALLERY_SM_COL_CLASS.fetch(cols, 'sm:grid-cols-6')
-    ].join(' ')
-  end
-
-  def contest_gallery_column_count(count)
-    n = count.to_i
-    return n if n.between?(1, 5)
-
-    GALLERY_COLUMN_COUNT.fetch(n, 6)
   end
 
   def contest_month_span(open_at, close_at)

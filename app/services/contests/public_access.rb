@@ -5,7 +5,7 @@ module Contests
   # without opening /contests; admins always see every surface.
   module PublicAccess
     LISTED = false
-    PUBLIC_SHOW_SLUGS = %w[i-konkurs-ranobe].freeze
+    PUBLIC_SHOW_SLUGS = %w[i-konkurs-ranobe ii-konkurs-ranobe].freeze
 
     module_function
 

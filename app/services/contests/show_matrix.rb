@@ -74,7 +74,6 @@ module Contests
       { id: :requirements, anchor: 'requirements', partial: 'contests/requirements',
         phases: Phase::ACTIVE_PHASES + %i[cancelled] },
       { id: :works, anchor: 'works', partial: 'contests/works', phases: GALLERY_PHASES, nav: 'works' },
-      { id: :past_winners, anchor: 'past-winners', partial: 'contests/past_winners', if: :past_winners? },
       { id: :closing, anchor: 'discussion', partial: 'contests/closing',
         nav_links: [{ nav: 'discussion', anchor: 'discussion' }, { nav: 'rules', anchor: 'rules' }] }
     ].freeze

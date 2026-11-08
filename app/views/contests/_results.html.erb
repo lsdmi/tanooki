@@ -1,7 +1,7 @@
 <%# locals: (contest:) %>
 <section id="results" class="scroll-mt-24">
   <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.results') %></p>
-  <% awards = contest.awards.includes(:contest_prize, contest_entry: { fiction: [:genres, { cover_attachment: :blob }] })
+  <% awards = contest.awards.includes(:contest_prize, contest_entry: { fiction: { cover_attachment: :blob } })
                      .references(:contest_prize)
                      .order(Arel.sql('contest_prizes.place IS NULL, contest_prizes.place ASC, contest_awards.id ASC'))
                      .to_a %>

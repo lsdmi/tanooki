@@ -69,7 +69,7 @@ module Contests
     def gallery_entries
       contest.entries.gallery.where.not(fiction_id: nil)
              .where(fiction_id: Chapter.released.select(:fiction_id))
-             .includes(fiction: [{ cover_attachment: :blob }, :genres])
+             .includes(fiction: { cover_attachment: :blob })
              .order(Arel.sql(gallery_order_sql))
     end
 
@@ -99,15 +99,6 @@ module Contests
     # Prizes with a donation unlock threshold, lowest first.
     def donation_goals
       @donation_goals ||= contest.prizes.where.not(unlock_at_uah: nil).order(:unlock_at_uah).to_a
-    end
-
-    def past_winners?
-      past_winners.any?
-    end
-
-    # Winners of earlier contests (this one excluded).
-    def past_winners
-      @past_winners ||= HubPresenter.new.hall_of_fame(limit: 4, except: contest).to_a
     end
 
     private

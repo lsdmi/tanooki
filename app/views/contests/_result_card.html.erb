@@ -1,11 +1,12 @@
 <%# locals: (award:, rank:, contest:) %>
 <% entry = award.contest_entry %>
 <% fiction = entry.fiction %>
-<% card = fiction && popular_fiction_card_stats(fiction) %>
 <% href = fiction ? fiction_path(fiction) : (entry.legacy_url.presence || contest_path(contest)) %>
 <% external = href.start_with?('http') %>
 <% crown = { 1 => ['token-raw text-amber-300', :one], 2 => ['token-raw text-slate-300', :two], 3 => ['token-raw text-amber-700', :three] }[rank] %>
 <% cover_link = 'group/cover relative block aspect-[2/3] overflow-hidden rounded-xl bg-surface transition-[filter,transform] duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 hover:brightness-105 dark:focus-visible:ring-violet-400' %>
+<% rating = fiction&.average_rating.to_f %>
+<% rating_label = rating.positive? ? number_with_precision(rating, precision: 1, separator: ',') : '—' %>
 <article class="group min-w-0">
   <%= link_to href, (external ? { target: '_blank', rel: 'noopener noreferrer' } : turbo_drive_visit_data).merge(class: cover_link) do %>
     <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: rank, rank_size: :strip) %>
@@ -30,22 +31,22 @@
         <span class="text-sm font-semibold text-fg"><%= entry.display_title %></span>
       </div>
     <% end %>
-    <% if card %>
+    <% if fiction %>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10 md:px-3 md:pb-3">
-        <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: card[:views]) %>
-        <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: card[:rating]) %>
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: format_view_count(fiction.views)) %>
+        <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: rating_label) %>
       </div>
     <% end %>
   <% end %>
   <div class="pb-1 pl-0.5 pt-1.5 sm:pb-1.5 sm:pl-1 sm:pt-2 md:pt-2.5 lg:pt-2.5 xl:pb-2 xl:pt-3">
-    <p class="font-semibold leading-tight text-fg text-[11px] sm:text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base">
+    <p class="font-semibold leading-tight text-fg text-[10px] sm:text-[11px] md:text-xs lg:text-xs xl:text-sm 2xl:text-sm">
       <%= link_to entry.display_title, href,
                   (external ? { target: '_blank', rel: 'noopener noreferrer' } : turbo_drive_visit_data).merge(
                     class: 'token-raw line-clamp-2 rounded-lg transition-colors hover:text-fg-brand hover:underline underline-offset-2 group-hover/cover:text-cyan-700 dark:group-hover/cover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main'
                   ) %>
     </p>
     <% if entry.display_author.present? %>
-      <p class="mt-0.5 truncate leading-snug text-fg-muted text-[10px] sm:mt-1 sm:text-[11px] md:text-xs lg:text-xs xl:text-xs 2xl:text-sm"><%= entry.display_author %></p>
+      <p class="mt-0.5 truncate leading-snug text-fg-muted text-[9px] sm:mt-1 sm:text-[10px] md:text-[11px] lg:text-[11px] xl:text-xs 2xl:text-xs"><%= entry.display_author %></p>
     <% end %>
   </div>
 </article>
