@@ -1,15 +1,12 @@
 <%# locals: (contest:) %>
 <section id="requirements" class="scroll-mt-24">
-  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.requirements') %></p>
+  <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.requirements') %></h2>
   <ul class="mt-4 space-y-2 text-sm text-fg-secondary">
     <% if contest.requires_new_work? %>
       <li><%= t('contests.show.requirements.new_work') %></li>
     <% end %>
     <% if contest.min_chapters %>
       <li><%= t('contests.show.requirements.chapters', count: contest.min_chapters) %></li>
-    <% end %>
-    <% if contest.min_words %>
-      <li><%= t('contests.show.requirements.words', count: number_with_delimiter(contest.min_words, delimiter: ' ')) %></li>
     <% end %>
     <% if contest.required_genre %>
       <li><%= t('contests.show.requirements.genre', name: contest.required_genre.name) %></li>

@@ -13,7 +13,7 @@ module Admin
       :title, :tagline, :kind, :teaser_text, :description, :rules,
       :announced_at, :submissions_open_at, :submissions_close_at, :judging_close_at,
       :required_genre_id, :requires_new_work, :requires_completed,
-      :min_chapters, :min_words, :max_words, :judged_word_cap, :judged_chapters_scope,
+      :min_chapters, :judged_chapters_scope,
       :max_content_rating, :max_entries_per_user, :jury_weight,
       :prize_pool_uah, :donations_uah, :donation_url, :carryover_uah,
       :cover, :entry_placeholder_cover,
@@ -39,7 +39,7 @@ module Admin
     end
 
     def default_contest_rules
-      { requires_new_work: true, min_chapters: 3, min_words: 10_000, judged_word_cap: 25_000 }
+      { requires_new_work: true, min_chapters: 3 }
     end
 
     def default_contest_limits

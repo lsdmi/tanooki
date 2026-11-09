@@ -55,15 +55,6 @@ class ContestTest < ActiveSupport::TestCase
     assert_predicate contest.errors[:criteria], :any?
   end
 
-  test 'min_words cannot exceed max_words' do
-    contest = contests(:draft)
-    contest.min_words = 5000
-    contest.max_words = 3000
-
-    assert_not contest.valid?
-    assert_predicate contest.errors[:min_words], :any?
-  end
-
   test 'jury_weight must be 0..100' do
     contest = contests(:draft)
     contest.jury_weight = 120

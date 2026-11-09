@@ -21,6 +21,10 @@ module StructuredData
       pages_about_page?
     end
 
+    def contest_page_meta?
+      contests_show_page?
+    end
+
     def storage_catalog_meta?
       fiction_lists_alphabetical_page?
     end

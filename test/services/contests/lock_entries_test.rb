@@ -39,10 +39,9 @@ module Contests
       assert_nil @entry.reviewed_at
     end
 
-    test 'snapshot lists judged chapters with words and digest' do
+    test 'snapshot lists judged chapters with digest' do
       chapter = chapters(:one)
       plain = chapter.content.to_plain_text.to_s
-      words = chapter.word_count.to_i
 
       travel_to @contest.submissions_close_at + 1.minute do
         LockEntries.call(contest: @contest)
@@ -50,22 +49,13 @@ module Contests
 
       row = @entry.reload.locked_snapshot.fetch('chapters').find { |item| item['chapter_id'] == chapter.id }
 
-      assert_equal words, row['words']
       assert_equal Digest::SHA256.hexdigest(plain), row['digest']
-    end
-
-    test 'snapshot total_words sums chapter words' do
-      expected = RequirementsProgress.new(@entry).judged_chapters.sum { |chapter| chapter.word_count.to_i }
-
-      travel_to @contest.submissions_close_at + 1.minute do
-        LockEntries.call(contest: @contest)
-      end
-
-      assert_equal expected, @entry.reload.locked_snapshot['total_words']
+      assert_equal %w[chapter_id digest], row.keys.sort
+      assert_not @entry.locked_snapshot.key?('total_words')
     end
 
     test 'marks qualified when every requirement is met' do
-      @contest.update!(min_chapters: 1, min_words: nil, required_genre: nil, requires_completed: false)
+      @contest.update!(min_chapters: 1, required_genre: nil, requires_completed: false)
 
       travel_to @contest.submissions_close_at + 1.minute do
         LockEntries.call(contest: @contest)

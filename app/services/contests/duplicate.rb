@@ -6,7 +6,7 @@ module Contests
     DEFAULT_WEEKS_UNTIL_OPEN = 4
     COPIED_ATTRIBUTES = %i[
       kind preset_key preset_version required_genre_id requires_new_work requires_completed
-      min_chapters min_words max_words judged_word_cap judged_chapters_scope max_content_rating
+      min_chapters judged_chapters_scope max_content_rating
       max_entries_per_user jury_weight prize_pool_uah donation_url
     ].freeze
     PRIZE_ATTRIBUTES = %i[title kind place position cash_uah unlock_at_uah perks avatar_id].freeze

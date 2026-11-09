@@ -50,8 +50,7 @@ module Contests
     end
 
     def volume_parts
-      [("від #{delimited(contest.min_words)} слів" if contest.min_words),
-       ("не менше #{contest.min_chapters} розділів" if contest.min_chapters)].compact
+      [("не менше #{contest.min_chapters} розділів" if contest.min_chapters)].compact
     end
 
     def genre_rating

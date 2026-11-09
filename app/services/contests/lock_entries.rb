@@ -52,11 +52,10 @@ module Contests
         plain = chapter.content.to_plain_text.to_s
         {
           'chapter_id' => chapter.id,
-          'words' => chapter.word_count.to_i,
           'digest' => Digest::SHA256.hexdigest(plain)
         }
       end
-      { 'chapters' => rows, 'total_words' => rows.sum { |row| row['words'] } }
+      { 'chapters' => rows }
     end
 
     def sync_authors!(entry)

@@ -16,7 +16,7 @@ module Layout
 
     def footer_fragment_cache_key
       [
-        'footer/v9',
+        'footer/v10',
         I18n.locale,
         Time.zone.now.year,
         fragment_cache_version_bucket(12.hours)

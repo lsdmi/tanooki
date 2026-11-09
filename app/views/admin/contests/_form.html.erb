@@ -61,7 +61,7 @@
       <%= f.select :max_content_rating, Fiction.content_ratings.map { |name, value| [name, value] }, {},
                    class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
     </div>
-    <% %i[min_chapters min_words max_words judged_word_cap max_entries_per_user jury_weight].each do |field| %>
+    <% %i[min_chapters max_entries_per_user jury_weight].each do |field| %>
       <div>
         <%= f.label field, t("admin.contests.fields.#{field}"), class: 'block text-sm font-medium text-fg' %>
         <%= f.number_field field, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>

@@ -79,8 +79,7 @@ module Admin
     def unchanged_rules
       {
         requires_new_work: '1', requires_completed: '0',
-        min_chapters: @contest.min_chapters, min_words: @contest.min_words, max_words: @contest.max_words.to_s,
-        judged_word_cap: @contest.judged_word_cap, judged_chapters_scope: @contest.judged_chapters_scope,
+        min_chapters: @contest.min_chapters, judged_chapters_scope: @contest.judged_chapters_scope,
         max_content_rating: @contest.max_content_rating, max_entries_per_user: @contest.max_entries_per_user,
         jury_weight: @contest.jury_weight, prize_pool_uah: @contest.prize_pool_uah,
         donations_uah: @contest.donations_uah, carryover_uah: @contest.carryover_uah

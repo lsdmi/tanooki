@@ -13,7 +13,7 @@ module Layout
     end
 
     test 'footer_fragment_cache_key uses versioned namespace' do
-      assert_equal 'footer/v9', footer_fragment_cache_key.first
+      assert_equal 'footer/v10', footer_fragment_cache_key.first
     end
 
     test 'navbar_fragment_cache_key includes section name' do

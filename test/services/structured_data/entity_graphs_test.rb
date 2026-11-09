@@ -84,5 +84,43 @@ module StructuredData
       assert_equal 'ItemList', payload.dig('mainEntity', '@type')
       assert_equal 2, payload.dig('mainEntity', 'numberOfItems')
     end
+
+    test 'contest_page_json includes webpage breadcrumb and event types' do
+      payload = JSON.parse(@graphs.contest_page_json(contests(:results)))
+      types = payload.fetch('@graph').pluck('@type')
+
+      assert_empty(%w[WebPage BreadcrumbList Event] - types)
+    end
+
+    test 'contest_page_json breadcrumb skips the gated hub' do
+      payload = JSON.parse(@graphs.contest_page_json(contests(:results)))
+      breadcrumb = payload['@graph'].find { |node| node['@type'] == 'BreadcrumbList' }
+
+      assert_equal 3, breadcrumb['itemListElement'].size
+      assert_match(%r{/rules#contest-rules\z}, breadcrumb['itemListElement'][1]['item'])
+    end
+
+    test 'contest_page_json lists place winners with fiction urls' do
+      contest = contests(:results)
+      contest.awards.destroy_all
+      fiction = fictions(:one)
+      prize = ContestPrize.create!(
+        contest:, position: 0, title: '1 місце', kind: :place, place: 1, cash_uah: 0
+      )
+      entry = ContestEntry.create!(
+        contest:, fiction:, status: :accepted, ai_usage: :none,
+        submitted_at: contest.submissions_close_at - 1.day,
+        rules_accepted_at: contest.submissions_close_at - 1.day
+      )
+      ContestAward.create!(
+        contest:, contest_prize: prize, contest_entry: entry, awarded_at: contest.results_published_at
+      )
+
+      winners = JSON.parse(@graphs.contest_page_json(contest))['@graph']
+                    .find { |node| node['@type'] == 'ItemList' }
+
+      assert_equal fiction.title, winners['itemListElement'].first['name']
+      assert_match(%r{\Ahttp://example.com/fictions/}, winners['itemListElement'].first['item'])
+    end
   end
 end

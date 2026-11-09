@@ -4,19 +4,19 @@
 <div class="grid lg:grid-cols-12 lg:items-start <%= contest_split_gap_class %>">
   <% if show_timeline %>
     <div id="timeline" class="scroll-mt-24 lg:col-span-12">
-      <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.timeline') %></p>
+      <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.timeline') %></h2>
       <%= render Contests::TimelineComponent.new(presenter:, embedded: true) %>
     </div>
   <% end %>
 
   <div id="prizes" class="scroll-mt-24 <%= jurors ? 'lg:col-span-7' : 'lg:col-span-12' %>">
-    <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.prizes') %></p>
+    <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.prizes') %></h2>
     <%= render Contests::PrizePoolComponent.new(presenter:, embedded: true) %>
   </div>
 
   <% if jurors %>
     <div id="jury" class="scroll-mt-24 lg:col-span-5 <%= contest_split_rail_class %>">
-      <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.jury') %></p>
+      <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.jury') %></h2>
       <%= render 'contests/jury', contest: %>
     </div>
   <% end %>

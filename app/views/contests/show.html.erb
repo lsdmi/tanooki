@@ -3,6 +3,12 @@
   <% content_for :page_background_veil, 'opacity-95' %>
   <% content_for :page_background_motion, 'scale-105 motion-safe:animate-contest-hero-drift' %>
 <% end %>
+<%# Outside fragment cache so guest cache hits still emit LCP preload in <head>. %>
+<% if @contest.cover.attached? && !@contest.draft? %>
+  <% content_for :head do %>
+    <%= tag.link rel: 'preload', as: 'image', href: url_for(@contest.cover), fetchpriority: 'high' %>
+  <% end %>
+<% end %>
 
 <% cache_if current_user.blank?,
             [@contest, @contest.updated_at, @contest.entries.maximum(:updated_at), Date.current],
@@ -42,5 +48,6 @@
         </div>
       <% end %>
     <% end %>
+    <%= render 'contests/other_archives', contest: @contest %>
   </div>
 <% end %>

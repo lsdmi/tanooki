@@ -11,7 +11,7 @@
                       loading: 'lazy',
                       decoding: 'async' %>
       </a>
-      <nav class="token-raw flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-300 sm:justify-end" aria-label="Про сайт">
+      <nav class="token-raw flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-200 sm:justify-end" aria-label="Про сайт">
         <%= link_to about_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Про Баку — baka.in.ua' do %>
           Про Бака
         <% end %>
@@ -29,17 +29,17 @@
         <% end %>
       </nav>
     </div>
-    <div class="token-raw flex flex-col gap-2 border-t border-zinc-800 pt-4 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+    <div class="token-raw flex flex-col gap-2 border-t border-zinc-800 pt-4 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <p>
         © 2023-<%= Time.zone.now.year %>
-        <a href="/" class="token-raw hover:text-zinc-300 hover:underline">baka.in.ua™</a>.
+        <a href="/" class="token-raw text-zinc-300 hover:text-white hover:underline">baka.in.ua™</a>.
         Всі права захищені.
       </p>
-      <nav class="token-raw flex flex-wrap gap-x-4 gap-y-1" aria-label="Юридична інформація">
-        <%= link_to privacy_path, class: 'token-raw hover:text-zinc-300 hover:underline underline-offset-2', title: 'Політика конфіденційності — baka.in.ua' do %>
+      <nav class="token-raw flex flex-wrap gap-x-4 gap-y-1 text-zinc-300" aria-label="Юридична інформація">
+        <%= link_to privacy_path, class: 'token-raw hover:text-white hover:underline underline-offset-2', title: 'Політика конфіденційності — baka.in.ua' do %>
           Конфіденційність
         <% end %>
-        <%= link_to privacy_path(anchor: 'cookies'), class: 'token-raw hover:text-zinc-300 hover:underline underline-offset-2', title: 'Політика cookies — baka.in.ua' do %>
+        <%= link_to privacy_path(anchor: 'cookies'), class: 'token-raw hover:text-white hover:underline underline-offset-2', title: 'Політика cookies — baka.in.ua' do %>
           Cookies
         <% end %>
       </nav>

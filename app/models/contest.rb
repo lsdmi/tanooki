@@ -58,13 +58,12 @@ class Contest < ApplicationRecord
   validates :jury_weight, numericality: { only_integer: true, in: 0..100 }
   validates :max_content_rating, inclusion: { in: Fiction.content_ratings.values }
   validates :max_entries_per_user, numericality: { only_integer: true, greater_than: 0 }
-  validates :min_chapters, :min_words, :max_words, :judged_word_cap,
+  validates :min_chapters,
             numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :prize_pool_uah, :donations_uah, :carryover_uah,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :dates_strictly_increasing
   validate :criteria_weights_sum_to_hundred
-  validate :min_words_not_above_max
 
   include ContestAttachmentFormats
 
@@ -122,12 +121,5 @@ class Contest < ApplicationRecord
     return if total == 100
 
     errors.add(:criteria, :weights_must_sum_to_hundred)
-  end
-
-  def min_words_not_above_max
-    return if min_words.blank? || max_words.blank?
-    return if min_words <= max_words
-
-    errors.add(:min_words, :less_than_or_equal_to, count: max_words)
   end
 end

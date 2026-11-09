@@ -1,7 +1,7 @@
 <%# locals: (contest:, presenter:) %>
 <% entry = presenter.my_entry %>
 <section id="my-entry" class="scroll-mt-24">
-  <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.my_participation') %></p>
+  <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.my_participation') %></h2>
   <div class="mt-4">
     <% if entry&.rejected? %>
       <p class="font-semibold text-fg"><%= t('contests.show.my_participation.rejected') %></p>

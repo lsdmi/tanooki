@@ -39,5 +39,9 @@ module Routing
     def fiction_lists_alphabetical_page?
       controller_path == 'fiction_lists' && action_name == 'alphabetical'
     end
+
+    def contests_show_page?
+      controller_name.to_sym == :contests && action_name.to_sym == :show
+    end
   end
 end

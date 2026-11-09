@@ -16,6 +16,12 @@ module ContestsHelper
     Contests::PublicAccess.discoverable_contests.order(:results_published_at, :id)
   end
 
+  def other_archive_contests(contest)
+    return Contest.none if contest.blank?
+
+    public_archive_contests.where.not(id: contest.id)
+  end
+
   # Spacing/type: xl+ is the ideal; smaller breakpoints step down from it.
   def contest_section_label_class
     'border-b border-brand/45 pb-1 text-sm font-semibold text-fg ' \
@@ -74,18 +80,8 @@ module ContestsHelper
       contest.requires_new_work? ? t('contests.submit.req.new_kind', kind:) : kind,
       t('contests.submit.req.deadline', date: l(contest.submissions_close_at.to_date, format: :long))
     ]
-    volume = contest_submit_volume_parts(contest)
-    parts << volume.join(' · ') if volume.any?
+    parts << t('contests.submit.req.chapters', count: contest.min_chapters) if contest.min_chapters
     parts.join(' · ')
-  end
-
-  def contest_submit_volume_parts(contest)
-    volume = []
-    volume << t('contests.submit.req.chapters', count: contest.min_chapters) if contest.min_chapters
-    if contest.min_words
-      volume << t('contests.submit.req.words', count: number_with_delimiter(contest.min_words, delimiter: ' '))
-    end
-    volume
   end
 
   def contest_entry_for_fiction(fiction)

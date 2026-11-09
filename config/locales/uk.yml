@@ -1018,11 +1018,6 @@ uk:
         few: "%{count} розділи"
         many: "%{count} розділів"
         other: "%{count} розділів"
-      words:
-        one: "%{count} слово"
-        few: "%{count} слова"
-        many: "%{count} слів"
-        other: "%{count} слів"
       completed: Твір позначено завершеним
       genre: "Жанр «%{name}»"
       rating: "Маркування до %{max}+"
@@ -1137,6 +1132,9 @@ uk:
       cancellation:
         body: Цей конкурс скасовано. Роботи лишаються на сайті як звичайні твори.
         reason: "Причина: %{reason}"
+      other_archives:
+        title: Інші архіви
+        rules_link: Загальні правила конкурсів
       rules:
         general: Загальні правила
         criteria: Критерії журі
@@ -1144,6 +1142,7 @@ uk:
         scoring_body: "Фінальний бал = %{jury}% оцінка журі + %{readers}% бал читачів. Місця визначає формула."
         extra: Положення цього конкурсу
         changes: Зміни в правилах
+        site_rules_link: На сторінці правил сайту
       discussion:
         empty: "Поки тиша. "
         login: Увійти, щоб написати
@@ -1156,7 +1155,6 @@ uk:
       requirements:
         new_work: Новий твір після старту подачі
         chapters: "Щонайменше %{count} розділів"
-        words: "Щонайменше %{count} слів"
         genre: "Жанр «%{name}»"
         rating: "Маркування не вище %{rating}+"
         completed: Твір має бути позначений завершеним
@@ -1207,7 +1205,6 @@ uk:
           few: "%{count} розділи"
           many: "%{count} розділів"
           other: "%{count} розділів"
-        words: "%{count} слів"
     participation:
       heading: "Подаю твір «%{title}»"
       subhead: Лишилось підтвердити правила й розказати про ШІ.
@@ -1891,9 +1888,6 @@ uk:
         requires_new_work: Лише нові твори
         requires_completed: Має бути завершеним
         min_chapters: Мін. розділів
-        min_words: Мін. слів
-        max_words: Макс. слів
-        judged_word_cap: Ліміт слів для журі
         judged_chapters_scope: Які розділи оцінюються
         max_content_rating: Макс. маркування
         max_entries_per_user: Заявок на людину

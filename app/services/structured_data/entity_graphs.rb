@@ -5,6 +5,7 @@ module StructuredData
   class EntityGraphs
     include Rails.application.routes.url_helpers
     include StorageCatalogGraph
+    include ContestPageGraph
 
     def initialize(asset_url:)
       @asset_url = asset_url

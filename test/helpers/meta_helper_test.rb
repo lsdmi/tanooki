@@ -50,27 +50,27 @@ class MetaHelperTest < ActionView::TestCase
     @highlights = [Struct.new(:cover).new('/psyduck_background.webp')]
     request.path = root_path
 
-    assert_equal url_for(@highlights.first.cover), meta_image
+    assert_equal 'http://example.com/psyduck_background.webp', meta_image
   end
 
   test 'meta_image returns expected URL for search controller with results' do
     @results = [Struct.new(:cover).new('results_cover.jpg')]
     request.path = search_index_path
 
-    assert_equal url_for(@results.first.cover), meta_image
+    assert_equal 'http://example.com/results_cover.jpg', meta_image
   end
 
   test 'meta_image returns expected URL for search controller without results' do
     @results = []
     request.path = search_index_path
 
-    assert_equal asset_path('/psyduck_background.webp'), meta_image
+    assert_match(%r{\Ahttp://example.com/.*psyduck_background}, meta_image)
   end
 
   test 'meta_image returns expected URL for other controllers with publication' do
     @publication = publications(:tale_approved_one)
 
-    assert_equal url_for(@publication.cover), meta_image
+    assert_match(%r{\Ahttp://example.com/rails/active_storage/}, meta_image)
   end
 
   test 'meta_image returns fallback URL when no results or publication covers are available' do
@@ -78,7 +78,19 @@ class MetaHelperTest < ActionView::TestCase
     @results = []
     @publication = nil
 
-    assert_equal asset_path('/psyduck_background.webp'), meta_image
+    assert_match(%r{\Ahttp://example.com/.*psyduck_background}, meta_image)
+  end
+
+  test 'meta_image is absolute for contest covers' do
+    @contest = contests(:results)
+    @contest.cover.attach(
+      io: Rails.root.join('test/fixtures/files/cover_valid.webp').open,
+      filename: 'cover.webp',
+      content_type: 'image/webp'
+    )
+    request.path = contest_path(@contest)
+
+    assert_match(%r{\Ahttp://example.com/rails/active_storage/}, meta_image)
   end
 
   test 'meta_type returns website for root and search pages' do

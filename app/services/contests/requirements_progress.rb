@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Contests
-  # Live checklist for an accepted contest entry: chapters, words, completion, genre, rating.
+  # Live checklist for an accepted contest entry: chapters, completion, genre, rating.
   class RequirementsProgress
     Item = Data.define(:key, :label, :current, :required, :met?)
 
@@ -18,7 +18,6 @@ module Contests
 
       [
         chapters_item,
-        words_item,
         completed_item,
         genre_item,
         rating_item
@@ -46,20 +45,6 @@ module Contests
       Item.new(
         key: :chapters,
         label: I18n.t('contests.progress.chapters', count: required),
-        current:,
-        required:,
-        met?: current >= required
-      )
-    end
-
-    def words_item
-      required = contest.min_words
-      return if required.blank?
-
-      current = judged_word_total
-      Item.new(
-        key: :words,
-        label: I18n.t('contests.progress.words', count: required),
         current:,
         required:,
         met?: current >= required
@@ -105,10 +90,6 @@ module Contests
         required: max,
         met?: current <= max
       )
-    end
-
-    def judged_word_total
-      judged_chapters.sum { |chapter| chapter.word_count.to_i }
     end
   end
 end

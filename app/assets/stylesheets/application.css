@@ -185,12 +185,49 @@ html.adblock-likely .home-banner-slot.reader-ad-slot {
   pointer-events: none !important;
 }
 
+/* Dual banner row (fictions index / genres / contests show): reserve before Ads hydrate.
+   Grid + hide-when-collapsed live here so deferred adsense_slots.css cannot flash the row away
+   before measuring starts (that jump was shifting #about / content below on contest show). */
+.index-banners__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .index-banners__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+}
+
+.index-banners .reader-ad-slot,
+.index-banners .reader-ad-slot--preview,
+.index-banners .reader-ad-slot--adsense-filled,
+.index-banners .reader-ad-slot--pending,
+.index-banners .reader-ad-slot--measuring {
+  margin: 0;
+}
+
 .index-banners .reader-ad-slot .reader-ad-slot__frame,
+.index-banners .reader-ad-slot--preview .reader-ad-slot__frame,
 .index-banners .reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
 .index-banners .reader-ad-slot--adsense-filled .reader-ad-slot__frame {
   height: 280px;
   min-height: 280px;
   max-height: 280px;
+}
+
+/* Right cell optional: collapsed unit leaves the other full-width. Frame height stays reserved above. */
+.index-banners__slot:has(.reader-ad-slot--collapsed) {
+  display: none;
+}
+
+/* Hide the row only after every slot collapsed (or adblock) — never while idle before JS measuring. */
+.index-banners:not(:has(.reader-ad-slot:not(.reader-ad-slot--collapsed))),
+html.adblock-likely .index-banners {
+  display: none;
+  margin: 0;
 }
 
 html.adblock-likely .index-banners .reader-ad-slot {

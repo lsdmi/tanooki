@@ -16,7 +16,7 @@ module Contests
       FakeContest = Struct.new(
         :title, :tagline, :kind, :phase, :slug, :cover, :submissions_close_at, :submissions_open_at,
         :prize_pool_uah, :donations_uah, :carryover_uah, :donation_url, :prizes, :criteria, :jury_weight,
-        :requires_new_work, :min_chapters, :min_words, :max_content_rating, :required_genre,
+        :requires_new_work, :min_chapters, :max_content_rating, :required_genre,
         keyword_init: true
       ) do
         def requires_new_work? = requires_new_work
@@ -54,7 +54,7 @@ module Contests
             { key: :fee, label: 'Внесок', value: 'безкоштовно' },
             { key: :first_prize, label: 'Перший приз', value: '1 500 ₴ (фонд 3 750 ₴)' },
             { key: :who, label: 'Хто може', value: 'зареєстровані з підтвердженою поштою' },
-            { key: :what, label: 'Що подавати', value: 'новий ориджинал · від 10 000 слів · не менше 3 розділів' },
+            { key: :what, label: 'Що подавати', value: 'новий ориджинал · не менше 3 розділів' },
             { key: :genre_rating, label: 'Жанр і маркування', value: 'до 16+' }
           ]
         end
@@ -127,7 +127,6 @@ module Contests
         jury_weight: 60,
         requires_new_work: true,
         min_chapters: 3,
-        min_words: 10_000,
         max_content_rating: 16,
         required_genre: nil
       }

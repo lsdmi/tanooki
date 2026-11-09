@@ -61,5 +61,14 @@ module Contests
     def cover?
       contest.cover.attached?
     end
+
+    def cover_html_dimensions
+      return {} unless cover?
+
+      width, height = contest.cover.blob.metadata.values_at('width', 'height')
+      return {} if width.blank? || height.blank?
+
+      { width: width.to_i, height: height.to_i }
+    end
   end
 end

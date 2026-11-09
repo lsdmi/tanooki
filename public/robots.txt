@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /search
+Disallow: /mcp
 
 Sitemap: https://baka.in.ua/sitemap.xml
 

@@ -11,8 +11,6 @@ ranobe:
     requires_new_work: true
     requires_completed: false
     min_chapters: 3
-    min_words: 10000
-    judged_word_cap: 25000
     judged_chapters_scope: until_close
     max_content_rating: 18
     max_entries_per_user: 1
@@ -44,9 +42,6 @@ short_story:
     requires_new_work: true
     requires_completed: true
     min_chapters: 1
-    min_words: 3000
-    max_words: 12000
-    judged_word_cap: 12000
     judged_chapters_scope: until_close
     max_content_rating: 18
     max_entries_per_user: 1
@@ -76,8 +71,6 @@ fanfiction:
     requires_new_work: true
     requires_completed: false
     min_chapters: 3
-    min_words: 10000
-    judged_word_cap: 25000
     judged_chapters_scope: until_close
     max_content_rating: 18
     max_entries_per_user: 1
@@ -107,8 +100,6 @@ translation:
     requires_new_work: false
     requires_completed: false
     min_chapters: 25
-    min_words: null
-    judged_word_cap: null
     judged_chapters_scope: in_window
     max_content_rating: 18
     max_entries_per_user: 1

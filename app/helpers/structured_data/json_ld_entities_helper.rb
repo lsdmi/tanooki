@@ -19,6 +19,10 @@ module StructuredData
       entity_graphs.chapter_article_json(chapter)
     end
 
+    def contest_page_meta(contest)
+      entity_graphs.contest_page_json(contest)
+    end
+
     def storage_catalog_meta(fictions)
       entity_graphs.storage_catalog_json(fictions)
     end

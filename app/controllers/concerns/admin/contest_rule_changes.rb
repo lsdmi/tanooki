@@ -5,14 +5,14 @@ module Admin
   module ContestRuleChanges
     SETTINGS_KEYS = %w[
       announced_at submissions_open_at submissions_close_at judging_close_at
-      requires_new_work requires_completed min_chapters min_words max_words judged_word_cap
+      requires_new_work requires_completed min_chapters
       judged_chapters_scope max_content_rating max_entries_per_user jury_weight
       prize_pool_uah criteria
     ].freeze
     TIME_KEYS = %w[announced_at submissions_open_at submissions_close_at judging_close_at].freeze
     BOOLEAN_KEYS = %w[requires_new_work requires_completed].freeze
     INTEGER_KEYS = %w[
-      min_chapters min_words max_words judged_word_cap max_content_rating
+      min_chapters max_content_rating
       max_entries_per_user jury_weight prize_pool_uah
     ].freeze
     PRIZE_TEXT_KEYS = %w[title kind perks].freeze

@@ -1,7 +1,7 @@
 <%# locals: (contest:, presenter:) %>
 <section id="works" class="relative z-10 w-full scroll-mt-24 bg-white/60 dark:bg-white/10 <%= contest_section_y_class %> <%= contest_band_pad_class %>">
   <div class="mx-auto w-full max-w-screen-xl px-4 2xl:px-0">
-    <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.works') %></p>
+    <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.works') %></h2>
     <% entries = presenter.gallery_entries.to_a %>
     <% if entries.any? %>
       <ul class="<%= contest_gallery_grid_class(entries.size) %>">

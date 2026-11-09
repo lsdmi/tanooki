@@ -46,14 +46,25 @@ module Meta
       assert_equal 'Перше речення про конкурс. Підсумки та роботи на Баці.', description
     end
 
-    test 'meta_description stays within SERP length' do
+    test 'meta_description keeps archive tail when tagline is long' do
       contest = contests(:results)
       contest.tagline = ('Довгий слоган конкурсу з багатьма словами. ' * 8).strip
 
       description = ContestSeo.new(contest).meta_description
 
       assert_operator description.length, :<=, ContestSeo::MAX_DESCRIPTION_LENGTH
-      assert_match(/…\z/, description)
+      assert_match(/Підсумки та роботи на Баці\.\z/, description)
+      assert_includes description, '…'
+    end
+
+    test 'meta_description keeps live tail when tagline is long' do
+      contest = contests(:submissions)
+      contest.tagline = ('Довгий слоган конкурсу з багатьма словами. ' * 8).strip
+
+      description = ContestSeo.new(contest).meta_description
+
+      assert_operator description.length, :<=, ContestSeo::MAX_DESCRIPTION_LENGTH
+      assert_match(/Умови, роботи й призи на Баці\.\z/, description)
     end
   end
 end

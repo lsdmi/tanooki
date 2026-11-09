@@ -64,7 +64,7 @@ module Contests
     end
 
     def requirements_lines
-      [new_work_line, chapters_line, words_line, genre_line, rating_line, completed_line].compact
+      [new_work_line, chapters_line, genre_line, rating_line, completed_line].compact
     end
 
     def new_work_line
@@ -75,10 +75,6 @@ module Contests
       return unless contest.min_chapters
 
       I18n.t('contests.show.requirements.chapters', count: contest.min_chapters)
-    end
-
-    def words_line
-      I18n.t('contests.show.requirements.words', count: contest.min_words) if contest.min_words
     end
 
     def genre_line

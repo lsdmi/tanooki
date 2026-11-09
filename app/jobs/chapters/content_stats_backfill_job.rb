@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Chapters
-  # One-shot backfill of chapters.word_count / body_bytes / excerpt. Enqueue with
+  # One-shot backfill of chapters.body_bytes / excerpt. Enqueue with
   # `Chapters::ContentStatsBackfillJob.perform_later` (or again with an after_id to resume).
   class ContentStatsBackfillJob < ApplicationJob
     BATCH = 500

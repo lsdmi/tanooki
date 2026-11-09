@@ -3,7 +3,7 @@
 module Contests
   # Builds an unpublished contest draft from a format preset (§7.7.1).
   class CreateFromPreset
-    RAW_REQUIREMENT_KEYS = %w[min_chapters min_words max_words judged_word_cap].freeze
+    RAW_REQUIREMENT_KEYS = %w[min_chapters].freeze
 
     class Error < StandardError; end
 

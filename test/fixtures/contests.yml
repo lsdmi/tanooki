@@ -10,8 +10,6 @@ draft:
   judging_close_at: <%= 17.weeks.from_now %>
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1
@@ -39,8 +37,6 @@ announced:
   published_at: <%= 1.week.ago %>
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1
@@ -68,8 +64,6 @@ submissions:
   published_at: <%= 4.weeks.ago %>
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1
@@ -97,8 +91,6 @@ judging:
   published_at: <%= 14.weeks.ago %>
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1
@@ -127,8 +119,6 @@ results:
   results_published_at: <%= 1.week.ago %>
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1
@@ -158,8 +148,6 @@ cancelled:
   cancel_reason: Замало учасників
   requires_new_work: true
   min_chapters: 3
-  min_words: 10000
-  judged_word_cap: 25000
   judged_chapters_scope: until_close
   max_content_rating: 18
   max_entries_per_user: 1

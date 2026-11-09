@@ -9,6 +9,7 @@ module Meta
     LIVE_TAIL = 'Умови, роботи й призи на Баці.'
     MAX_DESCRIPTION_LENGTH = 160
     SENTENCE_BOUNDARY = /(?<=[.?!])\s+/
+    MIN_BODY_BUDGET = 24
 
     def initialize(contest)
       @contest = contest
@@ -19,13 +20,18 @@ module Meta
     end
 
     def meta_description
-      parts = []
-      if (body = blurb).present?
-        body = "#{body}." unless body.match?(/[.!?…]\z/)
-        parts << body
-      end
-      parts << (archive? ? ARCHIVE_TAIL : LIVE_TAIL)
-      parts.join(' ').squish.truncate(MAX_DESCRIPTION_LENGTH, separator: /\s/, omission: '…')
+      tail = archive? ? ARCHIVE_TAIL : LIVE_TAIL
+      body = prepared_blurb
+      return tail if body.blank?
+
+      combined = "#{body} #{tail}".squish
+      return combined if combined.length <= MAX_DESCRIPTION_LENGTH
+
+      budget = MAX_DESCRIPTION_LENGTH - tail.length - 1
+      return tail if budget < MIN_BODY_BUDGET
+
+      truncated = body.truncate(budget, separator: /\s/, omission: '…')
+      "#{truncated} #{tail}".squish
     end
 
     private
@@ -38,6 +44,13 @@ module Meta
 
     def archive?
       Contests::Phase.new(contest).call == :results
+    end
+
+    def prepared_blurb
+      body = blurb
+      return if body.blank?
+
+      body.match?(/[.!?…]\z/) ? body : "#{body}."
     end
 
     def blurb

@@ -20,26 +20,11 @@ module Contests
       assert_equal @contest.min_chapters, item.required
     end
 
-    test 'lists a words item for a submissions contest' do
-      item = RequirementsProgress.call(@entry).find { |row| row.key == :words }
-
-      assert item
-    end
-
     test 'marks genre when the required genre is present' do
       @contest.update!(required_genre: genres(:original))
       item = RequirementsProgress.call(@entry).find { |row| row.key == :genre }
 
       assert_predicate item, :met?
-    end
-
-    test 'words sum word_count on judged released chapters' do
-      judged = RequirementsProgress.new(@entry).judged_chapters
-      judged.each { |chapter| chapter.update!(content: 'слово ' * 200) }
-
-      words = RequirementsProgress.call(@entry).find { |row| row.key == :words }
-
-      assert_equal judged.size * 200, words.current
     end
 
     test 'completed item appears when the contest requires a finished work' do

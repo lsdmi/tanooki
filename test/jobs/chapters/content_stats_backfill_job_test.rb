@@ -4,21 +4,20 @@ require 'test_helper'
 
 module Chapters
   class ContentStatsBackfillJobTest < ActiveSupport::TestCase
-    test 'writes word_count excerpt and body_bytes for existing chapters' do
+    test 'writes excerpt and body_bytes for existing chapters' do
       chapter = chapters(:one)
       chapter.scanlator_ids = chapter.scanlators.ids
       chapter.content = "<p>#{Array.new(120, 'слово').join(' ')}</p>"
       chapter.save!
 
       chapter = Chapter.find(chapter.id)
-      chapter.assign_attributes(word_count: 0, body_bytes: 0, excerpt: nil)
+      chapter.assign_attributes(body_bytes: 0, excerpt: nil)
       chapter.save!(validate: false)
 
       ContentStatsBackfillJob.perform_now(0)
 
       chapter.reload
 
-      assert_equal 120, chapter.word_count
       assert_includes chapter.excerpt, 'слово'
       assert_operator chapter.body_bytes, :>, 0
     end
@@ -30,7 +29,7 @@ module Chapters
       chapter.save!
       chapter.rich_text_content.destroy
       chapter = Chapter.find(chapter.id)
-      chapter.assign_attributes(word_count: 0, body_bytes: 0, excerpt: nil)
+      chapter.assign_attributes(body_bytes: 0, excerpt: nil)
       chapter.save!(validate: false)
 
       rich_texts = ActionText::RichText.with_deleted.where(
@@ -43,8 +42,8 @@ module Chapters
 
       chapter.reload
 
-      assert_equal 120, chapter.word_count
       assert_includes chapter.excerpt, 'слово'
+      assert_operator chapter.body_bytes, :>, 0
     end
   end
 end

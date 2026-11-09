@@ -39,12 +39,12 @@
     <% end %>
   <% end %>
   <div class="pb-1 pl-0.5 pt-1.5 sm:pb-1.5 sm:pl-1 sm:pt-2 md:pt-2.5 lg:pt-2.5 xl:pb-2 xl:pt-3">
-    <p class="font-semibold leading-tight text-fg text-[10px] sm:text-[11px] md:text-xs lg:text-xs xl:text-sm 2xl:text-sm">
+    <h3 class="font-semibold leading-tight text-fg text-[10px] sm:text-[11px] md:text-xs lg:text-xs xl:text-sm 2xl:text-sm">
       <%= link_to entry.display_title, href,
                   (external ? { target: '_blank', rel: 'noopener noreferrer' } : turbo_drive_visit_data).merge(
                     class: 'token-raw line-clamp-2 rounded-lg transition-colors hover:text-fg-brand hover:underline underline-offset-2 group-hover/cover:text-cyan-700 dark:group-hover/cover:text-rose-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main'
                   ) %>
-    </p>
+    </h3>
     <% if entry.display_author.present? %>
       <p class="mt-0.5 truncate leading-snug text-fg-muted text-[9px] sm:mt-1 sm:text-[10px] md:text-[11px] lg:text-[11px] xl:text-xs 2xl:text-xs"><%= entry.display_author %></p>
     <% end %>

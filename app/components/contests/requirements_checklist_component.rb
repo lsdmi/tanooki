@@ -35,7 +35,7 @@ module Contests
     end
 
     def numeric?(item)
-      item.key.in?(%i[chapters words])
+      item.key == :chapters
     end
 
     def value_text(item)

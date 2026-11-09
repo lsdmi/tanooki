@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Keeps chapters.word_count / body_bytes / excerpt in sync when Action Text is loaded for the save.
+# Keeps chapters.body_bytes / excerpt in sync when Action Text is loaded for the save.
 module ChapterContentStats
   extend ActiveSupport::Concern
 

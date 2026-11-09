@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_145035) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_09_153655) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -160,7 +160,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_145035) do
     t.bigint "user_id", null: false
     t.integer "views", default: 0
     t.decimal "volume_number", precision: 9, scale: 1
-    t.integer "word_count", default: 0, null: false
     t.index ["api_token_id"], name: "index_chapters_on_api_token_id"
     t.index ["fiction_id", "deleted_at", "published_at"], name: "index_chapters_on_fiction_deleted_published"
     t.index ["fiction_id", "deleted_at", "status", "published_at"], name: "index_chapters_on_fiction_deleted_status_published"
@@ -296,15 +295,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_145035) do
     t.string "donation_url"
     t.integer "donations_uah", default: 0, null: false
     t.string "judged_chapters_scope", limit: 16, default: "until_close", null: false
-    t.integer "judged_word_cap"
     t.datetime "judging_close_at", null: false
     t.integer "jury_weight", default: 60, null: false
     t.string "kind", limit: 16, default: "original", null: false
     t.integer "max_content_rating", default: 18, null: false
     t.integer "max_entries_per_user", default: 1, null: false
-    t.integer "max_words"
     t.integer "min_chapters"
-    t.integer "min_words"
     t.string "preset_key", limit: 32
     t.integer "preset_version"
     t.integer "prize_pool_uah", default: 0, null: false

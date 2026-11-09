@@ -1,7 +1,7 @@
 <%# locals: (contest:, presenter:) %>
 <section id="about" class="relative z-10 w-full scroll-mt-24 <%= contest_section_y_class %>">
   <div class="mx-auto w-full max-w-screen-xl px-4 2xl:px-0">
-    <p class="<%= contest_section_label_class %>"><%= t('contests.show.sections.theme') %></p>
+    <h2 class="<%= contest_section_label_class %>"><%= t('contests.show.sections.theme') %></h2>
     <div class="prose prose-sm mt-2.5 max-w-none text-fg prose-headings:text-fg prose-p:text-fg prose-li:text-fg
                 sm:mt-3 sm:prose-sm md:mt-3.5 md:prose-base lg:mt-4 lg:prose-base xl:mt-4 xl:prose-lg dark:prose-invert">
       <% if contest.description.present? %>
