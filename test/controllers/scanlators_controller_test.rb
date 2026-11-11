@@ -28,6 +28,22 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'new form exposes notice field id and helper text' do
+    sign_in users(:user_one)
+    get new_scanlator_url
+
+    assert_select '#scanlator_notice'
+    assert_select 'p', text: /профілі команди/
+  end
+
+  test 'edit form exposes notice field id and helper text' do
+    sign_in users(:user_one)
+    get edit_scanlator_url(scanlators(:one))
+
+    assert_select '#scanlator_notice'
+    assert_select 'p', text: /профілі команди/
+  end
+
   test 'should create scanlator' do
     sign_in users(:user_one)
     assert_difference('Scanlator.count') do

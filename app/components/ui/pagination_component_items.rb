@@ -15,14 +15,14 @@ module Ui
     end
 
     def current_page_item(label, rounded)
-      { type: :current, label: label.to_s, css_class: rounded_class(CURRENT_CLASSES, rounded) }
+      { type: :current, label: label.to_s, css_class: rounded_class(current_classes, rounded) }
     end
 
     def button_page_item(page, label, aria_label, rounded)
       {
         type: :button,
         label: label.to_s,
-        css_class: rounded_class(PAGE_CLASSES, rounded),
+        css_class: rounded_class(page_classes, rounded),
         onclick: onclick.call(page),
         aria_label: aria_label
       }
@@ -33,13 +33,25 @@ module Ui
         type: :form,
         label: label.to_s,
         page: page,
-        css_class: rounded_class(PAGE_CLASSES, rounded),
+        css_class: rounded_class(page_classes, rounded),
         aria_label: aria_label
       }
     end
 
     def gap_item(label)
-      { type: :gap, label: label, css_class: GAP_CLASSES }
+      { type: :gap, label: label, css_class: gap_classes }
+    end
+
+    def page_classes
+      pill? ? PILL_PAGE_CLASSES : PAGE_CLASSES
+    end
+
+    def current_classes
+      pill? ? PILL_CURRENT_CLASSES : CURRENT_CLASSES
+    end
+
+    def gap_classes
+      pill? ? PILL_GAP_CLASSES : GAP_CLASSES
     end
 
     def rounded_class(base, rounded)
@@ -47,6 +59,8 @@ module Ui
     end
 
     def rounded_corner_class(rounded)
+      return if pill?
+
       case rounded
       when :left then 'rounded-l-md'
       when :right then 'rounded-r-md'

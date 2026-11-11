@@ -30,6 +30,15 @@ module Ui
       assert_selector 'span.bg-brand', text: '2'
     end
 
+    test 'pill variant uses quiet chip chrome without brand fill' do
+      pagy = Pagy.new(count: 50, page: 1, limit: 10)
+
+      render_inline(PaginationComponent.new(pagy: pagy, variant: :pill, onclick: ->(page) { "loadPage(#{page})" }))
+
+      assert_selector 'span.rounded-lg.border-2[aria-current="page"]', text: '1'
+      assert_no_selector 'span.bg-brand'
+    end
+
     test 'renders onclick prev and next buttons' do
       pagy = Pagy.new(count: 50, page: 2, limit: 10)
 

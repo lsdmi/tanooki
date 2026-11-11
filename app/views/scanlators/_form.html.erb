@@ -37,7 +37,8 @@
 
           <div>
             <%= f.label :notice, 'Оголошення', class: 'block text-sm font-medium text-fg-secondary mb-2' %>
-            <%= f.text_area :notice, class: "bg-surface-strong border border-line-strong text-fg text-sm rounded-lg focus:ring-2 focus:ring-brand focus:border-brand block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:notice].any?}", rows: 4, placeholder: "Оголошення (необов'язково)" %>
+            <%= f.text_area :notice, id: 'scanlator_notice', class: "bg-surface-strong border border-line-strong text-fg text-sm rounded-lg focus:ring-2 focus:ring-brand focus:border-brand block w-full p-3 transition-all duration-200 #{'border-red-300 dark:border-red-500 ring-red-200 dark:ring-red-900/20' if scanlator.errors[:notice].any?}", rows: 4, placeholder: "Наприклад: Шукаємо редактора… (необов'язково)" %>
+            <p class="mt-2.5 text-sm text-fg-muted">Показується на профілі команди та у вкладці «Про твір» на сторінках ваших творів. Зручно для набору людей або короткого статусу.</p>
             <%= tag.p scanlator.errors[:notice].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-1 flex items-center' do %>
               <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
               <%= scanlator.errors[:notice].first %>

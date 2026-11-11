@@ -11,13 +11,17 @@ module Ui
       aria_label: 'Сторінок',
       custom_params: {},
       turbo_stream: false,
+      variant: :default,
       html: {}
     }.freeze
 
     def initialize(pagy:, **options)
       super()
       @pagy = pagy
-      assign_options(DEFAULT_OPTIONS.merge(options))
+      merged = DEFAULT_OPTIONS.merge(options)
+      raise ArgumentError, "unknown variant: #{merged[:variant]}" unless VARIANTS.include?(merged[:variant].to_sym)
+
+      assign_options(merged)
     end
 
     def render?
@@ -30,7 +34,8 @@ module Ui
 
     private
 
-    attr_reader :pagy, :pagy_id, :aria_label, :frame_id, :custom_params, :form_path, :onclick, :turbo_stream, :html
+    attr_reader :pagy, :pagy_id, :aria_label, :frame_id, :custom_params, :form_path, :onclick,
+                :turbo_stream, :variant, :html
 
     def assign_options(options)
       @pagy_id = options[:pagy_id]
@@ -40,7 +45,12 @@ module Ui
       @form_path = options[:form_path]
       @onclick = options[:onclick]
       @turbo_stream = options[:turbo_stream]
+      @variant = options[:variant].to_sym
       @html = options[:html]
+    end
+
+    def pill?
+      variant == :pill
     end
 
     def wrapper_classes
