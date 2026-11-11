@@ -15,25 +15,26 @@ module Api
         list(fiction_id, **).map { |chapter| Serialize.summary(chapter) }
       end
 
-      def batch(fiction_id, **)
-        capped(list(fiction_id, **)).map { |chapter| Serialize.full(chapter) }
+      def batch(fiction_id, body: :all, **)
+        capped(list(fiction_id, with_body: true, **)).map { |chapter| Serialize.full(chapter, body:) }
       end
 
-      def by_number(fiction_id, number, volume: nil, **)
+      def by_number(fiction_id, number, volume: nil, body: :all, **)
         matches = numbered(fiction_id, number, volume, **)
         raise Error.new('not_found', :not_found) if matches.empty?
         raise ambiguous!(matches) if matches.many?
 
-        Serialize.full(matches.first)
+        Serialize.full(matches.first, body:)
       end
 
       private
 
       attr_reader :access
 
-      def list(fiction_id, team_id: nil, from: nil, to: nil)
+      def list(fiction_id, team_id: nil, from: nil, to: nil, with_body: false)
         fiction = access.fiction!(fiction_id)
-        scope = access.chapters.where(fiction_id: fiction.id).preload(:scanlators, :rich_text_content)
+        scope = access.chapters.where(fiction_id: fiction.id).preload(:scanlators)
+        scope = scope.preload(:rich_text_content) if with_body
         filter_numbers(filter_team(scope, team_id), from, to).ordered_by_volume_and_number
       end
 

@@ -68,12 +68,39 @@ module StructuredData
     def scanlator_organization_data(scanlator)
       {
         '@type': 'Organization',
-        description: scanlator.description,
+        description: scanlator.description.presence&.squish,
         identifier: scanlator.slug,
-        image: scanlator.avatar.present? ? url_for(scanlator.avatar) : 'scanlator_avatar.webp',
+        image: scanlator_organization_image(scanlator),
         name: scanlator.title,
-        sameAs: [telegram_profile_url(scanlator.telegram_id)]
-      }
+        sameAs: scanlator_organization_same_as(scanlator)
+      }.compact
+    end
+
+    def scanlator_organization_image(scanlator)
+      if scanlator.avatar.attached?
+        rails_blob_url(scanlator.avatar, only_path: false, **default_public_url_options)
+      else
+        absolute_json_ld_path(asset_path('scanlator_avatar.webp'))
+      end
+    end
+
+    def scanlator_organization_same_as(scanlator)
+      url = telegram_profile_url(scanlator.telegram_id)
+      url.present? ? [url] : nil
+    end
+
+    def absolute_json_ld_path(path)
+      value = path.to_s
+      return value if value.match?(%r{\Ahttps?://}i)
+
+      opts = default_public_url_options
+      protocol = opts[:protocol].presence || 'http'
+      host = opts.fetch(:host)
+      port = opts[:port]
+      origin = "#{protocol}://#{host}"
+      origin = "#{origin}:#{port}" if port.present? && [80, 443].exclude?(port.to_i)
+      path_part = value.start_with?('/') ? value : "/#{value}"
+      "#{origin}#{path_part}"
     end
 
     def person_data(user)

@@ -105,7 +105,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :contests, only: %i[index show], param: :slug do
+  resources :contests, only: %i[show], param: :slug do
     member do
       get :comments
     end

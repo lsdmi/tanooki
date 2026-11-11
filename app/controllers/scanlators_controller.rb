@@ -2,9 +2,11 @@
 
 # Handles translation team pages and authenticated team management.
 class ScanlatorsController < ApplicationController
-  helper Scanlators::SelectOptionsHelper, Ui::StrokeIconHelper
+  helper Scanlators::SelectOptionsHelper, Scanlators::WorksCatalogHelper, Ui::StrokeIconHelper,
+         Fictions::ListPaginationHelper
 
   include FictionQuery
+  include Scanlators::ShowCatalog
 
   before_action :authenticate_user!, except: :show
   before_action :set_scanlator, only: %i[show edit update destroy]
@@ -18,10 +20,7 @@ class ScanlatorsController < ApplicationController
   end
 
   def show
-    @scanlator_stats = Scanlators::ShowPresenter.new(@scanlator)
-    @fictions = @scanlator.fictions_with_published_chapters
-                          .most_reads
-                          .includes(%i[cover_attachment genres])
+    prepare_scanlator_show
   end
 
   def new

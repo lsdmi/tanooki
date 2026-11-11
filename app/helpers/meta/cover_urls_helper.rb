@@ -12,6 +12,8 @@ module Meta
     SHOWCASE_MOBILE_SIZE = [768, 320].freeze
     SHOWCASE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_SIZE, format: :webp }.freeze
     SHOWCASE_MOBILE_TRANSFORMATIONS = { resize_to_limit: SHOWCASE_MOBILE_SIZE, format: :webp }.freeze
+    # Larger than showcase slides: the team page uses the banner full-height behind a page wash.
+    SCANLATOR_BANNER_TRANSFORMATIONS = { resize_to_limit: [1920, 960], format: :webp }.freeze
     AVATAR_TRANSFORMATIONS = { resize_to_limit: [128, 128], format: :webp }.freeze
     SCANLATOR_AVATAR_TRANSFORMATIONS = { resize_to_limit: [256, 256], format: :webp }.freeze
     VIDEO_THUMB_TRANSFORMATIONS = { resize_to_limit: [640, 360], format: :webp }.freeze
@@ -54,7 +56,7 @@ module Meta
     def scanlator_banner_url(attachment)
       return asset_path('scanlator_banner.webp') unless attachment&.attached?
 
-      variant_image_url(attachment, SHOWCASE_TRANSFORMATIONS) || asset_path('scanlator_banner.webp')
+      variant_image_url(attachment, SCANLATOR_BANNER_TRANSFORMATIONS) || asset_path('scanlator_banner.webp')
     end
 
     def publication_cover_header_url(attachment)

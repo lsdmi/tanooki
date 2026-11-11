@@ -29,8 +29,21 @@
         <h2 class="text-2xl font-bold text-fg mb-4">Розділи</h2>
         <p class="text-fg-secondary leading-relaxed mb-4">
           Список творів ваших команд: <code class="text-fg">GET /api/v1/me/fictions</code>.
-          Розділи твору: <code class="text-fg">GET /api/v1/fictions/slug/chapters</code>.
-          Один розділ, уже з абзацами: <code class="text-fg">GET /api/v1/chapters/123</code>.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Каталог і текст розділені навмисно. Спочатку каталог без тіл:
+          <code class="text-fg">GET /api/v1/fictions/slug/chapters</code>
+          (опційно <code class="text-fg">from</code> / <code class="text-fg">to</code> / <code class="text-fg">team_id</code>).
+          У відповіді немає <code class="text-fg">html</code>, <code class="text-fg">paragraphs</code> і <code class="text-fg">version</code> —
+          так великий твір з ілюстраціями не відвалюється по таймауту.
+        </p>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Текст беріть окремо: один розділ <code class="text-fg">GET /api/v1/chapters/123</code>
+          або <code class="text-fg">GET /api/v1/fictions/slug/chapters/by_number/12</code>,
+          кілька — <code class="text-fg">GET /api/v1/fictions/slug/chapters/batch?from=1&amp;to=5</code>
+          (до 5 розділів і з лімітом за розміром HTML).
+          Query <code class="text-fg">body=all|html|paragraphs</code>: для порівняння текстів зручно <code class="text-fg">body=html</code>.
+          Поле <code class="text-fg">version</code> є лише в цих відповідях з текстом — його й передавайте в запис.
         </p>
         <p class="text-fg-secondary leading-relaxed mb-4">
           Нова чернетка. Поле <code class="text-fg">content</code> — це Markdown.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_09_153655) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_10_124016) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -319,7 +319,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_09_153655) do
     t.datetime "submissions_close_at", null: false
     t.datetime "submissions_open_at", null: false
     t.string "tagline", limit: 160
-    t.string "teaser_text", limit: 160
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["required_genre_id"], name: "index_contests_on_required_genre_id"

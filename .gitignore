@@ -43,6 +43,9 @@ coverage/*
 # Local performance audit notes (not for version control)
 /docs/
 
+# Hallmark local scratch (screenshots, preflight, session decisions)
+.hallmark/
+
 # Editor settings (machine-specific paths, e.g. mise Ruby/RuboCop)
 .vscode/
 .cursor/

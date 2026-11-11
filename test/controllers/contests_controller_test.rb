@@ -5,15 +5,6 @@ require 'test_helper'
 class ContestsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test 'admin can open hub while unlisted' do
-    sign_in users(:user_one)
-
-    get contests_path
-
-    assert_response :success
-    assert_select '.contests-page'
-  end
-
   test 'admin can open show while unlisted' do
     sign_in users(:user_one)
 
@@ -75,17 +66,6 @@ class ContestsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_predicate Contests::Readiness.new(contest.reload), :previewed?
-  end
-
-  test 'admin hub shows teaser text for unpublished draft when idle' do
-    sign_in users(:user_one)
-    Contest.active.find_each { |contest| contest.update!(cancelled_at: Time.current) }
-    contests(:draft).update!(teaser_text: 'Скоро новий Поріг')
-
-    get contests_path
-
-    assert_response :success
-    assert_select 'p', text: 'Скоро новий Поріг'
   end
 
   test 'unknown slug is not found' do

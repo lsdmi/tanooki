@@ -90,21 +90,6 @@ class ScanlatorsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to scanlator_path(scanlator)
     assert_equal 'Updated Scanlator', scanlator.reload.title
   end
-  test 'should show scanlator' do
-    scanlator = scanlators(:one)
-    get scanlator_path(scanlator)
-
-    assert_response :success
-    assert_not_nil assigns(:fictions)
-    assert_kind_of Scanlators::ShowPresenter, assigns(:scanlator_stats)
-  end
-
-  test 'should show scanlator stats on profile page' do
-    get scanlator_path(scanlators(:one))
-
-    assert_includes response.body, 'Розділів'
-    assert_includes response.body, '4.5'
-  end
 
   test 'should destroy scanlator' do
     sign_in users(:user_one)

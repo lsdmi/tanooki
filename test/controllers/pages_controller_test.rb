@@ -25,7 +25,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'li', text: /під позначкою 16\+ є порушенням правил/
   end
 
-  test 'rules page links to each public archive contest while hub is unlisted' do
+  test 'rules page links to each public archive contest and not a contests index' do
     get rules_url
 
     Contests::PublicAccess.discoverable_contests.find_each do |contest|
@@ -33,7 +33,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
                     contest_path(contest),
                     text: contest.title
     end
-    assert_select 'a[href=?]', contests_path, count: 0
+    assert_select 'a[href="/contests"]', count: 0
     assert_select '#contest-rules h2', text: 'Загальні правила конкурсів'
   end
 

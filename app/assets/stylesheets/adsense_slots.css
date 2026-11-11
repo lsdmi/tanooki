@@ -6,41 +6,10 @@ html.adblock-likely .bookshelf-show__ad,
   display: none !important;
 }
 
-/* Scanlator show: ad-only column drops out when blocked / unfilled / never started.
-   Flex + justify-center keeps the fiction card centred whenever that column is gone
-   (our collapse, adblock-likely, or an extension hiding the column). */
-html.adblock-likely .scanlator-show__sidebar-ad,
-.scanlator-show__sidebar-ad:has(.reader-ad-slot--collapsed),
-.scanlator-show__sidebar-ad:not(:has(.reader-ad-slot--adsense-filled)):not(:has(.reader-ad-slot--preview)):not(:has(.reader-ad-slot--measuring)):not(:has(.reader-ad-slot--pending)) {
-  display: none !important;
-}
-
+/* Scanlator show: single full-width slot under the works grid. */
 html.adblock-likely .scanlator-show__ad--full,
 .scanlator-show__ad--full:has(.reader-ad-slot--collapsed) {
   display: none !important;
-}
-
-@media (min-width: 1024px) {
-  .scanlator-show__grid--ad-sidebar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .scanlator-show__grid--ad-sidebar .scanlator-show__sidebar-ad {
-    flex: 0 0 calc((100% - 2rem) / 3);
-    width: calc((100% - 2rem) / 3);
-    max-width: calc((100% - 2rem) / 3);
-  }
-
-  /* Same width as two of three grid tracks (+ the gap between them). */
-  .scanlator-show__grid--ad-sidebar .scanlator-show__fictions {
-    flex: 0 0 calc(2 * (100% - 2rem) / 3);
-    width: calc(2 * (100% - 2rem) / 3);
-    max-width: calc(2 * (100% - 2rem) / 3);
-  }
 }
 
 .reader-ad-slot--adsense-filled {

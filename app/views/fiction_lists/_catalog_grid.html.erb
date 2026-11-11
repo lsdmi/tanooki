@@ -1,4 +1,5 @@
-<div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6">
+<% mid_ads = local_assigns.fetch(:mid_ads, true) %>
+<div class="<%= local_assigns.fetch(:wrapper_class, 'mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6') %>">
   <% fictions.each_with_index do |fiction, index| %>
     <% rating = fiction.average_rating %>
     <% rating_text = rating.positive? ? number_with_precision(rating, precision: 1, separator: ',') : nil %>
@@ -6,7 +7,7 @@
     <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
     <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs).first(2) %>
     <% eager_cover = index < 2 %>
-    <article class="group min-w-0" data-fiction-picker-id-param="<%= fiction.id %>">
+    <article class="group min-w-0">
       <%= link_to fiction_path(fiction),
             class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-md bg-surface-strong transition-[filter,transform] duration-200 ease-out hover:brightness-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand',
             data: { turbo_frame: '_top' } do %>
@@ -53,8 +54,17 @@
         <% end %>
       </div>
     </article>
-    <% if catalog_mid_ad?(index: index, total: fictions.size) %>
-      <%= render 'fiction_lists/catalog_ad_slot', wrapper_class: 'col-span-full' %>
+    <% if mid_ads && catalog_mid_ad?(index: index, total: fictions.size) %>
+      <% if local_assigns[:mid_ad_placement] %>
+        <div class="scanlator-show__ad scanlator-show__ad--full col-span-full w-full py-6">
+          <%= render 'shared/adsense_slot',
+                     placement: mid_ad_placement,
+                     navigation_key: local_assigns.fetch(:mid_ad_navigation_key, ''),
+                     measure_as: 'bottom' %>
+        </div>
+      <% else %>
+        <%= render 'fiction_lists/catalog_ad_slot', wrapper_class: 'col-span-full' %>
+      <% end %>
     <% end %>
   <% end %>
 </div>

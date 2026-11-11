@@ -9,8 +9,9 @@ module Api
 
         tool_name 'list_chapters'
         title 'List chapters'
-        description 'Chapters of one fiction this token can see, without the text. Call this before create_chapter. ' \
-                    'Another team’s chapters are absent. Needs chapters:read.'
+        description 'Catalog only: id, number, title, status, volume, teams — no html, paragraphs, or version. ' \
+                    'Call this before create_chapter and to discover numbers. For text or version use get_chapter / ' \
+                    'get_chapters. Another team’s chapters are absent. Needs chapters:read.'
         input_schema(
           properties: {
             fiction: { type: 'string', description: 'Fiction id or slug' },

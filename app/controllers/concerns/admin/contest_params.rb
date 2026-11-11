@@ -10,7 +10,7 @@ module Admin
     ].freeze
 
     CONTEST_PERMITTED = [
-      :title, :tagline, :kind, :teaser_text, :description, :rules,
+      :title, :tagline, :kind, :description, :rules,
       :announced_at, :submissions_open_at, :submissions_close_at, :judging_close_at,
       :required_genre_id, :requires_new_work, :requires_completed,
       :min_chapters, :judged_chapters_scope,

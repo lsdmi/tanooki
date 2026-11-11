@@ -17,7 +17,7 @@ class Contest < ApplicationRecord
     { 'key' => 'hook', 'label' => 'Захопливість', 'weight' => 15 }
   ].freeze
 
-  normalizes_squished :title, :tagline, :teaser_text, :cancel_reason
+  normalizes_squished :title, :tagline, :cancel_reason
 
   friendly_id :slug_candidates
 
@@ -53,7 +53,7 @@ class Contest < ApplicationRecord
        validate: true
 
   validates :title, presence: true, length: { maximum: 100 }
-  validates :tagline, :teaser_text, length: { maximum: 160 }, allow_blank: true
+  validates :tagline, length: { maximum: 160 }, allow_blank: true
   validates :announced_at, :submissions_open_at, :submissions_close_at, :judging_close_at, presence: true
   validates :jury_weight, numericality: { only_integer: true, in: 0..100 }
   validates :max_content_rating, inclusion: { in: Fiction.content_ratings.values }

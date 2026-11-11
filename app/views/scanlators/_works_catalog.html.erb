@@ -1,0 +1,52 @@
+<%# locals: (fictions:, pagy:, scanlator:) %>
+<%= turbo_frame_tag Scanlators::WorksCatalogHelper::WORKS_FRAME_ID, class: 'catalog-list-frame scanlator-works block' do %>
+  <%= render 'scanlators/works_toolbar', pagy: pagy %>
+
+  <div class="catalog-list-body relative mt-2 min-h-48">
+    <div class="catalog-frame-spinner" aria-hidden="true">
+      <svg class="h-8 w-8 animate-spin text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" role="presentation">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
+
+    <div class="catalog-list-body-content">
+      <% if fictions.any? %>
+        <% mid_ad_locals = {
+             mid_ad_placement: :scanlator_show,
+             mid_ad_navigation_key: "#{scanlator.id}-p#{pagy.page}"
+           } %>
+        <% if params[:view] == 'list' %>
+          <%= render 'fiction_lists/catalog_list', fictions: fictions, **mid_ad_locals %>
+        <% else %>
+          <%= render 'fiction_lists/catalog_grid', fictions: fictions, **mid_ad_locals %>
+        <% end %>
+        <%= ui_pagination(
+              pagy,
+              frame_id: Scanlators::WorksCatalogHelper::WORKS_FRAME_ID,
+              custom_params: scanlator_works_pagy_custom_params,
+              html: { class: 'pt-12' }
+            ) %>
+      <% elsif params[:q].present? %>
+        <div class="py-16 text-center">
+          <p class="font-semibold text-fg"><%= t('fiction_lists.empty.search_title', query: params[:q]) %></p>
+          <p class="mt-1 text-sm text-fg-muted"><%= t('fiction_lists.empty.search_hint') %></p>
+        </div>
+        <div class="scanlator-show__ad scanlator-show__ad--full mt-6">
+          <%= render 'shared/adsense_slot',
+                     placement: :scanlator_show,
+                     navigation_key: "#{scanlator.id}-empty",
+                     measure_as: 'bottom' %>
+        </div>
+      <% else %>
+        <p class="py-16 text-center text-base text-fg-muted">У цієї команди ще немає опублікованих творів.</p>
+        <div class="scanlator-show__ad scanlator-show__ad--full mt-6">
+          <%= render 'shared/adsense_slot',
+                     placement: :scanlator_show,
+                     navigation_key: "#{scanlator.id}-empty",
+                     measure_as: 'bottom' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

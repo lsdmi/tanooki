@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
-# Public contests hub and contest page.
+# Public contest show and comments (no hub index — guests use direct show URLs).
 class ContestsController < ApplicationController
-  before_action :require_contests_hub_access!, only: :index
   before_action :set_contest, only: %i[show comments]
   before_action :require_contest_show_access!, only: %i[show comments]
-
-  def index
-    @hub = Contests::HubPresenter.new
-    preload_contest_cover(@hub.featured)
-  end
 
   def show
     preview_draft_contest! if @contest.draft?
@@ -30,10 +24,6 @@ class ContestsController < ApplicationController
 
   def set_contest
     @contest = Contest.friendly.find(params.expect(:slug))
-  end
-
-  def require_contests_hub_access!
-    raise ActiveRecord::RecordNotFound unless Contests::PublicAccess.visible?(current_user)
   end
 
   def require_contest_show_access!

@@ -864,6 +864,7 @@ uk:
     rules:
       title: Загальні правила конкурсів
       intro: Діють для всіх конкурсів. Конкретний конкурс додає своє Положення (тема, вимоги, дати, призи) і може змінити лише те, що позначено як налаштування конкурсу.
+      section_title: Конкурси
       page_blurb: Правила участі, ШІ, оцінювання й призів — однакові для всіх конкурсів на Баці.
       page_link: Читати загальні правила
       who:
@@ -1032,21 +1033,6 @@ uk:
       fanfiction: Фанфік
       translation: Переклад
       art: Арт
-    hub:
-      title: Конкурси
-      idle_title: Наступний конкурс готуємо
-      idle_body: Між конкурсами тут — зала слави й архів. Стеж за анонсом у Telegram.
-      teaser_hint: Офіційний анонс з’явиться невдовзі — стеж за Telegram.
-      telegram: Стежити в Telegram
-      hall_of_fame: Зала слави
-      hall_of_fame_empty: Переможці з’являться після перших результатів.
-      archive_title: Архів
-      archive_empty: Архів поки порожній.
-      archive_entries:
-        one: "%{count} робота"
-        few: "%{count} роботи"
-        many: "%{count} робіт"
-        other: "%{count} роботи"
     presets:
       draft_title: "Чернетка · %{preset}"
       duplicate_title: "Наступний після «%{title}»"
@@ -1877,7 +1863,6 @@ uk:
         title: Назва
         tagline: Слоган
         kind: Тип
-        teaser_text: Тизер для хабу
         description: Тема й підказки
         rules: Додаткові пункти Положення
         announced_at: Анонс

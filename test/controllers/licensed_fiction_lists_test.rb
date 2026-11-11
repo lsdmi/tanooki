@@ -14,8 +14,8 @@ class LicensedFictionListsTest < ActionDispatch::IntegrationTest
   test 'the alphabetical licensed filter lists only licensed works' do
     get alphabetical_fictions_url, params: { licensed: '1' }
 
-    assert_select '[data-fiction-picker-id-param]', 1
-    assert_select '[data-fiction-picker-id-param=?]', @licensed.id.to_s
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@licensed), minimum: 1
+    assert_select '#fiction-list-page a[href=?]', fiction_path(fictions(:one)), count: 0
   end
 
   test 'a cover picked on a filtered catalog URL keeps the catalog details' do

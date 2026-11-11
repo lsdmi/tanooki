@@ -4,7 +4,9 @@ module Api
   module Mcp
     # One stateless MCP server for the current token. It shares the Phase 2 services with REST.
     class Server
-      INSTRUCTIONS = 'Draft is the default. Call list_chapters before create_chapter. ' \
+      INSTRUCTIONS = 'Draft is the default. Call list_chapters before create_chapter — it returns ' \
+                     'metadata only (no text, no version). Read text with get_chapter or get_chapters ' \
+                     '(up to 5); take version from those reads before any write. ' \
                      'Prefer edit_paragraphs over update_chapter for a fix. ' \
                      'After a write, show edit_url and what changed. One chapter per write. ' \
                      'To see a picture, call view_chapter_image. Do not download the image URL yourself.'

@@ -7,8 +7,7 @@
     <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
     <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs) %>
     <% eager_cover = index < 2 %>
-    <article class="flex gap-4 rounded-xl border border-line bg-main p-4"
-             data-fiction-picker-id-param="<%= fiction.id %>">
+    <article class="flex gap-4 rounded-xl border border-line bg-main p-4">
       <%= link_to fiction_path(fiction),
             class: 'relative w-28 shrink-0 self-start overflow-hidden rounded-lg bg-surface-strong sm:w-32',
             data: { turbo_frame: '_top' } do %>
@@ -87,7 +86,16 @@
       </div>
     </article>
     <% if catalog_mid_ad?(index: index, total: fictions.size) %>
-      <%= render 'fiction_lists/catalog_ad_slot' %>
+      <% if local_assigns[:mid_ad_placement] %>
+        <div class="scanlator-show__ad scanlator-show__ad--full w-full py-2">
+          <%= render 'shared/adsense_slot',
+                     placement: mid_ad_placement,
+                     navigation_key: local_assigns.fetch(:mid_ad_navigation_key, ''),
+                     measure_as: 'bottom' %>
+        </div>
+      <% else %>
+        <%= render 'fiction_lists/catalog_ad_slot' %>
+      <% end %>
     <% end %>
   <% end %>
 </div>

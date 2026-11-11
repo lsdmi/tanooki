@@ -32,4 +32,12 @@ class PagesApiTest < ActionDispatch::IntegrationTest
     assert_match 'published_at', response.body
     assert_match 'ISO 8601', response.body
   end
+
+  test 'the docs separate chapter catalog from bodies' do
+    get api_docs_path
+
+    assert_match 'Каталог і текст розділені', response.body
+    assert_match 'body=all|html|paragraphs', response.body
+    assert_match 'chapters/batch', response.body
+  end
 end

@@ -24,10 +24,6 @@
       <%= f.select :kind, Contest::KINDS.map { |k| [k, k] }, {}, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
     </div>
     <div class="sm:col-span-2">
-      <%= f.label :teaser_text, t('admin.contests.fields.teaser_text'), class: 'block text-sm font-medium text-fg' %>
-      <%= f.text_field :teaser_text, class: 'mt-1 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
-    </div>
-    <div class="sm:col-span-2">
       <%= f.label :description, t('admin.contests.fields.description'), class: 'block text-sm font-medium text-fg' %>
       <%= f.text_area :description, value: contest.description.to_s, class: 'tinymce mt-1 min-h-48 w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
     </div>

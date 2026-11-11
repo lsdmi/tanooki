@@ -92,7 +92,7 @@ module StructuredData
       assert_empty(%w[WebPage BreadcrumbList Event] - types)
     end
 
-    test 'contest_page_json breadcrumb skips the gated hub' do
+    test 'contest_page_json breadcrumb uses rules instead of a contests index' do
       payload = JSON.parse(@graphs.contest_page_json(contests(:results)))
       breadcrumb = payload['@graph'].find { |node| node['@type'] == 'BreadcrumbList' }
 

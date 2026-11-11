@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Contests
-  # Gates hub + submit until LISTED. Archive shows in PUBLIC_SHOW_SLUGS are public
-  # without opening /contests; admins always see every surface.
+  # Guest-facing contest shows are allowlisted. Admins see every show.
+  # LISTED opens all visible shows + submit surfaces (no public /contests hub).
   module PublicAccess
     LISTED = false
     PUBLIC_SHOW_SLUGS = %w[i-konkurs-ranobe ii-konkurs-ranobe].freeze

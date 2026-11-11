@@ -78,7 +78,8 @@ module Layout
     end
 
     def requires_catalog_storage_styles?
-      controller_path == 'fiction_lists' && action_name == 'alphabetical'
+      (controller_path == 'fiction_lists' && action_name == 'alphabetical') ||
+        (controller_path == 'scanlators' && action_name == 'show')
     end
 
     def requires_sweetalert_styles?

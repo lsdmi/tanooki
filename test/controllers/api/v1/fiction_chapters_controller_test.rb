@@ -4,13 +4,32 @@ require 'test_helper'
 
 module Api
   module V1
-    class FictionChaptersControllerTest < ActionDispatch::IntegrationTest
-      setup do
+    module FictionChaptersTestHelpers
+      def issue(user, scopes)
+        token = ApiToken.issue!(user:, name: 'Claude', scopes:)
+        [token, token.secret]
+      end
+
+      def auth
+        { 'Authorization' => "Bearer #{@secret}" }
+      end
+
+      def draft_body
+        { number: 12, title: 'Новий', content: 'Чернетка з абзацом.', scanlator_ids: [scanlators(:two).id] }
+      end
+
+      def setup_fiction_chapters_api!
         @user = users(:user_two)
         @token, @secret = issue(@user, %w[chapters:read chapters:write])
         @fiction = fictions(:eighteen)
         FictionScanlator.create!(fiction: @fiction, scanlator: scanlators(:two))
       end
+    end
+
+    class FictionChaptersControllerTest < ActionDispatch::IntegrationTest
+      include FictionChaptersTestHelpers
+
+      setup { setup_fiction_chapters_api! }
 
       teardown do
         Rails.cache.delete(Api::Limits.counter_key(:create, @user, Date.current))
@@ -26,16 +45,40 @@ module Api
         assert_equal [401, 401, 401], statuses
       end
 
-      test 'a member lists and reads a chapter just created' do
+      test 'a member creates a chapter' do
         post api_v1_fiction_chapters_path(@fiction), params: draft_body, headers: auth, as: :json
-        chapter_id = response.parsed_body['id']
 
         assert_response :created
+        assert_predicate response.parsed_body['id'], :present?
+      end
 
+      test 'a member reads a chapter just created' do
+        post api_v1_fiction_chapters_path(@fiction), params: draft_body, headers: auth, as: :json
+        chapter_id = response.parsed_body['id']
         get api_v1_chapter_path(chapter_id), headers: auth
 
         assert_response :success
         assert_equal chapter_id, response.parsed_body['id']
+        assert_predicate response.parsed_body['version'], :present?
+      end
+
+      test 'the chapter list omits body fields' do
+        post api_v1_fiction_chapters_path(@fiction), params: draft_body, headers: auth, as: :json
+        get api_v1_fiction_chapters_path(@fiction), headers: auth
+        row = response.parsed_body.fetch('chapters').sole
+
+        assert_response :success
+        assert_equal 12, row['number']
+        assert_nil row['version']
+      end
+
+      test 'the chapter list omits html and paragraphs' do
+        post api_v1_fiction_chapters_path(@fiction), params: draft_body, headers: auth, as: :json
+        get api_v1_fiction_chapters_path(@fiction), headers: auth
+        row = response.parsed_body.fetch('chapters').sole
+
+        assert_nil row['html']
+        assert_nil row['paragraphs']
       end
 
       test 'another teams fiction is not found' do
@@ -52,6 +95,16 @@ module Api
 
         assert_response :forbidden
         assert_equal 'publish_scope', response.parsed_body.dig('error', 'code')
+      end
+    end
+
+    class FictionChaptersControllerEdgesTest < ActionDispatch::IntegrationTest
+      include FictionChaptersTestHelpers
+
+      setup { setup_fiction_chapters_api! }
+
+      teardown do
+        Rails.cache.delete(Api::Limits.counter_key(:create, @user, Date.current))
       end
 
       test 'a duplicate number for the same team conflicts' do
@@ -116,21 +169,6 @@ module Api
 
         assert_response :too_many_requests
         assert_equal 'rate_limited', response.parsed_body.dig('error', 'code')
-      end
-
-      private
-
-      def issue(user, scopes)
-        token = ApiToken.issue!(user:, name: 'Claude', scopes:)
-        [token, token.secret]
-      end
-
-      def auth
-        { 'Authorization' => "Bearer #{@secret}" }
-      end
-
-      def draft_body
-        { number: 12, title: 'Новий', content: 'Чернетка з абзацом.', scanlator_ids: [scanlators(:two).id] }
       end
     end
   end

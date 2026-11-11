@@ -20,14 +20,14 @@ module Ui
     test 'renders summary with formatted rating and count' do
       render_inline(StarRatingComponent.new(rating: 4.5, rating_count: 12, show_summary: true))
 
-      assert_selector 'p.anime-text.text-stone-100', text: /4[,.]5/
+      assert_selector 'p.text-stone-100', text: /4[,.]5/
       assert_text 'Рейтинг (12)'
     end
 
     test 'renders empty summary when rating is zero' do
       render_inline(StarRatingComponent.new(rating: 0, show_summary: true))
 
-      assert_selector 'p.anime-text.text-stone-400', text: '—'
+      assert_selector 'p.text-stone-400', text: '—'
       assert_text 'Рейтинг'
       assert_no_text 'Рейтинг ('
     end

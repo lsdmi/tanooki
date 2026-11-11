@@ -58,7 +58,7 @@ class LayoutFragmentCacheTest < ActionDispatch::IntegrationTest
     get fictions_path
 
     assert_select 'nav[aria-label="Основна навігація"] #ranobeNavButton', count: 0
-    assert_select 'nav[aria-label="Основна навігація"] a[href=?]', contests_path, count: 0
+    assert_select 'nav[aria-label="Основна навігація"] a[href="/contests"]', count: 0
   end
 
   test 'signed in navbar omits retired mega-menu labels' do

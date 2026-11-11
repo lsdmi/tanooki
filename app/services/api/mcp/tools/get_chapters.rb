@@ -9,7 +9,8 @@ module Api
 
         tool_name 'get_chapters'
         title 'Get chapters'
-        description 'Up to 5 chapters in a number range, with paragraphs. Use this to proofread a range. ' \
+        description 'Up to 5 chapters in a number range, each with html, paragraphs, and version. ' \
+                    'Use after list_chapters when you need bodies (proofread, compare). Cap is also ~200KB of HTML. ' \
                     'Writes are still one chapter at a time. Needs chapters:read.'
         input_schema(
           properties: {

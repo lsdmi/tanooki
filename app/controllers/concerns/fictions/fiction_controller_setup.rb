@@ -77,7 +77,7 @@ module Fictions
     rescue ActiveRecord::RecordNotFound
       raise unless Contests::PublicAccess.visible?(current_user)
 
-      redirect_to contests_path, alert: t('contests.submit.missing')
+      redirect_to rules_path(anchor: 'contest-rules'), alert: t('contests.submit.missing')
     end
 
     def can_create_fiction?

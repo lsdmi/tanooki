@@ -12,11 +12,13 @@ module Api
       end
 
       def batch
-        render json: { chapters: catalog.batch(params[:fiction_id], **list_options) }
+        render json: { chapters: catalog.batch(params[:fiction_id], **list_options, body: body_option) }
       end
 
       def by_number
-        render json: catalog.by_number(params[:fiction_id], params[:number], volume: params[:volume], **list_options)
+        render json: catalog.by_number(
+          params[:fiction_id], params[:number], volume: params[:volume], **list_options, body: body_option
+        )
       end
 
       def create
@@ -39,6 +41,14 @@ module Api
 
       def list_options
         { team_id: params[:team_id], from: params[:from], to: params[:to] }
+      end
+
+      def body_option
+        case params[:body].to_s
+        when 'html' then :html
+        when 'paragraphs' then :paragraphs
+        else :all
+        end
       end
 
       def catalog

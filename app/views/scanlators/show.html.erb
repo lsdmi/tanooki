@@ -1,191 +1,161 @@
-<div class="bg-page">
-  <header class="relative">
-    <%# The strip is taller than the header and ends in the page color, so the banner has no bottom edge. %>
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-80 overflow-hidden" aria-hidden="true">
-      <%= image_tag scanlator_banner_url(@scanlator.banner),
+<% donation_url = @scanlator.donation_url %>
+<% extra_link_url = @scanlator.extra_link_url %>
+<% scanlator_has_links = @scanlator.telegram_id? || donation_url.present? || extra_link_url.present? %>
+<% scanlator_link_class = 'underline font-medium text-fg-brand hover:text-fg-brand-hover break-words' %>
+<% scanlator_social_btn = [
+     'group inline-flex size-11 items-center justify-center rounded-full',
+     'token-raw bg-white/35 text-fg-secondary shadow-sm ring-1 ring-zinc-950/25 backdrop-blur-sm',
+     'transition duration-200 ease-out',
+     'token-raw hover:bg-white/70 hover:text-fg hover:shadow-md hover:ring-zinc-950/35',
+     'motion-safe:hover:-translate-y-0.5 active:translate-y-0 active:scale-95',
+     'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+     'token-raw dark:bg-zinc-950/25 dark:ring-white/30 dark:hover:bg-zinc-950/55 dark:hover:ring-white/40'
+   ].join(' ') %>
+<% scanlator_social_icon = 'size-5 shrink-0 transition duration-200 ease-out' %>
+<% scanlator_social_icon_send = "#{scanlator_social_icon} motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5" %>
+<% scanlator_social_icon_heart = "#{scanlator_social_icon} motion-safe:group-hover:scale-110 group-hover:fill-current" %>
+<% scanlator_social_icon_link = "#{scanlator_social_icon} motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5" %>
+<% scanlator_stat_chip = 'token-raw inline-flex items-center gap-1.5 rounded-lg border border-zinc-500 bg-white/40 px-3 py-1.5 text-sm backdrop-blur-sm dark:border-zinc-400/80 dark:bg-zinc-950/35' %>
+<% scanlator_banner_src = @scanlator.banner.attached? ? scanlator_banner_url(@scanlator.banner) : nil %>
+
+<div class="relative min-h-screen overflow-hidden bg-page">
+  <% if scanlator_banner_src.blank? %>
+    <%= tag.div **lazy_decoration_background(
+          'psyduck_background.webp',
+          html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed',
+          aria: { hidden: true }
+        ) %>
+    <div class="pointer-events-none absolute inset-0 bg-page/95 dark:bg-page/90" aria-hidden="true"></div>
+  <% else %>
+    <%# Full-page strip behind content; wash fades the art out by the bottom of the page. %>
+    <div class="scanlator-show__banner pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+      <%= image_tag scanlator_banner_src,
                     alt: '',
-                    class: 'absolute inset-0 size-full scale-105 object-cover object-center blur-[2px]' %>
-      <div class="absolute inset-0 bg-linear-to-b from-page/75 to-page dark:from-page/70"></div>
+                    class: 'absolute inset-0 size-full object-cover object-[50%_20%]' %>
+      <div class="absolute inset-0 bg-linear-to-b from-page/75 via-page/95 via-[28%] to-page dark:from-page/70 dark:via-page/92 dark:via-[28%]"></div>
     </div>
-    <div class="relative mx-auto flex max-w-5xl items-start gap-4 px-4 pt-10 pb-6 sm:gap-5 sm:pt-12 sm:pb-8">
-      <%= image_tag scanlator_avatar_url(@scanlator.avatar),
-                    alt: '',
-                    class: 'size-16 shrink-0 rounded-full bg-surface object-cover ring-1 ring-line sm:size-20' %>
+  <% end %>
 
-      <div class="min-w-0 flex-1">
-        <h1 class="text-2xl font-semibold tracking-tight text-fg sm:text-3xl"><%= @scanlator.title %></h1>
+  <header class="relative z-10">
+    <div class="relative mx-auto flex max-w-screen-xl flex-col items-center gap-4 px-4 pt-10 pb-6 md:flex-row md:items-start md:gap-6 md:pt-14 md:pb-8 2xl:px-0">
+      <div class="size-40 shrink-0 overflow-hidden rounded-full bg-surface-strong">
+        <%= image_tag scanlator_avatar_url(@scanlator.avatar),
+                      alt: @scanlator.title,
+                      class: 'size-full object-cover' %>
+      </div>
 
-        <% if @scanlator.telegram_id? %>
-          <%= link_to telegram_profile_url(@scanlator.telegram_id),
-                      target: '_blank',
-                      rel: 'noopener noreferrer',
-                      class: 'mt-1 inline-block text-sm text-fg-muted transition-colors hover:text-fg' do %>
-            @<%= @scanlator.telegram_id %>
-          <% end %>
+      <div class="flex min-w-0 flex-1 flex-col gap-2 text-center md:max-w-2xl md:text-left">
+        <h1 class="text-xl font-bold tracking-tight text-fg md:text-2xl"><%= @scanlator.title %></h1>
+
+        <% if @scanlator.description? %>
+          <div class="text-sm leading-relaxed text-pretty text-fg-secondary md:text-base">
+            <%= linkify_urls(@scanlator.description, link_class: scanlator_link_class) %>
+          </div>
         <% end %>
 
-        <ul class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-secondary">
-          <li><span class="font-medium text-fg"><%= format_view_count(@scanlator_stats.chapters_count) %></span> Розділів</li>
-          <li><span class="font-medium text-fg"><%= format_view_count(@scanlator_stats.total_views) %></span> Прочитань</li>
-          <li>
-            <span class="font-medium text-fg"><%= format_view_count(@scanlator_stats.total_thanks_count) %></span>
-            <%= t('chapters.thanks.scanlator_label') %>
+        <ul class="mt-1 flex flex-wrap justify-center gap-2 md:justify-start">
+          <li class="<%= scanlator_stat_chip %>">
+            <span class="font-semibold tabular-nums text-fg"><%= format_view_count(@scanlator_stats.chapters_count) %></span>
+            <span class="text-fg-secondary">Розділів</span>
           </li>
-          <li class="inline-flex items-center gap-1.5">
-            <span class="size-1.5 rounded-full <%= @scanlator_stats.active_recently? ? 'bg-green-500' : 'bg-fg-subtle' %>" aria-hidden="true"></span>
-            <%= @scanlator_stats.active_recently? ? 'Активна' : 'Неактивна' %>
+          <li class="<%= scanlator_stat_chip %>">
+            <span class="font-semibold tabular-nums text-fg"><%= format_view_count(@scanlator_stats.total_views) %></span>
+            <span class="text-fg-secondary">Прочитань</span>
           </li>
-          <li class="inline-flex items-center gap-1">
-            <% if @scanlator_stats.average_rating.to_f.positive? %>
+          <li class="<%= scanlator_stat_chip %>">
+            <span class="font-semibold tabular-nums text-status-danger-subtle-fg"><%= format_view_count(@scanlator_stats.total_thanks_count) %></span>
+            <span class="text-fg-secondary"><%= t('chapters.thanks.scanlator_label') %></span>
+          </li>
+          <% if @scanlator_stats.active_recently? %>
+            <li class="<%= scanlator_stat_chip %> font-medium text-status-success-subtle-fg">
+              Активна
+            </li>
+          <% else %>
+            <li class="<%= scanlator_stat_chip %> text-fg-secondary">
+              Неактивна
+            </li>
+          <% end %>
+          <% if @scanlator_stats.average_rating.to_f.positive? %>
+            <li class="<%= scanlator_stat_chip %>">
               <%= stroke_icon(:star, 'size-3.5 fill-amber-400 text-amber-400') %>
-              <span class="font-medium text-fg"><%= number_with_precision(@scanlator_stats.average_rating, precision: 1) %></span>
-            <% else %>
-              <span class="font-medium text-fg">—</span>
-            <% end %>
-          </li>
+              <span class="font-semibold tabular-nums text-fg"><%= number_with_precision(@scanlator_stats.average_rating, precision: 1) %></span>
+            </li>
+          <% end %>
         </ul>
 
-        <% donation_url = @scanlator.donation_url %>
-        <% extra_link_url = @scanlator.extra_link_url %>
-        <% if donation_url || extra_link_url %>
-          <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-            <% if donation_url %>
-              <% donation_label = t('chapters.reader_support_card.support', service: @scanlator.donation_service) %>
-              <%= link_to donation_url,
-                          target: '_blank',
-                          rel: 'noopener noreferrer',
-                          class: 'inline-flex items-center gap-1.5 text-fg-brand transition-colors hover:text-fg-brand-hover',
-                          aria: { label: donation_label } do %>
-                <%= stroke_icon(:heart, 'size-4') %>
-                <%= donation_label %>
-              <% end %>
+        <% if @members.any? %>
+          <ul class="mt-3 flex flex-wrap items-center justify-center gap-y-2 -space-x-2 md:justify-start" aria-label="Учасники">
+            <% @members.each do |member| %>
+              <li>
+                <%= link_to profile_path(member.sqid),
+                            class: 'relative inline-flex size-8 overflow-hidden rounded-full bg-surface-strong ring-2 ring-page transition hover:z-10 hover:ring-brand focus:outline-none focus-visible:z-10 focus-visible:ring-brand',
+                            title: member.name,
+                            aria: { label: member.name } do %>
+                  <%= image_tag avatar_image_url(member.avatar.image),
+                                alt: '',
+                                class: 'size-full object-cover',
+                                loading: 'lazy',
+                                decoding: 'async' %>
+                <% end %>
+              </li>
             <% end %>
-            <% if extra_link_url %>
-              <%= link_to extra_link_url,
-                          target: '_blank',
-                          rel: 'noopener noreferrer',
-                          class: 'inline-flex items-center gap-1.5 text-fg-secondary transition-colors hover:text-fg' do %>
-                <%= stroke_icon(:external_link, 'size-4') %>
-                Посилання
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </header>
-
-    <!-- Main Content -->
-    <% scanlator_has_sidebar_cards = @scanlator.description? || @scanlator.notice? %>
-    <% scanlator_has_fictions = @fictions.ids.size.positive? %>
-    <% scanlator_ad_full_width = scanlator_has_sidebar_cards %>
-    <% scanlator_sidebar_link_class = 'underline font-medium text-fg-brand hover:text-fg-brand-hover break-words' %>
-    <% scanlator_sidebar_card = 'relative overflow-hidden rounded-xl border border-line bg-surface shadow-md dark:bg-surface/95' %>
-    <% scanlator_sidebar_mascot = 'pointer-events-none absolute bottom-4 right-4 select-none text-4xl text-fg-subtle opacity-[0.15] transform -rotate-12 dark:opacity-20 sm:text-5xl sm:bottom-5 sm:right-5' %>
-    <div class="relative z-10 container mx-auto px-4 pt-8 pb-16 max-w-5xl space-y-8">
-      <div class="scanlator-show__grid grid grid-cols-1 lg:grid-cols-3 gap-8<%= ' scanlator-show__grid--ad-sidebar' unless scanlator_ad_full_width %>">
-        <% if scanlator_has_sidebar_cards %>
-          <div class="lg:col-span-1 flex flex-col gap-5">
-            <% if @scanlator.description? %>
-              <section class="<%= scanlator_sidebar_card %>">
-                <div class="h-px w-full bg-gradient-to-r from-transparent via-brand/50 to-transparent dark:via-brand/40"></div>
-                <div class="relative px-5 py-6 sm:px-6 sm:py-7">
-                  <article>
-                    <header class="mb-3 flex items-center gap-2.5">
-                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-subtle text-fg-brand">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </span>
-                      <h2 class="text-xs font-semibold uppercase tracking-wider text-fg-muted">Про команду</h2>
-                    </header>
-                    <div class="border-l-2 border-brand/30 pl-4 text-sm leading-relaxed text-fg-secondary dark:border-brand/35 md:text-[15px]">
-                      <%= linkify_urls(@scanlator.description, link_class: scanlator_sidebar_link_class) %>
-                    </div>
-                  </article>
-                  <div class="<%= scanlator_sidebar_mascot %>" aria-hidden="true">(^o^)</div>
-                </div>
-              </section>
-            <% end %>
-
-            <% if @scanlator.notice? %>
-              <section class="<%= scanlator_sidebar_card %>">
-                <div class="h-px w-full bg-gradient-to-r from-transparent via-brand/50 to-transparent dark:via-brand/40"></div>
-                <div class="relative px-5 py-6 sm:px-6 sm:py-7">
-                  <article>
-                    <header class="mb-3 flex items-center gap-2.5">
-                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-subtle text-fg-brand">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
-                        </svg>
-                      </span>
-                      <h2 class="text-xs font-semibold uppercase tracking-wider text-fg-muted">Оголошення</h2>
-                    </header>
-                    <div class="border-l-2 border-brand/40 pl-4 text-sm leading-relaxed text-fg-secondary dark:border-brand/45 md:text-[15px]">
-                      <%= linkify_urls(@scanlator.notice, link_class: scanlator_sidebar_link_class) %>
-                    </div>
-                  </article>
-                  <% unless @scanlator.description? %>
-                    <div class="<%= scanlator_sidebar_mascot %>" aria-hidden="true">(^o^)</div>
-                  <% end %>
-                </div>
-              </section>
-            <% end %>
-          </div>
-        <% else %>
-          <%# Ad-only column: drops out when unfilled/blocked; flex justify-center then centres the card. %>
-          <div class="scanlator-show__sidebar-ad lg:col-span-1 flex flex-col gap-5">
-            <div class="scanlator-show__ad scanlator-show__ad--sidebar">
-              <%= render "shared/adsense_slot",
-                         placement: :scanlator_show,
-                         navigation_key: @scanlator.id,
-                         measure_as: "bottom" %>
-            </div>
-          </div>
-        <% end %>
-
-        <% if scanlator_has_fictions %>
-          <div data-controller="fiction-picker" class="scanlator-show__fictions lg:col-span-2">
-            <div class="p-4 bg-surface rounded-lg shadow-md overflow-hidden mb-8 lg:mb-0">
-              <% if @fictions.ids.size > 1 %>
-                <div class="flex md:justify-center lg:justify-start space-x-2 overflow-x-auto pt-4 pb-4 mb-4 -mx-2 px-2">
-                  <% @fictions.each_with_index do |fiction, index| %>
-                    <div class="relative transition duration-300 transform hover:scale-105 cursor-pointer flex-shrink-0 w-14 h-20 sm:w-16 sm:h-24">
-                      <%= cover_card_picture_tag(fiction.cover,
-                          alt: fiction.title,
-                          class: "w-full h-full object-cover rounded-md shadow-sm #{index == 0 ? 'ring-2 ring-line-strong' : ''}",
-                          data: {
-                            action: "click->fiction-picker#selectFiction",
-                            fiction_picker_target: "image",
-                            fiction_picker_id_param: fiction.id
-                          } ) %>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
-              <%= turbo_frame_tag "fiction_details" do %>
-                <%= render partial: 'fictions/fiction_details', locals: { fiction: @fictions.first } %>
-              <% end %>
-            </div>
-          </div>
+          </ul>
         <% end %>
       </div>
 
-      <% if scanlator_ad_full_width %>
-        <div class="scanlator-show__ad scanlator-show__ad--full">
-          <%= render "shared/adsense_slot",
-                     placement: :scanlator_show,
-                     navigation_key: @scanlator.id,
-                     measure_as: "bottom" %>
+      <% if scanlator_has_links %>
+        <div class="flex flex-wrap justify-center gap-2 md:ml-auto md:justify-end">
+          <% if @scanlator.telegram_id? %>
+            <% telegram_label = "Telegram @#{@scanlator.telegram_id}" %>
+            <%= link_to telegram_profile_url(@scanlator.telegram_id),
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        class: scanlator_social_btn,
+                        title: telegram_label,
+                        aria: { label: telegram_label } do %>
+              <%= stroke_icon(:send, scanlator_social_icon_send) %>
+            <% end %>
+          <% end %>
+          <% if donation_url %>
+            <% donation_label = t('chapters.reader_support_card.support', service: @scanlator.donation_service) %>
+            <%= link_to donation_url,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        class: "#{scanlator_social_btn} text-status-danger-solid hover:text-status-danger-solid",
+                        title: donation_label,
+                        aria: { label: donation_label } do %>
+              <%= stroke_icon(:heart, scanlator_social_icon_heart) %>
+            <% end %>
+          <% end %>
+          <% if extra_link_url %>
+            <% extra_label = scanlator_extra_link_label(extra_link_url) %>
+            <%= link_to extra_link_url,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        class: scanlator_social_btn,
+                        title: extra_label,
+                        aria: { label: extra_label } do %>
+              <%= stroke_icon(:external_link, scanlator_social_icon_link) %>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     </div>
+  </header>
+
+  <div class="relative z-10 mx-auto max-w-screen-xl space-y-10 px-4 pb-16 2xl:px-0">
+    <% if @scanlator.notice? %>
+      <section class="border-t border-line-strong pt-6">
+        <h2 class="text-sm font-medium text-fg-muted">Оголошення</h2>
+        <div class="mt-1.5 text-base leading-relaxed text-fg">
+          <%= linkify_urls(@scanlator.notice, link_class: scanlator_link_class) %>
+        </div>
+      </section>
+    <% end %>
+
+    <section>
+      <h2 class="sr-only">Твори</h2>
+      <%= render 'scanlators/works_catalog', fictions: @fictions, pagy: @pagy, scanlator: @scanlator %>
+    </section>
   </div>
 </div>
-
-<style>
-  .anime-text {
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    letter-spacing: 1px;
-  }
-</style>

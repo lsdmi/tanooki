@@ -8,7 +8,7 @@ module Api
       before_action(only: %i[update paragraph_edits]) { enforce_scope('chapters:write') }
 
       def show
-        render json: Api::Chapters::Serialize.full(access.chapter!(params[:id]))
+        render json: Api::Chapters::Serialize.full(access.chapter!(params[:id]), body: body_option)
       end
 
       def update
@@ -38,6 +38,14 @@ module Api
 
       def paragraph_input
         params.permit(:version, edits: %i[n old new])
+      end
+
+      def body_option
+        case params[:body].to_s
+        when 'html' then :html
+        when 'paragraphs' then :paragraphs
+        else :all
+        end
       end
 
       def access

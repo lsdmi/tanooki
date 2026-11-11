@@ -56,7 +56,7 @@ class FictionListsContentFilterTest < ActionDispatch::IntegrationTest
 
     get alphabetical_fictions_url, params: { genre: genres(:bl).id }
 
-    assert_select '#fiction-list-page [data-fiction-picker-id-param=?]', @everyone.id.to_s, count: 0
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@everyone), count: 0
     assert_includes response.body, I18n.t('content_filters.genre_hidden')
     assert_select 'turbo-frame#fiction-list-page a[href=?][data-turbo-frame=?]',
                   studio_index_path(tab: 'profile'), '_top',
@@ -77,6 +77,6 @@ class FictionListsContentFilterTest < ActionDispatch::IntegrationTest
 
     get alphabetical_fictions_url
 
-    assert_select '#fiction-list-page [data-fiction-picker-id-param=?]', @everyone.id.to_s, count: 0
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@everyone), count: 0
   end
 end

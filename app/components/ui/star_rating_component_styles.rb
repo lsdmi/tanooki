@@ -20,8 +20,8 @@ module Ui
     ].join(' ').freeze
     HALF_STAR_CLIP_STYLE = 'clip-path: inset(0 50% 0 0);'
 
-    VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-100'
-    EMPTY_VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold anime-text text-stone-400'
+    VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold text-stone-100'
+    EMPTY_VALUE_CLASSES = 'token-raw text-base sm:text-xl md:text-2xl font-bold text-stone-400'
     LABEL_CLASSES = 'token-raw text-xs sm:text-sm md:text-base text-stone-300'
   end
 end

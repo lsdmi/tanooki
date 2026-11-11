@@ -86,8 +86,9 @@ module Meta
     end
 
     def scanlator_description
+      titles = scanlator.fictions.limit(5).pluck(:title).to_sentence.truncate(75)
       "#{scanlator.title} перекладають ранобе та фанфіки українською " \
-        "(#{scanlator.fictions.map(&:title).to_sentence.truncate(75)}). " \
+        "(#{titles}). " \
         'Читайте онлайн на Бака!'
     end
 

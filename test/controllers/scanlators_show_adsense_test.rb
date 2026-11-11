@@ -16,7 +16,7 @@ class ScanlatorsShowAdsenseTest < ActionDispatch::IntegrationTest
     assert_select '.scanlator-show__ad .reader-ad-slot', count: 0
   end
 
-  test 'show renders full-width adsense when any sidebar card is present' do
+  test 'show inserts scanlator adsense in the works grid like storage mid-ad' do
     @scanlator.update!(description: 'Team about text', notice: nil)
 
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
@@ -24,25 +24,11 @@ class ScanlatorsShowAdsenseTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select '.scanlator-show__ad--full #adsense-slot-scanlator_show-' \
-                  "#{@scanlator.id}.reader-ad-slot--preview", count: 1
-    assert_select '.scanlator-show__ad--sidebar', count: 0
+    assert_select '.grid .scanlator-show__ad--full #adsense-slot-scanlator_show-' \
+                  "#{@scanlator.id}-p1.reader-ad-slot--preview", count: 1
   end
 
-  test 'show renders full-width adsense when both sidebar cards are present' do
-    @scanlator.update!(description: 'Team about text', notice: 'Team notice text')
-
-    Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-      get scanlator_url(@scanlator)
-    end
-
-    assert_response :success
-    assert_select '.scanlator-show__ad--full #adsense-slot-scanlator_show-' \
-                  "#{@scanlator.id}.reader-ad-slot--preview", count: 1
-    assert_select '.scanlator-show__ad--sidebar', count: 0
-  end
-
-  test 'show renders left-column adsense when description and notice are blank' do
+  test 'show keeps mid-grid adsense when description and notice are blank' do
     @scanlator.update!(description: nil, notice: nil)
 
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
@@ -50,31 +36,32 @@ class ScanlatorsShowAdsenseTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_select '.scanlator-show__sidebar-ad .scanlator-show__ad--sidebar #adsense-slot-scanlator_show-' \
-                  "#{@scanlator.id}.reader-ad-slot--preview", count: 1
-    assert_select '.scanlator-show__ad--full', count: 0
+    assert_select '.grid .scanlator-show__ad--full #adsense-slot-scanlator_show-' \
+                  "#{@scanlator.id}-p1.reader-ad-slot--preview", count: 1
   end
 
-  test 'show uses ad-sidebar grid when description and notice are blank' do
-    @scanlator.update!(description: nil, notice: nil)
+  test 'show places adsense after the empty state when the team has no works' do
+    empty_team = scanlators(:two)
 
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-      get scanlator_url(@scanlator)
+      get scanlator_url(empty_team)
     end
 
     assert_response :success
-    assert_select '.scanlator-show__grid--ad-sidebar', count: 1
+    assert_select '.grid .scanlator-show__ad', count: 0
+    assert_select '.scanlator-show__ad--full #adsense-slot-scanlator_show-' \
+                  "#{empty_team.id}-empty.reader-ad-slot--preview", count: 1
   end
 
-  test 'show keeps content sidebar without ad-sidebar grid when cards are present' do
+  test 'show inserts scanlator adsense in list view mid-list' do
     @scanlator.update!(description: 'Team about text', notice: nil)
 
     Rails.stub(:env, ActiveSupport::StringInquirer.new('development')) do
-      get scanlator_url(@scanlator)
+      get scanlator_url(@scanlator, view: 'list')
     end
 
     assert_response :success
-    assert_select '.scanlator-show__grid--ad-sidebar', count: 0
-    assert_select '.scanlator-show__sidebar-ad', count: 0
+    assert_select '.scanlator-show__ad--full #adsense-slot-scanlator_show-' \
+                  "#{@scanlator.id}-p1.reader-ad-slot--preview", count: 1
   end
 end

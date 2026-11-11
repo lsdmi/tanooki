@@ -11,13 +11,13 @@ module Admin
       @contest = contests(:submissions)
     end
 
-    test 'published contest saves teaser and theme without a rule-change reason' do
+    test 'published contest saves tagline and theme without a rule-change reason' do
       prize = ContestPrize.create!(
         contest: @contest, title: '1 місце', kind: :place, place: 1, position: 0, cash_uah: 100
       )
 
       patch admin_contest_url(@contest), params: { contest: unchanged_params.merge(
-        teaser_text: 'Новий тизер',
+        tagline: 'Новий слоган',
         description: '<p>Нова тема</p>',
         prizes_attributes: { '0' => prize_params(prize) }
       ) }
@@ -25,7 +25,7 @@ module Admin
       assert_redirected_to admin_contest_path(@contest)
       @contest.reload
 
-      assert_equal 'Новий тизер', @contest.teaser_text
+      assert_equal 'Новий слоган', @contest.tagline
       assert_includes @contest.description.to_plain_text, 'Нова тема'
     end
 

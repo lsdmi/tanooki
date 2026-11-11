@@ -62,6 +62,22 @@ module Api
         ActionView::Base.annotate_rendered_view_with_filenames = false
       end
 
+      test 'body=html omits paragraphs' do
+        get api_v1_chapter_path(@chapter.id), params: { body: 'html' }, headers: auth
+
+        assert_response :success
+        assert_predicate response.parsed_body['html'], :present?
+        assert_nil response.parsed_body['paragraphs']
+      end
+
+      test 'body=paragraphs omits html' do
+        get api_v1_chapter_path(@chapter.id), params: { body: 'paragraphs' }, headers: auth
+
+        assert_response :success
+        assert_nil response.parsed_body['html']
+        assert_predicate response.parsed_body['paragraphs'], :present?
+      end
+
       private
 
       def issue(scopes)
