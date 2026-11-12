@@ -2,7 +2,8 @@
 
 module Api
   module Chapters
-    # Replaces numbered blocks. Blocks left out of the edit keep their HTML, including styles and notes.
+    # Replaces numbered blocks. Untouched blocks keep their HTML; edited ones rewrite text in place
+    # when markdown structure is unchanged, so TinyMCE styles and notes survive.
     class EditParagraphs
       Result = Data.define(:chapter, :changes, :diff)
 

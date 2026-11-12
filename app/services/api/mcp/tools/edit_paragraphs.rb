@@ -3,14 +3,18 @@
 module Api
   module Mcp
     module Tools
-      # Replaces numbered blocks and leaves every other block’s HTML alone.
+      # Replaces numbered blocks; text-only edits keep the block’s HTML (styles, notes).
       class EditParagraphs < MCP::Tool
         extend Hints
 
         tool_name 'edit_paragraphs'
         title 'Edit paragraphs'
-        description 'Prefer this over update_chapter for fixes. n starts at 1. old must match the current paragraph. ' \
-                    'An empty new deletes it. Pass version from get_chapter. One chapter per call. ' \
+        description 'Prefer this over update_chapter for fixes. n starts at 1. ' \
+                    'old must match paragraphs from get_chapter. ' \
+                    'Text-only edits (same **/* markup) keep HTML styles and notes; ' \
+                    'identical old and new change nothing. An empty new deletes the block. ' \
+                    'New markup or a blank-line split rebuilds that block from Markdown. ' \
+                    'Pass version from get_chapter. One chapter per call. ' \
                     'A published chapter needs chapters:publish. Show the diff afterwards.'
         input_schema(
           properties: {

@@ -78,7 +78,12 @@
         <h2 class="text-2xl font-bold text-fg mb-4">Абзаци, історія, зображення</h2>
         <p class="text-fg-secondary leading-relaxed mb-4">
           Правка одного абзацу не переписує сусідні. <code class="text-fg">n</code> рахується з 1.
-          <code class="text-fg">old</code> має збігатися з поточним текстом. Порожній <code class="text-fg">new</code> видаляє абзац.
+          <code class="text-fg">old</code> має збігатися з поточним Markdown абзацу з
+          <code class="text-fg">paragraphs</code>. Порожній <code class="text-fg">new</code> видаляє абзац.
+          Якщо змінюється лише текст (та сама розмітка <code class="text-fg">**</code> / <code class="text-fg">*</code>),
+          HTML абзацу правиться на місці: жирний, курсив, стилі редактора й примітки лишаються.
+          Той самий <code class="text-fg">old</code> і <code class="text-fg">new</code> нічого не змінює.
+          Нова розмітка, посилання чи розбиття на кілька абзаців — тоді блок збирається з Markdown знову.
         </p>
         <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl -X POST https://baka.in.ua/api/v1/chapters/123/paragraph_edits \
   -H "Authorization: Bearer baka_…" \
@@ -103,8 +108,13 @@
           Markdown: абзаци розділяє порожній рядок. <code class="text-fg">**жирний**</code>,
           <code class="text-fg">*курсив*</code>, заголовки <code class="text-fg">#</code>,
           <code class="text-fg">##</code>, <code class="text-fg">###</code>, <code class="text-fg">####</code>.
+          У <code class="text-fg">paragraphs</code> жирний і курсив з HTML також віддаються як
+          <code class="text-fg">**</code> / <code class="text-fg">*</code>.
           Картинка: <code class="text-fg">![опис](url)</code>, де url — з відповіді завантаження.
-          Вбудовані base64-зображення не приймаються. HTML у тексті очищується, а що прибрано — повертається в <code class="text-fg">sanitizer_changes</code>.
+          Вбудовані base64-зображення не приймаються.
+          Для <code class="text-fg">POST</code>/<code class="text-fg">PATCH</code> із готовим HTML передайте
+          <code class="text-fg">content_format: "html"</code> (за замовчуванням — Markdown; інакше теги екрануються).
+          HTML у тексті очищується, а що прибрано — повертається в <code class="text-fg">sanitizer_changes</code>.
         </p>
       </section>
 

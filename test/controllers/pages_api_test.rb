@@ -40,4 +40,11 @@ class PagesApiTest < ActionDispatch::IntegrationTest
     assert_match 'body=all|html|paragraphs', response.body
     assert_match 'chapters/batch', response.body
   end
+
+  test 'the docs explain paragraph_edits keeps formatting on text-only edits' do
+    get api_docs_path
+
+    assert_match 'правиться на місці', response.body
+    assert_match 'content_format: "html"', response.body
+  end
 end

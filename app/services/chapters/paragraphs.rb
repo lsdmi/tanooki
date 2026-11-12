@@ -1,9 +1,20 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Top-level blocks of a chapter body. Untouched blocks keep the HTML they were parsed with.
+  # Top-level blocks of a chapter body.
+  # Untouched blocks keep the HTML they were parsed with. Edited blocks prefer a surgical text
+  # rewrite inside that HTML (styles, dir, notes stay); markdown re-render is only the fallback
+  # when the edit changes markdown structure (bold/links/split/…).
   class Paragraphs
     Block = Data.define(:html, :markdown)
+    INLINE_TAGS = {
+      'strong' => ->(text) { "**#{text}**" },
+      'b' => ->(text) { "**#{text}**" },
+      'em' => ->(text) { "*#{text}*" },
+      'i' => ->(text) { "*#{text}*" },
+      's' => ->(text) { "~~#{text}~~" },
+      'br' => ->(_) { "\n" }
+    }.freeze
 
     def self.list(html)
       blocks(html).each_with_index.map { |block, index| { n: index + 1, markdown: block.markdown } }
@@ -19,6 +30,12 @@ module Chapters
       nodes.each_with_index.flat_map { |block, index| replacements.fetch(index, [block]) }.map(&:html).join
     end
 
+    def self.markdown_for(node)
+      return '---' if node.name == 'hr'
+
+      "#{heading_prefix(node)}#{inline(node)}".strip
+    end
+
     def self.block_for(node)
       return if node.text? && node.text.blank?
       return Block.new(html: escape_text(node.text), markdown: node.text.squish) if node.text?
@@ -30,7 +47,8 @@ module Chapters
     def self.replacements_for(nodes, edits, changes)
       Array(edits).each_with_object({}) do |edit, replacements|
         index = matched_index(nodes, edit)
-        replacements[index] = replacement_blocks(edit.to_h.with_indifferent_access[:new], changes)
+        edit = edit.to_h.with_indifferent_access
+        replacements[index] = replacement_blocks(nodes[index], edit[:new], changes)
       end
     end
 
@@ -51,18 +69,21 @@ module Chapters
       raise Api::Error.new('paragraph_mismatch', :unprocessable_entity, { n: number, current: markdown })
     end
 
-    def self.replacement_blocks(markdown, changes)
+    def self.replacement_blocks(original, markdown, changes)
       return [] if markdown.to_s.strip.empty?
+      return [original] if markdown.to_s.squish == original.markdown.squish
+      return [ParagraphSurgery.replace(original, markdown)] if ParagraphSurgery.applicable?(original.markdown, markdown)
 
-      prepared = Api::Chapters::Content.call(markdown, 'markdown')
-      changes.concat(prepared.changes)
-      blocks(prepared.html)
+      render_markdown_blocks(original, markdown, changes)
     end
 
-    def self.markdown_for(node)
-      return '---' if node.name == 'hr'
+    def self.render_markdown_blocks(original, markdown, changes)
+      prepared = Api::Chapters::Content.call(markdown, 'markdown')
+      changes.concat(prepared.changes)
+      rendered = blocks(prepared.html)
+      return rendered unless rendered.size == 1
 
-      "#{heading_prefix(node)}#{inline(node)}".strip
+      [ParagraphSurgery.copy_root_attributes(original, rendered.first)]
     end
 
     def self.heading_prefix(node)
@@ -75,15 +96,19 @@ module Chapters
 
     def self.inline_child(child)
       return child.text if child.text?
+      return INLINE_TAGS[child.name].call(inline(child)) if INLINE_TAGS.key?(child.name)
+      return "[#{inline(child)}](#{child['href']})" if child.name == 'a'
+      return span_markdown(child) if child.name == 'span'
 
-      case child.name
-      when 'strong', 'b' then "**#{inline(child)}**"
-      when 'em', 'i' then "*#{inline(child)}*"
-      when 's' then "~~#{inline(child)}~~"
-      when 'br' then "\n"
-      when 'a' then "[#{inline(child)}](#{child['href']})"
-      else inline(child)
-      end
+      inline(child)
+    end
+
+    def self.span_markdown(node)
+      content = inline(node)
+      style = node['style'].to_s.downcase
+      content = "*#{content}*" if style.match?(/font-style:\s*italic/)
+      content = "**#{content}**" if style.match?(/font-weight:\s*(bold|[6-9]00)/)
+      content
     end
 
     def self.escape_text(text)
@@ -91,6 +116,6 @@ module Chapters
     end
 
     private_class_method :block_for, :replacements_for, :matched_index, :block_at, :mismatch!, :replacement_blocks,
-                         :markdown_for, :heading_prefix, :inline, :inline_child, :escape_text
+                         :render_markdown_blocks, :heading_prefix, :inline, :inline_child, :span_markdown, :escape_text
   end
 end

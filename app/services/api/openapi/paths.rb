@@ -2,6 +2,15 @@
 
 module Api
   module Openapi
+    CHAPTER_PATCH = 'Можна передати title, content, volume_number, status, published_at, ' \
+                    'scanlator_ids, content_format (markdown за замовчуванням, або html); ' \
+                    'для заміни тексту потрібна version.'
+    PARAGRAPH_EDITS = 'Тіло: version і edits[{n, old, new}]. old — Markdown з paragraphs. ' \
+                      'Неторкані абзаци лишають HTML. Текстова правка зі тією ж розміткою ' \
+                      'переписує лише текст усередині HTML (стилі й примітки лишаються); ' \
+                      'old == new нічого не змінює. Нова розмітка або розбиття абзацу — ' \
+                      'перезбірка блоку з Markdown.'
+
     # Path map for the team OpenAPI document.
     module Paths
       MAP = {
@@ -78,13 +87,13 @@ module Api
           },
           patch: {
             summary: 'Часткова зміна',
-            description: 'Можна передати title, content, volume_number, status, published_at, ' \
-                         'scanlator_ids; для заміни тексту потрібна version.',
+            description: CHAPTER_PATCH,
             responses: { '200': { description: 'Оновлено' }, '409': { description: 'version застаріла' } }
           }
         },
         '/chapters/{id}/paragraph_edits' => {
-          post: { summary: 'Правка абзаців', responses: { '200': { description: 'Оновлено' } } }
+          post: { summary: 'Правка абзаців', description: PARAGRAPH_EDITS,
+                  responses: { '200': { description: 'Оновлено' }, '409': { description: 'version застаріла' } } }
         },
         '/chapters/{id}/revisions' => {
           get: { summary: 'Історія правок API', responses: { '200': { description: 'Список' } } }
@@ -96,10 +105,8 @@ module Api
           post: { summary: 'Повернути цю версію', responses: { '200': { description: 'Відновлено' } } }
         },
         '/chapter_images' => {
-          post: {
-            summary: 'Зображення файлом або за URL',
-            responses: { '201': { description: 'Адреса для Markdown' } }
-          }
+          post: { summary: 'Зображення файлом або за URL',
+                  responses: { '201': { description: 'Адреса для Markdown' } } }
         }
       }.freeze
     end

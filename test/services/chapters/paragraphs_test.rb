@@ -42,5 +42,51 @@ module Chapters
       assert_includes split, 'Альфа'
       assert_includes split, @note
     end
+
+    test 'a no-op keeps tinymce spans and dir byte-for-byte' do
+      html = '<p dir="ltr"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">' \
+             'Каролін згадала <span style="font-weight: bold;">Гуакамоле</span>.</span></p>'
+      listed = Paragraphs.list(html)
+      result = Paragraphs.apply(html, [{ n: 1, old: listed.first[:markdown], new: listed.first[:markdown] }])
+
+      assert_equal html, result
+      assert_includes listed.first[:markdown], '**Гуакамоле**'
+    end
+
+    test 'a plain text edit rewrites inside tinymce html without dropping styles' do
+      html = '<p dir="ltr"><span style="font-family: tahoma; font-size: 12pt;">' \
+             'Каролін згадала <span style="font-weight: bold;">Гуакамоле</span>.</span></p>'
+      listed = Paragraphs.list(html)
+      result = Paragraphs.apply(
+        html,
+        [{ n: 1, old: listed.first[:markdown], new: 'Каролін пригадала **Гуакамоле**.' }]
+      )
+
+      assert_equal(
+        [true, true, true],
+        [result.include?('dir="ltr"'), result.include?('font-weight: bold'), result.include?('пригадала')]
+      )
+      assert_includes result, 'font-family: tahoma'
+      assert_not_includes result, 'згадала'
+    end
+
+    test 'a plain text edit keeps note spans and paragraph styles' do
+      listed = Paragraphs.list(@note)
+      result = Paragraphs.apply(@note, [{ n: 1, old: listed.first[:markdown], new: 'Після слова.' }])
+
+      assert_equal(
+        [true, true, true],
+        [result.include?('text-align: center'), result.include?('note-reference'), result.include?('Після')]
+      )
+      assert_includes result, 'data-note="примітка"'
+      assert_not_includes result, 'До '
+    end
+
+    test 'keeping bold markers updates text inside strong without re-render' do
+      html = '<h1><strong>Пролог</strong></h1>'
+      result = Paragraphs.apply(html, [{ n: 1, old: '# **Пролог**', new: '# **Епілог**' }])
+
+      assert_equal '<h1><strong>Епілог</strong></h1>', result
+    end
   end
 end

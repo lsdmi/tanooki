@@ -29,6 +29,14 @@ module Api
         assert_equal 'Каталог розділів без тексту', list['summary']
         assert(batch['parameters'].any? { |param| param['name'] == 'body' })
       end
+
+      test 'paragraph_edits describes in-place text edits' do
+        get '/api/v1/openapi.json'
+        edits = response.parsed_body.dig('paths', '/chapters/{id}/paragraph_edits', 'post')
+
+        assert_equal '1.2.0', response.parsed_body.dig('info', 'version')
+        assert_match(/стилі й примітки/, edits['description'])
+      end
     end
   end
 end

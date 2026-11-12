@@ -92,6 +92,7 @@ class McpControllerTest < ActionDispatch::IntegrationTest
     text = guide.dig('result', 'contents', 0, 'text')
 
     assert_match(/edit_paragraphs/, text)
+    assert_match(/стилі редактора й примітки/, text)
     assert_match(/get_chapters/, prompt.dig('result', 'messages', 0, 'content', 'text'))
   end
 
