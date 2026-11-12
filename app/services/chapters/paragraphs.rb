@@ -8,12 +8,9 @@ module Chapters
   class Paragraphs
     Block = Data.define(:html, :markdown)
     INLINE_TAGS = {
-      'strong' => ->(text) { "**#{text}**" },
-      'b' => ->(text) { "**#{text}**" },
-      'em' => ->(text) { "*#{text}*" },
-      'i' => ->(text) { "*#{text}*" },
-      's' => ->(text) { "~~#{text}~~" },
-      'br' => ->(_) { "\n" }
+      'strong' => ->(text) { "**#{text}**" }, 'b' => ->(text) { "**#{text}**" },
+      'em' => ->(text) { "*#{text}*" }, 'i' => ->(text) { "*#{text}*" },
+      's' => ->(text) { "~~#{text}~~" }, 'br' => ->(_) { "\n" }
     }.freeze
 
     def self.list(html)
@@ -96,15 +93,29 @@ module Chapters
 
     def self.inline_child(child)
       return child.text if child.text?
-      return INLINE_TAGS[child.name].call(inline(child)) if INLINE_TAGS.key?(child.name)
-      return "[#{inline(child)}](#{child['href']})" if child.name == 'a'
+      return inline_tag_markdown(child) if INLINE_TAGS.key?(child.name)
+      return link_markdown(child) if child.name == 'a'
       return span_markdown(child) if child.name == 'span'
 
       inline(child)
     end
 
+    def self.inline_tag_markdown(node)
+      content = inline(node)
+      return '' if content.empty? && node.name != 'br'
+
+      INLINE_TAGS[node.name].call(content)
+    end
+
+    def self.link_markdown(node)
+      content = inline(node)
+      content.empty? ? '' : "[#{content}](#{node['href']})"
+    end
+
     def self.span_markdown(node)
       content = inline(node)
+      return '' if content.empty?
+
       style = node['style'].to_s.downcase
       content = "*#{content}*" if style.match?(/font-style:\s*italic/)
       content = "**#{content}**" if style.match?(/font-weight:\s*(bold|[6-9]00)/)
@@ -116,6 +127,7 @@ module Chapters
     end
 
     private_class_method :block_for, :replacements_for, :matched_index, :block_at, :mismatch!, :replacement_blocks,
-                         :render_markdown_blocks, :heading_prefix, :inline, :inline_child, :span_markdown, :escape_text
+                         :render_markdown_blocks, :heading_prefix, :inline, :inline_child, :inline_tag_markdown,
+                         :link_markdown, :span_markdown, :escape_text
   end
 end

@@ -36,13 +36,19 @@ module Chapters
     def scrub(node)
       return if node.text?
       return node.remove unless node.element?
-
-      node.name = RENAMES.fetch(node.name, node.name)
-      return drop(node, :tag, tag: node.name) if DROP_WITH_CONTENT.include?(node.name)
-      return unwrap(node) unless TAGS.include?(node.name)
+      return unless rename_allowed!(node)
 
       strip_attributes(node)
       check_element(node)
+      UserContent::EmptyInlines.remove!(node, media: 'img, br')
+    end
+
+    def rename_allowed!(node)
+      node.name = RENAMES.fetch(node.name, node.name)
+      return drop(node, :tag, tag: node.name) && nil if DROP_WITH_CONTENT.include?(node.name)
+      return unwrap(node) && nil unless TAGS.include?(node.name)
+
+      true
     end
 
     def check_element(node)

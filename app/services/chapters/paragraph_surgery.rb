@@ -27,10 +27,10 @@ module Chapters
     ].freeze
 
     def self.applicable?(old_markdown, new_markdown)
-      return false if new_markdown.to_s.match?(/\n\s*\n/)
       return false if new_markdown.to_s.strip.match?(/\A(?:---|\*\*\*)\z/)
 
-      structure(old_markdown) == structure(new_markdown)
+      line_breaks(old_markdown) == line_breaks(new_markdown) &&
+        structure(old_markdown) == structure(new_markdown)
     end
 
     def self.replace(original, markdown)
@@ -58,8 +58,11 @@ module Chapters
 
     def self.structure(text) = text.to_s.scan(STRUCTURE_TOKEN)
 
+    # Soft/hard breaks in markdown are `<br>` placeholders, not characters in HTML text nodes.
+    def self.line_breaks(text) = text.to_s.scan(/\n+/)
+
     def self.visible_text(markdown)
-      strip_inline(markdown.to_s.sub(/\A\#{1,4}\s+/, '').sub(/\A>\s+/, ''))
+      strip_inline(markdown.to_s.sub(/\A\#{1,4}\s+/, '').sub(/\A>\s+/, '')).delete("\n")
     end
 
     def self.strip_inline(text)
@@ -120,7 +123,8 @@ module Chapters
       node_index_at(nodes, position - 1)
     end
 
-    private_class_method :structure, :visible_text, :strip_inline, :rewrite_text!, :seed_text!, :apply_diff!,
-                         :append_change!, :node_index_at, :node_index_for_insert, :roots, :merge_attributes!
+    private_class_method :structure, :line_breaks, :visible_text, :strip_inline, :rewrite_text!, :seed_text!,
+                         :apply_diff!, :append_change!, :node_index_at, :node_index_for_insert, :roots,
+                         :merge_attributes!
   end
 end

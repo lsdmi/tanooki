@@ -46,6 +46,12 @@ module UserContent
       assert_not_nil rendered_link('<a href="#note-1"></a>')
     end
 
+    test 'drops empty inline wrappers left by Google Docs paste' do
+      html = rendered_html('<p><strong id="docs-internal-guid-x"></strong><em></em>текст</p>')
+
+      assert_equal [true, true], [html.strip == '<p>текст</p>', html.exclude?('strong')]
+    end
+
     test 'drops links hidden in Word conditional comments' do
       html = rendered_html('<p>текст<!--[if gte vml 1]><v:rect href="https://pubfuture.com/"></v:rect><![endif]--></p>')
 

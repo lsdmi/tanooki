@@ -53,7 +53,7 @@ module UserContent
         return STOP
       end
 
-      super
+      super.tap { UserContent::EmptyInlines.remove!(node) }
     end
 
     def self.https_uri(src)

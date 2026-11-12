@@ -27,6 +27,7 @@ class Chapter < ApplicationRecord
   has_many :chapter_scanlators, dependent: :destroy
   has_many :revisions, class_name: 'ChapterRevision', dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
+  has_many :paragraph_reports, dependent: :delete_all
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :scanlators, through: :chapter_scanlators
   has_many :users, through: :scanlators
@@ -107,11 +108,7 @@ class Chapter < ApplicationRecord
     content&.body&.to_html.to_s
   end
 
-  def slug_candidates
-    [
-      "#{fiction&.title&.downcase}-rozdil-#{number}"
-    ]
-  end
+  def slug_candidates = ["#{fiction&.title&.downcase}-rozdil-#{number}"]
 
   private
 

@@ -77,5 +77,12 @@ module Chapters
     test 'comments and non-breaking spaces' do
       assert_equal '<p>а б в</p>', clean("<!-- коментар --><p>а&nbsp;б\u00A0в</p>").html
     end
+
+    test 'empty inline wrappers are dropped so markdown never sees ****' do
+      result = clean('<p><strong id="docs-internal-guid-x"></strong><em> </em>текст<s></s></p>')
+
+      assert_equal '<p>текст</p>', result.html
+      assert_empty result.changes
+    end
   end
 end

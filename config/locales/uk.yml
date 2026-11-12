@@ -160,6 +160,20 @@ uk:
           attributes:
             user_id:
               taken: можна подякувати за розділ лише один раз
+        paragraph_report:
+          attributes:
+            quote:
+              blank: потрібен текст абзацу
+              too_long: задовгий для репорту
+            digest:
+              blank: потрібен відбиток розділу
+              wrong_length: некоректний відбиток розділу
+            block_index:
+              greater_than_or_equal_to: має бути невід’ємним
+            message:
+              too_long: задовге повідомлення
+            status:
+              inclusion: невідомий статус
         contest:
           attributes:
             base:
@@ -1223,6 +1237,15 @@ uk:
       errors:
         own_work: Не можна дякувати за власний розділ
         not_released: Розділ ще не опубліковано
+    paragraph_reports:
+      errors:
+        own_work: Не можна репортити власний розділ
+        not_released: Розділ ще не опубліковано
+        blank_quote: Потрібен текст абзацу
+        duplicate_open: Ви вже повідомили про помилку в цьому абзаці
+        message_too_long: Повідомлення задовге
+        invalid_anchor: Некоректне посилання на абзац
+        generic: Не вдалося надіслати репорт. Спробуйте ще раз.
     notices:
       create_success: Розділ додано.
       update_success: Розділ оновлено.

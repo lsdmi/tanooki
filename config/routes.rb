@@ -131,6 +131,7 @@ Rails.application.routes.draw do
     end
     resource :read, only: %i[create destroy], module: :chapters
     resources :thanks, only: :create, controller: 'chapter_thanks'
+    resources :paragraph_reports, only: :create, controller: 'chapter_paragraph_reports'
   end
   resources :chapter_images, only: :create
   resources :chapter_markdown_imports, only: :create, controller: 'chapters/markdown_imports'

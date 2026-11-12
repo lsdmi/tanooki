@@ -43,6 +43,9 @@ class User < ApplicationRecord
   has_many :translation_requests, dependent: :destroy
   has_many :translation_request_votes, dependent: :destroy
   has_many :chapter_thanks, dependent: :destroy
+  has_many :paragraph_reports, dependent: :destroy
+  has_many :resolved_paragraph_reports, class_name: 'ParagraphReport', foreign_key: :resolved_by_id,
+                                        inverse_of: :resolved_by, dependent: :nullify
   has_one :content_filter, class_name: 'UserContentFilter', dependent: :destroy
   has_many :hidden_packages, class_name: 'UserHiddenPackage', dependent: :destroy, inverse_of: :user
   has_many :submitted_contest_entries, class_name: 'ContestEntry', foreign_key: :submitter_id,

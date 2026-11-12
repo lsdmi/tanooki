@@ -88,5 +88,29 @@ module Chapters
 
       assert_equal '<h1><strong>Епілог</strong></h1>', result
     end
+
+    test 'a text edit inside a blank-lined paragraph keeps font spans byte-stable' do
+      html = '<p dir="ltr"><strong id="docs-internal-guid-abc"></strong>' \
+             '<span style="font-family: tahoma; font-size: 12pt;">Перший рядок<br><br>' \
+             'Другий рядок з <span style="font-weight: bold;">важливим</span> словом.</span></p>'
+      listed = Paragraphs.list(html)
+      result = Paragraphs.apply(
+        html,
+        [{ n: 1, old: listed.first[:markdown], new: listed.first[:markdown].sub('словом', 'текстом') }]
+      )
+
+      assert_equal(
+        [1, html.scan('style=').size, true, true, true, true],
+        [Paragraphs.blocks(result).size, result.scan('style=').size, result.include?('font-family: tahoma'),
+         result.include?('font-weight: bold'), result.include?('текстом'), listed.first[:markdown].exclude?('****')]
+      )
+      assert_not_includes result, 'словом'
+    end
+
+    test 'empty inline tags do not export markdown emphasis noise' do
+      html = '<p><strong id="docs-internal-guid-x"></strong><em></em>текст <s></s></p>'
+
+      assert_equal 'текст', Paragraphs.list(html).first[:markdown]
+    end
   end
 end
