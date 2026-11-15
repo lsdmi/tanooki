@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Bottom sheet for a translation-error report: desktop context menu, or select text → «Повідомити» chip.
+  # Bottom sheet for a translation-error report: select text → «Повідомити» chip.
   # Also offers «Копіювати абзац». Same UI for readers, team, and admins; guests get a login CTA.
   class ParagraphReportSheetComponent < ViewComponent::Base
     MESSAGE_MAX = ParagraphReport::MESSAGE_MAX

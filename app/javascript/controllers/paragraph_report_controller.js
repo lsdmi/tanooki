@@ -42,7 +42,7 @@ const ACTIVE_CLASSES = [
 const PANEL_HIDDEN_CLASS = "translate-y-full"
 const PANEL_SHOWN_CLASS = "translate-y-0"
 
-// Desktop: context menu on a reader block. Any pointer: select text → floating «Повідомити» chip
+// Select text in a reader block → floating «Повідомити» chip
 // (ported to document.body so reader stacking / main z-10 cannot hide it).
 export default class extends Controller {
   static targets = ["backdrop", "panel", "quote", "message", "error", "submit", "form", "guest"]
@@ -65,14 +65,12 @@ export default class extends Controller {
     this.payload = null
     this.copyText = ""
     this.chip = null
-    this._onContextMenu = this.onContextMenu.bind(this)
     this._onEscape = this.onEscape.bind(this)
     this._onSelectionChange = this.onSelectionChange.bind(this)
     this._onPointerUp = this.onPointerUp.bind(this)
     this._onScrollOrResize = this.onScrollOrResize.bind(this)
     this._onChipPointerDown = this.openFromChip.bind(this)
 
-    document.addEventListener("contextmenu", this._onContextMenu)
     document.addEventListener("selectionchange", this._onSelectionChange)
     window.addEventListener("pointerup", this._onPointerUp)
     window.addEventListener("mouseup", this._onPointerUp)
@@ -85,7 +83,6 @@ export default class extends Controller {
   disconnect() {
     this.destroyChip()
     this.close()
-    document.removeEventListener("contextmenu", this._onContextMenu)
     document.removeEventListener("selectionchange", this._onSelectionChange)
     window.removeEventListener("pointerup", this._onPointerUp)
     window.removeEventListener("mouseup", this._onPointerUp)
@@ -96,18 +93,6 @@ export default class extends Controller {
   ensureContent() {
     this.content ||= document.getElementById("user-content")
     return this.content
-  }
-
-  onContextMenu(event) {
-    const content = this.ensureContent()
-    if (!content || this.locked()) return
-
-    const block = event.target.closest?.("[data-rp-i]")
-    if (!block || !content.contains(block)) return
-
-    event.preventDefault()
-    this.hideChip()
-    this.openFor(block)
   }
 
   onSelectionChange() {

@@ -14,6 +14,20 @@
   }
 }
 
+/*
+ * Closed report sheet: hide fully. On iOS Safari, fixed bottom + translateY(100%)
+ * still peeks above the browser chrome (visual viewport ≠ layout viewport).
+ */
+.paragraph-report__panel[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+  translate: 0 calc(100% + 6rem);
+}
+
+.paragraph-report__panel[aria-hidden="false"] {
+  visibility: visible;
+}
+
 /* Open paragraph-error marks: soft wash always visible (stronger on interact) */
 .immersive-reader #user-content .paragraph-report--marked {
   background-color: color-mix(in srgb, var(--color-status-warning-subtle-bg) 70%, transparent) !important;
