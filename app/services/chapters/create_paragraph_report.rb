@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Creates an open paragraph error report for a live chapter. The team (and admins) cannot report their own work.
+  # Creates an open paragraph error report for a live chapter. Same rules for readers, team, and admins.
   class CreateParagraphReport
     Result = Data.define(:ok, :report, :error)
 
@@ -19,7 +19,6 @@ module Chapters
 
     def call
       return failure(:not_released) unless @chapter.public_visible?
-      return failure(:own_work) if @user.manages_chapter?(@chapter)
 
       payload = validated_payload
       return payload if payload.is_a?(Result)

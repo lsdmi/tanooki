@@ -22,7 +22,6 @@
 
   <%= render 'reader_settings_drawer', chapter: @chapter %>
   <%= render 'comments_drawer', chapter: @chapter %>
-  <%= render Chapters::ParagraphReportSheetComponent.new(chapter: @chapter, user: current_user) %>
 
   <main class="relative z-10">
     <%= render 'reader_toolbar', chapter: @chapter, fiction: @chapter.fiction %>
@@ -53,6 +52,9 @@
 
     <%= render 'reader_copyright' %>
   </main>
+
+  <%# After #user-content so the report controller can bind to reader blocks on connect. %>
+  <%= render Chapters::ParagraphReportSheetComponent.new(chapter: @chapter, user: current_user) %>
 
   <button type="button"
           id="jump-to-top"

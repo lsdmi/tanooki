@@ -3,7 +3,6 @@
 # Reader reports a translation error on one chapter paragraph block. JSON for the reader UI (P1).
 class ChapterParagraphReportsController < ApplicationController
   ERROR_STATUSES = {
-    own_work: :forbidden,
     not_released: :unprocessable_content,
     blank_quote: :unprocessable_content,
     duplicate_open: :unprocessable_content,

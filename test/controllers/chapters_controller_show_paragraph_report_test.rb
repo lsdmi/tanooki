@@ -26,12 +26,12 @@ class ChaptersControllerShowParagraphReportTest < ActionDispatch::IntegrationTes
     assert_select '#paragraph-report textarea#paragraph-report-message'
   end
 
-  test 'the team does not get the report sheet' do
+  test 'the team gets the report sheet like any reader' do
     sign_in users(:user_one)
 
     get chapter_url(@chapter)
 
-    assert_select '#paragraph-report', count: 0
+    assert_select '#paragraph-report form[data-paragraph-report-target=form]'
   end
 
   test 'an 18+ locked chapter still embeds the sheet outside the blurred prose' do

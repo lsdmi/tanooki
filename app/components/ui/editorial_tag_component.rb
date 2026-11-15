@@ -13,10 +13,7 @@ module Ui
       adult: { label: '18+', icon: :warning },
       novelty: { label: 'Новинка', icon: :lightning },
       popular: { label: 'Популярне', icon: :star },
-      update: { label: 'Оновлення', icon: :refresh },
-      # Contest labels are built at call sites («Учасник · …» / place · contest).
-      contest_entry: { label: 'Учасник', icon: :flag },
-      contest_winner: { label: 'Переможець', icon: :trophy }
+      update: { label: 'Оновлення', icon: :refresh }
     }.freeze
 
     # Doc name KIND_COLORS; kept as SOLID_COLORS for existing call sites.
@@ -25,9 +22,7 @@ module Ui
       adult: 'token-raw bg-rose-600',
       novelty: 'bg-violet-600',
       popular: 'bg-fuchsia-700',
-      update: 'bg-teal-600',
-      contest_entry: 'bg-sky-700',
-      contest_winner: 'bg-amber-700'
+      update: 'bg-teal-600'
     }.freeze
     KIND_COLORS = SOLID_COLORS
 

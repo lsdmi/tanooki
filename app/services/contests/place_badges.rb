@@ -5,6 +5,8 @@ module Contests
   # instead of the amber winner pill.
   class PlaceBadges
     TOP = (1..5)
+    # Same set as former hero pills: place artwork still shows for DQ / incomplete entries.
+    ENTRY_STATUSES = %w[accepted qualified incomplete disqualified].freeze
     Result = Data.define(:label, :place, :slug, :href)
 
     def initialize(fiction)
@@ -17,7 +19,7 @@ module Contests
       awards.filter_map { |award| result_for(award) }
     end
 
-    def self.replaces_tag?(award)
+    def self.badge?(award)
       return false unless award
 
       prize = award.contest_prize
@@ -37,14 +39,14 @@ module Contests
     def awards
       ContestAward.joins(:contest_entry, :contest_prize)
                   .merge(Contests::PublicAccess.discoverable_contests)
-                  .where(contest_entries: { fiction_id: fiction.id, status: FictionHeroTags::VISIBLE_STATUSES })
+                  .where(contest_entries: { fiction_id: fiction.id, status: ENTRY_STATUSES })
                   .where(contest_prizes: { kind: :place, place: TOP })
                   .includes(:contest, :contest_prize)
                   .order('contest_prizes.place ASC, contest_awards.id ASC')
     end
 
     def result_for(award)
-      return unless self.class.replaces_tag?(award)
+      return unless self.class.badge?(award)
 
       contest = award.contest
       Result.new(

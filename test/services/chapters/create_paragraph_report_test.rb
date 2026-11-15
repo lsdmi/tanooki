@@ -23,16 +23,16 @@ module Chapters
       )
     end
 
-    test 'the team cannot report its own chapter' do
+    test 'the team can report its own chapter' do
       ScanlatorUser.create!(scanlator: scanlators(:one), user: @user)
 
-      assert_no_difference('ParagraphReport.count') do
-        assert_equal :own_work, call_report.error
+      assert_difference('ParagraphReport.count') do
+        assert call_report.ok
       end
     end
 
-    test 'an admin cannot report either' do
-      assert_equal :own_work, call_report(user: users(:user_one)).error
+    test 'an admin can report too' do
+      assert call_report(user: users(:user_one)).ok
     end
 
     test 'a draft or scheduled chapter cannot be reported' do

@@ -29,15 +29,16 @@ class ChapterParagraphReportsControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test 'the team gets 403' do
+  test 'the team can create a report on their chapter' do
     ScanlatorUser.create!(scanlator: scanlators(:one), user: @user)
 
-    post chapter_paragraph_reports_path(@chapter),
-         params: { block_index: 0, quote: 'текст', digest: @digest },
-         as: :json
+    assert_difference('ParagraphReport.count') do
+      post chapter_paragraph_reports_path(@chapter),
+           params: { block_index: 0, quote: 'текст', digest: @digest },
+           as: :json
+    end
 
-    assert_response :forbidden
-    assert_equal 'Не можна репортити власний розділ', response.parsed_body['error']
+    assert_response :created
   end
 
   test 'a draft gets 422' do
