@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-import { markParagraphReportBlock } from "paragraph_report_marks"
+import { markParagraphReportQuote, normalizeMarkText } from "paragraph_report_marks"
 
-// Paints open-report marks and shows reader messages on hover / click / keyboard.
+// Paints open-report quote marks and shows reader messages on hover / click / keyboard.
 export default class extends Controller {
   static values = {
     items: { type: Array, default: [] },
@@ -17,13 +17,18 @@ export default class extends Controller {
     this.itemsValue.forEach((item) => {
       const index = Number(item.i)
       if (!Number.isInteger(index)) return
-      this.messagesByIndex.set(index, normalizeEntries(item.m))
+
+      const entries = normalizeEntries(item.m)
+      this.messagesByIndex.set(index, entries)
+
       const block = this.content.querySelector(`[data-rp-i="${index}"]`)
-      markParagraphReportBlock(block)
+      if (!block) return
+
+      uniqueQuotes(entries).forEach((quote) => markParagraphReportQuote(block, quote))
     })
 
     this.pinned = false
-    this.activeBlock = null
+    this.activeMark = null
     this._onPointerOver = this.onPointerOver.bind(this)
     this._onPointerOut = this.onPointerOut.bind(this)
     this._onClick = this.onClick.bind(this)
@@ -52,54 +57,57 @@ export default class extends Controller {
   onCreated(event) {
     const index = Number(event.detail?.blockIndex)
     if (!Number.isInteger(index) || index < 0) return
-    const existing = this.messagesByIndex.get(index) || []
-    existing.push({
+
+    const entry = {
       u: String(event.detail?.user || "").trim(),
-      t: String(event.detail?.message || "").trim()
-    })
+      t: String(event.detail?.message || "").trim(),
+      q: String(event.detail?.quote || "").trim()
+    }
+    const existing = this.messagesByIndex.get(index) || []
+    existing.push(entry)
     this.messagesByIndex.set(index, existing)
 
     const block = this.content?.querySelector(`[data-rp-i="${index}"]`)
-    markParagraphReportBlock(block)
+    markParagraphReportQuote(block, entry.q)
   }
 
   onPointerOver(event) {
     if (this.pinned) return
     if (event.pointerType === "touch") return
-    const block = event.target.closest?.(".paragraph-report--marked")
-    if (!block || !this.content.contains(block)) return
-    this.showPopover(block)
+    const mark = event.target.closest?.(".paragraph-report--marked")
+    if (!mark || !this.content.contains(mark)) return
+    this.showPopover(mark)
   }
 
   onPointerOut(event) {
     if (this.pinned) return
     if (event.pointerType === "touch") return
-    const block = event.target.closest?.(".paragraph-report--marked")
-    if (!block || !this.content.contains(block)) return
+    const mark = event.target.closest?.(".paragraph-report--marked")
+    if (!mark || !this.content.contains(mark)) return
     const next = event.relatedTarget
-    if (next && (block.contains(next) || this.popover?.contains(next))) return
+    if (next && (mark.contains(next) || this.popover?.contains(next))) return
     this.hidePopover()
   }
 
   onClick(event) {
-    const block = event.target.closest?.(".paragraph-report--marked")
-    if (!block || !this.content.contains(block)) return
-    if (this.popover && this.activeBlock === block && this.pinned) {
+    const mark = event.target.closest?.(".paragraph-report--marked")
+    if (!mark || !this.content.contains(mark)) return
+    if (this.popover && this.activeMark === mark && this.pinned) {
       this.pinned = false
       this.hidePopover()
       return
     }
     this.pinned = true
-    this.showPopover(block)
+    this.showPopover(mark)
   }
 
   onKeydown(event) {
     if (event.key !== "Enter" && event.key !== " ") return
-    const block = event.target.closest?.(".paragraph-report--marked")
-    if (!block || !this.content.contains(block)) return
+    const mark = event.target.closest?.(".paragraph-report--marked")
+    if (!mark || !this.content.contains(mark)) return
     event.preventDefault()
     this.pinned = true
-    this.showPopover(block)
+    this.showPopover(mark)
   }
 
   onDocPointer(event) {
@@ -110,25 +118,35 @@ export default class extends Controller {
     this.hidePopover()
   }
 
-  showPopover(block) {
-    const index = Number(block.dataset.rpI)
-    const messages = this.messagesByIndex.get(index) || []
-    if (this.activeBlock && this.activeBlock !== block) {
-      this.activeBlock.removeAttribute("aria-expanded")
+  showPopover(mark) {
+    const messages = this.messagesFor(mark)
+    if (this.activeMark && this.activeMark !== mark) {
+      this.activeMark.removeAttribute("aria-expanded")
     }
-    this.activeBlock = block
-    block.setAttribute("aria-expanded", "true")
+    this.activeMark = mark
+    mark.setAttribute("aria-expanded", "true")
     this.ensurePopover()
     this.renderPopover(messages)
-    this.positionPopover(block)
+    this.positionPopover(mark)
     this.popover.hidden = false
   }
 
   hidePopover() {
     if (!this.popover) return
     this.popover.hidden = true
-    this.activeBlock?.removeAttribute("aria-expanded")
-    this.activeBlock = null
+    this.activeMark?.removeAttribute("aria-expanded")
+    this.activeMark = null
+  }
+
+  messagesFor(mark) {
+    const block = mark.matches?.("[data-rp-i]") ? mark : mark.closest?.("[data-rp-i]")
+    const index = Number(block?.dataset?.rpI)
+    const all = this.messagesByIndex.get(index) || []
+    const quote = normalizeMarkText(mark.dataset?.rpQ || "")
+    if (!quote) return all
+
+    const filtered = all.filter((entry) => normalizeMarkText(entry.q) === quote)
+    return filtered.length ? filtered : all
   }
 
   ensurePopover() {
@@ -151,17 +169,20 @@ export default class extends Controller {
           const user = escapeHtml(entry.u || "")
           const text = (entry.t || "").trim()
           const body = text
-            ? `<p class="paragraph-report-mark-popover__text">${escapeHtml(text)}</p>`
-            : `<p class="paragraph-report-mark-popover__text paragraph-report-mark-popover__empty">${escapeHtml(empty)}</p>`
-          return `<li class="paragraph-report-mark-popover__item"><span class="paragraph-report-mark-popover__user">${user}</span>${body}</li>`
+            ? `<span class="paragraph-report-mark-popover__text">${escapeHtml(text)}</span>`
+            : `<span class="paragraph-report-mark-popover__text paragraph-report-mark-popover__empty">${escapeHtml(empty)}</span>`
+          const line = user
+            ? `<span class="paragraph-report-mark-popover__user">${user}:</span> ${body}`
+            : body
+          return `<li class="paragraph-report-mark-popover__item">${line}</li>`
         }).join("")
-      : `<li class="paragraph-report-mark-popover__item"><p class="paragraph-report-mark-popover__text paragraph-report-mark-popover__empty">${escapeHtml(empty)}</p></li>`
+      : `<li class="paragraph-report-mark-popover__item"><span class="paragraph-report-mark-popover__text paragraph-report-mark-popover__empty">${escapeHtml(empty)}</span></li>`
 
     this.popover.innerHTML = `<ul class="paragraph-report-mark-popover__list">${items}</ul>`
   }
 
-  positionPopover(block) {
-    const rect = block.getBoundingClientRect()
+  positionPopover(mark) {
+    const rect = mark.getBoundingClientRect()
     const panel = this.popover
     panel.style.left = "0px"
     panel.style.top = "0px"
@@ -181,13 +202,29 @@ export default class extends Controller {
   }
 }
 
+function uniqueQuotes(entries) {
+  const seen = new Set()
+  const quotes = []
+  entries.forEach((entry) => {
+    const quote = normalizeMarkText(entry.q)
+    if (!quote || seen.has(quote)) return
+    seen.add(quote)
+    quotes.push(quote)
+  })
+  return quotes.length ? quotes : [""]
+}
+
 function normalizeEntries(entries) {
   if (!Array.isArray(entries)) return []
   return entries.map((entry) => {
     if (entry && typeof entry === "object") {
-      return { u: String(entry.u || ""), t: String(entry.t || "") }
+      return {
+        u: String(entry.u || ""),
+        t: String(entry.t || ""),
+        q: String(entry.q || "")
+      }
     }
-    return { u: "", t: String(entry || "") }
+    return { u: "", t: String(entry || ""), q: "" }
   })
 }
 

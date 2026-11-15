@@ -71,7 +71,10 @@ module Studio
     def notifications_content_loader
       @pagy, @comments = pagy(my_comments, limit: 16)
       preload_chapter_commentable_fictions(@comments)
-      user.update(latest_read_comment_id: latest_comments.first&.id)
+      user.update(
+        latest_read_comment_id: latest_comments.first&.id,
+        latest_read_paragraph_report_id: ParagraphReports::InboxCollector.new(user).latest_open_id
+      )
       load_paragraph_report_groups
     end
 

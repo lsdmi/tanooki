@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { fetchJson } from "translation_requests/http"
 import { showErrorMessage, showSuccessMessage } from "flash_toast"
-import { markParagraphReportBlock } from "paragraph_report_marks"
+import { markParagraphReportQuote } from "paragraph_report_marks"
 
 const QUOTE_LENGTH = 120
 const CHIP_MARGIN = 8
@@ -45,11 +45,10 @@ const PANEL_SHOWN_CLASS = "translate-y-0"
 // Select text in a reader block → floating «Повідомити» chip
 // (ported to document.body so reader stacking / main z-10 cannot hide it).
 export default class extends Controller {
-  static targets = ["backdrop", "panel", "quote", "message", "error", "submit", "form", "guest"]
+  static targets = ["backdrop", "panel", "quote", "message", "error", "submit", "form"]
   static values = {
     url: String,
     guest: Boolean,
-    loginPath: String,
     success: String,
     error: String,
     copied: String,
@@ -141,7 +140,7 @@ export default class extends Controller {
     if (!quote || !digest || !Number.isInteger(blockIndex) || blockIndex < 0) return
 
     this.clearNativeSelection()
-    this.copyText = full
+    this.copyText = quoteSource
     this.payload = { block_index: blockIndex, quote, digest }
     this.setActiveBlock(block)
     this.quoteTarget.textContent = quoteSource.length > QUOTE_LENGTH ? `${quote}…` : quote
@@ -224,11 +223,13 @@ export default class extends Controller {
 
         const reportedBlock = this.activeBlock
         const reportedMessage = message
-        markParagraphReportBlock(reportedBlock)
+        const reportedQuote = this.payload?.quote
+        markParagraphReportQuote(reportedBlock, reportedQuote)
         this.ensureContent()?.dispatchEvent(new CustomEvent("paragraph-report:created", {
           detail: {
             blockIndex: this.payload?.block_index,
             message: reportedMessage,
+            quote: reportedQuote,
             user: this.reporterNameValue
           }
         }))

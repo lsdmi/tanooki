@@ -2,7 +2,7 @@
 
 module Chapters
   # Bottom sheet for a translation-error report: select text → «Повідомити» chip.
-  # Also offers «Копіювати абзац». Same UI for readers, team, and admins; guests get a login CTA.
+  # Also offers «Копіювати» for the selected fragment. Same UI for readers, team, and admins; guests get a login CTA.
   class ParagraphReportSheetComponent < ViewComponent::Base
     MESSAGE_MAX = ParagraphReport::MESSAGE_MAX
 
@@ -34,7 +34,6 @@ module Chapters
         controller: 'paragraph-report',
         paragraph_report_url_value: chapter_paragraph_reports_path(chapter),
         paragraph_report_guest_value: guest?,
-        paragraph_report_login_path_value: login_path,
         paragraph_report_reporter_name_value: user&.name.to_s,
         paragraph_report_message_max_value: MESSAGE_MAX
       }.merge(stimulus_copy_data, stimulus_flash_data)

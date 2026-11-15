@@ -62,7 +62,7 @@ class ChapterParagraphReportsControllerTest < ActionDispatch::IntegrationTest
          as: :json
 
     assert_response :unprocessable_content
-    assert_equal 'Ви вже повідомили про помилку в цьому абзаці', response.parsed_body['error']
+    assert_equal 'Ви вже повідомили про помилку в цьому фрагменті', response.parsed_body['error']
   end
 
   test 'a guest gets 401 and is sent to login from a page' do

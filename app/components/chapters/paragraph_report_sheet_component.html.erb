@@ -51,7 +51,7 @@
       </div>
 
       <% if guest? %>
-        <div data-paragraph-report-target="guest" class="space-y-3">
+        <div class="space-y-3">
           <%= render Ui::ButtonComponent.new(
                 label: t('chapters.paragraph_reports.guest_cta'),
                 variant: :primary,

@@ -13,7 +13,7 @@ module Chapters
       render_inline(ParagraphReportSheetComponent.new(chapter: @chapter, user: @reader))
 
       assert_selector '#paragraph-report form[data-paragraph-report-target=form] textarea#paragraph-report-message'
-      assert_button 'Копіювати абзац'
+      assert_button 'Копіювати'
       assert_button 'Надіслати'
     end
 
@@ -37,7 +37,7 @@ module Chapters
       render_inline(ParagraphReportSheetComponent.new(chapter: @chapter, user: nil))
 
       assert_selector '[data-paragraph-report-chip-label-value]'
-      assert_button 'Копіювати абзац'
+      assert_button 'Копіювати'
     end
 
     test 'the team sees the report sheet like any reader' do
@@ -45,7 +45,7 @@ module Chapters
 
       assert_selector '#paragraph-report form[data-paragraph-report-target=form]'
       assert_selector '[data-paragraph-report-chip-label-value]'
-      assert_button 'Копіювати абзац'
+      assert_button 'Копіювати'
     end
 
     test 'stimulus values point at the create endpoint' do

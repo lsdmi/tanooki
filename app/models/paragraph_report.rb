@@ -10,6 +10,8 @@ class ParagraphReport < ApplicationRecord
   belongs_to :user
   belongs_to :chapter
   belongs_to :resolved_by, class_name: 'User', optional: true, inverse_of: :resolved_paragraph_reports
+  has_many :readers_who_last_saw, class_name: 'User', foreign_key: :latest_read_paragraph_report_id,
+                                  inverse_of: :latest_read_paragraph_report, dependent: :nullify
 
   enum :status, STATUSES.index_by(&:to_sym), default: :open, validate: true
 

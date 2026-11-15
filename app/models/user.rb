@@ -18,6 +18,8 @@ class User < ApplicationRecord
 
   belongs_to :avatar
   belongs_to :latest_read_comment, class_name: 'Comment', inverse_of: :users, optional: true
+  belongs_to :latest_read_paragraph_report, class_name: 'ParagraphReport', optional: true,
+                                            inverse_of: :readers_who_last_saw
   has_many :comments, dependent: :destroy
   has_many :epub_export_requests, dependent: :destroy
   has_many :publications, dependent: :destroy

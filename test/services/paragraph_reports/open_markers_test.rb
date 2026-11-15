@@ -52,11 +52,11 @@ module ParagraphReports
         {
           i: 0,
           m: [
-            { u: users(:user_two).name, t: 'Тут калька' },
-            { u: @other.name, t: 'Другий читач' }
+            { u: users(:user_two).name, t: 'Тут калька', q: 'Цитата' },
+            { u: @other.name, t: 'Другий читач', q: 'Цитата' }
           ]
         },
-        { i: 2, m: [{ u: users(:user_two).name, t: '' }] }
+        { i: 2, m: [{ u: users(:user_two).name, t: '', q: 'Цитата' }] }
       ]
     end
   end

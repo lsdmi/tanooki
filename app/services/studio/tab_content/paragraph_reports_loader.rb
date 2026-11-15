@@ -34,7 +34,9 @@ module Studio
       end
 
       def current_digests_for(chapters)
-        chapters.uniq.to_h { |chapter| [chapter.id, Chapters::ReaderContentHtml.new(chapter).digest] }
+        chapters = chapters.uniq
+        ActiveRecord::Associations::Preloader.new(records: chapters, associations: :rich_text_content).call
+        chapters.to_h { |chapter| [chapter.id, Chapters::ReaderContentHtml.new(chapter).digest] }
       end
     end
   end

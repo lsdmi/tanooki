@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_010000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -1002,6 +1002,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_130000) do
     t.boolean "admin", default: false
     t.bigint "avatar_id"
     t.bigint "latest_read_comment_id"
+    t.bigint "latest_read_paragraph_report_id"
     t.date "adult_content_acknowledged_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1014,6 +1015,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_130000) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["latest_read_comment_id"], name: "index_users_on_latest_read_comment_id"
+    t.index ["latest_read_paragraph_report_id"], name: "index_users_on_latest_read_paragraph_report_id"
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -1146,5 +1148,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_130000) do
   add_foreign_key "user_pokemons", "users"
   add_foreign_key "users", "avatars"
   add_foreign_key "users", "comments", column: "latest_read_comment_id"
+  add_foreign_key "users", "paragraph_reports", column: "latest_read_paragraph_report_id"
   add_foreign_key "youtube_videos", "youtube_channels"
 end

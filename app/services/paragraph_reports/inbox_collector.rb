@@ -25,6 +25,11 @@ module ParagraphReports
       relation.count
     end
 
+    # Newest open report id in this user's inbox (for nav «seen» cursor).
+    def latest_open_id
+      relation.maximum(:id)
+    end
+
     private
 
     attr_reader :user

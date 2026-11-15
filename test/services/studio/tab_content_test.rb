@@ -108,5 +108,18 @@ module Studio
       assert_equal 1, counts[fiction.id]
       assert_nil counts[fictions(:two).id]
     end
+
+    test 'current_digests_for preloads chapter rich text' do
+      chapters = [chapters(:one), chapters(:two)]
+      service = TabContent.new(users(:user_one), 'notifications', {})
+
+      digests = service.send(:current_digests_for, chapters)
+
+      assert_equal chapters.map(&:id).sort, digests.keys.sort
+      chapters.each { |chapter| assert_predicate chapter.association(:rich_text_content), :loaded? }
+      assert_queries_count(0) do
+        chapters.each { |chapter| Chapters::ReaderContentHtml.new(chapter).digest }
+      end
+    end
   end
 end

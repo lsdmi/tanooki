@@ -37,7 +37,7 @@ module ParagraphReports
     def marker_payload(block_index, group)
       {
         i: block_index,
-        m: group.map { |report| { u: report.user.name, t: report.message.to_s } }
+        m: group.map { |report| { u: report.user.name, t: report.message.to_s, q: report.quote.to_s } }
       }
     end
   end

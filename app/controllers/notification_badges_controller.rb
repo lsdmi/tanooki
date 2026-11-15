@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Lazy navbar chrome: unread comment badge for the notifications menu item.
+# Lazy navbar chrome: badge for unread comments and open paragraph-error reports.
 class NotificationBadgesController < ApplicationController
   before_action :authenticate_user!
 

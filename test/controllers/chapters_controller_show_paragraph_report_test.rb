@@ -61,7 +61,7 @@ class ChaptersControllerShowParagraphReportTest < ActionDispatch::IntegrationTes
     assert_response :success
     assert_select '.immersive-reader[data-controller~=paragraph-report-marks]' \
                   '[data-paragraph-report-marks-items-value=?]',
-                  %([{"i":0,"m":[{"u":"#{users(:user_two).name}","t":"Тут калька"}]}])
+                  %([{"i":0,"m":[{"u":"#{users(:user_two).name}","t":"Тут калька","q":"Цитата"}]}])
     assert_select '.immersive-reader[data-paragraph-report-marks-heading-value]', count: 1
   end
 

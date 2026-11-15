@@ -42,6 +42,18 @@ module ParagraphReports
       assert_equal 1, InboxCollector.new(users(:user_one)).open_count
     end
 
+    test 'latest_open_id is the newest open report in scope' do
+      newer = ParagraphReport.create!(
+        user: users(:user_two),
+        chapter: chapters(:one),
+        block_index: 2,
+        quote: 'Новіший',
+        digest: @digest
+      )
+
+      assert_equal newer.id, InboxCollector.new(users(:user_one)).latest_open_id
+    end
+
     test 'groups collapse the same block and digest from different readers' do
       other = users('user_101')
       second = ParagraphReport.create!(
