@@ -5,10 +5,14 @@
 module StudioTabLoadable
   extend ActiveSupport::Concern
 
-  STUDIO_TAB_COLLECTION_DEFAULTS = %i[
-    comments fictions publications avatars scanlators bookshelves epub_export_requests api_tokens
-    cover_quality_flags listing_nudge_flags
+  STUDIO_TAB_HASH_DEFAULTS = %i[
+    cover_quality_flags listing_nudge_flags fiction_open_report_counts paragraph_report_digests
   ].freeze
+
+  STUDIO_TAB_COLLECTION_DEFAULTS = (%i[
+    comments fictions publications avatars scanlators bookshelves epub_export_requests api_tokens
+    paragraph_report_groups
+  ] + STUDIO_TAB_HASH_DEFAULTS).freeze
 
   private
 
@@ -39,7 +43,7 @@ module StudioTabLoadable
   def assign_instance_variables
     STUDIO_TAB_COLLECTION_DEFAULTS.each do |name|
       ivar = :"@#{name}"
-      default = %i[cover_quality_flags listing_nudge_flags].include?(name) ? {} : []
+      default = STUDIO_TAB_HASH_DEFAULTS.include?(name) ? {} : []
       instance_variable_set(ivar, instance_variable_get(ivar) || default)
     end
   end

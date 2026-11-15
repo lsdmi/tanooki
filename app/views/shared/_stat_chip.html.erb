@@ -1,0 +1,20 @@
+<%# locals: value:, label:, html_class: (optional), tone: (optional :default|:warning) — icon via yield %>
+<% html_class = local_assigns.fetch(:html_class, nil) %>
+<% tone = local_assigns.fetch(:tone, :default) %>
+<% tone_classes = if tone == :warning
+                    'text-status-warning-subtle-fg hover:bg-status-warning-subtle-bg'
+                  else
+                    'text-fg-secondary hover:bg-main hover:text-fg'
+                  end %>
+<span class="group relative inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 tabular-nums transition-colors <%= tone_classes %> <%= html_class %>"
+      tabindex="0"
+      title="<%= label %>"
+      aria-label="<%= "#{value} #{label}" %>">
+  <%= yield %>
+  <span class="text-xs font-semibold tracking-tight"><%= value %></span>
+  <span class="pointer-events-none absolute left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-md bg-invert px-2 py-1 text-xs/5 text-fg-on-invert opacity-0 shadow-popover transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+        style="bottom: calc(100% + 6px)"
+        role="tooltip">
+    <%= label %>
+  </span>
+</span>

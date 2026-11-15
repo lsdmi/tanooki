@@ -1,4 +1,4 @@
-<li role="presentation">
+<li class="group relative shrink-0 overflow-visible" role="presentation">
   <%= link_to(
     tab_studio_path(item[:id]),
     data: {
@@ -6,14 +6,27 @@
       tab: item[:id],
       action: "click->studio-tabs#select"
     },
-    class: "border-line-strong inline-flex w-full items-center justify-center rounded-lg py-3 transition-colors duration-200 #{is_active ? active_classes : inactive_classes}",
+    class: "relative flex size-10 items-center justify-center overflow-visible rounded-lg transition-colors duration-150 #{is_active ? active_classes : inactive_classes}",
     id: "#{item[:id]}-tab",
     role: "tab",
-    aria: { controls: item[:id], selected: is_active }
+    aria: {
+      controls: item[:id],
+      selected: is_active,
+      label: (item[:badge] ? "#{item[:label]}, #{item[:badge]}" : item[:label])
+    }
   ) do %>
-    <svg class="me-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="<%= item[:icon] %>" />
-    </svg>
-    <%= item[:label] %>
+    <span class="sr-only"><%= item[:label] %></span>
+    <%= studio_tab_icon(item) %>
   <% end %>
+  <% if item[:badge] %>
+    <span class="pointer-events-none absolute z-10 inline-flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-status-danger-solid px-1 text-[9px] font-semibold leading-none text-white"
+          style="top: 6px; right: 6px; box-shadow: 0 0 0 1.5px #fff">
+      <%= item[:badge] %>
+    </span>
+  <% end %>
+  <span class="pointer-events-none absolute left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-md bg-invert px-2 py-1 text-xs/5 text-fg-on-invert opacity-0 shadow-popover transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+        style="top: calc(100% + 6px)"
+        role="tooltip">
+    <%= item[:label] %>
+  </span>
 </li>

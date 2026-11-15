@@ -29,6 +29,7 @@ class ChaptersController < ApplicationController
     )
     # Drawer sort only needs the order param; FictionShowPresenter would pull ranks and similar lists.
     @chapter_list_order = params[:order].presence || :desc
+    @paragraph_report_marks = ParagraphReports::OpenMarkers.for(@chapter)
     assign_reader_ad_drawer_session
   end
 

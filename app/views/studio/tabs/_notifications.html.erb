@@ -1,46 +1,84 @@
-<% if comments.any? %>
-  <div class="flex justify-center sm:justify-end">
-    <%= link_to calendar_fictions_path(subscriptions: true), turbo_drive_visit_data.merge(class: "inline-flex items-center gap-1.5 text-sm font-medium text-fg-brand hover:underline") do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-      Календар оновлень
+<% groups = local_assigns.fetch(:paragraph_report_groups, []) %>
+<% digests = local_assigns.fetch(:paragraph_report_digests, {}) %>
+<% reports_pagy = local_assigns[:reports_pagy] %>
+<% side_by_side = groups.any? && comments.any? %>
+
+<% if groups.any? || comments.any? %>
+  <div class="<%= side_by_side ? 'grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-6' : 'space-y-8' %>">
+    <% if groups.any? %>
+      <section class="min-w-0 space-y-3" aria-labelledby="studio-paragraph-reports-heading">
+        <h2 id="studio-paragraph-reports-heading" class="text-base font-semibold text-fg">
+          <%= t('studio.paragraph_reports.section_title') %>
+        </h2>
+        <%= render 'studio/tabs/paragraph_report_groups',
+                   paragraph_report_groups: groups,
+                   paragraph_report_digests: digests %>
+        <% if reports_pagy %>
+          <%= ui_pagination(
+                reports_pagy,
+                pagy_id: 'reports-pagy',
+                page_param: :reports_page,
+                frame_id: 'tab-content',
+                turbo_stream: true,
+                custom_params: { tab: 'notifications', page: pagy&.page }.compact,
+                html: { class: 'pt-2' }
+              ) %>
+        <% end %>
+      </section>
     <% end %>
-  </div>
-  <!-- Notifications List -->
-  <div class="space-y-4">
-    <% comments.group_by { |n| n.created_at.to_date }.each do |date, notifications| %>
-      <div>
-        <div class="text-xs uppercase text-fg-subtle mb-2">
-          <%= l(date, format: :long) == l(Date.today, format: :long) ? "Сьогодні" : l(date, format: :long) %>
+
+    <% if comments.any? %>
+      <section class="min-w-0 space-y-4" aria-labelledby="studio-comments-heading">
+        <div class="flex flex-wrap items-end justify-between gap-2">
+          <h2 id="studio-comments-heading" class="text-base font-semibold text-fg">
+            <%= t('studio.notifications.comments_title') %>
+          </h2>
+          <%= link_to calendar_fictions_path(subscriptions: true), turbo_drive_visit_data.merge(class: "inline-flex items-center gap-1.5 text-sm font-medium text-fg-brand hover:underline") do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Календар оновлень
+          <% end %>
         </div>
-        <div class="space-y-2">
-          <% notifications.each do |notification| %>
-            <div class="relative rounded-lg border border-line bg-card p-4 shadow-sm flex flex-row items-center gap-3 sm:gap-4">
-              <!-- Avatar -->
-              <div class="hidden sm:flex flex-shrink-0 relative mb-2 sm:mb-0">
-                <%= image_tag avatar_image_url(notification.user.avatar.image), alt: notification.user.name, class: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full', height: '48', width: '48' %>
+        <div class="space-y-4">
+          <% comments.group_by { |n| n.created_at.to_date }.each do |date, notifications| %>
+            <div>
+              <div class="text-xs uppercase text-fg-subtle mb-2">
+                <%= l(date, format: :long) == l(Date.today, format: :long) ? "Сьогодні" : l(date, format: :long) %>
               </div>
-              <!-- Content -->
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 mb-1">
-                  <span class="font-semibold text-base sm:text-sm text-fg"><%= link_to notification.user.name, profile_path(notification.user.sqid), turbo_drive_visit_data.merge(class: 'hover:text-brand hover:underline transition-all duration-200') %></span>
-                  <span class="text-xs px-2 py-0.5 rounded bg-brand-subtle text-fg-brand">
-                    <%= link_to commentable_title(notification.commentable), comment_url(notification), turbo_drive_visit_data.merge(class: 'hover:underline') %>
-                  </span>
-                </div>
-                <div class="text-fg font-light tracking-tight text-sm sm:text-base break-words">
-                  <%= notification.content %>
-                </div>
+              <div class="space-y-2">
+                <% notifications.each do |notification| %>
+                  <div class="relative rounded-lg border border-line bg-card p-4 shadow-sm flex flex-row items-center gap-3 sm:gap-4">
+                    <div class="hidden sm:flex flex-shrink-0 relative mb-2 sm:mb-0">
+                      <%= image_tag avatar_image_url(notification.user.avatar.image), alt: notification.user.name, class: 'w-10 h-10 sm:w-12 sm:h-12 rounded-full', height: '48', width: '48' %>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 mb-1">
+                        <span class="font-semibold text-base sm:text-sm text-fg"><%= link_to notification.user.name, profile_path(notification.user.sqid), turbo_drive_visit_data.merge(class: 'hover:text-brand hover:underline transition-all duration-200') %></span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-brand-subtle text-fg-brand">
+                          <%= link_to commentable_title(notification.commentable), comment_url(notification), turbo_drive_visit_data.merge(class: 'hover:underline') %>
+                        </span>
+                      </div>
+                      <div class="text-fg font-light tracking-tight text-sm sm:text-base break-words">
+                        <%= notification.content %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
               </div>
             </div>
           <% end %>
         </div>
-      </div>
+        <%= ui_pagination(
+              pagy,
+              frame_id: 'tab-content',
+              turbo_stream: true,
+              custom_params: { tab: 'notifications', reports_page: reports_pagy&.page }.compact,
+              html: { class: 'p-4 sm:p-6' }
+            ) %>
+      </section>
     <% end %>
   </div>
-  <!-- Pagination -->
-  <%= ui_pagination(pagy, frame_id: 'tab-content', turbo_stream: true, html: { class: 'p-4 sm:p-6' }) %>
 <% else %>
   <div class="rounded-lg border border-line bg-card p-6 sm:p-8 text-center shadow-sm relative overflow-hidden">
     <div class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 opacity-10 pointer-events-none">
@@ -50,7 +88,6 @@
       </svg>
     </div>
     <div class="mx-auto h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-brand-subtle flex items-center justify-center mb-4 relative z-10">
-      <!-- Provided SVG Icon -->
       <svg class="w-7 h-7 sm:w-8 sm:h-8 text-fg-brand" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.556 8.5h8m-8 3.5H12m7.111-7H4.89a.896.896 0 0 0-.629.256.868.868 0 0 0-.26.619v9.25c0 .232.094.455.26.619A.896.896 0 0 0 4.89 16H9l3 4 3-4h4.111a.896.896 0 0 0 .629-.256.868.868 0 0 0 .26-.619v-9.25a.868.868 0 0 0-.26-.619.896.896 0 0 0-.63-.256Z" />
       </svg>

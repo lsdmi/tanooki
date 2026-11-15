@@ -7,6 +7,7 @@ pin 'pwa', preload: true
 pin 'turbo_transitions', preload: true
 pin 'turbo_cache_hooks', preload: true
 pin 'flash_toast', preload: false
+pin 'paragraph_report_marks', preload: false
 pin 'slim_select_lifecycle', preload: false
 pin 'adult_content_disclaimer', preload: false
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true

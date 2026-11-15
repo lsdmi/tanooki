@@ -23,8 +23,9 @@ class ChapterParagraphReportsControllerTest < ActionDispatch::IntegrationTest
     body = response.parsed_body
 
     assert_equal(
-      [true, 'open', 1, 'Рядок з помилкою'],
-      [body['id'].present?, body['status'], body['block_index'], body['quote']]
+      [true, 'open', 1, 'Рядок з помилкою', 'опечатка'],
+      [body['id'].present?, body['status'], body['block_index'], body['quote'],
+       ParagraphReport.find(body['id']).message]
     )
   end
 

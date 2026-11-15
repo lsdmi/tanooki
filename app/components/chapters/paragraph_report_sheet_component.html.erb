@@ -1,0 +1,91 @@
+<%= tag.div id: 'paragraph-report', class: 'paragraph-report', data: stimulus_data do %>
+  <div data-paragraph-report-target="backdrop"
+       class="paragraph-report__backdrop fixed inset-0 z-[51] bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
+       data-action="click->paragraph-report#close"
+       aria-hidden="true"></div>
+
+  <div data-paragraph-report-target="panel"
+       id="paragraph-report-panel"
+       class="paragraph-report__panel fixed inset-x-0 bottom-0 z-[52] mx-auto flex max-h-[min(90dvh,36rem)] w-full max-w-lg translate-y-full flex-col overflow-hidden rounded-t-2xl border border-line bg-main shadow-xl shadow-stone-900/15 transition-transform duration-200 ease-out dark:shadow-black/40 sm:rounded-2xl"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="paragraph-report-title"
+       aria-hidden="true">
+    <div class="flex shrink-0 items-start justify-between gap-3 border-b border-line px-4 py-4 sm:px-5">
+      <div class="min-w-0 pr-2">
+        <h2 id="paragraph-report-title" class="text-base font-semibold text-fg">
+          <%= t('chapters.paragraph_reports.title') %>
+        </h2>
+        <p class="mt-0.5 text-sm text-fg-muted">
+          <%= t('chapters.paragraph_reports.hint') %>
+        </p>
+      </div>
+      <button type="button"
+              class="shrink-0 rounded-md p-1.5 text-fg-muted transition-colors hover:bg-surface hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+              data-action="click->paragraph-report#close"
+              aria-label="<%= t('chapters.paragraph_reports.close') %>">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
+      <div class="mb-4">
+        <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-fg-muted">
+          <%= t('chapters.paragraph_reports.quote_label') %>
+        </p>
+        <blockquote data-paragraph-report-target="quote"
+                    class="paragraph-report__quote rounded-lg border border-line bg-surface px-3 py-2.5 text-sm leading-relaxed text-fg">
+        </blockquote>
+      </div>
+
+      <% if guest? %>
+        <div data-paragraph-report-target="guest" class="space-y-3">
+          <%= render Ui::ButtonComponent.new(
+                label: t('chapters.paragraph_reports.guest_cta'),
+                variant: :primary,
+                size: :lg,
+                as: :link,
+                href: login_path,
+                full_width: true
+              ) %>
+        </div>
+      <% else %>
+        <form data-paragraph-report-target="form"
+              data-action="submit->paragraph-report#submit"
+              class="space-y-4">
+          <div>
+            <label for="paragraph-report-message" class="mb-1.5 block text-sm font-medium text-fg">
+              <%= t('chapters.paragraph_reports.message_label') %>
+            </label>
+            <textarea id="paragraph-report-message"
+                      data-paragraph-report-target="message"
+                      rows="3"
+                      maxlength="<%= MESSAGE_MAX %>"
+                      class="w-full rounded-lg border border-line-strong bg-main px-3 py-2.5 text-sm text-fg placeholder:text-fg-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 dark:bg-card dark:border-line"
+                      placeholder="<%= t('chapters.paragraph_reports.message_placeholder') %>"></textarea>
+          </div>
+
+          <p data-paragraph-report-target="error"
+             class="hidden text-sm text-status-danger-solid"
+             role="alert"
+             aria-live="polite"></p>
+
+          <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg border border-line-strong bg-main px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                    data-action="click->paragraph-report#close">
+              <%= t('chapters.paragraph_reports.cancel') %>
+            </button>
+            <button type="submit"
+                    data-paragraph-report-target="submit"
+                    class="inline-flex items-center justify-center rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-fg-on-brand transition-colors hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 disabled:cursor-not-allowed disabled:opacity-50">
+              <%= t('chapters.paragraph_reports.submit') %>
+            </button>
+          </div>
+        </form>
+      <% end %>
+    </div>
+  </div>
+<% end %>

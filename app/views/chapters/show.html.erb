@@ -1,12 +1,20 @@
 <%
   license_hidden = @chapter.license_hidden?
   resume_locator = reader_resume_locator(@chapter) unless license_hidden
+  paragraph_report_marks = Array(@paragraph_report_marks)
   reader_controllers = 'comments-drawer jump-to-top chapter-drawer reader-settings'
   reader_controllers = "#{reader_controllers} #{reader_progress_controllers}" unless license_hidden
   reader_controllers = "#{reader_controllers} reading-resume" if resume_locator
+  reader_controllers = "#{reader_controllers} paragraph-report-marks" if paragraph_report_marks.any?
+  flash.now[:notice] = t('chapters.paragraph_reports.stale_anchor') if !license_hidden && reader_report_anchor_stale?(@chapter)
 %>
 <div class="immersive-reader bg-reader-bg min-h-screen relative"
      data-controller="<%= reader_controllers %>"
+     <% if paragraph_report_marks.any? %>
+       data-paragraph-report-marks-items-value="<%= paragraph_report_marks.to_json %>"
+       data-paragraph-report-marks-heading-value="<%= t('chapters.paragraph_reports.marked_heading') %>"
+       data-paragraph-report-marks-empty-value="<%= t('chapters.paragraph_reports.marked_empty') %>"
+     <% end %>
      <%= tag.attributes(data: reader_progress_data(@chapter, @next_chapter)) unless license_hidden %>
      <%= tag.attributes(data: reader_resume_data(resume_locator)) if resume_locator %>>
   <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" style="background-image: url('<%= cover_background_url(@chapter.fiction.cover) %>');"></div>
@@ -14,6 +22,7 @@
 
   <%= render 'reader_settings_drawer', chapter: @chapter %>
   <%= render 'comments_drawer', chapter: @chapter %>
+  <%= render Chapters::ParagraphReportSheetComponent.new(chapter: @chapter, user: current_user) %>
 
   <main class="relative z-10">
     <%= render 'reader_toolbar', chapter: @chapter, fiction: @chapter.fiction %>

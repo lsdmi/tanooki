@@ -1238,6 +1238,24 @@ uk:
         own_work: Не можна дякувати за власний розділ
         not_released: Розділ ще не опубліковано
     paragraph_reports:
+      studio_label:
+        one: помилка
+        few: помилки
+        many: помилок
+        other: помилок
+      title: Знайшли помилку?
+      hint: Утримуйте абзац (або ПКМ на комп’ютері), щоб повідомити про помилку.
+      quote_label: Абзац
+      message_label: "Що не так? (необов’язково)"
+      message_placeholder: "Наприклад: опечатка, калька, неточний сенс…"
+      submit: Надіслати
+      cancel: Скасувати
+      close: Закрити
+      success: "Дякуємо! Команда побачить репорт у Студії."
+      marked_heading: Повідомлення читачів
+      marked_empty: Читач позначив помилку без коментаря
+      guest_cta: Увійдіть, щоб повідомити про помилку
+      stale_anchor: Текст абзацу змінено — позиція може не збігатися.
       errors:
         own_work: Не можна репортити власний розділ
         not_released: Розділ ще не опубліковано
@@ -1754,6 +1772,40 @@ uk:
       image_too_large: Зображення завелике (максимум 20 МБ).
       image_timeout: Не вдалося завантажити зображення вчасно.
       image_fetch_failed: Сервер із зображенням відповів помилкою.
+  studio:
+    notifications:
+      comments_title: Коментарі
+    paragraph_reports:
+      section_title: Повідомлення про помилки
+      stale: Текст змінився
+      stale_hint: Текст розділу змінився після репорту — цитата може більше не збігатися.
+      reporters_count:
+        one: "%{count} читач"
+        few: "%{count} читачі"
+        many: "%{count} читачів"
+        other: "%{count} читачів"
+      fixed: Виправлено
+      dismissed: Відхилити
+      open_reader: У рідері
+      edit_chapter: Редагувати
+      resolved:
+        fixed: Репорт позначено як виправлений.
+        dismissed: Репорт відхилено.
+      resolved_many:
+        fixed:
+          one: "%{count} репорт позначено як виправлений."
+          few: "%{count} репорти позначено як виправлені."
+          many: "%{count} репортів позначено як виправлені."
+          other: "%{count} репортів позначено як виправлені."
+        dismissed:
+          one: "%{count} репорт відхилено."
+          few: "%{count} репорти відхилено."
+          many: "%{count} репортів відхилено."
+          other: "%{count} репортів відхилено."
+      errors:
+        forbidden: Немає доступу до цього репорту.
+        already_resolved: Репорт уже закрито.
+        invalid_transition: Некоректний статус.
   api_tokens:
     title: Ключі API
     experimental: Експериментально

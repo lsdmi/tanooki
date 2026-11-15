@@ -1,16 +1,23 @@
-<%# Renders the Studio tab list using a helper and a partial for each tab item %>
-<%# CSS classes for active/inactive tabs %>
-<% active_classes   = "!bg-brand !text-fg-on-brand" %>
-<% inactive_classes = "bg-surface-strong text-fg-muted hover:bg-brand-subtle hover:text-fg-brand-hover" %>
+<% items = studio_menu_items %>
+<% active_classes   = "bg-brand text-fg-on-brand shadow-sm" %>
+<% inactive_classes = "text-fg-muted hover:bg-surface-strong hover:text-fg" %>
 
 <ul
-  class="-mb-px grid grid-cols-2 flex-wrap gap-4 text-center text-sm font-medium lg:grid-cols-8"
+  class="studio-tab-list mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 overflow-visible rounded-xl border bg-card p-2 shadow-md"
   id="default-tab"
   role="tablist"
+  aria-label="Studio"
   data-controller="studio-tabs"
   data-studio-tabs-active-value="<%= active_tab %>"
   data-studio-tabs-path-value="<%= studio_index_path %>">
-  <% studio_menu_items.each do |item| %>
-    <%= render partial: "studio/tab_item", locals: { item: item, is_active: (active_tab == item[:id]), active_classes: active_classes, inactive_classes: inactive_classes, active_tab: active_tab } %>
+  <% items.each do |item| %>
+    <%= render partial: "studio/tab_item",
+               locals: {
+                 item: item,
+                 is_active: (active_tab == item[:id]),
+                 active_classes: active_classes,
+                 inactive_classes: inactive_classes,
+                 active_tab: active_tab
+               } %>
   <% end %>
 </ul>

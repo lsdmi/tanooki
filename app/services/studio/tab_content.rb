@@ -4,12 +4,17 @@ module Studio
   # Loads instance variables for the active Studio tab (blogs, pokemons, teams, etc.).
   class TabContent
     include Pagy::Backend
+    include ParagraphReportsLoader
 
     ASSIGNMENT_KEYS = %i[
       pagy publications pokemon_show scanlators fictions comments avatars bookshelves epub_export_requests
       api_tokens
       cover_quality_flags
       listing_nudge_flags
+      fiction_open_report_counts
+      paragraph_report_groups
+      paragraph_report_digests
+      reports_pagy
     ].freeze
 
     def initialize(user, active_tab, params = {})
@@ -60,11 +65,14 @@ module Studio
       @pagy, @fictions = pagy(fiction_list.includes(:genres, cover_attachment: :blob), limit: 8)
       @cover_quality_flags = Fictions::CoverQualityFlags.for_fictions(@fictions)
       @listing_nudge_flags = Catalog::ListingNudgeFlags.for_fictions(@fictions)
+      @fiction_open_report_counts = open_report_counts_by_fiction(@fictions)
     end
 
     def notifications_content_loader
-      @pagy, @comments = pagy(my_comments, limit: 8)
+      @pagy, @comments = pagy(my_comments, limit: 16)
+      preload_chapter_commentable_fictions(@comments)
       user.update(latest_read_comment_id: latest_comments.first&.id)
+      load_paragraph_report_groups
     end
 
     def profile_content_loader
@@ -93,6 +101,13 @@ module Studio
     def my_comments
       Comment.where(id: latest_comments.pluck(:id)).includes({ user: { avatar: [:image_attachment] } },
                                                              :commentable).order(id: :desc)
+    end
+
+    def preload_chapter_commentable_fictions(comments)
+      chapters = comments.filter_map { |comment| comment.commentable if comment.commentable_type == 'Chapter' }
+      return if chapters.empty?
+
+      ActiveRecord::Associations::Preloader.new(records: chapters, associations: :fiction).call
     end
 
     def latest_comments

@@ -58,10 +58,31 @@ module Readings
     test 'shows the thanks count next to comments' do
       ChapterThank.find_by(user: users(:user_two), chapter: @chapter)&.destroy!
       ChapterThank.create!(user: users(:user_two), chapter: @chapter)
+      label = I18n.t('chapters.thanks.studio_label')
       render_inline(ChapterRowComponent.new(chapter: @chapter.reload, variant: :table_row, pagy_page: 1))
 
       assert_text @chapter.thanks_count.to_s
-      assert_text I18n.t('chapters.thanks.studio_label')
+      assert_selector "[title='#{label}']", text: @chapter.thanks_count.to_s
+    end
+
+    test 'shows open paragraph report count when present' do
+      label = I18n.t('chapters.paragraph_reports.studio_label', count: 3)
+      render_inline(
+        ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 1, open_report_count: 3)
+      )
+
+      assert_text '3'
+      assert_selector "[title='#{label}']", text: '3'
+      assert_selector '[role=tooltip]', text: label
+    end
+
+    test 'hides open paragraph report count when zero' do
+      label = I18n.t('chapters.paragraph_reports.studio_label', count: 0)
+      render_inline(
+        ChapterRowComponent.new(chapter: @chapter, variant: :table_row, pagy_page: 1, open_report_count: 0)
+      )
+
+      assert_no_selector "[title='#{label}']"
     end
 
     test 'rejects unknown variant' do

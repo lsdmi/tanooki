@@ -10,6 +10,7 @@ module Ui
       pagy_id: 'pagy',
       aria_label: 'Сторінок',
       custom_params: {},
+      page_param: :page,
       turbo_stream: false,
       variant: :default,
       html: {}
@@ -34,7 +35,7 @@ module Ui
 
     private
 
-    attr_reader :pagy, :pagy_id, :aria_label, :frame_id, :custom_params, :form_path, :onclick,
+    attr_reader :pagy, :pagy_id, :aria_label, :frame_id, :custom_params, :page_param, :form_path, :onclick,
                 :turbo_stream, :variant, :html
 
     def assign_options(options)
@@ -42,6 +43,7 @@ module Ui
       @aria_label = options[:aria_label]
       @frame_id = options[:frame_id]
       @custom_params = options[:custom_params]
+      @page_param = options[:page_param]
       @form_path = options[:form_path]
       @onclick = options[:onclick]
       @turbo_stream = options[:turbo_stream]

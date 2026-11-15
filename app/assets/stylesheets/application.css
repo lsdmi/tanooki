@@ -44,6 +44,36 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Studio tab strip: one border, midpoint of former border-line-strong + ring. */
+.studio-tab-list {
+  border-color: color-mix(in srgb, var(--color-line-strong) 55%, rgb(0 0 0 / 0.05));
+}
+
+.dark .studio-tab-list {
+  border-color: color-mix(in srgb, var(--color-line-strong) 55%, rgb(255 255 255 / 0.1));
+}
+
+/* Compact icon+number stats pill (writings / readings). Divider stays visible on surface-strong in dark. */
+.stat-pill-group > * + * {
+  position: relative;
+}
+
+.stat-pill-group > * + *::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 0.875rem;
+  transform: translateY(-50%);
+  background-color: color-mix(in srgb, var(--color-fg) 22%, transparent);
+  pointer-events: none;
+}
+
+.dark .stat-pill-group > * + *::before {
+  background-color: rgb(255 255 255 / 0.38);
+}
+
 /* Local fonts resized to Montserrat's metrics so the swap does not reflow text. */
 @font-face {
   font-family: "Montserrat Fallback Segoe UI";

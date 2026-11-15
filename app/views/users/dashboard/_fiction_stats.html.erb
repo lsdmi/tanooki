@@ -1,0 +1,25 @@
+<%# locals: fiction:, open_reports: (optional) %>
+<% open_reports = local_assigns.fetch(:open_reports, 0).to_i %>
+<%= render 'shared/stat_pill_group' do %>
+  <%= render 'shared/stat_chip', value: fiction.views, label: 'переглядів' do %>
+    <svg class="h-3.5 w-3.5 shrink-0 opacity-70" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12z" />
+      <circle cx="12" cy="12" r="3" stroke-width="1.75" />
+    </svg>
+  <% end %>
+  <%= render 'shared/stat_chip', value: fiction.comments_count, label: 'коментарів' do %>
+    <svg class="h-3.5 w-3.5 shrink-0 opacity-70" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.2-3.8 7.5-8.5 7.5a9.3 9.3 0 01-4-.9L3 20l1.2-3.3A7.6 7.6 0 013 12c0-4.2 3.8-7.5 9-7.5s9 3.3 9 7.5z" />
+    </svg>
+  <% end %>
+  <% if open_reports.positive? %>
+    <%= render 'shared/stat_chip',
+               value: open_reports,
+               label: t('chapters.paragraph_reports.studio_label', count: open_reports),
+               tone: :warning do %>
+      <svg class="h-3.5 w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 9v3.5m0 3.25h.01M10.3 4.2 2.7 17.1c-.7 1.2.2 2.7 1.6 2.7h15.4c1.4 0 2.3-1.5 1.6-2.7L13.7 4.2c-.7-1.2-2.5-1.2-3.4 0z" />
+      </svg>
+    <% end %>
+  <% end %>
+<% end %>

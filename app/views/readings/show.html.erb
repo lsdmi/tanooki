@@ -1,3 +1,8 @@
 <%= turbo_frame_tag 'chapters-list' do %>
-  <%= render 'chapters', fiction: @fiction, pagy: @pagy, chapters: @chapters %>
+  <%= render 'chapters',
+             fiction: @fiction,
+             pagy: @pagy,
+             chapters: @chapters,
+             paragraph_report_counts: @paragraph_report_counts,
+             fiction_open_report_count: @fiction_open_report_count %>
 <% end %>

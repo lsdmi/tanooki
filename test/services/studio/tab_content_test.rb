@@ -81,5 +81,32 @@ module Studio
         assert_not publication.association(:rich_text_description).loaded?
       end
     end
+
+    test 'writings tab assigns open paragraph report counts by fiction' do
+      fiction = fictions(:one)
+      ParagraphReport.create!(
+        user: users(:user_two),
+        chapter: chapters(:one),
+        block_index: 0,
+        quote: 'Цитата',
+        digest: 'c' * ParagraphReport::DIGEST_LENGTH
+      )
+      ParagraphReport.create!(
+        user: users('user_101'),
+        chapter: chapters(:two),
+        block_index: 0,
+        quote: 'Інша',
+        digest: 'd' * ParagraphReport::DIGEST_LENGTH,
+        status: :fixed,
+        resolved_at: Time.current
+      )
+      service = TabContent.new(users(:user_one), 'writings', { page: 1 })
+
+      service.call
+      counts = service.instance_variable_get(:@fiction_open_report_counts)
+
+      assert_equal 1, counts[fiction.id]
+      assert_nil counts[fictions(:two).id]
+    end
   end
 end

@@ -1,0 +1,7 @@
+<%# locals: aria_label: (optional) — yield one or more shared/stat_chip %>
+<% aria_label = local_assigns.fetch(:aria_label, 'Статистика') %>
+<div class="stat-pill-group inline-flex max-w-full items-center rounded-full bg-surface-strong p-1"
+     role="group"
+     aria-label="<%= aria_label %>">
+  <%= yield %>
+</div>

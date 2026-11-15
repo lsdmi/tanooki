@@ -70,7 +70,7 @@ module Ui
     def form_options(item)
       options = {
         method: :get,
-        params: custom_params.merge(page: item[:page]),
+        params: custom_params.merge(page_param => item[:page]),
         form: turbo_form_options,
         class: item[:css_class]
       }

@@ -4,7 +4,16 @@ require 'test_helper'
 
 class HomeVideosSectionTest < ActionDispatch::IntegrationTest
   def setup
+    Rails.cache.delete(Root::HomeVideos::CACHE_KEY)
     Rails.cache.delete('home_videos/v1')
+  end
+
+  test 'popular videos section always renders three supporting cards' do
+    Search::TagCounts.stub(:call, {}) { get root_url }
+
+    assert_response :success
+    assert_select 'section[aria-labelledby="home-videos"] .hidden.lg\\:grid .flex.min-h-0.flex-col.gap-4 > *',
+                  count: Root::VideosHelper::SUPPORTING_VIDEO_COUNT
   end
 
   test 'popular videos section renders editorial shell' do

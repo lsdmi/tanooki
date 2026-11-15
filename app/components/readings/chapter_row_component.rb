@@ -11,18 +11,19 @@ module Readings
     VARIANTS = %i[table_row card].freeze
 
     # editable: false on a licensed fiction for the team (no edit or delete, drafts not linked).
-    def initialize(chapter:, variant: :table_row, pagy_page: 1, editable: true)
+    def initialize(chapter:, variant: :table_row, pagy_page: 1, editable: true, open_report_count: 0)
       super()
       @chapter = chapter
       @variant = variant.to_sym
       @pagy_page = pagy_page
       @editable = editable
+      @open_report_count = open_report_count.to_i
       validate!
     end
 
     private
 
-    attr_reader :chapter, :variant, :pagy_page, :editable
+    attr_reader :chapter, :variant, :pagy_page, :editable, :open_report_count
 
     def validate!
       raise ArgumentError, "unknown variant: #{variant}" unless VARIANTS.include?(variant)
@@ -30,6 +31,12 @@ module Readings
 
     def table_row?
       variant == :table_row
+    end
+
+    def open_report_count? = open_report_count.positive?
+
+    def open_report_label
+      helpers.t('chapters.paragraph_reports.studio_label', count: open_report_count)
     end
 
     def published_at_label

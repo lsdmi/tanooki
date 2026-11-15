@@ -14,6 +14,7 @@ class ReadingsController < ApplicationController
       Library::ChapterCatalog.ordered_user_chapters_desc(@fiction, current_user),
       limit: 36
     )
+    load_paragraph_report_counts
   end
 
   def destroy
@@ -80,13 +81,30 @@ class ReadingsController < ApplicationController
       request_path: reading_path(@fiction),
       page: params[:page] || 1
     )
+    load_paragraph_report_counts
+  end
+
+  def load_paragraph_report_counts
+    ids = @chapters.map(&:id)
+    @paragraph_report_counts = if ids.empty?
+                                 {}
+                               else
+                                 ParagraphReport.open.where(chapter_id: ids).group(:chapter_id).count
+                               end
+    @fiction_open_report_count = ParagraphReport.open.joins(:chapter)
+                                                .where(chapters: { fiction_id: @fiction.id })
+                                                .count
   end
 
   def refresh_list
-    turbo_stream.update(
-      'chapters-list',
-      partial: 'chapters',
-      locals: { fiction: @fiction, pagy: @pagy, chapters: @chapters }
-    )
+    turbo_stream.update('chapters-list', partial: 'chapters', locals: chapters_list_locals)
+  end
+
+  def chapters_list_locals
+    {
+      fiction: @fiction, pagy: @pagy, chapters: @chapters,
+      paragraph_report_counts: @paragraph_report_counts,
+      fiction_open_report_count: @fiction_open_report_count
+    }
   end
 end

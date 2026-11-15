@@ -32,6 +32,15 @@ module Reading
           percent: progress.resume_percent.to_f, digest: progress.resume_digest)
     end
 
+    # Studio «У рідері» deep-link: quote + block index + digest, no percent fallback.
+    def self.from_report_anchor(quote:, block_index:, digest:)
+      parsed_quote = parse_quote(quote)
+      parsed_index = parse_block_index(block_index)
+      return unless parsed_quote || parsed_index
+
+      new(quote: parsed_quote, block_index: parsed_index, percent: nil, digest: parse_digest(digest))
+    end
+
     def self.parse_quote(value)
       value.is_a?(String) ? value.squish.first(QUOTE_LENGTH).presence : nil
     end
