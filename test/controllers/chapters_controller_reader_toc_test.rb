@@ -7,7 +7,8 @@ class ChaptersControllerReaderTocTest < ActionDispatch::IntegrationTest
 
   TRIGGER = 'button[data-chapter-drawer-target=trigger][aria-controls=reader-chapter-list-panel]'
   TOOLBAR_TRIGGER = "header.reader-toolbar #{TRIGGER}".freeze
-  PHONE_TRIGGER = "#{TRIGGER}[data-jump-to-top-target=reveal][hidden]".freeze
+  PHONE_DOCK = '[data-reader-mobile-dock][data-jump-to-top-target=reveal][hidden]'
+  PHONE_TRIGGER = "#{PHONE_DOCK} #{TRIGGER}".freeze
 
   test 'the toolbar opens the chapter list with a visible Зміст label' do
     sign_in users(:user_one)

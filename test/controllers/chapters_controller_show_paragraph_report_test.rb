@@ -22,7 +22,7 @@ class ChaptersControllerShowParagraphReportTest < ActionDispatch::IntegrationTes
 
     get chapter_url(@chapter)
 
-    assert_select '#paragraph-report form[data-paragraph-report-target=form]'
+    assert_select '#paragraph-report form'
     assert_select '#paragraph-report textarea#paragraph-report-message'
   end
 
@@ -31,7 +31,7 @@ class ChaptersControllerShowParagraphReportTest < ActionDispatch::IntegrationTes
 
     get chapter_url(@chapter)
 
-    assert_select '#paragraph-report form[data-paragraph-report-target=form]'
+    assert_select '#paragraph-report form'
   end
 
   test 'an 18+ locked chapter still embeds the sheet outside the blurred prose' do

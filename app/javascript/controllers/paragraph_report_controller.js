@@ -5,6 +5,7 @@ import { markParagraphReportQuote } from "paragraph_report_marks"
 
 const QUOTE_LENGTH = 120
 const CHIP_MARGIN = 8
+const MOBILE_MQ = "(max-width: 639px)"
 const CHIP_CLASS = [
   "fixed",
   "z-[70]",
@@ -31,6 +32,26 @@ const CHIP_CLASS = [
   "focus-visible:ring-offset-main",
   "dark:shadow-black/30"
 ].join(" ")
+const MOBILE_TRIGGER_CLASS = [
+  "inline-flex",
+  "h-11",
+  "w-11",
+  "shrink-0",
+  "items-center",
+  "justify-center",
+  "rounded-full",
+  "border",
+  "border-line/90",
+  "bg-page/95",
+  "text-fg",
+  "shadow-md",
+  "shadow-slate-900/10",
+  "focus:outline-none",
+  "focus-visible:ring-2",
+  "focus-visible:ring-fg-subtle/80",
+  "dark:shadow-black/40",
+  "dark:focus-visible:ring-fg-brand/80"
+].join(" ")
 const ACTIVE_CLASSES = [
   "rounded",
   "outline",
@@ -41,18 +62,21 @@ const ACTIVE_CLASSES = [
 ]
 const PANEL_HIDDEN_CLASS = "translate-y-full"
 const PANEL_SHOWN_CLASS = "translate-y-0"
+const MOBILE_TRIGGER_SVG = `
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M12 9v3.75m0 3.75h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg>
+`.trim()
 
-// Select text in a reader block → floating «Повідомити» chip
-// (ported to document.body so reader stacking / main z-10 cannot hide it).
+// Select text → desktop floating chip, or on phones a quiet icon beside «Зміст».
 export default class extends Controller {
-  static targets = ["backdrop", "panel", "quote", "message", "error", "submit", "form"]
+  static targets = ["backdrop", "panel", "quote", "message", "error", "submit"]
   static values = {
     url: String,
     guest: Boolean,
     success: String,
     error: String,
-    copied: String,
-    copyFailed: String,
     chipLabel: { type: String, default: "Повідомити" },
     reporterName: { type: String, default: "" },
     messageMax: { type: Number, default: 500 }
@@ -62,31 +86,35 @@ export default class extends Controller {
     this.sheetOpen = false
     this.activeBlock = null
     this.payload = null
-    this.copyText = ""
     this.chip = null
+    this.mobileTrigger = null
+    this.mobileMq = window.matchMedia(MOBILE_MQ)
     this._onEscape = this.onEscape.bind(this)
     this._onSelectionChange = this.onSelectionChange.bind(this)
     this._onPointerUp = this.onPointerUp.bind(this)
     this._onScrollOrResize = this.onScrollOrResize.bind(this)
-    this._onChipPointerDown = this.openFromChip.bind(this)
+    this._onTriggerPointerDown = this.openFromTrigger.bind(this)
+    this._onMobileMq = this.onMobileMq.bind(this)
 
     document.addEventListener("selectionchange", this._onSelectionChange)
     window.addEventListener("pointerup", this._onPointerUp)
     window.addEventListener("mouseup", this._onPointerUp)
     window.addEventListener("scroll", this._onScrollOrResize, true)
     window.addEventListener("resize", this._onScrollOrResize)
+    this.mobileMq.addEventListener?.("change", this._onMobileMq)
 
     this.ensureContent()
   }
 
   disconnect() {
-    this.destroyChip()
+    this.destroyAffordances()
     this.close()
     document.removeEventListener("selectionchange", this._onSelectionChange)
     window.removeEventListener("pointerup", this._onPointerUp)
     window.removeEventListener("mouseup", this._onPointerUp)
     window.removeEventListener("scroll", this._onScrollOrResize, true)
     window.removeEventListener("resize", this._onScrollOrResize)
+    this.mobileMq.removeEventListener?.("change", this._onMobileMq)
   }
 
   ensureContent() {
@@ -94,36 +122,45 @@ export default class extends Controller {
     return this.content
   }
 
+  mobileViewport() {
+    return this.mobileMq.matches
+  }
+
+  onMobileMq() {
+    this.hideAffordances()
+    if (!this.sheetOpen && !this.locked()) this.syncAffordances()
+  }
+
   onSelectionChange() {
     if (this.sheetOpen || this.locked()) {
-      this.hideChip()
+      this.hideAffordances()
       return
     }
-    window.requestAnimationFrame(() => this.syncChip())
+    window.requestAnimationFrame(() => this.syncAffordances())
   }
 
   onPointerUp() {
     if (this.sheetOpen || this.locked()) return
-    window.requestAnimationFrame(() => this.syncChip())
+    window.requestAnimationFrame(() => this.syncAffordances())
   }
 
   onScrollOrResize() {
     if (this.sheetOpen) {
-      this.hideChip()
+      this.hideAffordances()
       return
     }
-    this.syncChip()
+    this.syncAffordances()
   }
 
-  openFromChip(event) {
+  openFromTrigger(event) {
     event.preventDefault()
     event.stopPropagation()
     const found = this.selectionInBlock()
     if (!found) {
-      this.hideChip()
+      this.hideAffordances()
       return
     }
-    this.hideChip()
+    this.hideAffordances()
     this.openFor(found.block, found.text)
   }
 
@@ -140,7 +177,6 @@ export default class extends Controller {
     if (!quote || !digest || !Number.isInteger(blockIndex) || blockIndex < 0) return
 
     this.clearNativeSelection()
-    this.copyText = quoteSource
     this.payload = { block_index: blockIndex, quote, digest }
     this.setActiveBlock(block)
     this.quoteTarget.textContent = quoteSource.length > QUOTE_LENGTH ? `${quote}…` : quote
@@ -178,23 +214,8 @@ export default class extends Controller {
     document.removeEventListener("keydown", this._onEscape)
     this.setActiveBlock(null)
     this.payload = null
-    this.copyText = ""
     this.sheetOpen = false
     this.clearInlineError()
-  }
-
-  async copy(event) {
-    event.preventDefault()
-    const text = this.copyText
-    if (!text) return
-
-    try {
-      await this.writeClipboard(text)
-      this.close()
-      showSuccessMessage(this.copiedValue)
-    } catch {
-      showErrorMessage(this.copyFailedValue)
-    }
   }
 
   submit(event) {
@@ -249,13 +270,24 @@ export default class extends Controller {
     if (event.key === "Escape" && this.sheetOpen) this.close()
   }
 
-  syncChip() {
+  syncAffordances() {
     const found = this.selectionInBlock()
     if (!found) {
-      this.hideChip()
+      this.hideAffordances()
       return
     }
 
+    if (this.mobileViewport()) {
+      this.hideChip()
+      this.showMobileTrigger()
+      return
+    }
+
+    this.hideMobileTrigger()
+    this.syncChip()
+  }
+
+  syncChip() {
     const selection = window.getSelection()
     const range = selection?.getRangeAt(0)
     if (!range) {
@@ -294,10 +326,51 @@ export default class extends Controller {
     chip.textContent = this.chipLabelValue
     chip.hidden = true
     chip.setAttribute("data-paragraph-report-chip", "")
-    chip.addEventListener("pointerdown", this._onChipPointerDown)
+    chip.addEventListener("pointerdown", this._onTriggerPointerDown)
     document.body.appendChild(chip)
     this.chip = chip
     return chip
+  }
+
+  ensureMobileTrigger() {
+    if (this.mobileTrigger) return this.mobileTrigger
+
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className = `${MOBILE_TRIGGER_CLASS} fixed z-40 sm:hidden`
+    button.hidden = true
+    button.setAttribute("data-paragraph-report-mobile-trigger", "")
+    button.setAttribute("aria-label", this.chipLabelValue)
+    button.innerHTML = MOBILE_TRIGGER_SVG
+    button.addEventListener("pointerdown", this._onTriggerPointerDown)
+    document.body.appendChild(button)
+    this.mobileTrigger = button
+    return button
+  }
+
+  showMobileTrigger() {
+    const button = this.ensureMobileTrigger()
+    this.positionMobileTrigger()
+    button.hidden = false
+  }
+
+  // Sit just right of «Зміст» when that dock is on screen; otherwise bottom-left alone.
+  positionMobileTrigger() {
+    const button = this.mobileTrigger
+    if (!button) return
+
+    const dock = document.querySelector("[data-reader-mobile-dock]")
+    if (dock && !dock.hidden) {
+      const rect = dock.getBoundingClientRect()
+      button.style.left = `${Math.round(rect.right + 8)}px`
+      button.style.bottom = `${Math.round(window.innerHeight - rect.bottom)}px`
+      button.style.top = "auto"
+      return
+    }
+
+    button.style.left = "1rem"
+    button.style.bottom = "1rem"
+    button.style.top = "auto"
   }
 
   hideChip() {
@@ -305,11 +378,33 @@ export default class extends Controller {
     this.chip.hidden = true
   }
 
+  hideMobileTrigger() {
+    if (!this.mobileTrigger) return
+    this.mobileTrigger.hidden = true
+  }
+
+  hideAffordances() {
+    this.hideChip()
+    this.hideMobileTrigger()
+  }
+
+  destroyAffordances() {
+    this.destroyChip()
+    this.destroyMobileTrigger()
+  }
+
   destroyChip() {
     if (!this.chip) return
-    this.chip.removeEventListener("pointerdown", this._onChipPointerDown)
+    this.chip.removeEventListener("pointerdown", this._onTriggerPointerDown)
     this.chip.remove()
     this.chip = null
+  }
+
+  destroyMobileTrigger() {
+    if (!this.mobileTrigger) return
+    this.mobileTrigger.removeEventListener("pointerdown", this._onTriggerPointerDown)
+    this.mobileTrigger.remove()
+    this.mobileTrigger = null
   }
 
   selectionInBlock() {
@@ -341,24 +436,6 @@ export default class extends Controller {
   clearNativeSelection() {
     const selection = window.getSelection()
     if (selection && selection.rangeCount > 0) selection.removeAllRanges()
-  }
-
-  async writeClipboard(text) {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text)
-      return
-    }
-
-    const field = document.createElement("textarea")
-    field.value = text
-    field.setAttribute("readonly", "")
-    field.style.position = "fixed"
-    field.style.top = "-9999px"
-    document.body.appendChild(field)
-    field.select()
-    const ok = document.execCommand("copy")
-    field.remove()
-    if (!ok) throw new Error("copy failed")
   }
 
   setActiveBlock(block) {

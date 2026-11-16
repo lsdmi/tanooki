@@ -8,8 +8,8 @@ module ApplicationHelper
   include Chapters::CommentsDrawerHelper
   include Chapters::ReaderBottomHelper
   include Comments::PresentationHelper
-  include ContestsHelper
-  include NotificationsHelper
+  include Contests::PagesHelper
+  include Notifications::NavBadgeHelper
   include Studio::MenuHelper
   include ExternalUrls::UrlsHelper
   include Fictions::FormattingHelper

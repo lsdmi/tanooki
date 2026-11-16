@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Chapters
-  # Bottom sheet for a translation-error report: select text → «Повідомити» chip.
-  # Also offers «Копіювати» for the selected fragment. Same UI for readers, team, and admins; guests get a login CTA.
+  # Bottom sheet for a translation-error report: select text → «Повідомити».
+  # Same UI for readers, team, and admins; guests get a login CTA.
   class ParagraphReportSheetComponent < ViewComponent::Base
     MESSAGE_MAX = ParagraphReport::MESSAGE_MAX
 
@@ -30,25 +30,21 @@ module Chapters
     end
 
     def stimulus_data
+      { controller: 'paragraph-report' }.merge(stimulus_endpoint_data, stimulus_label_data)
+    end
+
+    def stimulus_endpoint_data
       {
-        controller: 'paragraph-report',
         paragraph_report_url_value: chapter_paragraph_reports_path(chapter),
         paragraph_report_guest_value: guest?,
         paragraph_report_reporter_name_value: user&.name.to_s,
         paragraph_report_message_max_value: MESSAGE_MAX
-      }.merge(stimulus_copy_data, stimulus_flash_data)
-    end
-
-    def stimulus_copy_data
-      {
-        paragraph_report_copied_value: t('chapters.paragraph_reports.copied'),
-        paragraph_report_copy_failed_value: t('chapters.paragraph_reports.copy_failed'),
-        paragraph_report_chip_label_value: t('chapters.paragraph_reports.chip')
       }
     end
 
-    def stimulus_flash_data
+    def stimulus_label_data
       {
+        paragraph_report_chip_label_value: t('chapters.paragraph_reports.chip'),
         paragraph_report_success_value: t('chapters.paragraph_reports.success'),
         paragraph_report_error_value: t('chapters.paragraph_reports.errors.generic')
       }
