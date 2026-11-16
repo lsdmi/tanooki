@@ -33,10 +33,10 @@ class Bookshelf < ApplicationRecord
     sqid
   end
 
-  # Membership (via touch on sync) + fiction content updates invalidate the strip/details HTML.
+  # Membership (via touch on sync) + fiction content updates invalidate the catalog HTML.
   def fiction_list_fragment_cache_key(page: 1)
     [
-      'bookshelves/fiction-list/v1',
+      'bookshelves/fiction-list/v2',
       id,
       updated_at.to_fs(:usec),
       fictions.maximum(:updated_at)&.to_fs(:usec),

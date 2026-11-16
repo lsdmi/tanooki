@@ -32,8 +32,8 @@ class ContentFilterListsTest < ActionDispatch::IntegrationTest
 
     get bookshelf_url(bookshelves(:two).sqid)
 
-    assert_select '#fiction-list-page [data-fiction-picker-id-param=?]', @eighteen.id.to_s, count: 0
-    assert_select '#fiction-list-page [data-fiction-picker-id-param=?]', @everyone.id.to_s
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@eighteen), count: 0
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@everyone)
     assert_includes response.body, I18n.t('content_filters.hidden_count', count: 1)
   end
 
@@ -43,7 +43,7 @@ class ContentFilterListsTest < ActionDispatch::IntegrationTest
 
     get bookshelf_url(bookshelves(:one).sqid)
 
-    assert_select '#fiction-list-page [data-fiction-picker-id-param=?]', @eighteen.id.to_s
+    assert_select '#fiction-list-page a[href=?]', fiction_path(@eighteen)
     assert_not_includes response.body, I18n.t('content_filters.hidden_count', count: 1)
   end
 

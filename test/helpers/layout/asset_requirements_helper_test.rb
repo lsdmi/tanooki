@@ -111,6 +111,12 @@ module Layout
       assert_not_predicate self, :requires_catalog_storage_styles?
     end
 
+    test 'catalog storage styles load on bookshelf show' do
+      assign_controller(:bookshelves, :show)
+
+      assert_predicate self, :requires_catalog_storage_styles?
+    end
+
     test 'actiontext styles load on tale show' do
       assign_controller(:tales, :show)
 

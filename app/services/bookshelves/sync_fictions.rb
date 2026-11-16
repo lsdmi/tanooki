@@ -15,8 +15,17 @@ module Bookshelves
     def call
       return if normalized_fiction_ids.empty?
 
-      bookshelf.bookshelf_fictions.destroy_all
+      previous_fiction_ids = bookshelf.fictions.pluck(:id)
+      replace_membership!
+      bust_fiction_show_fragments(previous_fiction_ids)
+    end
 
+    private
+
+    attr_reader :bookshelf, :fiction_ids
+
+    def replace_membership!
+      bookshelf.bookshelf_fictions.destroy_all
       normalized_fiction_ids.each do |fiction_id|
         bookshelf.bookshelf_fictions.create!(fiction_id:)
       end
@@ -26,9 +35,12 @@ module Bookshelves
       bookshelf.update!(updated_at: Time.current)
     end
 
-    private
-
-    attr_reader :bookshelf, :fiction_ids
+    # Guest fiction#show fragment keys on fiction.updated_at («На полицях»).
+    # update_all: skip validations/callbacks — membership change only needs a new cache key.
+    def bust_fiction_show_fragments(previous_fiction_ids)
+      affected_ids = (previous_fiction_ids + normalized_fiction_ids).uniq
+      Fiction.where(id: affected_ids).update_all(updated_at: Time.current)
+    end
 
     def normalized_fiction_ids
       @normalized_fiction_ids ||= Array(fiction_ids).compact_blank.map(&:to_i).uniq

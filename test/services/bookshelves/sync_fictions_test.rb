@@ -35,5 +35,14 @@ module Bookshelves
 
       assert_equal [@fiction_one.id, @fiction_two.id].sort, @bookshelf.fictions.pluck(:id).sort
     end
+
+    test 'touches affected fictions so guest show fragments refresh' do
+      before = @fiction_one.reload.updated_at
+
+      SyncFictions.call(bookshelf: @bookshelf, fiction_ids: [@fiction_two.id])
+
+      assert_operator @fiction_one.reload.updated_at, :>, before
+      assert_operator @fiction_two.reload.updated_at, :>, before
+    end
   end
 end

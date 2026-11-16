@@ -400,6 +400,10 @@ uk:
       create_success: Полицю дадано
       update_success: Полицю оновлено!
       destroy_success: Полицю видалено.
+    show:
+      share:
+        label: Скопіювати
+        copied: Скопійовано
   profiles:
     pokemon_stats:
       title: Статистика Покемонів
@@ -842,6 +846,8 @@ uk:
         finished: Прочитано
         postponed: Відкладено
         dropped: Покинуто
+      on_bookshelves:
+        title: На полицях
       rating:
         title: Оцінка твору
         info: Про оцінку

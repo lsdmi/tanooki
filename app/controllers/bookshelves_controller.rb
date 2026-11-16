@@ -2,14 +2,12 @@
 
 # User-curated fiction lists (bookshelves) for browsing and managing collections.
 class BookshelvesController < ApplicationController
-  helper Fictions::ListPaginationHelper
+  helper Fictions::ListPaginationHelper, Ui::StrokeIconHelper
 
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: :show
   before_action :set_bookshelf, only: %i[show edit update destroy]
   before_action :load_selected_fictions, only: %i[new create edit update]
   before_action :track_bookshelf_visit, only: :show
-
-  def index; end
 
   def show
     prepare_bookshelf_fictions
@@ -63,7 +61,8 @@ class BookshelvesController < ApplicationController
     relation, @hidden_fiction_count, @content_filter_fingerprint = Bookshelves::VisibleFictions.call(
       bookshelf: @bookshelf, viewer: current_user, filter: current_content_filter
     )
-    @pagy, @fictions = pagy(relation.includes(:genres, cover_attachment: :blob), limit: 20)
+    @header_covers = relation.joins(:cover_attachment).includes(:cover_attachment).limit(5)
+    @pagy, @fictions = pagy(relation.includes(:genres, :cover_attachment), limit: 24)
   end
 
   def bookshelf_list_locals

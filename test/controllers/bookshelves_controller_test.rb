@@ -11,13 +11,12 @@ class BookshelvesControllerTest < ActionDispatch::IntegrationTest
     @bookshelf = bookshelves(:one)
   end
 
-  # Index action doesn't have a corresponding view, skipping this test
-
   test 'should show bookshelf' do
     get bookshelf_url(@bookshelf.sqid)
 
     assert_response :success
     assert_select 'h1', @bookshelf.title
+    assert_select '#fiction-list-page'
   end
 
   test 'should get new when authenticated' do

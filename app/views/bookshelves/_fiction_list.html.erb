@@ -2,6 +2,39 @@
 <% cache_key = bookshelf.fiction_list_fragment_cache_key(page: pagy.page) %>
 <% cache_key << content_filter_fingerprint if content_filter_fingerprint.present? %>
 <% cache cache_key do %>
-  <%= render Ui::FilteredNoticeComponent.new(count: hidden_fiction_count.to_i, change_path: content_filter_settings_path) %>
-  <%= render partial: 'fiction_lists/picker_list', locals: { fictions:, pagy: } %>
+  <%= turbo_frame_tag 'fiction-list-page', class: 'catalog-list-frame block' do %>
+    <%= render Ui::FilteredNoticeComponent.new(count: hidden_fiction_count.to_i, change_path: content_filter_settings_path) %>
+
+    <div class="catalog-list-body relative mt-2 min-h-48">
+      <div class="catalog-frame-spinner" aria-hidden="true">
+        <svg class="h-8 w-8 animate-spin text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" role="presentation">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+
+      <div class="catalog-list-body-content">
+        <% if fictions.any? %>
+          <%= render 'fiction_lists/catalog_grid',
+                     fictions: fictions,
+                     mid_ad_placement: :bookshelf,
+                     mid_ad_navigation_key: "#{bookshelf.sqid}-p#{pagy.page}" %>
+          <%= ui_pagination(
+                pagy,
+                frame_id: 'fiction-list-page',
+                variant: :pill,
+                html: { class: 'pt-12' }
+              ) %>
+        <% else %>
+          <p class="py-16 text-center text-base text-fg-muted">На цій полиці ще немає творів.</p>
+          <div class="scanlator-show__ad scanlator-show__ad--full mt-6">
+            <%= render 'shared/adsense_slot',
+                       placement: :bookshelf,
+                       navigation_key: "#{bookshelf.sqid}-empty",
+                       measure_as: 'bottom' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 <% end %>

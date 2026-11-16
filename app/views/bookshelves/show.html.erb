@@ -1,52 +1,72 @@
-<div class="max-w-6xl mx-auto px-4 pb-8 z-10 relative py-6 sm:py-8">
-  <div class="bookshelf-show grid grid-cols-1 lg:grid-cols-[20rem_minmax(0,1fr)] gap-6 lg:gap-8">
-    <aside class="bookshelf-show__sidebar flex flex-col gap-6 min-h-0">
-      <div class="relative shrink-0 overflow-hidden rounded-xl border border-line bg-card p-5 shadow-md sm:p-6">
-        <%= render 'shared/decorative_ornament' %>
+<% share_url = bookshelf_url(@bookshelf) %>
+<div class="relative min-h-screen overflow-hidden bg-page">
+  <%= tag.div **lazy_decoration_background(
+        'psyduck_background.webp',
+        html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed',
+        aria: { hidden: true }
+      ) %>
+  <div class="pointer-events-none absolute inset-0 bg-page/95 dark:bg-page/90" aria-hidden="true"></div>
 
-        <div class="relative z-10">
-          <p class="text-xs font-semibold uppercase tracking-wider text-fg-brand mb-2">Полиця</p>
-          <h1 class="text-xl sm:text-2xl font-black text-fg tracking-tight leading-tight">
+  <div class="relative z-10 mx-auto max-w-screen-xl px-4 pb-8 pt-12 sm:pb-10 sm:pt-16 lg:pt-20 2xl:px-0">
+    <header class="mb-10 sm:mb-12">
+      <% if @header_covers.any? %>
+        <ul class="flex items-end -space-x-3 sm:-space-x-4" aria-hidden="true">
+          <% @header_covers.each_with_index do |fiction, index| %>
+            <li class="relative w-12 shrink-0 overflow-hidden rounded-md bg-surface-strong ring-2 ring-page sm:w-14 <%= index.odd? ? 'translate-y-1.5' : '' %>"
+                style="z-index: <%= @header_covers.size - index %>;">
+              <%= cover_card_picture_tag(
+                    fiction.cover,
+                    alt: '',
+                    class: 'aspect-[2/3] w-full object-cover',
+                    loading: (index < 2 ? 'eager' : 'lazy'),
+                    decoding: 'async',
+                    fetchpriority: (index.zero? ? 'high' : nil)
+                  ) %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <div class="<%= @header_covers.any? ? 'mt-8 sm:mt-10' : '' %> min-w-0 max-w-2xl">
+        <div class="inline-flex max-w-full items-center gap-2">
+          <h1 class="min-w-0 break-words text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
             <%= @bookshelf.title %>
           </h1>
-
-          <dl class="mt-4 space-y-3 text-sm">
-            <div>
-              <dt class="font-medium text-fg-muted">Автор</dt>
-              <dd class="mt-1 text-fg">
-                <%= link_to @bookshelf.user_name,
-                            profile_path(@bookshelf.user_sqid),
-                            class: 'hover:text-fg-brand transition-colors duration-200' %>
-              </dd>
-            </div>
-            <% if @bookshelf.description.present? %>
-              <div>
-                <dt class="font-medium text-fg-muted">Опис</dt>
-                <dd class="mt-1 leading-relaxed text-fg-secondary">
-                  <%= @bookshelf.description %>
-                </dd>
-              </div>
-            <% end %>
-          </dl>
+          <%= tag.div class: 'shrink-0',
+                      data: {
+                        controller: 'share-link',
+                        share_link_url_value: share_url,
+                        share_link_copied_value: t('bookshelves.show.share.copied'),
+                        share_link_idle_value: t('bookshelves.show.share.label')
+                      } do %>
+            <button type="button"
+                    class="inline-flex size-8 items-center justify-center rounded-md text-fg-muted transition-[color,transform] duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                    title="<%= t('bookshelves.show.share.label') %>"
+                    aria-label="<%= t('bookshelves.show.share.label') %>"
+                    data-action="share-link#copyUrl">
+              <%= stroke_icon(:share, 'size-4 shrink-0') %>
+              <span class="sr-only" data-share-link-target="label"><%= t('bookshelves.show.share.label') %></span>
+            </button>
+          <% end %>
         </div>
+        <p class="mt-2 text-sm text-fg-muted">
+          <%= link_to @bookshelf.user_name,
+                      profile_path(@bookshelf.user_sqid),
+                      class: 'rounded-sm transition-colors hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+        </p>
+        <% if @bookshelf.description.present? %>
+          <p class="mt-4 text-sm leading-relaxed text-pretty text-fg-secondary sm:text-[0.9375rem]">
+            <%= @bookshelf.description %>
+          </p>
+        <% end %>
       </div>
+    </header>
 
-      <div class="bookshelf-show__ad flex w-full flex-col lg:min-h-0 lg:flex-1">
-        <%= render "shared/adsense_slot",
-                   placement: :bookshelf,
-                   navigation_key: @bookshelf.sqid %>
-      </div>
-    </aside>
-
-    <main class="min-w-0">
-      <div class="rounded-xl border border-line bg-surface p-3 shadow-md sm:p-4">
-        <%= render 'bookshelves/fiction_list',
-                   bookshelf: @bookshelf,
-                   fictions: @fictions,
-                   pagy: @pagy,
-                   hidden_fiction_count: @hidden_fiction_count,
-                   content_filter_fingerprint: @content_filter_fingerprint %>
-      </div>
-    </main>
+    <%= render 'bookshelves/fiction_list',
+               bookshelf: @bookshelf,
+               fictions: @fictions,
+               pagy: @pagy,
+               hidden_fiction_count: @hidden_fiction_count,
+               content_filter_fingerprint: @content_filter_fingerprint %>
   </div>
 </div>

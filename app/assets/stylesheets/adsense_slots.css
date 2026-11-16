@@ -1,12 +1,7 @@
 /* AdSense slot chrome (browse + in-chapter). Deferred via DEFERRED_PAGE_STYLESHEETS.
    CLS reservations (base slot, collapse, show/index/home measuring heights) live in application.css. */
 
-html.adblock-likely .bookshelf-show__ad,
-.bookshelf-show__ad:has(.reader-ad-slot--collapsed) {
-  display: none !important;
-}
-
-/* Scanlator show: single full-width slot under the works grid. */
+/* Full-width mid/empty catalog ads (scanlator show, bookshelf show). */
 html.adblock-likely .scanlator-show__ad--full,
 .scanlator-show__ad--full:has(.reader-ad-slot--collapsed) {
   display: none !important;
@@ -126,64 +121,6 @@ html.adblock-likely .scanlator-show__ad--full,
 .fiction-show__ad .reader-ad-slot.reader-ad-slot--measuring {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-/* Bookshelf show: horizontal banner on mobile; tall unit in left column on desktop */
-.bookshelf-show__ad .reader-ad-slot__adsense iframe {
-  width: 100% !important;
-  max-width: 100%;
-}
-
-@media (max-width: 1023px) {
-  .bookshelf-show__ad .reader-ad-slot--preview,
-  .bookshelf-show__ad .reader-ad-slot--adsense-filled {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .bookshelf-show__sidebar {
-    height: 100%;
-  }
-
-  .bookshelf-show__ad {
-    flex: 1 1 0;
-    min-height: 0;
-  }
-
-  .bookshelf-show__ad .reader-ad-slot {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    margin: 0;
-    overflow: visible;
-  }
-
-  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview,
-  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--adsense-filled {
-    margin: 0;
-  }
-
-  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__frame {
-    flex: 1 1 auto;
-    min-height: 0;
-    max-height: none;
-    overflow: visible;
-  }
-
-  .bookshelf-show__ad .reader-ad-slot .reader-ad-slot__preview {
-    box-sizing: border-box;
-    height: 100%;
-    min-height: 0;
-  }
-
-  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--measuring:not(.reader-ad-slot--adsense-filled) .reader-ad-slot__frame,
-  .bookshelf-show__ad .reader-ad-slot.reader-ad-slot--preview .reader-ad-slot__frame {
-    min-height: 16rem;
-  }
 }
 
 /* Homepage mid-page dual banners (626×166 design, stacked mobile / side-by-side desktop) */

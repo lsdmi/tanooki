@@ -73,6 +73,9 @@ class FictionShowPresenter
 
   def similar_hidden_count = similar_fictions && similar_finder.hidden_count
 
+  # Curated Bookshelf lists that include this fiction (not Library reading shelves).
+  def curated_bookshelves = @curated_bookshelves ||= Fictions::CuratedBookshelves.call(fiction: @fiction)
+
   def order = @params[:order] || :desc
 
   def sorted_chapters_locals = { fiction: @fiction, order:, filter: @params[:filter], team: @params[:team] }
