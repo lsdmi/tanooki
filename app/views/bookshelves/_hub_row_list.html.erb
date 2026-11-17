@@ -1,0 +1,8 @@
+<%# locals: (entries:) %>
+<ul class="bookshelves-hub-rows grid grid-cols-1 lg:grid-cols-2 lg:gap-x-8 xl:gap-x-10">
+  <% entries.each do |entry| %>
+    <li class="bookshelves-hub-row min-w-0">
+      <%= render 'bookshelves/hub_card_row', entry: entry %>
+    </li>
+  <% end %>
+</ul>

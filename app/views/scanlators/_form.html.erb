@@ -124,14 +124,16 @@
           <div>
             <%= f.label :banner, 'Банер', class: 'block text-sm font-medium text-fg-secondary mb-2' %>
             <div class="flex justify-center items-center w-full">
-              <%= f.label :banner, class: "flex flex-col justify-center items-center w-full h-48 bg-surface-strong rounded-lg border-2 border-line-strong border-dashed cursor-pointer hover:border-brand/50 transition-all duration-200 #{'border-status-danger-subtle-border dark:border-status-danger-solid' if scanlator.errors[:banner].any?}" do %>
-                <div class="flex flex-col justify-center items-center pt-5 pb-6">
+              <%= f.label :banner, class: "relative flex flex-col justify-center items-center w-full h-48 bg-surface-strong rounded-lg border-2 border-line-strong border-dashed cursor-pointer hover:border-brand/50 transition-all duration-200 #{'border-status-danger-subtle-border dark:border-status-danger-solid' if scanlator.errors[:banner].any?}" do %>
+                <div class="pointer-events-none flex flex-col justify-center items-center pt-5 pb-6">
                   <svg aria-hidden="true" class="mb-3 w-8 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                   <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
                   <p class="text-xs text-fg-muted">SVG, PNG, JPEG чи WebP</p>
                 </div>
-                <%= f.file_field :banner, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-                <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'text-center text-sm text-fg-muted' %>
+                <%= f.file_field :banner,
+                                 class: 'absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0',
+                                 data: { action: 'change->dropzone#update' } %>
+                <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
               <% end %>
             </div>
             <%= tag.p scanlator.errors[:banner].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-2 flex items-center' do %>
@@ -144,14 +146,16 @@
           <div>
             <%= f.label :avatar, 'Портретик', class: 'block text-sm font-medium text-fg-secondary mb-2' %>
             <div class="flex justify-center items-center w-full">
-              <%= f.label :avatar, class: "flex flex-col justify-center items-center w-full h-48 bg-surface-strong rounded-lg border-2 border-line-strong border-dashed cursor-pointer hover:border-brand/50 transition-all duration-200 #{'border-status-danger-subtle-border dark:border-status-danger-solid' if scanlator.errors[:avatar].any?}" do %>
-                <div class="flex flex-col justify-center items-center pt-5 pb-6">
+              <%= f.label :avatar, class: "relative flex flex-col justify-center items-center w-full h-48 bg-surface-strong rounded-lg border-2 border-line-strong border-dashed cursor-pointer hover:border-brand/50 transition-all duration-200 #{'border-status-danger-subtle-border dark:border-status-danger-solid' if scanlator.errors[:avatar].any?}" do %>
+                <div class="pointer-events-none flex flex-col justify-center items-center pt-5 pb-6">
                   <svg aria-hidden="true" class="mb-3 w-8 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                   <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
                   <p class="text-xs text-fg-muted">SVG, PNG, JPEG чи WebP</p>
                 </div>
-                <%= f.file_field :avatar, class: "hidden", label: false, data: { action: "change->dropzone#update" } %>
-                <%= tag.div f.object.avatar.blob&.filename || nil, id: 'avatar_name', class: 'text-center text-sm text-fg-muted' %>
+                <%= f.file_field :avatar,
+                                 class: 'absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0',
+                                 data: { action: 'change->dropzone#update' } %>
+                <%= tag.div f.object.avatar.blob&.filename || nil, id: 'avatar_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
               <% end %>
             </div>
             <%= tag.p scanlator.errors[:avatar].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-2 flex items-center' do %>

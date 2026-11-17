@@ -42,6 +42,7 @@ module Meta
 
     test 'static_path? matches configured index routes' do
       assert PageDescription.static_path?(fictions_path)
+      assert PageDescription.static_path?(bookshelves_path)
       assert_not PageDescription.static_path?(root_path)
     end
 
@@ -53,6 +54,16 @@ module Meta
       ).resolve
 
       assert_equal I18n.t('meta.description.fictions.index'), description
+    end
+
+    test 'resolve returns static path copy for bookshelves hub' do
+      description = PageDescription.new(
+        request_path: bookshelves_path,
+        controller_name: 'bookshelves',
+        action_name: 'index'
+      ).resolve
+
+      assert_equal I18n.t('meta.description.bookshelves.index'), description
     end
 
     test 'resolve returns genre DB description on genre show pages' do

@@ -1,0 +1,29 @@
+<div class="bookshelves-hub relative min-h-screen overflow-x-clip bg-page">
+  <%= tag.div **lazy_decoration_background(
+        'psyduck_background.webp',
+        html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed',
+        aria: { hidden: true }
+      ) %>
+  <div class="pointer-events-none absolute inset-0 bg-page/95 dark:bg-page/90" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-screen-xl px-4 pb-20 pt-12 sm:pb-24 sm:pt-16 lg:pt-20 2xl:px-0">
+    <header class="bookshelves-hub-reveal mb-10 flex w-full min-w-0 flex-col flex-wrap justify-between gap-3 sm:mb-12 md:flex-row md:items-end md:gap-8">
+      <h1 class="min-w-0 text-2xl font-black leading-none tracking-tight text-fg sm:text-3xl md:text-4xl lg:text-6xl">
+        <%= t('bookshelves.index.title') %>
+        <span class="text-fg-brand"><%= t('bookshelves.index.title_sub') %></span>
+      </h1>
+      <p class="max-w-md text-xs leading-relaxed text-pretty text-fg-secondary sm:text-sm md:max-w-xs md:pb-1 md:text-right lg:text-[0.9375rem]">
+        <%= t('bookshelves.index.lead') %>
+      </p>
+    </header>
+
+    <% if @popular.empty? && @recent.empty? %>
+      <p class="text-sm text-fg-muted"><%= t('bookshelves.index.empty') %></p>
+    <% else %>
+      <%= render 'bookshelves/hub_layout',
+                 popular: @popular,
+                 recent: @recent,
+                 pagy: @pagy %>
+    <% end %>
+  </div>
+</div>

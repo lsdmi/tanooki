@@ -1,0 +1,25 @@
+<%# locals: (entries:, pagy:) %>
+<%= turbo_frame_tag 'hub-recent-page', class: 'catalog-list-frame block' do %>
+  <div class="catalog-list-body relative min-h-24">
+    <div class="catalog-frame-spinner" aria-hidden="true">
+      <svg class="h-8 w-8 animate-spin text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" role="presentation">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
+
+    <div class="catalog-list-body-content">
+      <% if entries.any? %>
+        <%= render 'bookshelves/hub_row_list', entries: %>
+        <%= ui_pagination(
+              pagy,
+              frame_id: 'hub-recent-page',
+              variant: :pill,
+              html: { class: 'pt-8 sm:pt-10' }
+            ) %>
+      <% else %>
+        <p class="py-10 text-center text-sm text-fg-muted"><%= t('bookshelves.index.recent_empty') %></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

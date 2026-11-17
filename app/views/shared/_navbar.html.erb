@@ -1,20 +1,20 @@
-<nav class="pt-2.5 pb-2 bg-main antialiased relative z-50 shadow-md border-b border-line">
-  <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
-    <div class="flex flex-wrap items-center justify-between gap-4 lg:flex-nowrap">
+<nav class="relative z-50 border-b border-line bg-main antialiased shadow-md">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <%# Fixed row height so chrome does not jump between pages (logo h-9 / md:h-12). %>
+    <div class="flex h-14 items-center justify-between gap-2 sm:gap-3 md:h-16">
       <% cache navbar_fragment_cache_key(:brand), expires_in: 1.hour do %>
         <%= render "shared/navbar_brand" %>
       <% end %>
 
-      <div class="flex items-center justify-end md:space-x-2 lg:order-3 md:mt-0 mt-1">
+      <%# Not fragment-cached: icon markup must not stick behind an hourly key. %>
+      <%= render "shared/navbar_nav_links" %>
+
+      <div class="flex shrink-0 items-center justify-end md:space-x-2">
         <% cache navbar_fragment_cache_key(:toolbar), expires_in: 1.hour do %>
           <%= render "shared/navbar_toolbar" %>
         <% end %>
         <%= render "shared/navbar_auth" %>
       </div>
-
-      <% cache navbar_fragment_cache_key(:nav_links), expires_in: 1.hour do %>
-        <%= render "shared/navbar_nav_links" %>
-      <% end %>
     </div>
   </div>
 </nav>

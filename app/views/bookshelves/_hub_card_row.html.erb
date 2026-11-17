@@ -1,0 +1,68 @@
+<% bookshelf = entry.bookshelf %>
+<% user = bookshelf.user %>
+<% has_fan = entry.covers.any? %>
+<article class="bookshelves-hub-row-hit flex min-w-0 items-start gap-3 py-5 sm:gap-3.5 sm:py-6 lg:py-7">
+  <div class="min-w-0 flex-1">
+    <div class="flex min-w-0 items-start gap-2.5">
+      <h3 class="min-w-0 flex-1 text-sm font-semibold leading-snug tracking-tight text-fg sm:truncate sm:text-base lg:text-lg">
+        <%= link_to bookshelf.title, bookshelf_path(bookshelf),
+                    **turbo_drive_visit_data,
+                    class: 'rounded-sm transition-colors duration-200 hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+      </h3>
+      <% unless has_fan %>
+        <%= render 'bookshelves/hub_age_badge',
+                   max_content_rating: entry.max_content_rating,
+                   placement: :inline %>
+      <% end %>
+    </div>
+    <div class="mt-2 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-fg-muted sm:text-sm">
+      <%= link_to profile_path(bookshelf.user_sqid),
+                  **turbo_drive_visit_data,
+                  class: 'inline-flex min-w-0 max-w-full items-center gap-2 rounded-sm transition-colors duration-200 hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' do %>
+        <% if user&.avatar&.image&.attached? %>
+          <%= image_tag avatar_image_url(user.avatar.image),
+                        alt: '',
+                        class: 'size-6 shrink-0 rounded-full object-cover ring-1 ring-line',
+                        height: 24,
+                        width: 24 %>
+        <% end %>
+        <span class="truncate"><%= bookshelf.user_name %></span>
+      <% end %>
+      <% if entry.fictions_count.positive? %>
+        <span class="shrink-0" aria-hidden="true">·</span>
+        <span class="shrink-0 tabular-nums">
+          <%= t('bookshelves.index.fictions_count', count: entry.fictions_count) %>
+        </span>
+      <% end %>
+    </div>
+    <% if bookshelf.description.present? %>
+      <p class="mt-2 line-clamp-1 text-xs leading-relaxed text-fg-secondary sm:text-sm">
+        <%= bookshelf.description %>
+      </p>
+    <% end %>
+    <% if entry.top_genres.any? %>
+      <% genre_slugs = entry.top_genres.to_h { |genre| [genre.name, genre.slug] } %>
+      <%= render Ui::TagListComponent.new(
+            labels: genre_slugs.keys,
+            variant: :genre,
+            size: :sm,
+            max: Bookshelves::HubPreview::TOP_GENRES,
+            genre_slugs:,
+            href_builder: ->(name) {
+              slug = genre_slugs[name]
+              fiction_genre_fictions_path(slug) if slug.present?
+            },
+            tag_html: turbo_drive_visit_data,
+            html: { class: 'mt-2.5 gap-1.5' }
+          ) %>
+    <% end %>
+  </div>
+  <% if has_fan %>
+    <div class="relative shrink-0">
+      <%= render 'bookshelves/hub_cover_fan', covers: entry.covers %>
+      <%= render 'bookshelves/hub_age_badge',
+                 max_content_rating: entry.max_content_rating,
+                 placement: :fan %>
+    </div>
+  <% end %>
+</article>

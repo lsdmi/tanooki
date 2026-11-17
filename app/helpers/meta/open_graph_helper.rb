@@ -24,7 +24,7 @@ module Meta
 
     def website_meta_path?
       [
-        root_path, search_index_path, fictions_path, youtube_videos_path,
+        root_path, search_index_path, fictions_path, bookshelves_path, youtube_videos_path,
         alphabetical_fictions_path, calendar_fictions_path, tales_path, about_path,
         rules_path, friends_path, privacy_path, translation_requests_path
       ].include?(request.path)

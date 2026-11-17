@@ -36,7 +36,7 @@
         </div>
       </section>
 
-      <section class="bg-main rounded-lg shadow-md p-6 border border-line">
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
         <h2 class="text-2xl font-bold text-fg mb-4">Контакти</h2>
         <div class="space-y-3 text-fg-secondary leading-relaxed">
           <p>
@@ -46,6 +46,24 @@
           <p>
             Проєкти та спільноти, з якими ми співпрацюємо, зібрані на сторінці
             <%= link_to 'Друзі Баки', friends_path, class: 'text-fg-brand hover:underline' %>.
+          </p>
+        </div>
+      </section>
+
+      <section id="credits" class="bg-main scroll-mt-24 rounded-lg border border-line p-6 shadow-md">
+        <h2 class="mb-4 text-2xl font-bold text-fg">Подяки</h2>
+        <div class="space-y-3 leading-relaxed text-fg-secondary">
+          <p>
+            Іконки навігації (Ранобе, Календар, Сховище, Полиці) —
+            <%= link_to 'Hand-Drawn Goods', 'https://handdrawngoods.com/',
+                        class: 'text-fg-brand hover:underline',
+                        rel: 'noopener noreferrer',
+                        target: '_blank' %>
+            через SVG Repo, ліцензія
+            <%= link_to 'CC BY', 'https://creativecommons.org/licenses/by/4.0/',
+                        class: 'text-fg-brand hover:underline',
+                        rel: 'noopener noreferrer',
+                        target: '_blank' %>.
           </p>
         </div>
       </section>

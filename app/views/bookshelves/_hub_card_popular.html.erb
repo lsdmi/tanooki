@@ -1,0 +1,64 @@
+<%# locals: (entry:) %>
+<% bookshelf = entry.bookshelf %>
+<% animate = entry.covers.size >= 2 %>
+<% cover_data = turbo_drive_visit_data[:data] || {} %>
+<% cover_data = cover_data.merge(controller: 'genre-cover-stack') if animate %>
+<article class="group relative flex min-w-0 flex-col rounded-xl text-center md:transition-[z-index] md:hover:z-20 md:focus-within:z-20">
+  <%= link_to bookshelf_path(bookshelf),
+              data: cover_data,
+              class: [
+                'relative mx-auto block h-[166px] w-[153px] overflow-hidden rounded-xl focus:outline-none',
+                'focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
+                'focus-visible:ring-offset-page'
+              ].join(' '),
+              aria: { label: bookshelf.title } do %>
+    <% if entry.covers.any? %>
+      <%= render 'fictions/genre_spotlight_covers',
+                 fictions: entry.covers,
+                 cover_preset: :thumb %>
+    <% else %>
+      <div class="h-full min-h-[8rem] rounded-xl bg-surface-strong" aria-hidden="true"></div>
+    <% end %>
+    <%= render 'bookshelves/hub_age_badge',
+               max_content_rating: entry.max_content_rating,
+               placement: :cover %>
+    <% if entry.fictions_count.positive? %>
+      <% count_label = t('bookshelves.index.fictions_count', count: entry.fictions_count) %>
+      <span class="bookshelves-hub-cover-count"
+            aria-label="<%= count_label %>"><%= count_label %></span>
+    <% end %>
+  <% end %>
+
+  <div class="mt-3 flex min-w-0 flex-1 flex-col items-center">
+    <p class="w-full truncate text-sm font-semibold leading-tight tracking-tight text-fg md:text-[0.9375rem] lg:text-base">
+      <%= link_to bookshelf.title, bookshelf_path(bookshelf),
+                  **turbo_drive_visit_data,
+                  class: 'rounded-sm transition-colors duration-200 hover:text-fg-brand group-hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
+    </p>
+    <%= link_to bookshelf.user_name, profile_path(bookshelf.user_sqid),
+                **turbo_drive_visit_data,
+                class: 'mt-1 max-w-full truncate rounded-sm text-xs text-fg-muted transition-colors duration-200 hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-sm' %>
+    <% if bookshelf.description.present? %>
+      <p class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-fg-secondary sm:text-sm lg:line-clamp-3">
+        <%= bookshelf.description %>
+      </p>
+    <% end %>
+    <% if entry.top_genres.any? %>
+      <% genre_slugs = entry.top_genres.to_h { |genre| [genre.name, genre.slug] } %>
+      <%= render Ui::TagListComponent.new(
+            labels: genre_slugs.keys,
+            variant: :genre,
+            size: :sm,
+            max: Bookshelves::HubPreview::TOP_GENRES,
+            compact_max: 1,
+            genre_slugs:,
+            href_builder: ->(name) {
+              slug = genre_slugs[name]
+              fiction_genre_fictions_path(slug) if slug.present?
+            },
+            tag_html: turbo_drive_visit_data,
+            html: { class: 'mt-3 justify-center gap-1.5' }
+          ) %>
+    <% end %>
+  </div>
+</article>

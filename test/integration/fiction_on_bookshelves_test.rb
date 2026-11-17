@@ -11,8 +11,8 @@ class FictionOnBookshelvesTest < ActionDispatch::IntegrationTest
   test 'about tab links to curated bookshelves that include the fiction' do
     get fiction_url(@fiction)
 
-    assert_response :success
     assert_select '#fiction-on-bookshelves-title', text: 'На полицях'
+    assert_select 'a[href=?]', bookshelves_path, text: I18n.t('fictions.about.on_bookshelves.all')
     assert_select 'a[href=?]', bookshelf_path(@bookshelf), text: @bookshelf.title
   end
 

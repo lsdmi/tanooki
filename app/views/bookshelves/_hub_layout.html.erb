@@ -1,0 +1,18 @@
+<%# locals: (popular:, recent:, pagy:) %>
+<div class="flex flex-col gap-12 sm:gap-14">
+  <% if popular.any? %>
+    <section class="bookshelves-hub-reveal" aria-label="<%= t('bookshelves.index.focus') %>">
+      <%= render 'bookshelves/hub_section_heading', title: t('bookshelves.index.focus') %>
+      <div class="bookshelves-hub-band rounded-2xl px-3 py-5 sm:px-5 sm:py-6">
+        <%= render 'bookshelves/hub_popular_section', entries: popular %>
+      </div>
+    </section>
+  <% end %>
+
+  <%= render 'bookshelves/hub_ad_slot' %>
+
+  <section class="bookshelves-hub-reveal" aria-label="<%= t('bookshelves.index.updates') %>">
+    <%= render 'bookshelves/hub_section_heading', title: t('bookshelves.index.updates') %>
+    <%= render 'bookshelves/hub_recent_list', entries: recent, pagy: %>
+  </section>
+</div>

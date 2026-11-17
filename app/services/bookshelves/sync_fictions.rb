@@ -36,10 +36,12 @@ module Bookshelves
     end
 
     # Guest fiction#show fragment keys on fiction.updated_at («На полицях»).
-    # update_all: skip validations/callbacks — membership change only needs a new cache key.
+    # Cover is preloaded so presence validation does not N+1 on each update.
     def bust_fiction_show_fragments(previous_fiction_ids)
       affected_ids = (previous_fiction_ids + normalized_fiction_ids).uniq
-      Fiction.where(id: affected_ids).update_all(updated_at: Time.current)
+      Fiction.where(id: affected_ids).includes(cover_attachment: :blob).find_each do |fiction|
+        fiction.update!(updated_at: Time.current)
+      end
     end
 
     def normalized_fiction_ids

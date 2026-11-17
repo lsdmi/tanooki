@@ -1,22 +1,44 @@
-      <div class="w-full md:flex md:items-center md:justify-center lg:order-2">
-        <nav class="flex relative items-center justify-center gap-1 p-2 rounded-lg sm:gap-2" aria-label="Основна навігація">
-          <%= link_to fictions_path,
-                      class: 'inline-flex items-center px-3 py-2 text-sm font-medium text-fg rounded-lg
-                              hover:text-fg-secondary hover:bg-surface-hover
-                              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
-            Ранобе
-          <% end %>
-          <%= link_to calendar_fictions_path,
-                      class: 'inline-flex items-center px-3 py-2 text-sm font-medium text-fg rounded-lg
-                              hover:text-fg-secondary hover:bg-surface-hover
-                              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
-            Календар
-          <% end %>
-          <%= link_to alphabetical_fictions_path,
-                      class: 'inline-flex items-center px-3 py-2 text-sm font-medium text-fg rounded-lg
-                              hover:text-fg-secondary hover:bg-surface-hover
-                              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand' do %>
-            Сховище
-          <% end %>
-        </nav>
+<%
+  nav_items = [
+    { path: fictions_path, label: 'Ранобе', icon: :book },
+    { path: calendar_fictions_path, label: 'Календар', icon: :calendar },
+    { path: alphabetical_fictions_path, label: 'Сховище', icon: :library },
+    { path: bookshelves_path, label: 'Полиці', icon: :shelves, section: :bookshelves }
+  ]
+  nav_link_class = %w[
+    relative inline-flex h-full items-center justify-center px-2 text-sm font-medium text-fg sm:px-3
+    transition-colors duration-200
+    after:pointer-events-none after:absolute after:inset-x-1.5 after:bottom-0 after:h-0.5
+    after:origin-center after:scale-x-0 after:rounded-full after:bg-brand after:content-['']
+    after:transition-transform after:duration-200 motion-reduce:after:transition-none
+    hover:text-fg-brand hover:after:scale-x-100
+    focus-visible:text-fg-brand focus-visible:after:scale-x-100
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand
+    aria-[current=page]:text-fg-brand aria-[current=page]:after:scale-x-100
+    motion-reduce:transition-none
+  ].join(' ')
+%>
+<div class="flex h-full min-w-0 flex-1 items-stretch justify-end sm:justify-center">
+  <nav class="flex h-full items-stretch gap-0.5 sm:gap-1" aria-label="Основна навігація">
+    <% nav_items.each do |item| %>
+      <% active = if item[:section] == :bookshelves
+                    request.path == bookshelves_path || request.path.start_with?('/bookshelves/')
+                  else
+                    current_page?(item[:path])
+                  end %>
+      <div class="group relative flex h-full">
+        <%= link_to item[:path],
+                    class: nav_link_class,
+                    aria: { label: item[:label], **(active ? { current: 'page' } : {}) } do %>
+          <span class="sm:hidden">
+            <%= navbar_icon(item[:icon], 'h-4 w-4 shrink-0') %>
+          </span>
+          <span class="hidden sm:inline"><%= item[:label] %></span>
+        <% end %>
+        <span class="pointer-events-none absolute left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-md bg-invert px-2 py-1 text-xs/5 text-fg-on-invert opacity-0 shadow-popover transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 sm:hidden"
+              style="top: calc(100% + 6px)"
+              role="tooltip"><%= item[:label] %></span>
       </div>
+    <% end %>
+  </nav>
+</div>

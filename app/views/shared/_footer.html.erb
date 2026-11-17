@@ -11,23 +11,26 @@
                       loading: 'lazy',
                       decoding: 'async' %>
       </a>
-      <nav class="token-raw flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-200 sm:justify-end" aria-label="Про сайт">
-        <%= link_to about_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Про Баку — baka.in.ua' do %>
-          Про Бака
-        <% end %>
-        <%= link_to friends_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Друзі Баки — baka.in.ua' do %>
-          Друзі
-        <% end %>
-        <%= link_to rules_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Правила спільноти — baka.in.ua' do %>
-          Правила
-        <% end %>
-        <%= link_to api_docs_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'API для команд — baka.in.ua' do %>
-          API
-        <% end %>
-        <%= link_to telegram_site_url, class: 'hover:text-white hover:underline underline-offset-2', title: 'Контакти (Telegram) — baka.in.ua', rel: 'noopener noreferrer', target: '_blank' do %>
-          Контакти
-        <% end %>
-      </nav>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:justify-end">
+        <nav class="token-raw flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-200" aria-label="Про сайт">
+          <%= link_to about_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Про Баку — baka.in.ua' do %>
+            Про Бака
+          <% end %>
+          <%= link_to friends_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Друзі Баки — baka.in.ua' do %>
+            Друзі
+          <% end %>
+          <%= link_to rules_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'Правила спільноти — baka.in.ua' do %>
+            Правила
+          <% end %>
+          <%= link_to api_docs_path, class: 'hover:text-white hover:underline underline-offset-2', title: 'API для команд — baka.in.ua' do %>
+            API
+          <% end %>
+          <%= link_to telegram_site_url, class: 'hover:text-white hover:underline underline-offset-2', title: 'Контакти (Telegram) — baka.in.ua', rel: 'noopener noreferrer', target: '_blank' do %>
+            Контакти
+          <% end %>
+        </nav>
+        <%= render 'shared/footer_social_links' %>
+      </div>
     </div>
     <div class="token-raw flex flex-col gap-2 border-t border-zinc-800 pt-4 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <p>

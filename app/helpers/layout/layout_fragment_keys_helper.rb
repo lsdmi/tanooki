@@ -9,14 +9,14 @@ module Layout
 
     def navbar_fragment_cache_key(section = :brand)
       [
-        'navbar/v10/shared', section.to_s, I18n.locale,
+        'navbar/v16/shared', section.to_s, I18n.locale,
         cookies[:color_theme].presence || 'light', fragment_cache_version_bucket(1.hour)
       ]
     end
 
     def footer_fragment_cache_key
       [
-        'footer/v10',
+        'footer/v14',
         I18n.locale,
         Time.zone.now.year,
         fragment_cache_version_bucket(12.hours)

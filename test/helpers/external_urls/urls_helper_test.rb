@@ -16,6 +16,10 @@ module ExternalUrls
       assert_equal 'https://www.buymeacoffee.com/bakaInUa', view.buymeacoffee_site_url
     end
 
+    test 'github_repo_url returns project repository link' do
+      assert_equal 'https://github.com/lsdmi/tanooki', view.github_repo_url
+    end
+
     test 'telegram_profile_url returns nil for blank handles' do
       assert_nil view.telegram_profile_url(nil)
       assert_nil view.telegram_profile_url('')

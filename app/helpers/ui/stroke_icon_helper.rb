@@ -12,6 +12,8 @@ module Ui
                   'M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13' \
                   'a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'],
       bookmark: ['m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z'],
+      calendar: ['M8 2v4', 'M16 2v4', 'M3 10h18',
+                 'M3 4h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z'],
       check: ['M20 6 9 17l-5-5'],
       check_check: ['M18 6 7 17l-5-5', 'm22 10-7.5 7.5L13 16'],
       chevron_down: ['m6 9 6 6 6-6'],
@@ -35,6 +37,7 @@ module Ui
               'A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'],
       hash: ['M4 9h16', 'M4 15h16', 'M10 3 8 21', 'M16 3l-2 18'],
       info: ['M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', 'M12 16v-4', 'M12 8h.01'],
+      library: ['m16 6 4 14', 'M12 6v14', 'M8 8v12', 'M4 4v16'],
       list: ['M3 12h.01', 'M3 18h.01', 'M3 6h.01', 'M8 12h13', 'M8 18h13', 'M8 6h13'],
       lock: ['M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2', 'M7 11V7a5 5 0 0 1 10 0v4'],
       log_in: ['m10 17 5-5-5-5', 'M15 12H3', 'M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'],
@@ -58,11 +61,37 @@ module Ui
       x: ['M18 6 6 18', 'm6 6 12 12']
     }.freeze
 
+    # Handdrawn Icons (CC BY — Hand-Drawn Goods via SVG Repo). Credit: pages#about #credits.
+    # Assets: app/assets/images/nav/*.svg
+    NAVBAR_ICON_NAMES = %i[book calendar library shelves].freeze
+
     def stroke_icon(name, classes = 'size-4 shrink-0')
       tag.svg(class: classes, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2,
               'stroke-linecap': 'round', 'stroke-linejoin': 'round', aria: { hidden: true }) do
         safe_join(STROKE_ICON_PATHS.fetch(name).map { |d| tag.path(d:) })
       end
+    end
+
+    def navbar_icon(name, classes = 'h-4 w-4 shrink-0')
+      raise ArgumentError, "unknown navbar icon: #{name}" unless NAVBAR_ICON_NAMES.include?(name)
+
+      svg, path = navbar_icon_nodes(name)
+      tag.svg(class: classes, viewBox: svg['viewBox'], fill: 'currentColor', aria: { hidden: true }) do
+        tag.path(**navbar_icon_path_attrs(path))
+      end
+    end
+
+    private
+
+    def navbar_icon_nodes(name)
+      doc = Nokogiri::XML(Rails.root.join('app/assets/images/nav', "#{name}.svg").read)
+      [doc.at_css('svg'), doc.at_css('path')]
+    end
+
+    def navbar_icon_path_attrs(path)
+      attrs = { d: path['d'], transform: path['transform'] }
+      attrs[:'fill-rule'] = path['fill-rule'] if path['fill-rule'].present?
+      attrs
     end
   end
 end

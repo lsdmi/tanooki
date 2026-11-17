@@ -32,6 +32,14 @@ class PublicationsControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
   end
 
+  test 'new publication cover input is clickable opacity overlay not display-none' do
+    get new_publication_path
+
+    assert_select 'label[for=publication_cover].relative'
+    assert_select 'input#publication_cover[type=file].opacity-0'
+    assert_select 'input#publication_cover.hidden', count: 0
+  end
+
   test 'unprocessable publish still loads slimselect assets' do
     post publications_url, params: {
       intent: 'publish',

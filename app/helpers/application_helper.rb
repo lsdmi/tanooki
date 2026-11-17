@@ -26,4 +26,5 @@ module ApplicationHelper
   include Root::VideosHelper
   include StructuredData::JsonLdHelper
   include Ui::ComponentHelper
+  include Ui::StrokeIconHelper
 end

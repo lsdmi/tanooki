@@ -59,15 +59,29 @@ module Meta
     end
 
     def path_to_cover
-      case request.path
-      when root_path then highlights_cover
-      when fictions_path then fictions_cover
-      when search_index_path then results_cover
-      when youtube_videos_path then youtube_video_cover
-      when tales_path then tales_cover
-      when %r{^/profile/.*} then user_profile_cover
-      else meta_cover
-      end
+      cover_by_path.fetch(request.path, -> { profile_or_default_cover }).call
+    end
+
+    def cover_by_path
+      {
+        root_path => method(:highlights_cover),
+        fictions_path => method(:fictions_cover),
+        bookshelves_path => method(:bookshelves_hub_cover),
+        search_index_path => method(:results_cover),
+        youtube_videos_path => method(:youtube_video_cover),
+        tales_path => method(:tales_cover)
+      }
+    end
+
+    def profile_or_default_cover
+      request.path.match?(%r{^/profile/}) ? user_profile_cover : meta_cover
+    end
+
+    def bookshelves_hub_cover
+      entry = meta_assign(:popular)&.first || meta_assign(:recent)&.first
+      return unless entry.respond_to?(:covers)
+
+      entry.covers.first&.cover
     end
 
     def user_profile_cover

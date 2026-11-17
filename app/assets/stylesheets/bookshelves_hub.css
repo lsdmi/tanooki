@@ -1,0 +1,183 @@
+/* Bookshelves hub + show surface styles. */
+
+.bookshelves-hub-band {
+  background-color: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  /* Light: opaque slate-300→500 mix so rules read on page (no alpha wash). */
+  border: 1px solid color-mix(in srgb, var(--color-line-strong) 45%, rgb(100 116 139));
+}
+
+.bookshelves-hub-rule {
+  background-color: color-mix(in srgb, var(--color-line-strong) 45%, rgb(100 116 139));
+}
+
+.dark .bookshelves-hub-band {
+  border-color: color-mix(in srgb, var(--color-line) 70%, transparent);
+}
+
+.dark .bookshelves-hub-rule {
+  background-color: color-mix(in srgb, var(--color-line) 70%, transparent);
+}
+
+.bookshelves-hub-reveal {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  animation: bookshelves-hub-in 480ms ease-out forwards;
+}
+
+.bookshelves-hub-reveal:nth-child(1) { animation-delay: 40ms; }
+.bookshelves-hub-reveal:nth-child(2) { animation-delay: 90ms; }
+.bookshelves-hub-reveal:nth-child(3) { animation-delay: 140ms; }
+
+@keyframes bookshelves-hub-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* List rules: per-row bottom borders.
+ * Hover on the hit: wide side bleed, padding-block keeps it off the neighbor.
+ * On lg 2-col, draw inset rules so each column keeps its own short line
+ * (negative margin would otherwise fuse them into one solid rule). */
+.bookshelves-hub-row {
+  position: relative;
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+  padding-block: 0.375rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-line-strong) 45%, rgb(100 116 139));
+}
+
+@media (width >= 640px) {
+  .bookshelves-hub-row {
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    padding-block: 0.5rem;
+  }
+}
+
+.dark .bookshelves-hub-row {
+  border-bottom-color: color-mix(in srgb, var(--color-line) 55%, transparent);
+}
+
+@media (width >= 1024px) {
+  .bookshelves-hub-row {
+    border-bottom: none;
+  }
+
+  .bookshelves-hub-row::after {
+    content: '';
+    position: absolute;
+    inset-inline: 1.5rem;
+    bottom: 0;
+    height: 1px;
+    background-color: color-mix(in srgb, var(--color-line-strong) 45%, rgb(100 116 139));
+    pointer-events: none;
+  }
+
+  .dark .bookshelves-hub-row::after {
+    background-color: color-mix(in srgb, var(--color-line) 55%, transparent);
+  }
+}
+
+/* Update-row mini fan: same odd/even stagger as show header (Tailwind translate may be purged). */
+.bookshelves-hub-cover-fan > li:nth-child(even) {
+  translate: 0 0.375rem; /* match show translate-y-1.5 */
+}
+
+.bookshelves-hub-fan-badge {
+  position: absolute;
+  top: -0.375rem;
+  right: -0.25rem;
+  left: auto;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* Focus cover: count sits top-right opposite the age badge (Tailwind right-* may be purged). */
+.bookshelves-hub-cover-count {
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+  left: auto;
+  z-index: 20;
+  display: flex;
+  height: 1.5rem;
+  max-width: calc(100% - 3.25rem);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  border: 1px solid currentColor;
+  background-color: rgb(255 255 255 / 0.55);
+  padding-inline: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgb(15 23 42);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.dark .bookshelves-hub-cover-count {
+  background-color: rgb(15 23 42 / 0.55);
+  color: rgb(255 255 255);
+}
+
+/* Age chip rim tracks the label color (light + dark; avoids purged dark:border-*). */
+.bookshelves-hub-age {
+  border-color: currentColor;
+}
+
+.bookshelves-hub-row-hit {
+  margin-inline: -1.25rem;
+  padding-inline: 1.75rem;
+  border-radius: 0.875rem;
+  transition: background-color 180ms ease;
+}
+
+@media (width >= 640px) {
+  .bookshelves-hub-row-hit {
+    margin-inline: -1.5rem;
+    padding-inline: 2.25rem;
+  }
+}
+
+/* 1-col: no rule under the final item. lg 2-col keeps short inset rules on every cell. */
+.bookshelves-hub-rows > .bookshelves-hub-row:last-child {
+  border-bottom: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bookshelves-hub-row-hit:hover {
+    background-color: color-mix(in srgb, var(--color-surface) 38%, transparent);
+  }
+}
+
+/* Mobile popular strip: gentle end fade so the rail feels open, not clipped.
+ * Grid takes over at md (4 cols) — snap+mask only below that. */
+.bookshelves-hub-snap {
+  mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.25rem), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 1.25rem), transparent 100%);
+}
+
+@media (width >= 768px) {
+  .bookshelves-hub-snap {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookshelves-hub-reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .bookshelves-hub-row-hit {
+    transition: none;
+  }
+}

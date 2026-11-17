@@ -2,16 +2,24 @@
 
 # User-curated fiction lists (bookshelves) for browsing and managing collections.
 class BookshelvesController < ApplicationController
+  include Bookshelves::FormActions
+
   helper Fictions::ListPaginationHelper, Ui::StrokeIconHelper
 
-  before_action :authenticate_user!, except: :show
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_bookshelf, only: %i[show edit update destroy]
   before_action :load_selected_fictions, only: %i[new create edit update]
   before_action :track_bookshelf_visit, only: :show
 
+  def index
+    prepare_hub
+    return unless turbo_frame_request_id == 'hub-recent-page'
+
+    render partial: 'bookshelves/hub_recent_list', locals: { entries: @recent, pagy: @pagy }
+  end
+
   def show
     prepare_bookshelf_fictions
-
     return unless turbo_frame_request_id == 'fiction-list-page'
 
     render partial: 'bookshelves/fiction_list', locals: bookshelf_list_locals
@@ -31,7 +39,6 @@ class BookshelvesController < ApplicationController
 
   def create
     @bookshelf = current_user.bookshelves.build(bookshelf_params)
-
     if @bookshelf.save
       sync_bookshelf_fictions
       redirect_to studio_index_path(tab: 'bookshelves'), notice: t('bookshelves.notices.create_success')
@@ -56,6 +63,24 @@ class BookshelvesController < ApplicationController
   end
 
   private
+
+  def prepare_hub
+    hub = { viewer: current_user, filter: current_content_filter }
+    @popular = Bookshelves::HubPreview.popular(**hub) unless recent_hub_frame?
+    @pagy, recent = pagy(Bookshelves::HubPreview.recent_scope(exclude_ids: hub_exclude_ids(hub), **hub),
+                         limit: Bookshelves::HubPreview::RECENT_PER_PAGE)
+    @recent = Bookshelves::HubPreview.decorate(recent)
+  end
+
+  def recent_hub_frame?
+    turbo_frame_request_id == 'hub-recent-page'
+  end
+
+  def hub_exclude_ids(hub)
+    return Bookshelves::HubPreview.popular_ids(**hub) if recent_hub_frame?
+
+    @popular.map { |entry| entry.bookshelf.id }
+  end
 
   def prepare_bookshelf_fictions
     relation, @hidden_fiction_count, @content_filter_fingerprint = Bookshelves::VisibleFictions.call(
@@ -89,38 +114,5 @@ class BookshelvesController < ApplicationController
 
   def bookshelf_params
     params.expect(bookshelf: [:title, :description, { fiction_ids: [] }])
-  end
-
-  def sync_bookshelf_fictions
-    Bookshelves::SyncFictions.call(
-      bookshelf: @bookshelf,
-      fiction_ids: submitted_fiction_ids
-    )
-  end
-
-  def submitted_fiction_ids
-    return [] unless params[:bookshelf]&.key?(:fiction_ids)
-
-    Array(params.dig(:bookshelf, :fiction_ids)).compact_blank
-  end
-
-  def load_selected_fictions
-    ids = if params[:bookshelf]&.key?(:fiction_ids)
-            Array(params.dig(:bookshelf, :fiction_ids)).compact_blank
-          elsif @bookshelf&.persisted?
-            @bookshelf.fictions.pluck(:id)
-          else
-            []
-          end
-
-    @selected_fictions = ids.any? ? Fiction.where(id: ids).order(:title) : Fiction.none
-  end
-
-  def refresh_list
-    turbo_stream.update(
-      'bookshelves-list',
-      partial: 'studio/tabs/bookshelves',
-      locals: { bookshelves: @bookshelves }
-    )
   end
 end

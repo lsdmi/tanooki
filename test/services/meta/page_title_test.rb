@@ -46,6 +46,16 @@ module Meta
       assert_equal I18n.t('meta.title.fictions.index'), title
     end
 
+    test 'resolve returns static path copy for bookshelves hub' do
+      title = PageTitle.new(
+        request_path: bookshelves_path,
+        controller_name: 'bookshelves',
+        action_name: 'index'
+      ).resolve
+
+      assert_equal I18n.t('meta.title.bookshelves.index'), title
+    end
+
     test 'resolve keeps the default title when a static path has no action copy' do
       title = PageTitle.new(
         request_path: fictions_path,

@@ -19,6 +19,7 @@ module Layout
       ['actiontext', :requires_actiontext_styles?],
       ['chapters_reader', :requires_chapters_reader_styles?],
       ['catalog_storage', :requires_catalog_storage_styles?],
+      ['bookshelves_hub', :requires_bookshelves_hub_styles?],
       ['sweetal2', :requires_sweetalert_styles?],
       ['adsense_slots', :requires_adsense_slots_styles?]
     ].freeze

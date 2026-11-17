@@ -2,6 +2,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant desktop-fine-hover (@media (width >= 1024px) and (hover: hover) and (pointer: fine));
 @source '../../helpers/**/*.rb';
+@source '../../views/**/*.{erb,html}';
 
 @theme {
   /* @font-face rules live in stylesheets/application.css (Propshaft digests the font URLs there). */

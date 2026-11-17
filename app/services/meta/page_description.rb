@@ -10,6 +10,7 @@ module Meta
     MAX_GENRE_DESCRIPTION_LENGTH = 160
     STATIC_DESCRIPTION_PATHS = %i[
       fictions_path
+      bookshelves_path
       youtube_videos_path
       alphabetical_fictions_path
       calendar_fictions_path

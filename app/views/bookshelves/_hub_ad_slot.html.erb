@@ -1,0 +1,9 @@
+<% if adsense_slot_renderable?(:bookshelves_index) %>
+  <section class="bookshelves-hub-reveal empty:hidden has-[.reader-ad-slot--adsense-filled]:block has-[.reader-ad-slot--preview]:block has-[.reader-ad-slot--collapsed]:hidden"
+           aria-label="<%= t('bookshelves.index.ad_label') %>">
+    <%= render 'shared/adsense_slot',
+               placement: :bookshelves_index,
+               navigation_key: 'hub',
+               measure_as: 'bottom' %>
+  </section>
+<% end %>

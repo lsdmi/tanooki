@@ -10,6 +10,8 @@ module Adsense
     chapter_reader_bottom: '1793380233',
     fiction_alphabetical: '4717940366',
     bookshelf: '9153677690',
+    # Hub `/bookshelves` — create unit in AdSense UI, then paste id (dev shows preview without it).
+    bookshelves_index: nil,
     home_banner_left: '7705289689',
     home_banner_right: '6392208016',
     youtube_video: '2144220675',

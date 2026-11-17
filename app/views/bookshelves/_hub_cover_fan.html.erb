@@ -1,0 +1,20 @@
+<%# locals: (covers:) %>
+<%# Mini fan like show header, sized for hub update rows. %>
+<% fan = Array(covers).first(Bookshelves::HubPreview::COVERS) %>
+<% if fan.any? %>
+  <ul class="bookshelves-hub-cover-fan flex shrink-0 items-end -space-x-2.5" aria-hidden="true">
+    <% fan.each_with_index do |fiction, index| %>
+      <li class="relative w-8 overflow-hidden rounded-md bg-surface-strong ring-2 ring-page sm:w-9"
+          style="z-index: <%= fan.size - index %>;">
+        <%= cover_card_picture_tag(
+              fiction.cover,
+              preset: :thumb,
+              alt: '',
+              class: 'aspect-[2/3] w-full object-cover',
+              loading: 'lazy',
+              decoding: 'async'
+            ) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
