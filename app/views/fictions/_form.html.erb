@@ -43,15 +43,21 @@
         <div class="relative mb-4">
           <%= f.label :banner, 'Банер', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
           <div class="relative group">
-            <%= f.label :banner, for: 'fictions_banner', class: "relative flex flex-col items-center justify-center w-full h-48 bg-surface border-2 border-dashed border-line-strong rounded-lg cursor-pointer hover:bg-surface-strong transition duration-300" do %>
-              <svg class="pointer-events-none w-12 h-12 text-fg-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-              <span class="pointer-events-none text-fg-muted text-center mx-1">WebP, ширина не менше 1000px, співвідношення сторін банера ~3:1</span>
+            <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface transition duration-300 hover:bg-surface-strong"
+                 data-controller="dropzone"
+                 data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Обрати банер">
+              <svg class="pointer-events-none mb-2 h-12 w-12 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+              <span class="pointer-events-none mx-1 text-center text-fg-muted">WebP, ширина не менше 1000px, співвідношення сторін банера ~3:1</span>
+              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
               <%= f.file_field :banner,
                                id: 'fictions_banner',
-                               class: 'absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0',
-                               data: { action: 'change->dropzone#update' } %>
-              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'pointer-events-none text-fg-muted text-center text-sm' %>
-            <% end %>
+                               class: 'sr-only',
+                               tabindex: -1,
+                               data: { dropzone_target: 'input', action: 'change->dropzone#update' } %>
+            </div>
             <%= tag.p fiction.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:banner].any? %>
           </div>
         </div>
@@ -152,19 +158,26 @@
            data-fiction-cover-preview-max-megabytes-value="<%= CoverImageValidator::MAX_BYTE_SIZE / 1.megabyte %>">
         <%= f.label :cover, 'Обкладинка', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <div class="relative group">
-          <%= f.label :cover, for: 'fictions_cover', class: "relative flex flex-col items-center justify-center w-full h-48 bg-surface border-2 border-dashed border-line-strong rounded-lg cursor-pointer hover:bg-surface-strong transition duration-300" do %>
-            <svg class="pointer-events-none w-12 h-12 text-fg-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+          <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface transition duration-300 hover:bg-surface-strong"
+               data-controller="dropzone"
+               data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
+               role="button"
+               tabindex="0"
+               aria-label="Обрати обкладинку">
+            <svg class="pointer-events-none mb-2 h-12 w-12 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             <span class="pointer-events-none text-fg-muted">WebP, AVIF, JPEG або PNG — мін. 600×800px, 3:4, до 2 МБ</span>
+            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
             <%= f.file_field :cover,
                              id: 'fictions_cover',
-                             class: 'absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0',
+                             class: 'sr-only',
+                             tabindex: -1,
                              accept: 'image/webp,image/avif,image/jpeg,image/png',
                              data: {
+                               dropzone_target: 'input',
                                fiction_cover_preview_target: 'input',
                                action: 'change->dropzone#update change->fiction-cover-preview#preview'
                              } %>
-            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'pointer-events-none text-fg-muted text-center text-sm' %>
-          <% end %>
+          </div>
           <%= tag.p fiction.errors[:cover].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:cover].any? %>
         </div>
 

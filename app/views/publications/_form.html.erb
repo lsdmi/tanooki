@@ -48,18 +48,24 @@
         </div>
 
         <div class="flex justify-center items-center w-full">
-          <%= f.label :cover, class: "relative flex flex-col justify-center items-center w-full h-48 bg-surface-strong rounded-lg border-2 border-line-strong border-dashed cursor-pointer hover:border-brand/50 transition-all duration-200 #{'border-status-danger-subtle-border dark:border-status-danger-solid' if publication.errors[:cover].any?}" do %>
-            <div class="pointer-events-none flex flex-col justify-center items-center pt-5 pb-6">
-              <svg aria-hidden="true" class="mb-3 w-8 h-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+          <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface-strong transition-all duration-200 hover:border-brand/50 <%= 'border-status-danger-subtle-border dark:border-status-danger-solid' if publication.errors[:cover].any? %>"
+               data-controller="dropzone"
+               data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
+               role="button"
+               tabindex="0"
+               aria-label="<%= t('publications.form.cover_pick', default: 'Обрати обкладинку') %>">
+            <div class="pointer-events-none flex flex-col items-center justify-center px-4 pt-5 pb-6">
+              <svg aria-hidden="true" class="mb-3 h-8 w-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
               <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
               <p class="text-xs text-fg-muted">SVG, PNG, JPEG чи WebP</p>
+              <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'mt-2 text-center text-sm text-fg-muted' %>
             </div>
-            <%# opacity-0 overlay (not display:none) — browsers block file pickers for hidden inputs %>
+            <%# sr-only (not display:none / opacity-0 overlay) — open via dropzone#open from a user gesture %>
             <%= f.file_field :cover,
-                             class: 'absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0',
-                             data: { action: 'change->dropzone#update' } %>
-            <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
-          <% end %>
+                             class: 'sr-only',
+                             tabindex: -1,
+                             data: { dropzone_target: 'input', action: 'change->dropzone#update' } %>
+          </div>
         </div>
         <%= tag.p publication.errors[:cover].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid mt-2 flex items-center' do %>
           <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>

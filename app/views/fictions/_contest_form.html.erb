@@ -64,12 +64,18 @@
   <div>
     <label class="block text-sm font-semibold text-fg"><%= t('contests.submit.fields.cover') %></label>
     <p class="mt-1 text-sm text-fg-muted"><%= t('contests.submit.fields.cover_hint') %></p>
-    <label for="fictions_cover" class="relative mt-3 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-line bg-surface px-4 py-8 hover:bg-surface-strong">
+    <div class="relative mt-3 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-line bg-surface px-4 py-8 hover:bg-surface-strong"
+         data-controller="dropzone"
+         data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
+         role="button"
+         tabindex="0"
+         aria-label="<%= t('contests.submit.fields.cover_pick') %>">
       <span class="pointer-events-none text-sm text-fg-muted"><%= t('contests.submit.fields.cover_pick') %></span>
-      <input type="file" name="fiction[cover]" id="fictions_cover" accept="image/webp,image/avif,image/jpeg,image/png"
-             class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0" data-action="change->dropzone#update">
       <span id="cover_name" class="pointer-events-none mt-2 text-xs text-fg-subtle"></span>
-    </label>
+      <input type="file" name="fiction[cover]" id="fictions_cover" accept="image/webp,image/avif,image/jpeg,image/png"
+             class="sr-only" tabindex="-1"
+             data-dropzone-target="input" data-action="change->dropzone#update">
+    </div>
     <% if submission.errors[:cover].any? %>
       <p class="mt-1 text-xs text-status-danger-solid"><%= submission.errors[:cover].to_sentence %></p>
     <% end %>
