@@ -6,7 +6,9 @@ module StructuredData
     NAME = 'Бака'
     FOUNDING_YEAR = '2023'
     DESCRIPTION = 'Бака — де ранобе читають українською: переклади, блоги, відео й спільнота, яка тримає все це живим.'
-    SOCIAL_URLS = [ExternalUrls.site_url].freeze
+    # Keep in sync with ExternalUrls::TELEGRAM_SITE_HANDLE (avoid loading helpers at boot).
+    TELEGRAM_URL = 'https://telegram.me/bakaInUa'
+    SOCIAL_URLS = [TELEGRAM_URL].freeze
     EXPERTISE_TOPICS = [
       'українські переклади ранобе',
       'лайт-новели',

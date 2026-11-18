@@ -20,8 +20,8 @@ module Bookshelves
       HubScope.relation(viewer:, filter:).most_viewed.limit(POPULAR_LIMIT).pluck(:id)
     end
 
-    def self.decorate(shelves, include_covers: true, include_genres: true)
-      new(shelves: Array(shelves), include_covers:, include_genres:).decorate
+    def self.decorate(shelves, include_covers: true, include_genres: true, viewer: nil, filter: nil)
+      new(shelves: Array(shelves), include_covers:, include_genres:, viewer:, filter:).decorate
     end
 
     def self.recent_scope(exclude_ids: [], viewer: nil, filter: nil)
@@ -56,7 +56,13 @@ module Bookshelves
       @shelves = shelves
       @include_covers = include_covers
       @include_genres = include_genres
+      reset_decorate_caches!
       shelves.map { |bookshelf| entry_for(bookshelf) }
+    end
+
+    def reset_decorate_caches!
+      @memberships = @cover_fictions = @fictions_counts = nil
+      @max_content_ratings = @top_genre_ids = @genres_by_id = nil
     end
 
     def entry_for(bookshelf)
@@ -81,41 +87,28 @@ module Bookshelves
       top_genre_ids.fetch(bookshelf.id, []).filter_map { |id| genres_by_id[id] }
     end
 
+    def memberships
+      @memberships ||= HubVisibleMemberships.call(@shelves, viewer: @viewer, filter: @filter)
+    end
+
     def cover_fictions
-      @cover_fictions ||= @include_covers ? HubCoverLoader.call(@shelves.map(&:id)) : {}
+      @cover_fictions ||= @include_covers ? HubCoverLoader.call(memberships) : {}
     end
 
     def fictions_counts
-      @fictions_counts ||= load_grouped_counts
+      @fictions_counts ||= memberships.group(:bookshelf_id).count
     end
 
     def max_content_ratings
-      @max_content_ratings ||= load_max_content_ratings
+      @max_content_ratings ||= HubMaxRatings.call(memberships)
     end
 
     def top_genre_ids
-      @top_genre_ids ||= @include_genres ? HubGenreLoader.call(@shelves.map(&:id)) : {}
+      @top_genre_ids ||= @include_genres ? HubGenreLoader.call(memberships) : {}
     end
 
     def genres_by_id
       @genres_by_id ||= Genre.where(id: top_genre_ids.values.flatten).index_by(&:id)
-    end
-
-    def load_grouped_counts
-      ids = @shelves.map(&:id)
-      return {} if ids.empty?
-
-      BookshelfFiction.where(bookshelf_id: ids).group(:bookshelf_id).count
-    end
-
-    def load_max_content_ratings
-      ids = @shelves.map(&:id)
-      return {} if ids.empty?
-
-      BookshelfFiction.joins(:fiction)
-                      .where(bookshelf_id: ids)
-                      .group(:bookshelf_id)
-                      .maximum('fictions.content_rating')
     end
   end
 end

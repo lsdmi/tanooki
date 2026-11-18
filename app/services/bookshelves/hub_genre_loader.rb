@@ -3,17 +3,17 @@
 module Bookshelves
   # Top genres per shelf by fiction membership count for hub cards.
   class HubGenreLoader
-    def self.call(bookshelf_ids, limit: HubPreview::TOP_GENRES)
-      new(bookshelf_ids, limit:).call
+    def self.call(memberships, limit: HubPreview::TOP_GENRES)
+      new(memberships, limit:).call
     end
 
-    def initialize(bookshelf_ids, limit:)
-      @bookshelf_ids = Array(bookshelf_ids)
+    def initialize(memberships, limit:)
+      @memberships = memberships
       @limit = limit
     end
 
     def call
-      return {} if @bookshelf_ids.empty?
+      return {} if @memberships.none?
 
       ranked = Hash.new { |hash, key| hash[key] = [] }
       ranked_rows.each do |bookshelf_id, genre_id, _count|
@@ -29,7 +29,7 @@ module Bookshelves
 
     def ranked_rows
       FictionGenre.joins(fiction: :bookshelf_fictions)
-                  .where(bookshelf_fictions: { bookshelf_id: @bookshelf_ids })
+                  .merge(@memberships)
                   .group('bookshelf_fictions.bookshelf_id', 'fiction_genres.genre_id')
                   .order(Arel.sql('COUNT(*) DESC'), 'fiction_genres.genre_id ASC')
                   .pluck(

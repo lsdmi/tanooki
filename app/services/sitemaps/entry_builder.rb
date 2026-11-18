@@ -7,7 +7,7 @@ module Sitemaps
 
     STATIC_URL_HELPERS = %i[
       root_url fictions_url alphabetical_fictions_url calendar_fictions_url tales_url youtube_videos_url
-      translation_requests_url about_url friends_url rules_url privacy_url
+      bookshelves_url translation_requests_url about_url friends_url rules_url privacy_url
     ].freeze
 
     def initialize(default_url_options)
@@ -16,7 +16,7 @@ module Sitemaps
 
     def to_a
       entries = static_entries + fiction_entries + tale_entries + youtube_video_entries + scanlator_entries +
-                genre_entries
+                genre_entries + bookshelf_entries
       entries += contest_show_entries
       entries
     end
@@ -61,6 +61,13 @@ module Sitemaps
     def genre_entries
       Genre.order(:id).pluck(:slug, :updated_at).map do |slug, updated_at|
         entry(:fiction_genre_fictions_url, slug, lastmod: updated_at)
+      end
+    end
+
+    # Public shelves with enough works for the hub (same floor as HubScope / CuratedBookshelves).
+    def bookshelf_entries
+      Bookshelf.where(id: Bookshelves::HubScope.ids_with_at_least).order(:id).map do |bookshelf|
+        entry(:bookshelf_url, bookshelf, lastmod: bookshelf.updated_at)
       end
     end
 

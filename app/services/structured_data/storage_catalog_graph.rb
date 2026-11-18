@@ -3,6 +3,8 @@
 module StructuredData
   # CollectionPage + ItemList JSON-LD for /fictions/alphabetical (current page only).
   module StorageCatalogGraph
+    include CollectionPageGraph
+
     def storage_catalog_json(fictions)
       storage_catalog_graph(Array(fictions)).to_json
     end
@@ -10,16 +12,12 @@ module StructuredData
     private
 
     def storage_catalog_graph(fictions)
-      page_url = alphabetical_fictions_url(only_path: false, **default_public_url_options)
-      {
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
+      collection_page_node(
         name: I18n.t('meta.title.fiction_lists.alphabetical'),
         description: I18n.t('meta.description.fiction_lists.alphabetical'),
-        url: page_url,
-        isPartOf: { '@type': 'WebSite', name: 'Бака', url: public_root_url },
-        mainEntity: storage_catalog_item_list(fictions)
-      }
+        url: alphabetical_fictions_url(only_path: false, **default_public_url_options),
+        main_entity: storage_catalog_item_list(fictions)
+      )
     end
 
     def storage_catalog_item_list(fictions)

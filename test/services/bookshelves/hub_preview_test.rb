@@ -32,10 +32,8 @@ module Bookshelves
     end
 
     test 'decorate without covers keeps owner and genres' do
-      recent = HubPreview.recent_scope(exclude_ids: []).limit(1).to_a
-      entry = HubPreview.decorate(recent, include_covers: false).first
-      # Touch avatar preload from recent_scope includes.
-      entry.bookshelf.user.avatar
+      bookshelf = bookshelves(:one)
+      entry = HubPreview.decorate([bookshelf], include_covers: false).first
 
       assert_predicate entry.bookshelf.user_name, :present?
       assert_empty entry.covers

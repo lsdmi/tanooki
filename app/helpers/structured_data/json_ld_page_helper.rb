@@ -29,6 +29,14 @@ module StructuredData
       fiction_lists_alphabetical_page?
     end
 
+    def bookshelves_hub_meta?
+      bookshelves_index_page?
+    end
+
+    def bookshelf_show_meta?
+      bookshelves_show_page?
+    end
+
     def article_author_meta?(publication)
       tales_show_page? && publication&.persisted?
     end

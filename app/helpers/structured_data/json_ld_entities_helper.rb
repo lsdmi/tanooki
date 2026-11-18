@@ -27,6 +27,14 @@ module StructuredData
       entity_graphs.storage_catalog_json(fictions)
     end
 
+    def bookshelves_hub_meta(popular, recent)
+      entity_graphs.bookshelves_hub_json(Array(popular) + Array(recent))
+    end
+
+    def bookshelf_show_meta(bookshelf, fictions)
+      entity_graphs.bookshelf_show_json(bookshelf, fictions)
+    end
+
     private
 
     def entity_graphs

@@ -84,15 +84,20 @@ class McpControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'not_found', body.dig('error', 'code')
   end
 
-  test 'the formatting guide and a prompt are available' do
+  test 'the formatting guide is available' do
     guide = call('resources/read', uri: 'baka://formatting-guide')
-    prompt = call(
-      'prompts/get', name: 'proofread_range', arguments: { fiction: 'eighteen', from: '1', to: '2', issue: 'діалоги' }
-    )
     text = guide.dig('result', 'contents', 0, 'text')
 
     assert_match(/edit_paragraphs/, text)
     assert_match(/стилі редактора й примітки/, text)
+    assert_match(/без HTML|як звичайний текст/, text)
+  end
+
+  test 'a proofread prompt is available' do
+    prompt = call(
+      'prompts/get', name: 'proofread_range', arguments: { fiction: 'eighteen', from: '1', to: '2', issue: 'діалоги' }
+    )
+
     assert_match(/get_chapters/, prompt.dig('result', 'messages', 0, 'content', 'text'))
   end
 

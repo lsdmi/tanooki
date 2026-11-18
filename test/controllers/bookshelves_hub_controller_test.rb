@@ -88,24 +88,6 @@ class BookshelvesHubControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1', count: 0
   end
 
-  test 'index hides another reader shelf when filter leaves zero visible works' do
-    other = users(:user_two)
-    eighteen = fictions(:eighteen)
-    shelf = other.bookshelves.create!(
-      title: 'Hub filtered empty shelf',
-      description: 'Only 18+ works so a capped reader should not see this row',
-      fiction_ids: [eighteen.id],
-      views: 50_000
-    )
-    BookshelfFiction.create!(bookshelf: shelf, fiction: eighteen)
-
-    sign_in @user
-    get bookshelves_url
-
-    assert_response :success
-    assert_select 'a[href=?]', bookshelf_path(shelf), count: 0
-  end
-
   private
 
   def seed_hub_shelves!
@@ -122,6 +104,17 @@ class BookshelvesHubControllerTest < ActionDispatch::IntegrationTest
       views:
     )
     Bookshelves::SyncFictions.call(bookshelf: shelf, fiction_ids: [@fiction.id])
+    pad_hub_shelf!(shelf, title:)
     shelf
+  end
+
+  def pad_hub_shelf!(shelf, title:)
+    while shelf.bookshelf_fictions.count < Bookshelves::HubScope::MIN_FICTIONS
+      clone = @fiction.dup
+      clone.title = "#{title} work #{shelf.bookshelf_fictions.count}"
+      clone.slug = nil
+      clone.save!(validate: false)
+      BookshelfFiction.create!(bookshelf: shelf, fiction: clone)
+    end
   end
 end

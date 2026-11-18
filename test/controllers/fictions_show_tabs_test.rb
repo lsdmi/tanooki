@@ -88,10 +88,12 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     get fiction_url(@fiction)
 
     assert_select '#fiction-panel-about #fiction-description.line-clamp-6', text: @fiction.description
-    expected = %w[fiction-description-title fiction-notices-title fiction-on-bookshelves-title
-                  fiction-shelves-title fiction-rating-title]
+    ids = css_select('#fiction-panel-about h2[id]').pluck('id')
+    # on-bookshelves appears only for sized shelves; presence is covered in FictionOnBookshelvesTest.
+    expected = %w[fiction-description-title fiction-notices-title fiction-shelves-title fiction-rating-title]
+    expected = expected.dup.insert(2, 'fiction-on-bookshelves-title') if ids.include?('fiction-on-bookshelves-title')
 
-    assert_equal expected, css_select('#fiction-panel-about h2[id]').pluck('id')
+    assert_equal expected, ids
   end
 
   test 'the main ad follows the sidebar in the markup so it comes last on mobile' do

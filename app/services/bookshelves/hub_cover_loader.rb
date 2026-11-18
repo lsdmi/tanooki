@@ -3,17 +3,17 @@
 module Bookshelves
   # Rank cover fictions per shelf by bookmark count for hub cards.
   class HubCoverLoader
-    def self.call(bookshelf_ids, limit: HubPreview::COVERS)
-      new(bookshelf_ids, limit:).call
+    def self.call(memberships, limit: HubPreview::COVERS)
+      new(memberships, limit:).call
     end
 
-    def initialize(bookshelf_ids, limit:)
-      @bookshelf_ids = Array(bookshelf_ids)
+    def initialize(memberships, limit:)
+      @memberships = memberships
       @limit = limit
     end
 
     def call
-      return {} if @bookshelf_ids.empty?
+      return {} if @memberships.none?
 
       fictions_by_id = Fiction.where(id: ranked_ids.values.flatten)
                               .includes(cover_attachment: :blob)
@@ -47,9 +47,8 @@ module Bookshelves
     end
 
     def cover_scope
-      BookshelfFiction.where(bookshelf_id: @bookshelf_ids)
-                      .joins(fiction: :cover_attachment)
-                      .left_joins(fiction: :readings)
+      @memberships.joins(fiction: :cover_attachment)
+                  .left_joins(fiction: :readings)
     end
   end
 end

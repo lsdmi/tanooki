@@ -45,12 +45,47 @@ module Sitemaps
       assert_not_includes listed_locs, "http://example.com/contests/#{contests(:draft).slug}"
     end
 
+    test 'includes the bookshelves hub and sized public shelves' do
+      shelf = sized_bookshelf!
+      locs = EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
+
+      assert_includes locs, 'http://example.com/bookshelves'
+      assert_includes locs, "http://example.com/bookshelves/#{shelf.sqid}"
+    end
+
+    test 'omits thin bookshelves from the sitemap' do
+      thin = users(:user_one).bookshelves.create!(
+        title: 'Thin sitemap shelf',
+        description: 'Only two works so sitemap should omit this shelf',
+        fiction_ids: [fictions(:one).id]
+      )
+      BookshelfFiction.where(bookshelf: thin).delete_all
+      BookshelfFiction.create!(bookshelf: thin, fiction: fictions(:one))
+      BookshelfFiction.create!(bookshelf: thin, fiction: fictions(:two))
+
+      locs = EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
+
+      assert_not_includes locs, "http://example.com/bookshelves/#{thin.sqid}"
+    end
+
     private
 
     def listed_locs
       Contests::PublicAccess.stub(:listed?, true) do
         EntryBuilder.new({ host: 'example.com' }).to_a.pluck(:loc)
       end
+    end
+
+    def sized_bookshelf!
+      shelf = bookshelves(:one)
+      while shelf.bookshelf_fictions.count < Bookshelves::HubScope::MIN_FICTIONS
+        clone = fictions(:one).dup
+        clone.title = "Sitemap pad #{shelf.bookshelf_fictions.count}"
+        clone.slug = nil
+        clone.save!(validate: false)
+        BookshelfFiction.create!(bookshelf: shelf, fiction: clone)
+      end
+      shelf
     end
   end
 end

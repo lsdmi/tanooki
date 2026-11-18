@@ -23,7 +23,7 @@ module Api
             type: 'text',
             text: <<~TEXT
               Read baka://formatting-guide. Call list_chapters for fiction #{args[:fiction]} before writing.
-              Format this translation and create_chapter as a draft of chapter #{args[:number]}. Do not publish.
+              Format this translation as Markdown only (no HTML tags) and create_chapter as a draft of chapter #{args[:number]}. Do not publish.
               Then show the edit_url.
 
               #{args[:translation]}

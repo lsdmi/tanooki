@@ -27,7 +27,7 @@ class FictionShowPresenter
   end
 
   def reading_progress
-    @reading_progress ||= find_or_fix_reading_progress
+    @reading_progress ||= find_or_build_reading_progress
   end
 
   def continue_reading
@@ -73,24 +73,23 @@ class FictionShowPresenter
 
   def similar_hidden_count = similar_fictions && similar_finder.hidden_count
 
-  # Curated Bookshelf lists that include this fiction (not Library reading shelves).
-  def curated_bookshelves = @curated_bookshelves ||= Fictions::CuratedBookshelves.call(fiction: @fiction)
+  def curated_bookshelves
+    @curated_bookshelves ||= Fictions::CuratedBookshelves.call(**curated_shelf_args)
+  end
 
   def order = @params[:order] || :desc
 
   def sorted_chapters_locals = { fiction: @fiction, order:, filter: @params[:filter], team: @params[:team] }
 
-  def bookmarks_total_count
-    bookmark_stats.sum
-  end
+  def bookmarks_total_count = bookmark_stats.sum
 
-  def first_chapter
-    @first_chapter ||= ordered_chapters.first
-  end
+  def first_chapter = @first_chapter ||= ordered_chapters.first
 
   private
 
   def similar_finder = @similar_finder ||= Fictions::SimilarFictions.new(@fiction, filter: @content_filter)
+
+  def curated_shelf_args = { fiction: @fiction, viewer: @current_user, filter: @content_filter }
 
   def ranks_cache_key = "fiction-#{@fiction.slug}-ranks"
 
@@ -117,14 +116,11 @@ class FictionShowPresenter
     @ordered_chapters_desc ||= chapters_list_scope.order(Library::ChapterCatalog.order_clause_desc)
   end
 
-  def find_or_fix_reading_progress
+  def find_or_build_reading_progress
     progress = ReadingProgress.find_by(fiction_id: @fiction.id, user_id: @current_user&.id)
     return nil unless progress
-
-    # Check if the chapter still exists
     return progress if progress.chapter
 
-    # Handle missing chapter
     handle_missing_chapter(progress)
   end
 

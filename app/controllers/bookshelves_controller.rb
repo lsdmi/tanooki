@@ -69,7 +69,7 @@ class BookshelvesController < ApplicationController
     @popular = Bookshelves::HubPreview.popular(**hub) unless recent_hub_frame?
     @pagy, recent = pagy(Bookshelves::HubPreview.recent_scope(exclude_ids: hub_exclude_ids(hub), **hub),
                          limit: Bookshelves::HubPreview::RECENT_PER_PAGE)
-    @recent = Bookshelves::HubPreview.decorate(recent)
+    @recent = Bookshelves::HubPreview.decorate(recent, **hub)
   end
 
   def recent_hub_frame?

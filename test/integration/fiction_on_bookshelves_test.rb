@@ -6,6 +6,13 @@ class FictionOnBookshelvesTest < ActionDispatch::IntegrationTest
   setup do
     @fiction = fictions(:one)
     @bookshelf = bookshelves(:one)
+    while @bookshelf.bookshelf_fictions.count < Fictions::CuratedBookshelves::MIN_FICTIONS
+      clone = @fiction.dup
+      clone.title = "About shelf pad #{@bookshelf.bookshelf_fictions.count}"
+      clone.slug = nil
+      clone.save!(validate: false)
+      BookshelfFiction.create!(bookshelf: @bookshelf, fiction: clone)
+    end
   end
 
   test 'about tab links to curated bookshelves that include the fiction' do

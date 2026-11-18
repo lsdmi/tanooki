@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 module StructuredData
-  # Builds Schema.org JSON-LD graph payloads for site, fiction, chapter, and about pages.
+  # Builds Schema.org JSON-LD graph payloads for site, catalog, contest, bookshelf, and content pages.
   class EntityGraphs
     include Rails.application.routes.url_helpers
     include StorageCatalogGraph
     include ContestPageGraph
+    include ChapterArticleGraph
+    include BookshelvesHubGraph
+    include BookshelfShowGraph
 
     def initialize(asset_url:)
       @asset_url = asset_url
@@ -86,27 +89,6 @@ module StructuredData
         description: SiteProfile::DESCRIPTION,
         mainEntity: SiteProfile.publisher_organization_data(root)
       }
-    end
-
-    def chapter_article_graph(chapter)
-      fiction = chapter.fiction
-      url = chapter_url(chapter, only_path: false, **default_public_url_options)
-      chapter_article_fields(chapter, fiction, url).merge(
-        '@context': 'https://schema.org',
-        '@type': 'Article'
-      )
-    end
-
-    def chapter_article_fields(chapter, fiction, url)
-      {
-        headline: "#{fiction.title} — #{chapter.display_title}",
-        image: [@asset_url.call(fiction.cover)],
-        datePublished: (chapter.published_at || chapter.created_at).iso8601,
-        dateModified: chapter.updated_at.iso8601,
-        author: fiction_author_node(fiction),
-        url:,
-        mainEntityOfPage: url
-      }.merge(content_rating_node(fiction))
     end
 
     def content_rating_node(fiction)

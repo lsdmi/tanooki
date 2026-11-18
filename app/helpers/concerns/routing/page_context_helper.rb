@@ -40,6 +40,14 @@ module Routing
       controller_path == 'fiction_lists' && action_name == 'alphabetical'
     end
 
+    def bookshelves_index_page?
+      controller_name.to_sym == :bookshelves && action_name.to_sym == :index
+    end
+
+    def bookshelves_show_page?
+      controller_name.to_sym == :bookshelves && action_name.to_sym == :show
+    end
+
     def contests_show_page?
       controller_name.to_sym == :contests && action_name.to_sym == :show
     end
