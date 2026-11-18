@@ -17,6 +17,7 @@ module Ui
       check: ['M20 6 9 17l-5-5'],
       check_check: ['M18 6 7 17l-5-5', 'm22 10-7.5 7.5L13 16'],
       chevron_down: ['m6 9 6 6 6-6'],
+      chevron_right: ['m9 18 6-6-6-6'],
       chevron_up: ['m18 15-6-6-6 6'],
       circle_check: ['M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', 'm9 12 2 2 4-4'],
       circle_pause: ['M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', 'M10 15V9', 'M14 15V9'],
@@ -63,7 +64,7 @@ module Ui
 
     # Handdrawn Icons (CC BY — Hand-Drawn Goods via SVG Repo). Credit: pages#about #credits.
     # Assets: app/assets/images/nav/*.svg
-    NAVBAR_ICON_NAMES = %i[book calendar library shelves].freeze
+    NAVBAR_ICON_NAMES = %i[book calendar library].freeze
 
     def stroke_icon(name, classes = 'size-4 shrink-0')
       tag.svg(class: classes, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2,

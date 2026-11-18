@@ -18,10 +18,9 @@
   background-color: color-mix(in srgb, var(--color-line) 70%, transparent);
 }
 
+/* No opacity:0 default — sheet may load deferred; keep H1 readable without FOUC. */
 .bookshelves-hub-reveal {
-  opacity: 0;
-  transform: translateY(0.5rem);
-  animation: bookshelves-hub-in 480ms ease-out forwards;
+  animation: bookshelves-hub-in 480ms ease-out both;
 }
 
 .bookshelves-hub-reveal:nth-child(1) { animation-delay: 40ms; }
@@ -29,8 +28,11 @@
 .bookshelves-hub-reveal:nth-child(3) { animation-delay: 140ms; }
 
 @keyframes bookshelves-hub-in {
+  from {
+    transform: translateY(0.5rem);
+  }
+
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

@@ -2,6 +2,7 @@
 
 module Layout
   # Defers CSS background-image until the section is near the viewport.
+  # Use +eager_decoration_background+ for above-fold brand washes so LCP is not stuck on lazy discovery.
   module LazyBackgroundHelper
     def lazy_decoration_background(filename, html_class:, **html)
       {
@@ -11,8 +12,22 @@ module Layout
       }
     end
 
+    # Inline background-image in initial HTML (prefer -sm when present). No lazy-bg observe.
+    def eager_decoration_background(filename, html_class:, **html)
+      {
+        class: html_class,
+        style: "background-image: url(#{decoration_eager_url(filename)})",
+        **html
+      }
+    end
+
     def decoration_small_filename(filename)
       filename.sub(/(\.[A-Za-z0-9]+)\z/, '-sm\1')
+    end
+
+    def decoration_eager_url(filename)
+      small = decoration_small_filename(filename)
+      asset_path(decoration_asset?(small) ? small : filename)
     end
 
     private

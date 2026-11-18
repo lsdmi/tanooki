@@ -1,0 +1,30 @@
+<%# locals: (shelves:) %>
+<% chip_class = [
+     'inline-flex max-w-full items-center truncate rounded-lg border border-line-strong',
+     'bg-main px-3 py-px text-sm/5 font-normal text-fg transition-colors',
+     'hover:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-fg-brand',
+     'focus-visible:ring-offset-2 focus-visible:ring-offset-main'
+   ].join(' ') %>
+
+<section class="flex flex-col gap-3" aria-labelledby="fiction-on-bookshelves-title">
+  <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+    <h2 id="fiction-on-bookshelves-title" class="text-sm/5 font-medium text-fg-muted">
+      <%= t('fictions.about.on_bookshelves.title') %>
+    </h2>
+    <%= link_to bookshelves_path,
+                class: [
+                  'inline-flex items-center gap-0.5 rounded-sm text-sm/5 font-medium text-fg-brand',
+                  'transition-colors hover:text-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-brand'
+                ].join(' ') do %>
+      <%= t('fictions.about.on_bookshelves.all') %>
+      <%= stroke_icon(:chevron_right, 'size-4 shrink-0') %>
+    <% end %>
+  </div>
+  <ul class="flex flex-wrap gap-2">
+    <% shelves.each do |bookshelf| %>
+      <li class="min-w-0 max-w-full">
+        <%= link_to bookshelf.title, bookshelf_path(bookshelf), class: chip_class %>
+      </li>
+    <% end %>
+  </ul>
+</section>

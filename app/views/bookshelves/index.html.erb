@@ -1,5 +1,9 @@
+<% content_for :head do %>
+  <%= tag.link rel: 'preload', as: 'image', href: decoration_eager_url('psyduck_background.webp'),
+               type: 'image/webp' %>
+<% end %>
 <div class="bookshelves-hub relative min-h-screen overflow-x-clip bg-page">
-  <%= tag.div **lazy_decoration_background(
+  <%= tag.div **eager_decoration_background(
         'psyduck_background.webp',
         html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed',
         aria: { hidden: true }

@@ -96,8 +96,7 @@ module Layout
       define_singleton_method(:adsense_adblock_check?) { true }
       assign_controller(:home, :index)
 
-      assert deferred_page_stylesheet?('pagy')
-      assert deferred_page_stylesheet?('sweetal2')
+      assert(%w[pagy sweetal2 bookshelves_hub].all? { |sheet| deferred_page_stylesheet?(sheet) })
     end
 
     test 'deferred page stylesheet uses print media with onload flip to all' do

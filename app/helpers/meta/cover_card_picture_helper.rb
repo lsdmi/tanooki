@@ -32,13 +32,21 @@ module Meta
     end
 
     def cover_card_srcset_payload(urls, preset:, srcset:, sizes:)
-      return {} unless srcset && preset.to_sym == :card
+      return {} unless srcset && cover_card_srcset_preset?(preset)
 
       {
         avif: urls[:avif_srcset],
         webp: urls[:webp_srcset],
-        sizes: sizes.presence || CoverCardPresets::CARD_GRID_SIZES
+        sizes: sizes.presence || cover_card_default_sizes(preset)
       }
+    end
+
+    def cover_card_srcset_preset?(preset)
+      %i[card thumb].include?(preset.to_sym)
+    end
+
+    def cover_card_default_sizes(preset)
+      preset.to_sym == :thumb ? CoverCardPresets::HUB_FOCUS_SIZES : CoverCardPresets::CARD_GRID_SIZES
     end
 
     def cover_card_picture_nodes(urls, lazy, img_options, srcsets)

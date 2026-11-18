@@ -1,4 +1,4 @@
-<%# locals: (entry:) %>
+<%# locals: (entry:, lcp: false) %>
 <% bookshelf = entry.bookshelf %>
 <% animate = entry.covers.size >= 2 %>
 <% cover_data = turbo_drive_visit_data[:data] || {} %>
@@ -15,7 +15,11 @@
     <% if entry.covers.any? %>
       <%= render 'fictions/genre_spotlight_covers',
                  fictions: entry.covers,
-                 cover_preset: :thumb %>
+                 cover_preset: :thumb,
+                 eager_first: lcp,
+                 decorative: false,
+                 srcset: true,
+                 sizes: Meta::CoverCardPresets::HUB_FOCUS_SIZES %>
     <% else %>
       <div class="h-full min-h-[8rem] rounded-xl bg-surface-strong" aria-hidden="true"></div>
     <% end %>

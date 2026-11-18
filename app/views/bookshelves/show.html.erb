@@ -1,6 +1,10 @@
 <% share_url = bookshelf_url(@bookshelf) %>
+<% content_for :head do %>
+  <%= tag.link rel: 'preload', as: 'image', href: decoration_eager_url('psyduck_background.webp'),
+               type: 'image/webp' %>
+<% end %>
 <div class="bookshelves-hub relative min-h-screen overflow-x-clip bg-page">
-  <%= tag.div **lazy_decoration_background(
+  <%= tag.div **eager_decoration_background(
         'psyduck_background.webp',
         html_class: 'pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed',
         aria: { hidden: true }
@@ -53,11 +57,14 @@
                 style="z-index: <%= @header_covers.size - index %>;">
               <%= cover_card_picture_tag(
                     fiction.cover,
-                    alt: '',
+                    preset: :thumb,
+                    alt: t('meta.cover_alt', title: fiction.title),
                     class: 'aspect-[2/3] w-full object-cover',
                     loading: (index < 2 ? 'eager' : 'lazy'),
                     decoding: 'async',
-                    fetchpriority: (index.zero? ? 'high' : nil)
+                    fetchpriority: (index.zero? ? 'high' : nil),
+                    srcset: true,
+                    sizes: Meta::CoverCardPresets::HUB_FAN_SIZES
                   ) %>
             </li>
           <% end %>

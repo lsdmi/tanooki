@@ -9,20 +9,20 @@ class BookshelvesJsonLdTest < ActionDispatch::IntegrationTest
     pad_shelf!(@shelf)
   end
 
-  test 'hub embeds CollectionPage ItemList json-ld' do
+  test 'hub embeds CollectionPage ItemList and BreadcrumbList json-ld' do
     get bookshelves_url
 
     assert_response :success
-    assert_match(/"@type":"CollectionPage"/, response.body)
-    assert_match(/"@type":"ItemList"/, response.body)
+    assert_match(/"@type":"CollectionPage".*"@type":"ItemList"/m, response.body)
+    assert_match(/"@type":"BreadcrumbList"/, response.body)
   end
 
-  test 'show embeds CollectionPage ItemList json-ld for the shelf' do
+  test 'show embeds CollectionPage ItemList and BreadcrumbList json-ld for the shelf' do
     get bookshelf_url(@shelf.sqid)
 
     assert_response :success
     assert_match(/"@type":"CollectionPage"/, response.body)
-    assert_match(/#{Regexp.escape(@shelf.title)}/, response.body)
+    assert_match(/"@type":"BreadcrumbList".*#{Regexp.escape(@shelf.title)}/m, response.body)
   end
 
   private

@@ -40,13 +40,6 @@ class BookshelvesHubControllerTest < ActionDispatch::IntegrationTest
                   profile_path(@user.sqid), '_top'
   end
 
-  test 'navbar marks bookshelves current on hub' do
-    get bookshelves_url
-
-    assert_select 'nav[aria-label="Основна навігація"] a[href=?][aria-current=?]',
-                  bookshelves_path, 'page', text: 'Полиці'
-  end
-
   test 'show breadcrumb links hub and current shelf' do
     bookshelf = bookshelves(:one)
 

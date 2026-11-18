@@ -6,9 +6,9 @@
     class="bookshelves-hub-snap -mr-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch] md:hidden"
     role="region"
     aria-label="<%= t('bookshelves.index.popular') %>">
-    <% entries.each do |entry| %>
+    <% entries.each_with_index do |entry, index| %>
       <div class="w-[153px] shrink-0 snap-start sm:w-[180px]">
-        <%= render 'bookshelves/hub_card_popular', entry: %>
+        <%= render 'bookshelves/hub_card_popular', entry:, lcp: index.zero? %>
       </div>
     <% end %>
     <div class="w-1 shrink-0 snap-end" aria-hidden="true"></div>
@@ -18,8 +18,8 @@
     class="hidden md:grid md:grid-cols-4 md:gap-5 lg:gap-6"
     role="region"
     aria-label="<%= t('bookshelves.index.popular') %>">
-    <% entries.each do |entry| %>
-      <%= render 'bookshelves/hub_card_popular', entry: %>
+    <% entries.each_with_index do |entry, index| %>
+      <%= render 'bookshelves/hub_card_popular', entry:, lcp: index.zero? %>
     <% end %>
   </div>
 </section>

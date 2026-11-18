@@ -3,6 +3,7 @@
 # User-curated fiction lists (bookshelves) for browsing and managing collections.
 class BookshelvesController < ApplicationController
   include Bookshelves::FormActions
+  include Bookshelves::GuestHubCaching
 
   helper Fictions::ListPaginationHelper, Ui::StrokeIconHelper
 
@@ -10,8 +11,11 @@ class BookshelvesController < ApplicationController
   before_action :set_bookshelf, only: %i[show edit update destroy]
   before_action :load_selected_fictions, only: %i[new create edit update]
   before_action :track_bookshelf_visit, only: :show
+  after_action :set_guest_hub_cache_headers, only: :index
 
   def index
+    return if serve_fresh_guest_hub?
+
     prepare_hub
     return unless turbo_frame_request_id == 'hub-recent-page'
 

@@ -21,12 +21,11 @@ class BookshelvesShowSurfaceTest < ActionDispatch::IntegrationTest
     assert_select '[data-action="share-link#copyUrl"][aria-label=?]', 'Скопіювати'
   end
 
-  test 'show uses psyduck decoration background' do
+  test 'show uses eager psyduck decoration background' do
     get bookshelf_url(@bookshelf.sqid)
 
-    assert_select '[data-controller="lazy-bg"][data-lazy-bg-url-value]' do |nodes|
-      assert_match(/psyduck_background/, nodes.first['data-lazy-bg-url-value'])
-    end
+    assert_select '[style*="background-image"][style*="psyduck_background"]'
+    assert_select 'link[rel=preload][as=image][href*=psyduck_background]'
   end
 
   test 'show links author to profile' do

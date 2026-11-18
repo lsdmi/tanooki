@@ -20,7 +20,7 @@ class FictionOnBookshelvesTest < ActionDispatch::IntegrationTest
 
     assert_select '#fiction-on-bookshelves-title', text: 'На полицях'
     assert_select 'a[href=?]', bookshelves_path, text: I18n.t('fictions.about.on_bookshelves.all')
-    assert_select 'a[href=?]', bookshelf_path(@bookshelf), text: @bookshelf.title
+    assert_select 'ul li a[href=?]', bookshelf_path(@bookshelf), text: @bookshelf.title
   end
 
   test 'about tab omits on-bookshelves when the fiction is on none' do

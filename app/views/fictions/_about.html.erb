@@ -36,29 +36,7 @@
 
     <% curated_bookshelves = show_presenter.curated_bookshelves %>
     <% if curated_bookshelves.any? %>
-      <section class="flex flex-col gap-2" aria-labelledby="fiction-on-bookshelves-title">
-        <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-          <h2 id="fiction-on-bookshelves-title" class="text-sm/5 font-medium text-fg-muted">
-            <%= t('fictions.about.on_bookshelves.title') %>
-          </h2>
-          <span class="text-fg-muted select-none" aria-hidden="true">·</span>
-          <%= link_to t('fictions.about.on_bookshelves.all'),
-                      bookshelves_path,
-                      class: 'rounded-sm text-sm/5 text-fg-muted transition-colors hover:text-fg-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
-        </div>
-        <ul class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm/5">
-          <% curated_bookshelves.each_with_index do |bookshelf, index| %>
-            <% if index.positive? %>
-              <li class="text-fg-muted select-none" aria-hidden="true">·</li>
-            <% end %>
-            <li class="min-w-0">
-              <%= link_to bookshelf.title,
-                          bookshelf_path(bookshelf),
-                          class: 'rounded-sm font-medium text-fg-brand transition-colors hover:text-fg-brand-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-brand' %>
-            </li>
-          <% end %>
-        </ul>
-      </section>
+      <%= render 'fictions/on_bookshelves', shelves: curated_bookshelves %>
     <% end %>
 
   </div>

@@ -86,21 +86,21 @@ module Meta
         avif: url_for(attachment.variant(avif_transform)),
         webp: url_for(attachment.variant(webp_transform))
       }
-      return urls unless preset.to_sym == :card
+      return urls unless cover_card_srcset_preset?(preset)
 
-      urls.merge(cover_card_srcset_urls(attachment))
+      urls.merge(cover_card_srcset_urls(attachment, preset:))
     end
 
-    def cover_card_srcset_urls(attachment)
+    def cover_card_srcset_urls(attachment, preset:)
       {
-        avif_srcset: cover_card_format_srcset(attachment, format: :avif),
-        webp_srcset: cover_card_format_srcset(attachment, format: :webp)
+        avif_srcset: cover_card_format_srcset(attachment, format: :avif, preset:),
+        webp_srcset: cover_card_format_srcset(attachment, format: :webp, preset:)
       }
     end
 
-    def cover_card_format_srcset(attachment, format:)
-      CoverCardPresets::CARD_SRCSET_WIDTHS.map do |width|
-        transform = CoverCardPresets.card_transformations_for_width(width, format:)
+    def cover_card_format_srcset(attachment, format:, preset: :card)
+      CoverCardPresets.srcset_widths_for(preset).map do |width|
+        transform = CoverCardPresets.srcset_transformations_for_width(preset, width, format:)
         "#{url_for(attachment.variant(transform))} #{width}w"
       end.join(', ')
     end

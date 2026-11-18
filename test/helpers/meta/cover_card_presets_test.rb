@@ -34,5 +34,14 @@ module Meta
       assert_equal [200, 300], transform[:resize_to_limit]
       assert_equal :webp, transform[:format]
     end
+
+    test 'thumb srcset widths keep the same aspect ladder' do
+      assert_equal [80, 120, 160], CoverCardPresets::THUMB_SRCSET_WIDTHS
+
+      transform = CoverCardPresets.thumb_transformations_for_width(80, format: :avif)
+
+      assert_equal [80, 120], transform[:resize_to_limit]
+      assert_equal :avif, transform[:format]
+    end
   end
 end

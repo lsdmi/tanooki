@@ -2,8 +2,7 @@
   nav_items = [
     { path: fictions_path, label: 'Ранобе', icon: :book },
     { path: calendar_fictions_path, label: 'Календар', icon: :calendar },
-    { path: alphabetical_fictions_path, label: 'Сховище', icon: :library },
-    { path: bookshelves_path, label: 'Полиці', icon: :shelves, section: :bookshelves }
+    { path: alphabetical_fictions_path, label: 'Сховище', icon: :library }
   ]
   nav_link_class = %w[
     relative inline-flex h-full items-center justify-center px-2 text-sm font-medium text-fg sm:px-3
@@ -21,11 +20,7 @@
 <div class="flex h-full min-w-0 flex-1 items-stretch justify-end sm:justify-center">
   <nav class="flex h-full items-stretch gap-0.5 sm:gap-1" aria-label="Основна навігація">
     <% nav_items.each do |item| %>
-      <% active = if item[:section] == :bookshelves
-                    request.path == bookshelves_path || request.path.start_with?('/bookshelves/')
-                  else
-                    current_page?(item[:path])
-                  end %>
+      <% active = current_page?(item[:path]) %>
       <div class="group relative flex h-full">
         <%= link_to item[:path],
                     class: nav_link_class,

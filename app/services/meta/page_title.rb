@@ -89,7 +89,16 @@ module Meta
     end
 
     def bookshelf_title(bookshelf)
-      "#{bookshelf.title} | Бака"
+      author = bookshelf.user_name.to_s
+      suffix = " — полиця #{author} | Бака"
+      title = bookshelf_title_within(bookshelf.title.to_s, 60 - suffix.length)
+      "«#{title}»#{suffix}"
+    end
+
+    def bookshelf_title_within(title, budget)
+      return title if title.length <= budget || budget < 2
+
+      "#{title[0, budget - 1]}…"
     end
   end
 end

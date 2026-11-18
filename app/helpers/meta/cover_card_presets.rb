@@ -9,6 +9,8 @@ module Meta
     FEATURED_CARD_SIZE = [1280, 960].freeze
     WIDE_CARD_SIZE = [1280, 720].freeze
     THUMB_SIZE = [160, 240].freeze
+    # Hub fans ~32–56 CSS px; focus stack face ~110 CSS px — keep quality ladder, no saver drop.
+    THUMB_SRCSET_WIDTHS = [80, 120, 160].freeze
 
     CARD_WEBP_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :webp }.freeze
     CARD_AVIF_TRANSFORMATIONS = { resize_to_limit: CARD_SIZE, format: :avif }.freeze
@@ -24,6 +26,8 @@ module Meta
     # Storage gallery: 2→6 columns. List row covers stay ~7–8rem.
     CARD_GRID_SIZES = '(max-width: 639px) 45vw, (max-width: 767px) 30vw, (max-width: 1279px) 22vw, 180px'
     CARD_LIST_SIZES = '(max-width: 639px) 7rem, 8rem'
+    HUB_FOCUS_SIZES = '(max-width: 767px) 153px, 25vw'
+    HUB_FAN_SIZES = '(max-width: 639px) 2rem, 2.25rem'
 
     PRESET_TRANSFORMATIONS = {
       card: [CARD_AVIF_TRANSFORMATIONS, CARD_WEBP_TRANSFORMATIONS].freeze,
@@ -56,6 +60,27 @@ module Meta
 
     def card_transformations_for_width(width, format:)
       { resize_to_limit: card_srcset_size(width), format: format }
+    end
+
+    def thumb_srcset_size(width)
+      height = (width * THUMB_SIZE[1] / THUMB_SIZE[0].to_f).round
+      [width, height]
+    end
+
+    def thumb_transformations_for_width(width, format:)
+      { resize_to_limit: thumb_srcset_size(width), format: format }
+    end
+
+    def srcset_widths_for(preset)
+      preset.to_sym == :thumb ? THUMB_SRCSET_WIDTHS : CARD_SRCSET_WIDTHS
+    end
+
+    def srcset_transformations_for_width(preset, width, format:)
+      if preset.to_sym == :thumb
+        thumb_transformations_for_width(width, format:)
+      else
+        card_transformations_for_width(width, format:)
+      end
     end
   end
 end

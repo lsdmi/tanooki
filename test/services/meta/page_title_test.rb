@@ -89,5 +89,14 @@ module Meta
 
       assert_equal ContestSeo.new(contest).page_title, title
     end
+
+    test 'resolve returns bookshelf SEO title with author' do
+      bookshelf = bookshelves(:one)
+
+      title = PageTitle.new(bookshelf: bookshelf).resolve
+
+      assert_match(/«#{Regexp.escape(bookshelf.title)}» — полиця #{Regexp.escape(bookshelf.user_name)}/, title)
+      assert_operator title.length, :<=, 60
+    end
   end
 end

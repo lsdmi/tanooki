@@ -1,6 +1,10 @@
-<%# locals: (fictions:, cover_preset: :thumb) %>
+<%# locals: (fictions:, cover_preset: :thumb, eager_first: false, srcset: false, sizes: nil, decorative: true) %>
 <% covers = fictions %>
 <% cover_preset = local_assigns.fetch(:cover_preset, :thumb) %>
+<% eager_first = local_assigns.fetch(:eager_first, false) %>
+<% srcset = local_assigns.fetch(:srcset, false) %>
+<% decorative = local_assigns.fetch(:decorative, true) %>
+<% sizes = local_assigns[:sizes] %>
 <% slots = %w[front left right] %>
 <% face_class = [
      'token-raw absolute overflow-hidden rounded-xl bg-stone-200',
@@ -19,15 +23,20 @@
   <div class="relative h-full w-full">
     <% covers.each_with_index do |fiction, index| %>
       <% slot = covers.one? ? 'solo' : slots.fetch(index) %>
+      <% lcp_cover = eager_first && index.zero? %>
       <div class="<%= face_class %>"
            data-genre-cover-stack-target="cover"
            data-slot="<%= slot %>">
         <%= cover_card_picture_tag(fiction.cover,
                       preset: cover_preset,
-                      alt: '',
-                      aria: { hidden: true },
+                      alt: (decorative ? '' : t('meta.cover_alt', title: fiction.title)),
+                      aria: (decorative ? { hidden: true } : nil),
                       class: 'h-full w-full object-cover object-center',
-                      loading: 'lazy') %>
+                      loading: (lcp_cover ? 'eager' : 'lazy'),
+                      decoding: 'async',
+                      fetchpriority: (lcp_cover ? 'high' : nil),
+                      srcset:,
+                      sizes:) %>
       </div>
     <% end %>
   </div>
