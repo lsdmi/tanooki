@@ -44,18 +44,14 @@
           <%= f.label :banner, 'Банер', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
           <div class="relative group">
             <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface transition duration-300 hover:bg-surface-strong"
-                 data-controller="dropzone"
-                 data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
-                 role="button"
-                 tabindex="0"
-                 aria-label="Обрати банер">
+                 data-controller="dropzone">
               <svg class="pointer-events-none mb-2 h-12 w-12 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
               <span class="pointer-events-none mx-1 text-center text-fg-muted">WebP, ширина не менше 1000px, співвідношення сторін банера ~3:1</span>
-              <%= tag.div f.object.banner.blob&.filename || nil, id: 'banner_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
+              <%= tag.div f.object.banner.blob&.filename, class: 'pointer-events-none text-center text-sm text-fg-muted', data: { dropzone_target: 'name' } %>
               <%= f.file_field :banner,
                                id: 'fictions_banner',
-                               class: 'sr-only',
-                               tabindex: -1,
+                               class: 'absolute inset-0 z-20 block h-full w-full cursor-pointer opacity-5',
+                               aria: { label: 'Обрати банер' },
                                data: { dropzone_target: 'input', action: 'change->dropzone#update' } %>
             </div>
             <%= tag.p fiction.errors[:banner].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:banner].any? %>
@@ -159,18 +155,14 @@
         <%= f.label :cover, 'Обкладинка', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <div class="relative group">
           <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface transition duration-300 hover:bg-surface-strong"
-               data-controller="dropzone"
-               data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
-               role="button"
-               tabindex="0"
-               aria-label="Обрати обкладинку">
+               data-controller="dropzone">
             <svg class="pointer-events-none mb-2 h-12 w-12 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             <span class="pointer-events-none text-fg-muted">WebP, AVIF, JPEG або PNG — мін. 600×800px, 3:4, до 2 МБ</span>
-            <%= tag.div f.object.cover.blob&.filename || nil, id: 'cover_name', class: 'pointer-events-none text-center text-sm text-fg-muted' %>
+            <%= tag.div f.object.cover.blob&.filename, class: 'pointer-events-none text-center text-sm text-fg-muted', data: { dropzone_target: 'name' } %>
             <%= f.file_field :cover,
                              id: 'fictions_cover',
-                             class: 'sr-only',
-                             tabindex: -1,
+                             class: 'absolute inset-0 z-20 block h-full w-full cursor-pointer opacity-5',
+                             aria: { label: 'Обрати обкладинку' },
                              accept: 'image/webp,image/avif,image/jpeg,image/png',
                              data: {
                                dropzone_target: 'input',

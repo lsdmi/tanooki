@@ -23,7 +23,7 @@
                 placeholder: "***********",
                 input_html: {
                   autocomplete: "current-password",
-                  class: "font-light text-base w-full p-3 block rounded-md border border-line text-fg bg-main tracking-tight #{'border-red-500' if resource.errors[:password].any? }"
+                  class: "block w-full rounded-md border border-line bg-main p-3 text-base font-light tracking-tight text-fg outline-none transition focus:border-emerald-400 focus-visible:outline-none #{'border-red-500' if resource.errors[:password].any? }"
                 },
                 label_html: {
                   class: 'block text-sm font-light text-fg mb-2 tracking-tight'
@@ -38,7 +38,7 @@
                 placeholder: "***********",
                 input_html: {
                   autocomplete: "password_confirmation",
-                  class: "font-light text-base w-full p-3 block rounded-md border border-line text-fg bg-main tracking-tight #{'border-red-500' if resource.errors[:password_confirmation].any? }"
+                  class: "block w-full rounded-md border border-line bg-main p-3 text-base font-light tracking-tight text-fg outline-none transition focus:border-emerald-400 focus-visible:outline-none #{'border-red-500' if resource.errors[:password_confirmation].any? }"
                 },
                 label_html: {
                   class: 'block text-sm font-light text-fg mb-2 tracking-tight'

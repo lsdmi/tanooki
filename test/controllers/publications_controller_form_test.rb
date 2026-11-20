@@ -32,12 +32,32 @@ class PublicationsControllerFormTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: I18n.t('chapters.alerts.draft'), count: 0
   end
 
-  test 'new publication cover opens via dropzone surface not display-none input' do
+  test 'new publication cover drop zone accepts drops and has no click-open action' do
     get new_publication_path
 
-    assert_select '[data-controller=dropzone][role=button][aria-label]'
-    assert_select 'input#publication_cover[type=file][data-dropzone-target=input].sr-only'
-    assert_select 'input#publication_cover.hidden, input#publication_cover.opacity-0', count: 0
+    assert_select '[data-action*="drop->dropzone#drop"]'
+    assert_select '[data-action*="click->dropzone#open"]', count: 0
+    assert_select 'img[data-dropzone-target=preview].hidden, [data-dropzone-target=name].hidden', count: 2
+  end
+
+  test 'new publication cover file input covers the box without hiding it' do
+    get new_publication_path
+
+    cover = css_select('input#publication_cover[type=file][aria-label][data-dropzone-target=input]').sole
+
+    assert_includes cover['class'].split, 'opacity-5'
+    assert_not_includes cover['class'].split, 'opacity-0'
+    assert_select 'input#publication_cover.sr-only, input#publication_cover.hidden', count: 0
+  end
+
+  test 'edit publication shows the saved cover in the dropzone' do
+    get edit_publication_path(@publication)
+
+    preview = css_select('img[data-dropzone-target=preview]').sole
+
+    assert_match 'active_storage', preview['src']
+    assert_not_includes preview['class'].to_s.split, 'hidden'
+    assert_select '#image_name', text: 'blob_one.png'
   end
 
   test 'unprocessable publish still loads slimselect assets' do

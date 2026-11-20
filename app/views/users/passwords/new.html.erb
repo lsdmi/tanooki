@@ -19,7 +19,7 @@
               placeholder: "email@example.com",
               input_html: {
                 autocomplete: "email",
-                class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg focus:ring-2 focus:ring-emerald-400 transition #{'border-red-500' if resource.errors[:email].any? }"
+                class: "w-full py-3 px-4 rounded-lg border border-line bg-main text-base text-fg outline-none transition focus:border-emerald-400 focus-visible:outline-none #{'border-red-500' if resource.errors[:email].any? }"
               },
               label_html: {
                 class: 'block text-sm font-medium text-fg-secondary mb-1'

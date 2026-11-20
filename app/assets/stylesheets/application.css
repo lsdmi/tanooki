@@ -131,9 +131,21 @@
     cursor: pointer;
   }
 
-  :where(a, button, [role="button"], summary, input, select, textarea):focus-visible {
+  /* Links/buttons: brand outline. Text fields: border only — never outline+ring together. */
+  :where(a, button, [role="button"], summary):focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
+  }
+
+  :where(
+    input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='submit']):not(
+        [type='button']
+      ):not([type='reset']):not([type='image']):not([type='range']):not([type='color']):not([type='hidden']),
+    select,
+    textarea
+  ):focus-visible {
+    outline: none;
+    border-color: var(--color-brand);
   }
 
   :where(button, [role="button"]):not(:disabled):active {

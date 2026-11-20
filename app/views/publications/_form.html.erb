@@ -48,22 +48,28 @@
         </div>
 
         <div class="flex justify-center items-center w-full">
-          <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-line-strong bg-surface-strong transition-all duration-200 hover:border-brand/50 <%= 'border-status-danger-subtle-border dark:border-status-danger-solid' if publication.errors[:cover].any? %>"
+          <% cover_attached = publication.cover.attached? %>
+          <div class="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-line-strong bg-surface-strong transition-all duration-200 hover:border-brand/50 <%= 'border-status-danger-subtle-border dark:border-status-danger-solid' if publication.errors[:cover].any? %>"
                data-controller="dropzone"
-               data-action="click->dropzone#open keydown.enter->dropzone#open keydown.space->dropzone#open"
-               role="button"
-               tabindex="0"
-               aria-label="<%= t('publications.form.cover_pick', default: 'Обрати обкладинку') %>">
-            <div class="pointer-events-none flex flex-col items-center justify-center px-4 pt-5 pb-6">
+               data-action="dragover->dropzone#allowDrop drop->dropzone#drop">
+            <%= tag.img src: (url_for(publication.cover) if cover_attached),
+                         alt: "",
+                         class: "pointer-events-none absolute inset-0 h-full w-full object-cover #{'hidden' unless cover_attached}",
+                         data: { dropzone_target: 'preview' } %>
+            <div class="pointer-events-none flex flex-col items-center justify-center px-4 pt-5 pb-6 <%= 'hidden' if cover_attached %>"
+                 data-dropzone-target="placeholder">
               <svg aria-hidden="true" class="mb-3 h-8 w-8 text-fg-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть,</span> аби обрати файл</p>
+              <p class="mb-2 text-sm text-fg-muted"><span class="font-semibold">Натисніть</span> або перетягніть файл</p>
               <p class="text-xs text-fg-muted">SVG, PNG, JPEG чи WebP</p>
-              <%= tag.div f.object.cover.blob&.filename || nil, id: 'image_name', class: 'mt-2 text-center text-sm text-fg-muted' %>
             </div>
-            <%# sr-only (not display:none / opacity-0 overlay) — open via dropzone#open from a user gesture %>
+            <%= tag.div publication.cover.blob&.filename,
+                       id: 'image_name',
+                       class: "pointer-events-none absolute inset-x-0 bottom-0 truncate bg-black/55 px-2 py-1 text-center text-xs text-white #{'hidden' unless cover_attached}",
+                       data: { dropzone_target: 'name' } %>
             <%= f.file_field :cover,
-                             class: 'sr-only',
-                             tabindex: -1,
+                             class: 'absolute inset-0 z-20 block h-full w-full cursor-pointer opacity-5',
+                             accept: 'image/jpeg,image/png,image/svg+xml,image/webp,image/avif',
+                             aria: { label: t('publications.form.cover_pick', default: 'Обрати обкладинку') },
                              data: { dropzone_target: 'input', action: 'change->dropzone#update' } %>
           </div>
         </div>

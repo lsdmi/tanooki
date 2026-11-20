@@ -1,48 +1,62 @@
 import { Controller } from "@hotwired/stimulus";
 
-// File pick surface: keep the input in the a11y tree (sr-only, never display:none /
- // opacity-0 overlay alone — Safari often ignores fully transparent file clicks).
-// Clicks on the surface call input.click() from a user gesture.
 export default class DropzoneController extends Controller {
-  static targets = ["input", "output"];
+  static targets = ["input", "name", "preview", "placeholder"];
 
-  static nameElements = {
-    fictions_cover: "#cover_name",
-    fictions_banner: "#banner_name",
-    scanlator_avatar: "#avatar_name",
-    scanlator_banner: "#banner_name",
-    publication_cover: "#image_name"
-  };
-
-  connect() {
-    Object.keys(this.constructor.nameElements).forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) this.refreshName(element);
-    });
+  disconnect() {
+    this.revokePreview();
   }
 
-  open(event) {
-    if (!this.hasInputTarget) return;
-    if (event.target === this.inputTarget) return;
-
+  allowDrop(event) {
     event.preventDefault();
-    this.inputTarget.click();
+  }
+
+  drop(event) {
+    event.preventDefault();
+    if (!this.hasInputTarget) return;
+
+    const file = event.dataTransfer?.files?.[0];
+    if (!file) return;
+
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    this.inputTarget.files = transfer.files;
+    this.inputTarget.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   update(event) {
     this.refreshName(event.target);
+    this.refreshPreview(event.target);
   }
 
   refreshName(input) {
-    const nameElement = this.nameElementFor(input);
-    if (!nameElement) return;
+    if (!this.hasNameTarget) return;
 
     const file = input.files?.[0];
-    nameElement.textContent = file ? file.name.slice(0, 40) : "";
+    if (!file) return;
+
+    this.nameTarget.textContent = file.name.slice(0, 40);
+    this.nameTarget.classList.remove("hidden");
   }
 
-  nameElementFor(input) {
-    const selector = this.constructor.nameElements[input.id] || "#image_name";
-    return this.element.querySelector(selector) || document.querySelector(selector);
+  refreshPreview(input) {
+    if (!this.hasPreviewTarget) return;
+
+    const file = input.files?.[0];
+    if (!file || !file.type.startsWith("image/")) return;
+
+    this.revokePreview();
+    this.previewUrl = URL.createObjectURL(file);
+    this.previewTarget.src = this.previewUrl;
+    this.previewTarget.alt = file.name;
+    this.previewTarget.classList.remove("hidden");
+    if (this.hasPlaceholderTarget) this.placeholderTarget.classList.add("hidden");
+  }
+
+  revokePreview() {
+    if (!this.previewUrl) return;
+
+    URL.revokeObjectURL(this.previewUrl);
+    this.previewUrl = null;
   }
 }
