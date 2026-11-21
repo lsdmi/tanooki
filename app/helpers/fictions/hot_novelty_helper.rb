@@ -19,8 +19,7 @@ module Fictions
 
     def hot_novelty_genres(fiction)
       adults, regular = fiction.genres.partition { |genre| Genre.adult_tag?(genre.name, slug: genre.slug) }
-      genre_links = (adults + regular).map { |genre| { name: genre.name, slug: genre.slug } }
-      fiction.with_content_rating_genre_links(genre_links).first(3)
+      (adults + regular).first(3).map { |genre| { name: genre.name, slug: genre.slug } }
     end
 
     def hot_novelty_rating(fiction)

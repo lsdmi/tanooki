@@ -25,6 +25,7 @@
                   fiction_picker_target: "image",
                   fiction_picker_id_param: fiction.id
                 } ) %>
+            <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :sm) %>
           </div>
         <% end %>
       </div>

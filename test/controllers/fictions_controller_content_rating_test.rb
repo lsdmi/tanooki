@@ -70,13 +70,13 @@ class FictionsControllerContentRatingTest < ActionDispatch::IntegrationTest
     assert_predicate @fiction.reload, :content_rating_sixteen?
   end
 
-  test 'sixteen show page is not age gated and shows amber pill' do
+  test 'sixteen show page is not age gated and marks the cover corner' do
     @fiction.update!(content_rating: :sixteen)
     get fiction_url(@fiction)
 
     assert_response :success
     assert_select '[role="note"]', text: /#{Regexp.escape(I18n.t('fictions.notice_zone.teen.title'))}/
-    assert_select 'span.bg-amber-200', text: '16+'
+    assert_select 'span[role="img"][aria-label="16+"].text-orange-400 svg'
   end
 
   test 'show page age notice is informational, without the reader dismiss hook' do
@@ -87,12 +87,12 @@ class FictionsControllerContentRatingTest < ActionDispatch::IntegrationTest
     assert_no_match I18n.t('fictions.notice_zone.adult.title'), response.body
   end
 
-  test 'eighteen show page shows the 18+ notice and rose pill' do
+  test 'eighteen show page shows the 18+ notice and marks the cover corner' do
     @fiction.update!(content_rating: :eighteen)
     get fiction_url(@fiction)
 
     assert_select '[role="note"]', text: /#{Regexp.escape(I18n.t('fictions.notice_zone.adult.title'))}/
-    assert_select 'span.bg-rose-200', text: '18+'
+    assert_select 'span[role="img"][aria-label="18+"].text-red-500 svg'
     assert_select 'section.adult-content-disclaimer', count: 0
   end
 

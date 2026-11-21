@@ -5,11 +5,14 @@
       <% matches.each do |fiction| %>
         <li class="flex gap-3">
           <% if fiction.cover.attached? %>
-            <%= image_tag cover_thumbnail_url(fiction.cover),
-                          alt: '',
-                          class: 'h-20 w-14 shrink-0 rounded-md object-cover',
-                          width: 56,
-                          height: 80 %>
+            <div class="relative h-20 w-14 shrink-0">
+              <%= image_tag cover_thumbnail_url(fiction.cover),
+                            alt: '',
+                            class: 'h-full w-full rounded-md object-cover',
+                            width: 56,
+                            height: 80 %>
+              <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :sm) %>
+            </div>
           <% end %>
           <div class="min-w-0">
             <p class="font-semibold text-fg break-words"><%= fiction.title %></p>

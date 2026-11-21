@@ -27,20 +27,12 @@ module Fictions
       'lg:grid-cols-[18.5rem_minmax(0,1fr)]'
     ].join(' ').freeze
 
-    COVER_CELL = 'col-start-1 row-span-2 row-start-1 self-start md:row-span-6'
+    COVER_CELL = 'relative col-start-1 row-span-2 row-start-1 self-start md:row-span-6'
     COVER_IMAGE = 'aspect-[74/105] w-full rounded-lg object-cover shadow-2xl md:rounded-xl'
     COVER_PLACEHOLDER = 'aspect-[74/105] w-full rounded-lg bg-surface-strong md:rounded-xl'
 
     TAGS_CELL = 'col-start-2 row-start-1 flex flex-wrap items-center gap-2 self-start'
-    # Desktop only: on phones the tags must stay one line, so the stats beside the cover end above its bottom edge.
-    AGE_TAG = 'inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm/5 font-medium text-white max-md:hidden'
-    # Danger / warning hues, as on the site's other rating tags. Not the status tokens: their warning and dark-mode
-    # shades are too light for white text.
-    AGE_TAG_TONES = {
-      'eighteen' => 'token-raw bg-rose-600',
-      'sixteen' => 'bg-orange-700'
-    }.freeze
-    # An inset ring, not a border, so it is as tall as the age tag beside it.
+    # An inset ring, not a border, so it is as tall as the licensed tag beside it.
     STATUS_TAG = 'inline-flex items-center rounded-md bg-card px-3 py-1 text-sm/5 font-medium text-fg ring-1 ' \
                  'ring-inset ring-line-strong dark:bg-fg/8 dark:ring-fg/15'
     LICENSED_TAG = 'inline-flex items-center gap-1 rounded-md bg-status-licensed-subtle-bg px-3 py-1 text-sm/5 ' \

@@ -18,14 +18,20 @@
                  cover_preset: :thumb,
                  eager_first: lcp,
                  decorative: false,
+                 age_badge: false,
                  srcset: true,
                  sizes: Meta::CoverCardPresets::HUB_FOCUS_SIZES %>
     <% else %>
       <div class="h-full min-h-[8rem] rounded-xl bg-surface-strong" aria-hidden="true"></div>
     <% end %>
-    <%= render 'bookshelves/hub_age_badge',
-               max_content_rating: entry.max_content_rating,
-               placement: :cover %>
+    <% if entry.max_content_rating.to_i.positive? %>
+      <%# Sits where the old text chip did: a few px in from the top-left corner of the cover stack. %>
+      <div class="pointer-events-none absolute z-20" style="inset: 2px 0 0 12px;">
+        <%= render 'bookshelves/hub_age_badge',
+                   max_content_rating: entry.max_content_rating,
+                   placement: :cover %>
+      </div>
+    <% end %>
     <% if entry.fictions_count.positive? %>
       <% count_label = t('bookshelves.index.fictions_count', count: entry.fictions_count) %>
       <span class="bookshelves-hub-cover-count"

@@ -28,14 +28,4 @@ module FictionContentRating
     when 'eighteen' then EIGHTEEN_LABEL
     end
   end
-
-  def with_content_rating_tag_labels(genre_names)
-    label = content_rating_label
-    label ? [label, *genre_names] : Array(genre_names)
-  end
-
-  def with_content_rating_genre_links(genre_links)
-    label = content_rating_label
-    label ? [{ name: label, slug: nil }, *genre_links] : Array(genre_links)
-  end
 end

@@ -31,10 +31,6 @@ module Contests
       helpers.fiction_path(fiction)
     end
 
-    def age_label
-      fiction.content_rating_label
-    end
-
     def rating_text
       rating = fiction.average_rating.to_f
       return unless rating.positive?
@@ -61,16 +57,6 @@ module Contests
         'group-hover/cover:scale-[1.02]',
         ('blur-md scale-105' if blur?)
       ].compact.join(' ')
-    end
-
-    def age_class
-      if fiction.content_rating_eighteen?
-        'token-raw border border-rose-700/60 bg-rose-100/80 text-rose-900 ' \
-          'token-raw dark:border-rose-400/50 dark:bg-rose-950/70 dark:text-rose-100'
-      else
-        'token-raw border border-amber-800/60 bg-amber-100/80 text-amber-950 ' \
-          'token-raw dark:border-amber-400/50 dark:bg-amber-950/70 dark:text-amber-100'
-      end
     end
   end
 end

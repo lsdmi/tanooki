@@ -3,7 +3,6 @@
   <% fictions.each_with_index do |fiction, index| %>
     <% rating = fiction.average_rating %>
     <% rating_text = rating.positive? ? number_with_precision(rating, precision: 1, separator: ',') : nil %>
-    <% age_label = fiction.content_rating_label %>
     <% genre_slugs = fiction.genres.sort_by(&:name).to_h { |genre| [genre.name, genre.slug] } %>
     <% genre_labels = Genre.sort_labels_adult_first(genre_slugs.keys, slugs: genre_slugs).first(2) %>
     <% eager_cover = index < 2 %>
@@ -22,10 +21,7 @@
               decoding: 'async',
               fetchpriority: (eager_cover ? 'high' : nil)
             ) %>
-        <% if age_label %>
-          <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= fiction.content_rating_eighteen? ? 'token-raw border border-rose-700/60 bg-rose-100/80 text-rose-900 dark:border-rose-400/50 dark:bg-rose-950/70 dark:text-rose-100' : 'token-raw border border-amber-800/60 bg-amber-100/80 text-amber-950 dark:border-amber-400/50 dark:bg-amber-950/70 dark:text-amber-100' %>"
-                aria-label="<%= age_label %>"><%= age_label %></span>
-        <% end %>
+        <%= render Fictions::CoverAgeBadgeComponent.new(fiction:) %>
         <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10">
           <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: format_view_count(fiction.views)) %>
           <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: rating_text) %>

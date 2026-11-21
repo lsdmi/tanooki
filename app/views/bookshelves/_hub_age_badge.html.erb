@@ -1,28 +1,15 @@
-<%# locals: (max_content_rating:, placement: :cover) %>
+<%# locals: (max_content_rating:, placement: :fan) %>
+<%# Shelf-level mark: the shelf's highest rating, drawn with the same age icon as the covers. %>
+<%# placement: :cover = focus card (top-left), :fan = update-row mini fan, :inline = next to the row title. %>
 <% band = max_content_rating.to_i %>
-<% if band >= Fiction.content_ratings.fetch('sixteen') %>
-  <% eighteen = band >= Fiction.content_ratings.fetch('eighteen') %>
-  <% label = eighteen ? FictionContentRating::EIGHTEEN_LABEL : FictionContentRating::SIXTEEN_LABEL %>
-  <%# Border via .bookshelves-hub-age → currentColor (matches label on light + dark). %>
-  <% tone = if eighteen
-              'bookshelves-hub-age token-raw border bg-rose-100/80 text-rose-900 dark:bg-rose-950/70 dark:text-rose-100'
-            else
-              'bookshelves-hub-age token-raw border bg-amber-100/80 text-amber-950 dark:bg-amber-950/70 dark:text-amber-100'
+<% rating = if band >= Fiction.content_ratings.fetch('eighteen') then 'eighteen'
+            elsif band >= Fiction.content_ratings.fetch('sixteen') then 'sixteen'
             end %>
-  <% place = placement.to_sym %>
-  <% shell = case place
-             when :cover
-               'pointer-events-none absolute left-1.5 top-1.5 z-20'
-             when :fan
-               'bookshelves-hub-fan-badge'
-             else
-               'inline-flex shrink-0'
-             end %>
-  <% size = if place == :cover
-              'h-6 min-w-[1.5rem] rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px]'
-            else
-              'h-5 min-w-[1.25rem] rounded px-1 text-[11px] font-medium shadow-sm backdrop-blur-[2px]'
-            end %>
-  <span class="<%= shell %> flex items-center justify-center <%= size %> <%= tone %>"
-        aria-label="<%= label %>"><%= label %></span>
+<% if rating %>
+  <% options = case placement.to_sym
+               when :cover then { size: :md, placement: :corner_left }
+               when :fan then { size: :lg, placement: :corner_right }
+               else { size: :md, placement: :inline }
+               end %>
+  <%= render Fictions::CoverAgeBadgeComponent.new(rating:, **options) %>
 <% end %>

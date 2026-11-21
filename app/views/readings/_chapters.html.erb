@@ -73,10 +73,11 @@
         <div class="flex items-start space-x-4">
           <!-- Fiction Cover -->
           <div class="flex-shrink-0">
-            <%= link_to fiction_path(fiction), turbo_drive_visit_data do %>
+            <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'relative block') do %>
               <%= cover_card_picture_tag(fiction.cover,
                   alt: fiction.title,
                   class: "w-20 h-24 rounded-lg object-cover shadow-sm border border-line-strong hover:shadow-md transition-shadow duration-200" ) %>
+              <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :md) %>
             <% end %>
           </div>
 

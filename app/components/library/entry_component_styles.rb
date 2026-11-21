@@ -9,7 +9,7 @@ module Library
       'transition-colors hover:border-line-strong',
       'md:grid-cols-[3rem_minmax(0,1fr)_auto_auto] md:items-center md:gap-x-4'
     ].join(' ').freeze
-    COVER_CELL = 'col-start-1 row-span-2 row-start-1 self-start md:row-span-1 md:self-center'
+    COVER_CELL = 'relative col-start-1 row-span-2 row-start-1 self-start md:row-span-1 md:self-center'
     COVER = 'aspect-[74/105] w-12 rounded-md object-cover shadow-sm'
     INFO_CELL = 'col-start-2 row-start-1 flex min-w-0 flex-col gap-1'
     # Stretched over the row, so a click anywhere but the button and ⋮ opens the fiction page.

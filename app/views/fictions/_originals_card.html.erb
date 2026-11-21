@@ -19,6 +19,7 @@
                     alt: fiction.title,
                     class: 'h-full w-full object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.03]',
                     loading: 'lazy') %>
+      <%= render Fictions::CoverAgeBadgeComponent.new(fiction:, size: :sm) %>
       <%# Square viewBox, so each band is exactly half the height. %>
       <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 block overflow-hidden rounded-sm shadow ring-1 ring-white lg:left-2 lg:top-2">
         <svg class="block h-3.5 w-3.5 lg:h-4 lg:w-4" viewBox="0 0 2 2" role="img" aria-label="Українське">

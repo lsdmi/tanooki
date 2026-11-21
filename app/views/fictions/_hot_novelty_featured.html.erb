@@ -4,11 +4,12 @@
 
 <div id="fiction_details" class="flex gap-3 lg:gap-5">
   <%= link_to fiction_path(fiction),
-              turbo_drive_visit_data.merge(class: 'group/cover aspect-[3/4] w-[144px] shrink-0 overflow-hidden rounded-lg bg-surface shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:w-[193px]') do %>
+              turbo_drive_visit_data.merge(class: 'group/cover relative aspect-[3/4] w-[144px] shrink-0 overflow-hidden rounded-lg bg-surface shadow-sm transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:w-[193px]') do %>
     <%= cover_card_picture_tag(fiction.cover,
                   alt: fiction.title,
                   class: 'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-[1.03]',
                   loading: (eager_cover ? 'eager' : 'lazy')) %>
+    <%= render Fictions::CoverAgeBadgeComponent.new(fiction:) %>
   <% end %>
 
   <%# Uniform gap between rows; my-auto hands the leftover height back as equal top/bottom margin. %>

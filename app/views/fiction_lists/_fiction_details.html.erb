@@ -13,6 +13,7 @@
         class: "w-32 sm:w-48 lg:w-full h-full object-cover rounded-md shadow-sm opacity-0",
         loading: "lazy",
         lazy: true) %>
+      <%= render Fictions::CoverAgeBadgeComponent.new(fiction:) %>
     <% end %>
   </div>
   <div class="flex-1 my-1 lg:col-span-2">
@@ -22,7 +23,7 @@
           <%= fiction.title %>
         </h3>
       <% end %>
-      <% if fiction.genres.any? || fiction.age_labelled? %>
+      <% if fiction.genres.any? %>
         <div class="hidden text-xs sm:text-sm sm:flex flex-wrap gap-2 mt-2 sm:mt-4 font-black text-fg tracking-tight leading-none">
           <%= render partial: 'fiction_lists/genre_tags', locals: { fiction: fiction, genres: fiction.fiction_genres.map(&:genre) } %>
         </div>

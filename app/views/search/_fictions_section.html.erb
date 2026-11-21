@@ -33,6 +33,7 @@
           <%= link_to fiction_path(fiction), turbo_drive_visit_data.merge(class: 'block') do %>
             <div class="relative overflow-hidden rounded-lg mb-2">
               <%= cover_card_picture_tag(fiction.cover, alt: fiction.title, class: "w-full h-36 object-cover transition duration-300 group-hover:scale-105" ) %>
+              <%= render Fictions::CoverAgeBadgeComponent.new(fiction:, size: :sm) %>
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300"></div>
             </div>
             <h3 class="font-semibold text-sm text-fg mb-1 line-clamp-2 group-hover:text-brand transition duration-300">

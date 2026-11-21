@@ -14,15 +14,10 @@
         <% else %>
           <div class="<%= COVER_PLACEHOLDER %>"></div>
         <% end %>
+        <%= render Fictions::CoverAgeBadgeComponent.new(fiction:, size: :lg) %>
       </div>
 
       <div class="<%= TAGS_CELL %>">
-        <% if fiction.age_labelled? %>
-          <span class="<%= AGE_TAG %> <%= AGE_TAG_TONES.fetch(fiction.content_rating) %>">
-            <%= render Ui::AdultWarningIconComponent.new(class: 'size-4 shrink-0') %>
-            <%= fiction.content_rating_label %>
-          </span>
-        <% end %>
         <% if fiction.licensed? %>
           <span class="<%= LICENSED_TAG %>"><%= stroke_icon(:lock) %><%= fiction.public_listing_label %></span>
         <% else %>

@@ -1,6 +1,7 @@
 <li id="reading-progress-<%= reading.id %>" class="<%= ROW %>" data-library-entry-state="<%= state %>">
   <div class="<%= COVER_CELL %>">
     <%= helpers.cover_card_picture_tag(fiction.cover, alt: '', class: COVER, loading: 'lazy', data: cover_data) %>
+    <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :sm) %>
   </div>
 
   <div class="<%= INFO_CELL %>">

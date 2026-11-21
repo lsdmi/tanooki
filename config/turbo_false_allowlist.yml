@@ -14,9 +14,9 @@ allowed:
   - app/views/publications/_edit.html.erb:14
   - app/views/publications/_new.html.erb:11
   - app/views/bookshelves/_form.html.erb:1
-  - app/views/readings/_chapters.html.erb:161
-  - app/views/readings/_chapters.html.erb:180
-  - app/views/readings/_chapters.html.erb:249
+  - app/views/readings/_chapters.html.erb:162
+  - app/views/readings/_chapters.html.erb:181
+  - app/views/readings/_chapters.html.erb:250
   - app/views/readings/chapter_row_component/_actions.html.erb:12
   - app/components/readings/chapter_row_component.rb:63
   - app/helpers/publications/form_helper.rb:25

@@ -11,11 +11,12 @@
 <section class="reader-bottom-card reader-anchor-card grid h-full w-full min-w-0 grid-cols-[auto_1fr] items-stretch gap-x-2.5 rounded-lg border border-line/90 bg-main/95 p-3 shadow-sm sm:gap-x-3 sm:rounded-xl sm:p-4 md:p-5 lg:flex lg:gap-4"
          aria-labelledby="reader-anchor-card-title">
   <% if fiction.cover.attached? %>
-    <div class="reader-bottom-card__visual reader-anchor-card__cover col-start-1 row-start-1 overflow-hidden rounded-md ring-1 ring-line/80 sm:rounded-lg">
+    <div class="reader-bottom-card__visual reader-anchor-card__cover relative col-start-1 row-start-1 overflow-hidden rounded-md ring-1 ring-line/80 sm:rounded-lg">
       <%= image_tag cover_thumbnail_url(fiction.cover),
                     alt: fiction.title,
                     class: 'h-full w-full object-cover',
                     loading: 'lazy' %>
+      <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :md) %>
     </div>
   <% end %>
 

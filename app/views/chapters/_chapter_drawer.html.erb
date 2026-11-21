@@ -19,6 +19,7 @@
         <%= link_to fiction_path(fiction, anchor: 'chapters'), turbo_drive_visit_data.merge(class: 'relative block h-[4.5rem] w-[3.25rem] shrink-0 overflow-hidden rounded-md bg-surface ring-1 ring-line') do %>
           <% if fiction.cover.attached? %>
             <%= image_tag cover_thumbnail_url(fiction.cover), alt: fiction.title, class: 'h-full w-full object-cover' %>
+            <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :sm) %>
           <% end %>
         <% end %>
 

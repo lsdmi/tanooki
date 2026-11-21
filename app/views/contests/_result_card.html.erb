@@ -32,6 +32,7 @@
       </div>
     <% end %>
     <% if fiction %>
+      <%= render Fictions::CoverAgeBadgeComponent.new(fiction:) %>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10 md:px-3 md:pb-3">
         <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: format_view_count(fiction.views)) %>
         <%= render Ui::GenrePageTagComponent.new(variant: :stat_rating, label: rating_label) %>

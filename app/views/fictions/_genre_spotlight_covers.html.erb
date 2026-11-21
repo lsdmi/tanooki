@@ -1,9 +1,10 @@
-<%# locals: (fictions:, cover_preset: :thumb, eager_first: false, srcset: false, sizes: nil, decorative: true) %>
+<%# locals: (fictions:, cover_preset: :thumb, eager_first: false, srcset: false, sizes: nil, decorative: true, age_badge: true) %>
 <% covers = fictions %>
 <% cover_preset = local_assigns.fetch(:cover_preset, :thumb) %>
 <% eager_first = local_assigns.fetch(:eager_first, false) %>
 <% srcset = local_assigns.fetch(:srcset, false) %>
 <% decorative = local_assigns.fetch(:decorative, true) %>
+<% age_badge = local_assigns.fetch(:age_badge, true) %>
 <% sizes = local_assigns[:sizes] %>
 <% slots = %w[front left right] %>
 <% face_class = [
@@ -37,6 +38,9 @@
                       fetchpriority: (lcp_cover ? 'high' : nil),
                       srcset:,
                       sizes:) %>
+        <% if age_badge %>
+          <%= render Fictions::CoverAgeBadgeComponent.new(fiction:, size: :sm, decorative:) %>
+        <% end %>
       </div>
     <% end %>
   </div>

@@ -226,6 +226,7 @@
                       lazy_image_target: "image",
                       lazy_image_url_value: cover_card_url(reading.fiction.cover)
                     } ) %>
+                  <%= render Fictions::CoverAgeBadgeComponent.new(fiction: reading.fiction, size: :sm) %>
                 <% end %>
 
                 <div class="flex-1">

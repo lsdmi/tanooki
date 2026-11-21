@@ -52,25 +52,26 @@ module Fictions
       assert_no_selector "li[title='Мова оригіналу']"
     end
 
-    test 'age tag is rose for 18+ and stays off phones' do
+    test 'age badge sits in the cover corner for 18+, not in the tag row' do
       @fiction.update!(content_rating: :eighteen)
       render_hero
 
-      assert_selector 'span.bg-rose-600.max-md\:hidden', text: '18+'
+      assert_selector 'span[role="img"][aria-label="18+"].md\:top-3 svg'
+      assert_no_selector 'span.max-md\:hidden', text: '18+'
     end
 
-    test 'age tag is orange for 16+' do
+    test 'age badge sits in the cover corner for 16+' do
       @fiction.update!(content_rating: :sixteen)
       render_hero
 
-      assert_selector 'span.bg-orange-700', text: '16+'
+      assert_selector 'span[role="img"][aria-label="16+"].md\:top-3 svg'
     end
 
     test 'no age tag for works without an age rating' do
       @fiction.update!(content_rating: :everyone)
       render_hero
 
-      assert_no_selector 'span.bg-rose-600, span.bg-orange-700'
+      assert_no_selector 'span[role="img"].md\:top-3'
     end
 
     test 'stats line pluralizes and compacts large view counts' do

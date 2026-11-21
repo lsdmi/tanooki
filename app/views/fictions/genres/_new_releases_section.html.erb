@@ -36,6 +36,7 @@
               <%= render Ui::GenrePageTagComponent.new(variant: :rank, label: card[:rank], rank_size: :featured) %>
             <% end %>
             <%= cover_card_picture_tag(fiction.cover, alt: fiction.title, class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]", loading: "lazy" ) %>
+            <%= render Fictions::CoverAgeBadgeComponent.new(fiction:, size: :lg) %>
           <% end %>
           <div class="relative isolate flex min-h-0 flex-1 flex-col overflow-hidden border-line bg-gradient-to-br from-surface via-white to-surface p-5 sm:border-l sm:p-6 sm:pl-7 dark:border-white/[0.05] dark:from-[#142a32]/38 dark:via-[#0f252c] dark:to-[#0a171c]">
             <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">

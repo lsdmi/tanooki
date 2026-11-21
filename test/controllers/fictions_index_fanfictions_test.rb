@@ -40,7 +40,8 @@ class FictionsIndexFanfictionsTest < ActionDispatch::IntegrationTest
 
     assert_select '[aria-labelledby="fictions-index-fanfictions"] [aria-label="Фанфіки"] article',
                   count: 2
-    assert_select '[aria-labelledby="fictions-index-fanfictions"] article > a > span', count: 0
+    # The only span a card link may hold is the age mark (role="img"); a rank pill would be a plain span.
+    assert_select '[aria-labelledby="fictions-index-fanfictions"] article > a > span:not([role="img"])', count: 0
   end
 
   test 'cards credit the scanlator between title and genres' do

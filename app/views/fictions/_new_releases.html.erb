@@ -28,7 +28,7 @@
       <% fictions.each do |fiction| %>
         <button
           type="button"
-          class="group/cover aspect-[3/4] w-[68px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-surface shadow-sm transition-shadow duration-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:w-[92px]"
+          class="group/cover relative aspect-[3/4] w-[68px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-surface shadow-sm transition-shadow duration-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:w-[92px]"
           data-action="click->fiction-picker#selectFiction"
           data-fiction-picker-target="image"
           data-fiction-picker-id-param="<%= fiction.id %>">
@@ -37,6 +37,7 @@
                         alt: fiction.title,
                         class: 'h-full w-full object-cover object-center transition-transform duration-300 group-hover/cover:scale-105',
                         loading: 'lazy') %>
+          <%= render Fictions::CoverAgeBadgeComponent.new(fiction: fiction, size: :sm) %>
         </button>
       <% end %>
     </div>

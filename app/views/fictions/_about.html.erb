@@ -3,14 +3,12 @@
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:grid-rows-[auto_1fr] lg:gap-x-10 xl:grid-cols-[minmax(0,1fr)_25rem]">
   <div class="flex min-w-0 flex-col gap-8 lg:col-start-1 lg:row-start-1">
     <%= render Ui::TagListComponent.new(
-          labels: fiction.with_content_rating_tag_labels(fiction.genres.map(&:name)),
+          labels: fiction.genres.map(&:name),
           variant: :genre,
           sort_adult_first: true,
           genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
           size: :snug,
           href_builder: ->(name) {
-            next if Genre.rating_tag?(name)
-
             genre = fiction.genres.find { |g| g.name == name }
             fiction_genre_fictions_path(genre) if genre
           }

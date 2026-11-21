@@ -13,6 +13,7 @@
         <%= link_to fiction_path(similar_fiction), turbo_drive_visit_data.merge(class: 'group/cover relative block aspect-[2/3] overflow-hidden rounded-xl bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-line-strong') do %>
           <%= cover_card_picture_tag(similar_fiction.cover, alt: similar_fiction.title, loading: 'lazy',
                                                             class: 'absolute inset-0 size-full object-cover transition-transform duration-300 ease-out group-hover/cover:scale-[1.03]') %>
+          <%= render Fictions::CoverAgeBadgeComponent.new(fiction: similar_fiction) %>
           <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-linear-to-t from-black/80 via-black/40 to-transparent p-2 pt-10 md:p-3 md:pt-10">
             <span class="<%= stat_class %>">
               <%= stroke_icon(:eye, 'size-3 shrink-0 text-white/90') %>

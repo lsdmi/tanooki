@@ -14,10 +14,7 @@
             decoding: 'async'
           ) %>
     <% end %>
-    <% if age_label %>
-      <span class="pointer-events-none absolute left-1.5 top-1.5 z-10 flex h-6 min-w-[1.5rem] items-center justify-center rounded-md px-1.5 text-xs font-bold shadow-sm backdrop-blur-[2px] <%= age_class %>"
-            aria-label="<%= age_label %>"><%= age_label %></span>
-    <% end %>
+    <%= render Fictions::CoverAgeBadgeComponent.new(fiction:) %>
     <% unless plain? %>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-1.5 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-2 pb-2 pt-10">
         <%= render Ui::GenrePageTagComponent.new(variant: :stat_views, label: helpers.format_view_count(fiction.views)) %>
