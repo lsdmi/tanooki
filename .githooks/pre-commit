@@ -1,6 +1,11 @@
 #!/bin/sh
 set -eu
 
+# macOS: Objective-C aborts a forked child that was caught mid-init ("+[UIFontDescriptor initialize] ... Crashing
+# instead"). Rails parallel test workers fork, so a worker can die and `bin/rails test` then waits forever.
+# This env var turns that check off; it is ignored on Linux.
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 echo "Checking for inline RuboCop directives..."
 bin/no-rubocop-directives --staged
 

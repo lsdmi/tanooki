@@ -1,0 +1,27 @@
+<section class="mx-auto max-w-xl px-4 py-10">
+  <h1 class="text-2xl font-bold text-fg"><%= t('admin.fiction_tags.merge.title', name: @source.name) %></h1>
+  <p class="mt-2 text-sm/6 text-fg-muted">
+    <%= t('admin.fiction_tags.merge.intro', name: @source.name) %>
+    <%= t('admin.fiction_tags.works', count: @source.fictions_count) %>.
+  </p>
+  <%= tag.p t('admin.fiction_tags.merge.explicit_note', name: @source.name), class: 'mt-2 text-sm/6 font-semibold text-status-danger-solid' if @source.explicit? %>
+
+  <% if @targets.empty? %>
+    <p class="mt-6 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm/5 text-fg-muted"><%= t('admin.fiction_tags.merge.no_targets') %></p>
+  <% else %>
+    <%= form_with url: admin_fiction_tag_merge_path(@source), method: :post, class: 'mt-6 flex flex-col gap-3' do %>
+      <%= label_tag :target_id, t('admin.fiction_tags.merge.target_label'), class: 'text-sm font-semibold text-fg' %>
+      <%= select_tag :target_id,
+                     options_for_select(@targets.map { |target| ["#{target.name} (#{target.fictions_count})", target.id] }),
+                     prompt: t('admin.fiction_tags.merge.target_prompt'),
+                     required: true,
+                     class: 'w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+      <div class="flex flex-wrap gap-2">
+        <%= submit_tag t('admin.fiction_tags.merge.submit'), name: nil,
+                       class: 'inline-flex cursor-pointer items-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+        <%= link_to t('admin.fiction_tags.merge.back'), admin_fiction_tags_path(filter: 'all'),
+                    class: 'inline-flex items-center rounded-lg bg-main px-4 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+      </div>
+    <% end %>
+  <% end %>
+</section>

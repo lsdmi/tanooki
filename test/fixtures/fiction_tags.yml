@@ -1,0 +1,20 @@
+rebirth:
+  name: Переродження
+  slug: pererodzhennia
+  status: active
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
+
+litrpg:
+  name: ЛітРПГ
+  slug: litrph
+  status: active
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
+
+yuri_hidden:
+  name: Юрі
+  slug: yuri
+  status: hidden
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>

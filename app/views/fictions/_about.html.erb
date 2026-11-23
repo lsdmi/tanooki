@@ -2,17 +2,30 @@
 <%# DOM order is the mobile order: main blocks, sidebar blocks, then the ad. From lg the ad joins the main column. %>
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:grid-rows-[auto_1fr] lg:gap-x-10 xl:grid-cols-[minmax(0,1fr)_25rem]">
   <div class="flex min-w-0 flex-col gap-8 lg:col-start-1 lg:row-start-1">
-    <%= render Ui::TagListComponent.new(
-          labels: fiction.genres.map(&:name),
-          variant: :genre,
-          sort_adult_first: true,
-          genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
-          size: :snug,
-          href_builder: ->(name) {
-            genre = fiction.genres.find { |g| g.name == name }
-            fiction_genre_fictions_path(genre) if genre
-          }
-        ) %>
+    <%# The wrapper only exists when there is something to put in it: an empty flex child still takes a gap-8 slot. %>
+    <% fiction_tags = fiction.visible_fiction_tags %>
+    <% if fiction.genres.any? || fiction_tags.any? %>
+      <div class="flex flex-col gap-3">
+        <%= render Ui::TagListComponent.new(
+              labels: fiction.genres.map(&:name),
+              variant: :genre,
+              sort_adult_first: true,
+              genre_slugs: fiction.genres.to_h { |genre| [genre.name, genre.slug] },
+              size: :snug,
+              href_builder: ->(name) {
+                genre = fiction.genres.find { |g| g.name == name }
+                fiction_genre_fictions_path(genre) if genre
+              }
+            ) %>
+
+        <%# Plain text, not chips: genres are the navigation, tags are a list of keywords. No links until PB-07 Phase 5. %>
+        <%= render Ui::TextTagListComponent.new(
+              caption: t('fictions.about.tags.title'),
+              labels: fiction_tags.map(&:name),
+              explicit_labels: fiction_tags.select(&:explicit?).map(&:name)
+            ) %>
+      </div>
+    <% end %>
 
     <section class="flex flex-col gap-6 md:gap-8" aria-labelledby="fiction-description-title"
              data-controller="clamp" data-clamp-clamped-class="line-clamp-6"

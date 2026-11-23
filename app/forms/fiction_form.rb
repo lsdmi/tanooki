@@ -3,6 +3,7 @@
 # Form object for creating/updating a fiction with banner validation and association params.
 class FictionForm
   include ActiveModel::Model
+  include Fictions::FormTags
 
   attr_accessor :fiction, :params, :user
 
@@ -10,7 +11,7 @@ class FictionForm
   validate :cover_is_valid
 
   FORM_ONLY_PARAMS = %i[
-    genre_ids scanlator_ids expected_chapters release licensed license_publisher license_url
+    genre_ids scanlator_ids tag_names expected_chapters release licensed license_publisher license_url
     chapters_hidden different_work
   ].freeze
 
@@ -41,6 +42,7 @@ class FictionForm
     apply_listing_editorial
     apply_license
     assign_association_ids_from_params
+    assign_tag_names
   end
 
   def apply_license

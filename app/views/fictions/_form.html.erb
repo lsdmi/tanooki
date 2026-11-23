@@ -140,6 +140,30 @@
         <%= f.select :genre_ids, options_for_select(genres.pluck(:name, :id), selected: f.object.genre_ids.presence || f.object.genres.ids), {}, { id: 'fiction_genre_ids_select', data: { controller: 'slim' }, multiple: true, class: 'w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong' } %>
       </div>
 
+      <% tag_selected = fiction_tag_selected_names(fiction) %>
+      <div id="fiction_tag_names" class="relative mb-6 scroll-mt-24">
+        <%= label_tag 'fiction_tag_names_select', t('fictions.form.tags.label'), class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= hidden_field_tag 'fiction[tag_names][]', '', id: nil %>
+        <%= select_tag 'fiction[tag_names][]',
+                       options_for_select(fiction_tag_option_names(tag_selected), selected: tag_selected),
+                       multiple: true,
+                       id: 'fiction_tag_names_select',
+                       class: 'w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong',
+                       data: {
+                         controller: 'fiction-tags',
+                         fiction_tags_max_value: FictionTag::MAX_PER_FICTION,
+                         fiction_tags_max_length_value: FictionTag::MAX_NAME_LENGTH,
+                         fiction_tags_status_id_value: 'fiction_tag_status',
+                         fiction_tags_counter_template_value: t('fictions.form.tags.counter', current: '__CURRENT__', max: '__MAX__')
+                       } %>
+        <p id="fiction_tag_status" class="mt-1 text-sm text-fg-muted" aria-live="polite">
+          <span data-counter><%= t('fictions.form.tags.counter', current: tag_selected.size, max: FictionTag::MAX_PER_FICTION) %></span>
+          <span data-message class="ml-2 text-status-danger-solid"></span>
+        </p>
+        <p class="text-fg-muted text-sm mt-1"><%= t('fictions.form.tags.hint') %></p>
+        <%= tag.p fiction.errors[:tag_names].to_sentence, class: 'mt-1 text-sm text-status-danger-solid' if fiction.errors[:tag_names].any? %>
+      </div>
+
       <div class="relative mb-4">
         <%= f.label :description, 'Опис', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <%= f.text_area :description, class: "w-full bg-surface text-fg placeholder-fg-subtle border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong", rows: 4, placeholder: 'Короткий опис твору' %>

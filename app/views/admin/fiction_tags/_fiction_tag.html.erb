@@ -1,0 +1,42 @@
+<%# locals: (tag:) %>
+<% secondary = 'inline-flex cursor-pointer items-center rounded-lg bg-main px-3 py-1.5 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+<li id="<%= dom_id(tag) %>" class="rounded-lg bg-surface px-3 py-3">
+  <%= form_with model: [:admin, tag], class: 'flex flex-wrap items-center gap-2' do |f| %>
+    <%= f.text_field :name,
+                     maxlength: FictionTag::MAX_NAME_LENGTH,
+                     required: true,
+                     aria: { label: t('admin.fiction_tags.name_label') },
+                     class: 'min-w-0 flex-1 rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg' %>
+    <%= f.submit t('admin.fiction_tags.save'), class: secondary %>
+  <% end %>
+
+  <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm/5 text-fg-muted">
+    <span><%= t('admin.fiction_tags.works', count: tag.fictions_count) %></span>
+    <span><%= t('admin.fiction_tags.created_on', date: tag.created_at.strftime('%d.%m.%Y')) %></span>
+    <% if tag.hidden? %>
+      <span class="rounded-full bg-main px-2 py-0.5 text-xs font-semibold text-fg ring-1 ring-inset ring-line"><%= t('admin.fiction_tags.badges.hidden') %></span>
+    <% end %>
+    <% if tag.explicit? %>
+      <span class="rounded-full bg-main px-2 py-0.5 text-xs font-semibold text-status-danger-solid ring-1 ring-inset ring-line"><%= t('admin.fiction_tags.badges.explicit') %></span>
+    <% end %>
+  </p>
+
+  <div class="mt-3 flex flex-wrap gap-2">
+    <%= button_to t("admin.fiction_tags.actions.#{tag.hidden? ? 'show' : 'hide'}"),
+                  admin_fiction_tag_path(tag),
+                  method: :patch,
+                  params: { fiction_tag: { status: tag.hidden? ? 'active' : 'hidden' } },
+                  class: secondary %>
+    <%= button_to t("admin.fiction_tags.actions.#{tag.explicit? ? 'unmark_explicit' : 'mark_explicit'}"),
+                  admin_fiction_tag_path(tag),
+                  method: :patch,
+                  params: { fiction_tag: { explicit: !tag.explicit? } },
+                  class: secondary %>
+    <%= link_to t('admin.fiction_tags.actions.merge'), new_admin_fiction_tag_merge_path(tag), class: secondary %>
+    <%= button_to t('admin.fiction_tags.actions.delete'),
+                  admin_fiction_tag_path(tag),
+                  method: :delete,
+                  form: { data: { turbo_confirm: t('admin.fiction_tags.confirm_delete', name: tag.name, count: tag.fictions_count) } },
+                  class: "#{secondary} text-status-danger-solid" %>
+  </div>
+</li>

@@ -23,6 +23,7 @@ module Fictions
         conflicts(FictionRating, :fiction_ratings)
         @report.skipped(:bookshelf_fictions, **dedupe(BookshelfFiction, :bookshelf_id))
         @report.skipped(:fiction_genres, **dedupe(FictionGenre, :genre_id))
+        @report.skipped(:fiction_tag_links, **dedupe(FictionTagLink, :fiction_tag_id))
         scanlators
         comments
       end

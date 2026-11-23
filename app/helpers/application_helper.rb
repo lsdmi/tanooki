@@ -15,6 +15,7 @@ module ApplicationHelper
   include Fictions::FormattingHelper
   include Fictions::HotNoveltyHelper
   include Fictions::IndexNavigationHubHelper
+  include Fictions::TagFieldHelper
   include Layout::Helper
   include Meta::CanonicalUrlHelper
   include Meta::CoverUrlsHelper

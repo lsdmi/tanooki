@@ -22,12 +22,15 @@ module Fictions
     end
 
     def sync_fiction_associations
-      Fictions::SyncAssociations.new(
+      result = Fictions::SyncAssociations.new(
         @fiction,
         genre_ids: fiction_params[:genre_ids],
         scanlator_ids: fiction_params[:scanlator_ids],
+        tag_names: fiction_params[:tag_names],
         user: current_user
       ).call
+      # FictionForm already rejects bad tag input; only a race on a brand-new tag can fail here.
+      flash[:alert] = t('fictions.form.tags.errors.not_saved') unless result.success?
     end
 
     def fiction_params
@@ -38,7 +41,7 @@ module Fictions
           :alternative_title, :author, :cover, :description, :english_title, :origin,
           :title, :expected_chapters, :release, :short_description, :banner, :content_rating,
           :licensed, :license_publisher, :license_url, :chapters_hidden, :different_work,
-          { genre_ids: [], scanlator_ids: [] }
+          { genre_ids: [], scanlator_ids: [], tag_names: [] }
         ]
       )
     end

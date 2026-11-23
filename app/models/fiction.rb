@@ -31,9 +31,7 @@ class Fiction < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :destroy
   has_one_attached :banner
   has_one_attached :cover
-  has_many :fiction_genres, dependent: :destroy
   has_many :fiction_scanlators, dependent: :destroy
-  has_many :genres, through: :fiction_genres
   has_many :readings, class_name: 'ReadingProgress', dependent: :destroy
   has_many :fiction_ratings, dependent: :destroy
   has_many :scanlators, through: :fiction_scanlators
@@ -41,6 +39,7 @@ class Fiction < ApplicationRecord
   has_many :bookshelf_fictions, dependent: :destroy
   has_many :bookshelves, through: :bookshelf_fictions
   include FictionContestEntries
+  include FictionTaxonomy
 
   enum :origin, { nknown: 'невідоме', english: 'англійське', bosnian: 'боснійське', italian: 'італійське',
                   chinese: 'китайське', korean: 'корейське', dutch: 'нідерландське', polish: 'польське',

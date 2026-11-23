@@ -9,6 +9,7 @@ pin 'turbo_cache_hooks', preload: true
 pin 'flash_toast', preload: false
 pin 'paragraph_report_marks', preload: false
 pin 'slim_select_lifecycle', preload: false
+pin 'fiction_tag_name', preload: false
 pin 'adult_content_disclaimer', preload: false
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
 pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true

@@ -1,0 +1,11 @@
+<section aria-label="<%= caption %>" class="<%= LIST_CLASSES %>">
+  <span class="<%= CAPTION_CLASSES %>"><%= caption %></span>
+  <% labels.each do |label| %>
+    <span class="<%= item_classes(label) %>">
+      <% if adult?(label) %>
+        <%= render Ui::AdultWarningIconComponent.new(class: ICON_CLASSES) %>
+      <% end %>
+      <span>#<%= label %></span>
+    </span>
+  <% end %>
+</section>

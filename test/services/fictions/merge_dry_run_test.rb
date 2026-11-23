@@ -14,6 +14,7 @@ module Fictions
       fiction_ratings moved 1 kept_newer 1 removed 1
       bookshelf_fictions moved 1 skipped 1
       fiction_genres moved 1 skipped 1
+      fiction_tag_links moved 1 skipped 1
       fiction_scanlators moved 1 skipped 1
       comments 1
       views 4
@@ -71,6 +72,7 @@ module Fictions
     def seed_catalog_rows
       seed_shelves
       seed_genres
+      seed_tags
       seed_scanlators
     end
 
@@ -84,6 +86,12 @@ module Fictions
       FictionGenre.create!(fiction: @target, genre: genres(:one))
       FictionGenre.create!(fiction: @source, genre: genres(:one))
       FictionGenre.create!(fiction: @source, genre: genres(:two))
+    end
+
+    def seed_tags
+      FictionTagLink.create!(fiction: @target, fiction_tag: fiction_tags(:rebirth))
+      FictionTagLink.create!(fiction: @source, fiction_tag: fiction_tags(:rebirth))
+      FictionTagLink.create!(fiction: @source, fiction_tag: fiction_tags(:litrpg))
     end
 
     def seed_scanlators

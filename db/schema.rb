@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_010000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -402,6 +402,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_010000) do
     t.datetime "updated_at", null: false
     t.index ["fiction_id"], name: "index_fiction_scanlators_on_fiction_id"
     t.index ["scanlator_id"], name: "index_fiction_scanlators_on_scanlator_id"
+  end
+
+  create_table "fiction_tag_links", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "fiction_id", null: false
+    t.bigint "fiction_tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiction_id", "fiction_tag_id"], name: "index_fiction_tag_links_on_fiction_id_and_fiction_tag_id", unique: true
+    t.index ["fiction_tag_id"], name: "index_fiction_tag_links_on_fiction_tag_id"
+  end
+
+  create_table "fiction_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", limit: 40, null: false
+    t.string "slug", null: false
+    t.string "status", limit: 16, default: "active", null: false
+    t.boolean "explicit", default: false, null: false
+    t.integer "fictions_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_fiction_tags_on_name", unique: true
+    t.index ["slug"], name: "index_fiction_tags_on_slug", unique: true
   end
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -1095,6 +1116,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_010000) do
   add_foreign_key "fiction_ratings", "users"
   add_foreign_key "fiction_scanlators", "fictions"
   add_foreign_key "fiction_scanlators", "scanlators"
+  add_foreign_key "fiction_tag_links", "fiction_tags", on_delete: :cascade
+  add_foreign_key "fiction_tag_links", "fictions", on_delete: :cascade
   add_foreign_key "fictions", "fictions", column: "merged_into_id", on_delete: :nullify
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"

@@ -88,4 +88,36 @@ class ChaptersControllerFormTest < ActionDispatch::IntegrationTest
     assert input
     assert_predicate input['value'].to_s, :blank?
   end
+
+  test 'new chapter form offers the latest chapter schedule when it is still ahead' do
+    moment = 3.days.from_now.change(hour: 12, min: 0)
+    chapters(:two).update!(published_at: moment, scanlator_ids: chapters(:two).scanlators.ids)
+    get new_chapter_url(fiction: 'one')
+
+    assert_select '[data-controller~=published-at-suggestion]'
+    assert_select 'button[data-action=?][data-published-at-suggestion-date-param=?]',
+                  'published-at-suggestion#apply', moment.strftime('%Y-%m-%d')
+    assert_select 'button[data-published-at-suggestion-time-param=?]', '12:00'
+  end
+
+  test 'new chapter form marks the schedule fields as suggestion targets' do
+    get new_chapter_url(fiction: 'one')
+
+    assert_select 'input[data-published-at-suggestion-target=date]'
+    assert_select 'select[data-published-at-suggestion-target=time]'
+  end
+
+  test 'new chapter form offers no schedule suggestion when the latest chapter is live' do
+    get new_chapter_url(fiction: 'one')
+
+    assert_select 'button[data-action=?]', 'published-at-suggestion#apply', count: 0
+    assert_select 'input#chapter_published_at_date'
+  end
+
+  test 'edit form does not offer the schedule suggestion' do
+    @chapter.update!(published_at: 2.days.from_now, scanlator_ids: @chapter.scanlators.ids)
+    get edit_chapter_url(@chapter)
+
+    assert_select 'button[data-action=?]', 'published-at-suggestion#apply', count: 0
+  end
 end

@@ -95,7 +95,8 @@
     <% published_at_date_value = params.dig(:chapter, :published_at_date).presence || schedule_at&.strftime('%Y-%m-%d') %>
     <% published_at_time_value = params.dig(:chapter, :published_at_time).presence || schedule_at&.strftime('%H:%M') %>
     <% sched_field_class = "dark:[color-scheme:dark] bg-surface-strong dark:bg-surface-strong/90 text-fg text-sm rounded-lg block w-full py-3 px-3 transition-all duration-200 #{'ring-red-200 dark:ring-red-900/20' if chapter.errors[:published_at].any?}" %>
-    <div class="space-y-3 pt-2">
+    <% publish_suggestion = chapter.new_record? ? chapter_publish_suggestion(chapter.fiction || @fiction) : nil %>
+    <div class="space-y-3 pt-2" data-controller="published-at-suggestion">
       <%= f.label :published_at, 'Дата та час публікації', class: 'block text-sm font-medium text-fg-secondary' %>
       <%# Native time input follows OS 12h/24h; select keeps 24h + 30-minute slots everywhere %>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -106,7 +107,7 @@
             class: "#{sched_field_class} border border-line-strong focus:ring-2 focus:ring-brand focus:border-brand",
             placeholder: 'рррр-мм-дд',
             autocomplete: 'off',
-            data: { controller: 'published-at-date-picker' } %>
+            data: { controller: 'published-at-date-picker', published_at_suggestion_target: 'date' } %>
         </div>
         <div>
           <%= label_tag 'chapter_published_at_time', 'Час (24 год, крок 30 хв)', class: 'block text-xs font-medium text-fg-muted mb-1.5' %>
@@ -114,9 +115,19 @@
             options_for_select(chapter_publish_time_select_options(published_at_time_value), published_at_time_value),
             include_blank: 'Оберіть час…',
             id: 'chapter_published_at_time',
-            class: "#{sched_field_class} [border-right:16px_solid_transparent]" %>
+            class: "#{sched_field_class} [border-right:16px_solid_transparent]",
+            data: { published_at_suggestion_target: 'time' } %>
         </div>
       </div>
+      <% if publish_suggestion %>
+        <button type="button"
+                class="text-sm font-medium text-fg-brand hover:underline text-left"
+                data-action="published-at-suggestion#apply"
+                data-published-at-suggestion-date-param="<%= publish_suggestion[:date] %>"
+                data-published-at-suggestion-time-param="<%= publish_suggestion[:time] %>">
+          Як у останнього розділу: <%= publish_suggestion[:label] %>
+        </button>
+      <% end %>
       <%= tag.p chapter.errors[:published_at].to_sentence(two_words_connector: "", last_word_connector: ""), class: 'text-sm text-status-danger-solid -mt-1 flex items-center' do %>
         <svg class="h-4 w-4 mr-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
         <%= chapter.errors[:published_at].first %>

@@ -1,0 +1,18 @@
+<% tags = ['Переродження', 'ЛітРПГ', 'Академія магії', 'Пригода у часі', 'Слабкий герой', 'Система прокачування',
+           'Повернення в минуле', 'Хитрий головний герой', 'Омегаверс'] %>
+
+<div class="space-y-8">
+  <section>
+    <p class="mb-3 text-sm font-medium text-gray-500">Light</p>
+    <div class="max-w-md rounded-xl bg-white p-8">
+      <%= render Ui::TextTagListComponent.new(caption: 'Теґи', labels: tags, explicit_labels: ['Омегаверс']) %>
+    </div>
+  </section>
+
+  <section class="dark">
+    <p class="mb-3 text-sm font-medium text-gray-400">Dark</p>
+    <div class="max-w-md rounded-xl bg-gray-950 p-8">
+      <%= render Ui::TextTagListComponent.new(caption: 'Теґи', labels: tags, explicit_labels: ['Омегаверс']) %>
+    </div>
+  </section>
+</div>

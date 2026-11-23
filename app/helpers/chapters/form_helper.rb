@@ -29,6 +29,14 @@ module Chapters
       chapter.persisted? && chapter.published?
     end
 
+    # Date, time and button label for copying the latest chapter's schedule, or nil when nothing fits.
+    def chapter_publish_suggestion(fiction)
+      moment = Chapters::PublishSuggestion.call(fiction)&.in_time_zone
+      return if moment.nil?
+
+      { date: moment.strftime('%Y-%m-%d'), time: moment.strftime('%H:%M'), label: l(moment, format: :long) }
+    end
+
     # Half-hour slots 00:00–23:30 (24h labels). Includes +selected+ if it is not on the grid (legacy data).
     def chapter_publish_time_select_options(selected = nil)
       slots = (0..23).flat_map do |h|

@@ -1,0 +1,50 @@
+<section class="mx-auto max-w-3xl px-4 py-10">
+  <h1 class="text-2xl font-bold text-fg"><%= t('admin.fiction_tags.title') %></h1>
+  <p class="mt-2 text-sm/6 text-fg-muted"><%= t('admin.fiction_tags.intro') %></p>
+
+  <%= form_with model: [:admin, @new_tag], class: 'mt-6 flex flex-wrap items-start gap-2' do |f| %>
+    <div class="min-w-0 flex-1">
+      <%= f.text_field :name,
+                       maxlength: FictionTag::MAX_NAME_LENGTH,
+                       required: true,
+                       placeholder: t('admin.fiction_tags.new_placeholder'),
+                       aria: { label: t('admin.fiction_tags.name_label') },
+                       class: 'w-full rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg placeholder-fg-subtle' %>
+      <%= tag.p @new_tag.errors[:name].to_sentence, class: 'mt-1 text-sm text-status-danger-solid' if @new_tag.errors[:name].any? %>
+    </div>
+    <%= f.submit t('admin.fiction_tags.create'),
+                 class: 'inline-flex cursor-pointer items-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-fg-on-brand' %>
+  <% end %>
+
+  <nav class="mt-8 flex flex-wrap gap-2" aria-label="<%= t('admin.fiction_tags.title') %>">
+    <% Admin::FictionTagsController::FILTERS.each do |filter| %>
+      <% current = filter == @filter %>
+      <%= link_to admin_fiction_tags_path(filter:, q: @query.presence),
+                  aria: { current: ('page' if current) },
+                  class: ['inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold ring-1 ring-inset ring-line',
+                          (current ? 'bg-brand text-fg-on-brand' : 'bg-main text-fg')] do %>
+        <%= t("admin.fiction_tags.tabs.#{filter}") %> (<%= @counts[filter] %>)
+      <% end %>
+    <% end %>
+  </nav>
+
+  <%= form_with url: admin_fiction_tags_path, method: :get, class: 'mt-3 flex gap-2' do %>
+    <%= hidden_field_tag :filter, @filter, id: nil %>
+    <%= search_field_tag :q, @query,
+                         autocomplete: 'off',
+                         placeholder: t('admin.fiction_tags.search_placeholder'),
+                         aria: { label: t('admin.fiction_tags.search_placeholder') },
+                         class: 'min-w-0 flex-1 rounded-lg border border-line bg-main px-3 py-2 text-sm text-fg placeholder-fg-subtle' %>
+    <%= submit_tag t('admin.fiction_tags.search'), name: nil,
+                   class: 'inline-flex cursor-pointer items-center rounded-lg bg-main px-4 py-2 text-sm font-semibold text-fg ring-1 ring-inset ring-line' %>
+  <% end %>
+
+  <% if @tags.empty? %>
+    <p class="mt-6 rounded-xl border border-line bg-main px-4 py-10 text-center text-sm/5 text-fg-muted"><%= t('admin.fiction_tags.empty') %></p>
+  <% else %>
+    <ul id="admin_fiction_tags" class="mt-6 flex flex-col gap-3">
+      <%= render partial: 'fiction_tag', collection: @tags, as: :tag %>
+    </ul>
+    <%= ui_pagination(@pagy, custom_params: { filter: @filter, q: @query.presence }.compact, html: { class: 'pt-8' }) %>
+  <% end %>
+</section>

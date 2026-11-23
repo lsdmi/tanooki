@@ -47,6 +47,9 @@ Rails.application.routes.draw do
     resources :avatars, except: %i[new edit show update]
     resources :genres, except: %i[new show]
     resources :tags, except: %i[new show]
+    resources :fiction_tags, only: %i[index create update destroy] do
+      resource :merge, only: %i[new create], controller: 'fiction_tag_merges'
+    end
     resources :api_limits, only: :index
     resources :api_rollbacks, only: %i[index create]
     resources :fiction_duplicates, only: :index do

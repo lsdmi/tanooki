@@ -89,7 +89,9 @@ Rails.application.configure do
     user_name: 'support@baka.in.ua',
     password: ENV.fetch('MAILER_PASSWORD'),
     authentication: 'login',
-    domain: 'baka.in.ua'
+    domain: 'baka.in.ua',
+    open_timeout: 10,
+    read_timeout: 20
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
