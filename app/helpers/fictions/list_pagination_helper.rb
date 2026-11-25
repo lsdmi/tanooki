@@ -45,8 +45,11 @@ module Fictions
       alphabetical_fictions_path(query)
     end
 
+    # One [name, value] pair per active filter value, so `tags` becomes one `tags[]` field per tag.
     def catalog_filter_hidden_fields
-      Fictions::ListFilters.permit_for_pagy(params)
+      Fictions::ListFilters.permit_for_pagy(params).flat_map do |key, value|
+        Array(value).map { |item| [key == :tags ? 'tags[]' : key, item] }
+      end
     end
 
     def catalog_active_filter_count

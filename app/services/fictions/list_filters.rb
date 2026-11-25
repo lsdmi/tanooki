@@ -3,11 +3,15 @@
 module Fictions
   # Permits and normalizes fiction catalog URL filters for queries and Pagy links.
   class ListFilters
-    KEYS = %i[genre only_new longreads evening top_rated finished licensed include_eighteen].freeze
-    FLAG_KEYS = (KEYS - [:genre]).freeze
+    KEYS = %i[genre tags only_new longreads evening top_rated finished licensed include_eighteen].freeze
+    # `genre` is one id and `tags` a list of slugs; every other key is a flag written as `1`.
+    FLAG_KEYS = (KEYS - %i[genre tags]).freeze
     # Read for one release after the rename; never written into query/pagy hashes.
     LEGACY_INCLUDE_EIGHTEEN_KEY = :adult_content
-    PERMIT_KEYS = (KEYS + [LEGACY_INCLUDE_EIGHTEEN_KEY, :page]).freeze
+    PERMIT_KEYS = (KEYS - %i[tags] + [LEGACY_INCLUDE_EIGHTEEN_KEY, :page]).freeze
+    MAX_TAGS = 5
+    # FictionTags::Normalizer.slug output: lowercase latin words joined by single hyphens.
+    TAG_SLUG = /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/
 
     class << self
       def permit_for_query(controller_params)
@@ -28,7 +32,7 @@ module Fictions
     end
 
     def initialize(controller_params)
-      @permitted = controller_params.permit(*PERMIT_KEYS)
+      @permitted = controller_params.permit(*PERMIT_KEYS, tags: [])
     end
 
     def include_eighteen_param_specified?
@@ -40,13 +44,16 @@ module Fictions
     end
 
     def to_query_hash
-      normalized.slice(*KEYS).to_h
+      query = normalized.slice(*KEYS).except(:tags).to_h
+      query[:tags] = tag_slugs if tag_slugs.any?
+      query
     end
 
     def to_pagy_hash
       {}.tap do |h|
         genre = normalized[:genre].to_s
         h[:genre] = genre if genre.match?(/\A\d+\z/)
+        h[:tags] = tag_slugs if tag_slugs.any?
 
         FLAG_KEYS.each do |key|
           h[key] = '1' if truthy?(normalized[key])
@@ -64,6 +71,13 @@ module Fictions
         end
         attrs.except(LEGACY_INCLUDE_EIGHTEEN_KEY)
       end
+    end
+
+    def tag_slugs
+      @tag_slugs ||= Array(normalized[:tags]).filter_map { |slug| slug.to_s.strip.downcase.presence }
+                                             .grep(TAG_SLUG)
+                                             .uniq
+                                             .first(MAX_TAGS)
     end
 
     def param_key?(key)

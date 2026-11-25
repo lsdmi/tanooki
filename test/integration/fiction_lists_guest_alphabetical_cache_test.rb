@@ -49,6 +49,16 @@ class FictionListsGuestAlphabeticalCacheTest < ActionDispatch::IntegrationTest
     assert_response :not_modified
   end
 
+  test 'hiding a tag refreshes the guest etag so the drawer does not show it stale' do
+    get alphabetical_fictions_path
+    etag = response.headers['ETag']
+
+    fiction_tags(:rebirth).update!(status: :hidden)
+    get alphabetical_fictions_path, headers: { 'HTTP_IF_NONE_MATCH' => etag }
+
+    assert_response :success
+  end
+
   test 'guest alphabetical skips wild catch overlay' do
     Pokemons::WildCatch.stub(:new, ->(*) { raise 'wild catch should be skipped on guest alphabetical' }) do
       get alphabetical_fictions_path

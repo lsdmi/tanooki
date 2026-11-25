@@ -30,6 +30,19 @@ module Fictions
       assert_equal({ include_eighteen: '1' }, fiction_list_pagy_custom_params)
     end
 
+    test 'fiction_list_pagy_custom_params keeps the tag filter' do
+      controller.params[:tags] = %w[yuri rebirth]
+
+      assert_equal({ tags: %w[yuri rebirth] }, fiction_list_pagy_custom_params)
+    end
+
+    test 'catalog_filter_hidden_fields writes one tags[] field per tag' do
+      controller.params[:genre] = '12'
+      controller.params[:tags] = %w[yuri rebirth]
+
+      assert_equal [[:genre, '12'], ['tags[]', 'yuri'], ['tags[]', 'rebirth']], catalog_filter_hidden_fields
+    end
+
     test 'fiction_list_pagy_custom_params rejects non-numeric genre' do
       controller.params[:genre] = '<img onerror=alert(1)>'
 

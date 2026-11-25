@@ -109,7 +109,7 @@ module Search
     end
 
     def fiction_fields
-      ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators']
+      Fiction::SEARCH_FIELDS
     end
 
     def publication_fields

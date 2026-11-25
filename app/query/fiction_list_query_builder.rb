@@ -17,6 +17,7 @@ class FictionListQueryBuilder
 
   FILTER_STEPS = %i[
     by_genre
+    by_tags
     only_new_fictions
     longreads_only
     evening_only
@@ -26,9 +27,12 @@ class FictionListQueryBuilder
     matching_query
   ].freeze
 
-  def initialize(relation = Fiction.all, params = {})
+  # Third argument is positional on purpose: `params` is a plain filter hash, so keyword args would collide with it.
+  # Pass true only when the reader has 18+ on; otherwise 18+ tags neither filter nor match.
+  def initialize(relation = Fiction.all, params = {}, explicit_tags = nil)
     @relation = relation
     @params = params.to_h.with_indifferent_access
+    @explicit_tags = explicit_tags == true
   end
 
   def call
@@ -53,6 +57,10 @@ class FictionListQueryBuilder
 
     # Filter via subquery so includes(:genres) still loads every genre, not only the matched one.
     scope.where(id: FictionGenre.where(genre_id: @params['genre']).select(:fiction_id))
+  end
+
+  def by_tags(scope)
+    FictionTags::CatalogFilter.apply(scope, @params['tags'], explicit: @explicit_tags)
   end
 
   def only_new_fictions(scope)

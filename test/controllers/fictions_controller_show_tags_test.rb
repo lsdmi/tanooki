@@ -36,12 +36,12 @@ class FictionsControllerShowTagsTest < ActionDispatch::IntegrationTest
     assert_select BLOCK, text: /Юрі/, count: 0
   end
 
-  test 'tags are plain text with no links until the catalog filter exists' do
+  test 'each tag links to its catalogue filter, with no chip styling' do
     @fiction.fiction_tags << fiction_tags(:rebirth)
 
     get fiction_url(@fiction)
 
-    assert_select "#{BLOCK} a", count: 0
+    assert_select "#{BLOCK} a[href=?]", alphabetical_fictions_path(tags: ['pererodzhennia']), text: '#Переродження'
     assert_select "#{BLOCK} span.border", count: 0
   end
 

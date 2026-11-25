@@ -56,6 +56,27 @@ module Fictions
       assert_equal [plain.id, licensed.id], SimilarFictions.new(base).ranked_ids.first(2)
     end
 
+    test 'a shared tag counts half as much as an equally rare genre' do
+      base = listed('base', genres: [@rare], tags: [fiction_tags(:rebirth)], team: @team)
+      tag_match = listed('tag-match', tags: [fiction_tags(:rebirth)], views: 1000)
+      genre_match = listed('genre-match', genres: [@rare], views: 1)
+      6.times { |index| listed("filler-#{index}", genres: [@common]) }
+
+      assert_equal [genre_match.id, tag_match.id], SimilarFictions.new(base).ranked_ids.first(2)
+    end
+
+    test 'a hidden tag adds nothing' do
+      base = listed('base', tags: [fiction_tags(:rebirth), fiction_tags(:yuri_hidden)], team: @team)
+      active_match = listed('active-match', tags: [fiction_tags(:rebirth)], views: 1)
+      hidden_match = listed('hidden-match', tags: [fiction_tags(:yuri_hidden)], views: 1000)
+      SimilarFictions::LIMIT.times { |index| listed("popular-#{index}", views: 5000) }
+
+      ranked = SimilarFictions.new(base).ranked_ids
+
+      assert_equal active_match.id, ranked.first
+      assert_not_includes ranked, hidden_match.id
+    end
+
     test 'the fiction itself and works without chapters never show' do
       base = listed('base', genres: [@rare], team: @team)
       empty = listed('empty', genres: [@rare], chapter_count: 0)
@@ -84,7 +105,7 @@ module Fictions
       first.destroy!
 
       assert_equal [second.id], SimilarFictions.new(base).fictions.map(&:id)
-      assert Rails.cache.exist?("similar-to/v4/#{base.id}")
+      assert Rails.cache.exist?("similar-to/v5/#{base.id}")
     end
 
     test 'a rating cap drops an 18+ match when the shared ids are loaded' do
@@ -92,7 +113,7 @@ module Fictions
       adult = listed('adult', genres: [@rare], content_rating: :eighteen)
       plain = listed('plain', genres: [@rare])
       filter = ContentFilters::Preference.new(max_rating: 16, hidden_genre_ids: [].freeze)
-      Rails.cache.write("similar-to/v4/#{base.id}", [plain.id, adult.id])
+      Rails.cache.write("similar-to/v5/#{base.id}", [plain.id, adult.id])
       finder = SimilarFictions.new(base, filter:)
       ids = finder.fictions.map(&:id)
 
@@ -103,11 +124,12 @@ module Fictions
 
     private
 
-    def listed(slug, genres: [], team: nil, **attributes)
+    def listed(slug, genres: [], tags: [], team: nil, **attributes)
       fiction = Fiction.new(slug:, title: slug, author: 'Author', description: 'd' * 30, chapter_count: 1,
                             **attributes)
       fiction.save!(validate: false)
       genres.each { |genre| FictionGenre.create!(fiction:, genre:) }
+      tags.each { |tag| FictionTagLink.create!(fiction:, fiction_tag: tag) }
       FictionScanlator.create!(fiction:, scanlator: team) if team
       fiction
     end

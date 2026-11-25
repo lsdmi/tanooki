@@ -24,6 +24,16 @@ module Ui
       assert_no_selector '.border'
     end
 
+    test 'a tag with a path becomes a link and keeps the text' do
+      builder = ->(label) { "/fictions?tags[]=#{label}" if label == 'Драма' }
+
+      render_inline(TextTagListComponent.new(caption: 'Теґи', labels: %w[Драма Жахи], href_builder: builder))
+
+      assert_selector 'a[href="/fictions?tags[]=Драма"]', text: '#Драма'
+      assert_no_selector 'a[href*="Жахи"]'
+      assert_selector 'span', text: '#Жахи'
+    end
+
     test 'an 18+ tag gets the warning icon and the danger colour' do
       render_inline(TextTagListComponent.new(caption: 'Теґи', labels: %w[Омегаверс],
                                              explicit_labels: %w[Омегаверс]))

@@ -1,0 +1,19 @@
+<% if catalog_selected_tags.any? %>
+  <ul class="mb-4 flex flex-wrap gap-2 px-3" aria-label="<%= t('fiction_lists.filters.active_tags') %>">
+    <% catalog_selected_tags.each do |tag| %>
+      <li>
+        <%= render Ui::TagComponent.new(
+              label: tag.name,
+              variant: :filter,
+              as: :link,
+              href: catalog_tag_path_without(tag.slug),
+              html: {
+                title: t('fiction_lists.filters.remove_tag', name: tag.name),
+                aria: { label: t('fiction_lists.filters.remove_tag', name: tag.name) },
+                data: { turbo_frame: 'fiction-list-page', turbo_action: 'advance' }
+              }
+            ) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

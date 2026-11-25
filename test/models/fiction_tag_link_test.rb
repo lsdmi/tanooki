@@ -12,7 +12,7 @@ class FictionTagLinkTest < ActiveSupport::TestCase
     @fiction.fiction_tags << @tag
 
     assert_includes @fiction.reload.fiction_tags, @tag
-    assert_includes @tag.reload.fictions, @fiction
+    assert_includes FictionTagLink.where(fiction_tag: @tag).pluck(:fiction_id), @fiction.id
   end
 
   test 'counter cache tracks linked fictions' do

@@ -18,11 +18,13 @@
               }
             ) %>
 
-        <%# Plain text, not chips: genres are the navigation, tags are a list of keywords. No links until PB-07 Phase 5. %>
+        <%# Text, not chips: genres are the navigation chips, tags are keywords. Each tag opens its catalogue filter. %>
+        <% tag_slugs = fiction_tags.to_h { |tag| [tag.name, tag.slug] } %>
         <%= render Ui::TextTagListComponent.new(
               caption: t('fictions.about.tags.title'),
               labels: fiction_tags.map(&:name),
-              explicit_labels: fiction_tags.select(&:explicit?).map(&:name)
+              explicit_labels: fiction_tags.select(&:explicit?).map(&:name),
+              href_builder: ->(name) { alphabetical_fictions_path(tags: [tag_slugs[name]]) if tag_slugs[name] }
             ) %>
       </div>
     <% end %>

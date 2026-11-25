@@ -5,7 +5,11 @@
       <% if adult?(label) %>
         <%= render Ui::AdultWarningIconComponent.new(class: ICON_CLASSES) %>
       <% end %>
-      <span>#<%= label %></span>
+      <% if (href = href_for(label)) %>
+        <%= link_to "##{label}", href, class: LINK_CLASSES %>
+      <% else %>
+        <span>#<%= label %></span>
+      <% end %>
     </span>
   <% end %>
 </section>

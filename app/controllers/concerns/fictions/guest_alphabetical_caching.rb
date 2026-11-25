@@ -46,14 +46,20 @@ module Fictions
 
     def guest_alphabetical_etag_parts
       [
-        'fiction_lists/alphabetical/v1',
+        'fiction_lists/alphabetical/v2',
         I18n.locale,
         cookies[:color_theme].presence || 'light',
         catalog_include_eighteen? ? '18' : 'no18',
         Fiction.maximum(:updated_at),
         Fiction.maximum(:last_chapter_at),
-        Fiction.count
+        Fiction.count,
+        catalog_tags_fingerprint
       ]
+    end
+
+    # The drawer lists tags by use and visibility; hiding or renaming a tag must refresh the page.
+    def catalog_tags_fingerprint
+      [FictionTag.maximum(:updated_at), FictionTag.count]
     end
   end
 end

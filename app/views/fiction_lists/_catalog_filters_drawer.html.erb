@@ -63,6 +63,41 @@
         </div>
       </section>
 
+      <% tag_options = catalog_tag_options %>
+      <% selected_tag_slugs = catalog_tag_slugs %>
+      <% if tag_options.any? || catalog_selected_tags.any? %>
+        <section class="border-b border-line py-5" data-controller="catalog-tag-search">
+          <h3 class="mb-3 text-sm font-medium text-fg"><%= t('fiction_lists.filters.tags') %></h3>
+          <input type="search" autocomplete="off"
+                 class="mb-3 w-full rounded-md border border-[var(--catalog-control-line)] bg-main px-3 py-2 text-sm text-fg placeholder:text-fg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                 placeholder="<%= t('fiction_lists.filters.tags_search') %>"
+                 aria-label="<%= t('fiction_lists.filters.tags_search') %>"
+                 data-catalog-tag-search-target="input"
+                 data-action="input->catalog-tag-search#filter">
+          <div class="flex flex-wrap gap-2" role="group" aria-label="<%= t('fiction_lists.filters.tags') %>">
+            <% tag_options.each_with_index do |tag, index| %>
+              <% featured = index < FictionTags::CatalogFacet::FEATURED %>
+              <% checked = selected_tag_slugs.include?(tag.slug) %>
+              <label class="<%= chip %>"
+                     <%= 'hidden' unless featured || checked %>
+                     data-catalog-tag-search-target="item"
+                     data-name="<%= tag.name.downcase %>"
+                     data-featured="<%= featured %>">
+                <input type="checkbox" name="tags[]" value="<%= tag.slug %>" class="sr-only" <%= 'checked' if checked %>>
+                <%= tag.name %>
+              </label>
+            <% end %>
+            <% catalog_selected_tags.reject { |tag| tag_options.include?(tag) }.each do |tag| %>
+              <label class="<%= chip %>" data-catalog-tag-search-target="item" data-name="<%= tag.name.downcase %>" data-featured="false">
+                <input type="checkbox" name="tags[]" value="<%= tag.slug %>" class="sr-only" checked>
+                <%= tag.name %>
+              </label>
+            <% end %>
+          </div>
+          <p class="mt-3 text-sm text-fg-muted" hidden data-catalog-tag-search-target="empty"><%= t('fiction_lists.filters.tags_none') %></p>
+        </section>
+      <% end %>
+
       <section class="border-b border-line py-5">
         <h3 class="mb-3 text-sm font-medium text-fg"><%= t('fiction_lists.filters.quick') %></h3>
         <div class="flex flex-wrap gap-2">

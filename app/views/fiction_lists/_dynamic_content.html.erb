@@ -25,6 +25,8 @@
         </p>
       <% end %>
 
+      <%= render 'fiction_lists/active_tags' %>
+
       <% if fictions.any? %>
         <% if params[:view] == 'list' %>
           <%= render 'fiction_lists/catalog_list', fictions: fictions %>
@@ -36,6 +38,16 @@
         <div class="py-16 text-center">
           <p class="font-semibold text-fg"><%= t('fiction_lists.empty.search_title', query: params[:q]) %></p>
           <p class="mt-1 text-sm text-fg-muted"><%= t('fiction_lists.empty.search_hint') %></p>
+        </div>
+      <% elsif catalog_tags_selected? %>
+        <div class="py-16 text-center">
+          <p class="font-semibold text-fg"><%= t('fiction_lists.empty.tags_title') %></p>
+          <p class="mt-1 text-sm text-fg-muted">
+            <%= catalog_adult_tag_hidden? ? t('fiction_lists.empty.tags_adult_hint') : t('fiction_lists.empty.tags_hint') %>
+          </p>
+          <%= link_to t('fiction_lists.empty.tags_reset'), catalog_path_with(tags: nil),
+                      class: 'mt-4 inline-flex text-sm font-medium text-fg-brand underline-offset-2 hover:underline',
+                      data: { turbo_frame: 'fiction-list-page', turbo_action: 'advance' } %>
         </div>
       <% elsif local_assigns[:content_filter_notice] && current_content_filter.active? %>
         <p class="py-16 text-center text-lg font-semibold text-fg"><%= t('content_filters.empty') %></p>

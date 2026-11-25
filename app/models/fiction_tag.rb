@@ -11,8 +11,11 @@ class FictionTag < ApplicationRecord
 
   enum :status, { active: 'active', hidden: 'hidden' }, default: :active, validate: true
 
+  # Remember the works before dependent: :destroy drops the links, so they can be refreshed after commit.
+  before_destroy :remember_fiction_ids
   has_many :fiction_tag_links, dependent: :destroy
-  has_many :fictions, through: :fiction_tag_links
+
+  after_commit :refresh_fictions, on: %i[update destroy], if: :reader_facing_change?
 
   normalizes :name, with: ->(value) { FictionTags::Normalizer.name(value) }, apply_to_nil: false
 
@@ -22,6 +25,18 @@ class FictionTag < ApplicationRecord
   def normalize_friendly_id(value) = FictionTags::Normalizer.slug(value)
 
   private
+
+  def remember_fiction_ids
+    @fiction_ids = fiction_tag_links.pluck(:fiction_id)
+  end
+
+  def reader_facing_change?
+    destroyed? || saved_changes.keys.intersect?(%w[name status explicit])
+  end
+
+  def refresh_fictions
+    FictionTags::RefreshFictions.call(@fiction_ids || fiction_tag_links.pluck(:fiction_id))
+  end
 
   def name_slug_present_and_unique
     candidate = FictionTags::Normalizer.slug(name)

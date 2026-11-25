@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :searchkick do
-  desc 'Reindex fictions so content_rating and genre_ids reach OpenSearch (one-time deploy step, async)'
+  desc 'Reindex fictions so content_rating, genre_ids and tags reach OpenSearch (deploy step, async)'
   task reindex_fictions: :environment do
     Fiction.reindex(mode: :async)
   end

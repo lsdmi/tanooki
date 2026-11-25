@@ -43,16 +43,22 @@ module FictionTags
       assert_equal 2, FictionTagLink.where(fiction_tag: @target).count
     end
 
-    test 'touches only fictions that moved' do
+    test 'touches every fiction that carried the source and leaves the rest alone' do
       @one.fiction_tags << [@source, @target]
       @two.fiction_tags << @source
+      untouched = fictions(:eighteen)
+      untouched.fiction_tags << @target
       stamp = 1.day.ago
-      [@one, @two].each { |fiction| fiction.update!(updated_at: stamp) }
+      [@one, @two, untouched].each do |fiction|
+        fiction.updated_at = stamp
+        fiction.save!(validate: false)
+      end
 
       Merge.call(source: @source, target: @target)
 
-      assert_in_delta stamp, @one.reload.updated_at, 1
+      assert_operator @one.reload.updated_at, :>, stamp + 1.hour
       assert_operator @two.reload.updated_at, :>, stamp + 1.hour
+      assert_in_delta stamp, untouched.reload.updated_at, 1
     end
 
     test 'an explicit source makes the target explicit' do

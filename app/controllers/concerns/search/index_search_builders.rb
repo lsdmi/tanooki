@@ -12,7 +12,6 @@ module Search
       Timeout::Error,
       OpenSearch::Transport::Transport::Error
     ].freeze
-    FICTION_SEARCH_FIELDS = ['title^2', 'alternative_title', 'author', 'english_title', 'scanlators'].freeze
 
     private
 
@@ -22,7 +21,7 @@ module Search
 
     def fiction_search_options
       where = current_content_filter.searchkick_where
-      { fields: FICTION_SEARCH_FIELDS }.tap { |options| options[:where] = where if where.present? }
+      { fields: Fiction::SEARCH_FIELDS }.tap { |options| options[:where] = where if where.present? }
     end
 
     def publication_search

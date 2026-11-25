@@ -1,0 +1,91 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+
+# Catalogue filter by tags (`/fictions?tags[]=…`): the list, the drawer, the chips and the empty state.
+class FictionListsTagsTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  LIST = '#fiction-list-page'
+
+  setup do
+    @rebirth = fiction_tags(:rebirth)
+    @one = fictions(:one)
+    @two = fictions(:two)
+  end
+
+  test 'one tag keeps only the works that carry it' do
+    @one.fiction_tags << @rebirth
+
+    get alphabetical_fictions_url, params: { tags: [@rebirth.slug] }
+
+    assert_select "#{LIST} a[href=?]", fiction_path(@one)
+    assert_select "#{LIST} a[href=?]", fiction_path(@two), count: 0
+  end
+
+  test 'the page offers the tag in the drawer and marks it as the active filter' do
+    @one.fiction_tags << @rebirth
+
+    get alphabetical_fictions_url, params: { tags: [@rebirth.slug] }
+
+    assert_select 'input[type=checkbox][name="tags[]"][value=?][checked]', @rebirth.slug
+    assert_select 'a[aria-label=?][href=?]', "Прибрати теґ «#{@rebirth.name}»", alphabetical_fictions_path
+  end
+
+  test 'the drawer lists tags in use and leaves hidden ones out' do
+    @one.fiction_tags << @rebirth
+
+    get alphabetical_fictions_url
+
+    assert_select 'input[name="tags[]"][value=?]', @rebirth.slug
+    assert_select 'input[name="tags[]"][value=?]', fiction_tags(:yuri_hidden).slug, count: 0
+  end
+
+  test 'an unknown tag shows the tag empty state with a reset link' do
+    get alphabetical_fictions_url, params: { tags: ['no-such-tag'] }
+
+    assert_includes response.body, I18n.t('fiction_lists.empty.tags_title')
+    assert_select "#{LIST} a[href=?]", alphabetical_fictions_path, text: I18n.t('fiction_lists.empty.tags_reset')
+  end
+
+  test 'a reader without 18+ is told why an adult tag shows nothing' do
+    adult = FictionTag.create!(name: 'Омегаверс', explicit: true)
+    @one.fiction_tags << adult
+
+    get alphabetical_fictions_url, params: { tags: [adult.slug] }
+
+    assert_select "#{LIST} a[href=?]", fiction_path(@one), count: 0
+    assert_includes response.body, I18n.t('fiction_lists.empty.tags_adult_hint')
+  end
+
+  test 'turning 18+ on lets the adult tag through' do
+    adult = FictionTag.create!(name: 'Омегаверс', explicit: true)
+    @one.fiction_tags << adult
+
+    get alphabetical_fictions_url, params: { tags: [adult.slug], include_eighteen: '1' }
+
+    assert_select "#{LIST} a[href=?]", fiction_path(@one)
+  end
+
+  test 'a hidden genre keeps its works out even when they carry the tag' do
+    sign_in users(:user_two)
+    FictionGenre.create!(fiction: @one, genre: genres(:bl))
+    @one.fiction_tags << @rebirth
+
+    get alphabetical_fictions_url, params: { tags: [@rebirth.slug] }
+
+    assert_select "#{LIST} a[href=?]", fiction_path(@one), count: 0
+  end
+
+  test 'a tag-filtered page is noindex but still followed' do
+    get alphabetical_fictions_url, params: { tags: [@rebirth.slug] }
+
+    assert_select 'meta[name=robots][content=?]', 'noindex, follow'
+  end
+
+  test 'the plain catalogue keeps the default robots' do
+    get alphabetical_fictions_url
+
+    assert_select 'meta[name=robots][content=?]', 'max-image-preview:large'
+  end
+end

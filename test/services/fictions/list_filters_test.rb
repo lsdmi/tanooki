@@ -50,6 +50,22 @@ module Fictions
       assert_not ListFilters.include_eighteen?(ActionController::Parameters.new(include_eighteen: '0'))
     end
 
+    test 'permit_for_pagy keeps valid tag slugs once and in order' do
+      params = ActionController::Parameters.new(tags: ['yuri', 'Bad Tag!', 'rebirth', 'yuri'])
+
+      assert_equal({ tags: %w[yuri rebirth] }, ListFilters.permit_for_pagy(params))
+    end
+
+    test 'tags are capped at five slugs' do
+      params = ActionController::Parameters.new(tags: %w[a b c d e f g])
+
+      assert_equal %w[a b c d e], ListFilters.permit_for_query(params)[:tags]
+    end
+
+    test 'a scalar tags value is ignored' do
+      assert_empty ListFilters.permit_for_pagy(ActionController::Parameters.new(tags: 'yuri'))
+    end
+
     test 'include_eighteen_param_specified? detects key presence' do
       assert ListFilters.include_eighteen_param_specified?(
         ActionController::Parameters.new(include_eighteen: '0')

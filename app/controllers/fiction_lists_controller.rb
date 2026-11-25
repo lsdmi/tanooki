@@ -6,7 +6,9 @@ class FictionListsController < ApplicationController
   include Fictions::GuestAlphabeticalCaching
 
   helper Fictions::ListPaginationHelper
+  helper Fictions::CatalogTagFilterHelper
   helper Fictions::ShowCacheHelper
+  helper_method :catalog_explicit_tags?
 
   before_action :pokemon_appearance, only: [:alphabetical], unless: :guest_alphabetical_request?
   before_action :resolve_catalog_include_eighteen, only: [:alphabetical]
@@ -39,7 +41,7 @@ class FictionListsController < ApplicationController
 
   def paginated_fictions
     pagy(
-      FictionListQueryBuilder.new(catalog_scope, catalog_query_params).call,
+      FictionListQueryBuilder.new(catalog_scope, catalog_query_params, catalog_explicit_tags?).call,
       limit: 24
     )
   end
@@ -47,6 +49,11 @@ class FictionListsController < ApplicationController
   def catalog_scope
     base = catalog_include_eighteen? ? Fiction.all : Fiction.not_eighteen
     current_content_filter.apply(base)
+  end
+
+  # 18+ tags count only when 18+ is on and the reader's own content filter does not cap the rating.
+  def catalog_explicit_tags?
+    catalog_include_eighteen? && !current_content_filter.hides_eighteen?
   end
 
   def explicit_hidden_genre?

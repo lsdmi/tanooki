@@ -5,7 +5,8 @@ module FictionTags
   # then deletes the source. One transaction. Link rows move one by one so the fictions_count counter
   # cache stays right.
   # An explicit source makes the target explicit, so merged works never lose their 18+ marking.
-  # Saving each moved fiction expires fragments keyed on it and queues a Searchkick reindex.
+  # Every work that carried the source is refreshed after commit, including those that already had the target:
+  # the source name leaves their page and their search entry.
   class Merge
     Result = Data.define(:moved, :skipped)
 
@@ -20,13 +21,16 @@ module FictionTags
 
     def call
       check_arguments!
+      fiction_ids = @source.fiction_tag_links.pluck(:fiction_id)
 
-      FictionTag.transaction do
-        result = move_links
+      result = FictionTag.transaction do
+        moved = move_links
         @target.update!(explicit: true) if @source.explicit? && !@target.explicit?
         @source.reload.destroy!
-        result
+        moved
       end
+      RefreshFictions.call(fiction_ids)
+      result
     end
 
     private
@@ -41,15 +45,7 @@ module FictionTags
       skipped = @source.fiction_tag_links.where(fiction_id: shared_ids).destroy_all.size
       moving = @source.fiction_tag_links.where.not(fiction_id: shared_ids).to_a
       moving.each { |link| link.update!(fiction_tag: @target) }
-      refresh_fictions(moving.map(&:fiction_id))
       Result.new(moved: moving.size, skipped:)
-    end
-
-    def refresh_fictions(fiction_ids)
-      Fiction.where(id: fiction_ids).find_each do |fiction|
-        fiction.updated_at = Time.current
-        fiction.save!(validate: false)
-      end
     end
   end
 end
