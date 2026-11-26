@@ -20,7 +20,7 @@ module Fictions
 
     def guest_fiction_show_fragment_parts(fiction, show_presenter)
       [
-        'fiction_show/v58/guest',
+        'fiction_show/v59/guest',
         fiction,
         show_presenter.order,
         I18n.locale,

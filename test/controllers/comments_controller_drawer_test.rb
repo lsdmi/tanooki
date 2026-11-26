@@ -20,7 +20,7 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
 
   test 'creating chapter comment updates drawer count stream' do
     chapter = chapters(:two)
-    chapter.update!(comments_count: 0)
+    chapter.update_column(:comments_count, 0)
 
     post comments_url(format: :turbo_stream),
          params: {
@@ -39,7 +39,7 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
 
   test 'creating chapter comment increments comments count' do
     chapter = chapters(:two)
-    chapter.update!(comments_count: 0)
+    chapter.update_column(:comments_count, 0)
 
     post comments_url(format: :turbo_stream),
          params: {
@@ -57,7 +57,7 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
   test 'destroying chapter comment updates drawer count stream' do
     chapter_comment = comments(:comment_chapter)
     chapter = chapters(:two)
-    chapter.update!(comments_count: 1)
+    chapter.update_column(:comments_count, 1)
 
     delete comment_url(chapter_comment, format: :turbo_stream),
            headers: { 'Referer' => chapter_url(chapter) }
@@ -70,7 +70,7 @@ class CommentsControllerDrawerTest < ActionDispatch::IntegrationTest
   test 'destroying chapter comment decrements comments count' do
     chapter_comment = comments(:comment_chapter)
     chapter = chapters(:two)
-    chapter.update!(comments_count: 1)
+    chapter.update_column(:comments_count, 1)
 
     delete comment_url(chapter_comment, format: :turbo_stream),
            headers: { 'Referer' => chapter_url(chapter) }

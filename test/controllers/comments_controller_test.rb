@@ -49,6 +49,20 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
   end
 
+  test 'a comment can be created as a spoiler' do
+    post comments_url(format: :turbo), params: {
+      comment: { content: 'Spoiler comment', spoiler: '1', commentable_id: @publication.id, commentable_type: Tale }
+    }
+
+    assert_predicate Comment.order(:id).last, :spoiler
+  end
+
+  test 'a comment can be marked as a spoiler when edited' do
+    patch comment_url(@comment, format: :turbo_stream), params: { comment: { content: 'Updated', spoiler: '1' } }
+
+    assert_predicate @comment.reload, :spoiler
+  end
+
   test 'should ignore spoofed user id when creating comment' do
     assert_difference('Comment.count') do
       post comments_url(format: :turbo), params: {

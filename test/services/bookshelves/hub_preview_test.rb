@@ -14,8 +14,13 @@ module Bookshelves
     end
 
     test 'popular entries preload owner covers and genres' do
+      shelf = bookshelves(:one)
+      missing = HubScope::MIN_FICTIONS - shelf.bookshelf_fictions.count
+      Fiction.where.not(id: shelf.bookshelf_fictions.select(:fiction_id)).limit(missing).each do |fiction|
+        BookshelfFiction.create!(bookshelf: shelf, fiction:)
+      end
+
       entry = HubPreview.popular.first
-      skip 'no popular shelves' unless entry
 
       assert_predicate entry.bookshelf.user, :present?
       assert_operator entry.covers.size, :<=, HubPreview::COVERS

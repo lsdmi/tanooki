@@ -10,10 +10,13 @@ module Fictions
       fiction.fiction_tags.order(:name).pluck(:name)
     end
 
-    # Whatever is already selected (hidden tags the work carries, new names just typed) plus the active tags.
-    # Selected names go first so a differently-cased duplicate never hides the selected spelling.
+    # Whatever is already selected (hidden tags the work carries, new names just typed) first, each group
+    # alphabetical; then the remaining active tags, alphabetical. Selected spellings go first so a
+    # differently-cased duplicate never hides the selected one. The option order is the chip order.
     def fiction_tag_option_names(selected_names)
-      (selected_names + FictionTag.active.order(:name).pluck(:name)).uniq(&:downcase)
+      selected = selected_names.uniq(&:downcase).sort_by(&:downcase)
+      others = FictionTag.active.pluck(:name).sort_by(&:downcase)
+      (selected + others).uniq(&:downcase)
     end
   end
 end

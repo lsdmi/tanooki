@@ -1,14 +1,24 @@
 <%# locals: fiction:, order:, read_filter:, team_filter: %>
+<% thanks = Fictions::TeamThanks.call(fiction) %>
 <div class="flex w-full flex-wrap gap-1 rounded-lg bg-surface p-1 ring-1 ring-inset ring-line" role="group" aria-label="<%= t('fictions.chapters_tab.team.label') %>">
   <% choices = [[nil, t('fictions.chapters_tab.filter.all')]] + team_filter.teams.map { |team| [team.id, team.title] } %>
   <% choices.each do |value, label| %>
     <% selected = team_filter.value == value %>
-    <%= button_to label,
-                  chapter_team_fiction_path(fiction, order:, filter: read_filter.value, team: value),
+    <% team_thanks = value && thanks.fetch(value, 0) %>
+    <%= button_to chapter_team_fiction_path(fiction, order:, filter: read_filter.value, team: value),
                   form: { class: 'flex flex-none' },
                   data: { turbo_stream: '' },
                   aria: { pressed: selected },
-                  class: ['rounded-lg px-4 py-1.5 text-sm/5 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
-                          selected ? 'bg-main text-fg shadow-sm' : 'text-fg-muted hover:bg-surface-hover hover:text-fg'] %>
+                  class: ['inline-flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs/5 font-semibold transition-colors sm:px-4 sm:py-1.5 sm:text-sm/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong',
+                          selected ? 'bg-main text-fg shadow-sm' : 'text-fg-muted hover:bg-surface-hover hover:text-fg'] do %>
+      <%= label %>
+      <% if team_thanks&.positive? %>
+        <span class="inline-flex items-center gap-0.5 text-xs/5 font-medium text-fg-muted">
+          <span class="sr-only"><%= t('chapters.thanks.list_aria') %></span>
+          <%= stroke_icon(:heart, 'size-3 shrink-0 fill-current text-status-danger-solid') %>
+          <%= team_thanks %>
+        </span>
+      <% end %>
+    <% end %>
   <% end %>
 </div>

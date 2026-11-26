@@ -13,22 +13,25 @@ class PropshaftDevManifestTest < ActiveSupport::TestCase
     @manifest_path.delete if @manifest_path.exist?
   end
 
-  test 'refresh! updates tailwind digest when builds change' do
-    # Parallel workers share app/assets/builds/tailwind.css; mutating it races the suite.
-    # Rails 8.1+ exposes parallel_worker_id (TEST_ENV_NUMBER is gone); worker 0 is id 0.
-    skip 'shared tailwind.css is unsafe under parallel workers' unless parallel_worker_id.nil?
-
-    tailwind_path = Rails.root.join('app/assets/builds/tailwind.css')
-    original = tailwind_path.read
-    stale_digest = JSON.parse(@manifest_path.read)['tailwind.css']['digested_path']
+  test 'refresh! updates the digest of a build that changes' do
+    # A file of this worker's own: rewriting the shared tailwind.css would race the other parallel workers.
+    build = Rails.root.join("app/assets/builds/propshaft-dev-manifest-test-#{Process.pid}.css")
+    logical_path = build.basename.to_s
 
     begin
-      tailwind_path.write("#{original} ")
+      build.write('a {}')
+      # The sweeper ignores future mtimes and Linux CI has 1s resolution, so date the first write back.
+      past = 10.seconds.ago.to_time
+      File.utime(past, past, build)
+      PropshaftDevManifest.refresh!(@manifest_path)
+      stale_digest = JSON.parse(@manifest_path.read)[logical_path]['digested_path']
+
+      build.write('b {}')
       PropshaftDevManifest.refresh!(@manifest_path)
 
-      assert_not_equal stale_digest, JSON.parse(@manifest_path.read)['tailwind.css']['digested_path']
+      assert_not_equal stale_digest, JSON.parse(@manifest_path.read)[logical_path]['digested_path']
     ensure
-      tailwind_path.write(original)
+      build.delete if build.exist?
       PropshaftDevManifest.refresh!(@manifest_path)
     end
   end

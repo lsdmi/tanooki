@@ -1,4 +1,17 @@
 #!/usr/bin/env ruby
+if ARGV.first.to_s.start_with?("test")
+  # libvips reads this once at init, and `bin/rails test` loads it before test_helper (test:prepare). Image tests
+  # feed deliberately truncated files; without it libvips prints "error in tile" although the code handles them.
+  ENV["VIPS_WARNING"] ||= "0"
+
+  # On macOS a forked test worker may not load a new Objective-C class once the parent has threads, so the first
+  # Vips text render in a worker (CoreText fonts) kills it and the run waits for it forever. libobjc reads this
+  # flag only at process start, hence the re-exec.
+  if RUBY_PLATFORM.include?("darwin") && !ENV.key?("OBJC_DISABLE_INITIALIZE_FORK_SAFETY")
+    exec({ "OBJC_DISABLE_INITIALIZE_FORK_SAFETY" => "YES" }, RbConfig.ruby, __FILE__, *ARGV)
+  end
+end
+
 APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
 require "rails/commands"

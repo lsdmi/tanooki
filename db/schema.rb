@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_210000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -187,6 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
     t.bigint "commentable_id", null: false
     t.string "commentable_type", null: false
     t.text "content"
+    t.boolean "spoiler", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
@@ -395,6 +396,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
     t.check_constraint "(`rating` >= 1) and (`rating` <= 5)", name: "check_rating_range"
   end
 
+  create_table "fiction_reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "comment_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "fiction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_fiction_reviews_on_comment_id", unique: true
+    t.index ["fiction_id", "created_at"], name: "index_fiction_reviews_on_fiction_and_created_at"
+    t.index ["user_id", "fiction_id"], name: "index_fiction_reviews_on_user_and_fiction", unique: true
+  end
+
   create_table "fiction_scanlators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "fiction_id", null: false
     t.bigint "scanlator_id", null: false
@@ -433,6 +445,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
     t.text "description", null: false
     t.text "short_description"
     t.integer "comments_count", default: 0
+    t.integer "reviews_count", default: 0, null: false
     t.integer "views", default: 0
     t.string "author", null: false
     t.string "origin"
@@ -1114,6 +1127,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_120000) do
   add_foreign_key "fiction_genres", "genres"
   add_foreign_key "fiction_ratings", "fictions"
   add_foreign_key "fiction_ratings", "users"
+  add_foreign_key "fiction_reviews", "comments", on_delete: :cascade
+  add_foreign_key "fiction_reviews", "fictions", on_delete: :cascade
+  add_foreign_key "fiction_reviews", "users", on_delete: :cascade
   add_foreign_key "fiction_scanlators", "fictions"
   add_foreign_key "fiction_scanlators", "scanlators"
   add_foreign_key "fiction_tag_links", "fiction_tags", on_delete: :cascade

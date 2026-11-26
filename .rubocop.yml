@@ -33,6 +33,8 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'app/services/analytics/view_increment.rb'
     - 'app/models/concerns/soft_deletable.rb'
+    # Tests set counter caches directly: those columns are read-only for update! once the counting model loads.
+    - 'test/**/*'
 
 # Soft-delete runs destroy callbacks, so AR :dependent would mutate entries on soft
 # delete. Withdraw happens in after_destroy; hard delete cascades via the FK.

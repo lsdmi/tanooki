@@ -72,6 +72,14 @@ module Fictions
       assert_select '#sort-chapters p', text: latest_line(@theirs)
     end
 
+    test 'a team tab shows its thanks count only when there are thanks' do
+      ChapterThank.create!(user: users(:user_one), chapter: @theirs)
+      get fiction_url(@fiction)
+
+      assert_select '[aria-label=Переклад] button', text: /Two.*1/m
+      assert_select '[aria-label=Переклад] button', text: 'One'
+    end
+
     test 'all keeps distinct slots across teams' do
       clear_reads!
       add_other_chapter!(number: 2, title: 'Overlap')

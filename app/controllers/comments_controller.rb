@@ -66,11 +66,11 @@ class CommentsController < ApplicationController
   end
 
   def create_comment_params
-    params.expect(comment: %i[content commentable_id commentable_type parent_id])
+    params.expect(comment: %i[content spoiler commentable_id commentable_type parent_id])
   end
 
   def update_comment_params
-    params.expect(comment: [:content])
+    params.expect(comment: %i[content spoiler])
   end
 
   def update_parent(parent_id)

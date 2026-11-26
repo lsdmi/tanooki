@@ -67,6 +67,43 @@ class CommentTest < ActiveSupport::TestCase
     assert_not @publication.comments.build.chapter_comment?
   end
 
+  test 'a comment is not a spoiler by default' do
+    comment = Comment.create!(content: 'Parent comment', commentable: @publication, user: @user)
+
+    assert_not comment.reload.spoiler
+  end
+
+  test 'a comment can be marked as a spoiler' do
+    comment = Comment.create!(content: 'Parent comment', commentable: @publication, user: @user, spoiler: true)
+
+    assert_predicate comment.reload, :spoiler
+  end
+
+  test 'a review cannot be edited below the review length' do
+    comment = review_comment
+
+    assert_not comment.update(content: 'надто коротко')
+    assert_includes comment.errors[:content].join, FictionReview::MIN_LENGTH.to_s
+  end
+
+  test 'a review can be edited while it stays long enough' do
+    comment = review_comment
+
+    assert comment.update(content: "#{comment.content} Ще одне речення.")
+  end
+
+  test 'changing only the spoiler flag of a review does not check the length again' do
+    comment = review_comment
+
+    assert comment.update(spoiler: true)
+  end
+
+  test 'a plain comment can be edited to any length' do
+    comment = Comment.create!(content: 'Parent comment', commentable: @publication, user: @user)
+
+    assert comment.update(content: 'ок')
+  end
+
   test 'should return only parent comments in parents scope' do
     parent1 = Comment.create(content: 'Parent 1', commentable: @publication, user: @user)
     child1 = Comment.create(content: 'Child 1', parent: parent1, commentable: @publication, user: @user)
@@ -79,5 +116,14 @@ class CommentTest < ActiveSupport::TestCase
 
     assert roots_present, 'expected parents scope to include root comments'
     assert replies_absent, 'expected parents scope to exclude replies'
+  end
+
+  private
+
+  def review_comment
+    fiction = fictions(:two)
+    comment = Comment.create!(content: 'Дуже сподобався сюжет і переклад. ' * 4, commentable: fiction, user: @user)
+    FictionReview.create!(comment:, user: @user, fiction:)
+    comment
   end
 end

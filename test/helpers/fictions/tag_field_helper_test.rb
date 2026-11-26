@@ -34,5 +34,12 @@ module Fictions
 
       assert_equal %w[переродження Юрі ЛітРПГ], options
     end
+
+    test 'options sort selected names and remaining active tags alphabetically, each group on its own' do
+      FictionTag.create!(name: 'Аніме')
+      options = fiction_tag_option_names(%w[Юрі Переродження])
+
+      assert_equal %w[Переродження Юрі Аніме ЛітРПГ], options
+    end
   end
 end

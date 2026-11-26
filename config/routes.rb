@@ -120,6 +120,7 @@ Rails.application.routes.draw do
       get :cancel_edit
       get :cancel_reply
     end
+    resource :review, only: %i[create destroy], controller: 'comment_reviews'
   end
   resources :chapters, except: %i[index destroy] do
     member do

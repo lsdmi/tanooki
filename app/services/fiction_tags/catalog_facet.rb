@@ -4,7 +4,7 @@ module FictionTags
   # Which tags the catalog can filter by. One rule for the drawer, the selected chips and the query:
   # only active tags, and 18+ tags only when the reader has 18+ on (`explicit:`).
   class CatalogFacet
-    # The drawer lists this many tags first; the rest show up when the reader searches.
+    # The drawer lists this many tags first; the rest show under «Показати всі» or when the reader searches.
     FEATURED = 12
 
     class << self
@@ -12,9 +12,9 @@ module FictionTags
         explicit ? FictionTag.active : FictionTag.active.where(explicit: false)
       end
 
-      # Tags with at least one work, most used first. Hidden or empty tags never reach the drawer.
+      # Tags with at least one work, in alphabetical order. Hidden or empty tags never reach the drawer.
       def options(explicit:)
-        visible(explicit:).where('fictions_count > 0').order(fictions_count: :desc, name: :asc).to_a
+        visible(explicit:).where('fictions_count > 0').order(:name).to_a
       end
 
       # Tags for the requested slugs, in the order they were asked for. Unknown or not visible slugs are skipped.

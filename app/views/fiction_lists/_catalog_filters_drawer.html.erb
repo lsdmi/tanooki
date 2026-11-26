@@ -73,7 +73,7 @@
                  placeholder="<%= t('fiction_lists.filters.tags_search') %>"
                  aria-label="<%= t('fiction_lists.filters.tags_search') %>"
                  data-catalog-tag-search-target="input"
-                 data-action="input->catalog-tag-search#filter">
+                 data-action="input->catalog-tag-search#render">
           <div class="flex flex-wrap gap-2" role="group" aria-label="<%= t('fiction_lists.filters.tags') %>">
             <% tag_options.each_with_index do |tag, index| %>
               <% featured = index < FictionTags::CatalogFacet::FEATURED %>
@@ -94,6 +94,16 @@
               </label>
             <% end %>
           </div>
+          <% if tag_options.size > FictionTags::CatalogFacet::FEATURED %>
+            <% show_all_label = t('fiction_lists.filters.tags_show_all', count: tag_options.size) %>
+            <button type="button"
+                    class="mt-3 text-sm font-medium text-fg-brand hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong"
+                    aria-expanded="false"
+                    data-catalog-tag-search-target="toggle"
+                    data-action="click->catalog-tag-search#toggle"
+                    data-expand-label="<%= show_all_label %>"
+                    data-collapse-label="<%= t('fiction_lists.filters.tags_show_less') %>"><%= show_all_label %></button>
+          <% end %>
           <p class="mt-3 text-sm text-fg-muted" hidden data-catalog-tag-search-target="empty"><%= t('fiction_lists.filters.tags_none') %></p>
         </section>
       <% end %>

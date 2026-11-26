@@ -12,12 +12,13 @@ module FictionTags
       fictions(:two).fiction_tags << @rebirth
     end
 
-    test 'options list the most used tags first and skip empty, hidden and adult ones' do
+    test 'options skip empty, hidden and adult ones' do
       assert_equal [@rebirth.slug], CatalogFacet.options(explicit: false).map(&:slug)
     end
 
-    test 'options include adult tags only when they are allowed' do
-      assert_equal [@rebirth.slug, @adult.slug], CatalogFacet.options(explicit: true).map(&:slug)
+    test 'options include adult tags only when they are allowed, alphabetically rather than by number of works' do
+      # @rebirth has two works and @adult one, yet «Омегаверс» comes first.
+      assert_equal [@adult.slug, @rebirth.slug], CatalogFacet.options(explicit: true).map(&:slug)
     end
 
     test 'selected keeps the requested order and skips unknown or hidden slugs' do
