@@ -11,20 +11,8 @@ class FictionShowPresenter
 
   COMMENTS_PAGE_SIZE = 10
 
-  # One page of top-level comments; the order and page come from the comments frame URL, so guests stay cacheable.
-  def comments
-    comments_page_with_lookahead.first(COMMENTS_PAGE_SIZE)
-  end
-
-  def more_comments? = comments_page_with_lookahead.size > COMMENTS_PAGE_SIZE
-
-  def comments_order = @params[:order].to_s == 'asc' ? :asc : :desc
-
-  def comments_page = [@params[:page].to_i, 1].max
-
-  def new_comment
-    @new_comment ||= Comment.new
-  end
+  delegate :comments, :more_comments?, :comments_order, :comments_page, :new_comment, :reviews_only?,
+           :review_stats, :list_state, to: :comments_thread
 
   def reading_progress
     @reading_progress ||= find_or_build_reading_progress
@@ -87,22 +75,13 @@ class FictionShowPresenter
 
   private
 
+  def comments_thread = @comments_thread ||= FictionShow::CommentsThread.new(@fiction, @params)
+
   def similar_finder = @similar_finder ||= Fictions::SimilarFictions.new(@fiction, filter: @content_filter)
 
   def curated_shelf_args = { fiction: @fiction, viewer: @current_user, filter: @content_filter }
 
   def ranks_cache_key = "fiction-#{@fiction.slug}-ranks"
-
-  def comments_page_with_lookahead
-    @comments_page_with_lookahead ||= @fiction.comments.parents
-                                              .includes(
-                                                { user: { avatar: :image_attachment } },
-                                                replies: { user: { avatar: :image_attachment } }
-                                              )
-                                              .order(created_at: comments_order, id: comments_order)
-                                              .offset((comments_page - 1) * COMMENTS_PAGE_SIZE)
-                                              .limit(COMMENTS_PAGE_SIZE + 1).to_a
-  end
 
   def chapters_list_scope
     @chapters_list_scope ||= Library::ChapterCatalog.chapters_scope_for_list(@fiction, @current_user)

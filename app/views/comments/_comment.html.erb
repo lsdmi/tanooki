@@ -14,7 +14,8 @@
   <% hidden_replies = [replies.size - Comments::PresentationHelper::REPLIES_PREVIEW, 0].max %>
   <% quiet = local_assigns.fetch(:quiet, false) %>
   <%= turbo_frame_tag comment, class: 'flex flex-col gap-3' do %>
-    <%= render 'comments/comment_body', comment:, commentable:, quiet: %>
+    <%= render 'comments/comment_body', comment:, commentable:, quiet:, review_stats: local_assigns[:review_stats],
+                                        list_state: local_assigns[:list_state] %>
     <%# Hidden until a reply exists, including one appended by turbo_stream. %>
     <div class="ml-11 flex flex-col gap-2 border-l-2 border-line pl-4 [&:not(:has(article))]:hidden" data-controller="reveal">
       <%= turbo_frame_tag "replies-#{comment.id}", class: 'flex flex-col gap-2' do %>

@@ -1,0 +1,6 @@
+<nav class="flex flex-wrap gap-2" aria-label="<%= t('fictions.reviews.filter.label') %>">
+  <%= link_to t('fictions.reviews.filter.all'), all_path,
+              class: chip_class(!reviews_only), aria: { current: (reviews_only ? nil : 'page') } %>
+  <%= link_to t('fictions.reviews.filter.reviews', count: fiction.reviews_count), reviews_path,
+              class: chip_class(reviews_only), aria: { current: (reviews_only ? 'page' : nil) } %>
+</nav>

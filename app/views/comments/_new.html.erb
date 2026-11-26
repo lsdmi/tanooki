@@ -71,6 +71,12 @@
     <% end %>
 
     <div class="flex flex-wrap items-center justify-end gap-2">
+      <% if commentable.is_a?(Fiction) && comment.parent_id.blank? %>
+        <label class="mr-auto inline-flex items-center gap-2 text-xs/5 text-fg-secondary">
+          <%= f.check_box :spoiler, id: "comment-spoiler-#{comment.id || 'new'}", class: 'size-4 rounded border-line text-brand focus:ring-brand' %>
+          <span><%= t('fictions.reviews.spoiler.checkbox') %></span>
+        </label>
+      <% end %>
       <% if comment.new_record? && comment.parent_id.present? %>
         <%= turbo_frame_tag "cancel-reply-#{comment.id}" do %>
           <%= ui_button(as: :link, href: cancel_reply_comment_path(comment.parent_id), variant: :ghost, size: :sm,

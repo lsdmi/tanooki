@@ -1,0 +1,13 @@
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+  <span class="inline-flex items-center rounded-full bg-brand-subtle px-2 py-0.5 text-xs/5 font-semibold text-fg-brand">
+    <%= t('fictions.reviews.badge') %>
+  </span>
+  <% if rating %>
+    <span class="inline-flex items-center gap-0.5" role="img" aria-label="<%= t('fictions.reviews.rating_label', rating: rating) %>">
+      <% (1..5).each do |star| %>
+        <%= stroke_icon(:star, star_classes(star)) %>
+      <% end %>
+    </span>
+  <% end %>
+  <p class="text-xs/5 text-fg-secondary"><%= read_text %></p>
+</div>

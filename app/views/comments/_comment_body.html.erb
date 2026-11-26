@@ -1,7 +1,11 @@
-<%# locals: (comment:, commentable: comment.commentable, quiet: false) %>
+<%# locals: (comment:, commentable: comment.commentable, quiet: false, review_stats: nil, list_state: nil) %>
 <% quiet = local_assigns.fetch(:quiet, false) %>
-<article class="<%= quiet ? 'flex flex-col gap-3 border-b border-line py-3' : 'flex flex-col gap-4 rounded-[14px] bg-main p-3 ring-1 ring-inset ring-line' %>">
-  <header class="flex items-center gap-2">
+<%# Only a fiction's top-level comment can be a review; the page preloads exactly those, so nothing else asks. %>
+<% review = (commentable.is_a?(Fiction) && comment.parent_id.nil?) ? comment.fiction_review : nil %>
+<% stats = review && (review_stats || FictionReviews::ReaderStats.new(fiction: commentable, user_ids: [comment.user_id])) %>
+<% ring = review ? 'ring-brand' : 'ring-line' %>
+<article class="<%= quiet ? 'flex flex-col gap-3 border-b border-line py-3' : "flex flex-col gap-4 rounded-[14px] bg-main p-3 ring-1 ring-inset #{ring}" %>">
+  <header class="flex flex-wrap items-center gap-2">
     <%= image_tag avatar_image_url(comment.user.avatar.image), alt: '', class: 'size-8 shrink-0 rounded-full object-cover', height: '32', width: '32' %>
     <div class="min-w-0 flex-1">
       <p class="truncate text-sm/5 font-medium text-fg">
@@ -12,6 +16,13 @@
       </p>
       <%= tag.p comment_posted_ago(comment), class: 'text-[10px]/4 text-fg-secondary' %>
     </div>
+
+    <% if review %>
+      <div class="order-last flex min-w-0 max-w-full basis-full sm:order-none sm:basis-auto sm:ml-auto sm:justify-end">
+        <%= render Fictions::Reviews::BadgeComponent.new(rating: stats.rating_for(comment.user_id),
+                                                         read_count: stats.read_count_for(comment.user_id)) %>
+      </div>
+    <% end %>
 
     <% if current_user&.id == comment.user_id %>
       <div class="flex shrink-0 gap-1">
@@ -30,12 +41,12 @@
   </header>
 
   <%= turbo_frame_tag "comment-content-#{comment.id}", class: 'block' do %>
-    <%= tag.p comment.content, class: Comments::PresentationHelper::COMMENT_TEXT_CLASS %>
+    <%= render 'comments/text', comment:, css: Comments::PresentationHelper::COMMENT_TEXT_CLASS %>
   <% end %>
 
   <% if current_user %>
-    <%= turbo_frame_tag "comment-reply-#{comment.id}", class: 'flex [&>form]:w-full' do %>
-      <%= render 'comments/actions', comment:, commentable: %>
+    <%= turbo_frame_tag "comment-reply-#{comment.id}", class: 'flex flex-wrap items-center gap-x-4 gap-y-2 [&>form]:w-full' do %>
+      <%= render 'comments/actions', comment:, commentable:, list_state: %>
     <% end %>
   <% else %>
     <div class="flex">

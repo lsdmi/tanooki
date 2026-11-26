@@ -1,6 +1,7 @@
 <% current_genre = params[:genre].to_s %>
 <% filter_on = ->(key) { ActiveModel::Type::Boolean.new.cast(params[key]) } %>
 <% chip = 'inline-flex cursor-pointer items-center justify-center rounded-md border border-[var(--catalog-control-line)] bg-main px-3 py-1.5 text-sm text-fg transition-colors hover:bg-surface-hover has-[:checked]:border-brand has-[:checked]:bg-brand-subtle has-[:checked]:font-medium has-[:checked]:text-fg-brand' %>
+<% tag_chip = chip.sub('text-sm', 'text-xs') %>
 
 <div data-catalog-filters-target="backdrop"
      class="fixed inset-0 z-[51] bg-black/40 opacity-0 pointer-events-none transition-opacity duration-150 ease-out"
@@ -78,7 +79,7 @@
             <% tag_options.each_with_index do |tag, index| %>
               <% featured = index < FictionTags::CatalogFacet::FEATURED %>
               <% checked = selected_tag_slugs.include?(tag.slug) %>
-              <label class="<%= chip %>"
+              <label class="<%= tag_chip %>"
                      <%= 'hidden' unless featured || checked %>
                      data-catalog-tag-search-target="item"
                      data-name="<%= tag.name.downcase %>"
@@ -88,7 +89,7 @@
               </label>
             <% end %>
             <% catalog_selected_tags.reject { |tag| tag_options.include?(tag) }.each do |tag| %>
-              <label class="<%= chip %>" data-catalog-tag-search-target="item" data-name="<%= tag.name.downcase %>" data-featured="false">
+              <label class="<%= tag_chip %>" data-catalog-tag-search-target="item" data-name="<%= tag.name.downcase %>" data-featured="false">
                 <input type="checkbox" name="tags[]" value="<%= tag.slug %>" class="sr-only" checked>
                 <%= tag.name %>
               </label>

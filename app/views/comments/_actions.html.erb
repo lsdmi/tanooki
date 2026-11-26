@@ -13,3 +13,7 @@
 <% else %>
   <%= render 'comments/reply_button', href: reply_href, html: { data: { turbo_stream: '' } } %>
 <% end %>
+<% if commentable.is_a?(Fiction) %>
+  <%= render Fictions::Reviews::ActionComponent.new(comment:, fiction: commentable, user: current_user,
+                                                    list_state: local_assigns[:list_state]) %>
+<% end %>

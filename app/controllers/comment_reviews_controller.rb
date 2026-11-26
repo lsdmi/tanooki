@@ -42,8 +42,25 @@ class CommentReviewsController < ApplicationController
     render turbo_stream: [
       *turbo_stream_notice(notice),
       turbo_stream.replace(@comment, partial: 'comments/comment',
-                                     locals: { comment: @comment, commentable: @comment.commentable })
+                                     locals: { comment: @comment, commentable: @comment.commentable,
+                                               list_state: }),
+      *filter_stream
     ]
+  end
+
+  # The «Відгуки (N)» count moves with every mark, so the filter is redrawn in the order and filter the reader sent.
+  def filter_stream
+    fiction = @comment.commentable
+    return [] unless fiction.is_a?(Fiction)
+
+    component = Fictions::Reviews::FilterComponent.new(fiction:, order: list_state[:order],
+                                                       reviews_only: list_state[:reviews_only])
+    [turbo_stream.update('fiction_review_filter', view_context.render(component))]
+  end
+
+  # The order and filter of the list the reader sent with the request; the same ones the comment's links carry.
+  def list_state
+    { order: params[:order].to_s == 'asc' ? :asc : :desc, reviews_only: params[:filter].to_s == 'reviews' }
   end
 
   def render_error(reason)

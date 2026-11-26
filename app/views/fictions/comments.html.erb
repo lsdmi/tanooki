@@ -10,7 +10,8 @@
       <% if presenter.comments.size > 1 || presenter.more_comments? %>
         <% newest_first = presenter.comments_order == :desc %>
         <%= ui_button(as: :link, variant: :outline, size: :lg,
-                      href: comments_fiction_path(@fiction, order: (newest_first ? :asc : :desc)),
+                      href: comments_fiction_path(@fiction, order: (newest_first ? :asc : :desc),
+                                                  filter: presenter.reviews_only? ? 'reviews' : nil),
                       html: { title: t(newest_first ? 'fictions.comments.show_oldest' : 'fictions.comments.show_newest'),
                               class: 'shrink-0' }) do %>
           <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -19,6 +20,11 @@
           <%= t(newest_first ? 'fictions.chapters_tab.newest' : 'fictions.chapters_tab.oldest') %>
         <% end %>
       <% end %>
+    </div>
+
+    <div id="fiction_review_filter">
+      <%= render Fictions::Reviews::FilterComponent.new(fiction: @fiction, order: presenter.comments_order,
+                                                        reviews_only: presenter.reviews_only?) %>
     </div>
 
     <% if current_user %>

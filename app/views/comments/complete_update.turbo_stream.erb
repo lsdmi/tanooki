@@ -16,6 +16,6 @@
   <% end %>
 <% else %>
   <%= turbo_stream.update "comment-content-#{@comment.id}" do %>
-    <%= tag.p @comment.content.to_s.strip, class: Comments::PresentationHelper::COMMENT_TEXT_CLASS %>
+    <%= render 'comments/text', comment: @comment, css: Comments::PresentationHelper::COMMENT_TEXT_CLASS %>
   <% end %>
 <% end %>

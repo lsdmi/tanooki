@@ -24,6 +24,27 @@ class CommentReviewsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, %(target="comment_#{@comment.id}")
   end
 
+  test 'a mark redraws the reviews filter with its count and the order the reader is looking at' do
+    post comment_review_path(@comment, format: :turbo_stream, order: 'asc', filter: 'reviews')
+
+    assert_includes response.body, %(target="fiction_review_filter")
+    assert_includes response.body, 'Відгуки (1)'
+    assert_includes response.body, 'filter=reviews&amp;order=asc'
+  end
+
+  test 'the marked comment keeps the list state on its unmark link' do
+    post comment_review_path(@comment, format: :turbo_stream, order: 'asc', filter: 'reviews')
+
+    assert_includes response.body, %(href="/comments/#{@comment.id}/review?filter=reviews&amp;order=asc")
+  end
+
+  test 'a mark without list state redraws the filter with the default order' do
+    post comment_review_path(@comment, format: :turbo_stream)
+
+    assert_includes response.body, %(target="fiction_review_filter")
+    assert_includes response.body, 'order=desc'
+  end
+
   test 'the author takes the mark off and the comment stays' do
     post comment_review_path(@comment, format: :turbo_stream)
 

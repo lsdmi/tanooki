@@ -1,0 +1,9 @@
+<%# locals: (comment:, review:, stats:) %>
+<div class="flex max-w-xl flex-col gap-3 rounded-[14px] bg-main p-3 ring-1 ring-inset <%= review ? 'ring-brand' : 'ring-line' %>">
+  <% if review %>
+    <%= render Fictions::Reviews::BadgeComponent.new(rating: stats.rating_for(comment.user_id),
+                                                     read_count: stats.read_count_for(comment.user_id)) %>
+  <% end %>
+  <%= render 'comments/text', comment:, css: 'text-sm/5 text-fg-secondary whitespace-pre-line break-words' %>
+  <%= render Fictions::Reviews::ActionComponent.new(comment:, fiction: comment.commentable, user: comment.user) %>
+</div>

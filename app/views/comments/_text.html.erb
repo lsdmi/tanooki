@@ -1,0 +1,12 @@
+<%# locals: (comment:, css:) %>
+<% text = comment.content.to_s.strip %>
+<% if comment.spoiler %>
+  <details class="group">
+    <summary class="cursor-pointer list-none text-xs/5 font-medium text-fg-muted hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-line-strong [&::-webkit-details-marker]:hidden">
+      <%= t('fictions.reviews.spoiler.summary') %>
+    </summary>
+    <%= tag.p text, class: "#{css} mt-2" %>
+  </details>
+<% else %>
+  <%= tag.p text, class: css %>
+<% end %>
