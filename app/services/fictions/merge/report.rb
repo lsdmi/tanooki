@@ -24,6 +24,14 @@ module Fictions
         @lines << "titles #{names.presence&.join(' ') || 'none'}"
       end
 
+      def hikka_slug_moved(slug)
+        @lines << "hikka_slug moved #{slug}"
+      end
+
+      def hikka_slug_kept(slug)
+        @lines << "hikka_slug kept_target dropped #{slug}"
+      end
+
       def already_merged
         'already merged'
       end

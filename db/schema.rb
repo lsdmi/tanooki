@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_100000) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -439,6 +439,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_210000) do
 
   create_table "fictions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "slug", null: false
+    t.string "hikka_slug"
     t.string "title", null: false
     t.string "alternative_title"
     t.string "english_title"
@@ -467,6 +468,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_210000) do
     t.index ["completed_at", "last_chapter_at"], name: "index_fictions_on_listing_progress"
     t.index ["content_rating"], name: "index_fictions_on_content_rating"
     t.index ["created_at"], name: "index_fictions_on_created_at"
+    t.index ["hikka_slug"], name: "index_fictions_on_hikka_slug", unique: true
     t.index ["licensed_at"], name: "index_fictions_on_licensed_at"
     t.index ["merged_into_id"], name: "index_fictions_on_merged_into_id"
     t.index ["paused_at"], name: "index_fictions_on_paused_at"

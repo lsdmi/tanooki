@@ -59,6 +59,7 @@ module Fictions
     end
 
     def retire_source
+      hikka_slug = @source.hikka_slug
       @source.merged_into = @target
       @source.views = 0
       @source.comments_count = 0
@@ -66,6 +67,23 @@ module Fictions
       @source.last_chapter_at = nil
       @source.save!(validate: false)
       @source.reload.destroy!
+      transfer_hikka_slug(hikka_slug)
+    end
+
+    # The source's delete releases its Hikka title, so the title can only move to the target after that (unique index).
+    # The target keeps its own title when it has one; then the source's title is dropped and the report says so.
+    # The lock re-reads the target's title under the row lock, so a concurrent save cannot be overwritten.
+    def transfer_hikka_slug(slug)
+      return if slug.blank?
+
+      @target.lock!
+      if @target.hikka_slug.nil?
+        @target.hikka_slug = slug
+        @target.save!(validate: false)
+        @report.hikka_slug_moved(slug)
+      else
+        @report.hikka_slug_kept(slug)
+      end
     end
 
     def publish!
@@ -75,6 +93,7 @@ module Fictions
       expire_fiction_counters(fiction)
       reindex(fiction)
       IndexCachedLists.expire!
+      HikkaFeed.bust
       Scanlators::StatsCacheInvalidation.for_scanlator_ids(fiction.scanlators.ids)
     end
 

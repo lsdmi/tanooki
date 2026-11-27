@@ -63,14 +63,14 @@ class FictionsShowTabsTest < ActionDispatch::IntegrationTest
     assert_select '#fiction-panel-comments[hidden] turbo-frame#fiction_comments[loading=lazy]'
   end
 
-  test 'Chapters is open for a reader who has started' do
+  test 'About stays open for a reader who has started' do
     reading_progresses(:one).update!(resume_at: 1.hour.ago)
 
     get fiction_url(@fiction)
 
-    assert_select '#fiction-tab-chapters[aria-selected=true]'
-    assert_select '#fiction-panel-chapters:not([hidden])'
-    assert_select '#fiction-panel-about[hidden]'
+    assert_select '#fiction-tab-about[aria-selected=true][tabindex="0"]'
+    assert_select '#fiction-tab-chapters[aria-selected=false][tabindex="-1"]'
+    assert_select '#fiction-panel-about[role=tabpanel]:not([hidden])'
   end
 
   test 'the team menu sits in the hero actions, outside the tab panels' do

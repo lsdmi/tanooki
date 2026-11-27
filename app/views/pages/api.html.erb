@@ -167,8 +167,38 @@
         </p>
         <p class="mt-4 text-fg-secondary leading-relaxed">
           Помилки приходять як JSON: <code class="text-fg">error.code</code> і українське <code class="text-fg">error.message</code>.
-          Чужий розділ — це 404. Машиночитний опис усіх адрес:
+          Чужий розділ — це 404. Машиночитний опис адрес, які працюють із ключем:
           <%= link_to 'OpenAPI', '/api/v1/openapi.json', class: 'underline underline-offset-2' %>.
+        </p>
+      </section>
+
+      <section class="bg-main rounded-lg shadow-md p-6 mb-8 border border-line">
+        <h2 class="text-2xl font-bold text-fg mb-4">Публічний список творів</h2>
+        <p class="text-fg-secondary leading-relaxed mb-4">
+          Для сайтів-партнерів, наприклад Хіки. Ключ не потрібен:
+          <code class="text-fg">GET /api/v1/fictions</code> віддає всі твори одним списком.
+          Відповідь кешується до години, тож зміна в творі з’являється тут не одразу.
+          Цієї адреси немає в OpenAPI, бо він описує лише API для ключів.
+        </p>
+        <pre class="overflow-x-auto rounded-lg bg-surface-strong p-4 text-sm text-fg"><code>curl https://baka.in.ua/api/v1/fictions
+
+[{
+  "alternative_title": "…",
+  "cover_url": "https://baka.in.ua/…",
+  "description": "…",
+  "english_title": "…",
+  "hikka_slug": "guimi-zhi-zhu-7059fd",
+  "reference": "https://baka.in.ua/fictions/my-fiction",
+  "slug": "my-fiction",
+  "title": "…"
+}]</code></pre>
+        <p class="mt-4 text-fg-secondary leading-relaxed mb-4">
+          <code class="text-fg">slug</code> — стабільна назва твору на Баці, та сама, що в
+          <code class="text-fg">reference</code>.
+          <code class="text-fg">hikka_slug</code> — назва тайтлу на Хіці, тобто частина адреси після
+          <code class="text-fg">hikka.io/novel/</code>. Її вказують автори твору в його налаштуваннях.
+          Один тайтл Хіки належить одному твору. Якщо твір ще не прив’язаний, там
+          <code class="text-fg">null</code>.
         </p>
       </section>
     </div>

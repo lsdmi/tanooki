@@ -29,6 +29,13 @@
         <%= tag.p fiction.errors[:author].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:author].any? %>
       </div>
 
+      <div class="relative mb-4">
+        <%= f.label :hikka_slug, t('fictions.form.hikka_slug.label'), class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
+        <%= f.input :hikka_slug, input_html: { class: text_field_class }, label: false, placeholder: 'slug або посилання на hikka.io' %>
+        <p class="mt-1 text-sm text-fg-muted"><%= t('fictions.form.hikka_slug.hint') %></p>
+        <%= tag.p fiction.errors[:hikka_slug].to_sentence, class: 'absolute -bottom-5 text-xs text-status-danger-solid' if fiction.errors[:hikka_slug].any? %>
+      </div>
+
       <div class="relative mb-8">
         <%= f.label :scanlator_ids, 'Перекладацька команда', class: 'block text-fg-secondary text-lg font-semibold mb-2' %>
         <%= f.select :scanlator_ids, options_for_select(scanlator_select_options(current_user), selected: f.object.scanlator_ids.presence || f.object.scanlators.ids), {}, { data: { controller: 'slim' }, multiple: true, class: "w-full bg-surface text-fg border border-line rounded-lg p-3 focus:ring-2 focus:ring-line-strong focus:border-line-strong" } %>

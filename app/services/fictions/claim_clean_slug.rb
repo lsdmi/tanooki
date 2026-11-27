@@ -43,6 +43,8 @@ module Fictions
     def remember_old_slug(old_slug)
       redirect = fiction.dup
       redirect.slug = old_slug
+      # The copy must not claim the Hikka title the live fiction holds (unique index).
+      redirect.hikka_slug = nil
       redirect.merged_into = fiction
       redirect.deleted_at = Time.current
       redirect.save!(validate: false)

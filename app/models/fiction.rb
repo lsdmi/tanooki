@@ -6,6 +6,8 @@ class Fiction < ApplicationRecord
   include FictionRatings
   include FictionListingProgress
   include FictionLicense
+  include FictionHikkaSlug
+  include FictionHikkaFeed
   include FictionContentRating
   include FictionThanks
   include Reviewable

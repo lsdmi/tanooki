@@ -41,6 +41,20 @@ class PagesApiTest < ActionDispatch::IntegrationTest
     assert_match 'chapters/batch', response.body
   end
 
+  test 'the docs describe the public fiction list with its slug fields' do
+    get api_docs_path
+
+    assert_select 'h2', text: 'Публічний список творів'
+    assert_select 'code', text: 'GET /api/v1/fictions'
+    assert_select 'code', text: 'hikka_slug'
+  end
+
+  test 'the public fiction list is not in the key-only OpenAPI document' do
+    get '/api/v1/openapi.json'
+
+    assert_not_includes response.parsed_body['paths'].keys, '/fictions'
+  end
+
   test 'the docs explain paragraph_edits keeps formatting on text-only edits' do
     get api_docs_path
 

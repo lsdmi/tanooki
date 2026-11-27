@@ -29,6 +29,19 @@ module Fictions
       assert_nil MergedRedirect.new(old_slug).target
     end
 
+    test 'the redirect copy does not take the Hikka slug the live fiction holds' do
+      fiction = fictions(:one)
+      fiction.update_column(:hikka_slug, 'guimi-zhi-zhu-7059fd')
+      old_slug = "clean-title-#{UUID}"
+      assign_slug(fiction, old_slug)
+
+      ClaimCleanSlug.new(fiction).call
+
+      assert_equal 'clean-title', fiction.reload.slug
+      assert_equal 'guimi-zhi-zhu-7059fd', fiction.hikka_slug
+      assert_nil Fiction.with_deleted.find_by!(slug: old_slug).hikka_slug
+    end
+
     test 'leaves a slug that has no uuid suffix' do
       fiction = fictions(:one)
 

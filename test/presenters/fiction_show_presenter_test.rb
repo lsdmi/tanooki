@@ -28,10 +28,10 @@ class FictionShowPresenterTest < ActiveSupport::TestCase
     assert_equal :about, @presenter.default_tab
   end
 
-  test 'default tab is Chapters once the reader opened a chapter' do
+  test 'default tab stays About once the reader opened a chapter' do
     reading_progresses(:one).update!(resume_at: 1.hour.ago)
 
-    assert_equal :chapters, @presenter.default_tab
+    assert_equal :about, @presenter.default_tab
   end
 
   test 'first and last chapter use memoized ordered relations' do

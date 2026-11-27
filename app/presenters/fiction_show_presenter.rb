@@ -34,11 +34,8 @@ class FictionShowPresenter
     continue_reading.continue_chapter
   end
 
-  # Guests always get About: their page is one cached variant, and a URL hash picks another tab on the client.
-  # So does a licensed work with no chapter left to list.
-  def default_tab
-    @current_user && reading_started? && @fiction.license_chapters_state != :removed ? :chapters : :about
-  end
+  # The page opens on About. A URL hash (`#chapters`, `#comments`) still picks another tab on the client.
+  def default_tab = :about
 
   def bookmark_stats
     Rails.cache.fetch("fiction-#{@fiction.slug}-stats", expires_in: 4.hours) do

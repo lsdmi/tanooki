@@ -14,11 +14,19 @@ module Fictions
       if form.save
         sync_fiction_associations
         flash[:alert] = t('fictions.license.clear_denied') if form.license_clear_denied?
+        flash_hikka_slug_warning
         redirect_to @fiction, notice: notice
       else
         @title_matches = form.title_matches
         render failure_template, status: :unprocessable_content
       end
+    end
+
+    # Hikka could not be asked: the fiction is saved, the author is told to save again. Keeps an earlier alert.
+    def flash_hikka_slug_warning
+      return unless @fiction.hikka_slug_warning
+
+      flash[:alert] ||= t('fictions.form.hikka_slug.unavailable')
     end
 
     def sync_fiction_associations
@@ -40,7 +48,7 @@ module Fictions
         fiction: [
           :alternative_title, :author, :cover, :description, :english_title, :origin,
           :title, :expected_chapters, :release, :short_description, :banner, :content_rating,
-          :licensed, :license_publisher, :license_url, :chapters_hidden, :different_work,
+          :licensed, :license_publisher, :license_url, :chapters_hidden, :different_work, :hikka_slug,
           { genre_ids: [], scanlator_ids: [], tag_names: [] }
         ]
       )

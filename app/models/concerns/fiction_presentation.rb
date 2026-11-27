@@ -4,18 +4,19 @@
 module FictionPresentation
   extend ActiveSupport::Concern
 
+  # Columns copied as they are into as_hikka_json; the two URLs are built there.
+  HIKKA_FIELDS = %i[alternative_title description english_title hikka_slug slug title].freeze
+
+  # Keys stay alphabetical. `slug` is the Baka slug, `hikka_slug` the matched Hikka title (nil when unmatched).
   def as_hikka_json
     routes = Rails.application.routes.url_helpers
-    public_url_options = Rails.application.config.action_mailer.default_url_options.symbolize_keys
+    url_options = Rails.application.config.action_mailer.default_url_options.symbolize_keys
+    url_options = { only_path: false, **url_options }
 
-    {
-      alternative_title: alternative_title,
-      cover_url: routes.rails_blob_url(cover, only_path: false, **public_url_options),
-      description: description,
-      english_title: english_title,
-      reference: routes.fiction_url(self, only_path: false, **public_url_options),
-      title: title
-    }
+    slice(*HIKKA_FIELDS).symbolize_keys.merge(
+      cover_url: routes.rails_blob_url(cover, **url_options),
+      reference: routes.fiction_url(self, **url_options)
+    ).sort.to_h
   end
 
   def similar_fictions
